@@ -1,4 +1,5 @@
 import * as React from "react";
+import { Link, useLocation } from "react-router-dom";
 import {
   SidebarInset,
   SidebarProvider,
@@ -7,7 +8,15 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { AppSidebar } from "@/components/app-sidebar";
 import { SearchDialog } from "@/components/search/SearchDialog";
-import { SearchTrigger } from "@/components/search/SearchTrigger";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
+import { registry } from "@/data/registry";
 
 export type LayoutPropsType = {
   children: React.ReactNode;
@@ -15,6 +24,11 @@ export type LayoutPropsType = {
 
 export default function Layout({ children }: LayoutPropsType) {
   const [searchOpen, setSearchOpen] = React.useState(false);
+  const location = useLocation();
+
+  const componentMatch = location.pathname.match(/^\/components\/([^/]+)/);
+  const currentSlug = componentMatch ? componentMatch[1] : null;
+  const currentEntry = currentSlug ? registry.find((item) => item.slug === currentSlug) : null;
 
   return (
     <SidebarProvider>
@@ -24,13 +38,31 @@ export default function Layout({ children }: LayoutPropsType) {
           <div className="flex items-center gap-2">
             <SidebarTrigger className="-ml-1" />
             <Separator orientation="vertical" className="mr-2 h-4" />
-            <span className="text-sm font-medium text-muted-foreground">
-              Playground
-            </span>
-          </div>
-
-          <div className="flex items-center gap-3">
-            <SearchTrigger onClick={() => setSearchOpen(true)} />
+            <Breadcrumb>
+              <BreadcrumbList>
+                <BreadcrumbItem className="hidden sm:block">
+                  <BreadcrumbLink render={<Link to="/" />}>
+                    Components
+                  </BreadcrumbLink>
+                </BreadcrumbItem>
+                {currentEntry ? (
+                  <>
+                    <BreadcrumbSeparator className="hidden sm:block" />
+                    <BreadcrumbItem className="hidden sm:block">
+                      <span className="text-muted-foreground font-normal text-xs sm:text-sm">
+                        {currentEntry.category}
+                      </span>
+                    </BreadcrumbItem>
+                    <BreadcrumbSeparator className="hidden sm:block" />
+                    <BreadcrumbItem>
+                      <BreadcrumbPage className="font-medium text-foreground text-xs sm:text-sm">
+                        {currentEntry.name}
+                      </BreadcrumbPage>
+                    </BreadcrumbItem>
+                  </>
+                ) : null}
+              </BreadcrumbList>
+            </Breadcrumb>
           </div>
         </header>
         <div className="flex flex-1 flex-col gap-4 p-6">
