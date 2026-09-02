@@ -16,6 +16,8 @@ export type Category = CategoryType;
 export type ComponentExampleType = {
   title: string;
   Example: React.ComponentType;
+  /** Raw source code of the component, imported via Vite ?raw */
+  code?: string;
 };
 export type ComponentExample = ComponentExampleType;
 
