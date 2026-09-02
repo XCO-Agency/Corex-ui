@@ -26,16 +26,6 @@ export const navigationComponents: ComponentEntry[] = [
       {
         title: "Controlled tabs",
         Example: TabsExample,
-        code: `const [selected, setSelected] = useState(0);
-const tabs = [
-  { id: "all", content: "All" },
-  { id: "drafts", content: "Drafts" },
-  { id: "archived", content: "Archived" },
-];
-
-<Tabs tabs={tabs} selected={selected} onSelect={setSelected}>
-  <Text>Panel content for "{tabs[selected].content}".</Text>
-</Tabs>`,
       },
     ],
   },

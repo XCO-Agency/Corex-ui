@@ -61,7 +61,6 @@ export const layoutComponents: ComponentEntry[] = [
       {
         title: "Padded box",
         Example: BoxExample,
-        code: `<Box padding="base">A padded Box.</Box>`,
       },
     ],
   },
@@ -74,11 +73,6 @@ export const layoutComponents: ComponentEntry[] = [
       {
         title: "Vertical stack",
         Example: BlockStackExample,
-        code: `<BlockStack gap="small-100">
-  <Box padding="small-200">First</Box>
-  <Box padding="small-200">Second</Box>
-  <Box padding="small-200">Third</Box>
-</BlockStack>`,
       },
     ],
   },
@@ -91,11 +85,6 @@ export const layoutComponents: ComponentEntry[] = [
       {
         title: "Horizontal stack",
         Example: InlineStackExample,
-        code: `<InlineStack gap="small-200">
-  <Box padding="small-200">First</Box>
-  <Box padding="small-200">Second</Box>
-  <Box padding="small-200">Third</Box>
-</InlineStack>`,
       },
     ],
   },
@@ -108,9 +97,6 @@ export const layoutComponents: ComponentEntry[] = [
       {
         title: "With a title",
         Example: CardExample,
-        code: `<Card title="Shipping address">
-  <Text>123 Main St, Springfield</Text>
-</Card>`,
       },
     ],
   },
@@ -123,13 +109,6 @@ export const layoutComponents: ComponentEntry[] = [
       {
         title: "With a primary action",
         Example: PageExample,
-        code: `<Page
-  title="Products"
-  subtitle="Manage your catalog"
-  primaryAction={{ content: "Add product" }}
->
-  <Text>Page content goes here.</Text>
-</Page>`,
       },
     ],
   },
@@ -142,11 +121,6 @@ export const layoutComponents: ComponentEntry[] = [
       {
         title: "Between content",
         Example: DividerExample,
-        code: `<BlockStack gap="small-200">
-  <Text>Above the divider</Text>
-  <Divider />
-  <Text>Below the divider</Text>
-</BlockStack>`,
       },
     ],
   },

@@ -15,8 +15,6 @@ export type Category = CategoryType;
 
 export type ComponentExampleType = {
   title: string;
-  /** Optional manual code snippet; if omitted, raw code is extracted from the rendered preview. */
-  code?: string;
   Example: React.ComponentType;
 };
 export type ComponentExample = ComponentExampleType;

@@ -48,7 +48,8 @@ export { Page } from "./components/Page";
 export type { PageProps } from "./components/Page";
 
 export { Tabs } from "./components/Tabs";
-export type { TabDescriptor, TabsProps } from "./components/Tabs";
+export type { TabDescriptor, TabItemType, TabsProps, TabsPropsType } from "./components/Tabs";
+
 
 export { Link } from "./components/Link";
 export type { LinkProps } from "./components/Link";

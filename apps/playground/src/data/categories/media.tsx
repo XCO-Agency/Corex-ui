@@ -35,10 +35,6 @@ export const mediaComponents: ComponentEntry[] = [
       {
         title: "Icons",
         Example: IconExample,
-        code: `<InlineStack gap="small-200">
-  <Icon source="save" accessibilityLabel="Save" />
-  <Icon source="delete" tone="critical" accessibilityLabel="Delete" />
-</InlineStack>`,
       },
     ],
   },
@@ -51,10 +47,6 @@ export const mediaComponents: ComponentEntry[] = [
       {
         title: "Avatars",
         Example: AvatarExample,
-        code: `<InlineStack gap="small-200">
-  <Avatar name="Ada Lovelace" initials="AL" />
-  <Avatar name="Grace Hopper" initials="GH" />
-</InlineStack>`,
       },
     ],
   },
@@ -67,10 +59,6 @@ export const mediaComponents: ComponentEntry[] = [
       {
         title: "Product photo",
         Example: ThumbnailExample,
-        code: `<Thumbnail
-  source="https://burst.shopifycdn.com/photos/black-leather-choker-necklace.jpg"
-  alt="Product photo"
-/>`,
       },
     ],
   },

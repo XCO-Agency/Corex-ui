@@ -86,11 +86,6 @@ export const appBridgeComponents: ComponentEntry[] = [
       {
         title: "Imperative show/hide via ref",
         Example: AppWindowExample,
-        code: `const windowRef = useRef<HTMLElementTagNameMap["s-app-window"]>(null);
-
-<Button onClick={() => windowRef.current?.show()}>Show App Window</Button>
-<Button onClick={() => windowRef.current?.hide()}>Hide App Window</Button>
-<AppWindow ref={windowRef} src="/app-window-content.html" />`,
       },
       {
         title: "Declarative trigger (no JS)",
@@ -105,18 +100,10 @@ export const appBridgeComponents: ComponentEntry[] = [
             <AppWindow id="app-window-declarative" src="/app-window-content.html" />
           </>
         ),
-        code: `<AppWindow id="app-window" src="/app-window-content.html" />
-<Button command="--show" commandFor="app-window">Open App Window</Button>
-<Button command="--hide" commandFor="app-window">Close App Window</Button>`,
       },
       {
         title: "Title bar accessory + menu (inside the window's content page)",
         Example: AppWindowTitleBarExample,
-        code: `// Rendered by the page AppWindow's \`src\` loads:
-<Page title="Edit Product">
-  <Badge slot="accessory" tone="warning">Draft</Badge>
-  <Button slot="primary-action">Save</Button>
-</Page>`,
       },
     ],
   },
@@ -130,11 +117,6 @@ export const appBridgeComponents: ComponentEntry[] = [
       {
         title: "Nav links",
         Example: AppNavExample,
-        code: `<AppNav>
-  <Link url="/app" removeUnderline>Home</Link>
-  <Link url="/app/templates">Templates</Link>
-  <Link url="/app/settings">Settings</Link>
-</AppNav>`,
       },
     ],
   },
@@ -148,15 +130,6 @@ export const appBridgeComponents: ComponentEntry[] = [
       {
         title: "Title bar icons and menu",
         Example: MenuInTitleBarExample,
-        code: `<Page title="Product Details">
-  <Button slot="primary-action" icon="save">Save</Button>
-  <Button slot="secondary-actions" commandFor="actions-menu" icon="menu">More actions</Button>
-  <Menu id="actions-menu">
-    <Button icon="duplicate">Duplicate</Button>
-    <Button icon="archive">Archive</Button>
-    <Button icon="delete" destructive>Delete</Button>
-  </Menu>
-</Page>`,
       },
     ],
   },
@@ -170,9 +143,6 @@ export const appBridgeComponents: ComponentEntry[] = [
       {
         title: "Show a toast",
         Example: ToastExample,
-        code: `const toast = useToast();
-
-<Button onClick={() => toast.show("Saved")}>Save</Button>`,
       },
     ],
   },
@@ -186,12 +156,6 @@ export const appBridgeComponents: ComponentEntry[] = [
       {
         title: "Save bar with useSaveBar()",
         Example: SaveBarExample,
-        code: `const saveBar = useSaveBar();
-
-<SaveBar id="modal-save-bar">
-  <button onClick={handleSave}>Save</button>
-  <button onClick={() => saveBar.hide("modal-save-bar")}>Discard</button>
-</SaveBar>`,
       },
       {
         title: "Same-page form (no wrapper needed)",
@@ -203,11 +167,6 @@ export const appBridgeComponents: ComponentEntry[] = [
             </p>
           </form>
         ),
-        code: `<form data-save-bar data-discard-confirmation>
-  <TextField label="Store Name" name="storeName" required />
-  <TextField label="Description" name="description" multiline />
-  <Checkbox label="Enable notifications" name="notifications" />
-</form>`,
       },
     ],
   },

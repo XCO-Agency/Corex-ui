@@ -47,12 +47,6 @@ export const feedbackComponents: ComponentEntry[] = [
       {
         title: "Tones",
         Example: BadgeVariants,
-        code: `<InlineStack gap="small-200">
-  <Badge tone="success">Active</Badge>
-  <Badge tone="warning">Pending</Badge>
-  <Badge tone="critical">Failed</Badge>
-  <Badge tone="info">Draft</Badge>
-</InlineStack>`,
       },
     ],
   },
@@ -65,11 +59,6 @@ export const feedbackComponents: ComponentEntry[] = [
       {
         title: "Dismissible",
         Example: BannerDismissible,
-        code: `const [visible, setVisible] = useState(true);
-
-<Banner title="Heads up" tone="warning" onDismiss={() => setVisible(false)}>
-  Some line items are out of stock.
-</Banner>`,
       },
     ],
   },
@@ -82,7 +71,6 @@ export const feedbackComponents: ComponentEntry[] = [
       {
         title: "Large spinner",
         Example: SpinnerExample,
-        code: `<Spinner size="large" accessibilityLabel="Loading" />`,
       },
     ],
   },
@@ -95,9 +83,6 @@ export const feedbackComponents: ComponentEntry[] = [
       {
         title: "On a destructive action",
         Example: TooltipExample,
-        code: `<Tooltip content="Deletes the item permanently">
-  <Button destructive>Delete</Button>
-</Tooltip>`,
       },
     ],
   },

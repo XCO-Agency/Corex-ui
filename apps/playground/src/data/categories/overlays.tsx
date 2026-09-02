@@ -30,17 +30,6 @@ export const overlaysComponents: ComponentEntry[] = [
       {
         title: "Confirmation modal",
         Example: ModalExample,
-        code: `const [open, setOpen] = useState(false);
-
-<Modal
-  open={open}
-  onClose={() => setOpen(false)}
-  title="Delete product"
-  primaryAction={{ content: "Delete", destructive: true, onAction: () => setOpen(false) }}
-  secondaryActions={[{ content: "Cancel", onAction: () => setOpen(false) }]}
->
-  <Text>This can't be undone.</Text>
-</Modal>`,
       },
     ],
   },

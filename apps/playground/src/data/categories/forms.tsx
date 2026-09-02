@@ -65,9 +65,6 @@ export const formsComponents: ComponentEntry[] = [
       {
         title: "Controlled input",
         Example: TextFieldExample,
-        code: `const [name, setName] = useState("Ada Lovelace");
-
-<TextField label="Name" value={name} onChange={(value) => setName(value)} />`,
       },
     ],
   },
@@ -80,17 +77,6 @@ export const formsComponents: ComponentEntry[] = [
       {
         title: "Controlled select",
         Example: SelectExample,
-        code: `const [country, setCountry] = useState("ca");
-
-<Select
-  label="Country"
-  value={country}
-  onChange={(value) => setCountry(value)}
-  options={[
-    { label: "Canada", value: "ca" },
-    { label: "United States", value: "us" },
-  ]}
-/>`,
       },
     ],
   },
@@ -103,13 +89,6 @@ export const formsComponents: ComponentEntry[] = [
       {
         title: "Controlled checkbox",
         Example: CheckboxExample,
-        code: `const [accepted, setAccepted] = useState(false);
-
-<Checkbox
-  label="I accept the terms"
-  checked={accepted}
-  onChange={(value) => setAccepted(value)}
-/>`,
       },
     ],
   },
@@ -122,18 +101,6 @@ export const formsComponents: ComponentEntry[] = [
       {
         title: "Multiple choice",
         Example: ChoiceListExample,
-        code: `const [selected, setSelected] = useState(["email"]);
-
-<ChoiceList
-  title="Notify me by"
-  choices={[
-    { label: "Email", value: "email" },
-    { label: "SMS", value: "sms" },
-  ]}
-  selected={selected}
-  onChange={(value) => setSelected(value)}
-  allowMultiple
-/>`,
       },
     ],
   },
@@ -146,9 +113,6 @@ export const formsComponents: ComponentEntry[] = [
       {
         title: "Controlled date field",
         Example: DateFieldExample,
-        code: `const [date, setDate] = useState("2026-01-01");
-
-<DateField label="Start date" value={date} onChange={(value) => setDate(value)} />`,
       },
     ],
   },
@@ -161,9 +125,6 @@ export const formsComponents: ComponentEntry[] = [
       {
         title: "Controlled date picker",
         Example: DatePickerExample,
-        code: `const [date, setDate] = useState("2026-01-01");
-
-<DatePicker selected={date} onChange={(value) => setDate(value)} />`,
       },
     ],
   },

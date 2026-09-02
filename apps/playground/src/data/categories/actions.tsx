@@ -3,8 +3,8 @@ import type { ComponentEntry } from "../types";
 
 function ButtonVariants() {
   return (
-    <InlineStack gap="small-200">
-      <Button primary>Primary</Button>
+    <InlineStack gap="none">
+      <Button variant="primary">Primary</Button>
       <Button>Secondary</Button>
       <Button destructive>Destructive</Button>
       <Button plain>Plain</Button>
@@ -15,7 +15,7 @@ function ButtonVariants() {
 
 function ButtonGroupExample() {
   return (
-    <ButtonGroup variant="segmented">
+    <ButtonGroup gap="none">
       <Button>One</Button>
       <Button>Two</Button>
       <Button>Three</Button>
@@ -58,13 +58,6 @@ export const actionsComponents: ComponentEntry[] = [
       {
         title: "Variants",
         Example: ButtonVariants,
-        code: `<InlineStack gap="200">
-  <Button primary>Primary</Button>
-  <Button>Secondary</Button>
-  <Button destructive>Destructive</Button>
-  <Button plain>Plain</Button>
-  <Button disabled>Disabled</Button>
-</InlineStack>`,
       },
     ],
   },
@@ -77,11 +70,6 @@ export const actionsComponents: ComponentEntry[] = [
       {
         title: "Segmented group",
         Example: ButtonGroupExample,
-        code: `<ButtonGroup variant="segmented">
-  <Button>One</Button>
-  <Button>Two</Button>
-  <Button>Three</Button>
-</ButtonGroup>`,
       },
     ],
   },
@@ -94,9 +82,6 @@ export const actionsComponents: ComponentEntry[] = [
       {
         title: "External link",
         Example: LinkExample,
-        code: `<Link url="https://shopify.dev" external>
-  View developer docs
-</Link>`,
       },
     ],
   },
@@ -109,14 +94,6 @@ export const actionsComponents: ComponentEntry[] = [
       {
         title: "Actions menu",
         Example: MenuExample,
-        code: `<Button commandFor="actions-menu" icon="menu">
-  More actions
-</Button>
-<Menu id="actions-menu">
-  <Button icon="duplicate">Duplicate</Button>
-  <Button icon="archive">Archive</Button>
-  <Button icon="delete" destructive>Delete</Button>
-</Menu>`,
       },
     ],
   },

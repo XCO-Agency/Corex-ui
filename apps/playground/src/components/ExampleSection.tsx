@@ -40,7 +40,7 @@ export function ExampleSection({ example }: ExampleSectionPropsType) {
     };
   }, [example.Example]);
 
-  const displayCode = example.code ?? extractedCode;
+  const displayCode = extractedCode;
 
   return (
     <section className="example" key={example.title}>
