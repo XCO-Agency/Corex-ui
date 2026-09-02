@@ -15,7 +15,9 @@ Polaris React a matter of swapping an import, not rewriting a UI.
 ```
 packages/corex-ui/    The publishable library — see its README for usage.
 apps/playground/      A Vite app for manually exercising every component against the real
-                       Polaris CDN script during development.
+                       Polaris CDN script during development — sidebar navigation grouped by
+                       category, an overview of every component, and a live example + copyable
+                       code per component.
 docs/                 Architecture, migration guide, and per-component prop-mapping docs.
 ```
 

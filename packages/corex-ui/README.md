@@ -63,8 +63,10 @@ legacy-prop-to-new-prop mapping table. More components are added incrementally â
 
 ## Development
 
-This package lives in a pnpm workspace alongside `apps/playground`, a small Vite app used to
-manually exercise every component against the real Polaris CDN script.
+This package lives in a pnpm workspace alongside `apps/playground`, a Vite app used to manually
+exercise every component against the real Polaris CDN script. It has a category-grouped
+sidebar, an overview page listing every available component, and a detail page per component
+with a live example next to its copyable source code.
 
 ```sh
 pnpm install
