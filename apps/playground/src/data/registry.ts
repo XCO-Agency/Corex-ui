@@ -29,3 +29,5 @@ export const registry: ComponentEntry[] = [
   ...navigationComponents,
   ...appBridgeComponents,
 ];
+
+export const blocks = [];
