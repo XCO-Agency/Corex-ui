@@ -1,18 +1,16 @@
 import * as React from "react";
 import { cn } from "@/lib/utils";
-import type { CanvasBackgroundType, CanvasViewportType } from "../types";
+import type { CanvasViewportType } from "../types";
 
 export type ComponentCanvasPropsType = {
   children: React.ReactNode;
   viewport?: CanvasViewportType;
-  background?: CanvasBackgroundType;
   className?: string;
 };
 
 export function ComponentCanvas({
   children,
   viewport = "100%",
-  background = "card",
   className,
 }: ComponentCanvasPropsType) {
   const getViewportMaxWidth = (vp: CanvasViewportType) => {
@@ -26,24 +24,13 @@ export function ComponentCanvas({
     }
   };
 
-  const getBackgroundClass = (bg: CanvasBackgroundType) => {
-    switch (bg) {
-      case "dots":
-        return "bg-card bg-[radial-gradient(oklch(0.7_0_0/0.2)_1px,transparent_1px)] dark:bg-[radial-gradient(oklch(1_0_0/0.15)_1px,transparent_1px)] [background-size:16px_16px]";
-      case "subdued":
-        return "bg-muted/50";
-      default:
-        return "bg-card";
-    }
-  };
-
   const isConstrained = viewport !== "100%";
 
   return (
     <div
       className={cn(
         "relative flex min-h-[260px] w-full items-center justify-center p-6 md:p-10 transition-colors duration-200 overflow-x-auto",
-        getBackgroundClass(background),
+        "bg-card bg-[radial-gradient(oklch(0.7_0_0/0.2)_1px,transparent_1px)] dark:bg-[radial-gradient(oklch(1_0_0/0.15)_1px,transparent_1px)] [background-size:16px_16px]",
         className
       )}
     >
