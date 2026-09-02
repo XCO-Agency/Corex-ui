@@ -1,5 +1,5 @@
 {
-  "name": "@xco/corex-ui",
+  "name": "@xco-agency/corex-ui",
   "version": "0.1.0",
   "description": "Legacy-Polaris-React-compatible React components, backed by Shopify's Polaris web components.",
   "license": "MIT",
@@ -43,7 +43,12 @@
     "typescript": "^5.6.3",
     "vitest": "^2.1.4"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/XCO-Agency/Corex-ui.git"
+  },
   "publishConfig": {
+    "registry": "https://npm.pkg.github.com",
     "access": "public"
   },
   "keywords": [
