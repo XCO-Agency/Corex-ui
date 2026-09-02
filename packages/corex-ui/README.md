@@ -1,17 +1,17 @@
-# @xco/corex-ui
+# @xco-agency/corex-ui
 
 Legacy-`@shopify/polaris`-compatible React components, backed by Shopify's actively-maintained
 Polaris web components (`s-*` custom elements). Swap your import source, keep your prop names.
 
 ```diff
 -import { Button, Card } from "@shopify/polaris";
-+import { Button, Card } from "@xco/corex-ui";
++import { Button, Card } from "@xco-agency/corex-ui";
 ```
 
 ## Install
 
 ```sh
-npm install @xco/corex-ui
+npm install @xco-agency/corex-ui
 npm install --save-dev @shopify/polaris-types # optional, recommended
 ```
 
@@ -22,13 +22,13 @@ already do this):
 <script src="https://cdn.shopify.com/shopifycloud/polaris-1.js"></script>
 ```
 
-`@xco/corex-ui` has no runtime dependency on Polaris — that CDN script is what actually
+`@xco-agency/corex-ui` has no runtime dependency on Polaris — that CDN script is what actually
 registers the `s-*` elements; this package only provides the React wrapper layer.
 
 ## Usage
 
 ```tsx
-import { Page, Card, TextField, Button } from "@xco/corex-ui";
+import { Page, Card, TextField, Button } from "@xco-agency/corex-ui";
 
 function ProductForm() {
   const [title, setTitle] = useState("");
@@ -77,8 +77,8 @@ with a live example next to its copyable source code.
 
 ```sh
 pnpm install
-pnpm --filter @xco/corex-ui test        # Vitest unit tests (prop/event mapping)
-pnpm --filter @xco/corex-ui typecheck
-pnpm --filter @xco/corex-ui build       # tsup -> dist/ (ESM + CJS + .d.ts)
+pnpm --filter @xco-agency/corex-ui test        # Vitest unit tests (prop/event mapping)
+pnpm --filter @xco-agency/corex-ui typecheck
+pnpm --filter @xco-agency/corex-ui build       # tsup -> dist/ (ESM + CJS + .d.ts)
 pnpm --filter playground dev            # manual QA app, http://localhost:5173
 ```

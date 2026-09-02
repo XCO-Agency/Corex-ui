@@ -2,7 +2,7 @@
   "name": "playground",
   "private": true,
   "version": "0.0.0",
-  "description": "Manual dev/QA app for @xco/corex-ui. Loads the real Polaris CDN script so components render exactly as they would in a Shopify embedded app.",
+  "description": "Manual dev/QA app for @xco-agency/corex-ui. Loads the real Polaris CDN script so components render exactly as they would in a Shopify embedded app.",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -10,7 +10,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@xco/corex-ui": "workspace:*",
+    "@xco-agency/corex-ui": "workspace:*",
     "prism-react-renderer": "^2.4.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
