@@ -1,55 +1,16 @@
-import { BlockStack, Box, Card, Divider, InlineStack, Page, Text } from "@xco/corex-ui";
 import type { ComponentEntry } from "../types";
-
-function BoxExample() {
-  return <Box padding="base">A padded Box.</Box>;
-}
-
-function BlockStackExample() {
-  return (
-    <BlockStack gap="small-100">
-      <Box padding="small-200">First</Box>
-      <Box padding="small-200">Second</Box>
-      <Box padding="small-200">Third</Box>
-    </BlockStack>
-  );
-}
-
-function InlineStackExample() {
-  return (
-    <InlineStack gap="small-200">
-      <Box padding="small-200">First</Box>
-      <Box padding="small-200">Second</Box>
-      <Box padding="small-200">Third</Box>
-    </InlineStack>
-  );
-}
-
-function CardExample() {
-  return (
-    <Card title="Shipping address">
-      <Text>123 Main St, Springfield</Text>
-    </Card>
-  );
-}
-
-function PageExample() {
-  return (
-    <Page title="Products" subtitle="Manage your catalog" primaryAction={{ content: "Add product" }}>
-      <Text>Page content goes here.</Text>
-    </Page>
-  );
-}
-
-function DividerExample() {
-  return (
-    <BlockStack gap="small-200">
-      <Text>Above the divider</Text>
-      <Divider />
-      <Text>Below the divider</Text>
-    </BlockStack>
-  );
-}
+import { BoxExample } from "@/examples/layout/BoxExample";
+import BoxExampleRaw from "@/examples/layout/BoxExample.tsx?raw";
+import { BlockStackExample } from "@/examples/layout/BlockStackExample";
+import BlockStackExampleRaw from "@/examples/layout/BlockStackExample.tsx?raw";
+import { InlineStackExample } from "@/examples/layout/InlineStackExample";
+import InlineStackExampleRaw from "@/examples/layout/InlineStackExample.tsx?raw";
+import { CardExample } from "@/examples/layout/CardExample";
+import CardExampleRaw from "@/examples/layout/CardExample.tsx?raw";
+import { PageExample } from "@/examples/layout/PageExample";
+import PageExampleRaw from "@/examples/layout/PageExample.tsx?raw";
+import { DividerExample } from "@/examples/layout/DividerExample";
+import DividerExampleRaw from "@/examples/layout/DividerExample.tsx?raw";
 
 export const layoutComponents: ComponentEntry[] = [
   {
@@ -61,6 +22,7 @@ export const layoutComponents: ComponentEntry[] = [
       {
         title: "Padded box",
         Example: BoxExample,
+        code: BoxExampleRaw,
       },
     ],
   },
@@ -73,6 +35,7 @@ export const layoutComponents: ComponentEntry[] = [
       {
         title: "Vertical stack",
         Example: BlockStackExample,
+        code: BlockStackExampleRaw,
       },
     ],
   },
@@ -85,6 +48,7 @@ export const layoutComponents: ComponentEntry[] = [
       {
         title: "Horizontal stack",
         Example: InlineStackExample,
+        code: InlineStackExampleRaw,
       },
     ],
   },
@@ -97,6 +61,7 @@ export const layoutComponents: ComponentEntry[] = [
       {
         title: "With a title",
         Example: CardExample,
+        code: CardExampleRaw,
       },
     ],
   },
@@ -109,6 +74,7 @@ export const layoutComponents: ComponentEntry[] = [
       {
         title: "With a primary action",
         Example: PageExample,
+        code: PageExampleRaw,
       },
     ],
   },
@@ -121,6 +87,7 @@ export const layoutComponents: ComponentEntry[] = [
       {
         title: "Between content",
         Example: DividerExample,
+        code: DividerExampleRaw,
       },
     ],
   },

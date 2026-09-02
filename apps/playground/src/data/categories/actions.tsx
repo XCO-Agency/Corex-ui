@@ -1,12 +1,12 @@
 import type { ComponentEntry } from "../types";
-import { ButtonVariants } from "../../examples/actions/ButtonVariants";
-import ButtonVariantsRaw from "../../examples/actions/ButtonVariants.tsx?raw";
-import { ButtonGroupExample } from "../../examples/actions/ButtonGroupExample";
-import ButtonGroupExampleRaw from "../../examples/actions/ButtonGroupExample.tsx?raw";
-import { LinkExample } from "../../examples/actions/LinkExample";
-import LinkExampleRaw from "../../examples/actions/LinkExample.tsx?raw";
-import { MenuExample } from "../../examples/actions/MenuExample";
-import MenuExampleRaw from "../../examples/actions/MenuExample.tsx?raw";
+import { ButtonVariants } from "@/examples/actions/ButtonVariants";
+import ButtonVariantsRaw from "@/examples/actions/ButtonVariants.tsx?raw";
+import { ButtonGroupExample } from "@/examples/actions/ButtonGroupExample";
+import ButtonGroupExampleRaw from "@/examples/actions/ButtonGroupExample.tsx?raw";
+import { LinkExample } from "@/examples/actions/LinkExample";
+import LinkExampleRaw from "@/examples/actions/LinkExample.tsx?raw";
+import { MenuExample } from "@/examples/actions/MenuExample";
+import MenuExampleRaw from "@/examples/actions/MenuExample.tsx?raw";
 
 export const actionsComponents: ComponentEntry[] = [
   {

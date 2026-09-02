@@ -1,41 +1,12 @@
-import { useState } from "react";
-import { Badge, Banner, Button, InlineStack, Spinner, Tooltip } from "@xco/corex-ui";
 import type { ComponentEntry } from "../types";
-
-function BadgeVariants() {
-  return (
-    <InlineStack gap="small-200">
-      <Badge tone="success">Active</Badge>
-      <Badge tone="warning">Pending</Badge>
-      <Badge tone="critical">Failed</Badge>
-      <Badge tone="info">Draft</Badge>
-    </InlineStack>
-  );
-}
-
-function BannerDismissible() {
-  const [visible, setVisible] = useState(true);
-  if (!visible) {
-    return <Button onClick={() => setVisible(true)}>Show banner again</Button>;
-  }
-  return (
-    <Banner title="Heads up" tone="warning" onDismiss={() => setVisible(false)}>
-      Some line items are out of stock.
-    </Banner>
-  );
-}
-
-function SpinnerExample() {
-  return <Spinner size="large" accessibilityLabel="Loading" />;
-}
-
-function TooltipExample() {
-  return (
-    <Tooltip content="Deletes the item permanently">
-      <Button destructive>Delete</Button>
-    </Tooltip>
-  );
-}
+import { BadgeVariants } from "@/examples/feedback/BadgeVariants";
+import BadgeVariantsRaw from "@/examples/feedback/BadgeVariants.tsx?raw";
+import { BannerDismissible } from "@/examples/feedback/BannerDismissible";
+import BannerDismissibleRaw from "@/examples/feedback/BannerDismissible.tsx?raw";
+import { SpinnerExample } from "@/examples/feedback/SpinnerExample";
+import SpinnerExampleRaw from "@/examples/feedback/SpinnerExample.tsx?raw";
+import { TooltipExample } from "@/examples/feedback/TooltipExample";
+import TooltipExampleRaw from "@/examples/feedback/TooltipExample.tsx?raw";
 
 export const feedbackComponents: ComponentEntry[] = [
   {
@@ -47,6 +18,7 @@ export const feedbackComponents: ComponentEntry[] = [
       {
         title: "Tones",
         Example: BadgeVariants,
+        code: BadgeVariantsRaw,
       },
     ],
   },
@@ -59,6 +31,7 @@ export const feedbackComponents: ComponentEntry[] = [
       {
         title: "Dismissible",
         Example: BannerDismissible,
+        code: BannerDismissibleRaw,
       },
     ],
   },
@@ -71,6 +44,7 @@ export const feedbackComponents: ComponentEntry[] = [
       {
         title: "Large spinner",
         Example: SpinnerExample,
+        code: SpinnerExampleRaw,
       },
     ],
   },
@@ -83,6 +57,7 @@ export const feedbackComponents: ComponentEntry[] = [
       {
         title: "On a destructive action",
         Example: TooltipExample,
+        code: TooltipExampleRaw,
       },
     ],
   },
