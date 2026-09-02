@@ -1,2 +1,3 @@
 export { InlineStack } from "./InlineStack";
-export type { InlineStackProps } from "./InlineStack.types";
+export type { InlineStackProps, InlineStackPropsType } from "./InlineStack.types";
+

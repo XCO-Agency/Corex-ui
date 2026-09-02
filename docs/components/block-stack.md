@@ -7,7 +7,7 @@ Composed pattern: `s-stack` pinned to `direction="block"`. See
 ```tsx
 import { BlockStack, Text } from "@xco/corex-ui";
 
-<BlockStack gap="400">
+<BlockStack gap="base">
   <Text>First</Text>
   <Text>Second</Text>
 </BlockStack>;
@@ -15,6 +15,7 @@ import { BlockStack, Text } from "@xco/corex-ui";
 
 ## Prop mapping
 
-| Legacy prop | Behavior |
+| Prop | Behavior |
 | --- | --- |
-| `gap`, `align`, `inlineAlign` | Passed straight through to `s-stack`. |
+| `gap` | Accepts Polaris web-component spacing tokens (`small-200`, `base`, etc.). Legacy numeric values (e.g. `"400"`) are automatically translated for backward compatibility. |
+| `align`, `inlineAlign` | Passed straight through to `s-stack`. |

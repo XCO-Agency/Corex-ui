@@ -10,20 +10,23 @@ export const categories = [
   "App Bridge",
 ] as const;
 
-export type Category = (typeof categories)[number];
+export type CategoryType = (typeof categories)[number];
+export type Category = CategoryType;
 
-export interface ComponentExample {
+export type ComponentExampleType = {
   title: string;
-  code: string;
+  /** Optional manual code snippet; if omitted, raw code is extracted from the rendered preview. */
+  code?: string;
   Example: React.ComponentType;
-}
+};
+export type ComponentExample = ComponentExampleType;
 
-export interface ComponentEntry {
+export type ComponentEntryType = {
   name: string;
   slug: string;
-  category: Category;
+  category: CategoryType;
   description: string;
-  examples: ComponentExample[];
+  examples: ComponentExampleType[];
   /**
    * True for components whose live behavior only works inside a real
    * embedded Shopify admin session (App Bridge's `window.shopify` global,
@@ -32,4 +35,5 @@ export interface ComponentEntry {
    * the interaction works in this standalone playground.
    */
   requiresEmbeddedContext?: boolean;
-}
+};
+export type ComponentEntry = ComponentEntryType;

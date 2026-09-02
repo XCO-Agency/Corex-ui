@@ -4,7 +4,7 @@ import type { ComponentEntry } from "../types";
 
 function BadgeVariants() {
   return (
-    <InlineStack gap="200">
+    <InlineStack gap="small-200">
       <Badge tone="success">Active</Badge>
       <Badge tone="warning">Pending</Badge>
       <Badge tone="critical">Failed</Badge>
@@ -47,7 +47,7 @@ export const feedbackComponents: ComponentEntry[] = [
       {
         title: "Tones",
         Example: BadgeVariants,
-        code: `<InlineStack gap="200">
+        code: `<InlineStack gap="small-200">
   <Badge tone="success">Active</Badge>
   <Badge tone="warning">Pending</Badge>
   <Badge tone="critical">Failed</Badge>

@@ -2,25 +2,25 @@ import { BlockStack, Box, Card, Divider, InlineStack, Page, Text } from "@xco/co
 import type { ComponentEntry } from "../types";
 
 function BoxExample() {
-  return <Box padding="400">A padded Box.</Box>;
+  return <Box padding="base">A padded Box.</Box>;
 }
 
 function BlockStackExample() {
   return (
-    <BlockStack gap="300">
-      <Box padding="200">First</Box>
-      <Box padding="200">Second</Box>
-      <Box padding="200">Third</Box>
+    <BlockStack gap="small-100">
+      <Box padding="small-200">First</Box>
+      <Box padding="small-200">Second</Box>
+      <Box padding="small-200">Third</Box>
     </BlockStack>
   );
 }
 
 function InlineStackExample() {
   return (
-    <InlineStack gap="200">
-      <Box padding="200">First</Box>
-      <Box padding="200">Second</Box>
-      <Box padding="200">Third</Box>
+    <InlineStack gap="small-200">
+      <Box padding="small-200">First</Box>
+      <Box padding="small-200">Second</Box>
+      <Box padding="small-200">Third</Box>
     </InlineStack>
   );
 }
@@ -43,7 +43,7 @@ function PageExample() {
 
 function DividerExample() {
   return (
-    <BlockStack gap="200">
+    <BlockStack gap="small-200">
       <Text>Above the divider</Text>
       <Divider />
       <Text>Below the divider</Text>
@@ -61,7 +61,7 @@ export const layoutComponents: ComponentEntry[] = [
       {
         title: "Padded box",
         Example: BoxExample,
-        code: `<Box padding="400">A padded Box.</Box>`,
+        code: `<Box padding="base">A padded Box.</Box>`,
       },
     ],
   },
@@ -74,10 +74,10 @@ export const layoutComponents: ComponentEntry[] = [
       {
         title: "Vertical stack",
         Example: BlockStackExample,
-        code: `<BlockStack gap="300">
-  <Box padding="200">First</Box>
-  <Box padding="200">Second</Box>
-  <Box padding="200">Third</Box>
+        code: `<BlockStack gap="small-100">
+  <Box padding="small-200">First</Box>
+  <Box padding="small-200">Second</Box>
+  <Box padding="small-200">Third</Box>
 </BlockStack>`,
       },
     ],
@@ -91,10 +91,10 @@ export const layoutComponents: ComponentEntry[] = [
       {
         title: "Horizontal stack",
         Example: InlineStackExample,
-        code: `<InlineStack gap="200">
-  <Box padding="200">First</Box>
-  <Box padding="200">Second</Box>
-  <Box padding="200">Third</Box>
+        code: `<InlineStack gap="small-200">
+  <Box padding="small-200">First</Box>
+  <Box padding="small-200">Second</Box>
+  <Box padding="small-200">Third</Box>
 </InlineStack>`,
       },
     ],
@@ -142,7 +142,7 @@ export const layoutComponents: ComponentEntry[] = [
       {
         title: "Between content",
         Example: DividerExample,
-        code: `<BlockStack gap="200">
+        code: `<BlockStack gap="small-200">
   <Text>Above the divider</Text>
   <Divider />
   <Text>Below the divider</Text>

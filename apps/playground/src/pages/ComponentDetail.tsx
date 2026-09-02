@@ -1,6 +1,6 @@
 import { Navigate, useParams } from "react-router-dom";
 import { registry } from "../data/registry";
-import { CodeBlock } from "../components/CodeBlock";
+import { ExampleSection } from "../components/ExampleSection";
 import { SandboxNote } from "../components/SandboxNote";
 
 export function ComponentDetail() {
@@ -20,13 +20,7 @@ export function ComponentDetail() {
       {entry.requiresEmbeddedContext && <SandboxNote />}
 
       {entry.examples.map((example) => (
-        <section className="example" key={example.title}>
-          <h2>{example.title}</h2>
-          <div className="example-preview">
-            <example.Example />
-          </div>
-          <CodeBlock code={example.code} />
-        </section>
+        <ExampleSection key={example.title} example={example} />
       ))}
     </div>
   );

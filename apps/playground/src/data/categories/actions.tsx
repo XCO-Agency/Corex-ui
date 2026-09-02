@@ -3,7 +3,7 @@ import type { ComponentEntry } from "../types";
 
 function ButtonVariants() {
   return (
-    <InlineStack gap="200">
+    <InlineStack gap="small-200">
       <Button primary>Primary</Button>
       <Button>Secondary</Button>
       <Button destructive>Destructive</Button>
@@ -33,7 +33,7 @@ function LinkExample() {
 
 function MenuExample() {
   return (
-    <InlineStack gap="200">
+    <InlineStack gap="small-200">
       <Button commandFor="actions-menu" icon="menu">
         More actions
       </Button>

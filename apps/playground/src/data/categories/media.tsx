@@ -3,7 +3,7 @@ import type { ComponentEntry } from "../types";
 
 function IconExample() {
   return (
-    <InlineStack gap="200">
+    <InlineStack gap="small-200">
       <Icon source="save" accessibilityLabel="Save" />
       <Icon source="delete" tone="critical" accessibilityLabel="Delete" />
     </InlineStack>
@@ -12,7 +12,7 @@ function IconExample() {
 
 function AvatarExample() {
   return (
-    <InlineStack gap="200">
+    <InlineStack gap="small-200">
       <Avatar name="Ada Lovelace" initials="AL" />
       <Avatar name="Grace Hopper" initials="GH" />
     </InlineStack>
@@ -35,7 +35,7 @@ export const mediaComponents: ComponentEntry[] = [
       {
         title: "Icons",
         Example: IconExample,
-        code: `<InlineStack gap="200">
+        code: `<InlineStack gap="small-200">
   <Icon source="save" accessibilityLabel="Save" />
   <Icon source="delete" tone="critical" accessibilityLabel="Delete" />
 </InlineStack>`,
@@ -51,7 +51,7 @@ export const mediaComponents: ComponentEntry[] = [
       {
         title: "Avatars",
         Example: AvatarExample,
-        code: `<InlineStack gap="200">
+        code: `<InlineStack gap="small-200">
   <Avatar name="Ada Lovelace" initials="AL" />
   <Avatar name="Grace Hopper" initials="GH" />
 </InlineStack>`,

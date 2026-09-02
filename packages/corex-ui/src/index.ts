@@ -21,10 +21,10 @@ export { Box } from "./components/Box";
 export type { BoxProps } from "./components/Box";
 
 export { BlockStack } from "./components/BlockStack";
-export type { BlockStackProps } from "./components/BlockStack";
+export type { BlockStackProps, BlockStackPropsType } from "./components/BlockStack";
 
 export { InlineStack } from "./components/InlineStack";
-export type { InlineStackProps } from "./components/InlineStack";
+export type { InlineStackProps, InlineStackPropsType } from "./components/InlineStack";
 
 export { Card } from "./components/Card";
 export type { CardProps } from "./components/Card";
@@ -95,4 +95,21 @@ export { useToast, useSaveBar } from "./hooks";
 export type { UseToastResult, UseSaveBarResult } from "./hooks";
 export type { ShopifyGlobal, ShopifyToastOptions } from "./types/app-bridge";
 
-export type { Alignment, ButtonVariant, LegacySpacing, PolarisSpacing, Size, StackGap, Tone, TextVariant } from "./types/common";
+export type {
+  Alignment,
+  AlignmentType,
+  ButtonVariant,
+  ButtonVariantType,
+  LegacySpacing,
+  LegacySpacingType,
+  PolarisSpacing,
+  PolarisSpacingType,
+  Size,
+  SizeType,
+  StackGap,
+  StackGapType,
+  Tone,
+  ToneType,
+  TextVariant,
+  TextVariantType,
+} from "./types/common";
