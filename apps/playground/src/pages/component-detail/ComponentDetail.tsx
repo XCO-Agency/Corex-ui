@@ -49,6 +49,7 @@ export function ComponentDetail() {
                 key={example.title}
                 example={example}
                 index={index}
+                componentName={entry.name}
               />
             ))}
           </div>

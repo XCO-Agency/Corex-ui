@@ -13,11 +13,23 @@ export const categories = [
 export type CategoryType = (typeof categories)[number];
 export type Category = CategoryType;
 
+export type FileItemType = {
+  name: string;
+  path: string;
+  code: string;
+};
+
 export type ComponentExampleType = {
   title: string;
   Example: React.ComponentType;
   /** Raw source code of the component, imported via Vite ?raw */
   code?: string;
+  /** Optional filename, e.g. "ButtonVariants.tsx" */
+  filename?: string;
+  /** Optional files structure for future multi-file blocks */
+  files?: FileItemType[];
+  /** Optional npx command for blocks */
+  npxCommand?: string;
 };
 export type ComponentExample = ComponentExampleType;
 

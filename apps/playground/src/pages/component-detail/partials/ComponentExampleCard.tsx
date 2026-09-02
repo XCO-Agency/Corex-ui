@@ -1,14 +1,12 @@
 import * as React from "react";
 import {
-  Eye,
-  Code2,
   Monitor,
   Tablet,
   Smartphone,
   RotateCcw,
   Copy,
   Check,
-  Hash,
+  Terminal,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -25,22 +23,37 @@ import { ComponentCodeViewer } from "./ComponentCodeViewer";
 export type ComponentExampleCardPropsType = {
   example: ComponentExampleType;
   index: number;
+  componentName?: string;
 };
 
-export function ComponentExampleCard({ example, index }: ComponentExampleCardPropsType) {
+export function ComponentExampleCard({
+  example,
+  index,
+  componentName = "Component",
+}: ComponentExampleCardPropsType) {
   const [activeTab, setActiveTab] = React.useState<"preview" | "code">("preview");
   const [viewport, setViewport] = React.useState<CanvasViewportType>("100%");
   const [remountKey, setRemountKey] = React.useState(0);
-  const [copied, setCopied] = React.useState(false);
+  const [copiedImport, setCopiedImport] = React.useState(false);
 
   const anchorId = `example-${index}-${example.title.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`;
 
-  const handleCopyCode = async () => {
-    if (!example.code) return;
+  // For regular components: "import { Component } from '@xco-agency/corex-ui'"
+  // For future blocks: npxCommand (e.g. "npx shadcn@latest add ...")
+  const isBlock = Boolean(example.npxCommand);
+  const actionText = isBlock
+    ? example.npxCommand!
+    : `import { ${componentName} } from "@xco-agency/corex-ui"`;
+
+  const copyText = isBlock
+    ? example.npxCommand!
+    : `import { ${componentName} } from "@xco-agency/corex-ui";`;
+
+  const handleCopyAction = async () => {
     try {
-      await navigator.clipboard.writeText(example.code.trim());
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
+      await navigator.clipboard.writeText(copyText);
+      setCopiedImport(true);
+      setTimeout(() => setCopiedImport(false), 2000);
     } catch {
       // ignore
     }
@@ -48,138 +61,54 @@ export function ComponentExampleCard({ example, index }: ComponentExampleCardPro
 
   const handleRemount = () => {
     setRemountKey((prev) => prev + 1);
+    setViewport("100%");
   };
 
   return (
-    <section
-      id={anchorId}
-      className="group/section scroll-mt-20 space-y-3"
-    >
-      {/* Section title with anchor link */}
-      <div className="flex items-center gap-2">
-        <h2 className="text-lg font-semibold tracking-tight text-foreground sm:text-xl">
-          {example.title}
-        </h2>
-        <a
-          href={`#${anchorId}`}
-          className="opacity-0 group-hover/section:opacity-100 transition-opacity text-muted-foreground hover:text-foreground p-1"
-          title="Link to this section"
-          aria-label={`Link to ${example.title}`}
-        >
-          <Hash className="size-4" />
-        </a>
-      </div>
-
-      {/* Interactive card container */}
-      <div className="overflow-hidden rounded-xl border border-border bg-card shadow-xs">
-        {/* Card Header Toolbar */}
-        <div className="flex flex-wrap items-center justify-between gap-2 border-b border-border/70 bg-muted/30 px-3 py-2 sm:px-4">
-          {/* Tabs: Preview / Code */}
-          <div className="flex items-center rounded-lg border border-border/60 bg-background/80 p-0.5 shadow-xs">
+    <section id={anchorId} className="group/section scroll-mt-20 space-y-3">
+      {/* Top Toolbar Bar (Outside the Card) */}
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        {/* Left Side: [Preview | Code] toggle + Separator + Title */}
+        <div className="flex items-center gap-2.5 min-w-0">
+          <div className="inline-flex items-center rounded-lg border border-border/80 bg-muted/30 p-0.5 shadow-2xs shrink-0">
             <button
               type="button"
               onClick={() => setActiveTab("preview")}
               className={cn(
-                "flex items-center gap-1.5 rounded-md px-2.5 py-1 text-xs font-medium transition-all",
+                "rounded-md px-3 py-1 text-xs font-medium transition-all",
                 activeTab === "preview"
-                  ? "bg-primary text-primary-foreground shadow-xs"
+                  ? "bg-background text-foreground shadow-xs font-semibold"
                   : "text-muted-foreground hover:text-foreground"
               )}
             >
-              <Eye className="size-3.5" />
-              <span>Preview</span>
+              Preview
             </button>
-
-            {example.code && (
-              <button
-                type="button"
-                onClick={() => setActiveTab("code")}
-                className={cn(
-                  "flex items-center gap-1.5 rounded-md px-2.5 py-1 text-xs font-medium transition-all",
-                  activeTab === "code"
-                    ? "bg-primary text-primary-foreground shadow-xs"
-                    : "text-muted-foreground hover:text-foreground"
-                )}
-              >
-                <Code2 className="size-3.5" />
-                <span>Code</span>
-              </button>
-            )}
+            <button
+              type="button"
+              onClick={() => setActiveTab("code")}
+              className={cn(
+                "rounded-md px-3 py-1 text-xs font-medium transition-all",
+                activeTab === "code"
+                  ? "bg-background text-foreground shadow-xs font-semibold"
+                  : "text-muted-foreground hover:text-foreground"
+              )}
+            >
+              Code
+            </button>
           </div>
 
-          {/* Toolbar controls (visible during Preview tab) */}
-          {activeTab === "preview" ? (
-            <div className="flex items-center gap-1 sm:gap-2">
-              {/* Viewport size switcher */}
-              <div className="hidden sm:flex items-center rounded-md border border-border/50 bg-background/60 p-0.5">
-                <Tooltip>
-                  <TooltipTrigger
-                    render={
-                      <Button
-                        type="button"
-                        variant="ghost"
-                        size="icon-xs"
-                        className={cn(
-                          "size-6 rounded",
-                          viewport === "100%"
-                            ? "bg-muted text-foreground font-semibold"
-                            : "text-muted-foreground hover:text-foreground"
-                        )}
-                        onClick={() => setViewport("100%")}
-                      />
-                    }
-                  >
-                    <Monitor className="size-3.5" />
-                  </TooltipTrigger>
-                  <TooltipContent>Full Width (100%)</TooltipContent>
-                </Tooltip>
+          <div className="h-4 w-px bg-border/70 shrink-0" />
 
-                <Tooltip>
-                  <TooltipTrigger
-                    render={
-                      <Button
-                        type="button"
-                        variant="ghost"
-                        size="icon-xs"
-                        className={cn(
-                          "size-6 rounded",
-                          viewport === "768px"
-                            ? "bg-muted text-foreground font-semibold"
-                            : "text-muted-foreground hover:text-foreground"
-                        )}
-                        onClick={() => setViewport("768px")}
-                      />
-                    }
-                  >
-                    <Tablet className="size-3.5" />
-                  </TooltipTrigger>
-                  <TooltipContent>Tablet Width (768px)</TooltipContent>
-                </Tooltip>
+          <h3 className="text-sm font-medium text-foreground tracking-tight whitespace-nowrap">
+            {example.title}
+          </h3>
+        </div>
 
-                <Tooltip>
-                  <TooltipTrigger
-                    render={
-                      <Button
-                        type="button"
-                        variant="ghost"
-                        size="icon-xs"
-                        className={cn(
-                          "size-6 rounded",
-                          viewport === "375px"
-                            ? "bg-muted text-foreground font-semibold"
-                            : "text-muted-foreground hover:text-foreground"
-                        )}
-                        onClick={() => setViewport("375px")}
-                      />
-                    }
-                  >
-                    <Smartphone className="size-3.5" />
-                  </TooltipTrigger>
-                  <TooltipContent>Mobile Width (375px)</TooltipContent>
-                </Tooltip>
-              </div>
-
-              {/* Re-mount / Reset state button */}
+        {/* Right Side: Viewport Switchers + Import/NPX Action Button */}
+        <div className="flex items-center gap-2 shrink-0">
+          {/* Viewport size switcher pill (shown in Preview tab) */}
+          {activeTab === "preview" && (
+            <div className="flex items-center rounded-lg border border-border/80 bg-muted/30 p-0.5 shadow-2xs shrink-0">
               <Tooltip>
                 <TooltipTrigger
                   render={
@@ -187,7 +116,73 @@ export function ComponentExampleCard({ example, index }: ComponentExampleCardPro
                       type="button"
                       variant="ghost"
                       size="icon-xs"
-                      className="size-7 rounded-md text-muted-foreground hover:text-foreground hover:bg-background"
+                      className={cn(
+                        "size-6 rounded",
+                        viewport === "100%"
+                          ? "bg-background text-foreground shadow-2xs font-semibold"
+                          : "text-muted-foreground hover:text-foreground"
+                      )}
+                      onClick={() => setViewport("100%")}
+                    />
+                  }
+                >
+                  <Monitor className="size-3.5" />
+                </TooltipTrigger>
+                <TooltipContent>Desktop (100%)</TooltipContent>
+              </Tooltip>
+
+              <Tooltip>
+                <TooltipTrigger
+                  render={
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="icon-xs"
+                      className={cn(
+                        "size-6 rounded",
+                        viewport === "768px"
+                          ? "bg-background text-foreground shadow-2xs font-semibold"
+                          : "text-muted-foreground hover:text-foreground"
+                      )}
+                      onClick={() => setViewport("768px")}
+                    />
+                  }
+                >
+                  <Tablet className="size-3.5" />
+                </TooltipTrigger>
+                <TooltipContent>Tablet (768px)</TooltipContent>
+              </Tooltip>
+
+              <Tooltip>
+                <TooltipTrigger
+                  render={
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="icon-xs"
+                      className={cn(
+                        "size-6 rounded",
+                        viewport === "375px"
+                          ? "bg-background text-foreground shadow-2xs font-semibold"
+                          : "text-muted-foreground hover:text-foreground"
+                      )}
+                      onClick={() => setViewport("375px")}
+                    />
+                  }
+                >
+                  <Smartphone className="size-3.5" />
+                </TooltipTrigger>
+                <TooltipContent>Mobile (375px)</TooltipContent>
+              </Tooltip>
+
+              <Tooltip>
+                <TooltipTrigger
+                  render={
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="icon-xs"
+                      className="size-6 rounded text-muted-foreground hover:text-foreground hover:bg-background/80"
                       onClick={handleRemount}
                     />
                   }
@@ -196,48 +191,62 @@ export function ComponentExampleCard({ example, index }: ComponentExampleCardPro
                 </TooltipTrigger>
                 <TooltipContent>Reset Example State</TooltipContent>
               </Tooltip>
-
-              {/* Quick copy code button in preview bar */}
-              {example.code && (
-                <Tooltip>
-                  <TooltipTrigger
-                    render={
-                      <Button
-                        type="button"
-                        variant="ghost"
-                        size="icon-xs"
-                        className="size-7 rounded-md text-muted-foreground hover:text-foreground hover:bg-background"
-                        onClick={handleCopyCode}
-                      />
-                    }
-                  >
-                    {copied ? (
-                      <Check className="size-3.5 text-emerald-600" />
-                    ) : (
-                      <Copy className="size-3.5" />
-                    )}
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    {copied ? "Copied code!" : "Copy Code"}
-                  </TooltipContent>
-                </Tooltip>
-              )}
             </div>
-          ) : null}
-        </div>
+          )}
 
-        {/* Active Tab View */}
-        {activeTab === "preview" ? (
-          <ComponentCanvas
-            viewport={viewport}
-            key={remountKey}
-          >
-            <example.Example />
-          </ComponentCanvas>
-        ) : example.code ? (
-          <ComponentCodeViewer code={example.code} language="tsx" />
-        ) : null}
+          {/* Import / NPX Command Action Pill */}
+          <Tooltip>
+            <TooltipTrigger
+              render={
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  className="h-8 gap-2 px-3 font-mono text-xs text-muted-foreground hover:text-foreground shadow-2xs border-border/80 bg-background hover:bg-muted/40"
+                  onClick={handleCopyAction}
+                />
+              }
+            >
+              {isBlock ? (
+                <>
+                  <Terminal className="size-3.5 text-primary" />
+                  <span>{actionText}</span>
+                </>
+              ) : (
+                <span className="font-mono text-xs">
+                  <span className="hidden 2xl:inline">
+                    import &#123; {componentName} &#125; from "@xco-agency/corex-ui"
+                  </span>
+                  <span className="inline 2xl:hidden">
+                    import &#123; {componentName} &#125;
+                  </span>
+                </span>
+              )}
+              {copiedImport ? (
+                <Check className="size-3.5 text-emerald-600 dark:text-emerald-400" />
+              ) : (
+                <Copy className="size-3.5 opacity-70" />
+              )}
+            </TooltipTrigger>
+            <TooltipContent>
+              {copiedImport ? "Copied to clipboard!" : `Click to copy: ${copyText}`}
+            </TooltipContent>
+          </Tooltip>
+        </div>
       </div>
+
+      {/* Main Preview Canvas or Code Panel */}
+      {activeTab === "preview" ? (
+        <ComponentCanvas viewport={viewport} key={remountKey}>
+          <example.Example />
+        </ComponentCanvas>
+      ) : (
+        <ComponentCodeViewer
+          code={example.code ?? ""}
+          filename={example.filename ?? `${componentName}.tsx`}
+          files={example.files}
+        />
+      )}
     </section>
   );
 }

@@ -1,6 +1,14 @@
 import * as React from "react";
 import { Highlight, themes } from "prism-react-renderer";
-import { Check, Copy, ChevronDown, ChevronUp } from "lucide-react";
+import {
+  Check,
+  Copy,
+  ChevronDown,
+  ChevronRight,
+  Folder,
+  FolderOpen,
+  FileCode,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Tooltip,
@@ -8,30 +16,59 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
+import type { FileItemType } from "@/data/types";
 
 export type ComponentCodeViewerPropsType = {
   code: string;
+  filename?: string;
+  files?: FileItemType[];
   language?: string;
   className?: string;
-  maxCollapsedLines?: number;
 };
 
 export function ComponentCodeViewer({
   code,
+  filename = "component.tsx",
+  files,
   language = "tsx",
   className,
-  maxCollapsedLines = 22,
 }: ComponentCodeViewerPropsType) {
   const [copied, setCopied] = React.useState(false);
-  const [expanded, setExpanded] = React.useState(false);
+  const [activeFilePath, setActiveFilePath] = React.useState<string>(
+    files && files.length > 0 ? files[0]!.path : filename
+  );
+  const [openFolders, setOpenFolders] = React.useState<Record<string, boolean>>({
+    app: true,
+    components: true,
+    login: true,
+  });
 
-  const cleanCode = code.trim();
-  const lineCount = cleanCode.split("\n").length;
-  const isCollapsible = lineCount > maxCollapsedLines;
+  // Theme detection for light (themes.github) and dark (themes.vsDark)
+  const [isDark, setIsDark] = React.useState(false);
+  React.useEffect(() => {
+    setIsDark(document.documentElement.classList.contains("dark"));
+    const observer = new MutationObserver(() => {
+      setIsDark(document.documentElement.classList.contains("dark"));
+    });
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["class"],
+    });
+    return () => observer.disconnect();
+  }, []);
+
+  const activeFile = React.useMemo(() => {
+    if (files && files.length > 0) {
+      return files.find((f) => f.path === activeFilePath) ?? files[0]!;
+    }
+    return { name: filename, path: filename, code };
+  }, [files, activeFilePath, filename, code]);
+
+  const activeCode = (activeFile.code || code || "").trim();
 
   const handleCopy = async () => {
     try {
-      await navigator.clipboard.writeText(cleanCode);
+      await navigator.clipboard.writeText(activeCode);
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch {
@@ -39,22 +76,59 @@ export function ComponentCodeViewer({
     }
   };
 
+  const toggleFolder = (folderName: string) => {
+    setOpenFolders((prev) => ({ ...prev, [folderName]: !prev[folderName] }));
+  };
+
+  const hasMultipleFiles = Boolean(files && files.length > 0);
+
   return (
-      <div
-        className={cn(
-          "relative overflow-hidden rounded-b-xl border-t border-border/40 bg-[#121316] text-[#e4e4e7] dark:bg-[#0c0d0e]",
-          className
-        )}
-      >
-        {/* Top bar inside code block */}
-        <div className="flex h-10 items-center justify-between border-b border-white/10 bg-white/5 px-4 text-xs">
+    <div
+      className={cn(
+        "relative flex flex-col md:flex-row overflow-hidden rounded-xl border border-border/80 bg-card shadow-xs",
+        className
+      )}
+    >
+      {/* Optional File Tree (only for future multi-file blocks) */}
+      {hasMultipleFiles && (
+        <aside className="w-full md:w-56 shrink-0 border-b md:border-b-0 md:border-r border-border/70 bg-muted/20">
+          <div className="flex h-10 items-center border-b border-border/70 px-4 text-xs font-semibold tracking-wide text-muted-foreground uppercase">
+            Files
+          </div>
+          <div className="p-2 text-xs space-y-1 overflow-y-auto max-h-[400px]">
+            {files!.map((file) => {
+              const isSelected = file.path === activeFilePath;
+              return (
+                <button
+                  key={file.path}
+                  type="button"
+                  onClick={() => setActiveFilePath(file.path)}
+                  className={cn(
+                    "flex w-full items-center gap-2 rounded-md px-2.5 py-1.5 text-left font-mono transition-colors",
+                    isSelected
+                      ? "bg-muted font-semibold text-foreground shadow-2xs"
+                      : "text-muted-foreground hover:bg-muted/50 hover:text-foreground"
+                  )}
+                >
+                  <FileCode className="size-3.5 text-muted-foreground shrink-0" />
+                  <span className="truncate">{file.path}</span>
+                </button>
+              );
+            })}
+          </div>
+        </aside>
+      )}
+
+      {/* Main Code Editor Panel */}
+      <div className="flex-1 min-w-0 flex flex-col">
+        {/* Top Header Bar */}
+        <div className="flex h-10 items-center justify-between border-b border-border/70 bg-muted/30 px-4">
           <div className="flex items-center gap-2">
-            <span className="inline-block size-2 rounded-full bg-emerald-500/80" />
-            <span className="font-mono text-[11px] uppercase tracking-wider text-muted-foreground">
-              {language}
+            <span className="inline-flex items-center justify-center rounded bg-zinc-800 dark:bg-zinc-700 px-1.5 py-0.5 font-mono text-[10px] font-bold text-white tracking-wide">
+              TS
             </span>
-            <span className="text-[11px] text-muted-foreground/60">
-              ({lineCount} lines)
+            <span className="font-mono text-xs text-foreground/80 font-medium">
+              {activeFile.path}
             </span>
           </div>
 
@@ -64,49 +138,42 @@ export function ComponentCodeViewer({
                 <Button
                   type="button"
                   variant="ghost"
-                  size="xs"
-                  className="h-7 gap-1.5 px-2 text-xs text-muted-foreground hover:bg-white/10 hover:text-white"
+                  size="icon-xs"
+                  className="size-7 rounded-md text-muted-foreground hover:bg-muted hover:text-foreground"
                   onClick={handleCopy}
                 />
               }
             >
               {copied ? (
-                <>
-                  <Check className="size-3 text-emerald-400" />
-                  <span className="text-emerald-400">Copied</span>
-                </>
+                <Check className="size-3.5 text-emerald-600 dark:text-emerald-400" />
               ) : (
-                <>
-                  <Copy className="size-3" />
-                  <span>Copy</span>
-                </>
+                <Copy className="size-3.5" />
               )}
             </TooltipTrigger>
             <TooltipContent>
-              {copied ? "Copied code snippet!" : "Copy code"}
+              {copied ? "Copied code!" : "Copy code"}
             </TooltipContent>
           </Tooltip>
         </div>
 
-        {/* Code Content */}
-        <div
-          className={cn(
-            "relative overflow-x-auto transition-[max-height] duration-300",
-            isCollapsible && !expanded && "max-h-[380px]"
-          )}
-        >
-          <Highlight theme={themes.vsDark} code={cleanCode} language={language}>
+        {/* Code Content with Line Numbers */}
+        <div className="overflow-x-auto p-4 select-text">
+          <Highlight
+            theme={isDark ? themes.vsDark : themes.github}
+            code={activeCode}
+            language={language}
+          >
             {({ className: highlightClass, style, tokens, getLineProps, getTokenProps }) => (
               <pre
                 className={cn(
                   highlightClass,
-                  "m-0 p-4 font-mono text-[13px] leading-relaxed select-text"
+                  "m-0 font-mono text-[13px] leading-relaxed"
                 )}
                 style={{ ...style, background: "transparent" }}
               >
                 {tokens.map((line, lineIndex) => (
                   <div key={lineIndex} {...getLineProps({ line })} className="table-row">
-                    <span className="table-cell select-none pr-4 text-right font-mono text-[11px] text-muted-foreground/40">
+                    <span className="table-cell select-none pr-5 text-right font-mono text-xs text-muted-foreground/45 min-w-[2rem]">
                       {lineIndex + 1}
                     </span>
                     <span className="table-cell">
@@ -119,37 +186,8 @@ export function ComponentCodeViewer({
               </pre>
             )}
           </Highlight>
-
-          {/* Fade overlay when collapsed */}
-          {isCollapsible && !expanded && (
-            <div className="pointer-events-none absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-[#121316] to-transparent dark:from-[#0c0d0e]" />
-          )}
         </div>
-
-        {/* Expand / Collapse toggle footer */}
-        {isCollapsible && (
-          <div className="flex items-center justify-center border-t border-white/5 bg-white/2 py-2">
-            <Button
-              type="button"
-              variant="ghost"
-              size="xs"
-              className="h-6 gap-1 text-xs text-muted-foreground hover:bg-white/10 hover:text-white"
-              onClick={() => setExpanded(!expanded)}
-            >
-              {expanded ? (
-                <>
-                  <ChevronUp className="size-3" />
-                  <span>Collapse code</span>
-                </>
-              ) : (
-                <>
-                  <ChevronDown className="size-3" />
-                  <span>Expand code ({lineCount} lines)</span>
-                </>
-              )}
-            </Button>
-          </div>
-        )}
       </div>
+    </div>
   );
 }

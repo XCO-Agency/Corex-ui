@@ -1,6 +1,13 @@
 import * as React from "react";
+import {
+  ResizablePanelGroup,
+  ResizablePanel,
+  ResizableHandle,
+  usePanelRef,
+} from "@/components/ui/resizable";
 import { cn } from "@/lib/utils";
 import type { CanvasViewportType } from "../types";
+import { ComponentIframe } from "./ComponentIframe";
 
 export type ComponentCanvasPropsType = {
   children: React.ReactNode;
@@ -13,48 +20,76 @@ export function ComponentCanvas({
   viewport = "100%",
   className,
 }: ComponentCanvasPropsType) {
-  const getViewportMaxWidth = (vp: CanvasViewportType) => {
-    switch (vp) {
-      case "375px":
-        return "max-w-[375px]";
-      case "768px":
-        return "max-w-[768px]";
-      default:
-        return "w-full";
-    }
-  };
+  const panelRef = usePanelRef();
+  const [isDragging, setIsDragging] = React.useState(false);
 
-  const isConstrained = viewport !== "100%";
+  // Synchronize viewport state with resizable panel
+  React.useEffect(() => {
+    if (!panelRef.current) return;
+    switch (viewport) {
+      case "375px":
+        panelRef.current.resize("375px");
+        break;
+      case "768px":
+        panelRef.current.resize("768px");
+        break;
+      case "100%":
+      default:
+        panelRef.current.resize("100%");
+        break;
+    }
+  }, [viewport, panelRef]);
+
+  // Handle pointer cleanup for drag state
+  React.useEffect(() => {
+    if (!isDragging) return;
+    const handlePointerUp = () => setIsDragging(false);
+    window.addEventListener("pointerup", handlePointerUp);
+    return () => window.removeEventListener("pointerup", handlePointerUp);
+  }, [isDragging]);
 
   return (
     <div
       className={cn(
-        "relative flex min-h-[260px] w-full items-center justify-center p-6 md:p-10 transition-colors duration-200 overflow-x-auto",
-        "bg-card bg-[radial-gradient(oklch(0.7_0_0/0.2)_1px,transparent_1px)] dark:bg-[radial-gradient(oklch(1_0_0/0.15)_1px,transparent_1px)] [background-size:16px_16px]",
+        "bg-gray-500/10 rounded-xl",
         className
       )}
     >
-      {/* Resizable frame container */}
-      <div
-        className={cn(
-          "w-full transition-all duration-300 ease-out",
-          getViewportMaxWidth(viewport),
-          isConstrained &&
-            "mx-auto rounded-lg border border-dashed border-border/80 bg-background/80 p-4 shadow-sm"
-        )}
+      <ResizablePanelGroup
+        orientation="horizontal"
+        className="min-h-65 w-full "
       >
-        {/* Device frame label if constrained */}
-        {isConstrained && (
-          <div className="mb-3 flex items-center justify-between border-b border-border/60 pb-2 text-[11px] font-mono text-muted-foreground">
-            <span>Viewport preview</span>
-            <span>{viewport === "375px" ? "Mobile (375px)" : "Tablet (768px)"}</span>
-          </div>
-        )}
+        {/* Resizable Preview Canvas Panel */}
+        <ResizablePanel
+          panelRef={panelRef}
+          defaultSize="100%"
+          minSize="300px"
+          className="relative flex items-center justify-center bg-card border overflow-clip rounded-xl bg-[radial-gradient(oklch(0.7_0_0/0.2)_1px,transparent_1px)] dark:bg-[radial-gradient(oklch(1_0_0/0.15)_1px,transparent_1px)] [background-size:16px_16px]"
+        >
+          {/* Prevent iframe from capturing pointer events during drag resizing */}
+          {isDragging && (
+            <div className="absolute inset-0 z-50 cursor-col-resize select-none" />
+          )}
 
-        <div className="flex w-full items-center justify-center">
-          {children}
-        </div>
-      </div>
+          {/* Isolated iframe for Tailwind CSS isolation & authentic viewport simulation */}
+          <ComponentIframe>{children}</ComponentIframe>
+        </ResizablePanel>
+
+        {/* Resizable drag handle */}
+        <ResizableHandle
+          withHandle
+
+          onPointerDown={() => setIsDragging(true)}
+          className=" bg-transparent after:transition-colors [&>div]:transition-all hover:[&>div]:w-2 hover:[&>div]:bg-amber-500"
+        />
+
+        {/* Secondary empty spacer panel (skipped content) */}
+        <ResizablePanel
+          defaultSize="0%"
+          minSize="0px"
+          className="bg-muted/15"
+        />
+      </ResizablePanelGroup>
     </div>
   );
 }
