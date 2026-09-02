@@ -1,5 +1,6 @@
 import { forwardRef } from "react";
 import { createWebComponent } from "../../core/createWebComponent";
+import { mapLegacyGap } from "../../core/legacySpacing";
 import type { BlockStackProps } from "./BlockStack.types";
 
 const SStack = createWebComponent<HTMLElement>("s-stack", {
@@ -12,11 +13,11 @@ const SStack = createWebComponent<HTMLElement>("s-stack", {
  * the same element pinned to `direction="inline"`.
  */
 export const BlockStack = forwardRef<HTMLElement, BlockStackProps>(function BlockStack(
-  { children, ...rest },
+  { children, gap, ...rest },
   ref,
 ) {
   return (
-    <SStack ref={ref} {...rest}>
+    <SStack ref={ref} gap={mapLegacyGap(gap)} {...rest}>
       {children}
     </SStack>
   );

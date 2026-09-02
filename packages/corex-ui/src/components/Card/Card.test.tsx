@@ -6,7 +6,7 @@ describe("Card", () => {
   it("renders an s-section with an optional title", () => {
     render(<Card title="Details">Body content</Card>);
     expect(screen.getByText("Body content").closest("s-section")).not.toBeNull();
-    expect(screen.getByText("Details").tagName.toLowerCase()).toBe("s-text");
+    expect(screen.getByText("Details").tagName.toLowerCase()).toBe("s-heading");
   });
 
   it("renders without a title", () => {

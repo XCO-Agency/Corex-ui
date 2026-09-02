@@ -3,14 +3,16 @@ import { render, screen } from "@testing-library/react";
 import { Tooltip } from "./Tooltip";
 
 describe("Tooltip", () => {
-  it("renders the trigger and content in a slot", () => {
+  it("links the trigger to a sibling tooltip by id", () => {
     render(
       <Tooltip content="Deletes the item permanently">
         <span>Delete</span>
       </Tooltip>,
     );
-    expect(screen.getByText("Delete")).toBeInTheDocument();
+    const trigger = screen.getByText("Delete");
+    expect(trigger).toBeInTheDocument();
     const contentEl = screen.getByText("Deletes the item permanently");
-    expect(contentEl).toHaveAttribute("slot", "content");
+    expect(contentEl.closest("s-tooltip")).toHaveAttribute("id");
+    expect(trigger.closest("s-text")).toHaveAttribute("interestfor", contentEl.closest("s-tooltip")?.id);
   });
 });

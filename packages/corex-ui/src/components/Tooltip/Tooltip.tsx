@@ -1,8 +1,9 @@
-import { forwardRef } from "react";
+import { cloneElement, forwardRef, isValidElement, useId } from "react";
 import { createWebComponent } from "../../core/createWebComponent";
 import type { TooltipProps } from "./Tooltip.types";
 
 const STooltip = createWebComponent<HTMLElement>("s-tooltip");
+const SText = createWebComponent<HTMLElement>("s-text");
 
 /**
  * Composed pattern: the trigger is the default-slotted child, and `content`
@@ -12,13 +13,14 @@ const STooltip = createWebComponent<HTMLElement>("s-tooltip");
  * since tooltips are natively hover/focus-driven by the element itself.
  */
 export const Tooltip = forwardRef<HTMLElement, TooltipProps>(function Tooltip(
-  { children, content, ...rest },
+  { children, content, id, ...rest },
   ref,
 ) {
-  return (
-    <STooltip ref={ref} {...rest}>
-      {children}
-      <span slot="content">{content}</span>
-    </STooltip>
-  );
+  const generatedId = useId();
+  const tooltipId = id ?? `corex-tooltip-${generatedId.replace(/:/g, "")}`;
+  const trigger = isValidElement(children) && typeof children.type !== "string"
+    ? cloneElement(children, { interestFor: tooltipId })
+    : <SText interestFor={tooltipId}>{children}</SText>;
+
+  return <><STooltip ref={ref} id={tooltipId} {...rest}>{content}</STooltip>{trigger}</>;
 });

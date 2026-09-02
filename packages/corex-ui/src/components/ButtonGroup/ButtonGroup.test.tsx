@@ -16,4 +16,9 @@ describe("ButtonGroup", () => {
     expect(group).not.toBeNull();
     expect(screen.getByText("Two")).toBeInTheDocument();
   });
+
+  it("supports the Polaris-native gap prop", () => {
+    render(<ButtonGroup gap="none"><Button>One</Button></ButtonGroup>);
+    expect(screen.getByText("One").closest("s-button-group")).toHaveAttribute("gap", "none");
+  });
 });

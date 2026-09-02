@@ -14,7 +14,7 @@
 /// <reference types="@shopify/polaris-types" />
 
 export interface SModalElement extends HTMLElement {
-  show(): void;
+  showOverlay(): void;
   hideOverlay(): void;
 }
 

@@ -6,6 +6,7 @@ const SSelect = createWebComponent<HTMLElement, { onChange: "change" }>("s-selec
   events: { onChange: "change" },
   domProps: ["value"],
 });
+const SOption = createWebComponent<HTMLElement>("s-option");
 
 function normalizeOption(option: SelectOption | string): SelectOption {
   return typeof option === "string" ? { label: option, value: option } : option;
@@ -29,9 +30,9 @@ export const Select = forwardRef<HTMLElement, SelectProps>(function Select(
   return (
     <SSelect ref={ref} id={id} label={label} details={helpText} onChange={handleChange} {...rest}>
       {options.map(normalizeOption).map((option) => (
-        <option key={option.value} value={option.value} disabled={option.disabled}>
+        <SOption key={option.value} value={option.value} disabled={option.disabled} selected={rest.value === option.value}>
           {option.label}
-        </option>
+        </SOption>
       ))}
     </SSelect>
   );

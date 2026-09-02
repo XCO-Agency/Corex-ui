@@ -14,15 +14,15 @@ function defineStub(tagName: string, ElementClass: CustomElementConstructor) {
 
 class GenericPolarisStub extends HTMLElement {}
 
-/** `s-modal` supports imperative `show()` / `hideOverlay()`, mirrored here. */
+/** `s-modal` supports imperative `showOverlay()` / `hideOverlay()`, mirrored here. */
 class ModalStub extends HTMLElement {
-  show() {
+  showOverlay() {
     this.setAttribute("data-stub-open", "true");
   }
 
   hideOverlay() {
     this.removeAttribute("data-stub-open");
-    this.dispatchEvent(new Event("close", { bubbles: true }));
+    this.dispatchEvent(new Event("hide", { bubbles: true }));
   }
 }
 
@@ -41,6 +41,7 @@ const STUB_TAGS = [
   "s-button",
   "s-button-group",
   "s-text",
+  "s-heading",
   "s-badge",
   "s-banner",
   "s-box",
@@ -49,6 +50,7 @@ const STUB_TAGS = [
   "s-text-field",
   "s-text-area",
   "s-select",
+  "s-option",
   "s-checkbox",
   "s-spinner",
   "s-page",
@@ -59,6 +61,7 @@ const STUB_TAGS = [
   "s-thumbnail",
   "s-tooltip",
   "s-choice-list",
+  "s-choice",
   "s-date-field",
   "s-date-picker",
   "s-menu",

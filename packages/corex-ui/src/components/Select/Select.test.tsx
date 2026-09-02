@@ -3,7 +3,7 @@ import { render } from "@testing-library/react";
 import { Select } from "./Select";
 
 describe("Select", () => {
-  it("renders string and object options as <option> elements", () => {
+  it("renders string and object options as Polaris s-option elements", () => {
     render(
       <Select
         label="Country"
@@ -12,10 +12,10 @@ describe("Select", () => {
       />,
     );
 
-    const options = document.querySelectorAll("s-select option");
+    const options = document.querySelectorAll("s-select s-option");
     expect(options).toHaveLength(2);
-    expect(options[0]).toHaveValue("Canada");
-    expect(options[1]).toHaveValue("us");
+    expect(options[0]).toHaveAttribute("value", "Canada");
+    expect(options[1]).toHaveAttribute("value", "us");
   });
 
   it("calls legacy onChange(value, id) on the native change event", () => {

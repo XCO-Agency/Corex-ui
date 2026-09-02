@@ -28,13 +28,13 @@ export const Modal = forwardRef<ModalElement, ModalProps>(function Modal(
     const node = innerRef.current;
     if (!node) return;
     if (open) {
-      node.show();
+      node.showOverlay?.();
     } else {
-      node.hideOverlay();
+      node.hideOverlay?.();
     }
   }, [open]);
 
-  useDomEvent(innerRef, "close", () => onClose());
+  useDomEvent(innerRef, "hide", () => onClose());
 
   return (
     <SModal ref={mergeRefs(innerRef, forwardedRef)} heading={title} {...rest}>

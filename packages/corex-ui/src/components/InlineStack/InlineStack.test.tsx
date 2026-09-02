@@ -8,5 +8,6 @@ describe("InlineStack", () => {
     const el = screen.getByText("Item");
     expect(el.tagName.toLowerCase()).toBe("s-stack");
     expect(el).toHaveAttribute("direction", "inline");
+    expect(el).toHaveAttribute("gap", "small");
   });
 });

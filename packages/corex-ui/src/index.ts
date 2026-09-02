@@ -95,4 +95,4 @@ export { useToast, useSaveBar } from "./hooks";
 export type { UseToastResult, UseSaveBarResult } from "./hooks";
 export type { ShopifyGlobal, ShopifyToastOptions } from "./types/app-bridge";
 
-export type { Alignment, ButtonVariant, Size, Tone, TextVariant } from "./types/common";
+export type { Alignment, ButtonVariant, LegacySpacing, PolarisSpacing, Size, StackGap, Tone, TextVariant } from "./types/common";

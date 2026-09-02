@@ -8,6 +8,6 @@ describe("BlockStack", () => {
     const el = screen.getByText("Item");
     expect(el.tagName.toLowerCase()).toBe("s-stack");
     expect(el).toHaveAttribute("direction", "block");
-    expect(el).toHaveAttribute("gap", "400");
+    expect(el).toHaveAttribute("gap", "base");
   });
 });

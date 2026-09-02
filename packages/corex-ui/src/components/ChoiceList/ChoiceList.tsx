@@ -4,8 +4,9 @@ import type { ChoiceListProps } from "./ChoiceList.types";
 
 const SChoiceList = createWebComponent<HTMLElement, { onChange: "change" }>("s-choice-list", {
   events: { onChange: "change" },
-  domProps: ["choices", "selected"],
+  domProps: ["values"],
 });
+const SChoice = createWebComponent<HTMLElement>("s-choice");
 
 /**
  * Controlled-form-input pattern, like `Select`. `choices`/`selected` are
@@ -19,20 +20,26 @@ export const ChoiceList = forwardRef<HTMLElement, ChoiceListProps>(function Choi
   ref,
 ) {
   const handleChange = (event: Event) => {
-    const target = event.currentTarget as (EventTarget & { selected?: string[] }) | null;
-    onChange?.(target?.selected ?? [], name ?? "");
+    const target = event.currentTarget as (EventTarget & { values?: string[] }) | null;
+    onChange?.(target?.values ?? [], name ?? "");
   };
 
   return (
     <SChoiceList
       ref={ref}
-      heading={title}
-      choices={choices}
-      selected={selected}
+      label={title}
+      values={selected}
       multiple={allowMultiple}
       name={name}
       onChange={handleChange}
       {...rest}
-    />
+    >
+      {choices.map((choice) => (
+        <SChoice key={choice.value} value={choice.value} selected={selected.includes(choice.value)} disabled={choice.disabled}>
+          {choice.label}
+          {choice.helpText ? <span slot="details">{choice.helpText}</span> : null}
+        </SChoice>
+      ))}
+    </SChoiceList>
   );
 });

@@ -3,7 +3,7 @@ import { render, screen } from "@testing-library/react";
 import { Modal } from "./Modal";
 
 describe("Modal", () => {
-  it("calls show()/hideOverlay() on the underlying element as `open` changes", () => {
+  it("calls showOverlay()/hideOverlay() on the underlying element as `open` changes", () => {
     const onClose = vi.fn();
     const { rerender } = render(
       <Modal open={false} onClose={onClose} title="Delete item">
@@ -24,7 +24,7 @@ describe("Modal", () => {
     expect(el.hasAttribute("data-stub-open")).toBe(true);
   });
 
-  it("calls onClose when the element dispatches a close event", () => {
+  it("calls onClose when the element dispatches a hide event", () => {
     const onClose = vi.fn();
     render(
       <Modal open onClose={onClose} title="Delete item">
@@ -32,7 +32,7 @@ describe("Modal", () => {
       </Modal>,
     );
 
-    screen.getByText("Are you sure?").closest("s-modal")!.dispatchEvent(new Event("close"));
+    screen.getByText("Are you sure?").closest("s-modal")!.dispatchEvent(new Event("hide"));
     expect(onClose).toHaveBeenCalledTimes(1);
   });
 

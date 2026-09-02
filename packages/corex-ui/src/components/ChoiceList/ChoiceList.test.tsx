@@ -8,22 +8,22 @@ const choices = [
 ];
 
 describe("ChoiceList", () => {
-  it("sets `choices`/`selected` as live DOM properties", () => {
+  it("renders choices as Polaris s-choice elements and sets values", () => {
     render(<ChoiceList title="Notify me by" choices={choices} selected={["email"]} name="notify" />);
     const el = document.querySelector("s-choice-list") as HTMLElement & {
-      choices?: unknown;
-      selected?: string[];
+      values?: string[];
     };
-    expect(el.choices).toEqual(choices);
-    expect(el.selected).toEqual(["email"]);
+    expect(el.values).toEqual(["email"]);
+    expect(document.querySelectorAll("s-choice-list s-choice")).toHaveLength(2);
+    expect(document.querySelector("s-choice[value='email']")).toHaveAttribute("selected");
   });
 
   it("calls legacy onChange(selected, name) on the native change event", () => {
     const onChange = vi.fn();
     render(<ChoiceList choices={choices} selected={[]} name="notify" onChange={onChange} />);
 
-    const el = document.querySelector("s-choice-list") as HTMLElement & { selected?: string[] };
-    el.selected = ["sms"];
+    const el = document.querySelector("s-choice-list") as HTMLElement & { values?: string[] };
+    el.values = ["sms"];
     el.dispatchEvent(new Event("change", { bubbles: true }));
 
     expect(onChange).toHaveBeenCalledWith(["sms"], "notify");
