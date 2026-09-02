@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { categories, registry } from "../data/registry";
+import { thumbnails } from "../components/icons/ComponentThumbnails";
 
 export function Overview() {
   return (
@@ -18,12 +19,18 @@ export function Overview() {
           <section key={category} className="overview-section">
             <h2>{category}</h2>
             <div className="component-grid">
-              {items.map((item) => (
-                <Link to={`/components/${item.slug}`} className="component-card" key={item.slug}>
-                  <h3>{item.name}</h3>
-                  <p>{item.description}</p>
-                </Link>
-              ))}
+              {items.map((item) => {
+                const Thumbnail = thumbnails[item.slug];
+                return (
+                  <Link to={`/components/${item.slug}`} className="component-card" key={item.slug}>
+                    <div className="component-thumb">{Thumbnail ? <Thumbnail /> : null}</div>
+                    <div className="component-card-body">
+                      <h3>{item.name}</h3>
+                      <p>{item.description}</p>
+                    </div>
+                  </Link>
+                );
+              })}
             </div>
           </section>
         );

@@ -1,6 +1,7 @@
 import { useState } from "react";
+import { Highlight, themes } from "prism-react-renderer";
 
-export function CodeBlock({ code }: { code: string }) {
+export function CodeBlock({ code, language = "tsx" }: { code: string; language?: string }) {
   const [copied, setCopied] = useState(false);
 
   const handleCopy = async () => {
@@ -21,9 +22,19 @@ export function CodeBlock({ code }: { code: string }) {
           {copied ? "Copied!" : "Copy"}
         </button>
       </div>
-      <pre>
-        <code>{code}</code>
-      </pre>
+      <Highlight theme={themes.vsDark} code={code.trim()} language={language}>
+        {({ className, style, tokens, getLineProps, getTokenProps }) => (
+          <pre className={className} style={style}>
+            {tokens.map((line, lineIndex) => (
+              <div key={lineIndex} {...getLineProps({ line })}>
+                {line.map((token, tokenIndex) => (
+                  <span key={tokenIndex} {...getTokenProps({ token })} />
+                ))}
+              </div>
+            ))}
+          </pre>
+        )}
+      </Highlight>
     </div>
   );
 }
