@@ -1,4 +1,4 @@
-import { Button, ButtonGroup, InlineStack } from "@xco/corex-ui";
+import { Button, ButtonGroup, InlineStack, Link, Menu } from "@xco/corex-ui";
 import type { ComponentEntry } from "../types";
 
 function ButtonVariants() {
@@ -20,6 +20,31 @@ function ButtonGroupExample() {
       <Button>Two</Button>
       <Button>Three</Button>
     </ButtonGroup>
+  );
+}
+
+function LinkExample() {
+  return (
+    <Link url="https://shopify.dev" external>
+      View developer docs
+    </Link>
+  );
+}
+
+function MenuExample() {
+  return (
+    <InlineStack gap="200">
+      <Button commandFor="actions-menu" icon="menu">
+        More actions
+      </Button>
+      <Menu id="actions-menu">
+        <Button icon="duplicate">Duplicate</Button>
+        <Button icon="archive">Archive</Button>
+        <Button icon="delete" destructive>
+          Delete
+        </Button>
+      </Menu>
+    </InlineStack>
   );
 }
 
@@ -57,6 +82,41 @@ export const actionsComponents: ComponentEntry[] = [
   <Button>Two</Button>
   <Button>Three</Button>
 </ButtonGroup>`,
+      },
+    ],
+  },
+  {
+    name: "Link",
+    slug: "link",
+    category: "Actions",
+    description: "Makes text interactive for navigation.",
+    examples: [
+      {
+        title: "External link",
+        Example: LinkExample,
+        code: `<Link url="https://shopify.dev" external>
+  View developer docs
+</Link>`,
+      },
+    ],
+  },
+  {
+    name: "Menu",
+    slug: "menu",
+    category: "Actions",
+    description: "A dropdown list of actions, triggered by a Button using commandFor.",
+    examples: [
+      {
+        title: "Actions menu",
+        Example: MenuExample,
+        code: `<Button commandFor="actions-menu" icon="menu">
+  More actions
+</Button>
+<Menu id="actions-menu">
+  <Button icon="duplicate">Duplicate</Button>
+  <Button icon="archive">Archive</Button>
+  <Button icon="delete" destructive>Delete</Button>
+</Menu>`,
       },
     ],
   },

@@ -73,8 +73,9 @@ that specific component.
 
 ## 6. Components not yet covered
 
-This library currently ships a first-wave set of ~16 components (see the
-[README](../packages/corex-ui/README.md) for the full list) chosen to cover every wrapper
-pattern needed. If a component you use isn't here yet, it can be added following the pattern in
+This library currently ships around 30 components plus the [App Bridge](./app-bridge.md)
+subsystem (see the [README](../packages/corex-ui/README.md) for the full list and
+[`component-coverage.md`](./component-coverage.md) for the full audit against Polaris's
+catalog). If a component you use isn't here yet, it can be added following the pattern in
 [`docs/architecture.md`](./architecture.md#adding-a-new-component) without any changes to the
 existing components or the core integration layer.

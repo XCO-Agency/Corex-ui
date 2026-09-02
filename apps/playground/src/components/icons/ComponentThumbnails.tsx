@@ -192,6 +192,157 @@ export function TabsThumbnail() {
   );
 }
 
+export function LinkThumbnail() {
+  return (
+    <Frame>
+      <rect x="45" y="46" width="70" height="8" rx="2" fill={accent} />
+      <rect x="45" y="58" width="70" height="2" fill={accent} />
+    </Frame>
+  );
+}
+
+export function IconThumbnail() {
+  return (
+    <Frame>
+      <rect x="65" y="30" width="30" height="30" rx="6" fill="#eef0f1" stroke={border} />
+      <path d="M74 45 l6 6 l12 -14" fill="none" stroke={accent} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+    </Frame>
+  );
+}
+
+export function DividerThumbnail() {
+  return (
+    <Frame>
+      <rect x="30" y="30" width="100" height="6" rx="2" fill="#e4e6e8" />
+      <rect x="20" y="48" width="120" height="2" fill={border} />
+      <rect x="30" y="64" width="100" height="6" rx="2" fill="#e4e6e8" />
+    </Frame>
+  );
+}
+
+export function AvatarThumbnail() {
+  return (
+    <Frame>
+      <circle cx="80" cy="50" r="20" fill={accent} fillOpacity="0.15" stroke={accent} />
+      <circle cx="80" cy="43" r="6" fill={accent} fillOpacity="0.5" />
+      <path d="M67 62 a13 13 0 0 1 26 0" fill={accent} fillOpacity="0.5" />
+    </Frame>
+  );
+}
+
+export function ThumbnailThumbnail() {
+  return (
+    <Frame>
+      <rect x="55" y="30" width="50" height="40" rx="6" fill="#eef0f1" stroke={border} />
+      <circle cx="66" cy="42" r="4" fill={grayStrong} />
+      <path d="M58 64 l14 -14 l10 10 l10 -8 l8 12" fill="none" stroke={grayStrong} strokeWidth="2" strokeLinejoin="round" strokeLinecap="round" />
+    </Frame>
+  );
+}
+
+export function TooltipThumbnail() {
+  return (
+    <Frame>
+      <rect x="50" y="18" width="60" height="20" rx="4" fill="#202223" />
+      <rect x="60" y="24" width="40" height="8" rx="2" fill="#ffffff" fillOpacity="0.85" />
+      <path d="M75 38 l5 8 l5 -8 Z" fill="#202223" />
+      <rect x="60" y="58" width="40" height="18" rx="4" fill="#eef0f1" stroke={border} />
+    </Frame>
+  );
+}
+
+export function ChoiceListThumbnail() {
+  return (
+    <Frame>
+      <rect x="35" y="28" width="14" height="14" rx="3" fill={accent} fillOpacity="0.12" stroke={accent} />
+      <rect x="56" y="32" width="50" height="6" rx="2" fill={gray} />
+      <circle cx="42" cy="57" r="7" fill="none" stroke={border} strokeWidth="1.5" />
+      <rect x="56" y="54" width="50" height="6" rx="2" fill={gray} />
+    </Frame>
+  );
+}
+
+export function DateFieldThumbnail() {
+  return (
+    <Frame>
+      <rect x="35" y="28" width="50" height="6" rx="2" fill={grayStrong} />
+      <rect x="35" y="42" width="90" height="22" rx="4" fill="#ffffff" stroke={border} />
+      <rect x="99" y="48" width="14" height="12" rx="2" fill="none" stroke={grayStrong} strokeWidth="1.5" />
+    </Frame>
+  );
+}
+
+export function DatePickerThumbnail() {
+  return (
+    <Frame>
+      <rect x="45" y="20" width="70" height="58" rx="6" fill="#ffffff" stroke={border} />
+      <rect x="45" y="20" width="70" height="14" rx="6" fill={accent} fillOpacity="0.15" />
+      <circle cx="60" cy="52" r="3" fill={gray} />
+      <circle cx="75" cy="52" r="3" fill={gray} />
+      <circle cx="90" cy="52" r="3" fill={accent} />
+      <circle cx="60" cy="65" r="3" fill={gray} />
+      <circle cx="75" cy="65" r="3" fill={gray} />
+      <circle cx="90" cy="65" r="3" fill={gray} />
+    </Frame>
+  );
+}
+
+export function MenuThumbnail() {
+  return (
+    <Frame>
+      <rect x="30" y="20" width="60" height="16" rx="4" fill="#eef0f1" stroke={border} />
+      <rect x="40" y="44" width="80" height="34" rx="6" fill="#ffffff" stroke={border} />
+      <rect x="48" y="52" width="50" height="5" rx="2" fill={gray} />
+      <rect x="48" y="62" width="50" height="5" rx="2" fill={gray} />
+      <rect x="48" y="72" width="30" height="5" rx="2" fill="#d72c0d" fillOpacity="0.6" />
+    </Frame>
+  );
+}
+
+export function AppWindowThumbnail() {
+  return (
+    <Frame>
+      <rect x="20" y="18" width="120" height="64" rx="4" fill="#ffffff" stroke={border} />
+      <rect x="20" y="18" width="120" height="12" rx="4" fill="#eef0f1" />
+      <circle cx="28" cy="24" r="2" fill={grayStrong} />
+      <circle cx="35" cy="24" r="2" fill={grayStrong} />
+      <rect x="34" y="40" width="90" height="6" rx="2" fill="#e4e6e8" />
+      <rect x="34" y="52" width="70" height="6" rx="2" fill="#e4e6e8" />
+    </Frame>
+  );
+}
+
+export function AppNavThumbnail() {
+  return (
+    <Frame>
+      <rect x="15" y="40" width="130" height="20" rx="4" fill="#ffffff" stroke={border} />
+      <rect x="25" y="47" width="24" height="6" rx="2" fill={accent} />
+      <rect x="60" y="47" width="30" height="6" rx="2" fill={gray} />
+      <rect x="100" y="47" width="30" height="6" rx="2" fill={gray} />
+    </Frame>
+  );
+}
+
+export function SaveBarThumbnail() {
+  return (
+    <Frame>
+      <rect x="15" y="40" width="130" height="24" rx="6" fill="#202223" />
+      <rect x="95" y="47" width="40" height="10" rx="3" fill="#ffffff" fillOpacity="0.9" />
+      <rect x="50" y="47" width="40" height="10" rx="3" fill="none" stroke="#ffffff" strokeOpacity="0.6" />
+    </Frame>
+  );
+}
+
+export function ToastThumbnail() {
+  return (
+    <Frame>
+      <rect x="35" y="60" width="90" height="24" rx="12" fill="#202223" />
+      <circle cx="50" cy="72" r="4" fill="#50b83c" />
+      <rect x="60" y="68" width="55" height="7" rx="2" fill="#ffffff" fillOpacity="0.9" />
+    </Frame>
+  );
+}
+
 export const thumbnails: Record<string, React.ComponentType> = {
   button: ButtonThumbnail,
   "button-group": ButtonGroupThumbnail,
@@ -209,4 +360,19 @@ export const thumbnails: Record<string, React.ComponentType> = {
   checkbox: CheckboxThumbnail,
   modal: ModalThumbnail,
   tabs: TabsThumbnail,
+  link: LinkThumbnail,
+  icon: IconThumbnail,
+  divider: DividerThumbnail,
+  avatar: AvatarThumbnail,
+  thumbnail: ThumbnailThumbnail,
+  tooltip: TooltipThumbnail,
+  "choice-list": ChoiceListThumbnail,
+  "date-field": DateFieldThumbnail,
+  "date-picker": DatePickerThumbnail,
+  menu: MenuThumbnail,
+  "app-window": AppWindowThumbnail,
+  "app-nav": AppNavThumbnail,
+  "app-bridge-menu": MenuThumbnail,
+  "save-bar": SaveBarThumbnail,
+  toast: ToastThumbnail,
 };

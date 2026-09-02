@@ -2,9 +2,11 @@ import { actionsComponents } from "./categories/actions";
 import { formsComponents } from "./categories/forms";
 import { layoutComponents } from "./categories/layout";
 import { feedbackComponents } from "./categories/feedback";
+import { mediaComponents } from "./categories/media";
 import { overlaysComponents } from "./categories/overlays";
 import { typographyComponents } from "./categories/typography";
 import { navigationComponents } from "./categories/navigation";
+import { appBridgeComponents } from "./categories/app-bridge";
 import type { ComponentEntry } from "./types";
 
 export { categories } from "./types";
@@ -21,7 +23,9 @@ export const registry: ComponentEntry[] = [
   ...formsComponents,
   ...layoutComponents,
   ...feedbackComponents,
+  ...mediaComponents,
   ...overlaysComponents,
   ...typographyComponents,
   ...navigationComponents,
+  ...appBridgeComponents,
 ];

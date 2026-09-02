@@ -1,4 +1,4 @@
-import { BlockStack, Box, Card, InlineStack, Page, Text } from "@xco/corex-ui";
+import { BlockStack, Box, Card, Divider, InlineStack, Page, Text } from "@xco/corex-ui";
 import type { ComponentEntry } from "../types";
 
 function BoxExample() {
@@ -38,6 +38,16 @@ function PageExample() {
     <Page title="Products" subtitle="Manage your catalog" primaryAction={{ content: "Add product" }}>
       <Text>Page content goes here.</Text>
     </Page>
+  );
+}
+
+function DividerExample() {
+  return (
+    <BlockStack gap="200">
+      <Text>Above the divider</Text>
+      <Divider />
+      <Text>Below the divider</Text>
+    </BlockStack>
   );
 }
 
@@ -120,6 +130,23 @@ export const layoutComponents: ComponentEntry[] = [
 >
   <Text>Page content goes here.</Text>
 </Page>`,
+      },
+    ],
+  },
+  {
+    name: "Divider",
+    slug: "divider",
+    category: "Layout",
+    description: "Creates visual separation between sections of content.",
+    examples: [
+      {
+        title: "Between content",
+        Example: DividerExample,
+        code: `<BlockStack gap="200">
+  <Text>Above the divider</Text>
+  <Divider />
+  <Text>Below the divider</Text>
+</BlockStack>`,
       },
     ],
   },

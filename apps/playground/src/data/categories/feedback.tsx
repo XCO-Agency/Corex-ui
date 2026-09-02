@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Badge, Banner, Button, InlineStack, Spinner } from "@xco/corex-ui";
+import { Badge, Banner, Button, InlineStack, Spinner, Tooltip } from "@xco/corex-ui";
 import type { ComponentEntry } from "../types";
 
 function BadgeVariants() {
@@ -27,6 +27,14 @@ function BannerDismissible() {
 
 function SpinnerExample() {
   return <Spinner size="large" accessibilityLabel="Loading" />;
+}
+
+function TooltipExample() {
+  return (
+    <Tooltip content="Deletes the item permanently">
+      <Button destructive>Delete</Button>
+    </Tooltip>
+  );
 }
 
 export const feedbackComponents: ComponentEntry[] = [
@@ -75,6 +83,21 @@ export const feedbackComponents: ComponentEntry[] = [
         title: "Large spinner",
         Example: SpinnerExample,
         code: `<Spinner size="large" accessibilityLabel="Loading" />`,
+      },
+    ],
+  },
+  {
+    name: "Tooltip",
+    slug: "tooltip",
+    category: "Feedback",
+    description: "Displays helpful information when hovering or focusing an element.",
+    examples: [
+      {
+        title: "On a destructive action",
+        Example: TooltipExample,
+        code: `<Tooltip content="Deletes the item permanently">
+  <Button destructive>Delete</Button>
+</Tooltip>`,
       },
     ],
   },

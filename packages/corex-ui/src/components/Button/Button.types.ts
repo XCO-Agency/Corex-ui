@@ -29,4 +29,14 @@ export interface ButtonProps {
   className?: string;
   /** Standard HTML slot attribute, used to place this Button into a parent's named slot (e.g. a Modal's action area). */
   slot?: string;
+  /** Icon to render in the button, e.g. `icon="save"`. Best-effort — verify against your installed polaris-1.js. */
+  icon?: string;
+  /**
+   * The [Invoker Commands](https://shopify.dev) declarative trigger pattern, e.g.
+   * `command="--show"` paired with `commandFor` pointing at a `Modal`/`AppWindow`/`Menu`'s
+   * `id`. Lets a Button trigger those without any JS handler.
+   */
+  command?: string;
+  /** The `id` of the element `command` acts on (a `Modal`, `AppWindow`, or `Menu`). */
+  commandFor?: string;
 }

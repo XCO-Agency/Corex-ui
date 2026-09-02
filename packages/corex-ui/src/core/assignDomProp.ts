@@ -1,40 +1,21 @@
 /**
- * Assigns a single prop onto a custom element following Shopify's documented
- * property/attribute rule: if the property already exists on the element
- * (i.e. the custom element class defines it), set it as a DOM property so
- * non-primitive values (objects, arrays, functions) pass through untouched.
- * Otherwise fall back to standard attribute get/set/remove semantics.
+ * Assigns a single prop onto a custom element as a live DOM *property*
+ * (`el[key] = value`), never an attribute.
  *
- * `value` and `checked` are excluded from the "prefer property" shortcut
- * because they follow native HTML input semantics (attribute = default,
- * property = live value), matching how the real Polaris elements behave.
+ * This is only ever called for prop names a component wrapper explicitly
+ * listed in `createWebComponent`'s `domProps` option — the wrapper has
+ * already decided the value is non-primitive (objects/arrays) or must stay
+ * a live, controlled property (e.g. `TextField`/`Select`'s `value`,
+ * `Checkbox`'s `checked`, `ChoiceList`'s `choices`/`selected`), so there is
+ * no ambiguity left to resolve here the way plain JSX attribute passthrough
+ * has to. This mirrors how native `<input>` distinguishes its live `.value`
+ * property from the initial, attribute-driven default.
  */
 export function assignDomProp(el: Element, key: string, value: unknown): void {
   if (value === undefined) {
     return;
   }
 
-  // `value`/`checked` always go through the property (never the attribute)
-  // so controlled components stay in sync on every render, mirroring how
-  // native `<input>` distinguishes the live property from the initial
-  // attribute-driven default.
-  const alwaysUsesProperty = key === "value" || key === "checked";
-
-  if (alwaysUsesProperty || key in el) {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (el as any)[key] = value;
-    return;
-  }
-
-  if (value === false || value === null) {
-    el.removeAttribute(key);
-    return;
-  }
-
-  if (value === true) {
-    el.setAttribute(key, "");
-    return;
-  }
-
-  el.setAttribute(key, String(value));
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  (el as any)[key] = value;
 }

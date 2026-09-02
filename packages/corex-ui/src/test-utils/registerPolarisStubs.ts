@@ -26,6 +26,17 @@ class ModalStub extends HTMLElement {
   }
 }
 
+/** `s-app-window` supports imperative `show()` / `hide()`, per Shopify's own examples. */
+class AppWindowStub extends HTMLElement {
+  show() {
+    this.setAttribute("data-stub-open", "true");
+  }
+
+  hide() {
+    this.removeAttribute("data-stub-open");
+  }
+}
+
 const STUB_TAGS = [
   "s-button",
   "s-button-group",
@@ -36,10 +47,23 @@ const STUB_TAGS = [
   "s-stack",
   "s-section",
   "s-text-field",
+  "s-text-area",
   "s-select",
   "s-checkbox",
   "s-spinner",
   "s-page",
+  "s-link",
+  "s-icon",
+  "s-divider",
+  "s-avatar",
+  "s-thumbnail",
+  "s-tooltip",
+  "s-choice-list",
+  "s-date-field",
+  "s-date-picker",
+  "s-menu",
+  "s-app-nav",
+  "ui-save-bar",
 ];
 
 export function registerPolarisStubs() {
@@ -47,4 +71,5 @@ export function registerPolarisStubs() {
     defineStub(tag, class extends GenericPolarisStub {});
   }
   defineStub("s-modal", ModalStub);
+  defineStub("s-app-window", AppWindowStub);
 }

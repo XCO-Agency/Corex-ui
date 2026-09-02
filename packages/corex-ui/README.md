@@ -49,10 +49,15 @@ function ProductForm() {
 ## Components in this release
 
 `Button`, `ButtonGroup`, `Text`, `Badge`, `Banner`, `Box`, `BlockStack`, `InlineStack`, `Card`,
-`Modal`, `TextField`, `Select`, `Checkbox`, `Spinner`, `Page`, `Tabs`.
+`Modal`, `TextField`, `Select`, `Checkbox`, `Spinner`, `Page`, `Tabs`, `Link`, `Icon`, `Divider`,
+`Avatar`, `Thumbnail`, `Tooltip`, `ChoiceList`, `DateField`, `DatePicker`, `Menu`.
+
+Plus the [App Bridge](../../docs/app-bridge.md) subsystem: `AppWindow`, `AppNav`, `SaveBar`,
+`useToast`, `useSaveBar`.
 
 Each has a dedicated doc page under [`docs/components/`](../../docs/components/) with a full
-legacy-prop-to-new-prop mapping table. More components are added incrementally — see
+legacy-prop-to-new-prop mapping table. See [`docs/component-coverage.md`](../../docs/component-coverage.md)
+for what's not yet covered. More components are added incrementally — see
 [`docs/architecture.md`](../../docs/architecture.md#adding-a-new-component) for the pattern.
 
 ## Documentation
@@ -60,6 +65,8 @@ legacy-prop-to-new-prop mapping table. More components are added incrementally �
 - [Architecture](../../docs/architecture.md) — how the wrapper layer is built, and how to add components.
 - [Migration guide](../../docs/migration-guide.md) — moving an app off `@shopify/polaris`.
 - [Component docs](../../docs/components/) — one page per component.
+- [Component coverage](../../docs/component-coverage.md) — full audit against Polaris's web component catalog.
+- [App Bridge](../../docs/app-bridge.md) — `AppWindow`, `AppNav`, `SaveBar`, `useToast`, `useSaveBar`.
 
 ## Development
 

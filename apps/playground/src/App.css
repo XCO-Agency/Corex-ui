@@ -56,6 +56,31 @@ body {
   color: var(--text-subdued);
 }
 
+.sidebar-search {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 7px 10px;
+  margin-bottom: 8px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 13px;
+  color: var(--text);
+  background: var(--surface-subdued);
+}
+
+.sidebar-search:focus {
+  outline: none;
+  border-color: var(--accent);
+  background: var(--surface);
+}
+
+.sidebar-empty {
+  padding: 0 10px;
+  font-size: 13px;
+  color: var(--text-subdued);
+  margin-top: 16px;
+}
+
 .sidebar-section {
   margin-top: 20px;
 }
@@ -189,6 +214,27 @@ body {
   font-size: 13px;
   color: var(--text-subdued);
   line-height: 1.4;
+}
+
+/* Sandbox note (App Bridge components) */
+
+.sandbox-note {
+  border: 1px solid #f1d6a8;
+  background: #fff8ec;
+  color: #8a6116;
+  border-radius: 8px;
+  padding: 12px 16px;
+  font-size: 13px;
+  line-height: 1.5;
+  margin-bottom: 24px;
+}
+
+.sandbox-note code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 12px;
+  background: rgba(0, 0, 0, 0.06);
+  padding: 1px 4px;
+  border-radius: 3px;
 }
 
 /* Component detail examples */
