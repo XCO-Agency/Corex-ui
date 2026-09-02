@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@xco/corex-ui playground</title>
+    <!--
+      This is the CDN script every Shopify embedded app loads to register
+      the real `s-*` Polaris web components. Without it, the tags our
+      wrappers render are inert, unstyled custom elements — this file
+      mirrors exactly what a real app's HTML head has, per
+      https://shopify.dev/docs/api/polaris/using-polaris-web-components.
+    -->
+    <script src="https://cdn.shopify.com/shopifycloud/polaris-1.js"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

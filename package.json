@@ -1,0 +1,21 @@
+{
+  "name": "corex-ui-workspace",
+  "private": true,
+  "version": "0.0.0",
+  "description": "Workspace root for @xco/corex-ui, a Polaris-web-component-backed, legacy-Polaris-React-compatible UI library for Shopify apps.",
+  "scripts": {
+    "build": "pnpm --filter @xco/corex-ui run build",
+    "dev": "pnpm --filter playground run dev",
+    "test": "pnpm --filter @xco/corex-ui run test",
+    "typecheck": "pnpm --filter @xco/corex-ui run typecheck"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.3"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": ["esbuild"]
+  }
+}
