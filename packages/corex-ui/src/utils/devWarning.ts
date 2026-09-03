@@ -14,5 +14,5 @@ export function devWarning(componentName: string, message: string): void {
   warned.add(key);
 
   // eslint-disable-next-line no-console
-  console.warn(`[@xco/corex-ui] ${componentName}: ${message}`);
+  console.warn(`[@xco-agency/corex-ui] ${componentName}: ${message}`);
 }
