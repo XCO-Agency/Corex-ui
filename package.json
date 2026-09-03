@@ -5,6 +5,7 @@
   "description": "Workspace root for @xco-agency/corex-ui, a Polaris-web-component-backed, legacy-Polaris-React-compatible UI library for Shopify apps.",
   "scripts": {
     "build": "pnpm --filter @xco-agency/corex-ui run build",
+    "build:playground": "pnpm --filter playground run build",
     "dev": "pnpm --filter playground run dev",
     "test": "pnpm --filter @xco-agency/corex-ui run test",
     "typecheck": "pnpm --filter @xco-agency/corex-ui run typecheck"

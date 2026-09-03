@@ -1,0 +1,58 @@
+name: Publish Package
+
+on:
+  release:
+    types: [published, created]
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Dry run (do not publish)'
+        type: boolean
+        required: false
+        default: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+          registry-url: 'https://npm.pkg.github.com'
+          scope: '@xco-agency'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Type check
+        run: pnpm --filter @xco-agency/corex-ui run typecheck
+
+      - name: Run tests
+        run: pnpm --filter @xco-agency/corex-ui run test
+
+      - name: Build package
+        run: pnpm --filter @xco-agency/corex-ui run build
+
+      - name: Publish to GitHub Packages
+        working-directory: packages/corex-ui
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if [ "${{ github.event.inputs.dry_run }}" = "true" ]; then
+            echo "Running publish in dry-run mode..."
+            npm publish --dry-run
+          else
+            npm publish
+          fi

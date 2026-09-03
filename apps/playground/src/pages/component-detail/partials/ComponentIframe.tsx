@@ -44,22 +44,29 @@ export function ComponentIframe({ children, className }: ComponentIframePropsTyp
                   -webkit-font-smoothing: antialiased;
                 }
                 body {
-                  display: flex;
-                  flex-direction: column;
-                  align-items: center;
-                  justify-content: center;
                   min-height: 240px;
-                  padding: 24px;
+                  padding: 20px;
                   color: #202223;
+                  box-sizing: border-box;
                 }
                 html.dark body {
                   color: #f6f6f7;
                 }
                 #preview-root {
                   width: 100%;
+                  min-height: 200px;
                   display: flex;
                   align-items: center;
                   justify-content: center;
+                }
+                /* Do not flex-center full-width page layouts */
+                #preview-root:has(s-page) {
+                  display: block;
+                  padding: 0;
+                }
+                s-page {
+                  display: block;
+                  width: 100%;
                 }
               </style>
             </head>
@@ -80,8 +87,20 @@ export function ComponentIframe({ children, className }: ComponentIframePropsTyp
       }
 
       const root = doc.getElementById("preview-root");
-      if (root) {
-        setMountNode(root);
+      const win = iframe.contentWindow;
+      if (root && win) {
+        if (win.customElements?.whenDefined) {
+          Promise.all([
+            win.customElements.whenDefined("s-button"),
+            win.customElements.whenDefined("s-page"),
+          ]).then(() => {
+            setMountNode(root);
+          }).catch(() => {
+            setMountNode(root);
+          });
+        } else {
+          setMountNode(root);
+        }
       }
     };
 
