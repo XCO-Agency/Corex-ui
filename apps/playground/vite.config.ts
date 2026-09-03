@@ -8,6 +8,9 @@ export default defineConfig({
   resolve: {
     alias: {
       "@": fileURLToPath(new URL("./src", import.meta.url)),
+      "@xco-agency/corex-ui": fileURLToPath(
+        new URL("../../packages/corex-ui/src", import.meta.url),
+      ),
       "@xco/corex-ui": fileURLToPath(
         new URL("../../packages/corex-ui/src", import.meta.url),
       ),
