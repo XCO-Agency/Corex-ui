@@ -1,52 +1,12 @@
-import { Button, ButtonGroup, InlineStack, Link, Menu } from "@xco/corex-ui";
 import type { ComponentEntry } from "../types";
-
-function ButtonVariants() {
-  return (
-    <InlineStack gap="200">
-      <Button primary>Primary</Button>
-      <Button>Secondary</Button>
-      <Button destructive>Destructive</Button>
-      <Button plain>Plain</Button>
-      <Button disabled>Disabled</Button>
-    </InlineStack>
-  );
-}
-
-function ButtonGroupExample() {
-  return (
-    <ButtonGroup variant="segmented">
-      <Button>One</Button>
-      <Button>Two</Button>
-      <Button>Three</Button>
-    </ButtonGroup>
-  );
-}
-
-function LinkExample() {
-  return (
-    <Link url="https://shopify.dev" external>
-      View developer docs
-    </Link>
-  );
-}
-
-function MenuExample() {
-  return (
-    <InlineStack gap="200">
-      <Button commandFor="actions-menu" icon="menu">
-        More actions
-      </Button>
-      <Menu id="actions-menu">
-        <Button icon="duplicate">Duplicate</Button>
-        <Button icon="archive">Archive</Button>
-        <Button icon="delete" destructive>
-          Delete
-        </Button>
-      </Menu>
-    </InlineStack>
-  );
-}
+import { ButtonVariants } from "@/examples/actions/ButtonVariants";
+import ButtonVariantsRaw from "@/examples/actions/ButtonVariants.tsx?raw";
+import { ButtonGroupExample } from "@/examples/actions/ButtonGroupExample";
+import ButtonGroupExampleRaw from "@/examples/actions/ButtonGroupExample.tsx?raw";
+import { LinkExample } from "@/examples/actions/LinkExample";
+import LinkExampleRaw from "@/examples/actions/LinkExample.tsx?raw";
+import { MenuExample } from "@/examples/actions/MenuExample";
+import MenuExampleRaw from "@/examples/actions/MenuExample.tsx?raw";
 
 export const actionsComponents: ComponentEntry[] = [
   {
@@ -58,13 +18,7 @@ export const actionsComponents: ComponentEntry[] = [
       {
         title: "Variants",
         Example: ButtonVariants,
-        code: `<InlineStack gap="200">
-  <Button primary>Primary</Button>
-  <Button>Secondary</Button>
-  <Button destructive>Destructive</Button>
-  <Button plain>Plain</Button>
-  <Button disabled>Disabled</Button>
-</InlineStack>`,
+        code: ButtonVariantsRaw,
       },
     ],
   },
@@ -77,11 +31,7 @@ export const actionsComponents: ComponentEntry[] = [
       {
         title: "Segmented group",
         Example: ButtonGroupExample,
-        code: `<ButtonGroup variant="segmented">
-  <Button>One</Button>
-  <Button>Two</Button>
-  <Button>Three</Button>
-</ButtonGroup>`,
+        code: ButtonGroupExampleRaw,
       },
     ],
   },
@@ -94,9 +44,7 @@ export const actionsComponents: ComponentEntry[] = [
       {
         title: "External link",
         Example: LinkExample,
-        code: `<Link url="https://shopify.dev" external>
-  View developer docs
-</Link>`,
+        code: LinkExampleRaw,
       },
     ],
   },
@@ -109,14 +57,7 @@ export const actionsComponents: ComponentEntry[] = [
       {
         title: "Actions menu",
         Example: MenuExample,
-        code: `<Button commandFor="actions-menu" icon="menu">
-  More actions
-</Button>
-<Menu id="actions-menu">
-  <Button icon="duplicate">Duplicate</Button>
-  <Button icon="archive">Archive</Button>
-  <Button icon="delete" destructive>Delete</Button>
-</Menu>`,
+        code: MenuExampleRaw,
       },
     ],
   },

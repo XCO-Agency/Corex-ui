@@ -1,12 +1,18 @@
 import type { ReactNode } from "react";
-import type { Alignment, StackGap } from "../../types/common";
+import type { AlignmentType, StackGapType } from "../../types/common";
 
-export interface BlockStackProps {
+export type BlockStackPropsType = {
   children?: ReactNode;
-  /** @deprecated Numeric values such as `"400"` still work; prefer Polaris tokens such as `"base"`. */
-  gap?: StackGap;
-  align?: Alignment;
-  inlineAlign?: Alignment;
+  /**
+   * Spacing between children.
+   * Uses Polaris web-component spacing tokens (e.g. `"small-200"`, `"base"`).
+   * Legacy numeric values such as `"400"` are supported for backward compatibility.
+   */
+  gap?: StackGapType;
+  align?: AlignmentType;
+  inlineAlign?: AlignmentType;
   className?: string;
   id?: string;
-}
+};
+
+export type BlockStackProps = BlockStackPropsType;

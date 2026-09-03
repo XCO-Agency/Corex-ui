@@ -29,3 +29,10 @@ export const registry: ComponentEntry[] = [
   ...navigationComponents,
   ...appBridgeComponents,
 ];
+
+export type BlockGroupType = {
+  category: string;
+  components: ComponentEntry[];
+};
+
+export const blocks: BlockGroupType[] = [];

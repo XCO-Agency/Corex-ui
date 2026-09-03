@@ -10,20 +10,35 @@ export const categories = [
   "App Bridge",
 ] as const;
 
-export type Category = (typeof categories)[number];
+export type CategoryType = (typeof categories)[number];
+export type Category = CategoryType;
 
-export interface ComponentExample {
-  title: string;
+export type FileItemType = {
+  name: string;
+  path: string;
   code: string;
-  Example: React.ComponentType;
-}
+};
 
-export interface ComponentEntry {
+export type ComponentExampleType = {
+  title: string;
+  Example: React.ComponentType;
+  /** Raw source code of the component, imported via Vite ?raw */
+  code?: string;
+  /** Optional filename, e.g. "ButtonVariants.tsx" */
+  filename?: string;
+  /** Optional files structure for future multi-file blocks */
+  files?: FileItemType[];
+  /** Optional npx command for blocks */
+  npxCommand?: string;
+};
+export type ComponentExample = ComponentExampleType;
+
+export type ComponentEntryType = {
   name: string;
   slug: string;
-  category: Category;
+  category: CategoryType;
   description: string;
-  examples: ComponentExample[];
+  examples: ComponentExampleType[];
   /**
    * True for components whose live behavior only works inside a real
    * embedded Shopify admin session (App Bridge's `window.shopify` global,
@@ -32,4 +47,5 @@ export interface ComponentEntry {
    * the interaction works in this standalone playground.
    */
   requiresEmbeddedContext?: boolean;
-}
+};
+export type ComponentEntry = ComponentEntryType;

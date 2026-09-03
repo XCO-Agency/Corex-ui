@@ -1,59 +1,16 @@
-import { useState } from "react";
-import { Checkbox, ChoiceList, DateField, DatePicker, Select, TextField } from "@xco/corex-ui";
 import type { ComponentEntry } from "../types";
-
-function TextFieldExample() {
-  const [name, setName] = useState("Ada Lovelace");
-  return <TextField label="Name" value={name} onChange={(value) => setName(value)} />;
-}
-
-function SelectExample() {
-  const [country, setCountry] = useState("ca");
-  return (
-    <Select
-      label="Country"
-      value={country}
-      onChange={(value) => setCountry(value)}
-      options={[
-        { label: "Canada", value: "ca" },
-        { label: "United States", value: "us" },
-      ]}
-    />
-  );
-}
-
-function CheckboxExample() {
-  const [accepted, setAccepted] = useState(false);
-  return (
-    <Checkbox label="I accept the terms" checked={accepted} onChange={(value) => setAccepted(value)} />
-  );
-}
-
-function ChoiceListExample() {
-  const [selected, setSelected] = useState<string[]>(["email"]);
-  return (
-    <ChoiceList
-      title="Notify me by"
-      choices={[
-        { label: "Email", value: "email" },
-        { label: "SMS", value: "sms" },
-      ]}
-      selected={selected}
-      onChange={(value) => setSelected(value)}
-      allowMultiple
-    />
-  );
-}
-
-function DateFieldExample() {
-  const [date, setDate] = useState("2026-01-01");
-  return <DateField label="Start date" value={date} onChange={(value) => setDate(value)} />;
-}
-
-function DatePickerExample() {
-  const [date, setDate] = useState("2026-01-01");
-  return <DatePicker selected={date} onChange={(value) => setDate(value)} />;
-}
+import { TextFieldExample } from "@/examples/forms/TextFieldExample";
+import TextFieldExampleRaw from "@/examples/forms/TextFieldExample.tsx?raw";
+import { SelectExample } from "@/examples/forms/SelectExample";
+import SelectExampleRaw from "@/examples/forms/SelectExample.tsx?raw";
+import { CheckboxExample } from "@/examples/forms/CheckboxExample";
+import CheckboxExampleRaw from "@/examples/forms/CheckboxExample.tsx?raw";
+import { ChoiceListExample } from "@/examples/forms/ChoiceListExample";
+import ChoiceListExampleRaw from "@/examples/forms/ChoiceListExample.tsx?raw";
+import { DateFieldExample } from "@/examples/forms/DateFieldExample";
+import DateFieldExampleRaw from "@/examples/forms/DateFieldExample.tsx?raw";
+import { DatePickerExample } from "@/examples/forms/DatePickerExample";
+import DatePickerExampleRaw from "@/examples/forms/DatePickerExample.tsx?raw";
 
 export const formsComponents: ComponentEntry[] = [
   {
@@ -65,9 +22,7 @@ export const formsComponents: ComponentEntry[] = [
       {
         title: "Controlled input",
         Example: TextFieldExample,
-        code: `const [name, setName] = useState("Ada Lovelace");
-
-<TextField label="Name" value={name} onChange={(value) => setName(value)} />`,
+        code: TextFieldExampleRaw,
       },
     ],
   },
@@ -80,17 +35,7 @@ export const formsComponents: ComponentEntry[] = [
       {
         title: "Controlled select",
         Example: SelectExample,
-        code: `const [country, setCountry] = useState("ca");
-
-<Select
-  label="Country"
-  value={country}
-  onChange={(value) => setCountry(value)}
-  options={[
-    { label: "Canada", value: "ca" },
-    { label: "United States", value: "us" },
-  ]}
-/>`,
+        code: SelectExampleRaw,
       },
     ],
   },
@@ -103,13 +48,7 @@ export const formsComponents: ComponentEntry[] = [
       {
         title: "Controlled checkbox",
         Example: CheckboxExample,
-        code: `const [accepted, setAccepted] = useState(false);
-
-<Checkbox
-  label="I accept the terms"
-  checked={accepted}
-  onChange={(value) => setAccepted(value)}
-/>`,
+        code: CheckboxExampleRaw,
       },
     ],
   },
@@ -122,18 +61,7 @@ export const formsComponents: ComponentEntry[] = [
       {
         title: "Multiple choice",
         Example: ChoiceListExample,
-        code: `const [selected, setSelected] = useState(["email"]);
-
-<ChoiceList
-  title="Notify me by"
-  choices={[
-    { label: "Email", value: "email" },
-    { label: "SMS", value: "sms" },
-  ]}
-  selected={selected}
-  onChange={(value) => setSelected(value)}
-  allowMultiple
-/>`,
+        code: ChoiceListExampleRaw,
       },
     ],
   },
@@ -146,9 +74,7 @@ export const formsComponents: ComponentEntry[] = [
       {
         title: "Controlled date field",
         Example: DateFieldExample,
-        code: `const [date, setDate] = useState("2026-01-01");
-
-<DateField label="Start date" value={date} onChange={(value) => setDate(value)} />`,
+        code: DateFieldExampleRaw,
       },
     ],
   },
@@ -161,9 +87,7 @@ export const formsComponents: ComponentEntry[] = [
       {
         title: "Controlled date picker",
         Example: DatePickerExample,
-        code: `const [date, setDate] = useState("2026-01-01");
-
-<DatePicker selected={date} onChange={(value) => setDate(value)} />`,
+        code: DatePickerExampleRaw,
       },
     ],
   },

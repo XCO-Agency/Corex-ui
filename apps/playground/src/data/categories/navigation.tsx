@@ -1,20 +1,6 @@
-import { useState } from "react";
-import { Tabs, Text } from "@xco/corex-ui";
 import type { ComponentEntry } from "../types";
-
-function TabsExample() {
-  const [selected, setSelected] = useState(0);
-  const tabs = [
-    { id: "all", content: "All" },
-    { id: "drafts", content: "Drafts" },
-    { id: "archived", content: "Archived" },
-  ];
-  return (
-    <Tabs tabs={tabs} selected={selected} onSelect={setSelected}>
-      <Text>Panel content for &ldquo;{tabs[selected]!.content}&rdquo;.</Text>
-    </Tabs>
-  );
-}
+import { TabsExample } from "@/examples/navigation/TabsExample";
+import TabsExampleRaw from "@/examples/navigation/TabsExample.tsx?raw";
 
 export const navigationComponents: ComponentEntry[] = [
   {
@@ -26,16 +12,7 @@ export const navigationComponents: ComponentEntry[] = [
       {
         title: "Controlled tabs",
         Example: TabsExample,
-        code: `const [selected, setSelected] = useState(0);
-const tabs = [
-  { id: "all", content: "All" },
-  { id: "drafts", content: "Drafts" },
-  { id: "archived", content: "Archived" },
-];
-
-<Tabs tabs={tabs} selected={selected} onSelect={setSelected}>
-  <Text>Panel content for "{tabs[selected].content}".</Text>
-</Tabs>`,
+        code: TabsExampleRaw,
       },
     ],
   },

@@ -1,79 +1,20 @@
-import { useRef } from "react";
-import { AppNav, AppWindow, Badge, Button, Link, Menu, Page, SaveBar, useSaveBar, useToast } from "@xco/corex-ui";
 import type { ComponentEntry } from "../types";
-
-function AppWindowExample() {
-  const windowRef = useRef<HTMLElementTagNameMap["s-app-window"]>(null);
-  return (
-    <>
-      <Button onClick={() => windowRef.current?.show()}>Show App Window</Button>{" "}
-      <Button onClick={() => windowRef.current?.hide()}>Hide App Window</Button>
-      <AppWindow ref={windowRef} src="/app-window-content.html" />
-    </>
-  );
-}
-
-function AppWindowTitleBarExample() {
-  return (
-    <Page title="Edit Product">
-      <Badge slot="accessory" tone="warning">
-        Draft
-      </Badge>
-      <Button slot="primary-action">Save</Button>
-    </Page>
-  );
-}
-
-function AppNavExample() {
-  return (
-    <AppNav>
-      <Link url="/app" removeUnderline>
-        Home
-      </Link>
-      <Link url="/app/templates">Templates</Link>
-      <Link url="/app/settings">Settings</Link>
-    </AppNav>
-  );
-}
-
-function MenuInTitleBarExample() {
-  return (
-    <Page title="Product Details">
-      <Button slot="primary-action" icon="save">
-        Save
-      </Button>
-      <Button slot="secondary-actions" commandFor="app-bridge-actions-menu" icon="menu">
-        More actions
-      </Button>
-      <Menu id="app-bridge-actions-menu">
-        <Button icon="duplicate">Duplicate</Button>
-        <Button icon="archive">Archive</Button>
-        <Button icon="delete" destructive>
-          Delete
-        </Button>
-      </Menu>
-    </Page>
-  );
-}
-
-function ToastExample() {
-  const toast = useToast();
-  return <Button onClick={() => toast.show("Saved")}>Save</Button>;
-}
-
-function SaveBarExample() {
-  const saveBar = useSaveBar();
-  return (
-    <SaveBar id="playground-save-bar">
-      <button type="button" onClick={() => saveBar.hide("playground-save-bar")}>
-        Save
-      </button>
-      <button type="button" onClick={() => saveBar.hide("playground-save-bar")}>
-        Discard
-      </button>
-    </SaveBar>
-  );
-}
+import { AppWindowExample } from "@/examples/app-bridge/AppWindowExample";
+import AppWindowExampleRaw from "@/examples/app-bridge/AppWindowExample.tsx?raw";
+import { AppWindowDeclarativeExample } from "@/examples/app-bridge/AppWindowDeclarativeExample";
+import AppWindowDeclarativeExampleRaw from "@/examples/app-bridge/AppWindowDeclarativeExample.tsx?raw";
+import { AppWindowTitleBarExample } from "@/examples/app-bridge/AppWindowTitleBarExample";
+import AppWindowTitleBarExampleRaw from "@/examples/app-bridge/AppWindowTitleBarExample.tsx?raw";
+import { AppNavExample } from "@/examples/app-bridge/AppNavExample";
+import AppNavExampleRaw from "@/examples/app-bridge/AppNavExample.tsx?raw";
+import { MenuInTitleBarExample } from "@/examples/app-bridge/MenuInTitleBarExample";
+import MenuInTitleBarExampleRaw from "@/examples/app-bridge/MenuInTitleBarExample.tsx?raw";
+import { ToastExample } from "@/examples/app-bridge/ToastExample";
+import ToastExampleRaw from "@/examples/app-bridge/ToastExample.tsx?raw";
+import { SaveBarExample } from "@/examples/app-bridge/SaveBarExample";
+import SaveBarExampleRaw from "@/examples/app-bridge/SaveBarExample.tsx?raw";
+import { SaveBarFormExample } from "@/examples/app-bridge/SaveBarFormExample";
+import SaveBarFormExampleRaw from "@/examples/app-bridge/SaveBarFormExample.tsx?raw";
 
 export const appBridgeComponents: ComponentEntry[] = [
   {
@@ -86,37 +27,17 @@ export const appBridgeComponents: ComponentEntry[] = [
       {
         title: "Imperative show/hide via ref",
         Example: AppWindowExample,
-        code: `const windowRef = useRef<HTMLElementTagNameMap["s-app-window"]>(null);
-
-<Button onClick={() => windowRef.current?.show()}>Show App Window</Button>
-<Button onClick={() => windowRef.current?.hide()}>Hide App Window</Button>
-<AppWindow ref={windowRef} src="/app-window-content.html" />`,
+        code: AppWindowExampleRaw,
       },
       {
         title: "Declarative trigger (no JS)",
-        Example: () => (
-          <>
-            <Button command="--show" commandFor="app-window-declarative">
-              Open App Window
-            </Button>{" "}
-            <Button command="--hide" commandFor="app-window-declarative">
-              Close App Window
-            </Button>
-            <AppWindow id="app-window-declarative" src="/app-window-content.html" />
-          </>
-        ),
-        code: `<AppWindow id="app-window" src="/app-window-content.html" />
-<Button command="--show" commandFor="app-window">Open App Window</Button>
-<Button command="--hide" commandFor="app-window">Close App Window</Button>`,
+        Example: AppWindowDeclarativeExample,
+        code: AppWindowDeclarativeExampleRaw,
       },
       {
         title: "Title bar accessory + menu (inside the window's content page)",
         Example: AppWindowTitleBarExample,
-        code: `// Rendered by the page AppWindow's \`src\` loads:
-<Page title="Edit Product">
-  <Badge slot="accessory" tone="warning">Draft</Badge>
-  <Button slot="primary-action">Save</Button>
-</Page>`,
+        code: AppWindowTitleBarExampleRaw,
       },
     ],
   },
@@ -130,11 +51,7 @@ export const appBridgeComponents: ComponentEntry[] = [
       {
         title: "Nav links",
         Example: AppNavExample,
-        code: `<AppNav>
-  <Link url="/app" removeUnderline>Home</Link>
-  <Link url="/app/templates">Templates</Link>
-  <Link url="/app/settings">Settings</Link>
-</AppNav>`,
+        code: AppNavExampleRaw,
       },
     ],
   },
@@ -148,15 +65,7 @@ export const appBridgeComponents: ComponentEntry[] = [
       {
         title: "Title bar icons and menu",
         Example: MenuInTitleBarExample,
-        code: `<Page title="Product Details">
-  <Button slot="primary-action" icon="save">Save</Button>
-  <Button slot="secondary-actions" commandFor="actions-menu" icon="menu">More actions</Button>
-  <Menu id="actions-menu">
-    <Button icon="duplicate">Duplicate</Button>
-    <Button icon="archive">Archive</Button>
-    <Button icon="delete" destructive>Delete</Button>
-  </Menu>
-</Page>`,
+        code: MenuInTitleBarExampleRaw,
       },
     ],
   },
@@ -170,9 +79,7 @@ export const appBridgeComponents: ComponentEntry[] = [
       {
         title: "Show a toast",
         Example: ToastExample,
-        code: `const toast = useToast();
-
-<Button onClick={() => toast.show("Saved")}>Save</Button>`,
+        code: ToastExampleRaw,
       },
     ],
   },
@@ -186,28 +93,12 @@ export const appBridgeComponents: ComponentEntry[] = [
       {
         title: "Save bar with useSaveBar()",
         Example: SaveBarExample,
-        code: `const saveBar = useSaveBar();
-
-<SaveBar id="modal-save-bar">
-  <button onClick={handleSave}>Save</button>
-  <button onClick={() => saveBar.hide("modal-save-bar")}>Discard</button>
-</SaveBar>`,
+        code: SaveBarExampleRaw,
       },
       {
         title: "Same-page form (no wrapper needed)",
-        Example: () => (
-          <form data-save-bar data-discard-confirmation>
-            <p style={{ margin: 0, fontSize: 13, color: "#6d7175" }}>
-              Add <code>data-save-bar</code> / <code>data-discard-confirmation</code> directly to
-              a native &lt;form&gt; — no component needed.
-            </p>
-          </form>
-        ),
-        code: `<form data-save-bar data-discard-confirmation>
-  <TextField label="Store Name" name="storeName" required />
-  <TextField label="Description" name="description" multiline />
-  <Checkbox label="Enable notifications" name="notifications" />
-</form>`,
+        Example: SaveBarFormExample,
+        code: SaveBarFormExampleRaw,
       },
     ],
   },

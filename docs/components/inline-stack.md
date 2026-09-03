@@ -7,7 +7,7 @@ Composed pattern: `s-stack` pinned to `direction="inline"`. See
 ```tsx
 import { Button, InlineStack } from "@xco/corex-ui";
 
-<InlineStack gap="200">
+<InlineStack gap="small-200">
   <Button>Save</Button>
   <Button plain>Cancel</Button>
 </InlineStack>;
@@ -15,6 +15,7 @@ import { Button, InlineStack } from "@xco/corex-ui";
 
 ## Prop mapping
 
-| Legacy prop | Behavior |
+| Prop | Behavior |
 | --- | --- |
-| `gap`, `align`, `blockAlign`, `wrap` | Passed straight through to `s-stack`. |
+| `gap` | Accepts Polaris web-component spacing tokens (`small-200`, `base`, etc.). Legacy numeric values (e.g. `"200"`) are automatically translated for backward compatibility. |
+| `align`, `blockAlign`, `wrap` | Passed straight through to `s-stack`. |
