@@ -30,8 +30,7 @@ jobs:
         with:
           node-version: 22
           cache: 'pnpm'
-          registry-url: 'https://npm.pkg.github.com'
-          scope: '@xco-agency'
+          registry-url: 'https://registry.npmjs.org'
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
@@ -45,14 +44,14 @@ jobs:
       - name: Build package
         run: pnpm --filter @xco-agency/corex-ui run build
 
-      - name: Publish to GitHub Packages
+      - name: Publish to npm
         working-directory: packages/corex-ui
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
           if [ "${{ github.event.inputs.dry_run }}" = "true" ]; then
             echo "Running publish in dry-run mode..."
-            npm publish --dry-run
+            npm publish --access public --dry-run
           else
-            npm publish
+            npm publish --access public
           fi

@@ -48,7 +48,6 @@
     "url": "git+https://github.com/XCO-Agency/Corex-ui.git"
   },
   "publishConfig": {
-    "registry": "https://npm.pkg.github.com",
     "access": "public"
   },
   "keywords": [

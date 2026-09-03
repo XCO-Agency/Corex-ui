@@ -1,2 +1,17 @@
 export { Page } from "./Page";
-export type { PageProps } from "./Page.types";
+export type {
+  PageProps,
+  PagePropsType,
+  PageInlineSize,
+  PageInlineSizeType,
+  PagePrimaryAction,
+  PagePrimaryActionType,
+  PageMenuActionDescriptor,
+  PageMenuActionDescriptorType,
+  PageMenuGroupDescriptor,
+  PageMenuGroupDescriptorType,
+  PageBackAction,
+  PageBackActionType,
+  PagePaginationProps,
+  PagePaginationPropsType,
+} from "./Page.types";

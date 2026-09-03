@@ -1,6 +1,5 @@
 {
   "name": "corex-ui-workspace",
-  "private": true,
   "version": "0.0.0",
   "packageManager": "pnpm@10.30.3",
   "description": "Workspace root for @xco-agency/corex-ui, a Polaris-web-component-backed, legacy-Polaris-React-compatible UI library for Shopify apps.",

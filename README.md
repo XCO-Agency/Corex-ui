@@ -32,17 +32,9 @@ pnpm dev          # start the playground app
 
 ## Publishing & Installation
 
-The `@xco-agency/corex-ui` package is published to the GitHub Packages npm registry.
+The `@xco-agency/corex-ui` package is published to the public npm registry.
 
 ### For consumers: installing the package
-
-Add the scope-to-registry mapping to your `.npmrc`:
-
-```
-@xco-agency:registry=https://npm.pkg.github.com
-```
-
-Then authenticate with a GitHub token that has `read:packages` scope, and install:
 
 ```sh
 npm install @xco-agency/corex-ui
@@ -50,44 +42,19 @@ npm install @xco-agency/corex-ui
 pnpm add @xco-agency/corex-ui
 ```
 
-**Authentication**: Set your GitHub token via one of:
-- A local `~/.npmrc` file (untracked, never committed):
-  ```
-  //npm.pkg.github.com/:_authToken=<your-github-token>
-  ```
-- The `NODE_AUTH_TOKEN` environment variable:
-  ```sh
-  export NODE_AUTH_TOKEN=<your-github-token>
-  npm install @xco-agency/corex-ui
-  ```
-
-See [GitHub Packages npm registry docs](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-npm-registry) for more details.
+No `.npmrc` configuration or authentication tokens are required.
 
 ### For maintainers: publishing a release
 
 1. Bump the version in [`packages/corex-ui/package.json`](./packages/corex-ui/package.json).
 
-2. Authenticate with a GitHub PAT that has `write:packages` scope:
-   - Via local `~/.npmrc` (untracked, never committed):
-     ```
-     //npm.pkg.github.com/:_authToken=<your-github-token>
-     ```
-   - OR via environment variable:
-     ```sh
-     export NODE_AUTH_TOKEN=<your-github-token>
-     ```
-
-3. Publish from the repo root:
+2. Publish:
    ```sh
-   npm publish
+   cd packages/corex-ui
+   npm publish --access public
    ```
 
-   Or verify first with:
-   ```sh
-   npm publish --dry-run
-   ```
-
-Never commit a token or auth config to the repository.
+Or automatically via GitHub Actions release workflow (`.github/workflows/publish.yml`).
 
 ## Documentation
 

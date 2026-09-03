@@ -45,14 +45,29 @@ export { Spinner } from "./components/Spinner";
 export type { SpinnerProps } from "./components/Spinner";
 
 export { Page } from "./components/Page";
-export type { PageProps } from "./components/Page";
+export type {
+  PageProps,
+  PagePropsType,
+  PageInlineSize,
+  PageInlineSizeType,
+  PagePrimaryAction,
+  PagePrimaryActionType,
+  PageMenuActionDescriptor,
+  PageMenuActionDescriptorType,
+  PageMenuGroupDescriptor,
+  PageMenuGroupDescriptorType,
+  PageBackAction,
+  PageBackActionType,
+  PagePaginationProps,
+  PagePaginationPropsType,
+} from "./components/Page";
 
 export { Tabs } from "./components/Tabs";
 export type { TabDescriptor, TabItemType, TabsProps, TabsPropsType } from "./components/Tabs";
 
 
 export { Link } from "./components/Link";
-export type { LinkProps } from "./components/Link";
+export type { LinkProps, LinkPropsType } from "./components/Link";
 
 export { Icon } from "./components/Icon";
 export type { IconProps } from "./components/Icon";
