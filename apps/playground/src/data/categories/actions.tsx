@@ -7,6 +7,8 @@ import { LinkExample } from "@/examples/actions/LinkExample";
 import LinkExampleRaw from "@/examples/actions/LinkExample.tsx?raw";
 import { MenuExample } from "@/examples/actions/MenuExample";
 import MenuExampleRaw from "@/examples/actions/MenuExample.tsx?raw";
+import { ClickableExample } from "@/examples/actions/ClickableExample";
+import ClickableExampleRaw from "@/examples/actions/ClickableExample.tsx?raw";
 
 export const actionsComponents: ComponentEntry[] = [
   {
@@ -32,6 +34,19 @@ export const actionsComponents: ComponentEntry[] = [
         title: "Segmented group",
         Example: ButtonGroupExample,
         code: ButtonGroupExampleRaw,
+      },
+    ],
+  },
+  {
+    name: "Clickable",
+    slug: "clickable",
+    category: "Actions",
+    description: "An unstyled interactive wrapper powered by Polaris s-clickable for custom actions, cards, and rows.",
+    examples: [
+      {
+        title: "Interactive cards and actions",
+        Example: ClickableExample,
+        code: ClickableExampleRaw,
       },
     ],
   },

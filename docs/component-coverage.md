@@ -14,7 +14,7 @@ omitted — if you need one of the "Not yet" rows, it's a good candidate to add 
 | `s-button-group` | ✅ `ButtonGroup` |
 | `s-link` | ✅ `Link` |
 | `s-menu` | ✅ `Menu` |
-| `s-clickable` | Not yet — a generic interactive-element primitive; low legacy-parity value since Polaris React has no direct `Clickable` equivalent. |
+| `s-clickable` | ✅ `Clickable` / `ClickableAction` |
 | `s-clickable-chip` | Not yet — overlaps with `Badge`/`Link` for most use cases. |
 
 ## Feedback and status indicators

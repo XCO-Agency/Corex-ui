@@ -71,6 +71,9 @@ export function createWebComponent<
     for (const [key, value] of Object.entries(rest)) {
       if (domProps.includes(key)) continue;
       if (key in events) continue;
+      if (key === "className" && value !== undefined) {
+        passthroughProps["class"] = value;
+      }
       passthroughProps[key] = value;
     }
 

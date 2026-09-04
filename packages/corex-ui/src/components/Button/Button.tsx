@@ -1,38 +1,51 @@
 import { forwardRef } from "react";
 import { createWebComponent } from "../../core/createWebComponent";
 import { devWarning } from "../../utils/devWarning";
-import type { ButtonProps } from "./Button.types";
+import type { ButtonPropsType } from "./Button.types";
 
 const SButton = createWebComponent<HTMLElement, { onClick: "click" }>("s-button", {
   events: { onClick: "click" },
 });
 
 /**
- * Thin-wrapper pattern: legacy boolean flags (`primary`, `destructive`,
- * `plain`) are translated onto the new `variant`/`tone` attributes so
- * existing call sites keep working, while `variant`/`tone` remain available
- * directly for new code.
+ * Button component wrapping Polaris `<s-button>`.
+ * Translates legacy boolean flags (`primary`, `destructive`, `plain`, `outline`)
+ * onto modern `variant`/`tone` attributes while accepting `variant`/`tone` directly.
  */
-export const Button = forwardRef<HTMLElement, ButtonProps>(function Button(
+export const Button = forwardRef<HTMLElement, ButtonPropsType>(function Button(
   {
     children,
     content,
     primary,
     destructive,
     plain,
+    outline,
     variant,
     tone,
     url,
+    href,
+    target,
     external,
+    submit,
+    type,
     accessibilityLabel,
     fullWidth,
     pressed,
+    command,
+    commandFor,
+    interestFor,
     ...rest
   },
   ref,
 ) {
-  const resolvedVariant = variant ?? (primary ? "primary" : plain ? "plain" : undefined);
+  const resolvedVariant =
+    variant ??
+    (primary ? "primary" : plain ? "plain" : outline ? "secondary" : undefined);
   const resolvedTone = tone ?? (destructive ? "critical" : undefined);
+  const resolvedType = type ?? (submit ? "submit" : undefined);
+  const resolvedHref = href ?? url;
+  const resolvedTarget = target ?? (external ? "_blank" : undefined);
+  const resolvedRel = external ? "noopener noreferrer" : undefined;
 
   if (pressed !== undefined) {
     devWarning(
@@ -46,12 +59,18 @@ export const Button = forwardRef<HTMLElement, ButtonProps>(function Button(
       ref={ref}
       variant={resolvedVariant}
       tone={resolvedTone}
-      href={url}
-      target={external ? "_blank" : undefined}
-      rel={external ? "noopener noreferrer" : undefined}
-      accessibilityLabel={accessibilityLabel ?? (typeof content === "string" ? content : undefined)}
+      type={resolvedType}
+      href={resolvedHref}
+      target={resolvedTarget}
+      rel={resolvedRel}
+      accessibilityLabel={
+        accessibilityLabel ?? (typeof content === "string" ? content : undefined)
+      }
       fullWidth={fullWidth}
       pressed={pressed}
+      command={command}
+      commandFor={commandFor}
+      interestFor={interestFor}
       {...rest}
     >
       {content ?? children}

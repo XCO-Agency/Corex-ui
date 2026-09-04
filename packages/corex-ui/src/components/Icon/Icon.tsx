@@ -1,10 +1,41 @@
-import { forwardRef } from "react";
+import { forwardRef, Ref } from "react";
 import { createWebComponent } from "../../core/createWebComponent";
-import type { IconProps } from "./Icon.types";
+import type { IconPropsType } from "./Icon.types";
 
 const SIcon = createWebComponent<HTMLElement>("s-icon");
 
-/** Thin wrapper: legacy `source` maps to `s-icon`'s `type` attribute (best-effort). */
-export const Icon = forwardRef<HTMLElement, IconProps>(function Icon({ source, ...rest }, ref) {
-  return <SIcon ref={ref} type={source} {...rest} />;
+/**
+ * Icon component supporting Polaris icon source types:
+ * - String identifier for Polaris web component (e.g. `"search"`, `"save"`, `"star"`).
+ * - React component (Polaris SVG icon component).
+ */
+export const Icon = forwardRef<HTMLElement, IconPropsType>(function Icon(
+  { source, tone, accessibilityLabel, style, ...rest },
+  ref,
+) {
+  if (typeof source === "function") {
+    const SourceComponent = source;
+    return (
+      <span
+        ref={ref as unknown as Ref<HTMLSpanElement>}
+        aria-label={accessibilityLabel}
+        role={accessibilityLabel ? "img" : undefined}
+        style={style}
+        {...rest}
+      >
+        <SourceComponent />
+      </span>
+    );
+  }
+
+  return (
+    <SIcon
+      ref={ref}
+      type={source ?? undefined}
+      tone={tone}
+      aria-label={accessibilityLabel ?? source}
+      style={style}
+      {...rest}
+    />
+  );
 });

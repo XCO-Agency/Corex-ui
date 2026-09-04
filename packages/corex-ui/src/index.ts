@@ -3,22 +3,22 @@
 // not re-exported.
 
 export { Button } from "./components/Button";
-export type { ButtonProps } from "./components/Button";
+export type { ButtonProps, ButtonPropsType, ButtonType } from "./components/Button";
 
 export { ButtonGroup } from "./components/ButtonGroup";
 export type { ButtonGroupProps } from "./components/ButtonGroup";
 
 export { Text } from "./components/Text";
-export type { TextProps } from "./components/Text";
+export type { TextProps, TextPropsType } from "./components/Text";
 
 export { Badge } from "./components/Badge";
-export type { BadgeProps } from "./components/Badge";
+export type { BadgeProps, BadgePropsType, BadgeStatusType } from "./components/Badge";
 
 export { Banner } from "./components/Banner";
-export type { BannerProps } from "./components/Banner";
+export type { BannerProps, BannerPropsType, BannerActionType } from "./components/Banner";
 
 export { Box } from "./components/Box";
-export type { BoxProps } from "./components/Box";
+export type { BoxProps, BoxPropsType } from "./components/Box";
 
 export { BlockStack } from "./components/BlockStack";
 export type { BlockStackProps, BlockStackPropsType } from "./components/BlockStack";
@@ -27,7 +27,7 @@ export { InlineStack } from "./components/InlineStack";
 export type { InlineStackProps, InlineStackPropsType } from "./components/InlineStack";
 
 export { Card } from "./components/Card";
-export type { CardProps } from "./components/Card";
+export type { CardProps, CardPropsType, CardActionType } from "./components/Card";
 
 export { Modal } from "./components/Modal";
 export type { ModalAction, ModalProps } from "./components/Modal";
@@ -69,8 +69,20 @@ export type { TabDescriptor, TabItemType, TabsProps, TabsPropsType } from "./com
 export { Link } from "./components/Link";
 export type { LinkProps, LinkPropsType } from "./components/Link";
 
+export { Clickable, ClickableAction } from "./components/Clickable";
+export type {
+  ClickableProps,
+  ClickablePropsType,
+  ClickableActionProps,
+  ClickableActionPropsType,
+  ClickableBoxPropsType,
+  ClickableBasePropsType,
+  ClickableTargetType,
+  ClickableButtonType,
+} from "./components/Clickable";
+
 export { Icon } from "./components/Icon";
-export type { IconProps } from "./components/Icon";
+export type { IconProps, IconPropsType, IconSourceType } from "./components/Icon";
 
 export { Divider } from "./components/Divider";
 export type { DividerProps } from "./components/Divider";
@@ -95,6 +107,14 @@ export type { DatePickerProps } from "./components/DatePicker";
 
 export { Menu } from "./components/Menu";
 export type { MenuProps } from "./components/Menu";
+
+export { Navigation, Navigations } from "./components/Navigation";
+export type {
+  NavigationProps,
+  NavigationPropsType,
+  NavigationItemType,
+  NavigationSectionType,
+} from "./components/Navigation";
 
 // App Bridge (see docs/app-bridge.md) — a distinct subsystem from the
 // Polaris design components above.
@@ -128,4 +148,6 @@ export type {
   ToneType,
   TextVariant,
   TextVariantType,
+  Target,
+  TargetType,
 } from "./types/common";

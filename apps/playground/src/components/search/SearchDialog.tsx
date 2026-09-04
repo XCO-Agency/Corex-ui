@@ -2,7 +2,7 @@ import * as React from "react";
 import { useNavigate } from "react-router-dom";
 import { Search, X, ArrowRight, CornerDownLeft } from "lucide-react";
 import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
-import { registry, type ComponentEntry } from "@/data/registry";
+import { allEntries, blocks, type ComponentEntry } from "@/data/registry";
 import { getCategoryIcon } from "@/lib/category-icons";
 import { cn } from "@/lib/utils";
 
@@ -57,13 +57,13 @@ export function SearchDialog({ open: controlledOpen, onOpenChange }: SearchDialo
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [isOpen, setOpen]);
 
-  // Filter components
+  // Filter components and blocks
   const results = React.useMemo(() => {
     const trimmed = query.trim().toLowerCase();
     if (!trimmed) {
-      return registry;
+      return allEntries;
     }
-    return registry.filter((component) => {
+    return allEntries.filter((component) => {
       const nameMatch = component.name.toLowerCase().includes(trimmed);
       const slugMatch = component.slug.toLowerCase().includes(trimmed);
       const categoryMatch = component.category.toLowerCase().includes(trimmed);
@@ -88,7 +88,8 @@ export function SearchDialog({ open: controlledOpen, onOpenChange }: SearchDialo
   const handleSelect = React.useCallback(
     (component: ComponentEntry) => {
       setOpen(false);
-      navigate(`/components/${component.slug}`);
+      const isBlock = blocks.some((b) => b.components.some((c) => c.slug === component.slug));
+      navigate(isBlock ? `/blocks/${component.slug}` : `/components/${component.slug}`);
     },
     [navigate, setOpen]
   );

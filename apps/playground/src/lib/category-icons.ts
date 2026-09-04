@@ -9,11 +9,12 @@ import {
   Compass,
   ShoppingBag,
   Layers,
+  SlidersHorizontal,
   type LucideIcon,
 } from "lucide-react";
 import type { CategoryType } from "@/data/types";
 
-export const CATEGORY_ICONS: Record<CategoryType, LucideIcon> = {
+export const CATEGORY_ICONS: Record<string, LucideIcon> = {
   Actions: MousePointerClick,
   Forms: CheckSquare,
   Layout: LayoutGrid,
@@ -23,8 +24,10 @@ export const CATEGORY_ICONS: Record<CategoryType, LucideIcon> = {
   Typography: Type,
   Navigation: Compass,
   "App Bridge": ShoppingBag,
+  "Settings Layouts": SlidersHorizontal,
+  Settings: SlidersHorizontal,
 };
 
 export function getCategoryIcon(category: string): LucideIcon {
-  return (CATEGORY_ICONS as Record<string, LucideIcon>)[category] ?? Layers;
+  return CATEGORY_ICONS[category] ?? Layers;
 }

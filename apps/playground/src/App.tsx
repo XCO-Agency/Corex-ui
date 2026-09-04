@@ -11,6 +11,7 @@ export function App() {
           <Routes>
             <Route path="/" element={<Overview />} />
             <Route path="/components/:slug" element={<ComponentDetail />} />
+            <Route path="/blocks/:slug" element={<ComponentDetail />} />
           </Routes>
       </Layout>
     </TooltipProvider>

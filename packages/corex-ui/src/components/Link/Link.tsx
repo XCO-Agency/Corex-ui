@@ -1,22 +1,32 @@
 import { forwardRef } from "react";
 import { createWebComponent } from "../../core/createWebComponent";
-import type { LinkProps } from "./Link.types";
+import type { LinkPropsType } from "./Link.types";
 
 const SLink = createWebComponent<HTMLElement, { onClick: "click" }>("s-link", {
   events: { onClick: "click" },
 });
 
-/** Thin wrapper: legacy `url` maps to `href`, same translation `Button` uses. */
-export const Link = forwardRef<HTMLElement, LinkProps>(function Link(
-  { children, url, external, ...rest },
+/**
+ * Link component wrapping Polaris `<s-link>`.
+ * Supports modern `href`, `target`, `rel`, `download` as well as legacy `url` and `external`.
+ */
+export const Link = forwardRef<HTMLElement, LinkPropsType>(function Link(
+  { children, url, href, external, target, rel, download, ...rest },
   ref,
 ) {
+  const resolvedHref = href ?? url;
+  const resolvedTarget = target ?? (external ? "_blank" : undefined);
+  const resolvedRel = rel ?? (external ? "noopener noreferrer" : undefined);
+  const resolvedDownload =
+    typeof download === "boolean" ? (download ? "" : undefined) : download;
+
   return (
     <SLink
       ref={ref}
-      href={url}
-      target={external ? "_blank" : undefined}
-      rel={external ? "noopener noreferrer" : undefined}
+      href={resolvedHref}
+      target={resolvedTarget}
+      rel={resolvedRel}
+      download={resolvedDownload}
       {...rest}
     >
       {children}

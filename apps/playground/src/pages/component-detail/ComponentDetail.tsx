@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Navigate, useParams } from "react-router-dom";
-import { registry } from "@/data/registry";
+import { allEntries } from "@/data/registry";
 import { ComponentHeader } from "./partials/ComponentHeader";
 import { ComponentSandboxAlert } from "./partials/ComponentSandboxAlert";
 import { ComponentExampleCard } from "./partials/ComponentExampleCard";
@@ -10,15 +10,15 @@ import type { TocItemType } from "./types";
 
 export function ComponentDetail() {
   const { slug } = useParams<{ slug: string }>();
-  const currentIndex = registry.findIndex((item) => item.slug === slug);
-  const entry = registry[currentIndex];
+  const currentIndex = allEntries.findIndex((item) => item.slug === slug);
+  const entry = allEntries[currentIndex];
 
   if (!entry) {
     return <Navigate to="/" replace />;
   }
 
-  const prev = currentIndex > 0 ? registry[currentIndex - 1] : null;
-  const next = currentIndex >= 0 && currentIndex < registry.length - 1 ? registry[currentIndex + 1] : null;
+  const prev = currentIndex > 0 ? allEntries[currentIndex - 1] : null;
+  const next = currentIndex >= 0 && currentIndex < allEntries.length - 1 ? allEntries[currentIndex + 1] : null;
 
   const tocItems: TocItemType[] = React.useMemo(() => [
     { id: "overview", title: "Overview" },

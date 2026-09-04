@@ -45,6 +45,23 @@ export function AppSidebar({ onOpenSearch, ...props }: AppSidebarPropsType) {
     });
   }, [search]);
 
+  const filteredBlocks = React.useMemo(() => {
+    const trimmed = search.trim().toLowerCase();
+    if (!trimmed) return blocks;
+    return blocks
+      .map(({ category, components }) => {
+        const matchingComponents = components.filter((component) => {
+          const nameMatch = component.name.toLowerCase().includes(trimmed);
+          const slugMatch = component.slug.toLowerCase().includes(trimmed);
+          const categoryMatch = category.toLowerCase().includes(trimmed);
+          const descMatch = component.description.toLowerCase().includes(trimmed);
+          return nameMatch || slugMatch || categoryMatch || descMatch;
+        });
+        return { category, components: matchingComponents };
+      })
+      .filter((group) => group.components.length > 0);
+  }, [search]);
+
   const groupedExamples = React.useMemo(() => {
     const grouped = filteredExamples.reduce((acc, component) => {
       const groupName = component.category;
@@ -172,12 +189,17 @@ export function AppSidebar({ onOpenSearch, ...props }: AppSidebarPropsType) {
           </SidebarGroupContent>
         </SidebarGroup>
 
-        {blocks.length > 0 && (
+        {filteredBlocks.length > 0 && (
           <SidebarGroup>
-            <SidebarGroupLabel>Blocks</SidebarGroupLabel>
+            <SidebarGroupLabel className="flex items-center justify-between">
+              <span>Blocks</span>
+              <span className="text-[10px] font-mono text-muted-foreground">
+                {filteredBlocks.reduce((acc, g) => acc + g.components.length, 0)}
+              </span>
+            </SidebarGroupLabel>
             <SidebarGroupContent>
               <SidebarMenu>
-                {blocks.map(({ category, components }, idx) => {
+                {filteredBlocks.map(({ category, components }, idx) => {
                   const BlockCategoryIcon = getCategoryIcon(category);
                   return (
                     <SidebarMenuItem key={idx}>
@@ -186,11 +208,11 @@ export function AppSidebar({ onOpenSearch, ...props }: AppSidebarPropsType) {
                         <span>{category}</span>
                       </SidebarMenuButton>
                       {components.map((component) => (
-                        <SidebarMenuSub key={`/components/${component.slug}`}>
+                        <SidebarMenuSub key={`/blocks/${component.slug}`}>
                           <SidebarMenuSubItem>
                             <SidebarMenuSubButton
                               render={
-                                <Link to={`/components/${component.slug}`}>
+                                <Link to={`/blocks/${component.slug}`}>
                                   <span>{component.name}</span>
                                 </Link>
                               }

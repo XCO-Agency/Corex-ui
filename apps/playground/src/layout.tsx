@@ -16,7 +16,7 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
-import { registry } from "@/data/registry";
+import { findEntryBySlug } from "@/data/registry";
 
 export type LayoutPropsType = {
   children: React.ReactNode;
@@ -26,9 +26,11 @@ export default function Layout({ children }: LayoutPropsType) {
   const [searchOpen, setSearchOpen] = React.useState(false);
   const location = useLocation();
 
-  const componentMatch = location.pathname.match(/^\/components\/([^/]+)/);
-  const currentSlug = componentMatch ? componentMatch[1] : null;
-  const currentEntry = currentSlug ? registry.find((item) => item.slug === currentSlug) : null;
+  const match = location.pathname.match(/^\/(components|blocks)\/([^/]+)/);
+  const sectionType = match ? match[1] : null;
+  const currentSlug = match ? match[2] : null;
+  const currentEntry = currentSlug ? findEntryBySlug(currentSlug) : null;
+  const isBlock = sectionType === "blocks";
 
   return (
     <SidebarProvider>
@@ -42,7 +44,7 @@ export default function Layout({ children }: LayoutPropsType) {
               <BreadcrumbList>
                 <BreadcrumbItem className="hidden sm:block">
                   <BreadcrumbLink render={<Link to="/" />}>
-                    Components
+                    {isBlock ? "Blocks" : "Components"}
                   </BreadcrumbLink>
                 </BreadcrumbItem>
                 {currentEntry ? (

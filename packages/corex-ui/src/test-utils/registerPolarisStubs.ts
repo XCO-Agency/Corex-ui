@@ -66,6 +66,7 @@ const STUB_TAGS = [
   "s-date-picker",
   "s-menu",
   "s-app-nav",
+  "s-clickable",
   "ui-save-bar",
 ];
 

@@ -1,10 +1,18 @@
-import type { Tone } from "../../types/common";
+import type * as React from "react";
+import type { ToneType } from "../../types/common";
 
-export interface IconProps {
-  /** Icon name, e.g. `"save"`, `"delete"`. Best-effort — verify against your installed polaris-1.js. */
-  source: string;
-  tone?: Tone;
+export type IconSourceType =
+  | string
+  | React.FunctionComponent<React.SVGProps<SVGSVGElement>>
+  | React.ComponentType<{ className?: string }>;
+
+export type IconPropsType = {
+  /** Icon name (e.g. `"save"`, `"search"`, `"star"`) or a Polaris SVG component. */
+  source: IconSourceType;
+  tone?: ToneType;
   accessibilityLabel?: string;
   id?: string;
-  className?: string;
-}
+  style?: React.CSSProperties;
+};
+
+export type IconProps = IconPropsType;

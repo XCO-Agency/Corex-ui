@@ -7,6 +7,7 @@ import { overlaysComponents } from "./categories/overlays";
 import { typographyComponents } from "./categories/typography";
 import { navigationComponents } from "./categories/navigation";
 import { appBridgeComponents } from "./categories/app-bridge";
+import { settingsBlocks } from "./blocks/settings";
 import type { ComponentEntry } from "./types";
 
 export { categories } from "./types";
@@ -35,4 +36,21 @@ export type BlockGroupType = {
   components: ComponentEntry[];
 };
 
-export const blocks: BlockGroupType[] = [];
+export const blocks: BlockGroupType[] = [
+  {
+    category: "Settings Layouts",
+    components: settingsBlocks,
+  },
+];
+
+export const allEntries: ComponentEntry[] = [
+  ...registry,
+  ...blocks.flatMap((b) => b.components),
+];
+
+export function findEntryBySlug(slug: string): ComponentEntry | undefined {
+  return (
+    registry.find((item) => item.slug === slug) ??
+    blocks.flatMap((b) => b.components).find((item) => item.slug === slug)
+  );
+}
