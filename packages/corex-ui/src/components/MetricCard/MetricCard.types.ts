@@ -3,7 +3,7 @@ import { IconType, ToneType, SparklineColorType } from "../../types/common";
 
 // ─── Prop types ────────────────────────────────────────────────────────────────
 export type MetricCardBadgeType = {
-  value: string | number;
+  value: string | number | null | undefined;
   tone?: ToneType;
   dir?: "up" | "down";
 };

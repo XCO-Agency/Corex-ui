@@ -207,11 +207,17 @@ export function MetricCard({
               </Text>
             </span>
             {tooltip && <s-tooltip id={id}>{tooltip}</s-tooltip>}
-            {badge && (
+            {badge && badge.value && (
               <s-badge
                 tone={badge?.tone ?? "neutral"}
 
-                icon={badge?.dir === "up" ? "arrow-up" : "arrow-down"}
+                icon={
+                  badge?.dir
+                    ? badge?.dir === "up"
+                      ? "arrow-up"
+                      : "arrow-down"
+                    : undefined
+                }
               >
                 {badge.value}
               </s-badge>
