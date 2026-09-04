@@ -1,4 +1,4 @@
-import { forwardRef } from "react";
+import { forwardRef, useId } from "react";
 import type { CSSProperties } from "react";
 import { createWebComponent } from "../../core/createWebComponent";
 import type { TextPropsType } from "./Text.types";
@@ -6,6 +6,7 @@ import type { ToneType } from "../../types/common";
 
 const SText = createWebComponent<HTMLElement>("s-text");
 const SHeading = createWebComponent<HTMLElement>("s-heading");
+const STooltip = createWebComponent<HTMLElement>("s-tooltip");
 
 /**
  * Text component wrapping Polaris `<s-text>` and `<s-heading>`.
@@ -21,13 +22,20 @@ export const Text = forwardRef<HTMLElement, TextPropsType>(function Text(
     tone,
     visuallyHidden,
     style,
+    tooltip,
     ...rest
   },
   ref,
 ) {
-  const resolvedTone =
-    tone ??
-    (color === "subdued" ? "neutral" : (color as ToneType | undefined));
+  const id = useId();
+  const isTone =
+    color &&
+    color !== "subdued" &&
+    color !== "base" &&
+    ["auto", "success", "warning", "critical", "info", "neutral", "caution"].includes(color as string);
+
+  const resolvedTone = tone ?? (isTone ? (color as ToneType) : undefined);
+  const resolvedColor = !isTone ? color : undefined;
 
   const resolvedStyle: CSSProperties | undefined = visuallyHidden
     ? {
@@ -59,14 +67,19 @@ export const Text = forwardRef<HTMLElement, TextPropsType>(function Text(
   }
 
   return (
-    <SText
-      ref={ref}
-      variant={variant}
-      tone={resolvedTone}
-      style={resolvedStyle}
-      {...rest}
-    >
-      {children}
-    </SText>
+    <>
+      <SText
+        ref={ref}
+        variant={variant}
+        color={resolvedColor}
+        tone={resolvedTone}
+        style={resolvedStyle}
+        {...rest}
+        interestFor={tooltip ? id : undefined}
+      >
+        {children}
+      </SText>
+      {tooltip && <STooltip id={id}>{tooltip}</STooltip>}
+    </>
   );
 });

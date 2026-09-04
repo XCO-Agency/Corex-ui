@@ -194,10 +194,7 @@ export function MetricCard({
                 textUnderlineOffset: tooltip ? 5 : "none",
               }}
             >
-              <s-text type="strong" color="subdued" tone="critical" interestFor={id}>
-                {title}
-              </s-text>
-              <Text type="strong" color="subdued" tone="critical" interestFor={id}>
+              <Text type="strong" interestFor={id}>
                 {title}
               </Text>
             </span>
