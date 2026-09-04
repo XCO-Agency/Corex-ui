@@ -85,4 +85,62 @@ describe("Box", () => {
     const el = screen.getByText("Span Box");
     expect(el.tagName.toLowerCase()).toBe("s-box");
   });
+
+  it("translates legacy numeric padding tokens to Polaris web-component tokens", () => {
+    render(
+      <Box padding="200" data-testid="padded-box">
+        Padded Box
+      </Box>,
+    );
+    const el = screen.getByTestId("padded-box");
+    expect(el).toHaveAttribute("padding", "small-200");
+  });
+
+  it("translates multi-value shorthand padding", () => {
+    render(
+      <Box padding="200 400" data-testid="shorthand-box">
+        Shorthand Box
+      </Box>,
+    );
+    const el = screen.getByTestId("shorthand-box");
+    expect(el).toHaveAttribute("padding", "small-200 base");
+  });
+
+  it("translates directional padding props and kebab-cases attributes", () => {
+    render(
+      <Box
+        paddingBlock="400"
+        paddingInline="200"
+        paddingBlockStart="100"
+        paddingInlineEnd="050"
+        data-testid="directional-box"
+      >
+        Directional Box
+      </Box>,
+    );
+    const el = screen.getByTestId("directional-box");
+    expect(el).toHaveAttribute("padding-block", "base");
+    expect(el).toHaveAttribute("padding-inline", "small-200");
+    expect(el).toHaveAttribute("padding-block-start", "small-300");
+    expect(el).toHaveAttribute("padding-inline-end", "small-400");
+  });
+
+  it("translates legacy background and border tokens", () => {
+    render(
+      <Box
+        background="bg-surface"
+        borderColor="border"
+        borderRadius="full"
+        borderWidth="100"
+        data-testid="styled-legacy-box"
+      >
+        Legacy Styled Box
+      </Box>,
+    );
+    const el = screen.getByTestId("styled-legacy-box");
+    expect(el).toHaveAttribute("background", "base");
+    expect(el).toHaveAttribute("border-color", "base");
+    expect(el).toHaveAttribute("border-radius", "max");
+    expect(el).toHaveAttribute("border-width", "base");
+  });
 });

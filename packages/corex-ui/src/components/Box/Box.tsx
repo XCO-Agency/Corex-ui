@@ -2,9 +2,42 @@ import { forwardRef } from "react";
 import type { CSSProperties } from "react";
 import { createWebComponent } from "../../core/createWebComponent";
 import type { BoxPropsType } from "./Box.types";
-import { mapLegacyGap } from "../../core/legacySpacing";
+import {
+  mapLegacyBackground,
+  mapLegacyBorderColor,
+  mapLegacyBorderRadius,
+  mapLegacyBorderWidth,
+  mapLegacySpacing,
+} from "../../core/legacySpacing";
 
-const SBox = createWebComponent<HTMLElement>("s-box");
+const SBox = createWebComponent<HTMLElement>("s-box", {
+  domProps: [
+    "padding",
+    "paddingBlock",
+    "paddingBlockStart",
+    "paddingBlockEnd",
+    "paddingInline",
+    "paddingInlineStart",
+    "paddingInlineEnd",
+    "background",
+    "border",
+    "borderWidth",
+    "borderStyle",
+    "borderColor",
+    "borderRadius",
+    "blockSize",
+    "minBlockSize",
+    "maxBlockSize",
+    "inlineSize",
+    "minInlineSize",
+    "maxInlineSize",
+    "accessibilityRole",
+    "accessibilityLabel",
+    "accessibilityVisibility",
+    "display",
+    "overflow",
+  ],
+});
 
 /**
  * Box component wrapping Polaris `<s-box>`.
@@ -47,6 +80,16 @@ export const Box = forwardRef<HTMLElement, BoxPropsType>(function Box(
     style,
     className,
     padding,
+    paddingBlock,
+    paddingBlockStart,
+    paddingBlockEnd,
+    paddingInline,
+    paddingInlineStart,
+    paddingInlineEnd,
+    background,
+    borderColor,
+    borderRadius,
+    borderWidth,
     ...rest
   },
   ref,
@@ -62,6 +105,21 @@ export const Box = forwardRef<HTMLElement, BoxPropsType>(function Box(
   const resolvedInlineSize = inlineSize ?? width;
   const resolvedMinInlineSize = minInlineSize ?? minWidth;
   const resolvedMaxInlineSize = maxInlineSize ?? maxWidth;
+
+  // Resolve legacy styling mappings
+  const resolvedBackground = mapLegacyBackground(background);
+  const resolvedBorderColor = mapLegacyBorderColor(borderColor);
+  const resolvedBorderRadius = mapLegacyBorderRadius(borderRadius);
+  const resolvedBorderWidth = mapLegacyBorderWidth(borderWidth);
+
+  // Resolve padding props
+  const resolvedPadding = mapLegacySpacing(padding);
+  const resolvedPaddingBlock = mapLegacySpacing(paddingBlock);
+  const resolvedPaddingBlockStart = mapLegacySpacing(paddingBlockStart);
+  const resolvedPaddingBlockEnd = mapLegacySpacing(paddingBlockEnd);
+  const resolvedPaddingInline = mapLegacySpacing(paddingInline);
+  const resolvedPaddingInlineStart = mapLegacySpacing(paddingInlineStart);
+  const resolvedPaddingInlineEnd = mapLegacySpacing(paddingInlineEnd);
 
   // Merge legacy layout and styling properties into inline styles for seamless rendering
   const legacyStyles: CSSProperties = {};
@@ -104,7 +162,17 @@ export const Box = forwardRef<HTMLElement, BoxPropsType>(function Box(
       accessibilityVisibility={resolvedAccessibilityVisibility}
       style={resolvedStyle}
       className={resolvedClassName}
-      padding={mapLegacyGap(padding)}
+      padding={resolvedPadding}
+      paddingBlock={resolvedPaddingBlock}
+      paddingBlockStart={resolvedPaddingBlockStart}
+      paddingBlockEnd={resolvedPaddingBlockEnd}
+      paddingInline={resolvedPaddingInline}
+      paddingInlineStart={resolvedPaddingInlineStart}
+      paddingInlineEnd={resolvedPaddingInlineEnd}
+      background={resolvedBackground}
+      borderColor={resolvedBorderColor}
+      borderRadius={resolvedBorderRadius}
+      borderWidth={resolvedBorderWidth}
       {...rest}
     >
       {children}

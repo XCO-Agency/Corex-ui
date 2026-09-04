@@ -2,6 +2,7 @@ import type { CSSProperties, ReactNode } from "react";
 import type {
   ButtonVariant,
   ButtonVariantType,
+  IconType,
   Size,
   SizeType,
   TargetType,
@@ -56,7 +57,7 @@ export type ButtonPropsType = {
   /** Standard HTML slot attribute, used to place this Button into a parent's named slot. */
   slot?: string;
   /** Icon to render in the button. */
-  icon?: string;
+  icon?: IconType;
   /**
    * The Invoker Commands declarative trigger pattern (e.g. `command="--show"`).
    */

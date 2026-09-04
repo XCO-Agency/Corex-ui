@@ -21,6 +21,10 @@ import type { CreateWebComponentOptions, DomEventHandler, EventMap } from "./typ
 // eslint-disable-next-line @typescript-eslint/ban-types
 type NoEvents = {};
 
+function toKebabCase(str: string): string {
+  return str.replace(/([a-z0-9]|(?=[A-Z]))([A-Z])/g, "$1-$2").toLowerCase();
+}
+
 export function createWebComponent<
   TElement extends HTMLElement,
   TEvents extends EventMap = NoEvents,
@@ -74,10 +78,22 @@ export function createWebComponent<
 
       const passthroughProps: Record<string, unknown> = {};
       for (const [key, value] of Object.entries(rest)) {
-        if (domProps.includes(key)) continue;
         if (key in events) continue;
-        if (key === "className" && value !== undefined) {
+        if (value === undefined) continue;
+
+        if (key === "className") {
           passthroughProps["class"] = value;
+          continue;
+        }
+
+        // Non-primitive objects/arrays in domProps shouldn't be stringified as attributes
+        if (domProps.includes(key) && typeof value === "object" && value !== null) {
+          continue;
+        }
+
+        // Convert camelCase prop names to kebab-case HTML attributes for custom elements
+        if (!key.includes("-") && key !== "style" && /[A-Z]/.test(key)) {
+          passthroughProps[toKebabCase(key)] = value;
         }
         passthroughProps[key] = value;
       }

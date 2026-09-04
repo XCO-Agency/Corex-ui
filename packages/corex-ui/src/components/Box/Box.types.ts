@@ -1,17 +1,52 @@
 import type { CSSProperties, ElementType, ReactNode } from "react";
-import { LegacySpacingType, PolarisSpacingType, StackGapType } from "../../types/common";
+import type {
+  BoxPaddingDirectionType,
+  BoxPaddingType,
+  ColorKeywordType,
+  SizeKeywordType,
+} from "../../types/common";
 
 export type BoxBackgroundType =
-  "transparent" | "base" | "subdued" | "strong" | (string & {});
+  | ColorKeywordType
+  | "transparent"
+  | "bg"
+  | "bg-surface"
+  | "bg-surface-secondary"
+  | "bg-surface-tertiary"
+  | "bg-surface-brand"
+  | "bg-surface-strong"
+  | "bg-subdued"
+  | "bg-fill-transparent"
+  | (string & {});
 
 export type BoxBorderWidthType =
-  "small-100" | "small" | "base" | "large" | "large-100" | "none" | "" | (string & {});
+  | "small-100"
+  | "small"
+  | "base"
+  | "large"
+  | "large-100"
+  | "none"
+  | "0165"
+  | "025"
+  | "050"
+  | "100"
+  | "200"
+  | "400"
+  | ""
+  | (string & {});
 
 export type BoxBorderStyleType =
   "solid" | "dashed" | "dotted" | "none" | "" | (string & {});
 
 export type BoxBorderColorType =
-  "subdued" | "base" | "strong" | "transparent" | "" | (string & {});
+  | ColorKeywordType
+  | "transparent"
+  | "border"
+  | "border-subdued"
+  | "border-hover"
+  | "border-disabled"
+  | ""
+  | (string & {});
 
 export type BoxBorderRadiusType =
   | "none"
@@ -20,7 +55,14 @@ export type BoxBorderRadiusType =
   | "base"
   | "large"
   | "large-100"
+  | "max"
   | "full"
+  | "050"
+  | "100"
+  | "200"
+  | "300"
+  | "400"
+  | "500"
   | (string & {});
 
 export type BoxOverflowType =
@@ -62,35 +104,36 @@ export type BoxPropsType = {
   children?: ReactNode;
 
   // Modern Polaris web component (s-box) properties
-  /** Adjust the background of the component ('transparent' | 'base' | 'subdued' | 'strong' or CSS/token string). */
+  /** Adjust the background of the component ('transparent' | 'base' | 'subdued' | 'strong' or legacy Polaris alias). */
   background?: BoxBackgroundType;
-  /** Adjust the width of the border ('small-100' | 'small' | 'base' | 'large' | 'large-100' | 'none' | ''). */
+  /** Adjust the width of the border ('small-100' | 'small' | 'base' | 'large' | 'large-100' | 'none' | legacy token). */
   borderWidth?: BoxBorderWidthType;
   /** Adjust the style of the border ('solid' | 'dashed' | 'dotted' | 'none' | ''). */
   borderStyle?: BoxBorderStyleType;
-  /** Adjust the color of the border ('subdued' | 'base' | 'strong' | 'transparent' | ''). */
+  /** Adjust the color of the border ('subdued' | 'base' | 'strong' | 'transparent' | legacy token). */
   borderColor?: BoxBorderColorType;
-  /** Adjust the radius of the border ('none' | 'small-100' | 'small' | 'base' | 'large' | 'large-100' | 'full'). */
+  /** Adjust the radius of the border ('none' | 'small-100' | 'small' | 'base' | 'large' | 'large-100' | 'max' | 'full' | legacy token). */
   borderRadius?: BoxBorderRadiusType;
   /** Border shorthand or override. */
   border?: string;
   /**
    * Adjust the padding of all edges using 1-to-4-value flow-relative syntax or responsive keyword.
    * Order: block-start inline-end block-end inline-start.
+   * Accepts modern SizeKeyword tokens ('small-200', 'base') as well as legacy Polaris numeric tokens ('200', '400').
    */
-  padding?: StackGapType;
+  padding?: ResponsivePropType<BoxPaddingType>;
   /** Adjust the block-padding (overrides block value of padding). */
-  paddingBlock?: ResponsivePropType<string>;
+  paddingBlock?: ResponsivePropType<BoxPaddingDirectionType>;
   /** Adjust the block-start padding (overrides block-start of paddingBlock). */
-  paddingBlockStart?: ResponsivePropType<string>;
+  paddingBlockStart?: ResponsivePropType<BoxPaddingDirectionType>;
   /** Adjust the block-end padding (overrides block-end of paddingBlock). */
-  paddingBlockEnd?: ResponsivePropType<string>;
+  paddingBlockEnd?: ResponsivePropType<BoxPaddingDirectionType>;
   /** Adjust the inline padding (overrides inline value of padding). */
-  paddingInline?: ResponsivePropType<string>;
+  paddingInline?: ResponsivePropType<BoxPaddingDirectionType>;
   /** Adjust the inline-start padding (overrides inline-start of paddingInline). */
-  paddingInlineStart?: ResponsivePropType<string>;
+  paddingInlineStart?: ResponsivePropType<BoxPaddingDirectionType>;
   /** Adjust the inline-end padding (overrides inline-end of paddingInline). */
-  paddingInlineEnd?: ResponsivePropType<string>;
+  paddingInlineEnd?: ResponsivePropType<BoxPaddingDirectionType>;
   /** Sets the outer display type of the component ('auto' | 'none'). */
   display?: BoxDisplayType;
   /** Adjust the block size (CSS block-size / height). */

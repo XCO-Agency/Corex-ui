@@ -1,12 +1,13 @@
 import type { ReactNode } from "react";
+import { IconType } from "../../types/common";
 
 export type TabItemType = {
   id: string | number;
   content?: ReactNode;
   label?: string;
-  description?: string;
+  tooltip?: string;
   badge?: string | number;
-  icon?: ReactNode;
+  icon?: IconType;
   disabled?: boolean;
   accessibilityLabel?: string;
 };
@@ -15,9 +16,9 @@ export type TabDescriptor = TabItemType;
 
 export type TabsPropsType<T = string | number> = {
   tabs: TabItemType[];
-  /** Index of the selected tab (legacy numeric 0-indexed API). */
+  /** @deprecated selected use selectedTab instead */
   selected?: number;
-  /** Callback with the index of the selected tab (legacy API). */
+  /** @deprecated onSelect use onTabChange instead  */
   onSelect?: (selectedTabIndex: number) => void;
   /** ID of the currently selected tab (extended API). */
   selectedTab?: T | null;

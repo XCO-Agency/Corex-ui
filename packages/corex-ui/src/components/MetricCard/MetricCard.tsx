@@ -184,12 +184,13 @@ export function MetricCard({
       <BlockStack gap="small-100">
         {/* Header: icon + title + tooltip + badge */}
         <s-stack direction="inline" justifyContent="space-between" alignItems="center">
-          <s-stack
-            direction="inline"
-            gap="small-200"
-            alignItems="center"
-            justifyContent="safe end"
-            inlineSize="100%"
+          <div
+            style={{
+              display: "flex",
+              gap: 8,
+              alignItems: "center",
+              flex: 1,
+            }}
           >
             {icon && <Icon type={icon} tone={iconTone} />}
             <span
@@ -201,7 +202,7 @@ export function MetricCard({
                 textUnderlineOffset: tooltip ? 5 : "none",
               }}
             >
-              <Text type="strong" interestFor={id}>
+              <Text type="strong" truncate interestFor={id}>
                 {title}
               </Text>
             </span>
@@ -215,7 +216,7 @@ export function MetricCard({
                 {badge.value}
               </s-badge>
             )}
-          </s-stack>
+          </div>
         </s-stack>
 
         {/* Value + sparkline */}

@@ -5,7 +5,9 @@ import { Text } from "../Text";
 import { Button } from "../Button";
 import type { CardPropsType } from "./Card.types";
 
-const SSection = createWebComponent<HTMLElement>("s-section");
+const SSection = createWebComponent<HTMLElement>("s-section", {
+  domProps: ["padding", "heading"],
+});
 
 /**
  * Composed pattern: legacy `Card` has no direct Polaris web component
@@ -33,13 +35,20 @@ export const Card = forwardRef<HTMLElement, CardPropsType>(function Card(
     );
   }
 
+  const resolvedPadding =
+    padding === "none" || padding === "0"
+      ? "none"
+      : padding === "base"
+        ? "base"
+        : padding;
+
   const hasHeader = Boolean(title || (actions && actions.length > 0));
   const hasFooter = Boolean(
     primaryFooterAction || (secondaryFooterActions && secondaryFooterActions.length > 0),
   );
 
   return (
-    <SSection ref={ref} padding={padding} {...rest}>
+    <SSection ref={ref} padding={resolvedPadding} {...rest}>
       {hasHeader && (
         <div
           style={{

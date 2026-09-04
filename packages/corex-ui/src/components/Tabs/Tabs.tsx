@@ -70,6 +70,7 @@ export const Tabs = forwardRef(function Tabs<T extends string | number = string 
                 <Button
                   variant="tertiary"
                   pressed={isSelected}
+                  icon={tab.icon}
                   disabled={tab.disabled}
                   accessibilityLabel={tab.accessibilityLabel}
                   onClick={() => handleSelect(tab, index)}
@@ -91,8 +92,8 @@ export const Tabs = forwardRef(function Tabs<T extends string | number = string 
               );
 
               const tabNode =
-                showTooltip && tab.description ? (
-                  <Tooltip content={tab.description}>{button}</Tooltip>
+                showTooltip && tab.tooltip ? (
+                  <Tooltip content={tab.tooltip}>{button}</Tooltip>
                 ) : (
                   button
                 );

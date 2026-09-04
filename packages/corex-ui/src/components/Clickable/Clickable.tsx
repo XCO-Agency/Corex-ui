@@ -1,6 +1,13 @@
 import { forwardRef } from "react";
 import { createWebComponent } from "../../core/createWebComponent";
 import type { ClickablePropsType } from "./Clickable.types";
+import {
+  mapLegacyBackground,
+  mapLegacyBorderColor,
+  mapLegacyBorderRadius,
+  mapLegacyBorderWidth,
+  mapLegacySpacing,
+} from "../../core/legacySpacing";
 
 const SClickable = createWebComponent<
   HTMLElement,
@@ -15,7 +22,30 @@ const SClickable = createWebComponent<
     onBlur: "blur",
     onFocus: "focus",
   },
-  domProps: ["disabled", "loading"],
+  domProps: [
+    "disabled",
+    "loading",
+    "padding",
+    "paddingBlock",
+    "paddingBlockStart",
+    "paddingBlockEnd",
+    "paddingInline",
+    "paddingInlineStart",
+    "paddingInlineEnd",
+    "background",
+    "borderColor",
+    "borderRadius",
+    "borderWidth",
+    "borderStyle",
+    "blockSize",
+    "minBlockSize",
+    "maxBlockSize",
+    "inlineSize",
+    "minInlineSize",
+    "maxInlineSize",
+    "display",
+    "overflow",
+  ],
 });
 
 /**
@@ -101,19 +131,19 @@ export const Clickable = forwardRef<HTMLElement, ClickablePropsType>(function Cl
       commandFor={commandFor}
       interestFor={interestFor}
       lang={lang}
-      background={background}
-      borderWidth={borderWidth}
+      background={mapLegacyBackground(background)}
+      borderWidth={mapLegacyBorderWidth(borderWidth)}
       borderStyle={borderStyle}
-      borderColor={borderColor}
-      borderRadius={borderRadius}
+      borderColor={mapLegacyBorderColor(borderColor)}
+      borderRadius={mapLegacyBorderRadius(borderRadius)}
       border={border}
-      padding={padding}
-      paddingBlock={paddingBlock}
-      paddingBlockStart={paddingBlockStart}
-      paddingBlockEnd={paddingBlockEnd}
-      paddingInline={paddingInline}
-      paddingInlineStart={paddingInlineStart}
-      paddingInlineEnd={paddingInlineEnd}
+      padding={mapLegacySpacing(padding)}
+      paddingBlock={mapLegacySpacing(paddingBlock)}
+      paddingBlockStart={mapLegacySpacing(paddingBlockStart)}
+      paddingBlockEnd={mapLegacySpacing(paddingBlockEnd)}
+      paddingInline={mapLegacySpacing(paddingInline)}
+      paddingInlineStart={mapLegacySpacing(paddingInlineStart)}
+      paddingInlineEnd={mapLegacySpacing(paddingInlineEnd)}
       display={display}
       blockSize={blockSize}
       minBlockSize={minBlockSize}

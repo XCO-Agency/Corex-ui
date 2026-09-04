@@ -21,9 +21,8 @@ export type ButtonVariant = ButtonVariantType;
 export type SizeType = "small" | "medium" | "large";
 export type Size = SizeType;
 
-/** Polaris web-component spacing values. Standard for new code. */
-export type PolarisSpacingType =
-  | "none"
+/** Size tokens supported by Polaris web components. */
+export type SizeKeywordType =
   | "small-500"
   | "small-400"
   | "small-300"
@@ -37,6 +36,18 @@ export type PolarisSpacingType =
   | "large-300"
   | "large-400"
   | "large-500";
+export type SizeKeyword = SizeKeywordType;
+
+/** Color treatment keyword supported by Polaris web components. */
+export type ColorKeywordType = "subdued" | "base" | "strong";
+export type ColorKeyword = ColorKeywordType;
+
+/** Padding keyword: any SizeKeyword token or 'none'. */
+export type PaddingKeywordType = SizeKeywordType | "none";
+export type PaddingKeyword = PaddingKeywordType;
+
+/** Polaris web-component spacing values. Standard for new code. */
+export type PolarisSpacingType = PaddingKeywordType;
 export type PolarisSpacing = PolarisSpacingType;
 
 /** @deprecated Kept for backward compatibility. Use `PolarisSpacingType` values such as `small-200` or `base`. */
@@ -60,6 +71,24 @@ export type LegacySpacingType =
   | "3200";
 export type LegacySpacing = LegacySpacingType;
 
+/** Single spacing token (modern SizeKeyword, legacy numeric string, or 'none'). */
+export type SpacingTokenType = SizeKeywordType | LegacySpacingType | "none";
+
+/**
+ * 1-to-4-value shorthand spacing type supporting both modern and legacy tokens.
+ * Order: block-start inline-end block-end inline-start.
+ */
+export type BoxPaddingType =
+  SpacingTokenType | `${SpacingTokenType} ${SpacingTokenType}` | (string & {}) | number;
+
+/** Directional padding type (1-to-2 value shorthand or single token). */
+export type BoxPaddingDirectionType =
+  | SpacingTokenType
+  | `${SpacingTokenType} ${SpacingTokenType}`
+  | ""
+  | (string & {})
+  | number;
+
 /**
  * Stack gap type: prioritizes the new PolarisSpacingType tokens and pairs,
  * while keeping legacy numeric values for backward compatibility.
@@ -68,7 +97,8 @@ export type StackGapType =
   | PolarisSpacingType
   | `${PolarisSpacingType} ${PolarisSpacingType}`
   | (LegacySpacingType & {})
-  | (`${LegacySpacingType} ${LegacySpacingType}` & {});
+  | (`${LegacySpacingType} ${LegacySpacingType}` & {})
+  | number;
 export type StackGap = StackGapType;
 
 export type AlignmentType = "start" | "center" | "end";

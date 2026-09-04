@@ -10,6 +10,8 @@ export type CardActionType = {
   destructive?: boolean;
 };
 
+export type CardPaddingType = "base" | "none" | "0" | (string & {});
+
 export type CardPropsType = {
   children?: ReactNode;
   /** Rendered as a heading above the card content. */
@@ -25,8 +27,8 @@ export type CardPropsType = {
   primaryFooterAction?: CardActionType;
   /** Secondary actions in the card footer. */
   secondaryFooterActions?: CardActionType[];
-  /** Card padding. */
-  padding?: string;
+  /** Card padding ('base' | 'none' | legacy '0'). */
+  padding?: CardPaddingType;
   /** Card background color. */
   background?: string;
   className?: string;

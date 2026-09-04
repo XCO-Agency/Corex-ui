@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import type { IconType } from "../../types/common";
 
 /**
  * Valid inline sizes for the `s-page` web component.
@@ -49,7 +50,7 @@ export type PageMenuActionDescriptorType = {
   /** Whether to open the link in a new tab */
   external?: boolean;
   /** Optional icon identifier */
-  icon?: string;
+  icon?: IconType;
   /** Accessibility label for screen readers */
   accessibilityLabel?: string;
   /** Unique ID for the action element */
@@ -66,7 +67,7 @@ export type PageMenuGroupDescriptorType = {
   /** Actions contained within this group */
   actions: PageMenuActionDescriptorType[];
   /** Optional icon */
-  icon?: string;
+  icon?: IconType;
   /** Optional details */
   details?: ReactNode;
   [key: string]: unknown;
