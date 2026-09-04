@@ -10,7 +10,7 @@ const SIcon = createWebComponent<HTMLElement>("s-icon");
  * - React component (Polaris SVG icon component).
  */
 export const Icon = forwardRef<HTMLElement, IconPropsType>(function Icon(
-  { source, tone, accessibilityLabel, style, ...rest },
+  { source, tone, type, accessibilityLabel, style, ...rest },
   ref,
 ) {
   if (typeof source === "function") {
@@ -31,7 +31,7 @@ export const Icon = forwardRef<HTMLElement, IconPropsType>(function Icon(
   return (
     <SIcon
       ref={ref}
-      type={source ?? undefined}
+      type={type ?? source ?? undefined}
       tone={tone}
       aria-label={accessibilityLabel ?? source}
       style={style}

@@ -2,6 +2,7 @@ import { forwardRef } from "react";
 import type { CSSProperties } from "react";
 import { createWebComponent } from "../../core/createWebComponent";
 import type { BoxPropsType } from "./Box.types";
+import { mapLegacyGap } from "../../core/legacySpacing";
 
 const SBox = createWebComponent<HTMLElement>("s-box");
 
@@ -45,6 +46,7 @@ export const Box = forwardRef<HTMLElement, BoxPropsType>(function Box(
     accessibilityVisibility,
     style,
     className,
+    padding,
     ...rest
   },
   ref,
@@ -101,6 +103,7 @@ export const Box = forwardRef<HTMLElement, BoxPropsType>(function Box(
       accessibilityVisibility={resolvedAccessibilityVisibility}
       style={resolvedStyle}
       className={resolvedClassName}
+      padding={mapLegacyGap(padding)}
       {...rest}
     >
       {children}

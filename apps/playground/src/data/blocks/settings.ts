@@ -12,8 +12,6 @@ import NotificationSettingsCardRaw from "@/blocks/settings-layout/partials/Notif
 import SecuritySettingsCardRaw from "@/blocks/settings-layout/partials/SecuritySettingsCard.tsx?raw";
 import DangerZoneCardRaw from "@/blocks/settings-layout/partials/DangerZoneCard.tsx?raw";
 import SettingsSaveBarRaw from "@/blocks/settings-layout/partials/SettingsSaveBar.tsx?raw";
-import SocialSharingHeroCardRaw from "@/blocks/settings-layout/partials/SocialSharingHeroCard.tsx?raw";
-import SocialSharingSectionCardRaw from "@/blocks/settings-layout/partials/SocialSharingSectionCard.tsx?raw";
 import typesRaw from "@/blocks/settings-layout/types.ts?raw";
 import indexRaw from "@/blocks/settings-layout/index.ts?raw";
 
@@ -28,16 +26,7 @@ const blockFiles: FileItemType[] = [
     path: "examples/NavigationSettingsExample.tsx",
     code: NavigationSettingsExampleRaw,
   },
-  {
-    name: "SocialSharingHeroCard.tsx",
-    path: "partials/SocialSharingHeroCard.tsx",
-    code: SocialSharingHeroCardRaw,
-  },
-  {
-    name: "SocialSharingSectionCard.tsx",
-    path: "partials/SocialSharingSectionCard.tsx",
-    code: SocialSharingSectionCardRaw,
-  },
+
   {
     name: "AnnotatedSection.tsx",
     path: "partials/AnnotatedSection.tsx",

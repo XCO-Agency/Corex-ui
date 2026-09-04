@@ -1,7 +1,19 @@
 /** Shared prop unions reused across multiple legacy-compatible components. */
 
-export type ToneType = "success" | "warning" | "critical" | "info" | "neutral";
+export type IconType = JSX.IntrinsicElements["s-icon"]["type"];
+
+export type ToneType =
+  | "auto"
+  | "info"
+  | "success"
+  | "warning"
+  | "critical"
+  | "neutral"
+  | "caution"
+  | undefined;
 export type Tone = ToneType;
+
+export type SparklineColorType = ToneType | (string & {});
 
 export type ButtonVariantType = "primary" | "secondary" | "tertiary" | "plain";
 export type ButtonVariant = ButtonVariantType;
@@ -80,4 +92,3 @@ export type TargetType =
   | "_top"
   | (string & {});
 export type Target = TargetType;
-

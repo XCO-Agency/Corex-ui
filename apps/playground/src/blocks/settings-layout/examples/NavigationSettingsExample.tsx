@@ -2,11 +2,9 @@ import * as React from "react";
 import {
   Navigation,
   BlockStack,
-  InlineStack,
-  Badge,
   Text,
-  Icon,
   Box,
+  Page,
 } from "@xco-agency/corex-ui";
 
 export function NavigationSettingsExample() {
@@ -106,18 +104,7 @@ export function NavigationSettingsExample() {
   ];
 
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "row",
-        alignItems: "flex-start",
-        gap: "36px",
-        flexWrap: "wrap",
-        width: "100%",
-        boxSizing: "border-box",
-        padding: "8px 0 32px 0",
-      }}
-    >
+    <Page inlineSize="base">
       {/* Left Sidebar: Vertical Navigation */}
       <Box inlineSize="200px" >
         <Navigation
@@ -129,23 +116,7 @@ export function NavigationSettingsExample() {
         />
       </Box>
 
-      {/* Right Content Panel */}
-      <div style={{ flex: "1 1 560px", minWidth: "300px" }}>
-        {selectedNav === "social" ? (
-          <BlockStack gap="500">
-            <div>
-              <Text as="h1" variant="headingLg">
-                <span style={{ fontWeight: 700, fontSize: "22px", color: "#202223" }}>
-                  Social sharing
-                </span>
-              </Text>
-            </div>
-
-
-       
-          </BlockStack>
-        ) : (
-          <BlockStack gap="400">
+     <BlockStack gap="400">
             <Text as="h1" variant="headingLg">
               <span style={{ fontWeight: 700, fontSize: "22px", color: "#202223" }}>
                 {navigationSections
@@ -158,8 +129,6 @@ export function NavigationSettingsExample() {
               in the vertical navigation to view the social media dashboard.
             </Text>
           </BlockStack>
-        )}
-      </div>
-    </div>
+    </Page>
   );
 }

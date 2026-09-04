@@ -11,6 +11,8 @@ import { PageExample } from "@/examples/layout/PageExample";
 import PageExampleRaw from "@/examples/layout/PageExample.tsx?raw";
 import { DividerExample } from "@/examples/layout/DividerExample";
 import DividerExampleRaw from "@/examples/layout/DividerExample.tsx?raw";
+import { MetricCardExample } from "@/examples/layout/MetricCardExample";
+import MetricCardExampleRaw from "@/examples/layout/MetricCardExample.tsx?raw";
 
 export const layoutComponents: ComponentEntry[] = [
   {
@@ -62,6 +64,19 @@ export const layoutComponents: ComponentEntry[] = [
         title: "With a title",
         Example: CardExample,
         code: CardExampleRaw,
+      },
+    ],
+  },
+  {
+    name: "MetricCard",
+    slug: "metric-card",
+    category: "Layout",
+    description: "",
+    examples: [
+      {
+        title: "A Metric Card",
+        Example: MetricCardExample,
+        code: MetricCardExampleRaw,
       },
     ],
   },

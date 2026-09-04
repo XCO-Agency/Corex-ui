@@ -13,12 +13,14 @@ export type ComponentCanvasPropsType = {
   children: React.ReactNode;
   viewport?: CanvasViewportType;
   className?: string;
+  isFullscreen?: boolean;
 };
 
 export function ComponentCanvas({
   children,
   viewport = "100%",
   className,
+  isFullscreen = false,
 }: ComponentCanvasPropsType) {
   const panelRef = usePanelRef();
   const [isDragging, setIsDragging] = React.useState(false);
@@ -51,20 +53,22 @@ export function ComponentCanvas({
   return (
     <div
       className={cn(
-        "bg-gray-500/10 rounded-xl",
         className
       )}
     >
       <ResizablePanelGroup
         orientation="horizontal"
-        className="min-h-65 w-full "
+        className={cn(isFullscreen ? "min-h-[calc(100vh-9rem)]" : "min-h-65", "w-full")}
       >
         {/* Resizable Preview Canvas Panel */}
         <ResizablePanel
           panelRef={panelRef}
           defaultSize="100%"
           minSize="300px"
-          className="relative flex items-center justify-center bg-card border overflow-clip rounded-xl bg-[radial-gradient(oklch(0.7_0_0/0.2)_1px,transparent_1px)] dark:bg-[radial-gradient(oklch(1_0_0/0.15)_1px,transparent_1px)] [background-size:16px_16px]"
+          className={cn(
+            "relative flex justify-center bg-gray-50  overflow-clip  bg-[radial-gradient(oklch(0.7_0_0/0.2)_1px,transparent_1px)] dark:bg-[radial-gradient(oklch(1_0_0/0.15)_1px,transparent_1px)] bg-size-[16px_16px]",
+            isFullscreen ? "items-start py-4" : "items-center rounded-xl border"
+          )}
         >
           {/* Prevent iframe from capturing pointer events during drag resizing */}
           {isDragging && (

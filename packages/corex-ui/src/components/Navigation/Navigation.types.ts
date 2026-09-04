@@ -5,7 +5,7 @@ export type NavigationItemType = {
   id: string;
   label: string;
   /** Polaris icon name (e.g. `"import"`, `"search"`, `"star"`) or Polaris SVG component */
-  icon?: IconSourceType | React.ReactNode;
+  icon?: IconSourceType;
   url?: string;
   badge?: React.ReactNode;
   disabled?: boolean;

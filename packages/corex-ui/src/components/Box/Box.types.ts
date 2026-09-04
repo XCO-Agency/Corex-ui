@@ -1,4 +1,9 @@
 import type { CSSProperties, ElementType, ReactNode } from "react";
+import {
+  LegacySpacingType,
+  PolarisSpacingType,
+  StackGapType,
+} from "../../types/common";
 
 export type BoxBackgroundType =
   | "transparent"
@@ -117,7 +122,7 @@ export type BoxPropsType = {
    * Adjust the padding of all edges using 1-to-4-value flow-relative syntax or responsive keyword.
    * Order: block-start inline-end block-end inline-start.
    */
-  padding?: ResponsivePropType<string>;
+  padding?: StackGapType;
   /** Adjust the block-padding (overrides block value of padding). */
   paddingBlock?: ResponsivePropType<string>;
   /** Adjust the block-start padding (overrides block-start of paddingBlock). */

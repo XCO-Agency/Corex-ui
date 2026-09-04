@@ -35,5 +35,3 @@ export type CardPropsType = {
   [key: `aria-${string}`]: unknown;
   [key: `data-${string}`]: unknown;
 };
-
-export type CardProps = CardPropsType;
