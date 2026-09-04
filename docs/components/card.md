@@ -14,8 +14,8 @@ import { Card } from "@xco/corex-ui";
 
 ## Prop mapping
 
-| Legacy prop | Behavior |
-| --- | --- |
-| `title` | Rendered as a `Text` heading above `children`. |
-| `padding`, `background` | Passed through to the underlying `s-section`. |
-| `sectioned` | **No effect** — every `Card` already renders as a single section. Logs a dev-mode warning if passed. |
+| Legacy prop             | Behavior                                                                                             |
+| ----------------------- | ---------------------------------------------------------------------------------------------------- |
+| `title`                 | Rendered as a `Text` heading above `children`.                                                       |
+| `padding`, `background` | Passed through to the underlying `s-section`.                                                        |
+| `sectioned`             | **No effect** — every `Card` already renders as a single section. Logs a dev-mode warning if passed. |

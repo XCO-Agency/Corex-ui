@@ -19,10 +19,10 @@ import { Select } from "@xco/corex-ui";
 
 ## Prop mapping
 
-| Legacy prop | Behavior |
-| --- | --- |
-| `options` | Each entry (a string, or `{ label, value, disabled }`) is rendered as a native `<option>` child, since `s-select` reads its options from light-DOM `<option>` elements like a native `<select>`. |
-| `value` | Set as a live DOM property on every render, same as `TextField`. |
-| `onChange` | Bound to the native `change` event; called as `onChange(value, id)`, matching the legacy signature. |
-| `helpText` | Maps to `details`. |
-| `label`, `disabled`, `error`, `placeholder`, `id`, `name` | Passed straight through. |
+| Legacy prop                                               | Behavior                                                                                                                                                                                         |
+| --------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `options`                                                 | Each entry (a string, or `{ label, value, disabled }`) is rendered as a native `<option>` child, since `s-select` reads its options from light-DOM `<option>` elements like a native `<select>`. |
+| `value`                                                   | Set as a live DOM property on every render, same as `TextField`.                                                                                                                                 |
+| `onChange`                                                | Bound to the native `change` event; called as `onChange(value, id)`, matching the legacy signature.                                                                                              |
+| `helpText`                                                | Maps to `details`.                                                                                                                                                                               |
+| `label`, `disabled`, `error`, `placeholder`, `id`, `name` | Passed straight through.                                                                                                                                                                         |

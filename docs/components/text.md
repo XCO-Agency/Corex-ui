@@ -12,7 +12,7 @@ import { Text } from "@xco/corex-ui";
 
 ## Prop mapping
 
-| Legacy prop | Behavior |
-| --- | --- |
-| `variant`, `tone`, `alignment`, `fontWeight`, `truncate` | Passed straight through. |
-| `as` | Accepted for API compatibility only — `s-text` always renders as its own element, so this has no visual effect. |
+| Legacy prop                                              | Behavior                                                                                                        |
+| -------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
+| `variant`, `tone`, `alignment`, `fontWeight`, `truncate` | Passed straight through.                                                                                        |
+| `as`                                                     | Accepted for API compatibility only — `s-text` always renders as its own element, so this has no visual effect. |

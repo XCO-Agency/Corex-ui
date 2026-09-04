@@ -20,14 +20,14 @@ import { ChoiceList } from "@xco/corex-ui";
 
 ## Prop mapping
 
-| Legacy prop | Behavior |
-| --- | --- |
-| `title` | Maps to `heading`. |
-| `choices` | Set as a live DOM property (`domProps`) since it's a non-primitive array. |
-| `selected` | Set as a live DOM property, so this stays genuinely controlled. |
-| `onChange` | Bound to the native `change` event; called as `onChange(selected, name)`, matching the legacy signature. |
-| `allowMultiple` | Maps to `multiple`. |
-| `name`, `error` | Passed straight through. |
+| Legacy prop     | Behavior                                                                                                 |
+| --------------- | -------------------------------------------------------------------------------------------------------- |
+| `title`         | Maps to `heading`.                                                                                       |
+| `choices`       | Set as a live DOM property (`domProps`) since it's a non-primitive array.                                |
+| `selected`      | Set as a live DOM property, so this stays genuinely controlled.                                          |
+| `onChange`      | Bound to the native `change` event; called as `onChange(selected, name)`, matching the legacy signature. |
+| `allowMultiple` | Maps to `multiple`.                                                                                      |
+| `name`, `error` | Passed straight through.                                                                                 |
 
 The exact `choices`/`selected` property shape is best-effort (no full API reference was
 available for this element) — verify against your installed polaris-1.js.

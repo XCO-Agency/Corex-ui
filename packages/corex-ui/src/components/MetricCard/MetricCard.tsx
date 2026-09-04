@@ -5,7 +5,6 @@ import { Box } from "../Box";
 import { BlockStack } from "../BlockStack";
 import { Icon } from "../Icon";
 
-
 const SPARK_W = 64;
 const SPARK_H = 24;
 const SPARK_PADDING_X = 1;
@@ -37,10 +36,10 @@ function buildSmoothPath(data: number[], width: number, height: number): string 
   let path = `M ${points[0]?.x.toFixed(2)} ${points[0]?.y.toFixed(2)}`;
 
   for (let i = 0; i < points.length - 1; i++) {
-    const p0 = points[i - 1] ?? points[i] ?? {x:0, y:0};
-    const p1 = points[i] ?? {x:0, y:0};
-    const p2 = points[i + 1] ?? {x:0, y:0};
-    const p3 = points[i + 2] ?? {x:0, y:0};
+    const p0 = points[i - 1] ?? points[i] ?? { x: 0, y: 0 };
+    const p1 = points[i] ?? { x: 0, y: 0 };
+    const p2 = points[i + 1] ?? { x: 0, y: 0 };
+    const p3 = points[i + 2] ?? { x: 0, y: 0 };
 
     const cp1x = p1.x + (p2.x - p0.x) / 6;
     const cp1y = p1.y + (p2.y - p0.y) / 6;
@@ -115,7 +114,8 @@ export function Sparkline({
   const range = maxV - minV || 1;
 
   const endpointX = width - SPARK_PADDING_X;
-  const endpointY = SPARK_PADDING_Y + ((maxV - lastValue) / range) * (height - SPARK_PADDING_Y * 2);
+  const endpointY =
+    SPARK_PADDING_Y + ((maxV - lastValue) / range) * (height - SPARK_PADDING_Y * 2);
 
   const gradientId = `spark-gradient-${Math.random().toString(36).slice(2)}`;
 
@@ -179,18 +179,25 @@ export function MetricCard({
   sparklineHeight,
   onClick,
 }: MetricCardPropsType): JSX.Element {
-
   const innerContent = (
-    <Box padding='small-200'>
-      <BlockStack  gap="small-100">
+    <Box padding="small-200">
+      <BlockStack gap="small-100">
         {/* Header: icon + title + tooltip + badge */}
         <s-stack direction="inline" justifyContent="space-between" alignItems="center">
-          <s-stack direction="inline" gap="small-200" alignItems="center" justifyContent="safe end" inlineSize="100%">
+          <s-stack
+            direction="inline"
+            gap="small-200"
+            alignItems="center"
+            justifyContent="safe end"
+            inlineSize="100%"
+          >
             {icon && <Icon type={icon} tone={iconTone} />}
             <span
               style={{
                 flex: 1,
-                textDecoration: tooltip ? "underline 2px dotted var(--p-color-border-tertiary, rgba(204, 204, 204, 1))" : "none",
+                textDecoration: tooltip
+                  ? "underline 2px dotted var(--p-color-border-tertiary, rgba(204, 204, 204, 1))"
+                  : "none",
                 textUnderlineOffset: tooltip ? 5 : "none",
               }}
             >
@@ -202,10 +209,10 @@ export function MetricCard({
             {badge && (
               <s-badge
                 tone={badge?.tone ?? "neutral"}
-                
+
                 icon={badge?.dir === "up" ? "arrow-up" : "arrow-down"}
               >
-              {badge.value}
+                {badge.value}
               </s-badge>
             )}
           </s-stack>
@@ -217,7 +224,6 @@ export function MetricCard({
             <s-text fontVariantNumeric="tabular-nums">
               <strong>{value}</strong>
             </s-text>
-            
           </s-stack>
           {sparklineData && (
             <Sparkline

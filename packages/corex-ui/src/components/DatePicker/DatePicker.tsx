@@ -2,10 +2,13 @@ import { forwardRef } from "react";
 import { createWebComponent } from "../../core/createWebComponent";
 import type { DatePickerProps } from "./DatePicker.types";
 
-const SDatePicker = createWebComponent<HTMLElement, { onChange: "change" }>("s-date-picker", {
-  events: { onChange: "change" },
-  domProps: ["selected"],
-});
+const SDatePicker = createWebComponent<HTMLElement, { onChange: "change" }>(
+  "s-date-picker",
+  {
+    events: { onChange: "change" },
+    domProps: ["selected"],
+  },
+);
 
 /**
  * Controlled-form-input pattern over `s-date-picker`. Only single-date

@@ -46,17 +46,14 @@ export function AnnotatedSettingsExample() {
   const [isDirty, setIsDirty] = React.useState(false);
   const [isSaving, setIsSaving] = React.useState(false);
 
-  const handleGeneralChange = (
-    field: keyof GeneralSettingsFormType,
-    val: string
-  ) => {
+  const handleGeneralChange = (field: keyof GeneralSettingsFormType, val: string) => {
     setGeneral((prev) => ({ ...prev, [field]: val }));
     setIsDirty(true);
   };
 
   const handleNotificationChange = <K extends keyof NotificationSettingsFormType>(
     field: K,
-    val: NotificationSettingsFormType[K]
+    val: NotificationSettingsFormType[K],
   ) => {
     setNotifications((prev) => ({ ...prev, [field]: val }));
     setIsDirty(true);
@@ -64,7 +61,7 @@ export function AnnotatedSettingsExample() {
 
   const handleSecurityChange = <K extends keyof SecuritySettingsFormType>(
     field: K,
-    val: SecuritySettingsFormType[K]
+    val: SecuritySettingsFormType[K],
   ) => {
     setSecurity((prev) => ({ ...prev, [field]: val }));
     setIsDirty(true);
@@ -113,10 +110,7 @@ export function AnnotatedSettingsExample() {
               url: "https://help.shopify.com",
             }}
           >
-            <GeneralSettingsCard
-              data={general}
-              onChange={handleGeneralChange}
-            />
+            <GeneralSettingsCard data={general} onChange={handleGeneralChange} />
           </AnnotatedSection>
 
           <Divider />
@@ -137,10 +131,7 @@ export function AnnotatedSettingsExample() {
             title="Security & Integrations"
             description="Manage authentication policies, API credentials, and incoming webhook signature secrets."
           >
-            <SecuritySettingsCard
-              data={security}
-              onChange={handleSecurityChange}
-            />
+            <SecuritySettingsCard data={security} onChange={handleSecurityChange} />
           </AnnotatedSection>
 
           <Divider />

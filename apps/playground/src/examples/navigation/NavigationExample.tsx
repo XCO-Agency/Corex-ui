@@ -15,14 +15,14 @@ export function NavigationExample() {
     },
     {
       title: "PREFERENCES",
-      items: [
-        { id: "settings", label: "Settings", icon: "settings" },
-      ],
+      items: [{ id: "settings", label: "Settings", icon: "settings" }],
     },
   ];
 
   return (
-    <div style={{ display: "flex", gap: "24px", alignItems: "flex-start", width: "100%" }}>
+    <div
+      style={{ display: "flex", gap: "24px", alignItems: "flex-start", width: "100%" }}
+    >
       <div style={{ width: "240px", flexShrink: 0 }}>
         <Navigation
           sections={sections}

@@ -10,9 +10,15 @@ export const ButtonGroup = forwardRef<HTMLElement, ButtonGroupProps>(function Bu
   ref,
 ) {
   return (
-    <SButtonGroup ref={ref} gap={gap ?? (variant === "segmented" ? "none" : undefined)} {...rest}>
+    <SButtonGroup
+      ref={ref}
+      gap={gap ?? (variant === "segmented" ? "none" : undefined)}
+      {...rest}
+    >
       {Children.map(children, (child) =>
-        isValidElement(child) ? cloneElement(child, { slot: "secondary-actions" }) : child,
+        isValidElement(child)
+          ? cloneElement(child, { slot: "secondary-actions" })
+          : child,
       )}
     </SButtonGroup>
   );

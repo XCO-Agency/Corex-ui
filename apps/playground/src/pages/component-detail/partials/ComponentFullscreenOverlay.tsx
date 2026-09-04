@@ -40,7 +40,6 @@ export function ComponentFullscreenOverlay({
     ? example.npxCommand!
     : `import { ${componentName} } from "@xco-agency/corex-ui"`;
 
-  
   const handleCopyAction = async () => {
     try {
       await navigator.clipboard.writeText(actionText);
@@ -139,6 +138,6 @@ export function ComponentFullscreenOverlay({
         )}
       </div>
     </div>,
-    document.body
+    document.body,
   );
 }

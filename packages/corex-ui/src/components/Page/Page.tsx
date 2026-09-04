@@ -207,7 +207,8 @@ export const Page = forwardRef<HTMLElement, PagePropsType>(function Page(
   }
 
   const resolvedHeading = heading ?? (typeof title === "string" ? title : undefined);
-  const resolvedSubheading = subheading ?? (typeof subtitle === "string" ? subtitle : undefined);
+  const resolvedSubheading =
+    subheading ?? (typeof subtitle === "string" ? subtitle : undefined);
   const resolvedInlineSize =
     inlineSize ?? (fullWidth ? "large" : narrowWidth ? "small" : undefined);
 

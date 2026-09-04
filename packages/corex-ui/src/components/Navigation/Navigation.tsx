@@ -18,7 +18,7 @@ export const Navigation = React.forwardRef<HTMLElement, NavigationPropsType>(
       children,
       id,
     },
-    ref
+    ref,
   ) {
     const [internalSearch, setInternalSearch] = React.useState("");
     const [hoveredId, setHoveredId] = React.useState<string | null>(null);
@@ -114,7 +114,10 @@ export const Navigation = React.forwardRef<HTMLElement, NavigationPropsType>(
             if (visibleItems.length === 0 && activeSearch.trim()) return null;
 
             return (
-              <div key={sIdx} style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
+              <div
+                key={sIdx}
+                style={{ display: "flex", flexDirection: "column", gap: "4px" }}
+              >
                 {section.title && (
                   <div style={{ padding: "4px 8px 6px 8px" }}>
                     <Text as="h3" variant="bodySm" tone="neutral">
@@ -135,7 +138,9 @@ export const Navigation = React.forwardRef<HTMLElement, NavigationPropsType>(
 
                 <div style={{ display: "flex", flexDirection: "column", gap: "2px" }}>
                   {visibleItems.map((item) => {
-                    const isSelected = item.selected ?? (selectedId !== undefined && selectedId === item.id);
+                    const isSelected =
+                      item.selected ??
+                      (selectedId !== undefined && selectedId === item.id);
                     const isHovered = hoveredId === item.id;
 
                     return (
@@ -160,9 +165,13 @@ export const Navigation = React.forwardRef<HTMLElement, NavigationPropsType>(
                           backgroundColor: isSelected
                             ? "#f1f2f4"
                             : isHovered
-                            ? "#f6f6f7"
-                            : "transparent",
-                          color: isSelected ? "#202223" : item.disabled ? "#8c9196" : "#4a4d50",
+                              ? "#f6f6f7"
+                              : "transparent",
+                          color: isSelected
+                            ? "#202223"
+                            : item.disabled
+                              ? "#8c9196"
+                              : "#4a4d50",
                           fontWeight: isSelected ? 600 : 450,
                           fontSize: "13px",
                           textAlign: "left",
@@ -204,7 +213,9 @@ export const Navigation = React.forwardRef<HTMLElement, NavigationPropsType>(
                           </span>
                         </div>
 
-                        {item.badge && <span style={{ flexShrink: 0 }}>{item.badge}</span>}
+                        {item.badge && (
+                          <span style={{ flexShrink: 0 }}>{item.badge}</span>
+                        )}
                       </button>
                     );
                   })}
@@ -217,7 +228,7 @@ export const Navigation = React.forwardRef<HTMLElement, NavigationPropsType>(
         </BlockStack>
       </nav>
     );
-  }
+  },
 );
 
 export const Navigations = Navigation;

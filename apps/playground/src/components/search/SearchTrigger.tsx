@@ -8,7 +8,11 @@ export type SearchTriggerPropsType = {
   compact?: boolean;
 };
 
-export function SearchTrigger({ onClick, className, compact = false }: SearchTriggerPropsType) {
+export function SearchTrigger({
+  onClick,
+  className,
+  compact = false,
+}: SearchTriggerPropsType) {
   return (
     <button
       type="button"
@@ -16,7 +20,7 @@ export function SearchTrigger({ onClick, className, compact = false }: SearchTri
       className={cn(
         "group flex items-center justify-between gap-3 rounded-lg border border-border bg-muted/40 px-3 py-1.5 text-sm text-muted-foreground transition-colors hover:border-border/80 hover:bg-muted/70 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring cursor-pointer",
         compact ? "w-auto" : "w-full max-w-sm",
-        className
+        className,
       )}
       aria-label="Search components"
     >

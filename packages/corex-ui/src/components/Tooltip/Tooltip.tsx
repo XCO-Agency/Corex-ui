@@ -18,9 +18,19 @@ export const Tooltip = forwardRef<HTMLElement, TooltipProps>(function Tooltip(
 ) {
   const generatedId = useId();
   const tooltipId = id ?? `corex-tooltip-${generatedId.replace(/:/g, "")}`;
-  const trigger = isValidElement(children) && typeof children.type !== "string"
-    ? cloneElement(children, { interestFor: tooltipId })
-    : <SText interestFor={tooltipId}>{children}</SText>;
+  const trigger =
+    isValidElement(children) && typeof children.type !== "string" ? (
+      cloneElement(children, { interestFor: tooltipId })
+    ) : (
+      <SText interestFor={tooltipId}>{children}</SText>
+    );
 
-  return <><STooltip ref={ref} id={tooltipId} {...rest}>{content}</STooltip>{trigger}</>;
+  return (
+    <>
+      <STooltip ref={ref} id={tooltipId} {...rest}>
+        {content}
+      </STooltip>
+      {trigger}
+    </>
+  );
 });

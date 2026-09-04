@@ -13,8 +13,8 @@ import { Button, ButtonGroup } from "@xco/corex-ui";
 
 ## Prop mapping
 
-| Legacy prop | Behavior |
-| --- | --- |
-| `children` | Rendered as-is; use `Button` children. |
-| `variant` (`"segmented"` \| `"default"`) | Passed straight through. |
-| `fullWidth` | Passed straight through. |
+| Legacy prop                              | Behavior                               |
+| ---------------------------------------- | -------------------------------------- |
+| `children`                               | Rendered as-is; use `Button` children. |
+| `variant` (`"segmented"` \| `"default"`) | Passed straight through.               |
+| `fullWidth`                              | Passed straight through.               |

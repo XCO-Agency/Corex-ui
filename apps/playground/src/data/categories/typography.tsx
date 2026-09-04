@@ -7,7 +7,8 @@ export const typographyComponents: ComponentEntry[] = [
     name: "Text",
     slug: "text",
     category: "Typography",
-    description: "Displays styled text, from body copy to headings, with tone and weight options.",
+    description:
+      "Displays styled text, from body copy to headings, with tone and weight options.",
     examples: [
       {
         title: "Variants & tones",

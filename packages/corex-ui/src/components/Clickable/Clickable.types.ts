@@ -4,11 +4,7 @@ import type { TargetType } from "../../types/common";
 
 export type ClickableTargetType = TargetType;
 
-export type ClickableButtonType =
-  | "button"
-  | "submit"
-  | "reset"
-  | (string & {});
+export type ClickableButtonType = "button" | "submit" | "reset" | (string & {});
 
 /**
  * ClickableBoxPropsType reuses the shared BoxPropsType directly

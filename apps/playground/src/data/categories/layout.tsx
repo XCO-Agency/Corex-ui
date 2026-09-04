@@ -19,7 +19,8 @@ export const layoutComponents: ComponentEntry[] = [
     name: "Box",
     slug: "box",
     category: "Layout",
-    description: "A generic, unopinionated container for padding, background, and border styling.",
+    description:
+      "A generic, unopinionated container for padding, background, and border styling.",
     examples: [
       {
         title: "Padded box",
@@ -58,7 +59,8 @@ export const layoutComponents: ComponentEntry[] = [
     name: "Card",
     slug: "card",
     category: "Layout",
-    description: "A bordered content surface, optionally with a heading, used to group related content.",
+    description:
+      "A bordered content surface, optionally with a heading, used to group related content.",
     examples: [
       {
         title: "With a title",
@@ -84,7 +86,8 @@ export const layoutComponents: ComponentEntry[] = [
     name: "Page",
     slug: "page",
     category: "Layout",
-    description: "The top-level layout wrapper for a screen, with a heading and primary/secondary actions.",
+    description:
+      "The top-level layout wrapper for a screen, with a heading and primary/secondary actions.",
     examples: [
       {
         title: "With a primary action",

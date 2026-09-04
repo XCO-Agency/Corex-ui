@@ -15,7 +15,7 @@ import { Button, InlineStack } from "@xco/corex-ui";
 
 ## Prop mapping
 
-| Prop | Behavior |
-| --- | --- |
-| `gap` | Accepts Polaris web-component spacing tokens (`small-200`, `base`, etc.). Legacy numeric values (e.g. `"200"`) are automatically translated for backward compatibility. |
-| `align`, `blockAlign`, `wrap` | Passed straight through to `s-stack`. |
+| Prop                          | Behavior                                                                                                                                                                |
+| ----------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `gap`                         | Accepts Polaris web-component spacing tokens (`small-200`, `base`, etc.). Legacy numeric values (e.g. `"200"`) are automatically translated for backward compatibility. |
+| `align`, `blockAlign`, `wrap` | Passed straight through to `s-stack`.                                                                                                                                   |

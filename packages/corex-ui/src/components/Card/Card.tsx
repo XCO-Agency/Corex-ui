@@ -53,7 +53,9 @@ export const Card = forwardRef<HTMLElement, CardPropsType>(function Card(
             <Text as="h2" variant="headingSm">
               {title}
             </Text>
-          ) : <div />}
+          ) : (
+            <div />
+          )}
           {actions && actions.length > 0 && (
             <div style={{ display: "flex", gap: "8px" }}>
               {actions.map((act, index) => (

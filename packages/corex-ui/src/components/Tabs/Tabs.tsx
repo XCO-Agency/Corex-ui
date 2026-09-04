@@ -75,7 +75,13 @@ export const Tabs = forwardRef(function Tabs<T extends string | number = string 
                   onClick={() => handleSelect(tab, index)}
                 >
                   {tab.icon && (
-                    <span style={{ marginRight: "0.25rem", display: "inline-flex", alignItems: "center" }}>
+                    <span
+                      style={{
+                        marginRight: "0.25rem",
+                        display: "inline-flex",
+                        alignItems: "center",
+                      }}
+                    >
                       {tab.icon}
                     </span>
                   )}

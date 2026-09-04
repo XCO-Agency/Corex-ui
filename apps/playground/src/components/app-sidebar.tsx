@@ -1,11 +1,5 @@
 import * as React from "react";
-import {
-  Command,
-  Inbox,
-  Search,
-  Sparkles,
-  X,
-} from "lucide-react";
+import { Command, Inbox, Search, Sparkles, X } from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
@@ -63,14 +57,17 @@ export function AppSidebar({ onOpenSearch, ...props }: AppSidebarPropsType) {
   }, [search]);
 
   const groupedExamples = React.useMemo(() => {
-    const grouped = filteredExamples.reduce((acc, component) => {
-      const groupName = component.category;
-      if (!acc[groupName]) {
-        acc[groupName] = [];
-      }
-      acc[groupName].push(component);
-      return acc;
-    }, {} as Record<string, ComponentEntry[]>);
+    const grouped = filteredExamples.reduce(
+      (acc, component) => {
+        const groupName = component.category;
+        if (!acc[groupName]) {
+          acc[groupName] = [];
+        }
+        acc[groupName].push(component);
+        return acc;
+      },
+      {} as Record<string, ComponentEntry[]>,
+    );
 
     return Object.entries(grouped).map(([category, components]) => ({
       category,

@@ -21,5 +21,8 @@ const legacySpacing: Record<string, string> = {
 
 export function mapLegacyGap(gap: string | undefined) {
   if (!gap) return gap;
-  return gap.split(" ").map((value) => legacySpacing[value] ?? value).join(" ");
+  return gap
+    .split(" ")
+    .map((value) => legacySpacing[value] ?? value)
+    .join(" ");
 }

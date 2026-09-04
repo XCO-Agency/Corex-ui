@@ -15,7 +15,8 @@ export const actionsComponents: ComponentEntry[] = [
     name: "Button",
     slug: "button",
     category: "Actions",
-    description: "Triggers an action or event, such as submitting a form or opening a dialog.",
+    description:
+      "Triggers an action or event, such as submitting a form or opening a dialog.",
     examples: [
       {
         title: "Variants",
@@ -28,7 +29,8 @@ export const actionsComponents: ComponentEntry[] = [
     name: "ButtonGroup",
     slug: "button-group",
     category: "Actions",
-    description: "Displays multiple buttons grouped together, optionally as a segmented control.",
+    description:
+      "Displays multiple buttons grouped together, optionally as a segmented control.",
     examples: [
       {
         title: "Segmented group",
@@ -41,7 +43,8 @@ export const actionsComponents: ComponentEntry[] = [
     name: "Clickable",
     slug: "clickable",
     category: "Actions",
-    description: "An unstyled interactive wrapper powered by Polaris s-clickable for custom actions, cards, and rows.",
+    description:
+      "An unstyled interactive wrapper powered by Polaris s-clickable for custom actions, cards, and rows.",
     examples: [
       {
         title: "Interactive cards and actions",

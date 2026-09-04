@@ -81,9 +81,9 @@ export const Clickable = forwardRef<HTMLElement, ClickablePropsType>(function Cl
   const resolvedHref = href ?? url;
   const resolvedTarget = target ?? (external ? "_blank" : undefined);
   const resolvedRel = external ? "noopener noreferrer" : undefined;
-  const resolvedOnClick = (onClick ?? onclick) ?? undefined;
-  const resolvedOnBlur = (onBlur ?? onblur) ?? undefined;
-  const resolvedOnFocus = (onFocus ?? onfocus) ?? undefined;
+  const resolvedOnClick = onClick ?? onclick ?? undefined;
+  const resolvedOnBlur = onBlur ?? onblur ?? undefined;
+  const resolvedOnFocus = onFocus ?? onfocus ?? undefined;
   const resolvedDownload =
     typeof download === "boolean" ? (download ? "" : undefined) : download;
 

@@ -1,11 +1,5 @@
 import * as React from "react";
-import {
-  Navigation,
-  BlockStack,
-  Text,
-  Box,
-  Page,
-} from "@xco-agency/corex-ui";
+import { Navigation, BlockStack, Text, Box, Page } from "@xco-agency/corex-ui";
 
 export function NavigationSettingsExample() {
   const [selectedNav, setSelectedNav] = React.useState("social");
@@ -106,7 +100,7 @@ export function NavigationSettingsExample() {
   return (
     <Page inlineSize="base">
       {/* Left Sidebar: Vertical Navigation */}
-      <Box inlineSize="200px" >
+      <Box inlineSize="200px">
         <Navigation
           sections={navigationSections}
           selectedId={selectedNav}
@@ -116,19 +110,18 @@ export function NavigationSettingsExample() {
         />
       </Box>
 
-     <BlockStack gap="400">
-            <Text as="h1" variant="headingLg">
-              <span style={{ fontWeight: 700, fontSize: "22px", color: "#202223" }}>
-                {navigationSections
-                  .flatMap((s) => s.items)
-                  .find((i) => i.id === selectedNav)?.label ?? "Settings"}
-              </span>
-            </Text>
-            <Text as="p" variant="bodyMd" tone="neutral">
-              Configure settings and preferences for this section. Select &ldquo;Social sharing&rdquo;
-              in the vertical navigation to view the social media dashboard.
-            </Text>
-          </BlockStack>
+      <BlockStack gap="400">
+        <Text as="h1" variant="headingLg">
+          <span style={{ fontWeight: 700, fontSize: "22px", color: "#202223" }}>
+            {navigationSections.flatMap((s) => s.items).find((i) => i.id === selectedNav)
+              ?.label ?? "Settings"}
+          </span>
+        </Text>
+        <Text as="p" variant="bodyMd" tone="neutral">
+          Configure settings and preferences for this section. Select &ldquo;Social
+          sharing&rdquo; in the vertical navigation to view the social media dashboard.
+        </Text>
+      </BlockStack>
     </Page>
   );
 }

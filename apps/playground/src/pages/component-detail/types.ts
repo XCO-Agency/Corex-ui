@@ -6,8 +6,11 @@ export type TocItemType = {
   level?: number;
 };
 
-export type ComponentNavigationItemType = {
-  name: string;
-  slug: string;
-  category: string;
-} | null | undefined;
+export type ComponentNavigationItemType =
+  | {
+      name: string;
+      slug: string;
+      category: string;
+    }
+  | null
+  | undefined;

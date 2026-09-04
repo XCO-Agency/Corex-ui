@@ -22,7 +22,8 @@ export const navigationComponents: ComponentEntry[] = [
     name: "Navigation",
     slug: "navigation",
     category: "Navigation",
-    description: "Vertical navigation menu with search, group titles, icons, and item states.",
+    description:
+      "Vertical navigation menu with search, group titles, icons, and item states.",
     examples: [
       {
         title: "Vertical navigation with search",

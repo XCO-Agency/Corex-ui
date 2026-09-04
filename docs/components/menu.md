@@ -16,7 +16,7 @@ import { Button, Menu } from "@xco/corex-ui";
 
 ## Prop mapping
 
-| Legacy prop | Behavior |
-| --- | --- |
-| `id` | Required — referenced by a trigger `Button`'s `commandFor`. |
-| `children` | `Button` elements, one per menu item. |
+| Legacy prop | Behavior                                                    |
+| ----------- | ----------------------------------------------------------- |
+| `id`        | Required — referenced by a trigger `Button`'s `commandFor`. |
+| `children`  | `Button` elements, one per menu item.                       |

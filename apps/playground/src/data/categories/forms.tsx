@@ -56,7 +56,8 @@ export const formsComponents: ComponentEntry[] = [
     name: "ChoiceList",
     slug: "choice-list",
     category: "Forms",
-    description: "Presents a list of checkbox or radio-style choices, controlled via selected/onChange.",
+    description:
+      "Presents a list of checkbox or radio-style choices, controlled via selected/onChange.",
     examples: [
       {
         title: "Multiple choice",
@@ -82,7 +83,8 @@ export const formsComponents: ComponentEntry[] = [
     name: "DatePicker",
     slug: "date-picker",
     category: "Forms",
-    description: "A calendar for selecting a single date, controlled via selected/onChange.",
+    description:
+      "A calendar for selecting a single date, controlled via selected/onChange.",
     examples: [
       {
         title: "Controlled date picker",

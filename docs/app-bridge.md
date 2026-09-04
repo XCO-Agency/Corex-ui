@@ -45,8 +45,12 @@ rendering a `Page` with actions in its title bar via slots:
 ```tsx
 // app-window-content page
 <Page title="Product editor">
-  <Button slot="primary-action" onClick={() => toast.show("Save")}>Save</Button>
-  <Button slot="secondary-actions" onClick={() => toast.show("Preview")}>Preview</Button>
+  <Button slot="primary-action" onClick={() => toast.show("Save")}>
+    Save
+  </Button>
+  <Button slot="secondary-actions" onClick={() => toast.show("Preview")}>
+    Preview
+  </Button>
 </Page>
 ```
 
@@ -54,7 +58,9 @@ rendering a `Page` with actions in its title bar via slots:
 
 ```tsx
 <Page title="Edit Product">
-  <Badge slot="accessory" tone="warning">Draft</Badge>
+  <Badge slot="accessory" tone="warning">
+    Draft
+  </Badge>
   <Button slot="primary-action">Save</Button>
 </Page>
 ```
@@ -63,12 +69,18 @@ rendering a `Page` with actions in its title bar via slots:
 
 ```tsx
 <Page title="Product Details">
-  <Button slot="primary-action" icon="save">Save</Button>
-  <Button slot="secondary-actions" commandFor="actions-menu" icon="menu">More actions</Button>
+  <Button slot="primary-action" icon="save">
+    Save
+  </Button>
+  <Button slot="secondary-actions" commandFor="actions-menu" icon="menu">
+    More actions
+  </Button>
   <Menu id="actions-menu">
     <Button icon="duplicate">Duplicate</Button>
     <Button icon="archive">Archive</Button>
-    <Button icon="delete" destructive>Delete</Button>
+    <Button icon="delete" destructive>
+      Delete
+    </Button>
   </Menu>
 </Page>
 ```
@@ -81,7 +93,9 @@ Thin wrapper over `s-app-nav`, holding `Link` children:
 import { AppNav, Link } from "@xco/corex-ui";
 
 <AppNav>
-  <Link url="/app" removeUnderline>Home</Link>
+  <Link url="/app" removeUnderline>
+    Home
+  </Link>
   <Link url="/app/templates">Templates</Link>
   <Link url="/app/settings">Settings</Link>
 </AppNav>;

@@ -32,7 +32,9 @@ export const Text = forwardRef<HTMLElement, TextPropsType>(function Text(
     color &&
     color !== "subdued" &&
     color !== "base" &&
-    ["auto", "success", "warning", "critical", "info", "neutral", "caution"].includes(color as string);
+    ["auto", "success", "warning", "critical", "info", "neutral", "caution"].includes(
+      color as string,
+    );
 
   const resolvedTone = tone ?? (isTone ? (color as ToneType) : undefined);
   const resolvedColor = !isTone ? color : undefined;

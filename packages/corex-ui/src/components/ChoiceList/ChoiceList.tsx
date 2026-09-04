@@ -2,10 +2,13 @@ import { forwardRef } from "react";
 import { createWebComponent } from "../../core/createWebComponent";
 import type { ChoiceListProps } from "./ChoiceList.types";
 
-const SChoiceList = createWebComponent<HTMLElement, { onChange: "change" }>("s-choice-list", {
-  events: { onChange: "change" },
-  domProps: ["values"],
-});
+const SChoiceList = createWebComponent<HTMLElement, { onChange: "change" }>(
+  "s-choice-list",
+  {
+    events: { onChange: "change" },
+    domProps: ["values"],
+  },
+);
 const SChoice = createWebComponent<HTMLElement>("s-choice");
 
 /**
@@ -35,7 +38,12 @@ export const ChoiceList = forwardRef<HTMLElement, ChoiceListProps>(function Choi
       {...rest}
     >
       {choices.map((choice) => (
-        <SChoice key={choice.value} value={choice.value} selected={selected.includes(choice.value)} disabled={choice.disabled}>
+        <SChoice
+          key={choice.value}
+          value={choice.value}
+          selected={selected.includes(choice.value)}
+          disabled={choice.disabled}
+        >
           {choice.label}
           {choice.helpText ? <span slot="details">{choice.helpText}</span> : null}
         </SChoice>

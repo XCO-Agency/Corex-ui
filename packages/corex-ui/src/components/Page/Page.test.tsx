@@ -6,7 +6,11 @@ import { Button } from "../Button";
 describe("Page", () => {
   it("maps legacy title/subtitle to heading/subheading and composes primaryAction as a Button", () => {
     render(
-      <Page title="Products" subtitle="Manage your catalog" primaryAction={{ content: "Add product" }}>
+      <Page
+        title="Products"
+        subtitle="Manage your catalog"
+        primaryAction={{ content: "Add product" }}
+      >
         Body
       </Page>,
     );
@@ -113,7 +117,9 @@ describe("Page", () => {
         heading="Inventory"
         secondaryActions={[
           { content: "Export", onAction: onExport },
-          <Button key="import" variant="secondary">Import</Button>,
+          <Button key="import" variant="secondary">
+            Import
+          </Button>,
         ]}
       >
         Body

@@ -18,6 +18,13 @@ export const DateField = forwardRef<HTMLElement, DateFieldProps>(function DateFi
   };
 
   return (
-    <SDateField ref={ref} id={id} value={value ?? ""} details={helpText} onInput={handleInput} {...rest} />
+    <SDateField
+      ref={ref}
+      id={id}
+      value={value ?? ""}
+      details={helpText}
+      onInput={handleInput}
+      {...rest}
+    />
   );
 });

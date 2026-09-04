@@ -10,10 +10,10 @@ import { DatePicker } from "@xco/corex-ui";
 
 ## Prop mapping
 
-| Legacy prop | Behavior |
-| --- | --- |
-| `selected` | An ISO date string (`"2026-01-01"`), set as a live DOM property. |
-| `onChange` | Bound to the native `change` event; called as `onChange(date)`. |
+| Legacy prop | Behavior                                                         |
+| ----------- | ---------------------------------------------------------------- |
+| `selected`  | An ISO date string (`"2026-01-01"`), set as a live DOM property. |
+| `onChange`  | Bound to the native `change` event; called as `onChange(date)`.  |
 
 ## Scope limit
 

@@ -26,7 +26,7 @@ function DialogOverlay({ className, ...props }: DialogPrimitive.Backdrop.Props) 
       data-slot="dialog-overlay"
       className={cn(
         "fixed inset-0 z-50 bg-black/50 backdrop-blur-xs transition-opacity duration-150 data-ending-style:opacity-0 data-starting-style:opacity-0",
-        className
+        className,
       )}
       {...props}
     />
@@ -48,7 +48,7 @@ function DialogContent({
         data-slot="dialog-content"
         className={cn(
           "fixed top-1/2 left-1/2 z-50 grid w-full max-w-lg -translate-x-1/2 -translate-y-1/2 gap-4 rounded-xl border border-border bg-background p-6 shadow-2xl transition duration-150 ease-out data-ending-style:scale-95 data-ending-style:opacity-0 data-starting-style:scale-95 data-starting-style:opacity-0",
-          className
+          className,
         )}
         {...props}
       >
@@ -57,11 +57,7 @@ function DialogContent({
           <DialogPrimitive.Close
             data-slot="dialog-close"
             render={
-              <Button
-                variant="ghost"
-                className="absolute top-4 right-4"
-                size="icon-sm"
-              />
+              <Button variant="ghost" className="absolute top-4 right-4" size="icon-sm" />
             }
           >
             <XIcon className="size-4" />
@@ -87,7 +83,10 @@ function DialogFooter({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="dialog-footer"
-      className={cn("flex flex-col-reverse sm:flex-row sm:justify-end sm:gap-2", className)}
+      className={cn(
+        "flex flex-col-reverse sm:flex-row sm:justify-end sm:gap-2",
+        className,
+      )}
       {...props}
     />
   );
@@ -97,7 +96,10 @@ function DialogTitle({ className, ...props }: DialogPrimitive.Title.Props) {
   return (
     <DialogPrimitive.Title
       data-slot="dialog-title"
-      className={cn("text-lg font-semibold leading-none text-foreground tracking-tight", className)}
+      className={cn(
+        "text-lg font-semibold leading-none text-foreground tracking-tight",
+        className,
+      )}
       {...props}
     />
   );

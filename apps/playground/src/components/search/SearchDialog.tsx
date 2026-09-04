@@ -1,7 +1,12 @@
 import * as React from "react";
 import { useNavigate } from "react-router-dom";
 import { Search, X, ArrowRight, CornerDownLeft } from "lucide-react";
-import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  DialogDescription,
+} from "@/components/ui/dialog";
 import { allEntries, blocks, type ComponentEntry } from "@/data/registry";
 import { getCategoryIcon } from "@/lib/category-icons";
 import { cn } from "@/lib/utils";
@@ -11,7 +16,10 @@ export type SearchDialogPropsType = {
   onOpenChange?: (open: boolean) => void;
 };
 
-export function SearchDialog({ open: controlledOpen, onOpenChange }: SearchDialogPropsType) {
+export function SearchDialog({
+  open: controlledOpen,
+  onOpenChange,
+}: SearchDialogPropsType) {
   const [internalOpen, setInternalOpen] = React.useState(false);
   const [query, setQuery] = React.useState("");
   const [activeIndex, setActiveIndex] = React.useState(0);
@@ -34,7 +42,7 @@ export function SearchDialog({ open: controlledOpen, onOpenChange }: SearchDialo
         setActiveIndex(0);
       }
     },
-    [isControlled, onOpenChange]
+    [isControlled, onOpenChange],
   );
 
   // Global keyboard shortcut: Cmd+K / Ctrl+K or /
@@ -80,7 +88,9 @@ export function SearchDialog({ open: controlledOpen, onOpenChange }: SearchDialo
   // Ensure active element is scrolled into view
   React.useEffect(() => {
     if (listRef.current) {
-      const activeEl = listRef.current.querySelector<HTMLElement>(`[data-result-index="${activeIndex}"]`);
+      const activeEl = listRef.current.querySelector<HTMLElement>(
+        `[data-result-index="${activeIndex}"]`,
+      );
       activeEl?.scrollIntoView({ block: "nearest" });
     }
   }, [activeIndex]);
@@ -88,10 +98,12 @@ export function SearchDialog({ open: controlledOpen, onOpenChange }: SearchDialo
   const handleSelect = React.useCallback(
     (component: ComponentEntry) => {
       setOpen(false);
-      const isBlock = blocks.some((b) => b.components.some((c) => c.slug === component.slug));
+      const isBlock = blocks.some((b) =>
+        b.components.some((c) => c.slug === component.slug),
+      );
       navigate(isBlock ? `/blocks/${component.slug}` : `/components/${component.slug}`);
     },
-    [navigate, setOpen]
+    [navigate, setOpen],
   );
 
   const handleInputKeyDown = (e: React.KeyboardEvent) => {
@@ -179,7 +191,9 @@ export function SearchDialog({ open: controlledOpen, onOpenChange }: SearchDialo
                     onMouseEnter={() => setActiveIndex(idx)}
                     className={cn(
                       "flex w-full items-center justify-between gap-3 rounded-xl px-3.5 py-2.5 text-left transition-colors",
-                      isActive ? "bg-accent text-accent-foreground" : "text-foreground hover:bg-accent/50"
+                      isActive
+                        ? "bg-accent text-accent-foreground"
+                        : "text-foreground hover:bg-accent/50",
                     )}
                   >
                     <div className="flex items-center gap-3 min-w-0">
@@ -188,7 +202,7 @@ export function SearchDialog({ open: controlledOpen, onOpenChange }: SearchDialo
                           "flex size-8 shrink-0 items-center justify-center rounded-lg border",
                           isActive
                             ? "border-accent-foreground/20 bg-background text-foreground"
-                            : "border-border bg-muted/40 text-muted-foreground"
+                            : "border-border bg-muted/40 text-muted-foreground",
                         )}
                       >
                         <Icon className="size-4" />

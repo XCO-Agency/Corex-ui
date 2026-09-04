@@ -8,11 +8,11 @@ export function App() {
   return (
     <TooltipProvider>
       <Layout>
-          <Routes>
-            <Route path="/" element={<Overview />} />
-            <Route path="/components/:slug" element={<ComponentDetail />} />
-            <Route path="/blocks/:slug" element={<ComponentDetail />} />
-          </Routes>
+        <Routes>
+          <Route path="/" element={<Overview />} />
+          <Route path="/components/:slug" element={<ComponentDetail />} />
+          <Route path="/blocks/:slug" element={<ComponentDetail />} />
+        </Routes>
       </Layout>
     </TooltipProvider>
   );

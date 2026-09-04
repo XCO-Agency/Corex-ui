@@ -93,11 +93,13 @@ export function ComponentIframe({ children, className }: ComponentIframePropsTyp
           Promise.all([
             win.customElements.whenDefined("s-button"),
             win.customElements.whenDefined("s-page"),
-          ]).then(() => {
-            setMountNode(root);
-          }).catch(() => {
-            setMountNode(root);
-          });
+          ])
+            .then(() => {
+              setMountNode(root);
+            })
+            .catch(() => {
+              setMountNode(root);
+            });
         } else {
           setMountNode(root);
         }

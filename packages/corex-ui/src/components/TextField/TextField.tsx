@@ -66,7 +66,10 @@ export const TextField = forwardRef<HTMLElement, TextFieldProps>(function TextFi
 
   if (multiline) {
     return (
-      <STextArea {...sharedProps} rows={typeof multiline === "number" ? multiline : undefined}>
+      <STextArea
+        {...sharedProps}
+        rows={typeof multiline === "number" ? multiline : undefined}
+      >
         {slots}
       </STextArea>
     );

@@ -23,12 +23,12 @@ import { Tabs, Text } from "@xco/corex-ui";
 
 ## Prop mapping
 
-| Legacy prop | Behavior |
-| --- | --- |
-| `tabs` | Each `{ id, content, accessibilityLabel, disabled }` renders one tab `Button`. |
-| `selected` | Optional — omit for uncontrolled usage (defaults to the first tab and manages its own state). |
-| `onSelect` | Called with the clicked tab's index. |
-| `children` | Rendered as the panel content for whichever tab is currently selected — `Tabs` does not automatically show/hide per-tab content; render what you want for the current `selected` index yourself, exactly like legacy `Tabs`. |
+| Legacy prop | Behavior                                                                                                                                                                                                                     |
+| ----------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `tabs`      | Each `{ id, content, accessibilityLabel, disabled }` renders one tab `Button`.                                                                                                                                               |
+| `selected`  | Optional — omit for uncontrolled usage (defaults to the first tab and manages its own state).                                                                                                                                |
+| `onSelect`  | Called with the clicked tab's index.                                                                                                                                                                                         |
+| `children`  | Rendered as the panel content for whichever tab is currently selected — `Tabs` does not automatically show/hide per-tab content; render what you want for the current `selected` index yourself, exactly like legacy `Tabs`. |
 
 Because very custom `Tabs` styling from Polaris React (via `overrideStyles` or CSS overrides)
 targeted DOM structure that no longer exists, heavily customized legacy `Tabs` usage may need

@@ -51,11 +51,7 @@ export function ComponentCanvas({
   }, [isDragging]);
 
   return (
-    <div
-      className={cn(
-        className
-      )}
-    >
+    <div className={cn(className)}>
       <ResizablePanelGroup
         orientation="horizontal"
         className={cn(isFullscreen ? "min-h-[calc(100vh-9rem)]" : "min-h-65", "w-full")}
@@ -67,7 +63,7 @@ export function ComponentCanvas({
           minSize="300px"
           className={cn(
             "relative flex justify-center bg-gray-50  overflow-clip  bg-[radial-gradient(oklch(0.7_0_0/0.2)_1px,transparent_1px)] dark:bg-[radial-gradient(oklch(1_0_0/0.15)_1px,transparent_1px)] bg-size-[16px_16px]",
-            isFullscreen ? "items-start py-4" : "items-center rounded-xl border"
+            isFullscreen ? "items-start py-4" : "items-center rounded-xl border",
           )}
         >
           {/* Prevent iframe from capturing pointer events during drag resizing */}
@@ -88,11 +84,7 @@ export function ComponentCanvas({
         />
 
         {/* Secondary empty spacer panel (skipped content) */}
-        <ResizablePanel
-          defaultSize="0%"
-          minSize="0px"
-          className="bg-muted/15"
-        />
+        <ResizablePanel defaultSize="0%" minSize="0px" className="bg-muted/15" />
       </ResizablePanelGroup>
     </div>
   );

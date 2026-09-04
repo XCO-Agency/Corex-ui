@@ -10,9 +10,17 @@ export function ComponentSandboxAlert() {
             Requires a real embedded Shopify admin session
           </p>
           <p className="text-amber-800/90 dark:text-amber-200/90">
-            This playground runs as a standalone browser tab, not an embedded app.
-            Global APIs like <code className="rounded bg-amber-500/20 px-1.5 py-0.5 font-mono text-xs text-amber-950 dark:text-amber-100">window.shopify</code> and
-            components like <code className="rounded bg-amber-500/20 px-1.5 py-0.5 font-mono text-xs text-amber-950 dark:text-amber-100">AppWindow</code> need the Shopify Admin context to execute fully. The preview interaction below is illustrative, while the code samples show the real, copyable API.
+            This playground runs as a standalone browser tab, not an embedded app. Global
+            APIs like{" "}
+            <code className="rounded bg-amber-500/20 px-1.5 py-0.5 font-mono text-xs text-amber-950 dark:text-amber-100">
+              window.shopify
+            </code>{" "}
+            and components like{" "}
+            <code className="rounded bg-amber-500/20 px-1.5 py-0.5 font-mono text-xs text-amber-950 dark:text-amber-100">
+              AppWindow
+            </code>{" "}
+            need the Shopify Admin context to execute fully. The preview interaction below
+            is illustrative, while the code samples show the real, copyable API.
           </p>
         </div>
       </div>

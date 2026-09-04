@@ -13,6 +13,9 @@ describe("Tooltip", () => {
     expect(trigger).toBeInTheDocument();
     const contentEl = screen.getByText("Deletes the item permanently");
     expect(contentEl.closest("s-tooltip")).toHaveAttribute("id");
-    expect(trigger.closest("s-text")).toHaveAttribute("interestfor", contentEl.closest("s-tooltip")?.id);
+    expect(trigger.closest("s-text")).toHaveAttribute(
+      "interestfor",
+      contentEl.closest("s-tooltip")?.id,
+    );
   });
 });

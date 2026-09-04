@@ -74,7 +74,8 @@ export const Box = forwardRef<HTMLElement, BoxPropsType>(function Box(
   if (typeof insetInlineEnd === "string") legacyStyles.right = insetInlineEnd;
   if (opacity) legacyStyles.opacity = opacity;
   if (outlineColor) legacyStyles.outlineColor = outlineColor;
-  if (outlineStyle) legacyStyles.outlineStyle = outlineStyle as CSSProperties["outlineStyle"];
+  if (outlineStyle)
+    legacyStyles.outlineStyle = outlineStyle as CSSProperties["outlineStyle"];
   if (outlineWidth) legacyStyles.outlineWidth = outlineWidth;
   if (zIndex !== undefined) legacyStyles.zIndex = zIndex;
   if (overflowX) legacyStyles.overflowX = overflowX as CSSProperties["overflowX"];

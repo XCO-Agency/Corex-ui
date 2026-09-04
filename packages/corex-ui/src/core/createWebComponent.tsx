@@ -34,61 +34,67 @@ export function createWebComponent<
       children?: ReactNode;
     };
 
-  const Component = forwardRef<TElement, Props>(function WebComponent(props, forwardedRef) {
-    const innerRef = useRef<TElement>(null);
-    const { children, ...rest } = props;
+  const Component = forwardRef<TElement, Props>(
+    function WebComponent(props, forwardedRef) {
+      const innerRef = useRef<TElement>(null);
+      const { children, ...rest } = props;
 
-    useLayoutEffect(() => {
-      const node = innerRef.current;
-      if (!node) return;
-      for (const [attr, value] of Object.entries(staticAttributes)) {
-        node.setAttribute(attr, value);
-      }
-      // Static attributes never change, so this only needs to run once.
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-
-    useLayoutEffect(() => {
-      const node = innerRef.current;
-      if (!node) return;
-      for (const key of domProps) {
-        if (key in rest) {
-          assignDomProp(node, key, rest[key]);
+      useLayoutEffect(() => {
+        const node = innerRef.current;
+        if (!node) return;
+        for (const [attr, value] of Object.entries(staticAttributes)) {
+          node.setAttribute(attr, value);
         }
-      }
-    });
+        // Static attributes never change, so this only needs to run once.
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+      }, []);
 
-    // `eventEntries` is fixed per call to `createWebComponent`, so the
-    // number/order of hook calls below is stable across renders of any
-    // given instance of `Component`.
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    for (const [reactEventName, domEventName] of eventEntries) {
+      useLayoutEffect(() => {
+        const node = innerRef.current;
+        if (!node) return;
+        for (const key of domProps) {
+          if (key in rest) {
+            assignDomProp(node, key, rest[key]);
+          }
+        }
+      });
+
+      // `eventEntries` is fixed per call to `createWebComponent`, so the
+      // number/order of hook calls below is stable across renders of any
+      // given instance of `Component`.
       // eslint-disable-next-line react-hooks/rules-of-hooks
-      useDomEvent(innerRef, domEventName, rest[reactEventName] as DomEventHandler | undefined);
-    }
-
-    const passthroughProps: Record<string, unknown> = {};
-    for (const [key, value] of Object.entries(rest)) {
-      if (domProps.includes(key)) continue;
-      if (key in events) continue;
-      if (key === "className" && value !== undefined) {
-        passthroughProps["class"] = value;
+      for (const [reactEventName, domEventName] of eventEntries) {
+        // eslint-disable-next-line react-hooks/rules-of-hooks
+        useDomEvent(
+          innerRef,
+          domEventName,
+          rest[reactEventName] as DomEventHandler | undefined,
+        );
       }
-      passthroughProps[key] = value;
-    }
 
-    // The tag name is only known at runtime; type safety for consumers is
-    // enforced by the exported `Props` type of each individual component
-    // wrapper, not inside this generic factory.
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const Tag: any = tagName;
+      const passthroughProps: Record<string, unknown> = {};
+      for (const [key, value] of Object.entries(rest)) {
+        if (domProps.includes(key)) continue;
+        if (key in events) continue;
+        if (key === "className" && value !== undefined) {
+          passthroughProps["class"] = value;
+        }
+        passthroughProps[key] = value;
+      }
 
-    return (
-      <Tag {...passthroughProps} ref={mergeRefs(innerRef, forwardedRef)}>
-        {children}
-      </Tag>
-    );
-  });
+      // The tag name is only known at runtime; type safety for consumers is
+      // enforced by the exported `Props` type of each individual component
+      // wrapper, not inside this generic factory.
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const Tag: any = tagName;
+
+      return (
+        <Tag {...passthroughProps} ref={mergeRefs(innerRef, forwardedRef)}>
+          {children}
+        </Tag>
+      );
+    },
+  );
 
   Component.displayName = `WebComponent(${tagName})`;
   return Component;

@@ -34,4 +34,3 @@ export type TabsPropsType<T = string | number> = {
 };
 
 export type TabsProps<T = string | number> = TabsPropsType<T>;
-

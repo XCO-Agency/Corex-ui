@@ -10,6 +10,6 @@ import { Avatar } from "@xco/corex-ui";
 
 ## Prop mapping
 
-| Legacy prop | Behavior |
-| --- | --- |
+| Legacy prop                          | Behavior                 |
+| ------------------------------------ | ------------------------ |
 | `name`, `initials`, `source`, `size` | Passed straight through. |

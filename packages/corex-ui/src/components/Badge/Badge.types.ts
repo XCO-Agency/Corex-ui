@@ -2,12 +2,7 @@ import type { CSSProperties, ReactNode } from "react";
 import type { Size, SizeType, Tone, ToneType } from "../../types/common";
 
 export type BadgeStatusType =
-  | "success"
-  | "info"
-  | "attention"
-  | "warning"
-  | "critical"
-  | "new";
+  "success" | "info" | "attention" | "warning" | "critical" | "new";
 
 export type BadgePropsType = {
   children?: ReactNode;

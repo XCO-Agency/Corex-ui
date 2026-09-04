@@ -8,15 +8,20 @@
     "build:playground": "pnpm --filter playground run build",
     "dev": "pnpm --filter playground run dev",
     "test": "pnpm --filter @xco-agency/corex-ui run test",
-    "typecheck": "pnpm --filter @xco-agency/corex-ui run typecheck"
+    "typecheck": "pnpm --filter @xco-agency/corex-ui run typecheck",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
   "devDependencies": {
+    "prettier": "^3.9.6",
     "typescript": "^5.6.3"
   },
   "engines": {
     "node": ">=18"
   },
   "pnpm": {
-    "onlyBuiltDependencies": ["esbuild"]
+    "onlyBuiltDependencies": [
+      "esbuild"
+    ]
   }
 }

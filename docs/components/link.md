@@ -12,9 +12,9 @@ import { Link } from "@xco/corex-ui";
 
 ## Prop mapping
 
-| Legacy prop | Behavior |
-| --- | --- |
-| `url` | Maps to `href`. |
-| `external` | Adds `target="_blank"` and `rel="noopener noreferrer"`. |
-| `onClick` | Bound to the native `click` event. |
-| `monochrome`, `removeUnderline` | Passed straight through. |
+| Legacy prop                     | Behavior                                                |
+| ------------------------------- | ------------------------------------------------------- |
+| `url`                           | Maps to `href`.                                         |
+| `external`                      | Adds `target="_blank"` and `rel="noopener noreferrer"`. |
+| `onClick`                       | Bound to the native `click` event.                      |
+| `monochrome`, `removeUnderline` | Passed straight through.                                |

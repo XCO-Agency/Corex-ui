@@ -1,42 +1,17 @@
 import type { CSSProperties, ElementType, ReactNode } from "react";
-import {
-  LegacySpacingType,
-  PolarisSpacingType,
-  StackGapType,
-} from "../../types/common";
+import { LegacySpacingType, PolarisSpacingType, StackGapType } from "../../types/common";
 
 export type BoxBackgroundType =
-  | "transparent"
-  | "base"
-  | "subdued"
-  | "strong"
-  | (string & {});
+  "transparent" | "base" | "subdued" | "strong" | (string & {});
 
 export type BoxBorderWidthType =
-  | "small-100"
-  | "small"
-  | "base"
-  | "large"
-  | "large-100"
-  | "none"
-  | ""
-  | (string & {});
+  "small-100" | "small" | "base" | "large" | "large-100" | "none" | "" | (string & {});
 
 export type BoxBorderStyleType =
-  | "solid"
-  | "dashed"
-  | "dotted"
-  | "none"
-  | ""
-  | (string & {});
+  "solid" | "dashed" | "dotted" | "none" | "" | (string & {});
 
 export type BoxBorderColorType =
-  | "subdued"
-  | "base"
-  | "strong"
-  | "transparent"
-  | ""
-  | (string & {});
+  "subdued" | "base" | "strong" | "transparent" | "" | (string & {});
 
 export type BoxBorderRadiusType =
   | "none"
@@ -49,20 +24,12 @@ export type BoxBorderRadiusType =
   | (string & {});
 
 export type BoxOverflowType =
-  | "hidden"
-  | "visible"
-  | "scroll"
-  | "auto"
-  | "clip"
-  | (string & {});
+  "hidden" | "visible" | "scroll" | "auto" | "clip" | (string & {});
 
 export type BoxDisplayType = "auto" | "none" | (string & {});
 
 export type BoxAccessibilityVisibilityType =
-  | "exclusive"
-  | "hidden"
-  | "visible"
-  | (string & {});
+  "exclusive" | "hidden" | "visible" | (string & {});
 
 export type BoxAccessibilityRoleType =
   | "main"
@@ -84,21 +51,10 @@ export type BoxAccessibilityRoleType =
   | (string & {});
 
 export type BoxPositionType =
-  | "relative"
-  | "absolute"
-  | "fixed"
-  | "sticky"
-  | (string & {});
+  "relative" | "absolute" | "fixed" | "sticky" | (string & {});
 
 export type BoxAsType =
-  | "div"
-  | "span"
-  | "section"
-  | "legend"
-  | "ul"
-  | "li"
-  | ElementType
-  | (string & {});
+  "div" | "span" | "section" | "legend" | "ul" | "li" | ElementType | (string & {});
 
 export type ResponsivePropType<T> = T | Record<string, T>;
 

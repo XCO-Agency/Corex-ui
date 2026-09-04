@@ -32,7 +32,10 @@ describe("Modal", () => {
       </Modal>,
     );
 
-    screen.getByText("Are you sure?").closest("s-modal")!.dispatchEvent(new Event("hide"));
+    screen
+      .getByText("Are you sure?")
+      .closest("s-modal")!
+      .dispatchEvent(new Event("hide"));
     expect(onClose).toHaveBeenCalledTimes(1);
   });
 

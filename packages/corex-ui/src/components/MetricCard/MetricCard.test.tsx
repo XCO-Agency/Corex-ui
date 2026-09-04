@@ -10,7 +10,7 @@ describe("MetricCard", () => {
         title="Total Sales"
         value="$12,345"
         tooltip="Gross sales over last 30 days"
-      />
+      />,
     );
     expect(screen.getByText("Total Sales")).toBeInTheDocument();
     expect(screen.getByText("$12,345")).toBeInTheDocument();
@@ -25,7 +25,7 @@ describe("MetricCard", () => {
         value="120"
         sparklineData={[10, 20, 15, 30]}
         sparklineColor="#ff0000"
-      />
+      />,
     );
     const path = container.querySelector("path[stroke='#ff0000']");
     expect(path).toBeInTheDocument();
@@ -39,9 +39,11 @@ describe("MetricCard", () => {
         value="120"
         sparklineData={[10, 20, 15, 30]}
         sparklineColor="success"
-      />
+      />,
     );
-    const path = container.querySelector("path[stroke='var(--p-color-text-success, #108043)']");
+    const path = container.querySelector(
+      "path[stroke='var(--p-color-text-success, #108043)']",
+    );
     expect(path).toBeInTheDocument();
   });
 });

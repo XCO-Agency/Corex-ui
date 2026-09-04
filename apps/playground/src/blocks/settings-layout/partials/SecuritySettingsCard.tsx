@@ -15,14 +15,11 @@ export type SecuritySettingsCardPropsType = {
   data: SecuritySettingsFormType;
   onChange: <K extends keyof SecuritySettingsFormType>(
     field: K,
-    value: SecuritySettingsFormType[K]
+    value: SecuritySettingsFormType[K],
   ) => void;
 };
 
-export function SecuritySettingsCard({
-  data,
-  onChange,
-}: SecuritySettingsCardPropsType) {
+export function SecuritySettingsCard({ data, onChange }: SecuritySettingsCardPropsType) {
   return (
     <Card title="Security & API credentials">
       <BlockStack gap="400">

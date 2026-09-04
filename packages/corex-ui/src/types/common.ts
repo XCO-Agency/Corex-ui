@@ -85,10 +85,5 @@ export type TextVariantType =
   | "bodySm";
 export type TextVariant = TextVariantType;
 
-export type TargetType =
-  | "_blank"
-  | "_self"
-  | "_parent"
-  | "_top"
-  | (string & {});
+export type TargetType = "_blank" | "_self" | "_parent" | "_top" | (string & {});
 export type Target = TargetType;

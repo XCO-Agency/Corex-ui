@@ -8,13 +8,12 @@ const SStack = createWebComponent<HTMLElement>("s-stack", {
 });
 
 /** Composed pattern: `s-stack` pinned to `direction="inline"`. See `BlockStack`. */
-export const InlineStack = forwardRef<HTMLElement, InlineStackPropsType>(function InlineStack(
-  { children, gap, ...rest },
-  ref,
-) {
-  return (
-    <SStack ref={ref} gap={mapLegacyGap(gap)} {...rest}>
-      {children}
-    </SStack>
-  );
-});
+export const InlineStack = forwardRef<HTMLElement, InlineStackPropsType>(
+  function InlineStack({ children, gap, ...rest }, ref) {
+    return (
+      <SStack ref={ref} gap={mapLegacyGap(gap)} {...rest}>
+        {children}
+      </SStack>
+    );
+  },
+);

@@ -27,7 +27,9 @@ describe("Button", () => {
     const onClick = vi.fn();
     render(<Button onClick={onClick}>Click me</Button>);
 
-    screen.getByText("Click me").dispatchEvent(new MouseEvent("click", { bubbles: true }));
+    screen
+      .getByText("Click me")
+      .dispatchEvent(new MouseEvent("click", { bubbles: true }));
 
     expect(onClick).toHaveBeenCalledTimes(1);
   });

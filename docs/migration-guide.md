@@ -46,15 +46,15 @@ deliberate, low-risk, incremental swap.
 
 Most components map closely, but a few are worth knowing about before you swap:
 
-| Component | Difference |
-| --- | --- |
-| `Card` | No native `s-card` exists — it's composed from `s-section`. The legacy `sectioned` prop is a no-op (every `Card` already renders as one section); a dev-mode warning tells you if you're still passing it. |
-| `Modal` | Legacy `open`/`onClose` still work exactly the same from the outside, but internally the wrapper now calls the underlying element's imperative `show()`/`hideOverlay()` methods rather than toggling an attribute — no change needed in your code. |
-| `TextField` / `Select` | `onChange` still fires on every keystroke/selection, matching legacy behavior — it's now bound to the new element's `onInput`, since the new element's own `onChange` only fires on blur/commit. |
-| `TextField` | `multiline` now renders `s-text-area` under the hood instead of `s-text-field`; this is transparent to your code. |
-| `Tabs` | No native tab component exists yet — it's composed from `ButtonGroup`/`Button`, so very custom `Tabs` styling overrides from the old library won't carry over automatically. |
-| `Button` | `pressed` and `fullWidth` are forwarded best-effort (no confirmed equivalent on `s-button` as of this writing) — a dev-mode warning flags `pressed` specifically; verify visually if you rely on it. |
-| `Page` | `backAction` has no confirmed equivalent yet and is accepted for API compatibility only (with a dev warning) — it currently has no visual effect. |
+| Component              | Difference                                                                                                                                                                                                                                         |
+| ---------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `Card`                 | No native `s-card` exists — it's composed from `s-section`. The legacy `sectioned` prop is a no-op (every `Card` already renders as one section); a dev-mode warning tells you if you're still passing it.                                         |
+| `Modal`                | Legacy `open`/`onClose` still work exactly the same from the outside, but internally the wrapper now calls the underlying element's imperative `show()`/`hideOverlay()` methods rather than toggling an attribute — no change needed in your code. |
+| `TextField` / `Select` | `onChange` still fires on every keystroke/selection, matching legacy behavior — it's now bound to the new element's `onInput`, since the new element's own `onChange` only fires on blur/commit.                                                   |
+| `TextField`            | `multiline` now renders `s-text-area` under the hood instead of `s-text-field`; this is transparent to your code.                                                                                                                                  |
+| `Tabs`                 | No native tab component exists yet — it's composed from `ButtonGroup`/`Button`, so very custom `Tabs` styling overrides from the old library won't carry over automatically.                                                                       |
+| `Button`               | `pressed` and `fullWidth` are forwarded best-effort (no confirmed equivalent on `s-button` as of this writing) — a dev-mode warning flags `pressed` specifically; verify visually if you rely on it.                                               |
+| `Page`                 | `backAction` has no confirmed equivalent yet and is accepted for API compatibility only (with a dev warning) — it currently has no visual effect.                                                                                                  |
 
 See [`docs/architecture.md`](./architecture.md) for why these gaps exist and how they're
 tracked (`devWarning`), and each `docs/components/*.md` file for the full prop-mapping table of

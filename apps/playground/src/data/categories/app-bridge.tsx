@@ -21,7 +21,8 @@ export const appBridgeComponents: ComponentEntry[] = [
     name: "AppWindow",
     slug: "app-window",
     category: "App Bridge",
-    description: "Loads another page in an embedded window, shown/hidden via ref or command/commandFor.",
+    description:
+      "Loads another page in an embedded window, shown/hidden via ref or command/commandFor.",
     requiresEmbeddedContext: true,
     examples: [
       {
@@ -59,7 +60,8 @@ export const appBridgeComponents: ComponentEntry[] = [
     name: "Menu (title bar)",
     slug: "app-bridge-menu",
     category: "App Bridge",
-    description: "A secondary-actions Menu placed in a Page's title bar, opened via commandFor.",
+    description:
+      "A secondary-actions Menu placed in a Page's title bar, opened via commandFor.",
     requiresEmbeddedContext: true,
     examples: [
       {
@@ -73,7 +75,8 @@ export const appBridgeComponents: ComponentEntry[] = [
     name: "Toast",
     slug: "toast",
     category: "App Bridge",
-    description: "A brief, non-blocking confirmation message, shown via the useToast() hook.",
+    description:
+      "A brief, non-blocking confirmation message, shown via the useToast() hook.",
     requiresEmbeddedContext: true,
     examples: [
       {
@@ -87,7 +90,8 @@ export const appBridgeComponents: ComponentEntry[] = [
     name: "SaveBar",
     slug: "save-bar",
     category: "App Bridge",
-    description: "A persistent bar prompting the merchant to save or discard unsaved changes.",
+    description:
+      "A persistent bar prompting the merchant to save or discard unsaved changes.",
     requiresEmbeddedContext: true,
     examples: [
       {

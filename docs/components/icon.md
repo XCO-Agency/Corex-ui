@@ -10,7 +10,7 @@ import { Icon } from "@xco/corex-ui";
 
 ## Prop mapping
 
-| Legacy prop | Behavior |
-| --- | --- |
-| `source` | Maps to `s-icon`'s `type` attribute — best-effort, verify against your installed polaris-1.js. |
-| `tone`, `accessibilityLabel` | Passed straight through. |
+| Legacy prop                  | Behavior                                                                                       |
+| ---------------------------- | ---------------------------------------------------------------------------------------------- |
+| `source`                     | Maps to `s-icon`'s `type` attribute — best-effort, verify against your installed polaris-1.js. |
+| `tone`, `accessibilityLabel` | Passed straight through.                                                                       |

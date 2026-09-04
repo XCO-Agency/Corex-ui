@@ -10,6 +10,6 @@ import { Badge } from "@xco/corex-ui";
 
 ## Prop mapping
 
-| Legacy prop | Behavior |
-| --- | --- |
+| Legacy prop                | Behavior                 |
+| -------------------------- | ------------------------ |
 | `tone`, `size`, `progress` | Passed straight through. |

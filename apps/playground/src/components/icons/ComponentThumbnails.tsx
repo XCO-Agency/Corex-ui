@@ -27,7 +27,17 @@ const accent = "#2c6ecb";
 export function ButtonThumbnail() {
   return (
     <Frame>
-      <rect x="52" y="38" width="56" height="24" rx="6" fill={accent} fillOpacity="0.12" stroke={accent} strokeWidth="1.5" />
+      <rect
+        x="52"
+        y="38"
+        width="56"
+        height="24"
+        rx="6"
+        fill={accent}
+        fillOpacity="0.12"
+        stroke={accent}
+        strokeWidth="1.5"
+      />
       <rect x="66" y="47" width="28" height="6" rx="3" fill={accent} />
     </Frame>
   );
@@ -37,7 +47,16 @@ export function ButtonGroupThumbnail() {
   return (
     <Frame>
       <rect x="30" y="40" width="32" height="22" rx="4" fill="#eef0f1" stroke={border} />
-      <rect x="64" y="40" width="32" height="22" rx="4" fill={accent} fillOpacity="0.12" stroke={accent} />
+      <rect
+        x="64"
+        y="40"
+        width="32"
+        height="22"
+        rx="4"
+        fill={accent}
+        fillOpacity="0.12"
+        stroke={accent}
+      />
       <rect x="98" y="40" width="32" height="22" rx="4" fill="#eef0f1" stroke={border} />
     </Frame>
   );
@@ -67,7 +86,15 @@ export function BadgeThumbnail() {
 export function BannerThumbnail() {
   return (
     <Frame>
-      <rect x="20" y="30" width="120" height="40" rx="6" fill="#fff4e4" stroke="#b98900" />
+      <rect
+        x="20"
+        y="30"
+        width="120"
+        height="40"
+        rx="6"
+        fill="#fff4e4"
+        stroke="#b98900"
+      />
       <circle cx="40" cy="50" r="8" fill="#b98900" fillOpacity="0.35" />
       <rect x="58" y="42" width="70" height="6" rx="3" fill="#b98900" />
       <rect x="58" y="54" width="50" height="6" rx="3" fill="#b98900" fillOpacity="0.6" />
@@ -79,7 +106,13 @@ export function SpinnerThumbnail() {
   return (
     <Frame>
       <circle cx="80" cy="50" r="18" fill="none" stroke={gray} strokeWidth="5" />
-      <path d="M80 32 a18 18 0 0 1 18 18" fill="none" stroke={accent} strokeWidth="5" strokeLinecap="round" />
+      <path
+        d="M80 32 a18 18 0 0 1 18 18"
+        fill="none"
+        stroke={accent}
+        strokeWidth="5"
+        strokeLinecap="round"
+      />
     </Frame>
   );
 }
@@ -87,7 +120,16 @@ export function SpinnerThumbnail() {
 export function BoxThumbnail() {
   return (
     <Frame>
-      <rect x="45" y="25" width="70" height="50" rx="4" fill="#f6f6f7" stroke={border} strokeDasharray="4 3" />
+      <rect
+        x="45"
+        y="25"
+        width="70"
+        height="50"
+        rx="4"
+        fill="#f6f6f7"
+        stroke={border}
+        strokeDasharray="4 3"
+      />
     </Frame>
   );
 }
@@ -128,7 +170,15 @@ export function PageThumbnail() {
     <Frame>
       <rect x="18" y="14" width="124" height="72" rx="4" fill="#ffffff" stroke={border} />
       <rect x="28" y="24" width="50" height="8" rx="2" fill={grayStrong} />
-      <rect x="110" y="22" width="24" height="12" rx="3" fill={accent} fillOpacity="0.5" />
+      <rect
+        x="110"
+        y="22"
+        width="24"
+        height="12"
+        rx="3"
+        fill={accent}
+        fillOpacity="0.5"
+      />
       <rect x="28" y="44" width="104" height="6" rx="2" fill="#e4e6e8" />
       <rect x="28" y="54" width="104" height="6" rx="2" fill="#e4e6e8" />
       <rect x="28" y="64" width="70" height="6" rx="2" fill="#e4e6e8" />
@@ -151,7 +201,14 @@ export function SelectThumbnail() {
     <Frame>
       <rect x="35" y="28" width="50" height="6" rx="2" fill={grayStrong} />
       <rect x="35" y="42" width="90" height="22" rx="4" fill="#ffffff" stroke={border} />
-      <path d="M111 50 l4 5 l4 -5" fill="none" stroke={grayStrong} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+      <path
+        d="M111 50 l4 5 l4 -5"
+        fill="none"
+        stroke={grayStrong}
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
     </Frame>
   );
 }
@@ -159,8 +216,24 @@ export function SelectThumbnail() {
 export function CheckboxThumbnail() {
   return (
     <Frame>
-      <rect x="38" y="44" width="18" height="18" rx="4" fill={accent} fillOpacity="0.12" stroke={accent} />
-      <path d="M43 53 l4 4 l8 -8" fill="none" stroke={accent} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+      <rect
+        x="38"
+        y="44"
+        width="18"
+        height="18"
+        rx="4"
+        fill={accent}
+        fillOpacity="0.12"
+        stroke={accent}
+      />
+      <path
+        d="M43 53 l4 4 l8 -8"
+        fill="none"
+        stroke={accent}
+        strokeWidth="2.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
       <rect x="64" y="50" width="60" height="6" rx="2" fill={gray} />
     </Frame>
   );
@@ -205,7 +278,14 @@ export function IconThumbnail() {
   return (
     <Frame>
       <rect x="65" y="30" width="30" height="30" rx="6" fill="#eef0f1" stroke={border} />
-      <path d="M74 45 l6 6 l12 -14" fill="none" stroke={accent} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+      <path
+        d="M74 45 l6 6 l12 -14"
+        fill="none"
+        stroke={accent}
+        strokeWidth="2.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
     </Frame>
   );
 }
@@ -235,7 +315,14 @@ export function ThumbnailThumbnail() {
     <Frame>
       <rect x="55" y="30" width="50" height="40" rx="6" fill="#eef0f1" stroke={border} />
       <circle cx="66" cy="42" r="4" fill={grayStrong} />
-      <path d="M58 64 l14 -14 l10 10 l10 -8 l8 12" fill="none" stroke={grayStrong} strokeWidth="2" strokeLinejoin="round" strokeLinecap="round" />
+      <path
+        d="M58 64 l14 -14 l10 10 l10 -8 l8 12"
+        fill="none"
+        stroke={grayStrong}
+        strokeWidth="2"
+        strokeLinejoin="round"
+        strokeLinecap="round"
+      />
     </Frame>
   );
 }
@@ -244,7 +331,15 @@ export function TooltipThumbnail() {
   return (
     <Frame>
       <rect x="50" y="18" width="60" height="20" rx="4" fill="#202223" />
-      <rect x="60" y="24" width="40" height="8" rx="2" fill="#ffffff" fillOpacity="0.85" />
+      <rect
+        x="60"
+        y="24"
+        width="40"
+        height="8"
+        rx="2"
+        fill="#ffffff"
+        fillOpacity="0.85"
+      />
       <path d="M75 38 l5 8 l5 -8 Z" fill="#202223" />
       <rect x="60" y="58" width="40" height="18" rx="4" fill="#eef0f1" stroke={border} />
     </Frame>
@@ -254,7 +349,16 @@ export function TooltipThumbnail() {
 export function ChoiceListThumbnail() {
   return (
     <Frame>
-      <rect x="35" y="28" width="14" height="14" rx="3" fill={accent} fillOpacity="0.12" stroke={accent} />
+      <rect
+        x="35"
+        y="28"
+        width="14"
+        height="14"
+        rx="3"
+        fill={accent}
+        fillOpacity="0.12"
+        stroke={accent}
+      />
       <rect x="56" y="32" width="50" height="6" rx="2" fill={gray} />
       <circle cx="42" cy="57" r="7" fill="none" stroke={border} strokeWidth="1.5" />
       <rect x="56" y="54" width="50" height="6" rx="2" fill={gray} />
@@ -267,7 +371,16 @@ export function DateFieldThumbnail() {
     <Frame>
       <rect x="35" y="28" width="50" height="6" rx="2" fill={grayStrong} />
       <rect x="35" y="42" width="90" height="22" rx="4" fill="#ffffff" stroke={border} />
-      <rect x="99" y="48" width="14" height="12" rx="2" fill="none" stroke={grayStrong} strokeWidth="1.5" />
+      <rect
+        x="99"
+        y="48"
+        width="14"
+        height="12"
+        rx="2"
+        fill="none"
+        stroke={grayStrong}
+        strokeWidth="1.5"
+      />
     </Frame>
   );
 }
@@ -276,7 +389,15 @@ export function DatePickerThumbnail() {
   return (
     <Frame>
       <rect x="45" y="20" width="70" height="58" rx="6" fill="#ffffff" stroke={border} />
-      <rect x="45" y="20" width="70" height="14" rx="6" fill={accent} fillOpacity="0.15" />
+      <rect
+        x="45"
+        y="20"
+        width="70"
+        height="14"
+        rx="6"
+        fill={accent}
+        fillOpacity="0.15"
+      />
       <circle cx="60" cy="52" r="3" fill={gray} />
       <circle cx="75" cy="52" r="3" fill={gray} />
       <circle cx="90" cy="52" r="3" fill={accent} />
@@ -327,8 +448,25 @@ export function SaveBarThumbnail() {
   return (
     <Frame>
       <rect x="15" y="40" width="130" height="24" rx="6" fill="#202223" />
-      <rect x="95" y="47" width="40" height="10" rx="3" fill="#ffffff" fillOpacity="0.9" />
-      <rect x="50" y="47" width="40" height="10" rx="3" fill="none" stroke="#ffffff" strokeOpacity="0.6" />
+      <rect
+        x="95"
+        y="47"
+        width="40"
+        height="10"
+        rx="3"
+        fill="#ffffff"
+        fillOpacity="0.9"
+      />
+      <rect
+        x="50"
+        y="47"
+        width="40"
+        height="10"
+        rx="3"
+        fill="none"
+        stroke="#ffffff"
+        strokeOpacity="0.6"
+      />
     </Frame>
   );
 }

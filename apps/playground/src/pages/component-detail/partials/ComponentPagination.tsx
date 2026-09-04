@@ -24,12 +24,8 @@ export function ComponentPagination({ prev, next }: ComponentPaginationPropsType
             <ChevronLeft className="size-3.5 transition-transform group-hover:-translate-x-0.5" />
             <span>Previous</span>
           </div>
-          <div className="text-base font-semibold text-foreground">
-            {prev.name}
-          </div>
-          <div className="text-xs text-muted-foreground">
-            {prev.category}
-          </div>
+          <div className="text-base font-semibold text-foreground">{prev.name}</div>
+          <div className="text-xs text-muted-foreground">{prev.category}</div>
         </Link>
       ) : (
         <div className="hidden sm:block" />
@@ -44,12 +40,8 @@ export function ComponentPagination({ prev, next }: ComponentPaginationPropsType
             <span>Next</span>
             <ChevronRight className="size-3.5 transition-transform group-hover:translate-x-0.5" />
           </div>
-          <div className="text-base font-semibold text-foreground">
-            {next.name}
-          </div>
-          <div className="text-xs text-muted-foreground">
-            {next.category}
-          </div>
+          <div className="text-base font-semibold text-foreground">{next.name}</div>
+          <div className="text-xs text-muted-foreground">{next.category}</div>
         </Link>
       ) : null}
     </nav>

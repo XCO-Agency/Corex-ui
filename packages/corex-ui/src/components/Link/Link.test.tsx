@@ -18,7 +18,9 @@ describe("Link", () => {
   it("binds onClick as a native click listener", () => {
     const onClick = vi.fn();
     render(<Link onClick={onClick}>Click me</Link>);
-    screen.getByText("Click me").dispatchEvent(new MouseEvent("click", { bubbles: true }));
+    screen
+      .getByText("Click me")
+      .dispatchEvent(new MouseEvent("click", { bubbles: true }));
     expect(onClick).toHaveBeenCalledTimes(1);
   });
 });

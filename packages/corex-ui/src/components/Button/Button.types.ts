@@ -1,5 +1,12 @@
 import type { CSSProperties, ReactNode } from "react";
-import type { ButtonVariant, ButtonVariantType, Size, SizeType, TargetType, ToneType } from "../../types/common";
+import type {
+  ButtonVariant,
+  ButtonVariantType,
+  Size,
+  SizeType,
+  TargetType,
+  ToneType,
+} from "../../types/common";
 
 export type ButtonType = "button" | "submit" | "reset" | (string & {});
 

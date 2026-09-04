@@ -1,10 +1,6 @@
 import * as React from "react";
 import { Link, useLocation } from "react-router-dom";
-import {
-  SidebarInset,
-  SidebarProvider,
-  SidebarTrigger,
-} from "@/components/ui/sidebar";
+import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { Separator } from "@/components/ui/separator";
 import { AppSidebar } from "@/components/app-sidebar";
 import { SearchDialog } from "@/components/search/SearchDialog";
@@ -67,9 +63,7 @@ export default function Layout({ children }: LayoutPropsType) {
             </Breadcrumb>
           </div>
         </header>
-        <div className="flex flex-1 flex-col gap-4 p-6">
-          {children}
-        </div>
+        <div className="flex flex-1 flex-col gap-4 p-6">{children}</div>
       </SidebarInset>
       <SearchDialog open={searchOpen} onOpenChange={setSearchOpen} />
     </SidebarProvider>

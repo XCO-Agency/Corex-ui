@@ -10,6 +10,6 @@ import { Thumbnail } from "@xco/corex-ui";
 
 ## Prop mapping
 
-| Legacy prop | Behavior |
-| --- | --- |
+| Legacy prop             | Behavior                 |
+| ----------------------- | ------------------------ |
 | `source`, `alt`, `size` | Passed straight through. |

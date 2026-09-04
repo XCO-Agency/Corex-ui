@@ -12,8 +12,8 @@ import { Banner } from "@xco/corex-ui";
 
 ## Prop mapping
 
-| Legacy prop | Behavior |
-| --- | --- |
-| `title` | Maps to `heading`. |
-| `status` (deprecated in legacy) | Maps to `tone`; `tone` takes precedence if both are given. |
-| `onDismiss` | Bound to the element's native `dismiss` event; also sets `dismissible` automatically when provided. |
+| Legacy prop                     | Behavior                                                                                            |
+| ------------------------------- | --------------------------------------------------------------------------------------------------- |
+| `title`                         | Maps to `heading`.                                                                                  |
+| `status` (deprecated in legacy) | Maps to `tone`; `tone` takes precedence if both are given.                                          |
+| `onDismiss`                     | Bound to the element's native `dismiss` event; also sets `dismissible` automatically when provided. |

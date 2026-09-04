@@ -2,7 +2,7 @@
 
 App Bridge component — see [app-bridge.md](../app-bridge.md#savebar) for full examples,
 including the simpler `data-save-bar` form-attribute pattern for same-page forms. Wraps
-`<ui-save-bar>` — note this is a *different* custom element namespace from every other
+`<ui-save-bar>` — note this is a _different_ custom element namespace from every other
 component in this library (`ui-*`, not `s-*`).
 
 ```tsx
@@ -18,10 +18,10 @@ const saveBar = useSaveBar();
 
 ## Prop mapping
 
-| Legacy prop | Behavior |
-| --- | --- |
-| `id` | Required — referenced by `useSaveBar().show(id)`/`.hide(id)`. |
-| `children` | Rendered as-is. Shopify's own examples nest plain `<button>` elements, not Polaris `Button` — this wrapper doesn't constrain what you nest here. |
+| Legacy prop | Behavior                                                                                                                                         |
+| ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `id`        | Required — referenced by `useSaveBar().show(id)`/`.hide(id)`.                                                                                    |
+| `children`  | Rendered as-is. Shopify's own examples nest plain `<button>` elements, not Polaris `Button` — this wrapper doesn't constrain what you nest here. |
 
 Visibility is controlled externally via `useSaveBar()`, not a prop on this component — see
 [`useSaveBar`](../app-bridge.md#savebar).

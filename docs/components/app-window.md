@@ -13,10 +13,10 @@ import { AppWindow, Button } from "@xco/corex-ui";
 
 ## Prop mapping
 
-| Legacy prop | Behavior |
-| --- | --- |
-| `src` | Required — the URL of the page to load inside the window. |
-| `id` | Referenced by trigger `Button`s' `commandFor`. |
+| Legacy prop | Behavior                                                  |
+| ----------- | --------------------------------------------------------- |
+| `src`       | Required — the URL of the page to load inside the window. |
+| `id`        | Referenced by trigger `Button`s' `commandFor`.            |
 
 ## Notable difference from Modal
 

@@ -18,15 +18,21 @@ export function ComponentDetail() {
   }
 
   const prev = currentIndex > 0 ? allEntries[currentIndex - 1] : null;
-  const next = currentIndex >= 0 && currentIndex < allEntries.length - 1 ? allEntries[currentIndex + 1] : null;
+  const next =
+    currentIndex >= 0 && currentIndex < allEntries.length - 1
+      ? allEntries[currentIndex + 1]
+      : null;
 
-  const tocItems: TocItemType[] = React.useMemo(() => [
-    { id: "overview", title: "Overview" },
-    ...entry.examples.map((ex, index) => ({
-      id: `example-${index}-${ex.title.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`,
-      title: ex.title,
-    })),
-  ], [entry.examples]);
+  const tocItems: TocItemType[] = React.useMemo(
+    () => [
+      { id: "overview", title: "Overview" },
+      ...entry.examples.map((ex, index) => ({
+        id: `example-${index}-${ex.title.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`,
+        title: ex.title,
+      })),
+    ],
+    [entry.examples],
+  );
 
   return (
     <div className="mx-auto w-full max-w-7xl px-2 sm:px-4 lg:px-6 py-2 pb-16">

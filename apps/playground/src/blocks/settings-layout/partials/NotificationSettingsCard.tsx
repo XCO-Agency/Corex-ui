@@ -1,11 +1,18 @@
-import { Card, BlockStack, Banner, Checkbox, Select, Divider } from "@xco-agency/corex-ui";
+import {
+  Card,
+  BlockStack,
+  Banner,
+  Checkbox,
+  Select,
+  Divider,
+} from "@xco-agency/corex-ui";
 import type { NotificationSettingsFormType } from "../types";
 
 export type NotificationSettingsCardPropsType = {
   data: NotificationSettingsFormType;
   onChange: <K extends keyof NotificationSettingsFormType>(
     field: K,
-    value: NotificationSettingsFormType[K]
+    value: NotificationSettingsFormType[K],
   ) => void;
 };
 

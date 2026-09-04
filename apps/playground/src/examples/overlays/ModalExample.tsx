@@ -10,7 +10,11 @@ export function ModalExample() {
         open={open}
         onClose={() => setOpen(false)}
         title="Delete product"
-        primaryAction={{ content: "Delete", destructive: true, onAction: () => setOpen(false) }}
+        primaryAction={{
+          content: "Delete",
+          destructive: true,
+          onAction: () => setOpen(false),
+        }}
         secondaryActions={[{ content: "Cancel", onAction: () => setOpen(false) }]}
       >
         <Text>This can&rsquo;t be undone.</Text>

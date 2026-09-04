@@ -35,18 +35,10 @@ export function SettingsSaveBar({
           </InlineStack>
 
           <InlineStack gap="200" align="end" blockAlign="center">
-            <Button
-              variant="secondary"
-              disabled={isSaving}
-              onClick={onDiscard}
-            >
+            <Button variant="secondary" disabled={isSaving} onClick={onDiscard}>
               Discard
             </Button>
-            <Button
-              variant="primary"
-              loading={isSaving}
-              onClick={onSave}
-            >
+            <Button variant="primary" loading={isSaving} onClick={onSave}>
               Save changes
             </Button>
           </InlineStack>

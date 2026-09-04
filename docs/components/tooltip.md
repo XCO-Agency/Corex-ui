@@ -14,7 +14,7 @@ import { Tooltip } from "@xco/corex-ui";
 
 ## Prop mapping
 
-| Legacy prop | Behavior |
-| --- | --- |
-| `children` | The trigger element. |
-| `content` | Rendered in a `slot="content"` child — best-effort slot name, verify against your installed polaris-1.js. |
+| Legacy prop | Behavior                                                                                                  |
+| ----------- | --------------------------------------------------------------------------------------------------------- |
+| `children`  | The trigger element.                                                                                      |
+| `content`   | Rendered in a `slot="content"` child — best-effort slot name, verify against your installed polaris-1.js. |

@@ -7,7 +7,9 @@ App Bridge component — see [app-bridge.md](../app-bridge.md#appnav). Thin wrap
 import { AppNav, Link } from "@xco/corex-ui";
 
 <AppNav>
-  <Link url="/app" removeUnderline>Home</Link>
+  <Link url="/app" removeUnderline>
+    Home
+  </Link>
   <Link url="/app/settings">Settings</Link>
 </AppNav>;
 ```

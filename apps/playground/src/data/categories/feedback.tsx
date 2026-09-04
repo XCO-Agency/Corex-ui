@@ -13,7 +13,8 @@ export const feedbackComponents: ComponentEntry[] = [
     name: "Badge",
     slug: "badge",
     category: "Feedback",
-    description: "A short status descriptor for a resource, such as an order or product state.",
+    description:
+      "A short status descriptor for a resource, such as an order or product state.",
     examples: [
       {
         title: "Tones",
@@ -26,7 +27,8 @@ export const feedbackComponents: ComponentEntry[] = [
     name: "Banner",
     slug: "banner",
     category: "Feedback",
-    description: "Highlights important information or required actions prominently on the page.",
+    description:
+      "Highlights important information or required actions prominently on the page.",
     examples: [
       {
         title: "Dismissible",

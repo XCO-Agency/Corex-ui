@@ -31,9 +31,7 @@ export function AnnotatedSection({
         </BlockStack>
       </div>
 
-      <div style={{ flex: "2 1 420px", minWidth: "280px" }}>
-        {children}
-      </div>
+      <div style={{ flex: "2 1 420px", minWidth: "280px" }}>{children}</div>
     </div>
   );
 }

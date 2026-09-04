@@ -4,7 +4,11 @@ import { Banner } from "./Banner";
 
 describe("Banner", () => {
   it("maps legacy `status` to `tone` and `title` to `heading`", () => {
-    render(<Banner title="Heads up" status="warning">Something to know.</Banner>);
+    render(
+      <Banner title="Heads up" status="warning">
+        Something to know.
+      </Banner>,
+    );
     const el = screen.getByText("Something to know.");
     expect(el.tagName.toLowerCase()).toBe("s-banner");
     expect(el).toHaveAttribute("heading", "Heads up");

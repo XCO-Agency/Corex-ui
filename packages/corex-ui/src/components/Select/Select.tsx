@@ -28,9 +28,21 @@ export const Select = forwardRef<HTMLElement, SelectProps>(function Select(
   };
 
   return (
-    <SSelect ref={ref} id={id} label={label} details={helpText} onChange={handleChange} {...rest}>
+    <SSelect
+      ref={ref}
+      id={id}
+      label={label}
+      details={helpText}
+      onChange={handleChange}
+      {...rest}
+    >
       {options.map(normalizeOption).map((option) => (
-        <SOption key={option.value} value={option.value} disabled={option.disabled} selected={rest.value === option.value}>
+        <SOption
+          key={option.value}
+          value={option.value}
+          disabled={option.disabled}
+          selected={rest.value === option.value}
+        >
           {option.label}
         </SOption>
       ))}

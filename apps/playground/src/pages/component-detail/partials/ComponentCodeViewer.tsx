@@ -10,11 +10,7 @@ import {
   FileCode,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
 import type { FileItemType } from "@/data/types";
 
@@ -35,7 +31,7 @@ export function ComponentCodeViewer({
 }: ComponentCodeViewerPropsType) {
   const [copied, setCopied] = React.useState(false);
   const [activeFilePath, setActiveFilePath] = React.useState<string>(
-    files && files.length > 0 ? files[0]!.path : filename
+    files && files.length > 0 ? files[0]!.path : filename,
   );
   const [openFolders, setOpenFolders] = React.useState<Record<string, boolean>>({
     app: true,
@@ -86,7 +82,7 @@ export function ComponentCodeViewer({
     <div
       className={cn(
         "relative flex flex-col md:flex-row overflow-hidden rounded-xl border border-border/80 bg-card shadow-xs",
-        className
+        className,
       )}
     >
       {/* Optional File Tree (only for future multi-file blocks) */}
@@ -107,7 +103,7 @@ export function ComponentCodeViewer({
                     "flex w-full items-center gap-2 rounded-md px-2.5 py-1.5 text-left font-mono transition-colors",
                     isSelected
                       ? "bg-muted font-semibold text-foreground shadow-2xs"
-                      : "text-muted-foreground hover:bg-muted/50 hover:text-foreground"
+                      : "text-muted-foreground hover:bg-muted/50 hover:text-foreground",
                   )}
                 >
                   <FileCode className="size-3.5 text-muted-foreground shrink-0" />
@@ -150,9 +146,7 @@ export function ComponentCodeViewer({
                 <Copy className="size-3.5" />
               )}
             </TooltipTrigger>
-            <TooltipContent>
-              {copied ? "Copied code!" : "Copy code"}
-            </TooltipContent>
+            <TooltipContent>{copied ? "Copied code!" : "Copy code"}</TooltipContent>
           </Tooltip>
         </div>
 
@@ -163,11 +157,17 @@ export function ComponentCodeViewer({
             code={activeCode}
             language={language}
           >
-            {({ className: highlightClass, style, tokens, getLineProps, getTokenProps }) => (
+            {({
+              className: highlightClass,
+              style,
+              tokens,
+              getLineProps,
+              getTokenProps,
+            }) => (
               <pre
                 className={cn(
                   highlightClass,
-                  "m-0 font-mono text-[13px] leading-relaxed"
+                  "m-0 font-mono text-[13px] leading-relaxed",
                 )}
                 style={{ ...style, background: "transparent" }}
               >

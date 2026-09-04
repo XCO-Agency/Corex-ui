@@ -87,8 +87,14 @@ export function GeneralSettingsCard({ data, onChange }: GeneralSettingsCardProps
           value={data.timezone}
           onChange={(val) => onChange("timezone", val)}
           options={[
-            { label: "(GMT-05:00) Eastern Time (US & Canada)", value: "America/New_York" },
-            { label: "(GMT-08:00) Pacific Time (US & Canada)", value: "America/Los_Angeles" },
+            {
+              label: "(GMT-05:00) Eastern Time (US & Canada)",
+              value: "America/New_York",
+            },
+            {
+              label: "(GMT-08:00) Pacific Time (US & Canada)",
+              value: "America/Los_Angeles",
+            },
             { label: "(GMT+00:00) UTC", value: "UTC" },
             { label: "(GMT+01:00) London, Lisbon, Casablanca", value: "Europe/London" },
             { label: "(GMT+02:00) Paris, Berlin, Rome", value: "Europe/Paris" },

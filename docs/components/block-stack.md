@@ -15,7 +15,7 @@ import { BlockStack, Text } from "@xco/corex-ui";
 
 ## Prop mapping
 
-| Prop | Behavior |
-| --- | --- |
-| `gap` | Accepts Polaris web-component spacing tokens (`small-200`, `base`, etc.). Legacy numeric values (e.g. `"400"`) are automatically translated for backward compatibility. |
-| `align`, `inlineAlign` | Passed straight through to `s-stack`. |
+| Prop                   | Behavior                                                                                                                                                                |
+| ---------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `gap`                  | Accepts Polaris web-component spacing tokens (`small-200`, `base`, etc.). Legacy numeric values (e.g. `"400"`) are automatically translated for backward compatibility. |
+| `align`, `inlineAlign` | Passed straight through to `s-stack`.                                                                                                                                   |

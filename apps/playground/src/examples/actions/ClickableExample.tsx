@@ -18,7 +18,12 @@ export function ClickableExample() {
   const items = [
     { id: "orders", title: "Manage Orders", badge: "12 Pending", icon: "package" },
     { id: "customers", title: "Customer Audiences", badge: "Active", icon: "customer" },
-    { id: "discounts", title: "Promotions & Discounts", badge: "3 Running", icon: "discount" },
+    {
+      id: "discounts",
+      title: "Promotions & Discounts",
+      badge: "3 Running",
+      icon: "discount",
+    },
   ];
 
   const handleSimulatedAsyncAction = () => {
@@ -34,9 +39,10 @@ export function ClickableExample() {
     <BlockStack gap="400">
       <Banner tone="info">
         <Text as="p">
-          Clickable (and its alias ClickableAction) directly exposes Polaris <code>&lt;s-clickable&gt;</code>,
-          inheriting full <strong>BoxProps</strong> (background, border, padding, dimensions, overflow)
-          along with action properties (href/url, target, loading, disabled, download, command).
+          Clickable (and its alias ClickableAction) directly exposes Polaris{" "}
+          <code>&lt;s-clickable&gt;</code>, inheriting full <strong>BoxProps</strong>{" "}
+          (background, border, padding, dimensions, overflow) along with action properties
+          (href/url, target, loading, disabled, download, command).
         </Text>
       </Banner>
 

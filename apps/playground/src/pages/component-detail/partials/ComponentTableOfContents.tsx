@@ -23,7 +23,7 @@ export function ComponentTableOfContents({ items }: ComponentTableOfContentsProp
       {
         rootMargin: "-80px 0px -60% 0px",
         threshold: 0,
-      }
+      },
     );
 
     items.forEach((item) => {
@@ -70,9 +70,7 @@ export function ComponentTableOfContents({ items }: ComponentTableOfContentsProp
                     onClick={(e) => scrollToId(e, item.id)}
                     className={cn(
                       "block line-clamp-1 py-1 transition-colors hover:text-foreground",
-                      isActive
-                        ? "font-semibold text-primary"
-                        : "text-muted-foreground"
+                      isActive ? "font-semibold text-primary" : "text-muted-foreground",
                     )}
                   >
                     {item.title}

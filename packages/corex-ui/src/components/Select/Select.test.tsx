@@ -20,7 +20,9 @@ describe("Select", () => {
 
   it("calls legacy onChange(value, id) on the native change event", () => {
     const onChange = vi.fn();
-    render(<Select label="Country" id="country" options={["Canada"]} onChange={onChange} />);
+    render(
+      <Select label="Country" id="country" options={["Canada"]} onChange={onChange} />,
+    );
 
     const el = document.querySelector("s-select") as HTMLElement & { value?: string };
     el.value = "Canada";

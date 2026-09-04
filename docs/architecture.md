@@ -33,7 +33,7 @@ three places where React conventions and web-component conventions diverge:
 1. **DOM properties vs. attributes.** Primitive props (strings, booleans) pass straight
    through as JSX props — React's own custom-element handling assigns them as attributes or
    properties as appropriate. Anything listed in `options.domProps` is instead assigned
-   unconditionally as a live DOM *property* (`el[key] = value`, never an attribute) via
+   unconditionally as a live DOM _property_ (`el[key] = value`, never an attribute) via
    [`assignDomProp`](../packages/corex-ui/src/core/assignDomProp.ts) inside a
    `useLayoutEffect`. A wrapper lists a prop in `domProps` precisely because it's already
    decided the value must stay a live property — non-primitive values (`ChoiceList`'s

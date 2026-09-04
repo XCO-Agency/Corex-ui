@@ -9,7 +9,14 @@ const choices = [
 
 describe("ChoiceList", () => {
   it("renders choices as Polaris s-choice elements and sets values", () => {
-    render(<ChoiceList title="Notify me by" choices={choices} selected={["email"]} name="notify" />);
+    render(
+      <ChoiceList
+        title="Notify me by"
+        choices={choices}
+        selected={["email"]}
+        name="notify"
+      />,
+    );
     const el = document.querySelector("s-choice-list") as HTMLElement & {
       values?: string[];
     };
@@ -20,9 +27,13 @@ describe("ChoiceList", () => {
 
   it("calls legacy onChange(selected, name) on the native change event", () => {
     const onChange = vi.fn();
-    render(<ChoiceList choices={choices} selected={[]} name="notify" onChange={onChange} />);
+    render(
+      <ChoiceList choices={choices} selected={[]} name="notify" onChange={onChange} />,
+    );
 
-    const el = document.querySelector("s-choice-list") as HTMLElement & { values?: string[] };
+    const el = document.querySelector("s-choice-list") as HTMLElement & {
+      values?: string[];
+    };
     el.values = ["sms"];
     el.dispatchEvent(new Event("change", { bubbles: true }));
 

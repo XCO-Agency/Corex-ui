@@ -1,4 +1,9 @@
-import type { ComponentPropsWithoutRef, CSSProperties, ElementType, ReactNode } from "react";
+import type {
+  ComponentPropsWithoutRef,
+  CSSProperties,
+  ElementType,
+  ReactNode,
+} from "react";
 
 /**
  * Maps React-style event prop names (e.g. `onClick`) to the native DOM
