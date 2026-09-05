@@ -15,9 +15,15 @@ const SStack = createWebComponent<HTMLElement>("s-stack", {
 export const InlineStack: ForwardRefExoticComponent<
   InlineStackPropsType & RefAttributes<HTMLElement>
 > = forwardRef<HTMLElement, InlineStackPropsType>(
-  function InlineStack({ children, gap, ...rest }, ref) {
+  function InlineStack({ children, gap, align, blockAlign, justifyContent, alignItems, ...rest }, ref) {
     return (
-      <SStack ref={ref} gap={mapLegacyGap(gap)} {...rest}>
+      <SStack
+        ref={ref}
+        gap={mapLegacyGap(gap)}
+        justifyContent={justifyContent ?? (align as any)}
+        alignItems={alignItems ?? (blockAlign as any)}
+        {...rest}
+      >
         {children}
       </SStack>
     );

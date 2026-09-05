@@ -4,6 +4,7 @@ import { devWarning } from "../../utils/devWarning";
 import { Text } from "../Text";
 import { Button } from "../Button";
 import type { CardPropsType } from "./Card.types";
+import { InlineStack } from "../InlineStack";
 
 const SSection = createWebComponent<HTMLElement>("s-section", {
   domProps: ["padding", "heading"],
@@ -35,13 +36,7 @@ export const Card = forwardRef<HTMLElement, CardPropsType>(function Card(
     );
   }
 
-  const resolvedPadding =
-    padding === "none" || padding === "0"
-      ? "none"
-      : padding === "base"
-        ? "base"
-        : padding;
-
+  const resolvedPadding = padding === "0" ? "none" : padding;
   const hasHeader = Boolean(title || (actions && actions.length > 0));
   const hasFooter = Boolean(
     primaryFooterAction || (secondaryFooterActions && secondaryFooterActions.length > 0),
@@ -50,14 +45,7 @@ export const Card = forwardRef<HTMLElement, CardPropsType>(function Card(
   return (
     <SSection ref={ref} padding={resolvedPadding} {...rest}>
       {hasHeader && (
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            marginBottom: "8px",
-          }}
-        >
+        <InlineStack justifyContent="space-between" alignItems="center" gap="base">
           {title ? (
             <Text as="h2" variant="headingSm">
               {title}
@@ -66,11 +54,11 @@ export const Card = forwardRef<HTMLElement, CardPropsType>(function Card(
             <div />
           )}
           {actions && actions.length > 0 && (
-            <div style={{ display: "flex", gap: "8px" }}>
+            <InlineStack gap="small">
               {actions.map((act, index) => (
                 <Button
                   key={index}
-                  variant="plain"
+                  variant="tertiary"
                   onClick={act.onAction}
                   url={act.url}
                   external={act.external}
@@ -79,22 +67,19 @@ export const Card = forwardRef<HTMLElement, CardPropsType>(function Card(
                   {act.content}
                 </Button>
               ))}
-            </div>
+            </InlineStack>
           )}
-        </div>
+        </InlineStack>
       )}
 
       {children}
 
       {hasFooter && (
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "flex-end",
-            alignItems: "center",
-            gap: "8px",
-            marginTop: "16px",
-          }}
+        <InlineStack
+          justifyContent="safe end"
+          alignItems="center"
+          gap="small"
+          paddingBlockStart="small"
         >
           {secondaryFooterActions?.map((act, index) => (
             <Button
@@ -120,7 +105,7 @@ export const Card = forwardRef<HTMLElement, CardPropsType>(function Card(
               {primaryFooterAction.content}
             </Button>
           )}
-        </div>
+        </InlineStack>
       )}
     </SSection>
   );

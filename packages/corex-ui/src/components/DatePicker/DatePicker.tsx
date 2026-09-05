@@ -1,6 +1,11 @@
-import { forwardRef } from "react";
+import { forwardRef, useId } from "react";
+import type { ForwardRefExoticComponent, RefAttributes } from "react";
 import { createWebComponent } from "../../core/createWebComponent";
-import type { DatePickerPropsType } from "./DatePicker.types";
+import { Popover } from "../Popover";
+import type { DatePickerPropsType, DateRangeType } from "./DatePicker.types";
+import { DatePickerPanel } from "./DatePickerPanel";
+import { formatRangeDisplay, toISODateString } from "./datePickerUtils";
+import { Button } from "../Button";
 
 const SDatePicker = createWebComponent<HTMLElement, { onChange: "change" }>(
   "s-date-picker",
@@ -10,18 +15,94 @@ const SDatePicker = createWebComponent<HTMLElement, { onChange: "change" }>(
   },
 );
 
-/**
- * Controlled-form-input pattern over `s-date-picker`. Only single-date
- * selection is supported in this release.
- */
-export const DatePicker = forwardRef<HTMLElement, DatePickerPropsType>(function DatePicker(
-  { selected, onChange, ...rest },
+export const DatePicker: ForwardRefExoticComponent<
+  DatePickerPropsType & RefAttributes<HTMLElement>
+> = forwardRef<HTMLElement, DatePickerPropsType>(function DatePicker(
+  {
+    selected,
+    onChange,
+    onApply,
+    onCancel,
+    presets = false,
+    inline = false,
+    children,
+    activator,
+    disabled = false,
+    id,
+    className,
+    style,
+    ...rest
+  },
   ref,
 ) {
-  const handleChange = (event: Event) => {
-    const target = event.currentTarget as (EventTarget & { selected?: string }) | null;
-    onChange?.(target?.selected ?? "");
+  const generatedId = useId();
+  const popoverId = id ?? `date-picker-popover-${generatedId.replace(/:/g, "")}`;
+
+  // Normalize selected value into range
+  const currentRange: DateRangeType = (() => {
+    if (!selected) {
+      const today = toISODateString(new Date());
+      return { start: today, end: today };
+    }
+    if (typeof selected === "string") {
+      return { start: selected, end: selected };
+    }
+    return selected;
+  })();
+
+  const handleRangeChange = (range: DateRangeType) => {
+    if (typeof selected === "string") {
+      onChange?.(range.start);
+    } else {
+      onChange?.(range);
+    }
   };
 
-  return <SDatePicker ref={ref} selected={selected} onChange={handleChange} {...rest} />;
+  const handleApply = (range: DateRangeType) => {
+    onApply?.(range);
+    handleRangeChange(range);
+  };
+
+  const handleCancel = () => {
+    onCancel?.();
+  };
+
+  // Default trigger button with commandFor matching the Popover id
+  const defaultTrigger = (
+    <Button disabled={disabled} icon="calendar" commandFor={popoverId}>
+      {formatRangeDisplay(currentRange)}
+    </Button>
+  );
+
+  const effectiveTrigger = children
+    ? children(formatRangeDisplay(currentRange), popoverId)
+    : (activator ?? defaultTrigger);
+
+  if (inline) {
+    return (
+      <DatePickerPanel
+        id={popoverId}
+        selected={selected}
+        presets={presets}
+        onApply={handleApply}
+        onCancel={handleCancel}
+        onChangeRange={handleRangeChange}
+      />
+    );
+  }
+  return (
+    <>
+      {effectiveTrigger}
+      <Popover id={popoverId} ref={ref} maxBlockSize="none" {...rest}>
+        <DatePickerPanel
+          id={popoverId}
+          selected={selected}
+          presets={presets}
+          onApply={handleApply}
+          onCancel={handleCancel}
+          onChangeRange={handleRangeChange}
+        />
+      </Popover>
+    </>
+  );
 });

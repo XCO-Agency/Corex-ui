@@ -13,18 +13,14 @@ export type CardActionType = {
   destructive?: boolean;
 };
 
-export type CardPaddingType = "base" | "none" | "0" | (string & {});
+export type CardPaddingType = (NativeSectionProps["padding"] & "0") | (string & {});
 
-export type CardPropsType = Omit<
-  NativeSectionProps,
-  "heading" | "padding" | "children"
-> & {
-  children?: ReactNode;
-  /** Rendered as a heading above the card content. */
+export type CardPropsType = Omit<NativeSectionProps, "padding"> & {
+  /** @deprecated use heading Rendered as a heading above the card content. */
   title?: ReactNode;
+  padding?: CardPaddingType;
   /**
-   * @deprecated No equivalent on `s-section` — every `Card` already renders
-   * as a single section. Kept only so legacy call sites keep compiling.
+   * @deprecated use
    */
   sectioned?: boolean;
   /** Card header actions. */
@@ -34,8 +30,6 @@ export type CardPropsType = Omit<
   /** Secondary actions in the card footer. */
   secondaryFooterActions?: CardActionType[];
   /** Card padding ('base' | 'none' | legacy '0'). */
-  padding?: CardPaddingType;
-  /** Card background color. */
   background?: string;
   className?: string;
   id?: string;

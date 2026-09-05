@@ -40,7 +40,7 @@ export const Button = forwardRef<HTMLElement, ButtonPropsType>(function Button(
 ) {
   const resolvedVariant =
     variant ??
-    (primary ? "primary" : plain ? "plain" : outline ? "secondary" : undefined);
+    (primary ? "primary" : plain ? "tertiary" : outline ? "secondary" : undefined);
   const resolvedTone = tone ?? (destructive ? "critical" : undefined);
   const resolvedType = type ?? (submit ? "submit" : undefined);
   const resolvedHref = href ?? url;
@@ -66,14 +66,14 @@ export const Button = forwardRef<HTMLElement, ButtonPropsType>(function Button(
       accessibilityLabel={
         accessibilityLabel ?? (typeof content === "string" ? content : undefined)
       }
-      fullWidth={fullWidth}
+      inlineSize={rest.inlineSize ?? (fullWidth ? "fill" : undefined)}
       pressed={pressed}
       command={command}
       commandFor={commandFor}
       interestFor={interestFor}
       {...rest}
     >
-      {content ?? children}
+      {children ?? content}
     </SButton>
   );
 });

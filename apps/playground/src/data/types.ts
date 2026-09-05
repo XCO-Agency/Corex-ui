@@ -10,7 +10,7 @@ export const categories = [
   "App Bridge",
 ] as const;
 
-export type CategoryType = (typeof categories)[number] | "Layouts" | (string & {});
+export type CategoryType = (typeof categories)[number] | "Layouts" | "Metrics" | (string & {});
 export type Category = CategoryType;
 
 export type FileItemType = {

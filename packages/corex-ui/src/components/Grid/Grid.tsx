@@ -1,8 +1,4 @@
-import {
-  forwardRef,
-  type ForwardRefExoticComponent,
-  type RefAttributes,
-} from "react";
+import { forwardRef, type ForwardRefExoticComponent, type RefAttributes } from "react";
 import type { CSSProperties } from "react";
 import { createWebComponent } from "../../core/createWebComponent";
 import {
@@ -13,11 +9,7 @@ import {
   mapLegacySpacing,
 } from "../../core/legacySpacing";
 import { BOX_DOM_PROPS } from "../Box";
-import type {
-  GridComponentType,
-  GridItemPropsType,
-  GridPropsType,
-} from "./Grid.types";
+import type { GridComponentType, GridItemPropsType, GridPropsType } from "./Grid.types";
 
 const SGrid = createWebComponent<HTMLElement>("s-grid", {
   domProps: [
@@ -37,11 +29,7 @@ const SGrid = createWebComponent<HTMLElement>("s-grid", {
 });
 
 const SGridItem = createWebComponent<HTMLElement>("s-grid-item", {
-  domProps: [
-    ...BOX_DOM_PROPS,
-    "gridColumn",
-    "gridRow",
-  ],
+  domProps: [...BOX_DOM_PROPS, "gridColumn", "gridRow"],
 });
 
 function resolveGridColumns(
@@ -54,10 +42,7 @@ function resolveGridColumns(
   return String(columns);
 }
 
-function resolveGridRows(
-  gridTemplateRows?: unknown,
-  rows?: unknown,
-): string | undefined {
+function resolveGridRows(gridTemplateRows?: unknown, rows?: unknown): string | undefined {
   if (gridTemplateRows) return String(gridTemplateRows);
   if (rows === undefined || rows === null) return undefined;
   if (typeof rows === "number") return `repeat(${rows}, minmax(0, 1fr))`;
@@ -92,151 +77,149 @@ function resolveGridRow(
  */
 export const GridItem: ForwardRefExoticComponent<
   GridItemPropsType & RefAttributes<HTMLElement>
-> = forwardRef<HTMLElement, GridItemPropsType>(
-  function GridItem(
-    {
-      children,
-      as: _as,
-      color,
-      shadow,
-      position,
-      insetBlockStart,
-      insetBlockEnd,
-      insetInlineStart,
-      insetInlineEnd,
-      opacity,
-      outlineColor,
-      outlineStyle,
-      outlineWidth,
-      printHidden,
-      visuallyHidden,
-      zIndex,
-      width,
-      minWidth,
-      maxWidth,
-      height,
-      minHeight,
-      maxHeight,
-      overflowX,
-      overflowY,
-      blockSize,
-      minBlockSize,
-      maxBlockSize,
-      inlineSize,
-      minInlineSize,
-      maxInlineSize,
-      accessibilityVisibility,
-      style,
-      className,
-      padding,
-      paddingBlock,
-      paddingBlockStart,
-      paddingBlockEnd,
-      paddingInline,
-      paddingInlineStart,
-      paddingInlineEnd,
-      background,
-      borderColor,
-      borderRadius,
-      borderWidth,
-      gridColumn,
-      gridRow,
-      columnSpan,
-      rowSpan,
-      column,
-      row,
-      area,
-      ...rest
-    },
-    ref,
-  ) {
-    const resolvedAccessibilityVisibility =
-      accessibilityVisibility ?? (visuallyHidden ? "exclusive" : undefined);
-
-    const resolvedBlockSize = blockSize ?? height;
-    const resolvedMinBlockSize = minBlockSize ?? minHeight;
-    const resolvedMaxBlockSize = maxBlockSize ?? maxHeight;
-    const resolvedInlineSize = inlineSize ?? width;
-    const resolvedMinInlineSize = minInlineSize ?? minWidth;
-    const resolvedMaxInlineSize = maxInlineSize ?? maxWidth;
-
-    const resolvedBackground = mapLegacyBackground(background);
-    const resolvedBorderColor = mapLegacyBorderColor(borderColor);
-    const resolvedBorderRadius = mapLegacyBorderRadius(borderRadius);
-    const resolvedBorderWidth = mapLegacyBorderWidth(borderWidth);
-
-    const resolvedPadding = mapLegacySpacing(padding);
-    const resolvedPaddingBlock = mapLegacySpacing(paddingBlock);
-    const resolvedPaddingBlockStart = mapLegacySpacing(paddingBlockStart);
-    const resolvedPaddingBlockEnd = mapLegacySpacing(paddingBlockEnd);
-    const resolvedPaddingInline = mapLegacySpacing(paddingInline);
-    const resolvedPaddingInlineStart = mapLegacySpacing(paddingInlineStart);
-    const resolvedPaddingInlineEnd = mapLegacySpacing(paddingInlineEnd);
-
-    const resolvedGridColumn = resolveGridColumn(gridColumn, columnSpan, column);
-    const resolvedGridRow = resolveGridRow(gridRow, rowSpan, row);
-
-    const legacyStyles: CSSProperties = {};
-    if (color) legacyStyles.color = color;
-    if (shadow) legacyStyles.boxShadow = shadow;
-    if (position) legacyStyles.position = position as CSSProperties["position"];
-    if (typeof insetBlockStart === "string") legacyStyles.top = insetBlockStart;
-    if (typeof insetBlockEnd === "string") legacyStyles.bottom = insetBlockEnd;
-    if (typeof insetInlineStart === "string") legacyStyles.left = insetInlineStart;
-    if (typeof insetInlineEnd === "string") legacyStyles.right = insetInlineEnd;
-    if (opacity) legacyStyles.opacity = opacity;
-    if (outlineColor) legacyStyles.outlineColor = outlineColor;
-    if (outlineStyle)
-      legacyStyles.outlineStyle = outlineStyle as CSSProperties["outlineStyle"];
-    if (outlineWidth) legacyStyles.outlineWidth = outlineWidth;
-    if (zIndex !== undefined) legacyStyles.zIndex = zIndex;
-    if (overflowX) legacyStyles.overflowX = overflowX as CSSProperties["overflowX"];
-    if (overflowY) legacyStyles.overflowY = overflowY as CSSProperties["overflowY"];
-    if (area) legacyStyles.gridArea = area;
-
-    const resolvedStyle: CSSProperties | undefined =
-      Object.keys(legacyStyles).length > 0 || style
-        ? { ...legacyStyles, ...style }
-        : undefined;
-
-    const resolvedClassName = printHidden
-      ? className
-        ? `${className} print:hidden`
-        : "print:hidden"
-      : className;
-
-    return (
-      <SGridItem
-        ref={ref}
-        blockSize={resolvedBlockSize}
-        minBlockSize={resolvedMinBlockSize}
-        maxBlockSize={resolvedMaxBlockSize}
-        inlineSize={resolvedInlineSize}
-        minInlineSize={resolvedMinInlineSize}
-        maxInlineSize={resolvedMaxInlineSize}
-        accessibilityVisibility={resolvedAccessibilityVisibility}
-        style={resolvedStyle}
-        className={resolvedClassName}
-        padding={resolvedPadding}
-        paddingBlock={resolvedPaddingBlock}
-        paddingBlockStart={resolvedPaddingBlockStart}
-        paddingBlockEnd={resolvedPaddingBlockEnd}
-        paddingInline={resolvedPaddingInline}
-        paddingInlineStart={resolvedPaddingInlineStart}
-        paddingInlineEnd={resolvedPaddingInlineEnd}
-        background={resolvedBackground}
-        borderColor={resolvedBorderColor}
-        borderRadius={resolvedBorderRadius}
-        borderWidth={resolvedBorderWidth}
-        gridColumn={resolvedGridColumn}
-        gridRow={resolvedGridRow}
-        {...rest}
-      >
-        {children}
-      </SGridItem>
-    );
+> = forwardRef<HTMLElement, GridItemPropsType>(function GridItem(
+  {
+    children,
+    as: _as,
+    color,
+    shadow,
+    position,
+    insetBlockStart,
+    insetBlockEnd,
+    insetInlineStart,
+    insetInlineEnd,
+    opacity,
+    outlineColor,
+    outlineStyle,
+    outlineWidth,
+    printHidden,
+    visuallyHidden,
+    zIndex,
+    width,
+    minWidth,
+    maxWidth,
+    height,
+    minHeight,
+    maxHeight,
+    overflowX,
+    overflowY,
+    blockSize,
+    minBlockSize,
+    maxBlockSize,
+    inlineSize,
+    minInlineSize,
+    maxInlineSize,
+    accessibilityVisibility,
+    style,
+    className,
+    padding,
+    paddingBlock,
+    paddingBlockStart,
+    paddingBlockEnd,
+    paddingInline,
+    paddingInlineStart,
+    paddingInlineEnd,
+    background,
+    borderColor,
+    borderRadius,
+    borderWidth,
+    gridColumn,
+    gridRow,
+    columnSpan,
+    rowSpan,
+    column,
+    row,
+    area,
+    ...rest
   },
-);
+  ref,
+) {
+  const resolvedAccessibilityVisibility =
+    accessibilityVisibility ?? (visuallyHidden ? "exclusive" : undefined);
+
+  const resolvedBlockSize = blockSize ?? height;
+  const resolvedMinBlockSize = minBlockSize ?? minHeight;
+  const resolvedMaxBlockSize = maxBlockSize ?? maxHeight;
+  const resolvedInlineSize = inlineSize ?? width;
+  const resolvedMinInlineSize = minInlineSize ?? minWidth;
+  const resolvedMaxInlineSize = maxInlineSize ?? maxWidth;
+
+  const resolvedBackground = mapLegacyBackground(background);
+  const resolvedBorderColor = mapLegacyBorderColor(borderColor);
+  const resolvedBorderRadius = mapLegacyBorderRadius(borderRadius);
+  const resolvedBorderWidth = mapLegacyBorderWidth(borderWidth);
+
+  const resolvedPadding = mapLegacySpacing(padding);
+  const resolvedPaddingBlock = mapLegacySpacing(paddingBlock);
+  const resolvedPaddingBlockStart = mapLegacySpacing(paddingBlockStart);
+  const resolvedPaddingBlockEnd = mapLegacySpacing(paddingBlockEnd);
+  const resolvedPaddingInline = mapLegacySpacing(paddingInline);
+  const resolvedPaddingInlineStart = mapLegacySpacing(paddingInlineStart);
+  const resolvedPaddingInlineEnd = mapLegacySpacing(paddingInlineEnd);
+
+  const resolvedGridColumn = resolveGridColumn(gridColumn, columnSpan, column);
+  const resolvedGridRow = resolveGridRow(gridRow, rowSpan, row);
+
+  const legacyStyles: CSSProperties = {};
+  if (color) legacyStyles.color = color;
+  if (shadow) legacyStyles.boxShadow = shadow;
+  if (position) legacyStyles.position = position as CSSProperties["position"];
+  if (typeof insetBlockStart === "string") legacyStyles.top = insetBlockStart;
+  if (typeof insetBlockEnd === "string") legacyStyles.bottom = insetBlockEnd;
+  if (typeof insetInlineStart === "string") legacyStyles.left = insetInlineStart;
+  if (typeof insetInlineEnd === "string") legacyStyles.right = insetInlineEnd;
+  if (opacity) legacyStyles.opacity = opacity;
+  if (outlineColor) legacyStyles.outlineColor = outlineColor;
+  if (outlineStyle)
+    legacyStyles.outlineStyle = outlineStyle as CSSProperties["outlineStyle"];
+  if (outlineWidth) legacyStyles.outlineWidth = outlineWidth;
+  if (zIndex !== undefined) legacyStyles.zIndex = zIndex;
+  if (overflowX) legacyStyles.overflowX = overflowX as CSSProperties["overflowX"];
+  if (overflowY) legacyStyles.overflowY = overflowY as CSSProperties["overflowY"];
+  if (area) legacyStyles.gridArea = area;
+
+  const resolvedStyle: CSSProperties | undefined =
+    Object.keys(legacyStyles).length > 0 || style
+      ? { ...legacyStyles, ...style }
+      : undefined;
+
+  const resolvedClassName = printHidden
+    ? className
+      ? `${className} print:hidden`
+      : "print:hidden"
+    : className;
+
+  return (
+    <SGridItem
+      ref={ref}
+      blockSize={resolvedBlockSize}
+      minBlockSize={resolvedMinBlockSize}
+      maxBlockSize={resolvedMaxBlockSize}
+      inlineSize={resolvedInlineSize}
+      minInlineSize={resolvedMinInlineSize}
+      maxInlineSize={resolvedMaxInlineSize}
+      accessibilityVisibility={resolvedAccessibilityVisibility}
+      style={resolvedStyle}
+      className={resolvedClassName}
+      padding={resolvedPadding}
+      paddingBlock={resolvedPaddingBlock}
+      paddingBlockStart={resolvedPaddingBlockStart}
+      paddingBlockEnd={resolvedPaddingBlockEnd}
+      paddingInline={resolvedPaddingInline}
+      paddingInlineStart={resolvedPaddingInlineStart}
+      paddingInlineEnd={resolvedPaddingInlineEnd}
+      background={resolvedBackground}
+      borderColor={resolvedBorderColor}
+      borderRadius={resolvedBorderRadius}
+      borderWidth={resolvedBorderWidth}
+      gridColumn={resolvedGridColumn}
+      gridRow={resolvedGridRow}
+      {...rest}
+    >
+      {children}
+    </SGridItem>
+  );
+});
 
 /**
  * Grid component wrapping Polaris `<s-grid>`.
@@ -297,7 +280,7 @@ const GridRoot = forwardRef<HTMLElement, GridPropsType>(function Grid(
     justifyContent,
     alignContent,
     placeContent,
-    gap,
+    gap = "base",
     rowGap,
     columnGap,
     columns,

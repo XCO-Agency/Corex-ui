@@ -4,6 +4,7 @@ import { Text } from "../Text";
 import { Box } from "../Box";
 import { BlockStack } from "../BlockStack";
 import { Icon } from "../Icon";
+import { Clickable } from "../Clickable";
 
 const SPARK_W = 64;
 const SPARK_H = 24;
@@ -225,7 +226,7 @@ export function MetricCard({
                 textUnderlineOffset: tooltip ? 5 : "none",
               }}
             >
-              <Text type="strong" truncate interestFor={id} tooltip={tooltip}>
+              <Text variant="headingSm" interestFor={id} tooltip={tooltip}>
                 {title}
               </Text>
             </span>
@@ -271,9 +272,9 @@ export function MetricCard({
     <s-section padding="none">
       <s-box padding="small-300">
         {onClick ? (
-          <s-clickable onClick={onClick} borderRadius="base">
+          <Clickable onClick={onClick} borderRadius="base">
             {innerContent}
-          </s-clickable>
+          </Clickable>
         ) : (
           innerContent
         )}

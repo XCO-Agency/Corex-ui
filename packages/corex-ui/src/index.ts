@@ -32,6 +32,7 @@ export * from "./components/Tooltip";
 export * from "./components/ChoiceList";
 export * from "./components/DateField";
 export * from "./components/DatePicker";
+export * from "./components/Popover";
 export * from "./components/Menu";
 export * from "./components/Navigation";
 

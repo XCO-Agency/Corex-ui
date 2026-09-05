@@ -8,6 +8,7 @@ import { typographyComponents } from "./categories/typography";
 import { navigationComponents } from "./categories/navigation";
 import { appBridgeComponents } from "./categories/app-bridge";
 import { settingsBlocks } from "./blocks/settings";
+import { metricsBlocks } from "./blocks/metrics";
 import type { ComponentEntry } from "./types";
 
 export { categories } from "./types";
@@ -40,6 +41,10 @@ export const blocks: BlockGroupType[] = [
   {
     category: "Layouts",
     components: settingsBlocks,
+  },
+  {
+    category: "Metrics",
+    components: metricsBlocks,
   },
 ];
 

@@ -96,7 +96,30 @@ export type StackGapType =
   | (`${LegacySpacingType} ${LegacySpacingType}` & {})
   | number;
 
-export type AlignmentType = "start" | "center" | "end";
+export type AlignmentType =
+  | "start"
+  | "center"
+  | "end"
+  | "space-between"
+  | "space-around"
+  | "space-evenly"
+  | "baseline"
+  | "stretch";
+
+export type InlineAlignmentType =
+  | "start"
+  | "center"
+  | "end"
+  | "space-between"
+  | "space-around"
+  | "space-evenly";
+
+export type BlockAlignmentType =
+  | "start"
+  | "center"
+  | "end"
+  | "baseline"
+  | "stretch";
 
 export type TextVariantType =
   | "headingXl"

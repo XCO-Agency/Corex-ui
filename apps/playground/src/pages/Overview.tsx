@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { categories, registry, blocks } from "../data/registry";
 import { thumbnails } from "../components/icons/ComponentThumbnails";
-import { SlidersHorizontal } from "lucide-react";
+import { getCategoryIcon } from "@/lib/category-icons";
 
 export function Overview() {
   return (
@@ -30,7 +30,13 @@ export function Overview() {
                     key={item.slug}
                   >
                     <div className="component-thumb">
-                      {Thumbnail ? <Thumbnail /> : null}
+                      {Thumbnail ? (
+                        <Thumbnail />
+                      ) : (
+                        <span className="component-thumb-fallback">
+                          {item.name}
+                        </span>
+                      )}
                     </div>
                     <div className="component-card-body">
                       <h3>{item.name}</h3>
@@ -45,37 +51,39 @@ export function Overview() {
       })}
 
       {blocks.length > 0 && (
-        <div className="mt-12 space-y-6 border-t border-border pt-8">
-          <div>
+        <div className="space-y-8 pt-8 border-t border-border">
+          <div className="space-y-1">
             <h2 className="text-2xl font-bold tracking-tight text-foreground">Blocks</h2>
-            <p className="page-intro mt-1 text-sm text-muted-foreground">
-              Ready-to-use, multi-component application layouts and full page patterns
-              built with Corex UI.
+            <p className="text-sm text-muted-foreground">
+              Production-ready multi-component compositions and layout patterns for Shopify apps.
             </p>
           </div>
 
-          {blocks.map(({ category, components }) => (
-            <section key={category} className="overview-section">
-              <h3 className="text-lg font-semibold text-foreground mb-4">{category}</h3>
-              <div className="component-grid">
-                {components.map((item) => (
-                  <Link
-                    to={`/blocks/${item.slug}`}
-                    className="component-card"
-                    key={item.slug}
-                  >
-                    <div className="component-thumb flex items-center justify-center bg-muted/40 text-muted-foreground">
-                      <SlidersHorizontal className="size-8 text-primary/70" />
-                    </div>
-                    <div className="component-card-body">
-                      <h4 className="font-semibold text-foreground">{item.name}</h4>
-                      <p>{item.description}</p>
-                    </div>
-                  </Link>
-                ))}
-              </div>
-            </section>
-          ))}
+          {blocks.map(({ category, components }) => {
+            const BlockIcon = getCategoryIcon(category);
+            return (
+              <section key={category} className="overview-section">
+                <h3 className="text-lg font-semibold text-foreground mb-4">{category}</h3>
+                <div className="component-grid">
+                  {components.map((item) => (
+                    <Link
+                      to={`/blocks/${item.slug}`}
+                      className="component-card"
+                      key={item.slug}
+                    >
+                      <div className="component-thumb flex items-center justify-center bg-muted/40 text-muted-foreground">
+                        <BlockIcon className="size-8 text-primary/70" />
+                      </div>
+                      <div className="component-card-body">
+                        <h4 className="font-semibold text-foreground">{item.name}</h4>
+                        <p>{item.description}</p>
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+              </section>
+            );
+          })}
         </div>
       )}
     </div>

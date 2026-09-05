@@ -10,11 +10,12 @@ import {
   ShoppingBag,
   Layers,
   SlidersHorizontal,
+  TrendingUp,
   type LucideIcon,
 } from "lucide-react";
 import type { CategoryType } from "@/data/types";
 
-export const CATEGORY_ICONS: Record<string, LucideIcon> = {
+export const CATEGORY_ICONS: Record<CategoryType, LucideIcon> = {
   Actions: MousePointerClick,
   Forms: CheckSquare,
   Layout: LayoutGrid,
@@ -26,6 +27,7 @@ export const CATEGORY_ICONS: Record<string, LucideIcon> = {
   "App Bridge": ShoppingBag,
   Layouts: SlidersHorizontal,
   Settings: SlidersHorizontal,
+  Metrics: TrendingUp,
 };
 
 export function getCategoryIcon(category: string): LucideIcon {

@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import type {
-  AlignmentType,
+  BlockAlignmentType,
+  InlineAlignmentType,
   PolarisPropsType,
   StackGapType,
 } from "../../types/common";
@@ -18,8 +19,8 @@ export type InlineStackPropsType = Omit<
    * Legacy numeric values such as `"200"` are supported for backward compatibility.
    */
   gap?: StackGapType;
-  align?: AlignmentType;
-  blockAlign?: AlignmentType;
+  align?: InlineAlignmentType;
+  blockAlign?: BlockAlignmentType;
   wrap?: boolean;
   className?: string;
   id?: string;
