@@ -27,7 +27,7 @@ export const Text = forwardRef<HTMLElement, TextPropsType>(function Text(
   },
   ref,
 ) {
-  const id = useId();
+  const id = rest.id ?? useId();
   const isTone =
     color &&
     color !== "subdued" &&

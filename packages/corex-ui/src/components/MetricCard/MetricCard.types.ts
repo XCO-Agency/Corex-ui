@@ -1,6 +1,16 @@
 import type { CSSProperties, ReactNode } from "react";
 import { IconType, ToneType, SparklineColorType } from "../../types/common";
 
+export type SparklinePropsType = {
+  data: number[];
+  width?: number;
+  height?: number;
+  color?: string;
+  strokeWidth?: number;
+  showArea?: boolean;
+  showEndpoint?: boolean;
+};
+
 // ─── Prop types ────────────────────────────────────────────────────────────────
 export type MetricCardBadgeType = {
   value: string | number | null | undefined;

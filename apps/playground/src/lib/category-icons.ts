@@ -24,7 +24,7 @@ export const CATEGORY_ICONS: Record<string, LucideIcon> = {
   Typography: Type,
   Navigation: Compass,
   "App Bridge": ShoppingBag,
-  "Settings Layouts": SlidersHorizontal,
+  Layouts: SlidersHorizontal,
   Settings: SlidersHorizontal,
 };
 

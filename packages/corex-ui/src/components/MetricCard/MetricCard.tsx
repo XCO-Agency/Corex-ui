@@ -1,5 +1,5 @@
-import { type ReactNode, type JSX } from "react";
-import { MetricCardPropsType } from "./MetricCard.types";
+import { type ReactNode, type JSX, useId } from "react";
+import { MetricCardPropsType, SparklinePropsType } from "./MetricCard.types";
 import { Text } from "../Text";
 import { Box } from "../Box";
 import { BlockStack } from "../BlockStack";
@@ -7,39 +7,60 @@ import { Icon } from "../Icon";
 
 const SPARK_W = 64;
 const SPARK_H = 24;
+
 const SPARK_PADDING_X = 1;
 const SPARK_PADDING_Y = 3;
 
 const SPARK_STROKE = "#7a7e82";
 const SPARK_STROKE_WIDTH = 1.8;
 
-function buildSmoothPath(data: number[], width: number, height: number): string {
-  if (data.length < 2) return "";
+type Point = {
+  x: number;
+  y: number;
+};
 
-  const minV = Math.min(...data);
-  const maxV = Math.max(...data);
-  const range = maxV - minV || 1;
+function buildPoints(data: number[], width: number, height: number): Point[] {
+  if (data.length < 2) return [];
 
   const innerWidth = width - SPARK_PADDING_X * 2;
   const innerHeight = height - SPARK_PADDING_Y * 2;
 
-  const points = data.map((value, index) => ({
+  // Always use 0 as the baseline.
+  // This ensures positive metric charts start from the bottom.
+  const maxValue = Math.max(...data, 0);
+
+  // Prevent division by zero while keeping zero values
+  // positioned on the bottom baseline.
+  const range = maxValue || 1;
+
+  return data.map((value, index) => ({
     x: SPARK_PADDING_X + (index / (data.length - 1)) * innerWidth,
-    y: SPARK_PADDING_Y + ((maxV - value) / range) * innerHeight,
+
+    y: SPARK_PADDING_Y + (1 - Math.max(value, 0) / range) * innerHeight,
   }));
+}
+
+function buildSmoothPath(points: Point[]): string {
+  if (points.length < 2) return "";
 
   if (points.length === 2) {
-    return `M ${points[0]?.x.toFixed(2)} ${points[0]?.y.toFixed(2)}
-            L ${points[1]?.x.toFixed(2)} ${points[1]?.y.toFixed(2)}`;
+    return `
+      M ${points[0]?.x.toFixed(2)} ${points[0]?.y.toFixed(2)}
+      L ${points[1]?.x.toFixed(2)} ${points[1]?.y.toFixed(2)}
+    `;
   }
 
-  let path = `M ${points[0]?.x.toFixed(2)} ${points[0]?.y.toFixed(2)}`;
+  let path = `
+    M ${points[0]?.x.toFixed(2)} ${points[0]?.y.toFixed(2)}
+  `;
 
   for (let i = 0; i < points.length - 1; i++) {
-    const p0 = points[i - 1] ?? points[i] ?? { x: 0, y: 0 };
-    const p1 = points[i] ?? { x: 0, y: 0 };
-    const p2 = points[i + 1] ?? { x: 0, y: 0 };
-    const p3 = points[i + 2] ?? { x: 0, y: 0 };
+    const p0 = points[i - 1] ?? points[i];
+    const p1 = points[i];
+    const p2 = points[i + 1];
+    const p3 = points[i + 2] ?? p2;
+
+    if (!p0 || !p1 || !p2 || !p3) continue;
 
     const cp1x = p1.x + (p2.x - p0.x) / 6;
     const cp1y = p1.y + (p2.y - p0.y) / 6;
@@ -49,13 +70,29 @@ function buildSmoothPath(data: number[], width: number, height: number): string 
 
     path += `
       C
-      ${cp1x.toFixed(2)} ${cp1y.toFixed(2)},
-      ${cp2x.toFixed(2)} ${cp2y.toFixed(2)},
-      ${p2.x.toFixed(2)} ${p2.y.toFixed(2)}
+        ${cp1x.toFixed(2)} ${cp1y.toFixed(2)},
+        ${cp2x.toFixed(2)} ${cp2y.toFixed(2)},
+        ${p2.x.toFixed(2)} ${p2.y.toFixed(2)}
     `;
   }
 
   return path;
+}
+
+function buildAreaPath(linePath: string, points: Point[], height: number): string {
+  const firstPoint = points[0];
+  const lastPoint = points.at(-1);
+
+  if (!firstPoint || !lastPoint) return "";
+
+  const baselineY = height - SPARK_PADDING_Y;
+
+  return `
+    ${linePath}
+    L ${lastPoint.x} ${baselineY}
+    L ${firstPoint.x} ${baselineY}
+    Z
+  `;
 }
 
 const TONE_COLOR_MAP: Record<string, string> = {
@@ -70,26 +107,8 @@ const TONE_COLOR_MAP: Record<string, string> = {
 
 function resolveSparklineColor(color?: string): string {
   if (!color) return SPARK_STROKE;
+
   return TONE_COLOR_MAP[color] ?? color;
-}
-
-type SparklinePropsType = {
-  data: number[];
-  width?: number;
-  height?: number;
-  color?: string;
-  strokeWidth?: number;
-  showArea?: boolean;
-  showEndpoint?: boolean;
-};
-
-function buildAreaPath(linePath: string, width: number, height: number): string {
-  return `
-    ${linePath}
-    L ${width - SPARK_PADDING_X} ${height}
-    L ${SPARK_PADDING_X} ${height}
-    Z
-  `;
 }
 
 export function Sparkline({
@@ -101,23 +120,23 @@ export function Sparkline({
   showArea = true,
   showEndpoint = true,
 }: SparklinePropsType): JSX.Element | null {
+  const gradientId = useId();
+
   if (data.length < 2) return null;
 
-  const resolvedStroke = resolveSparklineColor(color ?? SPARK_STROKE);
-  const linePath = buildSmoothPath(data, width, height);
+  const resolvedStroke = resolveSparklineColor(color);
+
+  // Build the points only once.
+  const points = buildPoints(data, width, height);
+
+  const linePath = buildSmoothPath(points);
 
   if (!linePath) return null;
 
-  const lastValue = data[data.length - 1] ?? 0;
-  const minV = Math.min(...data);
-  const maxV = Math.max(...data);
-  const range = maxV - minV || 1;
+  // Use the exact final point from the path.
+  const endpoint = points.at(-1);
 
-  const endpointX = width - SPARK_PADDING_X;
-  const endpointY =
-    SPARK_PADDING_Y + ((maxV - lastValue) / range) * (height - SPARK_PADDING_Y * 2);
-
-  const gradientId = `spark-gradient-${Math.random().toString(36).slice(2)}`;
+  if (!endpoint) return null;
 
   return (
     <svg
@@ -136,11 +155,15 @@ export function Sparkline({
           <defs>
             <linearGradient id={gradientId} x1="0" y1="0" x2="0" y2="1">
               <stop offset="0%" stopColor={resolvedStroke} stopOpacity="0.16" />
+
               <stop offset="100%" stopColor={resolvedStroke} stopOpacity="0" />
             </linearGradient>
           </defs>
 
-          <path d={buildAreaPath(linePath, width, height)} fill={`url(#${gradientId})`} />
+          <path
+            d={buildAreaPath(linePath, points, height)}
+            fill={`url(#${gradientId})`}
+          />
         </>
       )}
 
@@ -155,9 +178,9 @@ export function Sparkline({
 
       {showEndpoint && (
         <>
-          <circle cx={endpointX} cy={endpointY} r="3" fill="white" />
+          <circle cx={endpoint.x} cy={endpoint.y} r="3" fill="white" />
 
-          <circle cx={endpointX} cy={endpointY} r="1.75" fill={resolvedStroke} />
+          <circle cx={endpoint.x} cy={endpoint.y} r="1.75" fill={resolvedStroke} />
         </>
       )}
     </svg>
@@ -202,11 +225,10 @@ export function MetricCard({
                 textUnderlineOffset: tooltip ? 5 : "none",
               }}
             >
-              <Text type="strong" truncate interestFor={id}>
+              <Text type="strong" truncate interestFor={id} tooltip={tooltip}>
                 {title}
               </Text>
             </span>
-            {tooltip && <s-tooltip id={id}>{tooltip}</s-tooltip>}
             {badge && badge.value && (
               <s-badge
                 tone={badge?.tone ?? "neutral"}

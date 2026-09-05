@@ -38,7 +38,7 @@ export type BlockGroupType = {
 
 export const blocks: BlockGroupType[] = [
   {
-    category: "Settings Layouts",
+    category: "Layouts",
     components: settingsBlocks,
   },
 ];
