@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 
-export interface SaveBarProps {
+export type SaveBarPropsType = {
   /** Referenced by `useSaveBar().show(id)` / `.hide(id)` — see `docs/app-bridge.md`. */
   id: string;
   /**
@@ -9,4 +9,4 @@ export interface SaveBarProps {
    */
   children?: ReactNode;
   className?: string;
-}
+};

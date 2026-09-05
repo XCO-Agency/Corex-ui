@@ -1,2 +1,2 @@
 export { DateField } from "./DateField";
-export type { DateFieldProps } from "./DateField.types";
+export type { DateFieldPropsType } from "./DateField.types";

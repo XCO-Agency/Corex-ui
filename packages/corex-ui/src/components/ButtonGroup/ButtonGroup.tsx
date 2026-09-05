@@ -1,11 +1,13 @@
 import { Children, cloneElement, forwardRef, isValidElement } from "react";
 import { createWebComponent } from "../../core/createWebComponent";
-import type { ButtonGroupProps } from "./ButtonGroup.types";
+import type { ButtonGroupPropsType } from "./ButtonGroup.types";
 
-const SButtonGroup = createWebComponent<HTMLElement>("s-button-group");
+const SButtonGroup = createWebComponent<HTMLElement>("s-button-group", {
+  domProps: ["gap"],
+});
 
 /** Thin wrapper: `s-button-group` accepts `<s-button>` children directly. */
-export const ButtonGroup = forwardRef<HTMLElement, ButtonGroupProps>(function ButtonGroup(
+export const ButtonGroup = forwardRef<HTMLElement, ButtonGroupPropsType>(function ButtonGroup(
   { children, fullWidth: _fullWidth, variant, gap, ...rest },
   ref,
 ) {

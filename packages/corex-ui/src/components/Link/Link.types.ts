@@ -1,7 +1,12 @@
 import type { CSSProperties, ReactNode } from "react";
-import type { TargetType } from "../../types/common";
+import type { PolarisPropsType, TargetType } from "../../types/common";
 
-export type LinkPropsType = {
+type NativeLinkProps = PolarisPropsType<"s-link">;
+
+export type LinkPropsType = Omit<
+  NativeLinkProps,
+  "children" | "target" | "download" | "onClick"
+> & {
   children?: ReactNode;
   /** Legacy Polaris URL prop. */
   url?: string;
@@ -23,11 +28,8 @@ export type LinkPropsType = {
   id?: string;
   className?: string;
   style?: CSSProperties;
-  /** Standard HTML slot attribute, used to place this Link into a parent's named slot. */
   slot?: string;
   accessibilityLabel?: string;
   [key: `aria-${string}`]: unknown;
   [key: `data-${string}`]: unknown;
 };
-
-export type LinkProps = LinkPropsType;

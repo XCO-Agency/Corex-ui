@@ -2,13 +2,13 @@ import type { CSSProperties, ElementType, ReactNode } from "react";
 import type {
   BoxPaddingDirectionType,
   BoxPaddingType,
-  ColorKeywordType,
-  SizeKeywordType,
+  PolarisPropsType,
 } from "../../types/common";
 
+type NativeBoxProps = PolarisPropsType<"s-box">;
+
 export type BoxBackgroundType =
-  | ColorKeywordType
-  | "transparent"
+  | NonNullable<NativeBoxProps["background"]>
   | "bg"
   | "bg-surface"
   | "bg-surface-secondary"
@@ -20,12 +20,7 @@ export type BoxBackgroundType =
   | (string & {});
 
 export type BoxBorderWidthType =
-  | "small-100"
-  | "small"
-  | "base"
-  | "large"
-  | "large-100"
-  | "none"
+  | NonNullable<NativeBoxProps["borderWidth"]>
   | "0165"
   | "025"
   | "050"
@@ -36,11 +31,11 @@ export type BoxBorderWidthType =
   | (string & {});
 
 export type BoxBorderStyleType =
-  "solid" | "dashed" | "dotted" | "none" | "" | (string & {});
+  | NonNullable<NativeBoxProps["borderStyle"]>
+  | (string & {});
 
 export type BoxBorderColorType =
-  | ColorKeywordType
-  | "transparent"
+  | NonNullable<NativeBoxProps["borderColor"]>
   | "border"
   | "border-subdued"
   | "border-hover"
@@ -49,14 +44,7 @@ export type BoxBorderColorType =
   | (string & {});
 
 export type BoxBorderRadiusType =
-  | "none"
-  | "small-100"
-  | "small"
-  | "base"
-  | "large"
-  | "large-100"
-  | "max"
-  | "full"
+  | NonNullable<NativeBoxProps["borderRadius"]>
   | "050"
   | "100"
   | "200"
@@ -66,30 +54,19 @@ export type BoxBorderRadiusType =
   | (string & {});
 
 export type BoxOverflowType =
-  "hidden" | "visible" | "scroll" | "auto" | "clip" | (string & {});
+  | NonNullable<NativeBoxProps["overflow"]>
+  | (string & {});
 
-export type BoxDisplayType = "auto" | "none" | (string & {});
+export type BoxDisplayType =
+  | NonNullable<NativeBoxProps["display"]>
+  | (string & {});
 
 export type BoxAccessibilityVisibilityType =
-  "exclusive" | "hidden" | "visible" | (string & {});
+  | NonNullable<NativeBoxProps["accessibilityVisibility"]>
+  | (string & {});
 
 export type BoxAccessibilityRoleType =
-  | "main"
-  | "header"
-  | "footer"
-  | "section"
-  | "aside"
-  | "navigation"
-  | "ordered-list"
-  | "list-item"
-  | "list-item-separator"
-  | "unordered-list"
-  | "separator"
-  | "status"
-  | "alert"
-  | "generic"
-  | "presentation"
-  | "none"
+  | NonNullable<NativeBoxProps["accessibilityRole"]>
   | (string & {});
 
 export type BoxPositionType =
@@ -100,10 +77,10 @@ export type BoxAsType =
 
 export type ResponsivePropType<T> = T | Record<string, T>;
 
-export type BoxPropsType = {
+export type NativeBoxOverridesType = {
   children?: ReactNode;
 
-  // Modern Polaris web component (s-box) properties
+  // Modern Polaris web component (s-box) properties with legacy token support
   /** Adjust the background of the component ('transparent' | 'base' | 'subdued' | 'strong' or legacy Polaris alias). */
   background?: BoxBackgroundType;
   /** Adjust the width of the border ('small-100' | 'small' | 'base' | 'large' | 'large-100' | 'none' | legacy token). */
@@ -114,8 +91,7 @@ export type BoxPropsType = {
   borderColor?: BoxBorderColorType;
   /** Adjust the radius of the border ('none' | 'small-100' | 'small' | 'base' | 'large' | 'large-100' | 'max' | 'full' | legacy token). */
   borderRadius?: BoxBorderRadiusType;
-  /** Border shorthand or override. */
-  border?: string;
+
   /**
    * Adjust the padding of all edges using 1-to-4-value flow-relative syntax or responsive keyword.
    * Order: block-start inline-end block-end inline-start.
@@ -134,29 +110,9 @@ export type BoxPropsType = {
   paddingInlineStart?: ResponsivePropType<BoxPaddingDirectionType>;
   /** Adjust the inline-end padding (overrides inline-end of paddingInline). */
   paddingInlineEnd?: ResponsivePropType<BoxPaddingDirectionType>;
-  /** Sets the outer display type of the component ('auto' | 'none'). */
-  display?: BoxDisplayType;
-  /** Adjust the block size (CSS block-size / height). */
-  blockSize?: string;
-  /** Adjust the minimum block size. */
-  minBlockSize?: string;
-  /** Adjust the maximum block size. */
-  maxBlockSize?: string;
-  /** Adjust the inline size (CSS inline-size / width). */
-  inlineSize?: string;
-  /** Adjust the minimum inline size. */
-  minInlineSize?: string;
-  /** Adjust the maximum inline size. */
-  maxInlineSize?: string;
-  /** Adjust the overflow behavior ('hidden' | 'visible' | 'scroll' | 'auto' | 'clip'). */
-  overflow?: BoxOverflowType;
-  /** Accessibility label for screen readers. */
-  accessibilityLabel?: string;
-  /** Accessibility role (e.g. 'generic', 'presentation', 'navigation', 'status', 'alert'). */
-  accessibilityRole?: BoxAccessibilityRoleType;
-  /** Accessibility visibility ('exclusive' | 'hidden' | 'visible'). */
-  accessibilityVisibility?: BoxAccessibilityVisibilityType;
+};
 
+export type LegacyBoxPropsType = {
   // Legacy Polaris React compatibility properties (marked @deprecated for modern code)
   /**
    * @deprecated HTML Element type in legacy Polaris React. In Polaris web components, the element is always `<s-box>`.
@@ -284,15 +240,20 @@ export type BoxPropsType = {
    * @deprecated Legacy dimension alias. Use `maxBlockSize` in modern code.
    */
   maxHeight?: string;
-
-  role?: string;
-  tabIndex?: number;
-  id?: string;
-  className?: string;
-  style?: CSSProperties;
-  slot?: string;
-  [key: `aria-${string}`]: unknown;
-  [key: `data-${string}`]: unknown;
 };
 
-export type BoxProps = BoxPropsType;
+export type BoxPropsType = Omit<
+  NativeBoxProps,
+  keyof NativeBoxOverridesType | "slot"
+> &
+  NativeBoxOverridesType &
+  LegacyBoxPropsType & {
+    role?: string;
+    tabIndex?: number;
+    id?: string;
+    className?: string;
+    style?: CSSProperties;
+    slot?: string;
+    [key: `aria-${string}`]: unknown;
+    [key: `data-${string}`]: unknown;
+  };

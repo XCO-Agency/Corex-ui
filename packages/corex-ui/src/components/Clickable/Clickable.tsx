@@ -1,4 +1,8 @@
-import { forwardRef } from "react";
+import {
+  forwardRef,
+  type ForwardRefExoticComponent,
+  type RefAttributes,
+} from "react";
 import { createWebComponent } from "../../core/createWebComponent";
 import type { ClickablePropsType } from "./Clickable.types";
 import {
@@ -58,12 +62,12 @@ const SClickable = createWebComponent<
  * `loading`, `download`, `type`, `command`, `commandFor`, `interestFor`,
  * `onClick`, `onBlur`, `onFocus`).
  */
-export const Clickable = forwardRef<HTMLElement, ClickablePropsType>(function Clickable(
+export const Clickable: ForwardRefExoticComponent<
+  ClickablePropsType & RefAttributes<HTMLElement>
+> = forwardRef<HTMLElement, ClickablePropsType>(function Clickable(
   {
     children,
-    content,
     href,
-    url,
     target,
     external,
     disabled,
@@ -99,28 +103,21 @@ export const Clickable = forwardRef<HTMLElement, ClickablePropsType>(function Cl
     accessibilityRole,
     accessibilityVisibility,
     onClick,
-    onclick,
     onBlur,
-    onblur,
     onFocus,
-    onfocus,
     ...rest
   },
   ref,
 ) {
-  const resolvedHref = href ?? url;
   const resolvedTarget = target ?? (external ? "_blank" : undefined);
   const resolvedRel = external ? "noopener noreferrer" : undefined;
-  const resolvedOnClick = onClick ?? onclick ?? undefined;
-  const resolvedOnBlur = onBlur ?? onblur ?? undefined;
-  const resolvedOnFocus = onFocus ?? onfocus ?? undefined;
   const resolvedDownload =
     typeof download === "boolean" ? (download ? "" : undefined) : download;
 
   return (
     <SClickable
       ref={ref}
-      href={resolvedHref}
+      href={href}
       target={resolvedTarget}
       rel={resolvedRel}
       disabled={disabled}
@@ -155,17 +152,12 @@ export const Clickable = forwardRef<HTMLElement, ClickablePropsType>(function Cl
       accessibilityLabel={accessibilityLabel}
       accessibilityRole={accessibilityRole}
       accessibilityVisibility={accessibilityVisibility}
-      onClick={resolvedOnClick}
-      onBlur={resolvedOnBlur}
-      onFocus={resolvedOnFocus}
+      onClick={onClick}
+      onBlur={onBlur}
+      onFocus={onFocus}
       {...rest}
     >
-      {content ?? children}
+      {children}
     </SClickable>
   );
 });
-
-/**
- * ClickableAction is an alias for Clickable.
- */
-export const ClickableAction = Clickable;

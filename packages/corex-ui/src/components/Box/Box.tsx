@@ -1,4 +1,8 @@
-import { forwardRef } from "react";
+import {
+  forwardRef,
+  type ForwardRefExoticComponent,
+  type RefAttributes,
+} from "react";
 import type { CSSProperties } from "react";
 import { createWebComponent } from "../../core/createWebComponent";
 import type { BoxPropsType } from "./Box.types";
@@ -10,33 +14,35 @@ import {
   mapLegacySpacing,
 } from "../../core/legacySpacing";
 
+export const BOX_DOM_PROPS = [
+  "padding",
+  "paddingBlock",
+  "paddingBlockStart",
+  "paddingBlockEnd",
+  "paddingInline",
+  "paddingInlineStart",
+  "paddingInlineEnd",
+  "background",
+  "border",
+  "borderWidth",
+  "borderStyle",
+  "borderColor",
+  "borderRadius",
+  "blockSize",
+  "minBlockSize",
+  "maxBlockSize",
+  "inlineSize",
+  "minInlineSize",
+  "maxInlineSize",
+  "accessibilityRole",
+  "accessibilityLabel",
+  "accessibilityVisibility",
+  "display",
+  "overflow",
+] as const;
+
 const SBox = createWebComponent<HTMLElement>("s-box", {
-  domProps: [
-    "padding",
-    "paddingBlock",
-    "paddingBlockStart",
-    "paddingBlockEnd",
-    "paddingInline",
-    "paddingInlineStart",
-    "paddingInlineEnd",
-    "background",
-    "border",
-    "borderWidth",
-    "borderStyle",
-    "borderColor",
-    "borderRadius",
-    "blockSize",
-    "minBlockSize",
-    "maxBlockSize",
-    "inlineSize",
-    "minInlineSize",
-    "maxInlineSize",
-    "accessibilityRole",
-    "accessibilityLabel",
-    "accessibilityVisibility",
-    "display",
-    "overflow",
-  ],
+  domProps: [...BOX_DOM_PROPS],
 });
 
 /**
@@ -44,7 +50,9 @@ const SBox = createWebComponent<HTMLElement>("s-box", {
  * Supports modern `<s-box>` props (`blockSize`, `inlineSize`, `accessibilityVisibility`, etc.)
  * as well as legacy `@shopify/polaris` Box props for full backward compatibility.
  */
-export const Box = forwardRef<HTMLElement, BoxPropsType>(function Box(
+export const Box: ForwardRefExoticComponent<
+  BoxPropsType & RefAttributes<HTMLElement>
+> = forwardRef<HTMLElement, BoxPropsType>(function Box(
   {
     children,
     as: _as,

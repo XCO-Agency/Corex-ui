@@ -1,2 +1,2 @@
 export { Thumbnail } from "./Thumbnail";
-export type { ThumbnailProps } from "./Thumbnail.types";
+export type { ThumbnailPropsType } from "./Thumbnail.types";

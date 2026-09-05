@@ -1,6 +1,6 @@
 import { forwardRef } from "react";
 import { createWebComponent } from "../../core/createWebComponent";
-import type { SelectOption, SelectProps } from "./Select.types";
+import type { SelectOptionType, SelectPropsType } from "./Select.types";
 
 const SSelect = createWebComponent<HTMLElement, { onChange: "change" }>("s-select", {
   events: { onChange: "change" },
@@ -8,18 +8,17 @@ const SSelect = createWebComponent<HTMLElement, { onChange: "change" }>("s-selec
 });
 const SOption = createWebComponent<HTMLElement>("s-option");
 
-function normalizeOption(option: SelectOption | string): SelectOption {
+function normalizeOption(option: SelectOptionType | string): SelectOptionType {
   return typeof option === "string" ? { label: option, value: option } : option;
 }
 
 /**
  * Controlled-form-input pattern: legacy `options` (string[] or
- * `{label, value}[]`) is rendered as native `<option>` children, since
- * `s-select` (like a native `<select>`) reads its options from light-DOM
- * `<option>` elements rather than a structured prop.
+ * `{label, value}[]`) is rendered as native `<s-option>` children, since
+ * `s-select` reads its options from `<s-option>` elements.
  */
-export const Select = forwardRef<HTMLElement, SelectProps>(function Select(
-  { label, options, onChange, helpText, id, ...rest },
+export const Select = forwardRef<HTMLElement, SelectPropsType>(function Select(
+  { label, options, onChange, helpText, details, id, ...rest },
   ref,
 ) {
   const handleChange = (event: Event) => {
@@ -32,7 +31,7 @@ export const Select = forwardRef<HTMLElement, SelectProps>(function Select(
       ref={ref}
       id={id}
       label={label}
-      details={helpText}
+      details={details ?? helpText}
       onChange={handleChange}
       {...rest}
     >
@@ -41,7 +40,6 @@ export const Select = forwardRef<HTMLElement, SelectProps>(function Select(
           key={option.value}
           value={option.value}
           disabled={option.disabled}
-          selected={rest.value === option.value}
         >
           {option.label}
         </SOption>

@@ -1,9 +1,22 @@
 import { forwardRef } from "react";
 import { createWebComponent } from "../../core/createWebComponent";
-import type { AvatarProps } from "./Avatar.types";
+import type { AvatarPropsType } from "./Avatar.types";
 
-const SAvatar = createWebComponent<HTMLElement>("s-avatar");
+const SAvatar = createWebComponent<HTMLElement>("s-avatar", {
+  domProps: [
+    "name",
+    "initials",
+    "src",
+    "alt",
+    "size",
+    "shape",
+    "accessibilityLabel",
+  ],
+});
 
-export const Avatar = forwardRef<HTMLElement, AvatarProps>(function Avatar(props, ref) {
-  return <SAvatar ref={ref} {...props} />;
+export const Avatar = forwardRef<HTMLElement, AvatarPropsType>(function Avatar(
+  { source, image, src, ...rest },
+  ref,
+) {
+  return <SAvatar ref={ref} src={src ?? image ?? source} {...rest} />;
 });

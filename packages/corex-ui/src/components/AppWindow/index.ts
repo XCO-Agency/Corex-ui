@@ -1,2 +1,2 @@
 export { AppWindow } from "./AppWindow";
-export type { AppWindowProps } from "./AppWindow.types";
+export type { AppWindowPropsType } from "./AppWindow.types";

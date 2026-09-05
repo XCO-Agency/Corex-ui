@@ -1,6 +1,6 @@
 import { forwardRef } from "react";
 import { createWebComponent } from "../../core/createWebComponent";
-import type { AppWindowProps } from "./AppWindow.types";
+import type { AppWindowPropsType } from "./AppWindow.types";
 
 type AppWindowElement = HTMLElementTagNameMap["s-app-window"];
 
@@ -15,7 +15,7 @@ const SAppWindow = createWebComponent<AppWindowElement>("s-app-window");
  * well with the declarative `<Button command="--show" commandFor="...">`
  * trigger pattern, exactly as Shopify's own examples show.
  */
-export const AppWindow = forwardRef<AppWindowElement, AppWindowProps>(function AppWindow(
+export const AppWindow = forwardRef<AppWindowElement, AppWindowPropsType>(function AppWindow(
   { src, ...rest },
   ref,
 ) {

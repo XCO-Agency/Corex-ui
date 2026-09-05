@@ -1,31 +1,31 @@
 import type { CSSProperties, ReactNode } from "react";
 import type {
-  ButtonVariant,
   ButtonVariantType,
   IconType,
-  Size,
+  PolarisPropsType,
   SizeType,
   TargetType,
   ToneType,
 } from "../../types/common";
 
+type NativeButtonProps = PolarisPropsType<"s-button">;
+
 export type ButtonType = "button" | "submit" | "reset" | (string & {});
 
-export type ButtonPropsType = {
+export type ButtonPropsType = Omit<
+  NativeButtonProps,
+  "variant" | "tone" | "size" | "type" | "target" | "children"
+> & {
   children?: ReactNode;
   /** Alias for `children`, matching legacy `Button` usage (`<Button content="Save" />`). */
   content?: ReactNode;
   onClick?: (event: MouseEvent) => void;
-  /** Renders the button as a link to this URL. */
+  /** Renders the button as a link to this URL (legacy alias for `href`). */
   url?: string;
-  /** URL to navigate to (modern web component prop). */
-  href?: string;
   /** Target browsing context for links ('_blank' | '_self' | '_parent' | '_top'). */
   target?: TargetType;
   /** Opens `url` in a new tab. */
   external?: boolean;
-  disabled?: boolean;
-  loading?: boolean;
   /** Sets button type to submit. */
   submit?: boolean;
   /** Button HTML type. */
@@ -41,38 +41,19 @@ export type ButtonPropsType = {
   /** @deprecated Kept for legacy-API compatibility. */
   monochrome?: boolean;
   /** Button visual variant ('primary' | 'secondary' | 'tertiary' | 'plain'). */
-  variant?: ButtonVariantType | ButtonVariant;
+  variant?: ButtonVariantType;
   /** Button visual tone ('critical' | 'success' | 'neutral' | 'auto'). */
   tone?: ToneType | "auto";
   /** Button size ('small' | 'medium' | 'large'). */
-  size?: SizeType | Size;
+  size?: SizeType;
   /** Expands button to fill full available inline width. */
   fullWidth?: boolean;
   /** Visual pressed state indicator. */
   pressed?: boolean;
-  accessibilityLabel?: string;
-  id?: string;
   className?: string;
   style?: CSSProperties;
-  /** Standard HTML slot attribute, used to place this Button into a parent's named slot. */
-  slot?: string;
   /** Icon to render in the button. */
   icon?: IconType;
-  /**
-   * The Invoker Commands declarative trigger pattern (e.g. `command="--show"`).
-   */
-  command?: string;
-  /** The `id` of the element `command` acts on. */
-  commandFor?: string;
-  /** Popover interest trigger target ID. */
-  interestFor?: string;
-  /** Text alignment inside button. */
-  textAlign?: "left" | "right" | "center";
-  role?: string;
-  ariaExpanded?: boolean;
-  ariaControls?: string;
   [key: `aria-${string}`]: unknown;
   [key: `data-${string}`]: unknown;
 };
-
-export type ButtonProps = ButtonPropsType;

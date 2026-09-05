@@ -17,8 +17,9 @@ export function useToast(): UseToastResult {
   return useMemo(
     () => ({
       show(message: string, options?: ShopifyToastOptions) {
-        if (typeof window !== "undefined" && window.shopify?.toast) {
-          window.shopify.toast.show(message, options);
+        const shopify = typeof window !== "undefined" ? (window.shopify as any) : undefined;
+        if (shopify?.toast) {
+          shopify.toast.show(message, options);
           return;
         }
         devWarning(

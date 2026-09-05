@@ -1,6 +1,5 @@
-export { Box } from "./Box";
+export { Box, BOX_DOM_PROPS } from "./Box";
 export type {
-  BoxProps,
   BoxPropsType,
   BoxBackgroundType,
   BoxBorderWidthType,

@@ -16,8 +16,9 @@ export function useSaveBar(): UseSaveBarResult {
   return useMemo(
     () => ({
       show(id?: string) {
-        if (typeof window !== "undefined" && window.shopify?.saveBar) {
-          window.shopify.saveBar.show(id);
+        const shopify = typeof window !== "undefined" ? (window.shopify as any) : undefined;
+        if (shopify?.saveBar) {
+          shopify.saveBar.show(id);
           return;
         }
         devWarning(
@@ -26,8 +27,9 @@ export function useSaveBar(): UseSaveBarResult {
         );
       },
       hide(id?: string) {
-        if (typeof window !== "undefined" && window.shopify?.saveBar) {
-          window.shopify.saveBar.hide(id);
+        const shopify = typeof window !== "undefined" ? (window.shopify as any) : undefined;
+        if (shopify?.saveBar) {
+          shopify.saveBar.hide(id);
           return;
         }
         devWarning(

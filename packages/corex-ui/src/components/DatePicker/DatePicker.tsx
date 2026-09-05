@@ -1,6 +1,6 @@
 import { forwardRef } from "react";
 import { createWebComponent } from "../../core/createWebComponent";
-import type { DatePickerProps } from "./DatePicker.types";
+import type { DatePickerPropsType } from "./DatePicker.types";
 
 const SDatePicker = createWebComponent<HTMLElement, { onChange: "change" }>(
   "s-date-picker",
@@ -12,11 +12,9 @@ const SDatePicker = createWebComponent<HTMLElement, { onChange: "change" }>(
 
 /**
  * Controlled-form-input pattern over `s-date-picker`. Only single-date
- * selection is supported in this release — legacy `DatePicker`'s range mode
- * (`allowRange`, `{start, end}` selection) isn't implemented yet; see
- * `docs/component-coverage.md`.
+ * selection is supported in this release.
  */
-export const DatePicker = forwardRef<HTMLElement, DatePickerProps>(function DatePicker(
+export const DatePicker = forwardRef<HTMLElement, DatePickerPropsType>(function DatePicker(
   { selected, onChange, ...rest },
   ref,
 ) {

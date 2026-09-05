@@ -1,13 +1,17 @@
 import type { ReactNode } from "react";
+import type { PolarisPropsType } from "../../types/common";
 
-export interface DateFieldProps {
+type NativeDateFieldProps = PolarisPropsType<"s-date-field">;
+
+export type DateFieldPropsType = Omit<
+  NativeDateFieldProps,
+  "label" | "value" | "details"
+> & {
   label: ReactNode;
   value?: string;
   onChange?: (value: string, id: string) => void;
-  disabled?: boolean;
-  error?: ReactNode;
   helpText?: ReactNode;
+  details?: ReactNode;
   id?: string;
-  name?: string;
   className?: string;
-}
+};

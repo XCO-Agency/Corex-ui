@@ -1,10 +1,17 @@
-import type { Size } from "../../types/common";
+import type { PolarisPropsType, SizeType } from "../../types/common";
 
-export interface AvatarProps {
+type NativeAvatarProps = PolarisPropsType<"s-avatar">;
+
+export type AvatarPropsType = Omit<NativeAvatarProps, "size"> & {
+  /** Name of person or entity (used for initials calculation / accessibility). */
   name?: string;
-  initials?: string;
+  /** Shape of the avatar ('round' | 'square'). */
+  shape?: "round" | "square" | (string & {});
+  /** Visually hidden label describing avatar. */
+  accessibilityLabel?: string;
+  /** Source image URL (legacy Polaris prop mapping to `src`). */
   source?: string;
-  size?: Size;
-  id?: string;
-  className?: string;
-}
+  /** Image URL alias mapping to `src`. */
+  image?: string;
+  size?: NativeAvatarProps["size"] | SizeType;
+};

@@ -1,6 +1,6 @@
 import { forwardRef } from "react";
 import { createWebComponent } from "../../core/createWebComponent";
-import type { DateFieldProps } from "./DateField.types";
+import type { DateFieldPropsType } from "./DateField.types";
 
 const SDateField = createWebComponent<HTMLElement, { onInput: "input" }>("s-date-field", {
   events: { onInput: "input" },
@@ -8,8 +8,8 @@ const SDateField = createWebComponent<HTMLElement, { onInput: "input" }>("s-date
 });
 
 /** Controlled-form-input pattern, identical shape to `TextField`. */
-export const DateField = forwardRef<HTMLElement, DateFieldProps>(function DateField(
-  { value, onChange, helpText, id, ...rest },
+export const DateField = forwardRef<HTMLElement, DateFieldPropsType>(function DateField(
+  { value, onChange, helpText, details, id, ...rest },
   ref,
 ) {
   const handleInput = (event: Event) => {
@@ -22,7 +22,7 @@ export const DateField = forwardRef<HTMLElement, DateFieldProps>(function DateFi
       ref={ref}
       id={id}
       value={value ?? ""}
-      details={helpText}
+      details={details ?? helpText}
       onInput={handleInput}
       {...rest}
     />

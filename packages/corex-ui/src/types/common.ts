@@ -11,15 +11,12 @@ export type ToneType =
   | "neutral"
   | "caution"
   | undefined;
-export type Tone = ToneType;
 
 export type SparklineColorType = ToneType | (string & {});
 
 export type ButtonVariantType = "primary" | "secondary" | "tertiary" | "plain";
-export type ButtonVariant = ButtonVariantType;
 
 export type SizeType = "small" | "medium" | "large";
-export type Size = SizeType;
 
 /** Size tokens supported by Polaris web components. */
 export type SizeKeywordType =
@@ -36,19 +33,15 @@ export type SizeKeywordType =
   | "large-300"
   | "large-400"
   | "large-500";
-export type SizeKeyword = SizeKeywordType;
 
 /** Color treatment keyword supported by Polaris web components. */
 export type ColorKeywordType = "subdued" | "base" | "strong";
-export type ColorKeyword = ColorKeywordType;
 
 /** Padding keyword: any SizeKeyword token or 'none'. */
 export type PaddingKeywordType = SizeKeywordType | "none";
-export type PaddingKeyword = PaddingKeywordType;
 
 /** Polaris web-component spacing values. Standard for new code. */
 export type PolarisSpacingType = PaddingKeywordType;
-export type PolarisSpacing = PolarisSpacingType;
 
 /** @deprecated Kept for backward compatibility. Use `PolarisSpacingType` values such as `small-200` or `base`. */
 export type LegacySpacingType =
@@ -68,18 +61,21 @@ export type LegacySpacingType =
   | "1600"
   | "2000"
   | "2400"
+  | "2800"
   | "3200";
-export type LegacySpacing = LegacySpacingType;
 
-/** Single spacing token (modern SizeKeyword, legacy numeric string, or 'none'). */
-export type SpacingTokenType = SizeKeywordType | LegacySpacingType | "none";
+/** All accepted single-spacing token inputs. */
+export type SpacingTokenType = PolarisSpacingType | LegacySpacingType;
 
 /**
- * 1-to-4-value shorthand spacing type supporting both modern and legacy tokens.
- * Order: block-start inline-end block-end inline-start.
+ * Modern Box padding type: accepts 1 to 4 space-separated tokens
+ * (block-start inline-end block-end inline-start flow-relative order).
  */
 export type BoxPaddingType =
-  SpacingTokenType | `${SpacingTokenType} ${SpacingTokenType}` | (string & {}) | number;
+  | SpacingTokenType
+  | `${SpacingTokenType} ${SpacingTokenType}`
+  | (string & {})
+  | number;
 
 /** Directional padding type (1-to-2 value shorthand or single token). */
 export type BoxPaddingDirectionType =
@@ -99,10 +95,8 @@ export type StackGapType =
   | (LegacySpacingType & {})
   | (`${LegacySpacingType} ${LegacySpacingType}` & {})
   | number;
-export type StackGap = StackGapType;
 
 export type AlignmentType = "start" | "center" | "end";
-export type Alignment = AlignmentType;
 
 export type TextVariantType =
   | "headingXl"
@@ -113,7 +107,14 @@ export type TextVariantType =
   | "bodyLg"
   | "bodyMd"
   | "bodySm";
-export type TextVariant = TextVariantType;
 
 export type TargetType = "_blank" | "_self" | "_parent" | "_top" | (string & {});
-export type Target = TargetType;
+
+/** Extracts the native JSX props of any Polaris web component (e.g. 's-grid', 's-box', 's-button'). */
+export type PolarisPropsType<TTag extends keyof JSX.IntrinsicElements> =
+  Omit<JSX.IntrinsicElements[TTag], "ref" | "key">;
+
+/** Extracts the native DOM element instance of any Polaris custom element. */
+export type PolarisElementType<TTag extends keyof HTMLElementTagNameMap> =
+  HTMLElementTagNameMap[TTag];
+

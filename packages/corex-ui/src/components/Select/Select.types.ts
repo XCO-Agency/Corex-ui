@@ -1,21 +1,25 @@
 import type { ReactNode } from "react";
+import type { PolarisPropsType } from "../../types/common";
 
-export interface SelectOption {
+type NativeSelectProps = PolarisPropsType<"s-select">;
+
+export type SelectOptionType = {
   label: string;
   value: string;
   disabled?: boolean;
-}
+};
 
-export interface SelectProps {
+export type SelectPropsType = Omit<
+  NativeSelectProps,
+  "label" | "value" | "onChange" | "details"
+> & {
   label: ReactNode;
-  options: Array<SelectOption | string>;
+  options: Array<SelectOptionType | string>;
   value?: string;
   onChange?: (value: string, id: string) => void;
-  disabled?: boolean;
-  error?: ReactNode;
   helpText?: ReactNode;
+  details?: ReactNode;
   placeholder?: string;
   id?: string;
-  name?: string;
   className?: string;
-}
+};

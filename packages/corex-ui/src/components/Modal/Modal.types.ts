@@ -1,21 +1,24 @@
 import type { ReactNode } from "react";
+import type { PolarisPropsType } from "../../types/common";
 
-export interface ModalAction {
+type NativeModalProps = PolarisPropsType<"s-modal">;
+
+export type ModalActionType = {
   content: ReactNode;
   onAction?: () => void;
   destructive?: boolean;
   disabled?: boolean;
   loading?: boolean;
-}
+};
 
-export interface ModalProps {
+export type ModalPropsType = Omit<NativeModalProps, "children" | "title"> & {
   children?: ReactNode;
   /** Controls visibility. `Modal` owns no internal open state, matching legacy `Modal`. */
   open: boolean;
   onClose: () => void;
   title?: ReactNode;
-  primaryAction?: ModalAction;
-  secondaryActions?: ModalAction[];
+  primaryAction?: ModalActionType;
+  secondaryActions?: ModalActionType[];
   className?: string;
   id?: string;
-}
+};

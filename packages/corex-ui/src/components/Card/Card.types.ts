@@ -1,4 +1,7 @@
 import type { CSSProperties, ReactNode } from "react";
+import type { PolarisPropsType } from "../../types/common";
+
+type NativeSectionProps = PolarisPropsType<"s-section">;
 
 export type CardActionType = {
   content: string;
@@ -12,7 +15,10 @@ export type CardActionType = {
 
 export type CardPaddingType = "base" | "none" | "0" | (string & {});
 
-export type CardPropsType = {
+export type CardPropsType = Omit<
+  NativeSectionProps,
+  "heading" | "padding" | "children"
+> & {
   children?: ReactNode;
   /** Rendered as a heading above the card content. */
   title?: ReactNode;

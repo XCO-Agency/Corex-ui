@@ -10,6 +10,7 @@ export * from "./components/Banner";
 export * from "./components/Box";
 export * from "./components/BlockStack";
 export * from "./components/InlineStack";
+export * from "./components/Grid";
 export * from "./components/MetricCard";
 
 export * from "./components/Card";

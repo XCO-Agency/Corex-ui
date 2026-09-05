@@ -1,6 +1,6 @@
 import { forwardRef } from "react";
 import { createWebComponent } from "../../core/createWebComponent";
-import type { SaveBarProps } from "./SaveBar.types";
+import type { SaveBarPropsType } from "./SaveBar.types";
 
 const UiSaveBar = createWebComponent<HTMLElement>("ui-save-bar");
 
@@ -10,7 +10,7 @@ const UiSaveBar = createWebComponent<HTMLElement>("ui-save-bar");
  * component in this library (`ui-*`, not `s-*`). Shown/hidden imperatively
  * by its `id` via `useSaveBar()`, not a prop on this component.
  */
-export const SaveBar = forwardRef<HTMLElement, SaveBarProps>(function SaveBar(
+export const SaveBar = forwardRef<HTMLElement, SaveBarPropsType>(function SaveBar(
   { children, ...rest },
   ref,
 ) {

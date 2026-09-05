@@ -1,7 +1,16 @@
 import type { ReactNode } from "react";
-import type { AlignmentType, StackGapType } from "../../types/common";
+import type {
+  AlignmentType,
+  PolarisPropsType,
+  StackGapType,
+} from "../../types/common";
 
-export type BlockStackPropsType = {
+type NativeStackProps = PolarisPropsType<"s-stack">;
+
+export type BlockStackPropsType = Omit<
+  NativeStackProps,
+  "gap" | "direction" | "children"
+> & {
   children?: ReactNode;
   /**
    * Spacing between children.
@@ -14,5 +23,3 @@ export type BlockStackPropsType = {
   className?: string;
   id?: string;
 };
-
-export type BlockStackProps = BlockStackPropsType;

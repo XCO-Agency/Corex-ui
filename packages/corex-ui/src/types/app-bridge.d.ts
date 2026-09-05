@@ -27,11 +27,27 @@ export interface SAppWindowElement extends HTMLElement {
 }
 
 declare global {
+  namespace JSX {
+    interface IntrinsicElements {
+      "s-app-nav": import("react").DetailedHTMLProps<
+        import("react").HTMLAttributes<HTMLElement>,
+        HTMLElement
+      >;
+      "s-app-window": import("react").DetailedHTMLProps<
+        import("react").HTMLAttributes<HTMLElement>,
+        HTMLElement
+      > & {
+        src?: string;
+      };
+    }
+  }
+
   interface Window {
     shopify?: ShopifyGlobal;
   }
 
   interface HTMLElementTagNameMap {
     "s-app-window": SAppWindowElement;
+    "s-app-nav": HTMLElement;
   }
 }

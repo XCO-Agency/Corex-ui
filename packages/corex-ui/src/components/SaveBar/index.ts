@@ -1,2 +1,2 @@
 export { SaveBar } from "./SaveBar";
-export type { SaveBarProps } from "./SaveBar.types";
+export type { SaveBarPropsType } from "./SaveBar.types";

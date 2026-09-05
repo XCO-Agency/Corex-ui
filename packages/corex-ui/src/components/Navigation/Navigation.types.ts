@@ -35,5 +35,3 @@ export type NavigationPropsType = {
   children?: React.ReactNode;
   id?: string;
 };
-
-export type NavigationProps = NavigationPropsType;

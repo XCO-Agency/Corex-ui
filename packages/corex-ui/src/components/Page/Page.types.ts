@@ -1,10 +1,12 @@
 import type { ReactNode } from "react";
-import type { IconType } from "../../types/common";
+import type { IconType, PolarisPropsType } from "../../types/common";
+
+type NativePageProps = PolarisPropsType<"s-page">;
 
 /**
  * Valid inline sizes for the `s-page` web component.
  */
-export type PageInlineSizeType = "base" | "large" | "small";
+export type PageInlineSizeType = NonNullable<NativePageProps["inlineSize"]>;
 
 /**
  * Action descriptor for the primary action button.
@@ -266,12 +268,3 @@ export type PagePropsType = {
    */
   onActionRollup?(hasRolledUp: boolean): void;
 };
-
-/* Compatibility type aliases */
-export type PageProps = PagePropsType;
-export type PageInlineSize = PageInlineSizeType;
-export type PagePrimaryAction = PagePrimaryActionType;
-export type PageMenuActionDescriptor = PageMenuActionDescriptorType;
-export type PageMenuGroupDescriptor = PageMenuGroupDescriptorType;
-export type PageBackAction = PageBackActionType;
-export type PagePaginationProps = PagePaginationPropsType;

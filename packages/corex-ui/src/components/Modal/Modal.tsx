@@ -3,7 +3,7 @@ import { createWebComponent } from "../../core/createWebComponent";
 import { mergeRefs } from "../../core/mergeRefs";
 import { useDomEvent } from "../../core/useDomEvent";
 import { Button } from "../Button";
-import type { ModalProps } from "./Modal.types";
+import type { ModalPropsType } from "./Modal.types";
 
 type ModalElement = HTMLElementTagNameMap["s-modal"];
 
@@ -18,7 +18,7 @@ const SModal = createWebComponent<ModalElement>("s-modal");
  * call `onClose` back — bridging declarative React state onto an imperative
  * DOM API in both directions.
  */
-export const Modal = forwardRef<ModalElement, ModalProps>(function Modal(
+export const Modal = forwardRef<ModalElement, ModalPropsType>(function Modal(
   { children, open, onClose, title, primaryAction, secondaryActions, ...rest },
   forwardedRef,
 ) {
@@ -39,23 +39,23 @@ export const Modal = forwardRef<ModalElement, ModalProps>(function Modal(
   return (
     <SModal ref={mergeRefs(innerRef, forwardedRef)} heading={title} {...rest}>
       {children}
-      {primaryAction ? (
+      {primaryAction && (
         <Button
           slot="primary-action"
-          primary
-          destructive={primaryAction.destructive}
+          variant="primary"
+          tone={primaryAction.destructive ? "critical" : undefined}
           disabled={primaryAction.disabled}
           loading={primaryAction.loading}
           onClick={primaryAction.onAction}
         >
           {primaryAction.content}
         </Button>
-      ) : null}
-      {secondaryActions?.map((action, index) => (
+      )}
+      {secondaryActions?.map((action, i) => (
         <Button
-          key={index}
+          key={i}
           slot="secondary-actions"
-          destructive={action.destructive}
+          tone={action.destructive ? "critical" : undefined}
           disabled={action.disabled}
           loading={action.loading}
           onClick={action.onAction}

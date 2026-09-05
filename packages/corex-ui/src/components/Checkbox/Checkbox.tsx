@@ -1,6 +1,6 @@
 import { forwardRef } from "react";
 import { createWebComponent } from "../../core/createWebComponent";
-import type { CheckboxProps } from "./Checkbox.types";
+import type { CheckboxPropsType } from "./Checkbox.types";
 
 const SCheckbox = createWebComponent<HTMLElement, { onChange: "change" }>("s-checkbox", {
   events: { onChange: "change" },
@@ -8,8 +8,8 @@ const SCheckbox = createWebComponent<HTMLElement, { onChange: "change" }>("s-che
 });
 
 /** Controlled-form-input pattern: `checked` is set as a live DOM property, see `assignDomProp`. */
-export const Checkbox = forwardRef<HTMLElement, CheckboxProps>(function Checkbox(
-  { label, checked, onChange, helpText, id, ...rest },
+export const Checkbox = forwardRef<HTMLElement, CheckboxPropsType>(function Checkbox(
+  { label, checked, onChange, helpText, details, id, ...rest },
   ref,
 ) {
   const handleChange = (event: Event) => {
@@ -23,7 +23,7 @@ export const Checkbox = forwardRef<HTMLElement, CheckboxProps>(function Checkbox
       id={id}
       label={label}
       checked={checked}
-      details={helpText}
+      details={details ?? helpText}
       onChange={handleChange}
       {...rest}
     />

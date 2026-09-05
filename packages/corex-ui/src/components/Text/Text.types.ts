@@ -1,23 +1,26 @@
 import type { CSSProperties, ElementType, ReactNode } from "react";
 import type {
-  Alignment,
   AlignmentType,
-  TextVariant,
+  PolarisPropsType,
   TextVariantType,
-  Tone,
   ToneType,
 } from "../../types/common";
 
-export type TextPropsType = {
+type NativeTextProps = PolarisPropsType<"s-text">;
+
+export type TextPropsType = Omit<
+  NativeTextProps,
+  "children" | "color" | "tone" | "type"
+> & {
   children?: ReactNode;
-  variant?: TextVariantType | TextVariant;
+  variant?: TextVariantType;
   /** Legacy prop for choosing the rendered HTML tag, e.g. `as="p"`. */
   as?: ElementType;
   /** Modern Polaris text tone ('success' | 'warning' | 'critical' | 'info' | 'neutral'). */
-  tone?: ToneType | Tone;
+  tone?: ToneType;
   /** Polaris text color ('base' | 'subdued') or legacy tone alias. */
-  color?: "base" | "subdued" | ToneType | Tone | (string & {});
-  alignment?: AlignmentType | Alignment;
+  color?: "base" | "subdued" | ToneType | (string & {});
+  alignment?: AlignmentType;
   fontWeight?: "regular" | "medium" | "semibold" | "bold";
   truncate?: boolean;
   breakWord?: boolean;
@@ -28,14 +31,8 @@ export type TextPropsType = {
   id?: string;
   style?: CSSProperties;
   /** Polaris web-component type attribute ('strong' | 'address' | 'redundant' | 'generic'). */
-  type?: "strong" | "address" | "redundant" | "generic" | (string & {});
-  /** Associates text with an interactive element (e.g. s-tooltip id). */
-  interestFor?: string;
-  /** Polaris web-component font-variant-numeric ('auto' | 'normal' | 'tabular-nums'). */
-  fontVariantNumeric?: "auto" | "normal" | "tabular-nums" | (string & {});
+  type?: NativeTextProps["type"] | "strong" | "address" | "redundant" | "generic" | (string & {});
   tooltip?: ReactNode;
   [key: `aria-${string}`]: unknown;
   [key: `data-${string}`]: unknown;
 };
-
-export type TextProps = TextPropsType;

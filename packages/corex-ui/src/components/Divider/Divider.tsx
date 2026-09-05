@@ -1,10 +1,10 @@
 import { forwardRef } from "react";
 import { createWebComponent } from "../../core/createWebComponent";
-import type { DividerProps } from "./Divider.types";
+import type { DividerPropsType } from "./Divider.types";
 
 const SDivider = createWebComponent<HTMLElement>("s-divider");
 
-export const Divider = forwardRef<HTMLElement, DividerProps>(
+export const Divider = forwardRef<HTMLElement, DividerPropsType>(
   function Divider(props, ref) {
     return <SDivider ref={ref} {...props} />;
   },

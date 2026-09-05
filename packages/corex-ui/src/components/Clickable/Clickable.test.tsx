@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
-import { Clickable, ClickableAction } from "./Clickable";
+import { Clickable } from "./Clickable";
 
 describe("Clickable", () => {
   it("renders s-clickable custom element with children", () => {
@@ -9,15 +9,9 @@ describe("Clickable", () => {
     expect(el.tagName.toLowerCase()).toBe("s-clickable");
   });
 
-  it("renders s-clickable with content prop", () => {
-    render(<Clickable content="Action Item" />);
-    const el = screen.getByText("Action Item");
-    expect(el.tagName.toLowerCase()).toBe("s-clickable");
-  });
-
-  it("maps url and external to href, target, and rel", () => {
+  it("maps external to target and rel", () => {
     render(
-      <Clickable url="https://example.com/action" external>
+      <Clickable href="https://example.com/action" external>
         External Link
       </Clickable>,
     );
@@ -61,14 +55,6 @@ describe("Clickable", () => {
     expect(onFocus).toHaveBeenCalledTimes(1);
     el.dispatchEvent(new FocusEvent("blur"));
     expect(onBlur).toHaveBeenCalledTimes(1);
-  });
-
-  it("supports lowercase onclick, onblur, onfocus attributes", () => {
-    const onclick = vi.fn();
-    render(<Clickable onclick={onclick}>Lowercase Click</Clickable>);
-    const el = screen.getByText("Lowercase Click");
-    el.dispatchEvent(new MouseEvent("click", { bubbles: true }));
-    expect(onclick).toHaveBeenCalledTimes(1);
   });
 
   it("supports disabled and loading props", () => {
@@ -132,15 +118,5 @@ describe("Clickable", () => {
     expect(el).toHaveAttribute("commandfor", "custom-modal");
     expect(el).toHaveAttribute("interestfor", "custom-popover");
     expect(el).toHaveAttribute("lang", "en");
-  });
-
-  it("exports ClickableAction as an alias identical to Clickable", () => {
-    expect(ClickableAction).toBe(Clickable);
-    const onClick = vi.fn();
-    render(<ClickableAction onClick={onClick}>Alias Action</ClickableAction>);
-    const el = screen.getByText("Alias Action");
-    expect(el.tagName.toLowerCase()).toBe("s-clickable");
-    el.dispatchEvent(new MouseEvent("click", { bubbles: true }));
-    expect(onClick).toHaveBeenCalledTimes(1);
   });
 });

@@ -1,8 +1,10 @@
-import type { Size } from "../../types/common";
+import type { PolarisPropsType, SizeType } from "../../types/common";
 
-export interface SpinnerProps {
-  size?: Size;
+type NativeSpinnerProps = PolarisPropsType<"s-spinner">;
+
+export type SpinnerPropsType = Omit<NativeSpinnerProps, "size"> & {
+  size?: NativeSpinnerProps["size"] | SizeType;
   accessibilityLabel?: string;
   className?: string;
   id?: string;
-}
+};

@@ -1,15 +1,15 @@
 import type { ReactNode } from "react";
 
-export interface ChoiceListOption {
+export type ChoiceListOptionType = {
   label: string;
   value: string;
   helpText?: string;
   disabled?: boolean;
-}
+};
 
-export interface ChoiceListProps {
+export type ChoiceListPropsType = {
   title?: ReactNode;
-  choices: ChoiceListOption[];
+  choices: ChoiceListOptionType[];
   selected: string[];
   onChange?: (selected: string[], name: string) => void;
   allowMultiple?: boolean;
@@ -17,4 +17,4 @@ export interface ChoiceListProps {
   error?: ReactNode;
   id?: string;
   className?: string;
-}
+};

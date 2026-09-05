@@ -12,8 +12,6 @@ export type TabItemType = {
   accessibilityLabel?: string;
 };
 
-export type TabDescriptor = TabItemType;
-
 export type TabsPropsType<T = string | number> = {
   tabs: TabItemType[];
   /** @deprecated selected use selectedTab instead */
@@ -33,5 +31,3 @@ export type TabsPropsType<T = string | number> = {
   className?: string;
   id?: string;
 };
-
-export type TabsProps<T = string | number> = TabsPropsType<T>;

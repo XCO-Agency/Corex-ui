@@ -1,9 +1,11 @@
-import type { Size } from "../../types/common";
+import type { PolarisPropsType, SizeType } from "../../types/common";
 
-export interface ThumbnailProps {
+type NativeThumbnailProps = PolarisPropsType<"s-thumbnail">;
+
+export type ThumbnailPropsType = Omit<NativeThumbnailProps, "size"> & {
   source: string;
   alt: string;
-  size?: Size;
+  size?: NativeThumbnailProps["size"] | SizeType;
   id?: string;
   className?: string;
-}
+};

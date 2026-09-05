@@ -1,6 +1,6 @@
 import { forwardRef } from "react";
 import { createWebComponent } from "../../core/createWebComponent";
-import type { ChoiceListProps } from "./ChoiceList.types";
+import type { ChoiceListPropsType } from "./ChoiceList.types";
 
 const SChoiceList = createWebComponent<HTMLElement, { onChange: "change" }>(
   "s-choice-list",
@@ -14,11 +14,9 @@ const SChoice = createWebComponent<HTMLElement>("s-choice");
 /**
  * Controlled-form-input pattern, like `Select`. `choices`/`selected` are
  * non-primitive, so they're declared as `domProps` and assigned as live DOM
- * properties rather than JSX attributes — the exact property/attribute
- * names are best-effort (no full API reference was available); verify
- * against your installed polaris-1.js.
+ * properties rather than JSX attributes.
  */
-export const ChoiceList = forwardRef<HTMLElement, ChoiceListProps>(function ChoiceList(
+export const ChoiceList = forwardRef<HTMLElement, ChoiceListPropsType>(function ChoiceList(
   { title, choices, selected, onChange, allowMultiple, name, ...rest },
   ref,
 ) {

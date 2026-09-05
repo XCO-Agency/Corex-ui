@@ -1,2 +1,2 @@
 export { TextField } from "./TextField";
-export type { TextFieldProps } from "./TextField.types";
+export type { TextFieldPropsType } from "./TextField.types";

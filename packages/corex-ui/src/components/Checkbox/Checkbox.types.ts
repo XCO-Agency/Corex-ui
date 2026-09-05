@@ -1,13 +1,17 @@
 import type { ReactNode } from "react";
+import type { PolarisPropsType } from "../../types/common";
 
-export interface CheckboxProps {
+type NativeCheckboxProps = PolarisPropsType<"s-checkbox">;
+
+export type CheckboxPropsType = Omit<
+  NativeCheckboxProps,
+  "label" | "checked" | "onChange" | "details"
+> & {
   label: ReactNode;
   checked?: boolean;
   onChange?: (checked: boolean, id: string) => void;
-  disabled?: boolean;
-  error?: ReactNode;
   helpText?: ReactNode;
+  details?: ReactNode;
   id?: string;
-  name?: string;
   className?: string;
-}
+};

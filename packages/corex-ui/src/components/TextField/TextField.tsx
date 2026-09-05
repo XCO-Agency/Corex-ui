@@ -1,6 +1,6 @@
 import { forwardRef } from "react";
 import { createWebComponent } from "../../core/createWebComponent";
-import type { TextFieldProps } from "./TextField.types";
+import type { TextFieldPropsType } from "./TextField.types";
 
 type FieldEvents = { onInput: "input"; onBlur: "blur"; onFocus: "focus" };
 const fieldEvents: FieldEvents = { onInput: "input", onBlur: "blur", onFocus: "focus" };
@@ -16,13 +16,10 @@ const STextArea = createWebComponent<HTMLElement, FieldEvents>("s-text-area", {
 
 /**
  * Controlled-form-input pattern: legacy `TextField.onChange` fires on every
- * keystroke, which is what the new element's `onInput` does — the new
- * element's own `onChange` only fires on blur/commit, so it is intentionally
- * *not* used here to preserve legacy per-keystroke behavior. `multiline`
- * switches the rendered element to `s-text-area`, since there is no single
- * element that covers both single- and multi-line legacy `TextField` usage.
+ * keystroke, which is what the new element's `onInput` does. `multiline`
+ * switches the rendered element to `s-text-area`.
  */
-export const TextField = forwardRef<HTMLElement, TextFieldProps>(function TextField(
+export const TextField = forwardRef<HTMLElement, TextFieldPropsType>(function TextField(
   {
     label,
     value,
@@ -30,6 +27,7 @@ export const TextField = forwardRef<HTMLElement, TextFieldProps>(function TextFi
     onBlur,
     onFocus,
     helpText,
+    details,
     multiline,
     prefix,
     suffix,
@@ -56,7 +54,7 @@ export const TextField = forwardRef<HTMLElement, TextFieldProps>(function TextFi
     id,
     label,
     value: value ?? "",
-    details: helpText,
+    details: details ?? helpText,
     required: requiredIndicator,
     onInput: handleInput,
     onBlur,
@@ -65,11 +63,9 @@ export const TextField = forwardRef<HTMLElement, TextFieldProps>(function TextFi
   };
 
   if (multiline) {
+    const rows = typeof multiline === "number" ? multiline : undefined;
     return (
-      <STextArea
-        {...sharedProps}
-        rows={typeof multiline === "number" ? multiline : undefined}
-      >
+      <STextArea rows={rows} {...sharedProps}>
         {slots}
       </STextArea>
     );
