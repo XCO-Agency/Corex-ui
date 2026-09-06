@@ -9,7 +9,7 @@ export function MenuExample() {
       <Menu id="actions-menu">
         <Button icon="duplicate">Duplicate</Button>
         <Button icon="archive">Archive</Button>
-        <Button icon="delete" destructive>
+        <Button icon="delete" tone="critical">
           Delete
         </Button>
       </Menu>

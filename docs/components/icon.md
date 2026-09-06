@@ -5,7 +5,7 @@ Thin wrapper over `s-icon`.
 ```tsx
 import { Icon } from "@xco-agency/corex-ui";
 
-<Icon source="save" accessibilityLabel="Save" />;
+<Icon type="save" accessibilityLabel="Save" />;
 ```
 
 ## Prop mapping

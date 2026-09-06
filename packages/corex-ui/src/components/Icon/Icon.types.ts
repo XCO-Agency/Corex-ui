@@ -12,7 +12,7 @@ export type IconPropsType = Omit<NativeIconProps, "source" | "tone" | "type"> & 
   /** Icon name (e.g. `"save"`, `"search"`, `"star"`) or a Polaris SVG component. */
   source?: IconSourceType;
   tone?: ToneType;
-  type?: IconType;
+  type?: IconType & string;
   accessibilityLabel?: string;
   id?: string;
   style?: React.CSSProperties;

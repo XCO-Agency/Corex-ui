@@ -19,14 +19,14 @@ export function DangerZoneCard({ onReset }: DangerZoneCardPropsType) {
     <Card title="Danger zone">
       <BlockStack gap="400">
         <Banner title="Reset all configuration to defaults" tone="critical">
-          <Text as="p" variant="bodySm">
+          <Text as="p">
             This action will revoke active API tokens, reset notification webhook
             bindings, and restore original store preferences. This action cannot be
             undone.
           </Text>
         </Banner>
 
-        <InlineStack align="start" gap="300">
+        <InlineStack justifyContent="start" gap="300">
           {confirming ? (
             <InlineStack gap="200">
               <Button

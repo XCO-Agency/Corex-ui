@@ -19,8 +19,8 @@ export function GeneralSettingsCard({ data, onChange }: GeneralSettingsCardProps
   return (
     <Card title="Store profile">
       <BlockStack gap="400">
-        <InlineStack gap="200" align="start" blockAlign="center">
-          <Text as="span" variant="bodySm" tone="neutral">
+        <InlineStack gap="200" align="start" alignItems="center">
+          <Text as="span" tone="neutral">
             Store status:
           </Text>
           <Badge tone="success">Active</Badge>

@@ -89,7 +89,7 @@ export function Step5ShopifyValidation({
                 >
                   <InlineStack
                     align="space-between"
-                    blockAlign="center"
+                    alignItems="center"
                     inlineSize="100%"
                   >
                     <BlockStack gap="none">
@@ -101,8 +101,8 @@ export function Step5ShopifyValidation({
                 </Box>
               </Clickable>
 
-              <InlineStack align="space-between" blockAlign="center" inlineSize="100%">
-                <InlineStack gap="small-200" blockAlign="center">
+              <InlineStack align="space-between" alignItems="center" inlineSize="100%">
+                <InlineStack gap="small-200" alignItems="center">
                   {state.embedStatus === "active" ? (
                     <Icon type="check-circle-filled" tone="success" />
                   ) : state.embedStatus === "checking" ? (
@@ -130,7 +130,7 @@ export function Step5ShopifyValidation({
           </BlockStack>
         </Box>
 
-        <InlineStack gap="small-200" blockAlign="center">
+        <InlineStack gap="small-200" alignItems="center">
           <Button onClick={() => dispatch({ type: "GO_BACK" })}>Back</Button>
           <Button variant="primary" onClick={() => dispatch({ type: "GO_NEXT" })}>
             Continue

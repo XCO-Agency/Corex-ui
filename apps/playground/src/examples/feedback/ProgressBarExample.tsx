@@ -16,7 +16,7 @@ export function ProgressBarExample() {
     <BlockStack gap="large-200">
       <Card>
         <BlockStack gap="base">
-          <InlineStack align="space-between" blockAlign="center">
+          <InlineStack align="space-between" alignItems="center">
             <Text heading as="h3">
               Interactive Progress
             </Text>
@@ -34,9 +34,7 @@ export function ProgressBarExample() {
           </InlineStack>
 
           <ProgressBar progress={progress} tone="success" size="base" />
-          <Text tone="subdued" variant="bodySm">
-            Current progress: {progress}%
-          </Text>
+          <Text color="subdued">Current progress: {progress}%</Text>
         </BlockStack>
       </Card>
 
@@ -47,38 +45,28 @@ export function ProgressBarExample() {
           </Text>
 
           <BlockStack gap="small-200">
-            <Text variant="bodySm" tone="subdued">
-              Success (Default)
-            </Text>
+            <Text color="subdued">Success (Default)</Text>
             <ProgressBar progress={80} tone="success" />
           </BlockStack>
 
           <BlockStack gap="small-200">
-            <Text variant="bodySm" tone="subdued">
-              Neutral
-            </Text>
+            <Text color="subdued">Neutral</Text>
             <ProgressBar progress={60} tone="neutral" />
           </BlockStack>
 
           <BlockStack gap="small-200">
-            <Text variant="bodySm" tone="subdued">
-              Caution
-            </Text>
+            <Text color="subdued">Caution</Text>
             <ProgressBar progress={45} tone="caution" />
           </BlockStack>
 
           <BlockStack gap="small-200">
-            <Text variant="bodySm" tone="subdued">
-              Critical
-            </Text>
+            <Text color="subdued">Critical</Text>
             <ProgressBar progress={20} tone="critical" />
           </BlockStack>
 
           <BlockStack gap="small-200">
-            <Text variant="bodySm" tone="subdued">
-              Subdued
-            </Text>
-            <ProgressBar progress={35} tone="subdued" />
+            <Text color="subdued">Subdued</Text>
+            <ProgressBar progress={35} color="subdued" />
           </BlockStack>
         </BlockStack>
       </Card>
@@ -90,30 +78,22 @@ export function ProgressBarExample() {
           </Text>
 
           <BlockStack gap="small-200">
-            <Text variant="bodySm" tone="subdued">
-              Extra Small (xs - 4px)
-            </Text>
+            <Text color="subdued">Extra Small (xs - 4px)</Text>
             <ProgressBar progress={50} size="xs" />
           </BlockStack>
 
           <BlockStack gap="small-200">
-            <Text variant="bodySm" tone="subdued">
-              Small (sm - 5px)
-            </Text>
+            <Text color="subdued">Small (sm - 5px)</Text>
             <ProgressBar progress={50} size="sm" />
           </BlockStack>
 
           <BlockStack gap="small-200">
-            <Text variant="bodySm" tone="subdued">
-              Base (base - 6px)
-            </Text>
+            <Text color="subdued">Base (base - 6px)</Text>
             <ProgressBar progress={50} size="base" />
           </BlockStack>
 
           <BlockStack gap="small-200">
-            <Text variant="bodySm" tone="subdued">
-              Large (lg - 8px)
-            </Text>
+            <Text color="subdued">Large (lg - 8px)</Text>
             <ProgressBar progress={50} size="lg" />
           </BlockStack>
         </BlockStack>

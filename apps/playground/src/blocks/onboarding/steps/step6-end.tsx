@@ -77,7 +77,7 @@ export function Step6Celebration({
                 <InlineStack
                   key={row.label}
                   gap="small-200"
-                  blockAlign="center"
+                  alignItems="center"
                   inlineSize="100%"
                 >
                   <Icon
@@ -91,7 +91,7 @@ export function Step6Celebration({
           </BlockStack>
         </Box>
         <BlockStack gap="small-200" align="center" inlineSize="100%">
-          <InlineStack gap="small-200" blockAlign="center">
+          <InlineStack gap="small-200" alignItems="center">
             <Button onClick={() => dispatch({ type: "GO_BACK" })}>Back</Button>
             <Button variant="primary" onClick={onGoToDashboard}>
               Go to Revenue Dashboard

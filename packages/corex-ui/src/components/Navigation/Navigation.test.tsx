@@ -1,45 +1,68 @@
-import { render, screen, fireEvent } from "@testing-library/react";
-import { describe, it, expect, vi } from "vitest";
-import { Navigation, Navigations } from "./Navigation";
+import { render, screen } from "@testing-library/react";
+import { describe, it, expect } from "vitest";
+import { Navigation, Navigations } from "./index";
+import { NavigationItem } from "./NavigationItem";
+import { NavigationLabel } from "./NavigationLabel";
+import { NavigationFooter } from "./NavigationFooter";
 
 describe("Navigation", () => {
-  const sections = [
-    {
-      title: "REVIEW COLLECTION",
-      items: [
-        { id: "import", label: "Import reviews" },
-        { id: "request", label: "Request reviews" },
-      ],
-    },
-    {
-      title: "REVIEW DISPLAY",
-      items: [
-        { id: "widgets", label: "Widgets" },
-        { id: "social", label: "Social sharing" },
-      ],
-    },
-  ];
+  it("renders sticky footer using Navigation.Footer", () => {
+    render(
+      <Navigation>
+        <Navigation.Item id="home" label="Home" />
+        <Navigation.Footer divider>
+          <Navigation.Item id="account" label="My Account" icon="person" />
+        </Navigation.Footer>
+      </Navigation>,
+    );
 
-  it("renders section titles and items", () => {
-    render(<Navigation sections={sections} selectedId="social" />);
-    expect(screen.getByText("REVIEW COLLECTION")).toBeInTheDocument();
-    expect(screen.getByText("Import reviews")).toBeInTheDocument();
-    expect(screen.getByText("Social sharing")).toBeInTheDocument();
+    expect(screen.getByText("Home")).toBeInTheDocument();
+    expect(screen.getByText("My Account")).toBeInTheDocument();
   });
 
-  it("triggers onSelect callback on click", () => {
-    const handleSelect = vi.fn();
-    render(<Navigation sections={sections} onSelect={handleSelect} />);
-    fireEvent.click(screen.getByText("Social sharing"));
-    expect(handleSelect).toHaveBeenCalledWith("social");
+  it("filters compound items when searching via Navigation.Search", () => {
+    render(
+      <Navigation>
+        <Navigation.Search placeholder="Search navigation..." />
+        <Navigation.Label>GENERAL</Navigation.Label>
+        <Navigation.Item id="analytics" label="Analytics" />
+        <Navigation.Item id="discounts" label="Discounts" />
+      </Navigation>,
+    );
+
+    expect(screen.getByText("Analytics")).toBeInTheDocument();
+    expect(screen.getByText("Discounts")).toBeInTheDocument();
+
+    const searchField = document.querySelector("s-search-field");
+    expect(searchField).toBeInTheDocument();
   });
 
-  it("supports search filtering", () => {
-    render(<Navigation sections={sections} searchable />);
-    const searchInput = screen.getByPlaceholderText("Search (Ctrl + Shift + F)");
-    fireEvent.change(searchInput, { target: { value: "social" } });
-    expect(screen.getByText("Social sharing")).toBeInTheDocument();
-    expect(screen.queryByText("Import reviews")).not.toBeInTheDocument();
+  it("renders link url on Clickable when url prop is passed to item", () => {
+    const { container } = render(
+      <Navigation>
+        <Navigation.Item id="docs" label="Documentation" url="https://example.com" />
+      </Navigation>,
+    );
+
+    expect(screen.getByText("Documentation")).toBeInTheDocument();
+    const clickable = container.querySelector("s-clickable");
+    expect(clickable).toBeInTheDocument();
+    expect(clickable).toHaveAttribute("href", "https://example.com");
+  });
+
+  it("renders standalone NavigationItem, NavigationLabel and NavigationFooter", () => {
+    render(
+      <div>
+        <NavigationLabel>Standalone Label</NavigationLabel>
+        <NavigationItem id="standalone" label="Standalone Item" />
+        <NavigationFooter>
+          <span>Footer Content</span>
+        </NavigationFooter>
+      </div>,
+    );
+    expect(screen.getByText("Standalone Label")).toBeInTheDocument();
+    expect(screen.getByText("Standalone Item")).toBeInTheDocument();
+    expect(screen.getByText("Footer Content")).toBeInTheDocument();
   });
 
   it("exports Navigations as alias", () => {

@@ -23,8 +23,8 @@ export function SecuritySettingsCard({ data, onChange }: SecuritySettingsCardPro
   return (
     <Card title="Security & API credentials">
       <BlockStack gap="400">
-        <InlineStack gap="200" align="start" blockAlign="center">
-          <Text as="span" variant="bodySm" tone="neutral">
+        <InlineStack gap="200" align="start" alignItems="center">
+          <Text as="span" tone="neutral">
             Environment mode:
           </Text>
           <Badge tone="info">Production</Badge>

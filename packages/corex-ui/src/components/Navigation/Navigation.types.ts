@@ -1,37 +1,67 @@
 import type * as React from "react";
-import type { IconSourceType } from "../Icon/Icon.types";
+import type { IconType, PolarisPropsType } from "../../types/common";
+import { BoxPropsType } from "../Box";
 
-export type NavigationItemType = {
-  id: string;
-  label: string;
+export type NavigationItemPropsType = {
+  id?: string;
+  label?: string;
   /** Polaris icon name (e.g. `"import"`, `"search"`, `"star"`) or Polaris SVG component */
-  icon?: IconSourceType;
+  icon?: IconType;
   url?: string;
   badge?: React.ReactNode;
   disabled?: boolean;
   selected?: boolean;
   onClick?: () => void;
-  subItems?: NavigationItemType[];
+  children?: React.ReactNode;
+  ariaLabel?: string;
 };
 
-export type NavigationSectionType = {
+export type NavigationItemType = NavigationItemPropsType;
+
+export type NavigationActionType =
+  | {
+      icon?: IconType;
+      accessibilityLabel?: string;
+      onClick?: () => void;
+    }
+  | React.ReactNode;
+
+export type NavigationLabelPropsType = {
+  children?: React.ReactNode;
+  action?: NavigationActionType;
+};
+
+export type NavigationSectionPropsType = {
   title?: string;
-  items: NavigationItemType[];
-  action?: {
-    icon?: IconSourceType;
-    accessibilityLabel?: string;
-    onClick?: () => void;
-  };
+  action?: NavigationActionType;
+  items?: NavigationItemPropsType[];
+  children?: React.ReactNode;
 };
 
-export type NavigationPropsType = {
-  sections: NavigationSectionType[];
+export type NavigationSectionType = NavigationSectionPropsType;
+
+export type NavigationSearchPropsType = Omit<
+  PolarisPropsType<"s-search-field">,
+  "onChange"
+> & {
+  onChange?: (value: string) => void;
+};
+
+export type NavigationFooterPropsType = {
+  children?: React.ReactNode;
+  divider?: boolean;
+  className?: string;
+  style?: React.CSSProperties;
+};
+
+export type NavigationContextType = {
+  search?: string;
+  setSearch?: (val: string) => void;
   selectedId?: string;
   onSelect?: (id: string) => void;
-  searchable?: boolean;
-  searchPlaceholder?: string;
-  searchValue?: string;
-  onSearchChange?: (val: string) => void;
-  children?: React.ReactNode;
-  id?: string;
+};
+
+export type NavigationPropsType = BoxPropsType & {
+  defaultSelected?: string;
+  sectionned?: boolean;
 };

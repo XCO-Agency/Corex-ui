@@ -80,7 +80,7 @@ export function Step4AddTools({ state, dispatch }: Step4AddToolsPropsType) {
                       inlineSize="100%"
                     >
                       <BlockStack gap="small-100">
-                        <InlineStack align="space-between" blockAlign="center">
+                        <InlineStack align="space-between" alignItems="center">
                           <IconTile
                             size="sm"
                             tone={tool.selected ? "success" : "subdued"}
@@ -104,7 +104,7 @@ export function Step4AddTools({ state, dispatch }: Step4AddToolsPropsType) {
                         <Text color="subdued">{tool.description}</Text>
                         <InlineStack
                           align="space-between"
-                          blockAlign="center"
+                          alignItems="center"
                           gap="base"
                           inlineSize="100%"
                         >
@@ -166,7 +166,7 @@ export function Step4AddTools({ state, dispatch }: Step4AddToolsPropsType) {
                             >
                               <InlineStack
                                 gap="base"
-                                blockAlign="center"
+                                alignItems="center"
                                 align="space-between"
                               >
                                 <BlockStack gap="none">
@@ -188,7 +188,7 @@ export function Step4AddTools({ state, dispatch }: Step4AddToolsPropsType) {
             <Box paddingBlockStart="small" inlineSize="100%">
               <InlineStack
                 align="space-between"
-                blockAlign="center"
+                alignItems="center"
                 gap="base"
                 inlineSize="100%"
               >
@@ -198,7 +198,7 @@ export function Step4AddTools({ state, dispatch }: Step4AddToolsPropsType) {
                     : `${selectedCount} tool${selectedCount > 1 ? "s" : ""} selected`}
                 </Text>
 
-                <InlineStack gap="small-200" blockAlign="center">
+                <InlineStack gap="small-200" alignItems="center">
                   <Button onClick={() => dispatch({ type: "GO_BACK" })}>Back</Button>
                   <Button variant="primary" onClick={() => dispatch({ type: "GO_NEXT" })}>
                     {selectedCount === 0 ? "Skip for now" : "Save & Continue"}

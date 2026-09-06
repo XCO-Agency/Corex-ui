@@ -12,7 +12,7 @@ export function DatePickerExample() {
     <BlockStack gap="600">
       <Box padding="200">
         <BlockStack gap="200">
-          <Text as="h4" variant="headingSm">
+          <Text as="h4" heading>
             Popover Mode with Presets & Date Range
           </Text>
           <DatePicker
@@ -20,7 +20,7 @@ export function DatePickerExample() {
             presets={true}
             onApply={(newRange) => setRange(newRange)}
           />
-          <Text as="p" variant="bodySm" color="subdued">
+          <Text as="p" color="subdued">
             Active range: {range.start} to {range.end}
           </Text>
         </BlockStack>
@@ -28,7 +28,7 @@ export function DatePickerExample() {
 
       <Box padding="200">
         <BlockStack gap="200">
-          <Text as="h4" variant="headingSm">
+          <Text as="h4" heading>
             Inline Mode
           </Text>
           <DatePicker

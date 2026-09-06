@@ -5,6 +5,8 @@ import { Text } from "../Text";
 import { Button } from "../Button";
 import type { CardPropsType } from "./Card.types";
 import { InlineStack } from "../InlineStack";
+import { BlockStack } from "../BlockStack";
+import { Icon } from "../Icon";
 
 const SSection = createWebComponent<HTMLElement>("s-section", {
   domProps: ["padding", "heading"],
@@ -24,6 +26,10 @@ export const Card = forwardRef<HTMLElement, CardPropsType>(function Card(
     actions,
     primaryFooterAction,
     secondaryFooterActions,
+    tooltip,
+    icon,
+    description,
+    heading,
     ...rest
   },
   ref,
@@ -44,13 +50,18 @@ export const Card = forwardRef<HTMLElement, CardPropsType>(function Card(
     <SSection ref={ref} {...rest}>
       {hasHeader && (
         <InlineStack justifyContent="space-between" alignItems="center" gap="base">
-          {title ? (
-            <Text as="h2" heading>
-              {title}
-            </Text>
-          ) : (
-            <div />
-          )}
+          <BlockStack gap="050">
+            {(title || heading) && (
+              <InlineStack gap="150" alignItems="center">
+                {icon && <Icon type={icon} size="small" />}
+                <Text tooltip={tooltip} heading>
+                  {title}
+                </Text>
+              </InlineStack>
+            )}
+            {description && <Text color="subdued">{description}</Text>}
+          </BlockStack>
+
           {actions && actions.length > 0 && (
             <InlineStack gap="small">
               {actions.map((act, index) => (

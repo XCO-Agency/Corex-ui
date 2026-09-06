@@ -106,7 +106,7 @@ export function Step3Configuration({ state, dispatch }: Step3ConfigurationPropsT
               inlineSize="100%"
             >
               <BlockStack gap="small-100">
-                <InlineStack align="space-between" blockAlign="center">
+                <InlineStack align="space-between" alignItems="center">
                   <Text color="subdued">SAMPLE CART TOTAL</Text>
                   <Text fontWeight="bold">
                     {formatCurrency(SAMPLE_CART_TOTAL, state.storeCurrency)}

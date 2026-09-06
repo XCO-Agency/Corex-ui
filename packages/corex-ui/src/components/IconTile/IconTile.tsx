@@ -9,6 +9,9 @@ export type IconTilePropsType = {
   children?: ReactNode;
   /** Visual tone (background & icon color) */
   tone?: IconTileToneType;
+
+  /** @deprecated use tone instead */
+  color?: IconTileToneType;
   /** Rounded corner style */
   borderRadius?: IconTileBorderRadiusType;
   /** Size dimensions ('sm' = 32px, 'md' = 40px, 'lg' = 44px) */
@@ -66,6 +69,7 @@ export const IconTile = forwardRef<HTMLDivElement, IconTilePropsType>(function I
   {
     children,
     tone = "success",
+    color = "success",
     borderRadius = "base",
     size = "md",
     style,
@@ -74,7 +78,7 @@ export const IconTile = forwardRef<HTMLDivElement, IconTilePropsType>(function I
   },
   ref,
 ) {
-  const toneStyle = TONE_STYLES[tone] ?? TONE_STYLES.success;
+  const toneStyle = TONE_STYLES[color ?? tone] ?? TONE_STYLES.success;
   const sizeStyle = SIZE_STYLES[size] ?? SIZE_STYLES.md;
   const radiusStyle = BORDER_RADIUS_STYLES[borderRadius] ?? BORDER_RADIUS_STYLES.base;
 

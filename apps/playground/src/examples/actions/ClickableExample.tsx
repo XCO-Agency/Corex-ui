@@ -9,6 +9,7 @@ import {
   Icon,
   Banner,
 } from "@xco-agency/corex-ui";
+import { IconType } from "@xco-agency/corex-ui";
 
 export function ClickableExample() {
   const [clickCount, setClickCount] = useState<number>(0);
@@ -55,7 +56,7 @@ export function ClickableExample() {
               alignItems: "center",
             }}
           >
-            <Text as="h3" variant="headingSm">
+            <Text as="h3" heading>
               Interactive Box Rows with BoxProps
             </Text>
             <Badge tone="info">{`Clicks: ${clickCount}`}</Badge>
@@ -79,12 +80,6 @@ export function ClickableExample() {
                   setClickCount((c) => c + 1);
                   setLastClickedItem(item.title);
                 }}
-                style={{
-                  display: "block",
-                  cursor: "pointer",
-                  textAlign: "left",
-                  transition: "background-color 0.15s ease, border-color 0.15s ease",
-                }}
               >
                 <div
                   style={{
@@ -93,11 +88,9 @@ export function ClickableExample() {
                     alignItems: "center",
                   }}
                 >
-                  <InlineStack gap="300" blockAlign="center">
-                    <Icon source={item.icon} />
-                    <Text as="span" variant="bodyMd" fontWeight="semibold">
-                      {item.title}
-                    </Text>
+                  <InlineStack gap="300" alignItems="center">
+                    <Icon type={item.icon as IconType} />
+                    <Text as="span">{item.title}</Text>
                   </InlineStack>
                   <Badge tone="neutral">{item.badge}</Badge>
                 </div>
@@ -109,7 +102,7 @@ export function ClickableExample() {
 
       <Card>
         <BlockStack gap="300">
-          <Text as="h3" variant="headingSm">
+          <Text as="h3" heading>
             Loading, Navigation & Disabled Action Props
           </Text>
 
@@ -123,40 +116,25 @@ export function ClickableExample() {
               borderRadius="base"
               padding="small"
               onClick={handleSimulatedAsyncAction}
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: "8px",
-                cursor: "pointer",
-              }}
             >
-              <Icon source="sparkles" />
-              <Text as="span" variant="bodySm" fontWeight="medium">
+              <Icon type="bolt" />
+              <Text as="span">
                 {isLoading ? "Processing..." : "Trigger Async Action"}
               </Text>
             </Clickable>
 
             {/* External Navigation Link */}
             <Clickable
-              url="https://shopify.dev/docs/api/app-home/polaris-web-components"
+              href="https://shopify.dev/docs/api/app-home/polaris-web-components"
               external
               background="subdued"
               borderWidth="small-100"
               borderColor="subdued"
               borderRadius="base"
               padding="small"
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: "8px",
-                textDecoration: "none",
-                cursor: "pointer",
-              }}
             >
-              <Icon source="link" />
-              <Text as="span" variant="bodySm" fontWeight="medium">
-                Shopify Web Components Docs
-              </Text>
+              <Icon type="link" />
+              <Text as="span">Shopify Web Components Docs</Text>
             </Clickable>
 
             {/* Disabled Action */}
@@ -167,15 +145,8 @@ export function ClickableExample() {
               borderColor="subdued"
               borderRadius="base"
               padding="small"
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: "8px",
-                opacity: 0.5,
-                cursor: "not-allowed",
-              }}
             >
-              <Text as="span" variant="bodySm" tone="neutral">
+              <Text as="span" tone="neutral">
                 Disabled Clickable Action
               </Text>
             </Clickable>

@@ -1,5 +1,5 @@
 import type { CSSProperties, ReactNode } from "react";
-import type { PolarisPropsType } from "../../types/common";
+import type { IconType, PolarisPropsType } from "../../types/common";
 
 export type CardActionType = {
   content: string;
@@ -12,13 +12,16 @@ export type CardActionType = {
 };
 
 export type CardPropsType = PolarisPropsType<"s-section"> & {
-  /** @deprecated use heading Rendered as a heading above the card content. */
+  /** @deprecated use "@heading" Rendered as a heading above the card content. */
   title?: ReactNode;
   /**
    * @deprecated use
    */
   sectioned?: boolean;
   /** Card header actions. */
+  icon?: IconType;
+  description?: ReactNode;
+  tooltip?: ReactNode;
   actions?: CardActionType[];
   /** Primary action in the card footer. */
   primaryFooterAction?: CardActionType;

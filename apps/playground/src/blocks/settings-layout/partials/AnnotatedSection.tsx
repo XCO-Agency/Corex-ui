@@ -14,7 +14,7 @@ export function AnnotatedSection({
           <Text as="h2" heading>
             {title}
           </Text>
-          <Text as="p" variant="bodySm" tone="neutral">
+          <Text as="p" tone="neutral">
             {description}
           </Text>
           {action ? (

@@ -1,8 +1,8 @@
-import { MetricCard } from "@xco-agency/corex-ui";
+import { MetricCard, Box } from "@xco-agency/corex-ui";
 
 export function MetricCardExample() {
   return (
-    <s-box minInlineSize="260px">
+    <Box minInlineSize="260px">
       <MetricCard
         title="Total orders"
         value="1,234"
@@ -16,6 +16,6 @@ export function MetricCardExample() {
         onClick={() => alert("Clickable action")}
         sparklineColor="critical"
       />
-    </s-box>
+    </Box>
   );
 }

@@ -27,14 +27,12 @@ export function SettingsSaveBar({
             gap: "16px",
           }}
         >
-          <InlineStack gap="200" align="start" blockAlign="center">
+          <InlineStack gap="200" align="start" alignItems="center">
             <Badge tone="warning">Unsaved changes</Badge>
-            <Text as="span" variant="bodySm">
-              You have unsaved changes in this section.
-            </Text>
+            <Text as="span">You have unsaved changes in this section.</Text>
           </InlineStack>
 
-          <InlineStack gap="200" align="end" blockAlign="center">
+          <InlineStack gap="200" align="end" alignItems="center">
             <Button variant="secondary" disabled={isSaving} onClick={onDiscard}>
               Discard
             </Button>

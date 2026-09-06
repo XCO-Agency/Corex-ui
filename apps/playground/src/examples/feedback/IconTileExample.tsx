@@ -15,41 +15,33 @@ export function IconTileExample() {
           <Text heading as="h3">
             Tones
           </Text>
-          <InlineStack gap="base" blockAlign="center">
-            <BlockStack gap="small-100" inlineAlign="center">
+          <InlineStack gap="base" alignItems="center">
+            <BlockStack gap="small-100" alignItems="center">
               <IconTile tone="success">
-                <Icon source="check" tone="inherit" />
+                <Icon type="check" tone="auto" />
               </IconTile>
-              <Text variant="bodySm" tone="subdued">
-                Success
-              </Text>
+              <Text color="subdued">Success</Text>
             </BlockStack>
 
-            <BlockStack gap="small-100" inlineAlign="center">
+            <BlockStack gap="small-100" alignItems="center">
               <IconTile tone="neutral">
-                <Icon source="cart" tone="inherit" />
+                <Icon type="cart" tone="auto" />
               </IconTile>
-              <Text variant="bodySm" tone="subdued">
-                Neutral
-              </Text>
+              <Text color="subdued">Neutral</Text>
             </BlockStack>
 
-            <BlockStack gap="small-100" inlineAlign="center">
+            <BlockStack gap="small-100" alignItems="center">
               <IconTile tone="caution">
-                <Icon source="alert-triangle" tone="inherit" />
+                <Icon type="alert-triangle" tone="auto" />
               </IconTile>
-              <Text variant="bodySm" tone="subdued">
-                Caution
-              </Text>
+              <Text color="subdued">Caution</Text>
             </BlockStack>
 
-            <BlockStack gap="small-100" inlineAlign="center">
+            <BlockStack gap="small-100" alignItems="center">
               <IconTile tone="subdued">
-                <Icon source="settings" tone="inherit" />
+                <Icon type="settings" tone="auto" />
               </IconTile>
-              <Text variant="bodySm" tone="subdued">
-                Subdued
-              </Text>
+              <Text color="subdued">Subdued</Text>
             </BlockStack>
           </InlineStack>
         </BlockStack>
@@ -60,32 +52,26 @@ export function IconTileExample() {
           <Text heading as="h3">
             Sizes
           </Text>
-          <InlineStack gap="base" blockAlign="center">
-            <BlockStack gap="small-100" inlineAlign="center">
+          <InlineStack gap="base" alignItems="center">
+            <BlockStack gap="small-100" alignItems="center">
               <IconTile size="sm" tone="success">
-                <Icon source="check" tone="inherit" />
+                <Icon type="check" tone="auto" />
               </IconTile>
-              <Text variant="bodySm" tone="subdued">
-                Small (32px)
-              </Text>
+              <Text color="subdued">Small (32px)</Text>
             </BlockStack>
 
-            <BlockStack gap="small-100" inlineAlign="center">
+            <BlockStack gap="small-100" alignItems="center">
               <IconTile size="md" tone="success">
-                <Icon source="check" tone="inherit" />
+                <Icon type="check" tone="auto" />
               </IconTile>
-              <Text variant="bodySm" tone="subdued">
-                Medium (40px)
-              </Text>
+              <Text color="subdued">Medium (40px)</Text>
             </BlockStack>
 
-            <BlockStack gap="small-100" inlineAlign="center">
+            <BlockStack gap="small-100" alignItems="center">
               <IconTile size="lg" tone="success">
-                <Icon source="check" tone="inherit" />
+                <Icon type="check" tone="auto" />
               </IconTile>
-              <Text variant="bodySm" tone="subdued">
-                Large (44px)
-              </Text>
+              <Text color="subdued">Large (44px)</Text>
             </BlockStack>
           </InlineStack>
         </BlockStack>
@@ -96,50 +82,40 @@ export function IconTileExample() {
           <Text heading as="h3">
             Border Radius
           </Text>
-          <InlineStack gap="base" blockAlign="center">
-            <BlockStack gap="small-100" inlineAlign="center">
+          <InlineStack gap="base" alignItems="center">
+            <BlockStack gap="small-100" alignItems="center">
               <IconTile borderRadius="none" tone="neutral">
-                <Icon source="apps" tone="inherit" />
+                <Icon type="apps" tone="auto" />
               </IconTile>
-              <Text variant="bodySm" tone="subdued">
-                None
-              </Text>
+              <Text color="subdued">None</Text>
             </BlockStack>
 
-            <BlockStack gap="small-100" inlineAlign="center">
+            <BlockStack gap="small-100" alignItems="center">
               <IconTile borderRadius="small" tone="neutral">
-                <Icon source="apps" tone="inherit" />
+                <Icon type="apps" tone="auto" />
               </IconTile>
-              <Text variant="bodySm" tone="subdued">
-                Small
-              </Text>
+              <Text color="subdued">Small</Text>
             </BlockStack>
 
-            <BlockStack gap="small-100" inlineAlign="center">
+            <BlockStack gap="small-100" alignItems="center">
               <IconTile borderRadius="base" tone="neutral">
-                <Icon source="apps" tone="inherit" />
+                <Icon type="apps" tone="auto" />
               </IconTile>
-              <Text variant="bodySm" tone="subdued">
-                Base
-              </Text>
+              <Text color="subdued">Base</Text>
             </BlockStack>
 
-            <BlockStack gap="small-100" inlineAlign="center">
+            <BlockStack gap="small-100" alignItems="center">
               <IconTile borderRadius="large" tone="neutral">
-                <Icon source="apps" tone="inherit" />
+                <Icon type="apps" tone="auto" />
               </IconTile>
-              <Text variant="bodySm" tone="subdued">
-                Large
-              </Text>
+              <Text color="subdued">Large</Text>
             </BlockStack>
 
-            <BlockStack gap="small-100" inlineAlign="center">
+            <BlockStack gap="small-100" alignItems="center">
               <IconTile borderRadius="full" tone="neutral">
-                <Icon source="apps" tone="inherit" />
+                <Icon type="apps" tone="auto" />
               </IconTile>
-              <Text variant="bodySm" tone="subdued">
-                Full
-              </Text>
+              <Text color="subdued">Full</Text>
             </BlockStack>
           </InlineStack>
         </BlockStack>

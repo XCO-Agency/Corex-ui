@@ -106,7 +106,7 @@ export function Step1Initializing({ state, dispatch }: Step1InitializingPropsTyp
                       className={styles.staggerItem}
                       style={{ animationDelay: `${i * 160}ms` }}
                     >
-                      <InlineStack gap="small-200" blockAlign="center">
+                      <InlineStack gap="small-200" alignItems="center">
                         {isDone ? (
                           <Icon type="check-circle-filled" tone="success" />
                         ) : isActive ? (
@@ -115,7 +115,7 @@ export function Step1Initializing({ state, dispatch }: Step1InitializingPropsTyp
                           <Icon type="clock" tone="neutral" />
                         )}
                         {isActive || isDone ? (
-                          <Text fontWeight="semibold">{task.label}</Text>
+                          <Text heading>{task.label}</Text>
                         ) : (
                           <Text color="subdued">{task.label}</Text>
                         )}

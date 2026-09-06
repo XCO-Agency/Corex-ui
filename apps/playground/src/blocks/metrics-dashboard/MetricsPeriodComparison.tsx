@@ -24,12 +24,10 @@ export function MetricsPeriodComparison({
     <Card heading="Period-over-Period Performance">
       <BlockStack gap="300">
         <Box background="subdued" padding="300" borderRadius="base">
-          <InlineStack align="space-between" blockAlign="center">
-            <InlineStack gap="200" blockAlign="center">
+          <InlineStack align="space-between" alignItems="center">
+            <InlineStack gap="200" alignItems="center">
               <Icon type="chart-line" />
-              <Text as="span" variant="bodySm" fontWeight="medium">
-                Comparative Analysis for {selectedDate}
-              </Text>
+              <Text as="span">Comparative Analysis for {selectedDate}</Text>
             </InlineStack>
             <Badge tone="success">Calculated vs Previous Period</Badge>
           </InlineStack>
@@ -52,8 +50,8 @@ export function MetricsPeriodComparison({
                 minInlineSize="200px"
               >
                 <BlockStack gap="150">
-                  <InlineStack align="space-between" blockAlign="center">
-                    <Text as="span" variant="bodySm" color="subdued">
+                  <InlineStack align="space-between" alignItems="center">
+                    <Text as="span" color="subdued">
                       {m.title}
                     </Text>
                     <Icon type={iconType} tone={tone} />
@@ -64,7 +62,7 @@ export function MetricsPeriodComparison({
                       {m.value}
                     </Text>
                     {m.previousValue && (
-                      <Text as="span" variant="bodySm" color="subdued">
+                      <Text as="span" color="subdued">
                         prev {m.previousValue}
                       </Text>
                     )}
@@ -72,8 +70,8 @@ export function MetricsPeriodComparison({
 
                   <Divider />
 
-                  <InlineStack align="space-between" blockAlign="center">
-                    <Text as="span" variant="bodySm" color="subdued">
+                  <InlineStack align="space-between" alignItems="center">
+                    <Text as="span" color="subdued">
                       Period Delta
                     </Text>
                     <Badge tone={tone}>
@@ -89,11 +87,11 @@ export function MetricsPeriodComparison({
 
         <Divider />
 
-        <InlineStack align="space-between" blockAlign="center">
-          <Text as="span" variant="bodySm" color="subdued">
+        <InlineStack align="space-between" alignItems="center">
+          <Text as="span" color="subdued">
             All timezones calculated in Store Local Time (UTC-04:00)
           </Text>
-          <Text as="span" variant="bodySm" color="subdued">
+          <Text as="span" color="subdued">
             Real-time telemetry enabled
           </Text>
         </InlineStack>

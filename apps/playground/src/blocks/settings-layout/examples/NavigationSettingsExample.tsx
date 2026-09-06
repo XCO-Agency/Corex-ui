@@ -1,10 +1,17 @@
 import * as React from "react";
-import { Navigation, BlockStack, Text, Box, Page } from "@xco-agency/corex-ui";
+import {
+  Navigation,
+  BlockStack,
+  Text,
+  Page,
+  type NavigationItemType,
+  InlineStack,
+} from "@xco-agency/corex-ui";
 
 export function NavigationSettingsExample() {
   const [selectedNav, setSelectedNav] = React.useState("social");
 
-  const navigationSections = [
+  const navigationSections: { items: NavigationItemType[]; title: string }[] = [
     {
       title: "REVIEW COLLECTION",
       items: [
@@ -31,7 +38,7 @@ export function NavigationSettingsExample() {
         {
           id: "products",
           label: "Product management",
-          icon: "tag",
+          icon: "product",
         },
         {
           id: "bundles",
@@ -41,16 +48,16 @@ export function NavigationSettingsExample() {
         {
           id: "flow",
           label: "Collection flow",
-          icon: "workflow",
+          icon: "git-branch",
         },
         {
           id: "optimize",
           label: "Optimize collection",
-          icon: "sparkles",
+          icon: "bolt",
         },
         {
           id: "moderation",
-          label: "Publishing and moderation",
+          label: "Moderation",
           icon: "thumbs-up",
         },
       ],
@@ -91,7 +98,7 @@ export function NavigationSettingsExample() {
         {
           id: "referrals",
           label: "Referrals",
-          icon: "customer",
+          icon: "person",
         },
       ],
     },
@@ -100,28 +107,49 @@ export function NavigationSettingsExample() {
   return (
     <Page inlineSize="base">
       {/* Left Sidebar: Vertical Navigation */}
-      <Box inlineSize="200px">
-        <Navigation
-          sections={navigationSections}
-          selectedId={selectedNav}
-          onSelect={setSelectedNav}
-          searchable
-          searchPlaceholder="Search (Ctrl + Shift + F)"
-        />
-      </Box>
+      <InlineStack gap="large">
+        <Navigation inlineSize="220px" sectionned defaultSelected="social">
+          <Navigation.Search onChange={(e) => console.log(e)} />
 
-      <BlockStack gap="400">
-        <Text as="h1" variant="large" heading>
-          <span style={{ fontWeight: 700, fontSize: "22px", color: "#202223" }}>
-            {navigationSections.flatMap((s) => s.items).find((i) => i.id === selectedNav)
-              ?.label ?? "Settings"}
-          </span>
-        </Text>
-        <Text as="p" variant="bodyMd" tone="neutral">
-          Configure settings and preferences for this section. Select &ldquo;Social
-          sharing&rdquo; in the vertical navigation to view the social media dashboard.
-        </Text>
-      </BlockStack>
+          {navigationSections.map((item, index) => (
+            <Navigation.Section key={index} title={item.title}>
+              {item.items.map((item, index) => (
+                <Navigation.Item
+                  key={index}
+                  id={item.id}
+                  label={item.label}
+                  icon={item.icon}
+                  badge={item.badge}
+                />
+              ))}
+            </Navigation.Section>
+          ))}
+
+          <Navigation.Footer divider>
+            <Navigation.Item
+              id="help"
+              label="Help & Support"
+              icon="question-circle"
+              url="https://shopify.dev"
+            />
+          </Navigation.Footer>
+        </Navigation>
+
+        <div style={{ flex: 1 }}>
+          <BlockStack gap="400">
+            <Text variant="large" heading>
+              {navigationSections
+                .flatMap((s) => s.items)
+                .find((i) => i.id === selectedNav)?.label ?? "Settings"}
+            </Text>
+            <Text tone="neutral">
+              Configure settings and preferences for this section. Select &ldquo;Social
+              sharing&rdquo; in the vertical navigation to view the social media
+              dashboard.
+            </Text>
+          </BlockStack>
+        </div>
+      </InlineStack>
     </Page>
   );
 }
