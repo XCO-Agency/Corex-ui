@@ -3,9 +3,9 @@
 Thin wrapper over `s-text`.
 
 ```tsx
-import { Text } from "@xco/corex-ui";
+import { Text } from "@xco-agency/corex-ui";
 
-<Text variant="headingMd" tone="success">
+<Text heading tone="success">
   Order confirmed
 </Text>;
 ```

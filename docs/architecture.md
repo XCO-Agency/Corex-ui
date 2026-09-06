@@ -1,6 +1,6 @@
 # Architecture
 
-`@xco/corex-ui` wraps Shopify's Polaris web components (`s-*` custom elements) behind a
+`@xco-agency/corex-ui` wraps Shopify's Polaris web components (`s-*` custom elements) behind a
 React API that mirrors legacy `@shopify/polaris` component names and props. This document
 explains how the wrapper layer is built and how to extend it.
 

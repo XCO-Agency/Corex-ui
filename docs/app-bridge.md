@@ -1,6 +1,6 @@
 # App Bridge: AppWindow, AppNav, Menu, SaveBar, Toast
 
-This is a distinct subsystem from the rest of `@xco/corex-ui`. Everything else in this library
+This is a distinct subsystem from the rest of `@xco-agency/corex-ui`. Everything else in this library
 wraps **Polaris design components** (`s-button`, `s-card`, ...); this page covers Shopify **App
 Bridge**'s embedded-app window, navigation, and notification layer — `s-app-window`, `s-app-nav`,
 `ui-save-bar` (a different custom element namespace, not `s-*`), and the imperative
@@ -21,7 +21,7 @@ it deliberately has no controlled `open`/`onClose` prop — trigger it either vi
 ref, exactly like the raw HTML:
 
 ```tsx
-import { AppWindow, Button } from "@xco/corex-ui";
+import { AppWindow, Button } from "@xco-agency/corex-ui";
 
 // Declarative — no event handlers needed:
 <AppWindow id="app-window" src="/app-window-content.html" />
@@ -90,7 +90,7 @@ rendering a `Page` with actions in its title bar via slots:
 Thin wrapper over `s-app-nav`, holding `Link` children:
 
 ```tsx
-import { AppNav, Link } from "@xco/corex-ui";
+import { AppNav, Link } from "@xco-agency/corex-ui";
 
 <AppNav>
   <Link url="/app" removeUnderline>
@@ -111,7 +111,7 @@ Thin wrapper over `s-menu`, holding `Button` children — pair it with a trigger
 `useToast()` wraps `window.shopify.toast.show(...)`:
 
 ```tsx
-import { useToast } from "@xco/corex-ui";
+import { useToast } from "@xco-agency/corex-ui";
 
 function SaveButton() {
   const toast = useToast();
@@ -127,7 +127,7 @@ Two ways to use App Bridge's save bar, depending on where the form lives.
 
 Add `data-save-bar` (and optionally `data-discard-confirmation`) directly to a native `<form>`
 — these are plain HTML attributes App Bridge's own script watches for, so there's no
-`@xco/corex-ui` wrapper for them:
+`@xco-agency/corex-ui` wrapper for them:
 
 ```tsx
 <form data-save-bar data-discard-confirmation>

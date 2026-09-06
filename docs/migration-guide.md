@@ -1,17 +1,17 @@
 # Migrating from `@shopify/polaris`
 
-`@shopify/polaris` (Polaris React) is deprecated. `@xco/corex-ui` gives you the same component
+`@shopify/polaris` (Polaris React) is deprecated. `@xco-agency/corex-ui` gives you the same component
 names and the same prop shapes, backed by Shopify's actively-maintained Polaris web components,
 so you can migrate one file — even one component — at a time.
 
 ## 1. Install
 
 ```sh
-npm install @xco/corex-ui
+npm install @xco-agency/corex-ui
 npm install --save-dev @shopify/polaris-types
 ```
 
-`@xco/corex-ui` has no runtime dependency on Polaris itself — the actual `s-*` elements are
+`@xco-agency/corex-ui` has no runtime dependency on Polaris itself — the actual `s-*` elements are
 provided by Shopify's CDN script, not an npm package. `@shopify/polaris-types` is optional but
 recommended: it gives you accurate ambient TypeScript types for the underlying elements,
 versioned to match the CDN script your app loads.
@@ -35,7 +35,7 @@ by that same script rather than by a React context provider.
 
 ```diff
 -import { Button, Card } from "@shopify/polaris";
-+import { Button, Card } from "@xco/corex-ui";
++import { Button, Card } from "@xco-agency/corex-ui";
 ```
 
 Both libraries can run side by side during a migration — they don't share any global state or
@@ -62,11 +62,11 @@ that specific component.
 
 ## 5. Rollout suggestion
 
-1. Add the CDN script tag and `@xco/corex-ui` dependency; leave `@shopify/polaris` installed.
+1. Add the CDN script tag and `@xco-agency/corex-ui` dependency; leave `@shopify/polaris` installed.
 2. Pick one low-traffic page or component and swap its import. Click through it manually — the
    visual language should look identical, since both libraries render Shopify's own design
    system.
-3. Watch the browser console in development for `[@xco/corex-ui]` warnings — they tell you
+3. Watch the browser console in development for `[@xco-agency/corex-ui]` warnings — they tell you
    exactly which props need a second look.
 4. Repeat page by page. Once nothing imports from `@shopify/polaris` anymore, remove it and its
    `<AppProvider>`/theme setup.

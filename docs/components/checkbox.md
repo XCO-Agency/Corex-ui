@@ -4,7 +4,7 @@ Controlled-form-input pattern over `s-checkbox`. See
 [architecture.md](../architecture.md#2-controlled-form-input).
 
 ```tsx
-import { Checkbox } from "@xco/corex-ui";
+import { Checkbox } from "@xco-agency/corex-ui";
 
 <Checkbox
   label="I accept the terms"

@@ -3,7 +3,7 @@
 Thin wrapper over `s-thumbnail`.
 
 ```tsx
-import { Thumbnail } from "@xco/corex-ui";
+import { Thumbnail } from "@xco-agency/corex-ui";
 
 <Thumbnail source="https://example.com/product.png" alt="Product photo" />;
 ```

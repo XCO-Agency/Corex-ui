@@ -5,7 +5,7 @@ Composed / imperative-bridge pattern over `s-modal`. See
 `open`/`onClose` API is bridged onto the element's imperative `show()`/`hideOverlay()` methods.
 
 ```tsx
-import { Modal, Text } from "@xco/corex-ui";
+import { Modal, Text } from "@xco-agency/corex-ui";
 
 <Modal
   open={open}

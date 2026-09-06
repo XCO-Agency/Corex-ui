@@ -1,6 +1,6 @@
 # Component coverage
 
-An explicit audit of every Polaris web component against what `@xco/corex-ui` currently wraps,
+An explicit audit of every Polaris web component against what `@xco-agency/corex-ui` currently wraps,
 by category (per [shopify.dev's App Home Polaris web components reference](https://shopify.dev/docs/api/app-home/polaris-web-components)),
 plus the separate App Bridge subsystem. Existing gaps are listed with a reason, not silently
 omitted — if you need one of the "Not yet" rows, it's a good candidate to add next following

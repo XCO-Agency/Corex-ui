@@ -4,7 +4,7 @@ App Bridge component — see [app-bridge.md](../app-bridge.md#appwindow) for ful
 `s-app-window`.
 
 ```tsx
-import { AppWindow, Button } from "@xco/corex-ui";
+import { AppWindow, Button } from "@xco-agency/corex-ui";
 
 <AppWindow id="app-window" src="/app-window-content.html" />
 <Button command="--show" commandFor="app-window">Open App Window</Button>

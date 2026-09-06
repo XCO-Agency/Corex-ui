@@ -6,7 +6,7 @@ including the simpler `data-save-bar` form-attribute pattern for same-page forms
 component in this library (`ui-*`, not `s-*`).
 
 ```tsx
-import { SaveBar, useSaveBar } from "@xco/corex-ui";
+import { SaveBar, useSaveBar } from "@xco-agency/corex-ui";
 
 const saveBar = useSaveBar();
 

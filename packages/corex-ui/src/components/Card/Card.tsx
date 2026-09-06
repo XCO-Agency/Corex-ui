@@ -47,7 +47,7 @@ export const Card = forwardRef<HTMLElement, CardPropsType>(function Card(
       {hasHeader && (
         <InlineStack justifyContent="space-between" alignItems="center" gap="base">
           {title ? (
-            <Text as="h2" variant="headingSm">
+            <Text as="h2" heading>
               {title}
             </Text>
           ) : (

@@ -3,7 +3,7 @@
 Thin wrapper over `s-icon`.
 
 ```tsx
-import { Icon } from "@xco/corex-ui";
+import { Icon } from "@xco-agency/corex-ui";
 
 <Icon source="save" accessibilityLabel="Save" />;
 ```

@@ -12,6 +12,7 @@ import { Button } from "../Button";
 import { InlineStack } from "../InlineStack";
 import { Text } from "../Text";
 import { Grid } from "../Grid";
+import { Clickable } from "../Clickable";
 
 export type DatePickerCalendarPropsType = {
   startDate: string;
@@ -92,7 +93,7 @@ export function DatePickerCalendar({
             <div style={{ width: "28px" }} />
           )}
 
-          <Text variant="headingSm">{getMonthTitle(year, month)}</Text>
+          <Text heading>{getMonthTitle(year, month)}</Text>
 
           {!isLeft ? (
             <Button
@@ -109,17 +110,9 @@ export function DatePickerCalendar({
         {/* Days of Week Row */}
         <Grid columns={7} columnGap="small-500">
           {DAY_NAMES.map((d) => (
-            <span
-              key={d}
-              style={{
-                fontSize: "11px",
-                fontWeight: 500,
-                textAlign: "center",
-                color: "var(--p-color-text-subdued, #6d7175)",
-              }}
-            >
+            <Text key={d} variant="xs">
               {d}
-            </span>
+            </Text>
           ))}
         </Grid>
 
@@ -147,6 +140,7 @@ export function DatePickerCalendar({
                   alignItems: "center",
                   justifyContent: "center",
                   height: "32px",
+                  width: "32px",
                   backgroundColor: hasRangeBridge
                     ? "var(--p-color-bg-surface-selected, #f1f2f3)"
                     : "transparent",
@@ -156,44 +150,40 @@ export function DatePickerCalendar({
                   borderBottomRightRadius: isEnd ? "8px" : "0",
                 }}
               >
-                <button
-                  type="button"
-                  onClick={() => {
-                    if (isCurrent) onSelectDate(item.dateStr);
-                  }}
-                  onMouseEnter={() => {
-                    if (isCurrent) setHoverDate(item.dateStr);
-                  }}
-                  disabled={!isCurrent}
-                  style={{
-                    width: "28px",
-                    height: "28px",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    borderRadius: "8px",
-                    border: "none",
-                    background: isEnd
-                      ? "var(--p-color-bg-fill-brand-selected, #2c3136)"
-                      : isStart
-                        ? "var(--p-color-bg-fill-brand-selected, #303030)"
-                        : "transparent",
-                    color:
-                      isEnd || isStart
-                        ? "#ffffff"
-                        : isCurrent
-                          ? "var(--p-color-text, #202223)"
-                          : "transparent",
-                    // fontSize: "12px",
-                    fontWeight: isStart || isEnd ? 600 : 400,
-                    cursor: isCurrent ? "pointer" : "default",
-                    position: "relative",
-                    zIndex: 1,
-                    transition: "transform 0.1s ease",
-                  }}
-                >
-                  {isCurrent ? item.dayNumber : ""}
-                </button>
+                {isCurrent ? (
+                  <Button
+                    type="button"
+                    onClick={() => onSelectDate(item.dateStr)}
+                    variant={isEnd || isStart ? "primary" : "tertiary"}
+                  >
+                    <span
+                      style={{
+                        marginInline: -4,
+                        width: 14,
+                        justifyContent: "center",
+                        alignItems: "center",
+                        display: "flex",
+                        height: 18,
+                      }}
+                    >
+                      {item.dayNumber}
+                    </span>
+                  </Button>
+                ) : (
+                  <span
+                    style={{
+                      justifyContent: "center",
+                      alignItems: "center",
+                      display: "flex",
+                      opacity: 0.3,
+                      height: 28,
+                      width: 28,
+                      borderRadius: 8,
+                    }}
+                  >
+                    -
+                  </span>
+                )}
               </div>
             );
           })}

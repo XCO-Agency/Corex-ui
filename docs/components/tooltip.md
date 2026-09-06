@@ -5,7 +5,7 @@ rendered into a `slot="content"` child. Unlike `Modal`, there's no imperative br
 are natively hover/focus-driven by the element itself.
 
 ```tsx
-import { Tooltip } from "@xco/corex-ui";
+import { Tooltip } from "@xco-agency/corex-ui";
 
 <Tooltip content="Deletes the item permanently">
   <Button destructive>Delete</Button>

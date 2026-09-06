@@ -5,7 +5,7 @@ Composed pattern: `s-stack` pinned to `direction="inline"`. See
 [architecture.md](../architecture.md#3-composed--imperative-bridge).
 
 ```tsx
-import { Button, InlineStack } from "@xco/corex-ui";
+import { Button, InlineStack } from "@xco-agency/corex-ui";
 
 <InlineStack gap="small-200">
   <Button>Save</Button>

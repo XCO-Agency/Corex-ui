@@ -7,7 +7,7 @@ from [`ButtonGroup`](./button-group.md) + [`Button`](./button.md) for the tab st
 [architecture.md](../architecture.md#3-composed--imperative-bridge).
 
 ```tsx
-import { Tabs, Text } from "@xco/corex-ui";
+import { Tabs, Text } from "@xco-agency/corex-ui";
 
 <Tabs
   tabs={[

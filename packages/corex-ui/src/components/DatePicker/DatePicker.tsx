@@ -84,6 +84,7 @@ export const DatePicker: ForwardRefExoticComponent<
         id={popoverId}
         selected={selected}
         presets={presets}
+        inline
         onApply={handleApply}
         onCancel={handleCancel}
         onChangeRange={handleRangeChange}

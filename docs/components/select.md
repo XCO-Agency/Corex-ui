@@ -4,7 +4,7 @@ Controlled-form-input pattern over `s-select`. See
 [architecture.md](../architecture.md#2-controlled-form-input).
 
 ```tsx
-import { Select } from "@xco/corex-ui";
+import { Select } from "@xco-agency/corex-ui";
 
 <Select
   label="Country"

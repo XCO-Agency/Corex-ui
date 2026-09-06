@@ -3,7 +3,7 @@
 Thin wrapper over `s-box`, Polaris's generic layout primitive.
 
 ```tsx
-import { Box } from "@xco/corex-ui";
+import { Box } from "@xco-agency/corex-ui";
 
 <Box padding="400" background="bg-surface-secondary">
   Content

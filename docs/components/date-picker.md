@@ -3,7 +3,7 @@
 Controlled-form-input pattern over `s-date-picker`.
 
 ```tsx
-import { DatePicker } from "@xco/corex-ui";
+import { DatePicker } from "@xco-agency/corex-ui";
 
 <DatePicker selected={date} onChange={(date) => setDate(date)} />;
 ```

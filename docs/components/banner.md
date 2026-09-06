@@ -3,7 +3,7 @@
 Thin wrapper over `s-banner`.
 
 ```tsx
-import { Banner } from "@xco/corex-ui";
+import { Banner } from "@xco-agency/corex-ui";
 
 <Banner title="Heads up" tone="warning" onDismiss={() => setVisible(false)}>
   Some line items are out of stock.

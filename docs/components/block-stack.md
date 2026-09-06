@@ -5,7 +5,7 @@ Composed pattern: `s-stack` pinned to `direction="block"`. See
 [`InlineStack`](./inline-stack.md), pins the same element to `direction="inline"`.
 
 ```tsx
-import { BlockStack, Text } from "@xco/corex-ui";
+import { BlockStack, Text } from "@xco-agency/corex-ui";
 
 <BlockStack gap="base">
   <Text>First</Text>

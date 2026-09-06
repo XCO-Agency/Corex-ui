@@ -3,7 +3,7 @@
 Thin wrapper over `s-button`. See [architecture.md](../architecture.md#1-thin-wrapper).
 
 ```tsx
-import { Button } from "@xco/corex-ui";
+import { Button } from "@xco-agency/corex-ui";
 
 <Button primary onClick={() => save()}>
   Save
@@ -12,7 +12,7 @@ import { Button } from "@xco/corex-ui";
 
 ## Prop mapping
 
-| Legacy `@shopify/polaris` prop                                      | `@xco/corex-ui` behavior                                                                                               |
+| Legacy `@shopify/polaris` prop                                      | `@xco-agency/corex-ui` behavior                                                                                        |
 | ------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
 | `children` / `content`                                              | Either works; `content` is treated as an alias for `children`.                                                         |
 | `primary` (deprecated in legacy)                                    | Maps to `variant="primary"`.                                                                                           |

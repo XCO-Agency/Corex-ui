@@ -3,7 +3,7 @@
 Thin wrapper over `s-button-group`, which accepts `<Button>` children directly.
 
 ```tsx
-import { Button, ButtonGroup } from "@xco/corex-ui";
+import { Button, ButtonGroup } from "@xco-agency/corex-ui";
 
 <ButtonGroup variant="segmented">
   <Button>One</Button>

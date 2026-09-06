@@ -4,7 +4,7 @@ Thin wrapper over `s-menu`, holding `Button` children. Part of the [App Bridge](
 subsystem — pair it with a trigger `Button` using `commandFor`.
 
 ```tsx
-import { Button, Menu } from "@xco/corex-ui";
+import { Button, Menu } from "@xco-agency/corex-ui";
 
 <Button commandFor="actions-menu" icon="menu">More actions</Button>
 <Menu id="actions-menu">

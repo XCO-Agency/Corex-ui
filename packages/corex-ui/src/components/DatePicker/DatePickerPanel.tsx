@@ -20,11 +20,13 @@ export type DatePickerPanelPropsType = Pick<
 > & {
   onChangeRange?: (range: DateRangeType) => void;
   id: string;
+  inline?: boolean;
 };
 
 export function DatePickerPanel({
   selected,
   id,
+  inline,
   presets = true,
   onApply,
   onCancel,
@@ -152,28 +154,32 @@ export function DatePickerPanel({
           onSelectDate={handleDateClick}
         />
 
-        <Divider />
+        {!inline && (
+          <>
+            <Divider />
 
-        {/* Bottom Actions */}
-        <InlineStack justifyContent="end" padding="small-100" gap="small">
-          <Button onClick={onCancel} commandFor={id} command="--hide">
-            Cancel
-          </Button>
+            {/* Bottom Actions */}
+            <InlineStack justifyContent="end" padding="small-100" gap="small">
+              <Button onClick={onCancel} commandFor={id} command="--hide">
+                Cancel
+              </Button>
 
-          <Button
-            variant="primary"
-            commandFor={id}
-            command="--hide"
-            onClick={handleApply}
-            disabled={
-              typeof currentRange === "string"
-                ? !currentRange
-                : !currentRange?.start || !currentRange?.end
-            }
-          >
-            Apply
-          </Button>
-        </InlineStack>
+              <Button
+                variant="primary"
+                commandFor={id}
+                command="--hide"
+                onClick={handleApply}
+                disabled={
+                  typeof currentRange === "string"
+                    ? !currentRange
+                    : !currentRange?.start || !currentRange?.end
+                }
+              >
+                Apply
+              </Button>
+            </InlineStack>
+          </>
+        )}
       </BlockStack>
     </InlineStack>
   );

@@ -3,7 +3,7 @@
 Thin wrapper over `s-link`.
 
 ```tsx
-import { Link } from "@xco/corex-ui";
+import { Link } from "@xco-agency/corex-ui";
 
 <Link url="https://example.com" external>
   View documentation

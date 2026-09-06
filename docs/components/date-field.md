@@ -4,7 +4,7 @@ Controlled-form-input pattern over `s-date-field`, identical shape to
 [`TextField`](./text-field.md).
 
 ```tsx
-import { DateField } from "@xco/corex-ui";
+import { DateField } from "@xco-agency/corex-ui";
 
 <DateField label="Start date" value={date} onChange={(value) => setDate(value)} />;
 ```

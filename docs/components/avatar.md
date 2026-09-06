@@ -3,7 +3,7 @@
 Thin wrapper over `s-avatar`.
 
 ```tsx
-import { Avatar } from "@xco/corex-ui";
+import { Avatar } from "@xco-agency/corex-ui";
 
 <Avatar name="Ada Lovelace" initials="AL" />;
 ```

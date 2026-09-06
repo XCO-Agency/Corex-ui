@@ -4,7 +4,7 @@ Controlled-form-input pattern over `s-text-field` (or `s-text-area` when `multil
 See [architecture.md](../architecture.md#2-controlled-form-input).
 
 ```tsx
-import { TextField } from "@xco/corex-ui";
+import { TextField } from "@xco-agency/corex-ui";
 
 <TextField label="Name" value={name} onChange={(value) => setName(value)} />;
 ```

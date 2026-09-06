@@ -4,7 +4,7 @@ App Bridge component — see [app-bridge.md](../app-bridge.md#appnav). Thin wrap
 `s-app-nav`, holding [`Link`](./link.md) children.
 
 ```tsx
-import { AppNav, Link } from "@xco/corex-ui";
+import { AppNav, Link } from "@xco-agency/corex-ui";
 
 <AppNav>
   <Link url="/app" removeUnderline>

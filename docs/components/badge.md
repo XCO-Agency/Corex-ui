@@ -3,7 +3,7 @@
 Thin wrapper over `s-badge`.
 
 ```tsx
-import { Badge } from "@xco/corex-ui";
+import { Badge } from "@xco-agency/corex-ui";
 
 <Badge tone="success">Active</Badge>;
 ```

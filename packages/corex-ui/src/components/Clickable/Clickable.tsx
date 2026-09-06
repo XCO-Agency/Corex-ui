@@ -91,7 +91,7 @@ export const Clickable: ForwardRefExoticComponent<
     blockSize,
     minBlockSize,
     maxBlockSize,
-    inlineSize,
+    inlineSize = "auto",
     minInlineSize,
     maxInlineSize,
     overflow,
@@ -111,11 +111,7 @@ export const Clickable: ForwardRefExoticComponent<
     typeof download === "boolean" ? (download ? "" : undefined) : download;
 
   return (
-    <div
-      style={{
-        flex: 1,
-      }}
-    >
+    <div style={{ flex: inlineSize === "auto" ? 0 : "auto" }}>
       <SClickable
         ref={ref}
         href={href}

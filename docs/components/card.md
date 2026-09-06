@@ -5,7 +5,7 @@ optional heading composed from [`Text`](./text.md). See
 [architecture.md](../architecture.md#3-composed--imperative-bridge).
 
 ```tsx
-import { Card } from "@xco/corex-ui";
+import { Card } from "@xco-agency/corex-ui";
 
 <Card title="Shipping address">
   <p>123 Main St.</p>

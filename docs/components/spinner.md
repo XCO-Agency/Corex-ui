@@ -3,7 +3,7 @@
 Thin wrapper over `s-spinner`.
 
 ```tsx
-import { Spinner } from "@xco/corex-ui";
+import { Spinner } from "@xco-agency/corex-ui";
 
 <Spinner size="large" accessibilityLabel="Loading orders" />;
 ```

@@ -4,7 +4,7 @@ Controlled-form-input pattern over `s-choice-list`, like [`Select`](./select.md)
 [architecture.md](../architecture.md#2-controlled-form-input).
 
 ```tsx
-import { ChoiceList } from "@xco/corex-ui";
+import { ChoiceList } from "@xco-agency/corex-ui";
 
 <ChoiceList
   title="Notify me by"
