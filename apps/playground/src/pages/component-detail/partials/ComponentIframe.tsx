@@ -158,7 +158,7 @@ export function ComponentIframe({ children, className }: ComponentIframePropsTyp
       ref={iframeRef}
       title="Component Preview"
       className={className ?? "w-full border-0 bg-transparent transition-all"}
-      style={{ minHeight: "260px", display: "block" }}
+      style={{ minHeight: "460px", display: "block" }}
     >
       {mountNode ? createPortal(children, mountNode) : null}
     </iframe>

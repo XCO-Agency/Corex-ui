@@ -2,11 +2,11 @@ import { Button, InlineStack } from "@xco/corex-ui";
 
 export function ButtonVariants() {
   return (
-    <InlineStack gap="none">
+    <InlineStack gap="base">
       <Button variant="primary">Primary</Button>
       <Button>Secondary</Button>
-      <Button destructive>Destructive</Button>
-      <Button plain>Plain</Button>
+      <Button tone="critical">Destructive</Button>
+      <Button variant="tertiary">Plain</Button>
       <Button disabled>Disabled</Button>
     </InlineStack>
   );

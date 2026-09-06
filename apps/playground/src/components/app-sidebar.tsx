@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Command, Inbox, Search, Sparkles, X } from "lucide-react";
+import { Command, Inbox, Search, Sparkles, X, ChevronDown } from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
@@ -11,14 +11,18 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  SidebarMenuSub,
-  SidebarMenuSubButton,
-  SidebarMenuSubItem,
   SidebarRail,
 } from "@/components/ui/sidebar";
+import {
+  Collapsible,
+  CollapsibleTrigger,
+  CollapsibleContent,
+} from "@/components/ui/collapsible";
+import { SidebarCategoryItem } from "@/components/SidebarCategoryItem";
 import { type ComponentEntry, registry, blocks } from "@/data/registry";
 import { getCategoryIcon } from "@/lib/category-icons";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
+import { cn } from "@/lib/utils";
 
 export type AppSidebarPropsType = React.ComponentProps<typeof Sidebar> & {
   onOpenSearch?: () => void;
@@ -26,6 +30,24 @@ export type AppSidebarPropsType = React.ComponentProps<typeof Sidebar> & {
 
 export function AppSidebar({ onOpenSearch, ...props }: AppSidebarPropsType) {
   const [search, setSearch] = React.useState("");
+  const location = useLocation();
+  const currentPath = location.pathname;
+
+  const isBlockRoute = currentPath.startsWith("/blocks");
+  const [isComponentsOpen, setIsComponentsOpen] = React.useState(() => !isBlockRoute);
+  const [isBlocksOpen, setIsBlocksOpen] = React.useState(() => isBlockRoute);
+
+  React.useEffect(() => {
+    if (isBlockRoute) {
+      setIsBlocksOpen(true);
+    } else if (currentPath.startsWith("/components")) {
+      setIsComponentsOpen(true);
+    }
+  }, [currentPath, isBlockRoute]);
+
+  const isSearching = search.trim().length > 0;
+  const effectiveComponentsOpen = isSearching || isComponentsOpen;
+  const effectiveBlocksOpen = isSearching || isBlocksOpen;
 
   const filteredExamples = React.useMemo(() => {
     const trimmed = search.trim().toLowerCase();
@@ -143,86 +165,100 @@ export function AppSidebar({ onOpenSearch, ...props }: AppSidebarPropsType) {
         </SidebarGroup>
 
         {/* Components SidebarGroup */}
-        <SidebarGroup>
-          <SidebarGroupLabel className="flex items-center justify-between">
-            <span>Components</span>
-            <span className="text-[10px] font-mono text-muted-foreground">
-              {filteredExamples.length}
-            </span>
-          </SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {groupedExamples.length === 0 ? (
-                <div className="px-3 py-6 text-center text-xs text-muted-foreground">
-                  No components matching &ldquo;{search}&rdquo;
-                </div>
-              ) : (
-                groupedExamples.map(({ category, components }, idx) => {
-                  const CategoryIcon = getCategoryIcon(category);
-                  return (
-                    <SidebarMenuItem key={idx}>
-                      <SidebarMenuButton>
-                        <CategoryIcon className="size-4" />
-                        <span>{category}</span>
-                      </SidebarMenuButton>
-                      {components.map((component) => (
-                        <SidebarMenuSub key={`/components/${component.slug}`}>
-                          <SidebarMenuSubItem>
-                            <SidebarMenuSubButton
-                              render={
-                                <Link to={`/components/${component.slug}`}>
-                                  <span>{component.name}</span>
-                                </Link>
-                              }
-                            />
-                          </SidebarMenuSubItem>
-                        </SidebarMenuSub>
-                      ))}
-                    </SidebarMenuItem>
-                  );
-                })
-              )}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
+        <Collapsible
+          open={effectiveComponentsOpen}
+          onOpenChange={setIsComponentsOpen}
+          className="group/components-collapsible"
+        >
+          <SidebarGroup>
+            <SidebarGroupLabel
+              render={
+                <CollapsibleTrigger className="flex w-full cursor-pointer items-center justify-between rounded-md px-2 transition-colors hover:bg-sidebar-accent/50" />
+              }
+            >
+              <span>Components</span>
+              <div className="flex items-center gap-1.5">
+                <span className="text-[10px] font-mono text-muted-foreground">
+                  {filteredExamples.length}
+                </span>
+                <ChevronDown
+                  className={cn(
+                    "size-3.5 text-muted-foreground transition-transform duration-200",
+                    !effectiveComponentsOpen && "-rotate-90",
+                  )}
+                />
+              </div>
+            </SidebarGroupLabel>
+            <CollapsibleContent>
+              <SidebarGroupContent>
+                <SidebarMenu>
+                  {groupedExamples.length === 0 ? (
+                    <div className="px-3 py-6 text-center text-xs text-muted-foreground">
+                      No components matching &ldquo;{search}&rdquo;
+                    </div>
+                  ) : (
+                    groupedExamples.map(({ category, components }) => (
+                      <SidebarCategoryItem
+                        key={category}
+                        category={category}
+                        components={components}
+                        icon={getCategoryIcon(category)}
+                        basePath="components"
+                        currentPath={currentPath}
+                        isSearching={isSearching}
+                      />
+                    ))
+                  )}
+                </SidebarMenu>
+              </SidebarGroupContent>
+            </CollapsibleContent>
+          </SidebarGroup>
+        </Collapsible>
 
         {filteredBlocks.length > 0 && (
-          <SidebarGroup>
-            <SidebarGroupLabel className="flex items-center justify-between">
-              <span>Blocks</span>
-              <span className="text-[10px] font-mono text-muted-foreground">
-                {filteredBlocks.reduce((acc, g) => acc + g.components.length, 0)}
-              </span>
-            </SidebarGroupLabel>
-            <SidebarGroupContent>
-              <SidebarMenu>
-                {filteredBlocks.map(({ category, components }, idx) => {
-                  const BlockCategoryIcon = getCategoryIcon(category);
-                  return (
-                    <SidebarMenuItem key={idx}>
-                      <SidebarMenuButton>
-                        <BlockCategoryIcon className="size-4" />
-                        <span>{category}</span>
-                      </SidebarMenuButton>
-                      {components.map((component) => (
-                        <SidebarMenuSub key={`/blocks/${component.slug}`}>
-                          <SidebarMenuSubItem>
-                            <SidebarMenuSubButton
-                              render={
-                                <Link to={`/blocks/${component.slug}`}>
-                                  <span>{component.name}</span>
-                                </Link>
-                              }
-                            />
-                          </SidebarMenuSubItem>
-                        </SidebarMenuSub>
-                      ))}
-                    </SidebarMenuItem>
-                  );
-                })}
-              </SidebarMenu>
-            </SidebarGroupContent>
-          </SidebarGroup>
+          <Collapsible
+            open={effectiveBlocksOpen}
+            onOpenChange={setIsBlocksOpen}
+            className="group/blocks-collapsible"
+          >
+            <SidebarGroup>
+              <SidebarGroupLabel
+                render={
+                  <CollapsibleTrigger className="flex w-full cursor-pointer items-center justify-between rounded-md px-2 transition-colors hover:bg-sidebar-accent/50" />
+                }
+              >
+                <span>Blocks</span>
+                <div className="flex items-center gap-1.5">
+                  <span className="text-[10px] font-mono text-muted-foreground">
+                    {filteredBlocks.reduce((acc, g) => acc + g.components.length, 0)}
+                  </span>
+                  <ChevronDown
+                    className={cn(
+                      "size-3.5 text-muted-foreground transition-transform duration-200",
+                      !effectiveBlocksOpen && "-rotate-90",
+                    )}
+                  />
+                </div>
+              </SidebarGroupLabel>
+              <CollapsibleContent>
+                <SidebarGroupContent>
+                  <SidebarMenu>
+                    {filteredBlocks.map(({ category, components }) => (
+                      <SidebarCategoryItem
+                        key={category}
+                        category={category}
+                        components={components}
+                        icon={getCategoryIcon(category)}
+                        basePath="blocks"
+                        currentPath={currentPath}
+                        isSearching={isSearching}
+                      />
+                    ))}
+                  </SidebarMenu>
+                </SidebarGroupContent>
+              </CollapsibleContent>
+            </SidebarGroup>
+          </Collapsible>
         )}
       </SidebarContent>
 

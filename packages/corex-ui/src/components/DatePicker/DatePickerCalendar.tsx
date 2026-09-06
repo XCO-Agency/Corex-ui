@@ -11,6 +11,7 @@ import {
 import { Button } from "../Button";
 import { InlineStack } from "../InlineStack";
 import { Text } from "../Text";
+import { Grid } from "../Grid";
 
 export type DatePickerCalendarPropsType = {
   startDate: string;
@@ -106,36 +107,24 @@ export function DatePickerCalendar({
         </InlineStack>
 
         {/* Days of Week Row */}
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(7, 1fr)",
-            textAlign: "center",
-            marginBottom: "40px",
-          }}
-        >
+        <Grid columns={7} columnGap="small-500">
           {DAY_NAMES.map((d) => (
             <span
               key={d}
               style={{
                 fontSize: "11px",
                 fontWeight: 500,
+                textAlign: "center",
                 color: "var(--p-color-text-subdued, #6d7175)",
               }}
             >
               {d}
             </span>
           ))}
-        </div>
+        </Grid>
 
         {/* Days Grid */}
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(7, 1fr)",
-            rowGap: "2px",
-          }}
-        >
+        <Grid columns={7} columnGap="none" rowGap="small-500">
           {days.map((item, idx) => {
             const isStart = isDateEqual(item.dateStr, effectiveStart);
             const isEnd = isDateEqual(item.dateStr, effectiveEnd);
@@ -208,7 +197,7 @@ export function DatePickerCalendar({
               </div>
             );
           })}
-        </div>
+        </Grid>
       </div>
     );
   };
