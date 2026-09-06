@@ -1,8 +1,16 @@
 import { useEffect, useRef, useState, type Dispatch } from "react";
-import type { OnboardingActionType, OnboardingStateType } from "../types";
-import { ProgressTracker } from "~/components/ui/ProgressTracker";
-import { IconTile } from "~/components/ui/IconTile";
-import Content from "~/components/ui/typography/Content";
+import type { OnboardingActionType, OnboardingStateType } from "../onboarding.types";
+import {
+  Box,
+  BlockStack,
+  InlineStack,
+  Button,
+  Icon,
+  IconTile,
+  ProgressBar,
+  Spinner,
+  Text,
+} from "@xco-agency/corex-ui";
 import styles from "../onboarding.module.css";
 
 const TASK_INTERVAL_MS = 750;
@@ -54,9 +62,9 @@ export function Step1Initializing({ state, dispatch }: Step1InitializingPropsTyp
   const firstPendingIndex = state.syncTasks.findIndex((task) => task.status !== "done");
 
   return (
-    <s-box paddingBlock="small">
-      <s-stack direction="block" gap="large" alignItems="center">
-        <s-box
+    <Box paddingBlock="small">
+      <BlockStack gap="large" alignItems="center">
+        <Box
           padding="large-400"
           border="base"
           borderRadius="large"
@@ -64,30 +72,30 @@ export function Step1Initializing({ state, dispatch }: Step1InitializingPropsTyp
           inlineSize="100%"
           maxInlineSize="440px"
         >
-          <s-stack direction="block" gap="base" alignItems="center">
+          <BlockStack gap="base" alignItems="center">
             {state.syncComplete ? (
-              <IconTile tone="success" size="lg" borderRadius="full">
-                <s-icon type="check" tone="success" size="base" />
+              <IconTile tone="success" size="lg">
+                <Icon type="check" tone="success" />
               </IconTile>
             ) : (
-              <s-spinner accessibilityLabel="Syncing store" size="large" />
+              <Spinner accessibilityLabel="Syncing store" size="large" />
             )}
 
-            <Content
-              variant="headingMd"
+            <Text
+              heading
               tooltip="We are automatically syncing your product catalog, multi-currency settings, and initializing your store's revenue engine."
             >
               {state.syncComplete ? "Store setup complete" : "Setting up Journeva"}
-            </Content>
+            </Text>
 
-            <Content subdue>
+            <Text color="subdued">
               {state.syncComplete
                 ? "Your store data and revenue engine have been synchronized successfully."
                 : "Sit tight — we’re syncing your store and provisioning your revenue engine."}
-            </Content>
+            </Text>
 
-            <s-box paddingBlock="small-100" inlineSize="100%">
-              <s-stack direction="block" gap="small-200">
+            <Box paddingBlock="small-100" inlineSize="100%">
+              <BlockStack gap="small-200">
                 {state.syncTasks.map((task, i) => {
                   const isDone = task.status === "done";
                   const isActive = !isDone && i === firstPendingIndex;
@@ -98,47 +106,47 @@ export function Step1Initializing({ state, dispatch }: Step1InitializingPropsTyp
                       className={styles.staggerItem}
                       style={{ animationDelay: `${i * 160}ms` }}
                     >
-                      <s-stack direction="inline" gap="small-200" alignItems="center">
+                      <InlineStack gap="small-200" blockAlign="center">
                         {isDone ? (
-                          <s-icon type="check-circle-filled" tone="success" size="base" />
+                          <Icon type="check-circle-filled" tone="success" />
                         ) : isActive ? (
-                          <s-spinner accessibilityLabel="Syncing task" size="base" />
+                          <Spinner accessibilityLabel="Syncing task" size="small" />
                         ) : (
-                          <s-icon type="clock" color="subdued" size="base" />
+                          <Icon type="clock" tone="neutral" />
                         )}
                         {isActive || isDone ? (
-                          <s-heading>{task.label}</s-heading>
+                          <Text fontWeight="semibold">{task.label}</Text>
                         ) : (
-                          <s-paragraph color="subdued">{task.label}</s-paragraph>
+                          <Text color="subdued">{task.label}</Text>
                         )}
-                      </s-stack>
+                      </InlineStack>
                     </div>
                   );
                 })}
-              </s-stack>
-            </s-box>
+              </BlockStack>
+            </Box>
 
-            <ProgressTracker
+            <ProgressBar
               progress={(doneCount / state.syncTasks.length) * 100}
               tone="success"
               style={{ marginTop: "1rem" }}
             />
-          </s-stack>
-        </s-box>
+          </BlockStack>
+        </Box>
 
         {state.syncComplete ? (
-          <s-button variant="primary" onClick={() => dispatch({ type: "GO_NEXT" })}>
+          <Button variant="primary" onClick={() => dispatch({ type: "GO_NEXT" })}>
             Continue
-          </s-button>
+          </Button>
         ) : showFallback ? (
-          <s-button
+          <Button
             variant="tertiary"
             onClick={() => dispatch({ type: "FORCE_SYNC_COMPLETE" })}
           >
             Taking longer than usual? Continue anyway
-          </s-button>
+          </Button>
         ) : null}
-      </s-stack>
-    </s-box>
+      </BlockStack>
+    </Box>
   );
 }

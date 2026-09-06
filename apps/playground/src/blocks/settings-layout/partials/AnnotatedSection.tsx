@@ -11,7 +11,7 @@ export function AnnotatedSection({
     <div style={{ display: "flex", flexWrap: "wrap", gap: "24px" }}>
       <div style={{ flex: "1 1 260px", maxWidth: "340px" }}>
         <BlockStack gap="200">
-          <Text as="h2" variant="headingMd">
+          <Text as="h2" heading>
             {title}
           </Text>
           <Text as="p" variant="bodySm" tone="neutral">

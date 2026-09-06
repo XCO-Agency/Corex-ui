@@ -1,4 +1,4 @@
-import { Button, ButtonGroup } from "@xco/corex-ui";
+import { Button, ButtonGroup } from "@xco-agency/corex-ui";
 
 export function ButtonGroupExample() {
   return (

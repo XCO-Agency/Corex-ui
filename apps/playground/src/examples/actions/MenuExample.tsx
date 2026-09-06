@@ -1,4 +1,4 @@
-import { Button, InlineStack, Menu } from "@xco/corex-ui";
+import { Button, InlineStack, Menu } from "@xco-agency/corex-ui";
 
 export function MenuExample() {
   return (

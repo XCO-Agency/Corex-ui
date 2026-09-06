@@ -60,7 +60,7 @@ export function MetricsPeriodComparison({
                   </InlineStack>
 
                   <InlineStack align="space-between" blockAlign="baseline">
-                    <Text as="span" variant="headingMd">
+                    <Text as="span" heading>
                       {m.value}
                     </Text>
                     {m.previousValue && (

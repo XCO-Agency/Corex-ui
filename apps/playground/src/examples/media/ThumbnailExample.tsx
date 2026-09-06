@@ -1,4 +1,4 @@
-import { Thumbnail } from "@xco/corex-ui";
+import { Thumbnail } from "@xco-agency/corex-ui";
 
 export function ThumbnailExample() {
   return (

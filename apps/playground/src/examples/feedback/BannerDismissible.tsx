@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Banner, Button } from "@xco/corex-ui";
+import { Banner, Button } from "@xco-agency/corex-ui";
 
 export function BannerDismissible() {
   const [visible, setVisible] = useState(true);

@@ -1,4 +1,4 @@
-import { MetricCard } from "@xco/corex-ui";
+import { MetricCard } from "@xco-agency/corex-ui";
 
 export function MetricCardExample() {
   return (

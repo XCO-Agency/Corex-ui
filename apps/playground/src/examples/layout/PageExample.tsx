@@ -1,4 +1,4 @@
-import { Page, Text } from "@xco/corex-ui";
+import { Page, Text } from "@xco-agency/corex-ui";
 
 export function PageExample() {
   return (

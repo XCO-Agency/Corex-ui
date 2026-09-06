@@ -33,12 +33,12 @@ function selectedTools(state: OnboardingStateType) {
 
 function stepAfter(step: OnboardingStepIdType): OnboardingStepIdType {
   const idx = STEP_ORDER.indexOf(step);
-  return STEP_ORDER[Math.min(idx + 1, STEP_ORDER.length - 1)];
+  return STEP_ORDER[Math.min(idx + 1, STEP_ORDER.length - 1)] ?? step;
 }
 
 function stepBefore(step: OnboardingStepIdType): OnboardingStepIdType {
   const idx = STEP_ORDER.indexOf(step);
-  return STEP_ORDER[Math.max(idx - 1, 0)];
+  return STEP_ORDER[Math.max(idx - 1, 0)] ?? step;
 }
 
 function reducer(

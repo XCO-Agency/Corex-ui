@@ -8,31 +8,25 @@ import type {
 
 type NativeTextProps = PolarisPropsType<"s-text">;
 
-export type TextPropsType = Omit<
-  NativeTextProps,
-  "children" | "color" | "tone" | "type"
-> & {
+export type TextPropsType = Omit<NativeTextProps, "children"> & {
   children?: ReactNode;
-  variant?: TextVariantType;
-  /** Legacy prop for choosing the rendered HTML tag, e.g. `as="p"`. */
+  variant?: "xs" | "small" | "base" | "large";
+  /** Applies heading weight and semantic h* wrapper tag per variant */
+  heading?: boolean;
+  /** Custom tag override (e.g. `as="p"` or `as="span"`). */
   as?: ElementType;
   /** Modern Polaris text tone ('success' | 'warning' | 'critical' | 'info' | 'neutral'). */
-  tone?: ToneType;
-  /** Polaris text color ('base' | 'subdued') or legacy tone alias. */
-  color?: "base" | "subdued" | ToneType | (string & {});
+  /** Shorthand for subdued color */
+  underline?: boolean;
   alignment?: AlignmentType;
-  fontWeight?: "regular" | "medium" | "semibold" | "bold";
   truncate?: boolean;
   breakWord?: boolean;
   numeric?: boolean;
-  /** Visually hide text while keeping accessible to screen readers. */
-  visuallyHidden?: boolean;
   className?: string;
-  id?: string;
   style?: CSSProperties;
-  /** Polaris web-component type attribute ('strong' | 'address' | 'redundant' | 'generic'). */
-  type?: NativeTextProps["type"] | "strong" | "address" | "redundant" | "generic" | (string & {});
   tooltip?: ReactNode;
+  /** ID of the element (e.g. s-tooltip) that should respond to interest/hover on this text */
+  interestFor?: string;
   [key: `aria-${string}`]: unknown;
   [key: `data-${string}`]: unknown;
 };

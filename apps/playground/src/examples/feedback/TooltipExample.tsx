@@ -1,4 +1,4 @@
-import { Button, Tooltip } from "@xco/corex-ui";
+import { Button, Tooltip } from "@xco-agency/corex-ui";
 
 export function TooltipExample() {
   return (

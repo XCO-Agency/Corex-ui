@@ -1,4 +1,4 @@
-import { BlockStack, InlineStack, Card, Skeleton } from "@xco/corex-ui";
+import { BlockStack, InlineStack, Card, Skeleton } from "@xco-agency/corex-ui";
 
 export function SkeletonBasicExample() {
   return (
@@ -8,7 +8,9 @@ export function SkeletonBasicExample() {
           {/* Avatar and title row with small and full radius */}
           <InlineStack gap="base" alignItems="center">
             <Skeleton width={48} height={48} borderRadius="full" />
-            <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: "8px" }}>
+            <div
+              style={{ flex: 1, display: "flex", flexDirection: "column", gap: "8px" }}
+            >
               <Skeleton width="45%" height={18} borderRadius="small" />
               <Skeleton width="25%" height={14} borderRadius="small" />
             </div>

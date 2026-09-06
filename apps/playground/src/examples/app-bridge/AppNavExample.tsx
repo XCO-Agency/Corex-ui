@@ -1,4 +1,4 @@
-import { AppNav, Link } from "@xco/corex-ui";
+import { AppNav, Link } from "@xco-agency/corex-ui";
 
 export function AppNavExample() {
   return (

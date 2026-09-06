@@ -111,7 +111,7 @@ export function NavigationSettingsExample() {
       </Box>
 
       <BlockStack gap="400">
-        <Text as="h1" variant="headingLg">
+        <Text as="h1" variant="large" heading>
           <span style={{ fontWeight: 700, fontSize: "22px", color: "#202223" }}>
             {navigationSections.flatMap((s) => s.items).find((i) => i.id === selectedNav)
               ?.label ?? "Settings"}

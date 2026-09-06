@@ -1,4 +1,4 @@
-import { Button, SaveBar, useSaveBar } from "@xco/corex-ui";
+import { Button, SaveBar, useSaveBar } from "@xco-agency/corex-ui";
 
 export function SaveBarExample() {
   const saveBar = useSaveBar();

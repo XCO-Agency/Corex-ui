@@ -1,4 +1,4 @@
-import { Avatar, InlineStack } from "@xco/corex-ui";
+import { Avatar, InlineStack } from "@xco-agency/corex-ui";
 
 export function AvatarExample() {
   return (

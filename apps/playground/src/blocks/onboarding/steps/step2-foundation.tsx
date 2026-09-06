@@ -5,7 +5,16 @@ import type {
   OnboardingStateType,
 } from "../onboarding.types";
 import styles from "../onboarding.module.css";
-import { Text, IconTile } from "@xco-agency/corex-ui";
+import {
+  Box,
+  BlockStack,
+  InlineStack,
+  Badge,
+  Button,
+  Icon,
+  IconTile,
+  Text,
+} from "@xco-agency/corex-ui";
 
 const CORE_ICONS: Record<CoreToolIdType, "cart" | "collection" | "chart-vertical"> = {
   "cart-drawer": "cart",
@@ -20,23 +29,24 @@ export type Step2FoundationPropsType = {
 
 export function Step2Foundation({ state, dispatch }: Step2FoundationPropsType) {
   return (
-    <s-box paddingBlock="large">
-      <s-stack direction="block" gap="large" alignItems="center">
-        <s-box inlineSize="100%" maxInlineSize="640px">
-          <s-stack direction="block" rowGap="large-500" alignItems="center">
-            <s-stack direction="block" gap="small-100" alignItems="center">
-              <s-badge tone="caution" size="large" icon="check">
+    <Box paddingBlock="large">
+      <BlockStack gap="large" alignItems="center">
+        <Box inlineSize="100%" maxInlineSize="640px">
+          <BlockStack gap="large" alignItems="center">
+            <BlockStack gap="small-100" alignItems="center">
+              <Badge tone="caution" size="large" icon="check">
                 Activation complete
-              </s-badge>
+              </Badge>
               <Text
-                variant="headingLg"
+                variant="large"
+                heading
                 tooltip={
                   <>
-                    <s-paragraph>Core conversion features Cart Drawer</s-paragraph>
-                    <s-paragraph tone="info">
+                    <Text as="p">Core conversion features Cart Drawer</Text>
+                    <Text as="p" tone="info">
                       Frequently Bought Together, and Realtime Analytics are
                       pre-configured and live out of the box.
-                    </s-paragraph>
+                    </Text>
                   </>
                 }
               >
@@ -46,56 +56,52 @@ export function Step2Foundation({ state, dispatch }: Step2FoundationPropsType) {
                 We&rsquo;ve already configured the essentials nothing to set up, nothing
                 to break.
               </Text>
-            </s-stack>
+            </BlockStack>
 
-            <s-stack direction="block" gap="small" inlineSize="100%">
+            <BlockStack gap="small" inlineSize="100%">
               {state.coreTools.map((tool, i) => (
                 <div
                   key={tool.id}
                   className={styles.staggerItem}
                   style={{ animationDelay: `${i * 80}ms` }}
                 >
-                  <s-box
+                  <Box
                     padding="small"
                     border="base"
                     borderRadius="large"
                     background="base"
                     inlineSize="100%"
                   >
-                    <s-stack
-                      direction="inline"
-                      gap="base"
-                      alignItems="center"
+                    <InlineStack
                       justifyContent="space-between"
+                      alignItems="center"
+                      gap="base"
                     >
-                      <s-stack direction="inline" gap="base" alignItems="center">
+                      <InlineStack gap="base" alignItems="center">
                         <IconTile tone="neutral">
-                          <s-icon type={CORE_ICONS[tool.id]} tone="success" size="base" />
+                          <Icon type={CORE_ICONS[tool.id]} tone="success" />
                         </IconTile>
-                        <s-stack direction="block" gap="none">
-                          <s-heading>{tool.name}</s-heading>
-                          <s-paragraph color="subdued">{tool.description}</s-paragraph>
-                        </s-stack>
-                      </s-stack>
-                      <s-badge tone="success">Active</s-badge>
-                    </s-stack>
-                  </s-box>
+                        <BlockStack gap="none">
+                          <Text fontWeight="semibold">{tool.name}</Text>
+                          <Text color="subdued">{tool.description}</Text>
+                        </BlockStack>
+                      </InlineStack>
+                      <Badge tone="success">Active</Badge>
+                    </InlineStack>
+                  </Box>
                 </div>
               ))}
-            </s-stack>
-
-            <s-stack direction="block" gap="small-200" alignItems="center">
-              <s-stack direction="inline" gap="small-200" alignItems="center">
-                <s-button onClick={() => dispatch({ type: "GO_BACK" })}>Back</s-button>
-                <s-button variant="primary" onClick={() => dispatch({ type: "GO_NEXT" })}>
-                  Continue
-                </s-button>
-              </s-stack>
-              <Text color="subdued">Fully customizable anytime from the Hub.</Text>
-            </s-stack>
-          </s-stack>
-        </s-box>
-      </s-stack>
-    </s-box>
+            </BlockStack>
+            <InlineStack gap="small-200" justifyContent="space-between" inlineSize="100%">
+              <Button onClick={() => dispatch({ type: "GO_BACK" })}>Back</Button>
+              <Button variant="primary" onClick={() => dispatch({ type: "GO_NEXT" })}>
+                Continue
+              </Button>
+            </InlineStack>
+            <Text color="subdued">Fully customizable anytime from the Hub.</Text>
+          </BlockStack>
+        </Box>
+      </BlockStack>
+    </Box>
   );
 }

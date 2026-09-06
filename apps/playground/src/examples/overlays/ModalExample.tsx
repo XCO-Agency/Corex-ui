@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Button, Modal, Text } from "@xco/corex-ui";
+import { Button, Modal, Text } from "@xco-agency/corex-ui";
 
 export function ModalExample() {
   const [open, setOpen] = useState(false);

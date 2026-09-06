@@ -1,4 +1,4 @@
-import { Box, InlineStack } from "@xco/corex-ui";
+import { Box, InlineStack } from "@xco-agency/corex-ui";
 
 export function InlineStackExample() {
   return (

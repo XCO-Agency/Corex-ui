@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Select } from "@xco/corex-ui";
+import { Select } from "@xco-agency/corex-ui";
 
 export function SelectExample() {
   const [country, setCountry] = useState("ca");

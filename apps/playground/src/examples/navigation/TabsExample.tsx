@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Tabs, Text } from "@xco/corex-ui";
+import { Tabs, Text } from "@xco-agency/corex-ui";
 
 export function TabsExample() {
   const [selected, setSelected] = useState(0);

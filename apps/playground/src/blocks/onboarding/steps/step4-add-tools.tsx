@@ -1,11 +1,23 @@
-import type { Dispatch } from "react";
+import { useState, type Dispatch } from "react";
 import type {
   OnboardingActionType,
   OnboardingStateType,
   OptionalToolIdType,
-} from "../types";
-import { IconTile } from "~/components/ui/IconTile";
-import Content from "~/components/ui/typography/Content";
+} from "../onboarding.types";
+import {
+  Box,
+  BlockStack,
+  InlineStack,
+  Grid,
+  Badge,
+  Button,
+  Clickable,
+  Icon,
+  IconTile,
+  Modal,
+  Switch,
+  Text,
+} from "@xco-agency/corex-ui";
 import styles from "../onboarding.module.css";
 
 const OPTIONAL_ICONS: Record<
@@ -24,27 +36,32 @@ export type Step4AddToolsPropsType = {
 };
 
 export function Step4AddTools({ state, dispatch }: Step4AddToolsPropsType) {
+  const [activeModalToolId, setActiveModalToolId] = useState<OptionalToolIdType | null>(
+    null,
+  );
+
   const selectedCount = state.optionalTools.filter((tool) => tool.selected).length;
+  const activeTool = state.optionalTools.find((t) => t.id === activeModalToolId);
 
   return (
-    <s-box paddingBlock="large">
-      <s-stack direction="block" gap="large" alignItems="center">
-        <s-box inlineSize="100%" maxInlineSize="640px">
-          <s-stack direction="block" gap="large-100" alignItems="center">
-            <s-stack direction="block" gap="small-100" alignItems="center">
-              <Content
-                variant="headingMd"
+    <Box paddingBlock="large">
+      <BlockStack gap="large" align="center">
+        <Box inlineSize="100%" maxInlineSize="640px">
+          <BlockStack gap="large-100" align="center">
+            <BlockStack gap="small-100" align="center">
+              <Text
+                heading
                 tooltip="Enable optional revenue drivers like Volume Discounts, Post-Purchase Upsells, and Checkout Bumps with one click."
               >
                 Add more revenue tools
-              </Content>
-              <Content subdue>
+              </Text>
+              <Text color="subdued">
                 Optional, high-impact modules with pre-tuned presets. Nothing here is
                 required to launch.
-              </Content>
-            </s-stack>
+              </Text>
+            </BlockStack>
 
-            <s-grid gridTemplateColumns="repeat(2, minmax(260px, 1fr))" gap="base">
+            <Grid gridTemplateColumns="repeat(2, minmax(260px, 1fr))" gap="base">
               {state.optionalTools.map((tool, i) => {
                 const activePreset = tool.presets.find(
                   (p) => p.id === tool.selectedPresetId,
@@ -55,157 +72,147 @@ export function Step4AddTools({ state, dispatch }: Step4AddToolsPropsType) {
                     className={styles.staggerItem}
                     style={{ animationDelay: `${i * 60}ms` }}
                   >
-                    <s-box
+                    <Box
                       padding="base"
                       border="base"
                       borderRadius="large"
                       background="base"
                       inlineSize="100%"
                     >
-                      <s-stack direction="block" gap="small-100">
-                        <s-stack
-                          direction="inline"
-                          justifyContent="space-between"
-                          alignItems="center"
-                        >
-                          <IconTile tone={tool.selected ? "success" : "subdued"}>
-                            <s-icon
+                      <BlockStack gap="small-100">
+                        <InlineStack align="space-between" blockAlign="center">
+                          <IconTile
+                            size="sm"
+                            tone={tool.selected ? "success" : "subdued"}
+                          >
+                            <Icon
                               type={OPTIONAL_ICONS[tool.id]}
-                              tone="success"
-                              size="base"
+                              tone={tool.selected ? "success" : "neutral"}
                             />
                           </IconTile>
-                          <s-switch
+                          <Switch
                             checked={tool.selected}
                             onChange={() =>
-                              dispatch({ type: "TOGGLE_OPTIONAL_TOOL", id: tool.id })
+                              dispatch({
+                                type: "TOGGLE_OPTIONAL_TOOL",
+                                id: tool.id,
+                              })
                             }
                           />
-                        </s-stack>
-                        <s-heading>{tool.name}</s-heading>
-                        <s-paragraph color="subdued">{tool.description}</s-paragraph>
-                        <s-stack
-                          justifyContent="space-between"
-                          direction="inline"
-                          alignItems="center"
+                        </InlineStack>
+                        <Text fontWeight="semibold">{tool.name}</Text>
+                        <Text color="subdued">{tool.description}</Text>
+                        <InlineStack
+                          align="space-between"
+                          blockAlign="center"
                           gap="base"
                           inlineSize="100%"
                         >
-                          <s-badge tone="neutral">{tool.impact}</s-badge>
-                          <s-button disabled={!tool.selected} commandFor={tool.id}>
-                            {activePreset ? activePreset.label : "Configure with presets"}
-                          </s-button>
-                        </s-stack>
-                      </s-stack>
-                    </s-box>
-
-                    <s-modal id={tool.id} heading={`Configure ${tool.name}`}>
-                      <s-box padding="base">
-                        <s-stack direction="block" gap="base">
-                          <s-paragraph color="subdued">{tool.description}</s-paragraph>
-
-                          <s-stack direction="block" gap="small-200">
-                            {tool.presets.map((preset) => {
-                              const isSelected =
-                                (tool.selectedPresetId || tool.presets[0]?.id) ===
-                                preset.id;
-                              return (
-                                <div
-                                  key={preset.id}
-                                  onClick={() => {
-                                    dispatch({
-                                      type: "SELECT_PRESET",
-                                      id: tool.id,
-                                      presetId: preset.id,
-                                    });
-                                    dispatch({
-                                      type: "CONFIRM_TOOL_CONFIG",
-                                      id: tool.id,
-                                    });
-                                  }}
-                                  style={{ cursor: "pointer" }}
-                                >
-                                  <s-box
-                                    padding="base"
-                                    border="base"
-                                    borderRadius="large"
-                                    background={isSelected ? "subdued" : "base"}
-                                  >
-                                    <s-stack
-                                      direction="inline"
-                                      gap="base"
-                                      alignItems="center"
-                                      justifyContent="space-between"
-                                    >
-                                      <s-stack direction="block" gap="none">
-                                        <s-heading>{preset.label}</s-heading>
-                                        <s-paragraph color="subdued">
-                                          {preset.description}
-                                        </s-paragraph>
-                                      </s-stack>
-                                      {isSelected && (
-                                        <s-badge tone="success">Selected</s-badge>
-                                      )}
-                                    </s-stack>
-                                  </s-box>
-                                </div>
-                              );
-                            })}
-                          </s-stack>
-
-                          <s-stack
-                            direction="inline"
-                            gap="small-200"
-                            justifyContent="end"
+                          <Badge tone="neutral">{tool.impact}</Badge>
+                          <Button
+                            disabled={!tool.selected}
+                            onClick={() => setActiveModalToolId(tool.id)}
                           >
-                            <s-button
-                              variant="primary"
-                              commandFor={tool.id}
-                              command="--hide"
-                            >
-                              Done
-                            </s-button>
-                          </s-stack>
-                        </s-stack>
-                      </s-box>
-                    </s-modal>
+                            {activePreset ? activePreset.label : "Configure with presets"}
+                          </Button>
+                        </InlineStack>
+                      </BlockStack>
+                    </Box>
                   </div>
                 );
               })}
-            </s-grid>
+            </Grid>
 
-            <s-box paddingBlockStart="small" inlineSize="100%">
-              <s-stack
-                justifyContent="space-between"
-                direction="inline"
-                alignItems="center"
+            {activeTool && (
+              <Modal
+                open={Boolean(activeModalToolId)}
+                onClose={() => setActiveModalToolId(null)}
+                title={`Configure ${activeTool.name}`}
+                primaryAction={{
+                  content: "Done",
+                  onAction: () => setActiveModalToolId(null),
+                }}
+              >
+                <Box padding="base">
+                  <BlockStack gap="base">
+                    <Text color="subdued">{activeTool.description}</Text>
+
+                    <BlockStack gap="small-200">
+                      {activeTool.presets.map((preset) => {
+                        const isSelected =
+                          (activeTool.selectedPresetId || activeTool.presets[0]?.id) ===
+                          preset.id;
+                        return (
+                          <Clickable
+                            key={preset.id}
+                            onClick={() => {
+                              dispatch({
+                                type: "SELECT_PRESET",
+                                id: activeTool.id,
+                                presetId: preset.id,
+                              });
+                              dispatch({
+                                type: "CONFIRM_TOOL_CONFIG",
+                                id: activeTool.id,
+                              });
+                            }}
+                            borderRadius="large"
+                          >
+                            <Box
+                              padding="base"
+                              border="base"
+                              borderRadius="large"
+                              background={isSelected ? "subdued" : "base"}
+                            >
+                              <InlineStack
+                                gap="base"
+                                blockAlign="center"
+                                align="space-between"
+                              >
+                                <BlockStack gap="none">
+                                  <Text fontWeight="semibold">{preset.label}</Text>
+                                  <Text color="subdued">{preset.description}</Text>
+                                </BlockStack>
+                                {isSelected && <Badge tone="success">Selected</Badge>}
+                              </InlineStack>
+                            </Box>
+                          </Clickable>
+                        );
+                      })}
+                    </BlockStack>
+                  </BlockStack>
+                </Box>
+              </Modal>
+            )}
+
+            <Box paddingBlockStart="small" inlineSize="100%">
+              <InlineStack
+                align="space-between"
+                blockAlign="center"
                 gap="base"
                 inlineSize="100%"
               >
-                <s-paragraph color="subdued">
+                <Text color="subdued">
                   {selectedCount === 0
                     ? "No tools selected yet"
                     : `${selectedCount} tool${selectedCount > 1 ? "s" : ""} selected`}
-                </s-paragraph>
+                </Text>
 
-                <s-stack direction="inline" gap="small-200" alignItems="center">
-                  <s-button onClick={() => dispatch({ type: "GO_BACK" })}>Back</s-button>
-                  <s-button
-                    variant="primary"
-                    onClick={() => dispatch({ type: "GO_NEXT" })}
-                  >
-                    {selectedCount === 0 ? "Skip for now" : `Save & Continue`}
-                  </s-button>
-                </s-stack>
-              </s-stack>
-            </s-box>
+                <InlineStack gap="small-200" blockAlign="center">
+                  <Button onClick={() => dispatch({ type: "GO_BACK" })}>Back</Button>
+                  <Button variant="primary" onClick={() => dispatch({ type: "GO_NEXT" })}>
+                    {selectedCount === 0 ? "Skip for now" : "Save & Continue"}
+                  </Button>
+                </InlineStack>
+              </InlineStack>
+            </Box>
 
-            <Content subdue>
+            <Text color="subdued">
               *Illustrative benchmarks — your own Analytics will show real lift once live.
-            </Content>
-          </s-stack>
-        </s-box>
-      </s-stack>
-    </s-box>
+            </Text>
+          </BlockStack>
+        </Box>
+      </BlockStack>
+    </Box>
   );
 }

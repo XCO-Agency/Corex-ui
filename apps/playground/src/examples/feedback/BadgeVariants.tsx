@@ -1,4 +1,4 @@
-import { Badge, InlineStack } from "@xco/corex-ui";
+import { Badge, InlineStack } from "@xco-agency/corex-ui";
 
 export function BadgeVariants() {
   return (

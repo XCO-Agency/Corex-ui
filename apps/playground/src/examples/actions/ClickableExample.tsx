@@ -8,7 +8,7 @@ import {
   Badge,
   Icon,
   Banner,
-} from "@xco/corex-ui";
+} from "@xco-agency/corex-ui";
 
 export function ClickableExample() {
   const [clickCount, setClickCount] = useState<number>(0);

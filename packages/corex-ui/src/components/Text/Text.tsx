@@ -1,86 +1,90 @@
 import { forwardRef, useId } from "react";
-import type { CSSProperties } from "react";
+import type { CSSProperties, ElementType } from "react";
 import { createWebComponent } from "../../core/createWebComponent";
 import type { TextPropsType } from "./Text.types";
-import type { ToneType } from "../../types/common";
 
 const SText = createWebComponent<HTMLElement>("s-text");
-const SHeading = createWebComponent<HTMLElement>("s-heading");
 const STooltip = createWebComponent<HTMLElement>("s-tooltip");
 
-/**
- * Text component wrapping Polaris `<s-text>` and `<s-heading>`.
- * Supports legacy `as`, `color="subdued"` translation, and `visuallyHidden`.
- */
+export const VARIANT_SIZE_MAP: Record<
+  NonNullable<TextPropsType["variant"]>,
+  {
+    fontSize: string;
+    lineHeight: string;
+    headingTag: "h2" | "h3" | "h4";
+    headingWeight: number;
+  }
+> = {
+  xs: {
+    fontSize: "0.7rem",
+    lineHeight: "1rem",
+    headingTag: "h4",
+    headingWeight: 600,
+  },
+  small: {
+    fontSize: "0.75rem",
+    lineHeight: "1rem",
+    headingTag: "h4",
+    headingWeight: 600,
+  },
+  base: {
+    fontSize: "0.8125rem",
+    lineHeight: "1.25rem",
+    headingTag: "h3",
+    headingWeight: 600,
+  },
+  large: {
+    fontSize: "1.25rem",
+    lineHeight: "1.75rem",
+    headingTag: "h2",
+    headingWeight: 700,
+  },
+};
+
 export const Text = forwardRef<HTMLElement, TextPropsType>(function Text(
   {
     children,
-    as: _as,
-    truncate: _truncate,
-    variant,
-    color,
-    tone,
-    visuallyHidden,
+    as,
+    truncate,
+    variant = "base",
+    heading,
+    underline = true,
     style,
+    className,
     tooltip,
+    interestFor,
     ...rest
   },
   ref,
 ) {
-  const id = rest.id ?? useId();
-  const isTone =
-    color &&
-    color !== "subdued" &&
-    color !== "base" &&
-    ["auto", "success", "warning", "critical", "info", "neutral", "caution"].includes(
-      color as string,
-    );
+  const autoId = useId().replace(/:/g, "");
+  const id = rest.id || interestFor || `corex-text-tooltip-${autoId}`;
+  const hasTooltip = Boolean(tooltip);
 
-  const resolvedTone = tone ?? (isTone ? (color as ToneType) : undefined);
-  const resolvedColor = !isTone ? color : undefined;
-
-  const resolvedStyle: CSSProperties | undefined = visuallyHidden
-    ? {
-        border: 0,
-        clip: "rect(0 0 0 0)",
-        height: "1px",
-        margin: "-1px",
-        overflow: "hidden",
-        padding: 0,
-        position: "absolute",
-        width: "1px",
-        whiteSpace: "nowrap",
-        ...style,
-      }
-    : style;
-
-  if (variant?.startsWith("heading")) {
-    return (
-      <SHeading
-        ref={ref}
-        data-legacy-variant={variant}
-        tone={resolvedTone}
-        style={resolvedStyle}
-        {...rest}
-      >
-        {children}
-      </SHeading>
-    );
-  }
+  if (!children && children !== 0) return null;
+  const config = VARIANT_SIZE_MAP[variant] || VARIANT_SIZE_MAP.base;
+  const WrapperTag: ElementType = as || (heading ? config.headingTag : "span");
 
   return (
     <>
-      <SText
-        ref={ref}
-        variant={variant}
-        color={resolvedColor}
-        tone={resolvedTone}
-        style={resolvedStyle}
-        {...rest}
-        interestFor={tooltip ? id : undefined}
+      <WrapperTag
+        className={className}
+        style={{
+          margin: 0,
+          borderBlockEnd:
+            hasTooltip && underline
+              ? "2px dotted var(--p-color-border-tertiary, #cccccc)"
+              : "none",
+          lineHeight: config.lineHeight,
+          "--s-global-font-weight-26021": heading ? config.headingWeight : "medium",
+          "--s-global-font-size-26021": config.fontSize,
+        }}
       >
-        {children}
-      </SText>
+        <SText ref={ref} interestFor={hasTooltip ? id : interestFor} {...rest}>
+          {children}
+        </SText>
+        <s-text tone="critical" />
+      </WrapperTag>
       {tooltip && <STooltip id={id}>{tooltip}</STooltip>}
     </>
   );

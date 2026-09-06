@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Checkbox } from "@xco/corex-ui";
+import { Checkbox } from "@xco-agency/corex-ui";
 
 export function CheckboxExample() {
   const [accepted, setAccepted] = useState(false);

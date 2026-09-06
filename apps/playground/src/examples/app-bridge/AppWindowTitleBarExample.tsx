@@ -1,4 +1,4 @@
-import { Badge, Button, Page } from "@xco/corex-ui";
+import { Badge, Button, Page } from "@xco-agency/corex-ui";
 
 export function AppWindowTitleBarExample() {
   return (

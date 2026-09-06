@@ -12,7 +12,7 @@ export function IconTileExample() {
     <BlockStack gap="large-200">
       <Card>
         <BlockStack gap="base">
-          <Text variant="headingMd" as="h3">
+          <Text heading as="h3">
             Tones
           </Text>
           <InlineStack gap="base" blockAlign="center">
@@ -57,7 +57,7 @@ export function IconTileExample() {
 
       <Card>
         <BlockStack gap="base">
-          <Text variant="headingMd" as="h3">
+          <Text heading as="h3">
             Sizes
           </Text>
           <InlineStack gap="base" blockAlign="center">
@@ -93,7 +93,7 @@ export function IconTileExample() {
 
       <Card>
         <BlockStack gap="base">
-          <Text variant="headingMd" as="h3">
+          <Text heading as="h3">
             Border Radius
           </Text>
           <InlineStack gap="base" blockAlign="center">

@@ -1,4 +1,4 @@
-import { BlockStack, Box } from "@xco/corex-ui";
+import { BlockStack, Box } from "@xco-agency/corex-ui";
 
 export function BlockStackExample() {
   return (

@@ -1,4 +1,4 @@
-import { Button, useToast } from "@xco/corex-ui";
+import { Button, useToast } from "@xco-agency/corex-ui";
 
 export function ToastExample() {
   const toast = useToast();

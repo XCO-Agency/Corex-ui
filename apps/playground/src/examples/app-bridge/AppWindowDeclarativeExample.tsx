@@ -1,4 +1,4 @@
-import { AppWindow, Button } from "@xco/corex-ui";
+import { AppWindow, Button } from "@xco-agency/corex-ui";
 
 export function AppWindowDeclarativeExample() {
   return (

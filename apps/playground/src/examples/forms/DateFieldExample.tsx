@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { DateField } from "@xco/corex-ui";
+import { DateField } from "@xco-agency/corex-ui";
 
 export function DateFieldExample() {
   const [date, setDate] = useState("2026-01-01");

@@ -1,9 +1,19 @@
 import type { Dispatch } from "react";
-import type { OnboardingActionType, OnboardingStateType } from "../types";
+import type { OnboardingActionType, OnboardingStateType } from "../onboarding.types";
 import { CURRENCIES, SAMPLE_CART_TOTAL } from "../constants";
-import Content from "~/components/ui/typography/Content";
-import { IconTile } from "~/components/ui/IconTile";
-import { ProgressBar } from "@xco-agency/corex-ui";
+import {
+  Box,
+  BlockStack,
+  InlineStack,
+  Button,
+  Icon,
+  IconTile,
+  ProgressBar,
+  Select,
+  Text,
+  TextField,
+} from "@xco-agency/corex-ui";
+
 function formatCurrency(amount: number, currency: string): string {
   try {
     return new Intl.NumberFormat("en-US", {
@@ -15,6 +25,7 @@ function formatCurrency(amount: number, currency: string): string {
     return `${currency} ${amount}`;
   }
 }
+
 export type Step3ConfigurationPropsType = {
   state: OnboardingStateType;
   dispatch: Dispatch<OnboardingActionType>;
@@ -36,98 +47,87 @@ export function Step3Configuration({ state, dispatch }: Step3ConfigurationPropsT
   };
 
   return (
-    <s-box paddingBlock="large">
-      <s-stack direction="block" gap="large" alignItems="center">
-        <s-box
+    <Box paddingBlock="large">
+      <BlockStack gap="large" alignItems="center" inlineSize="100%">
+        <BlockStack gap="small-300" alignItems="center">
+          <IconTile tone="caution">
+            <Icon type="delivery" />
+          </IconTile>
+          <Text
+            heading
+            tooltip="Customers will see a dynamic progress bar in the Cart Drawer encouraging them to add more items to earn free shipping."
+          >
+            One quick detail
+          </Text>
+          <Text color="subdued">
+            Set your free shipping threshold — we&rsquo;ll handle the rest.
+          </Text>
+        </BlockStack>
+        <Box
           padding="large-200"
           border="base"
           borderRadius="large"
-          background="base"
           inlineSize="100%"
-          maxInlineSize="460px"
+          background="base"
         >
-          <s-stack direction="block" gap="large-100" alignItems="center">
-            <s-stack direction="block" gap="small-100" alignItems="center">
-              <IconTile borderRadius="base" size="lg">
-                <s-icon type="delivery" tone="success" size="base" />
-              </IconTile>
-              <Content
-                variant="headingMd"
-                tooltip="Customers will see a dynamic progress bar in the Cart Drawer encouraging them to add more items to earn free shipping."
-              >
-                One quick detail
-              </Content>
-              <Content subdue>
-                Set your free shipping threshold — we&rsquo;ll handle the rest.
-              </Content>
-            </s-stack>
-
-            <s-box inlineSize="100%">
-              <s-stack direction="inline" gap="small-200" alignItems="start">
-                <s-box inlineSize="110px">
-                  <s-select
+          <BlockStack gap="large-100" alignItems="center" inlineSize="100%">
+            <Box inlineSize="100%">
+              <InlineStack gap="small-200" blockAlign="start">
+                <Box inlineSize="120px">
+                  <Select
                     label="Currency"
                     value={state.storeCurrency}
-                    onChange={(e: any) =>
+                    options={CURRENCIES}
+                    onChange={(currency) =>
                       dispatch({
                         type: "SET_CURRENCY",
-                        currency: (e.target as HTMLSelectElement).value,
+                        currency,
                       })
                     }
-                  >
-                    {CURRENCIES.map((currency) => (
-                      <s-option key={currency} value={currency}>
-                        {currency}
-                      </s-option>
-                    ))}
-                  </s-select>
-                </s-box>
-                <s-box inlineSize="100%">
-                  <s-number-field
-                    label="Free shipping threshold"
-                    value={String(threshold)}
-                    onInput={(e: any) =>
-                      handleAmountChange((e.target as HTMLInputElement).value)
-                    }
                   />
-                </s-box>
-              </s-stack>
-            </s-box>
+                </Box>
+                <Box inlineSize="100%">
+                  <TextField
+                    label="Free shipping threshold"
+                    type="number"
+                    value={String(threshold)}
+                    onChange={handleAmountChange}
+                    autoComplete="off"
+                  />
+                </Box>
+              </InlineStack>
+            </Box>
 
-            <s-box
+            <Box
               padding="base"
               border="base"
               borderRadius="base"
               background="subdued"
               inlineSize="100%"
             >
-              <s-stack direction="block" gap="small-100">
-                <s-stack
-                  direction="inline"
-                  justifyContent="space-between"
-                  alignItems="center"
-                >
-                  <s-text color="subdued">SAMPLE CART TOTAL</s-text>
-                  <s-text type="strong">
+              <BlockStack gap="small-100">
+                <InlineStack align="space-between" blockAlign="center">
+                  <Text color="subdued">SAMPLE CART TOTAL</Text>
+                  <Text fontWeight="bold">
                     {formatCurrency(SAMPLE_CART_TOTAL, state.storeCurrency)}
-                  </s-text>
-                </s-stack>
+                  </Text>
+                </InlineStack>
 
                 <ProgressBar progress={percent} size="base" tone="neutral" />
 
-                <s-text tone="success" type="strong">
+                <Text tone="success" fontWeight="bold">
                   {qualifies
                     ? "This cart qualifies for free shipping."
                     : `Add ${formatCurrency(remaining, state.storeCurrency)} more for free shipping.`}
-                </s-text>
-              </s-stack>
-            </s-box>
-          </s-stack>
-        </s-box>
-        <s-stack direction="block" gap="small-200" inlineSize="100%" alignItems="center">
-          <s-stack direction="inline" gap="small-200" alignItems="center">
-            <s-button onClick={() => dispatch({ type: "GO_BACK" })}>Back</s-button>
-            <s-button
+                </Text>
+              </BlockStack>
+            </Box>
+          </BlockStack>
+        </Box>
+        <BlockStack gap="small-200" inlineSize="100%" alignItems="center">
+          <InlineStack gap="small-200" inlineSize="100%" justifyContent="space-between">
+            <Button onClick={() => dispatch({ type: "GO_BACK" })}>Back</Button>
+            <Button
               variant="primary"
               onClick={() => {
                 dispatch({ type: "CONFIRM_THRESHOLD" });
@@ -135,13 +135,13 @@ export function Step3Configuration({ state, dispatch }: Step3ConfigurationPropsT
               }}
             >
               Save &amp; continue
-            </s-button>
-          </s-stack>
-          <s-button variant="tertiary" onClick={() => dispatch({ type: "GO_NEXT" })}>
+            </Button>
+          </InlineStack>
+          <Button variant="tertiary" onClick={() => dispatch({ type: "GO_NEXT" })}>
             Skip for now — I&rsquo;ll set this later
-          </s-button>
-        </s-stack>
-      </s-stack>
-    </s-box>
+          </Button>
+        </BlockStack>
+      </BlockStack>
+    </Box>
   );
 }

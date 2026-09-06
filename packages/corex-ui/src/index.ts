@@ -17,10 +17,12 @@ export * from "./components/ProgressBar";
 export * from "./components/IconTile";
 
 export * from "./components/Card";
+export * from "./components/Table";
 export * from "./components/Modal";
 export * from "./components/TextField";
 export * from "./components/Select";
 export * from "./components/Checkbox";
+export * from "./components/Switch";
 export * from "./components/Spinner";
 
 export * from "./components/Page";

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { TextField } from "@xco/corex-ui";
+import { TextField } from "@xco-agency/corex-ui";
 
 export function TextFieldExample() {
   const [name, setName] = useState("Ada Lovelace");

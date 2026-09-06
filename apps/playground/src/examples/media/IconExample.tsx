@@ -1,4 +1,4 @@
-import { Icon, InlineStack } from "@xco/corex-ui";
+import { Icon, InlineStack } from "@xco-agency/corex-ui";
 
 export function IconExample() {
   return (

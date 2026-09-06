@@ -1,6 +1,15 @@
 import { useEffect, useRef, type Dispatch } from "react";
-import type { OnboardingActionType, OnboardingStateType } from "../types";
-import Content from "~/components/ui/typography/Content";
+import type { OnboardingActionType, OnboardingStateType } from "../onboarding.types";
+import {
+  Box,
+  BlockStack,
+  InlineStack,
+  Button,
+  Clickable,
+  Icon,
+  Spinner,
+  Text,
+} from "@xco-agency/corex-ui";
 
 const CHECK_DURATION_MS = 2600;
 
@@ -15,6 +24,7 @@ function getThemeEditorDeepLink(
   });
   return `https://${shopDomain}/admin/themes/${themeId}/editor?${params.toString()}`;
 }
+
 export type Step5ShopifyValidationPropsType = {
   state: OnboardingStateType;
   dispatch: Dispatch<OnboardingActionType>;
@@ -44,9 +54,9 @@ export function Step5ShopifyValidation({
   };
 
   return (
-    <s-box paddingBlock="large">
-      <s-stack direction="block" gap="large" alignItems="center">
-        <s-box
+    <Box paddingBlock="large">
+      <BlockStack gap="large" align="center">
+        <Box
           padding="large"
           border="base"
           borderRadius="large"
@@ -54,87 +64,79 @@ export function Step5ShopifyValidation({
           inlineSize="100%"
           maxInlineSize="460px"
         >
-          <s-stack direction="block" gap="large-100" alignItems="center">
-            <s-stack direction="block" gap="small-100" alignItems="center">
-              <Content
-                variant="headingMd"
+          <BlockStack gap="large-100" align="center">
+            <BlockStack gap="small-100" align="center">
+              <Text
+                heading
                 tooltip="Enabling the theme app extension allows the cart drawer and revenue widgets to render seamlessly without modifying liquid code directly."
               >
                 Activate your theme embed
-              </Content>
-              <Content subdue>
+              </Text>
+              <Text color="subdued">
                 One click enables Journeva&rsquo;s cart drawer and upsells on your
                 storefront.
-              </Content>
-            </s-stack>
+              </Text>
+            </BlockStack>
 
-            <s-stack direction="block" gap="base" inlineSize="100%">
-              <s-clickable onClick={openThemeEditor} borderRadius="large">
-                <s-box
+            <BlockStack gap="base" inlineSize="100%">
+              <Clickable onClick={openThemeEditor} borderRadius="large">
+                <Box
                   padding="base"
                   border="base"
                   borderRadius="large"
                   background="base"
                   inlineSize="100%"
                 >
-                  <s-stack
-                    direction="inline"
-                    justifyContent="space-between"
-                    alignItems="center"
+                  <InlineStack
+                    align="space-between"
+                    blockAlign="center"
                     inlineSize="100%"
                   >
-                    <s-stack direction="block" gap="none">
-                      <s-heading>Open Theme Editor</s-heading>
-                      <s-paragraph color="subdued">
-                        Opens Shopify in a new tab
-                      </s-paragraph>
-                    </s-stack>
-                    <s-icon type="external" tone="neutral" size="base" />
-                  </s-stack>
-                </s-box>
-              </s-clickable>
+                    <BlockStack gap="none">
+                      <Text fontWeight="semibold">Open Theme Editor</Text>
+                      <Text color="subdued">Opens Shopify in a new tab</Text>
+                    </BlockStack>
+                    <Icon type="external" tone="neutral" />
+                  </InlineStack>
+                </Box>
+              </Clickable>
 
-              <s-stack
-                direction="inline"
-                justifyContent="space-between"
-                alignItems="center"
-                inlineSize="100%"
-              >
-                <s-stack direction="inline" gap="small-200" alignItems="center">
+              <InlineStack align="space-between" blockAlign="center" inlineSize="100%">
+                <InlineStack gap="small-200" blockAlign="center">
                   {state.embedStatus === "active" ? (
-                    <s-icon type="check-circle-filled" tone="success" size="base" />
+                    <Icon type="check-circle-filled" tone="success" />
                   ) : state.embedStatus === "checking" ? (
-                    <s-spinner
+                    <Spinner
                       accessibilityLabel="Checking installation status"
-                      size="base"
+                      size="small"
                     />
                   ) : (
-                    <s-icon type="clock" tone="neutral" size="base" />
+                    <Icon type="clock" tone="neutral" />
                   )}
-                  <s-text>
+                  <Text>
                     {state.embedStatus === "active"
                       ? "Theme embed active"
                       : state.embedStatus === "checking"
                         ? "Checking installation status…"
                         : "Not detected yet"}
-                  </s-text>
-                </s-stack>
+                  </Text>
+                </InlineStack>
 
-                <s-button onClick={runCheck} disabled={state.embedStatus === "checking"}>
+                <Button onClick={runCheck} disabled={state.embedStatus === "checking"}>
                   Recheck
-                </s-button>
-              </s-stack>
-            </s-stack>
-          </s-stack>
-        </s-box>
+                </Button>
+              </InlineStack>
+            </BlockStack>
+          </BlockStack>
+        </Box>
 
-        <s-stack direction="inline" gap="small-200" alignItems="center">
-          <s-button onClick={() => dispatch({ type: "GO_BACK" })}>Back</s-button>
-          <s-button variant="primary" onClick={() => dispatch({ type: "GO_NEXT" })}>
+        <InlineStack gap="small-200" blockAlign="center">
+          <Button onClick={() => dispatch({ type: "GO_BACK" })}>Back</Button>
+          <Button variant="primary" onClick={() => dispatch({ type: "GO_NEXT" })}>
             Continue
-          </s-button>
-        </s-stack>
-      </s-stack>
-    </s-box>
+          </Button>
+        </InlineStack>
+      </BlockStack>
+    </Box>
   );
 }

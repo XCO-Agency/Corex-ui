@@ -1,4 +1,4 @@
-import { Button, InlineStack } from "@xco/corex-ui";
+import { Button, InlineStack } from "@xco-agency/corex-ui";
 
 export function ButtonVariants() {
   return (

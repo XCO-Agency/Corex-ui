@@ -1,5 +1,5 @@
 import { useRef } from "react";
-import { AppWindow, Button } from "@xco/corex-ui";
+import { AppWindow, Button } from "@xco-agency/corex-ui";
 
 export function AppWindowExample() {
   const windowRef = useRef<HTMLElementTagNameMap["s-app-window"]>(null);

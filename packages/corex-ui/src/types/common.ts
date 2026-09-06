@@ -72,10 +72,7 @@ export type SpacingTokenType = PolarisSpacingType | LegacySpacingType;
  * (block-start inline-end block-end inline-start flow-relative order).
  */
 export type BoxPaddingType =
-  | SpacingTokenType
-  | `${SpacingTokenType} ${SpacingTokenType}`
-  | (string & {})
-  | number;
+  SpacingTokenType | `${SpacingTokenType} ${SpacingTokenType}` | (string & {}) | number;
 
 /** Directional padding type (1-to-2 value shorthand or single token). */
 export type BoxPaddingDirectionType =
@@ -107,37 +104,20 @@ export type AlignmentType =
   | "stretch";
 
 export type InlineAlignmentType =
-  | "start"
-  | "center"
-  | "end"
-  | "space-between"
-  | "space-around"
-  | "space-evenly";
+  "start" | "center" | "end" | "space-between" | "space-around" | "space-evenly";
 
-export type BlockAlignmentType =
-  | "start"
-  | "center"
-  | "end"
-  | "baseline"
-  | "stretch";
+export type BlockAlignmentType = "start" | "center" | "end" | "baseline" | "stretch";
 
-export type TextVariantType =
-  | "headingXl"
-  | "headingLg"
-  | "headingMd"
-  | "headingSm"
-  | "headingXs"
-  | "bodyLg"
-  | "bodyMd"
-  | "bodySm";
+export type TextVariantType = "small" | "base" | "large";
 
 export type TargetType = "_blank" | "_self" | "_parent" | "_top" | (string & {});
 
 /** Extracts the native JSX props of any Polaris web component (e.g. 's-grid', 's-box', 's-button'). */
-export type PolarisPropsType<TTag extends keyof JSX.IntrinsicElements> =
-  Omit<JSX.IntrinsicElements[TTag], "ref" | "key">;
+export type PolarisPropsType<TTag extends keyof JSX.IntrinsicElements> = Omit<
+  JSX.IntrinsicElements[TTag],
+  "ref" | "key"
+>;
 
 /** Extracts the native DOM element instance of any Polaris custom element. */
 export type PolarisElementType<TTag extends keyof HTMLElementTagNameMap> =
   HTMLElementTagNameMap[TTag];
-

@@ -1,4 +1,4 @@
-import { Button, Menu, Page } from "@xco/corex-ui";
+import { Button, Menu, Page } from "@xco-agency/corex-ui";
 
 export function MenuInTitleBarExample() {
   return (

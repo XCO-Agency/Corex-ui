@@ -1,4 +1,4 @@
-import { Link } from "@xco/corex-ui";
+import { Link } from "@xco-agency/corex-ui";
 
 export function LinkExample() {
   return (

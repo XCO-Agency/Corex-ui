@@ -1,6 +1,14 @@
 import { useEffect, type Dispatch } from "react";
 import type { OnboardingActionType, OnboardingStateType } from "../onboarding.types";
-import { Button, Icon, IconTile, Text } from "@xco-agency/corex-ui";
+import {
+  Box,
+  BlockStack,
+  InlineStack,
+  Button,
+  Icon,
+  IconTile,
+  Text,
+} from "@xco-agency/corex-ui";
 
 export type Step6CelebrationPropsType = {
   state: OnboardingStateType;
@@ -37,9 +45,9 @@ export function Step6Celebration({
   ];
 
   return (
-    <s-box paddingBlock="large">
-      <s-stack direction="block" gap="large" alignItems="center">
-        <s-box
+    <Box paddingBlock="large">
+      <BlockStack gap="large" align="center">
+        <Box
           padding="large-300"
           border="base"
           borderRadius="large"
@@ -47,51 +55,49 @@ export function Step6Celebration({
           inlineSize="100%"
           maxInlineSize="460px"
         >
-          <s-stack direction="block" gap="large-100" alignItems="center">
-            <s-stack direction="block" gap="small-100" alignItems="center">
+          <BlockStack gap="large-100" align="center">
+            <BlockStack gap="small-100" align="center">
               <IconTile tone="success" borderRadius="full" size="lg">
-                <Icon type="check" tone="success" size="base" />
+                <Icon type="check" tone="success" />
               </IconTile>
               <Text
-                variant="headingLg"
+                variant="large"
+                heading
                 tooltip="All revenue modules and default configurations have been deployed to your active storefront."
               >
                 You&rsquo;re all set 🎉
               </Text>
-              <Text color="subdue">
+              <Text color="subdued">
                 Journeva is live on your store and already working in the background.
               </Text>
-            </s-stack>
+            </BlockStack>
 
-            <s-stack direction="block" gap="small-200" inlineSize="100%">
+            <BlockStack gap="small-200" inlineSize="100%">
               {rows.map((row) => (
-                <s-stack
+                <InlineStack
                   key={row.label}
-                  direction="inline"
                   gap="small-200"
-                  alignItems="center"
+                  blockAlign="center"
                   inlineSize="100%"
                 >
-                  <s-icon
+                  <Icon
                     type={row.done ? "check-circle-filled" : "clock"}
                     tone={row.done ? "success" : "caution"}
                   />
-                  <s-paragraph color={row.done ? "base" : "subdued"}>
-                    {row.label}
-                  </s-paragraph>
-                </s-stack>
+                  <Text color={row.done ? "base" : "subdued"}>{row.label}</Text>
+                </InlineStack>
               ))}
-            </s-stack>
-          </s-stack>
-        </s-box>
-        <s-stack direction="block" gap="small-200" alignItems="center" inlineSize="100%">
-          <s-stack direction="inline" gap="small-200" alignItems="center">
+            </BlockStack>
+          </BlockStack>
+        </Box>
+        <BlockStack gap="small-200" align="center" inlineSize="100%">
+          <InlineStack gap="small-200" blockAlign="center">
             <Button onClick={() => dispatch({ type: "GO_BACK" })}>Back</Button>
             <Button variant="primary" onClick={onGoToDashboard}>
               Go to Revenue Dashboard
             </Button>
-          </s-stack>
-          <Text color="subdue">
+          </InlineStack>
+          <Text color="subdued">
             Need to change anything? Everything&rsquo;s editable anytime from the Hub.
           </Text>
           {onRestart ? (
@@ -99,8 +105,8 @@ export function Step6Celebration({
               Replay demo
             </Button>
           ) : null}
-        </s-stack>
-      </s-stack>
-    </s-box>
+        </BlockStack>
+      </BlockStack>
+    </Box>
   );
 }

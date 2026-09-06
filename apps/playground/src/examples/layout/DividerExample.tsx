@@ -1,4 +1,4 @@
-import { BlockStack, Divider, Text } from "@xco/corex-ui";
+import { BlockStack, Divider, Text } from "@xco-agency/corex-ui";
 
 export function DividerExample() {
   return (

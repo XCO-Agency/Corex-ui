@@ -1,4 +1,4 @@
-import { Card, Text } from "@xco/corex-ui";
+import { Card, Text } from "@xco-agency/corex-ui";
 
 export function CardExample() {
   return (

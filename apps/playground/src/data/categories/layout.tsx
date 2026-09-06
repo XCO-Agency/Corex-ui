@@ -13,6 +13,8 @@ import { DividerExample } from "@/examples/layout/DividerExample";
 import DividerExampleRaw from "@/examples/layout/DividerExample.tsx?raw";
 import { MetricCardExample } from "@/examples/layout/MetricCardExample";
 import MetricCardExampleRaw from "@/examples/layout/MetricCardExample.tsx?raw";
+import { TableExample } from "@/examples/layout/TableExample";
+import TableExampleRaw from "@/examples/layout/TableExample.tsx?raw";
 
 export const layoutComponents: ComponentEntry[] = [
   {
@@ -106,6 +108,20 @@ export const layoutComponents: ComponentEntry[] = [
         title: "Between content",
         Example: DividerExample,
         code: DividerExampleRaw,
+      },
+    ],
+  },
+  {
+    name: "Table",
+    slug: "table",
+    category: "Layout",
+    description:
+      "Displays tabular data with support for expandable sub-rows and custom cell renderers.",
+    examples: [
+      {
+        title: "With expandable sub-rows",
+        Example: TableExample,
+        code: TableExampleRaw,
       },
     ],
   },

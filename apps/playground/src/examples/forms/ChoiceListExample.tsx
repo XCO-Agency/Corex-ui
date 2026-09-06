@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ChoiceList, Grid } from "@xco/corex-ui";
+import { ChoiceList, Grid } from "@xco-agency/corex-ui";
 
 export function ChoiceListExample() {
   const [selected, setSelected] = useState<string[]>(["email"]);

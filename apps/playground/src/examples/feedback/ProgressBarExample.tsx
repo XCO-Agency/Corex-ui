@@ -17,14 +17,11 @@ export function ProgressBarExample() {
       <Card>
         <BlockStack gap="base">
           <InlineStack align="space-between" blockAlign="center">
-            <Text variant="headingMd" as="h3">
+            <Text heading as="h3">
               Interactive Progress
             </Text>
             <ButtonGroup>
-              <Button
-                size="slim"
-                onClick={() => setProgress((p) => Math.max(0, p - 10))}
-              >
+              <Button size="slim" onClick={() => setProgress((p) => Math.max(0, p - 10))}>
                 -10%
               </Button>
               <Button
@@ -45,7 +42,7 @@ export function ProgressBarExample() {
 
       <Card>
         <BlockStack gap="large-100">
-          <Text variant="headingMd" as="h3">
+          <Text heading as="h3">
             Tones
           </Text>
 
@@ -88,7 +85,7 @@ export function ProgressBarExample() {
 
       <Card>
         <BlockStack gap="large-100">
-          <Text variant="headingMd" as="h3">
+          <Text heading as="h3">
             Sizes
           </Text>
 

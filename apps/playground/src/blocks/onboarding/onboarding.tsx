@@ -1,6 +1,7 @@
+import { BlockStack, Page } from "@xco-agency/corex-ui";
 import { ONBOARDING_STEPS_CONFIG } from "./constants";
 import { useOnboarding } from "./use-onboarding";
-import { ProgressHeader } from "./ProgressHeader";
+import { ProgressHeader } from "./progress-header";
 import { Step1Initializing } from "./steps/step1-initializing";
 import { Step2Foundation } from "./steps/step2-foundation";
 import { Step3Configuration } from "./steps/step3-configuration";
@@ -50,17 +51,18 @@ export function Onboarding({ onGoToDashboard, onExit, onRestart }: OnboardingPro
   };
 
   return (
-    <s-page>
-      <ProgressHeader
-        stepIndex={stepIndex}
-        steps={ONBOARDING_STEPS_CONFIG}
-        onGoToStep={(targetStep: OnboardingStepIdType) =>
-          dispatch({ type: "GO_TO_STEP", step: targetStep })
-        }
-      />
-      <br />
-      <StepTransition stepKey={state.currentStep}>{renderStep()}</StepTransition>
-    </s-page>
+    <Page>
+      <BlockStack rowGap="base" alignItems="center" justifyContent="center">
+        <ProgressHeader
+          stepIndex={stepIndex}
+          steps={ONBOARDING_STEPS_CONFIG}
+          onGoToStep={(targetStep: OnboardingStepIdType) =>
+            dispatch({ type: "GO_TO_STEP", step: targetStep })
+          }
+        />
+        <StepTransition stepKey={state.currentStep}>{renderStep()}</StepTransition>
+      </BlockStack>
+    </Page>
   );
 }
 
@@ -102,6 +104,11 @@ export function StepTransition({ stepKey, children }: StepTransitionPropsType) {
     <div
       key={renderedKey}
       className={phase === "enter" ? styles.stepPanelEnter : styles.stepPanelExit}
+      style={{
+        width: "100%",
+        minWidth: "500px",
+        maxWidth: "600px",
+      }}
     >
       {showingCurrent ? children : lastChildren.current}
     </div>
