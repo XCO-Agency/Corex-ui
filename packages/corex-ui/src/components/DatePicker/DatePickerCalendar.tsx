@@ -40,7 +40,7 @@ export function DatePickerCalendar({
   const nextYear = nextMonthDate.getFullYear();
   const nextMonth = nextMonthDate.getMonth();
 
-  const handlePrev = (e: MouseEvent) => {
+  const handlePrev = (e?: any) => {
     console.log(typeof e);
 
     e.stopPropagation();
@@ -49,7 +49,7 @@ export function DatePickerCalendar({
     setViewMonth(prev.getMonth());
   };
 
-  const handleNext = (e: MouseEvent) => {
+  const handleNext = (e?: any) => {
     e.stopPropagation();
     const next = new Date(viewYear, viewMonth + 1, 1);
     setViewYear(next.getFullYear());

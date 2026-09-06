@@ -7,6 +7,8 @@ import { SpinnerExample } from "@/examples/feedback/SpinnerExample";
 import SpinnerExampleRaw from "@/examples/feedback/SpinnerExample.tsx?raw";
 import { TooltipExample } from "@/examples/feedback/TooltipExample";
 import TooltipExampleRaw from "@/examples/feedback/TooltipExample.tsx?raw";
+import { SkeletonBasicExample } from "@/examples/feedback/SkeletonBasicExample";
+import SkeletonBasicExampleRaw from "@/examples/feedback/SkeletonBasicExample.tsx?raw";
 
 export const feedbackComponents: ComponentEntry[] = [
   {
@@ -34,6 +36,20 @@ export const feedbackComponents: ComponentEntry[] = [
         title: "Dismissible",
         Example: BannerDismissible,
         code: BannerDismissibleRaw,
+      },
+    ],
+  },
+  {
+    name: "Skeleton",
+    slug: "skeleton",
+    category: "Feedback",
+    description:
+      "Animated shimmer placeholder simulating content while data is loading.",
+    examples: [
+      {
+        title: "Default Shimmer",
+        Example: SkeletonBasicExample,
+        code: SkeletonBasicExampleRaw,
       },
     ],
   },

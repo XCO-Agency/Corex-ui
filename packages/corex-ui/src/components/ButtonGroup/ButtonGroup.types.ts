@@ -3,13 +3,8 @@ import type { PolarisPropsType } from "../../types/common";
 
 type NativeButtonGroupProps = PolarisPropsType<"s-button-group">;
 
-export type ButtonGroupPropsType = Omit<
-  NativeButtonGroupProps,
-  "gap" | "children"
-> & {
+export type ButtonGroupPropsType = Omit<NativeButtonGroupProps, "children"> & {
   children?: ReactNode;
-  /** Polaris-native spacing control. Use `none` for a segmented group. */
-  gap?: NativeButtonGroupProps["gap"] | "base" | "none";
   /** @deprecated Use `gap="none"` for segmented groups, or omit `gap` for the default. */
   variant?: "segmented" | "default";
   fullWidth?: boolean;
