@@ -1,8 +1,4 @@
-import {
-  forwardRef,
-  type ForwardRefExoticComponent,
-  type RefAttributes,
-} from "react";
+import { forwardRef, type ForwardRefExoticComponent, type RefAttributes } from "react";
 import { createWebComponent } from "../../core/createWebComponent";
 import type { ClickablePropsType } from "./Clickable.types";
 import {
@@ -115,49 +111,55 @@ export const Clickable: ForwardRefExoticComponent<
     typeof download === "boolean" ? (download ? "" : undefined) : download;
 
   return (
-    <SClickable
-      ref={ref}
-      href={href}
-      target={resolvedTarget}
-      rel={resolvedRel}
-      disabled={disabled}
-      loading={loading}
-      download={resolvedDownload}
-      type={type}
-      command={command}
-      commandFor={commandFor}
-      interestFor={interestFor}
-      lang={lang}
-      background={mapLegacyBackground(background)}
-      borderWidth={mapLegacyBorderWidth(borderWidth)}
-      borderStyle={borderStyle}
-      borderColor={mapLegacyBorderColor(borderColor)}
-      borderRadius={mapLegacyBorderRadius(borderRadius)}
-      border={border}
-      padding={mapLegacySpacing(padding)}
-      paddingBlock={mapLegacySpacing(paddingBlock)}
-      paddingBlockStart={mapLegacySpacing(paddingBlockStart)}
-      paddingBlockEnd={mapLegacySpacing(paddingBlockEnd)}
-      paddingInline={mapLegacySpacing(paddingInline)}
-      paddingInlineStart={mapLegacySpacing(paddingInlineStart)}
-      paddingInlineEnd={mapLegacySpacing(paddingInlineEnd)}
-      display={display}
-      blockSize={blockSize}
-      minBlockSize={minBlockSize}
-      maxBlockSize={maxBlockSize}
-      inlineSize={inlineSize}
-      minInlineSize={minInlineSize}
-      maxInlineSize={maxInlineSize}
-      overflow={overflow}
-      accessibilityLabel={accessibilityLabel}
-      accessibilityRole={accessibilityRole}
-      accessibilityVisibility={accessibilityVisibility}
-      onClick={onClick}
-      onBlur={onBlur}
-      onFocus={onFocus}
-      {...rest}
+    <div
+      style={{
+        flex: 1,
+      }}
     >
-      {children}
-    </SClickable>
+      <SClickable
+        ref={ref}
+        href={href}
+        target={resolvedTarget}
+        rel={resolvedRel}
+        disabled={disabled}
+        loading={loading}
+        download={resolvedDownload}
+        type={type}
+        command={command}
+        commandFor={commandFor}
+        interestFor={interestFor}
+        lang={lang}
+        background={mapLegacyBackground(background)}
+        borderWidth={mapLegacyBorderWidth(borderWidth)}
+        borderStyle={borderStyle}
+        borderColor={mapLegacyBorderColor(borderColor)}
+        borderRadius={mapLegacyBorderRadius(borderRadius)}
+        border={border}
+        padding={mapLegacySpacing(padding)}
+        paddingBlock={mapLegacySpacing(paddingBlock)}
+        paddingBlockStart={mapLegacySpacing(paddingBlockStart)}
+        paddingBlockEnd={mapLegacySpacing(paddingBlockEnd)}
+        paddingInline={mapLegacySpacing(paddingInline)}
+        paddingInlineStart={mapLegacySpacing(paddingInlineStart)}
+        paddingInlineEnd={mapLegacySpacing(paddingInlineEnd)}
+        display={display}
+        blockSize={blockSize}
+        minBlockSize={minBlockSize}
+        maxBlockSize={maxBlockSize}
+        inlineSize={inlineSize}
+        minInlineSize={minInlineSize}
+        maxInlineSize={maxInlineSize}
+        overflow={overflow}
+        accessibilityLabel={accessibilityLabel}
+        accessibilityRole={accessibilityRole}
+        accessibilityVisibility={accessibilityVisibility}
+        onClick={onClick}
+        onBlur={onBlur}
+        onFocus={onFocus}
+        {...rest}
+      >
+        {children}
+      </SClickable>
+    </div>
   );
 });

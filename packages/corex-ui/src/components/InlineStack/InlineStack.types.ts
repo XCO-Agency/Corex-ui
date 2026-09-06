@@ -19,7 +19,9 @@ export type InlineStackPropsType = Omit<
    * Legacy numeric values such as `"200"` are supported for backward compatibility.
    */
   gap?: StackGapType;
+  /** @deprecated Use `justifyContent` instead.*/
   align?: InlineAlignmentType;
+  /** @deprecated Use `alignItems` instead.*/
   blockAlign?: BlockAlignmentType;
   wrap?: boolean;
   className?: string;

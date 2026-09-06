@@ -19,7 +19,9 @@ export type BlockStackPropsType = Omit<
    * Legacy numeric values such as `"400"` are supported for backward compatibility.
    */
   gap?: StackGapType;
+  /** @deprecated Use `justifyContent` instead.*/
   align?: BlockAlignmentType;
+  /** @deprecated Use `alignItems` instead.*/
   inlineAlign?: InlineAlignmentType;
   className?: string;
   id?: string;

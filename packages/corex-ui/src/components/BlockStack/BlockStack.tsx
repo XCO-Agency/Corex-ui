@@ -1,8 +1,4 @@
-import {
-  forwardRef,
-  type ForwardRefExoticComponent,
-  type RefAttributes,
-} from "react";
+import { forwardRef, type ForwardRefExoticComponent, type RefAttributes } from "react";
 import { createWebComponent } from "../../core/createWebComponent";
 import { mapLegacyGap } from "../../core/legacySpacing";
 import type { BlockStackPropsType } from "./BlockStack.types";
@@ -18,18 +14,19 @@ const SStack = createWebComponent<HTMLElement>("s-stack", {
  */
 export const BlockStack: ForwardRefExoticComponent<
   BlockStackPropsType & RefAttributes<HTMLElement>
-> = forwardRef<HTMLElement, BlockStackPropsType>(
-  function BlockStack({ children, gap, align, inlineAlign, justifyContent, alignItems, ...rest }, ref) {
-    return (
-      <SStack
-        ref={ref}
-        gap={mapLegacyGap(gap)}
-        justifyContent={justifyContent ?? (align as any)}
-        alignItems={alignItems ?? (inlineAlign as any)}
-        {...rest}
-      >
-        {children}
-      </SStack>
-    );
-  },
-);
+> = forwardRef<HTMLElement, BlockStackPropsType>(function BlockStack(
+  { children, gap, align, inlineAlign, justifyContent, alignItems, ...rest },
+  ref,
+) {
+  return (
+    <SStack
+      ref={ref}
+      gap={mapLegacyGap(gap)}
+      justifyContent={justifyContent ?? (align as any)}
+      alignItems={alignItems ?? (inlineAlign as any)}
+      {...rest}
+    >
+      {children}
+    </SStack>
+  );
+});
