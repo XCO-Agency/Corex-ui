@@ -108,7 +108,7 @@ export function DatePickerCalendar({
         </InlineStack>
 
         {/* Days of Week Row */}
-        <Grid columns={7} columnGap="small-500">
+        <Grid columns={7} columnGap="small-500" justifyItems="center">
           {DAY_NAMES.map((d) => (
             <Text key={d} variant="xs">
               {d}

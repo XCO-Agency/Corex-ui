@@ -7,7 +7,7 @@ import { Icon } from "../Icon";
 import { Clickable } from "../Clickable";
 
 const SPARK_W = 64;
-const SPARK_H = 24;
+const SPARK_H = 20;
 
 const SPARK_PADDING_X = 1;
 const SPARK_PADDING_Y = 3;
@@ -214,38 +214,25 @@ export function MetricCard({
               gap: 8,
               alignItems: "center",
               flex: 1,
+              marginInlineStart: -4,
             }}
           >
             {icon && <Icon type={icon} tone={iconTone} />}
-            <span
-              style={{
-                flex: 1,
-                textDecoration: tooltip
-                  ? "underline 2px dotted var(--p-color-border-tertiary, rgba(204, 204, 204, 1))"
-                  : "none",
-                textUnderlineOffset: tooltip ? 5 : "none",
-              }}
-            >
-              <Text variant="headingSm" interestFor={id} tooltip={tooltip}>
-                {title}
-              </Text>
-            </span>
-            {badge && badge.value && (
-              <s-badge
-                tone={badge?.tone ?? "neutral"}
-
-                icon={
-                  badge?.dir
-                    ? badge?.dir === "up"
-                      ? "arrow-up"
-                      : "arrow-down"
-                    : undefined
-                }
-              >
-                {badge.value}
-              </s-badge>
-            )}
+            <Text heading interestFor={id} tooltip={tooltip}>
+              {title}
+            </Text>
           </div>
+          {badge && badge.value && (
+            <s-badge
+              tone={badge?.tone ?? "neutral"}
+
+              icon={
+                badge?.dir ? (badge?.dir === "up" ? "arrow-up" : "arrow-down") : undefined
+              }
+            >
+              {badge.value}
+            </s-badge>
+          )}
         </s-stack>
 
         {/* Value + sparkline */}

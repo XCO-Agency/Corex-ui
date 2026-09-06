@@ -5,8 +5,7 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],
-      "@xco-agency/corex-ui": ["../../packages/corex-ui/src/index.ts"],
-      "@xco/corex-ui": ["../../packages/corex-ui/src/index.ts"]
+      "@xco-agency/corex-ui": ["../../packages/corex-ui/src/index.ts"]
     }
   },
   "include": ["src", "../../packages/corex-ui/src/types/**/*.d.ts"]

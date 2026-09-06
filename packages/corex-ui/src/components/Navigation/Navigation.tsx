@@ -120,18 +120,8 @@ export const Navigation = React.forwardRef<HTMLElement, NavigationPropsType>(
               >
                 {section.title && (
                   <div style={{ padding: "4px 8px 6px 8px" }}>
-                    <Text as="h3" variant="bodySm" tone="neutral">
-                      <span
-                        style={{
-                          fontSize: "11px",
-                          fontWeight: 700,
-                          letterSpacing: "0.04em",
-                          textTransform: "uppercase",
-                          color: "#6d7175",
-                        }}
-                      >
-                        {section.title}
-                      </span>
+                    <Text as="h3" tone="neutral" variant="xs">
+                      {section.title}
                     </Text>
                   </div>
                 )}

@@ -11,9 +11,6 @@ export default defineConfig({
       "@xco-agency/corex-ui": fileURLToPath(
         new URL("../../packages/corex-ui/src", import.meta.url),
       ),
-      "@xco/corex-ui": fileURLToPath(
-        new URL("../../packages/corex-ui/src", import.meta.url),
-      ),
     },
   },
 });

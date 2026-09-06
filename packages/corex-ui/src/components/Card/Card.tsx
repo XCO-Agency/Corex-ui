@@ -24,7 +24,6 @@ export const Card = forwardRef<HTMLElement, CardPropsType>(function Card(
     actions,
     primaryFooterAction,
     secondaryFooterActions,
-    padding,
     ...rest
   },
   ref,
@@ -36,14 +35,13 @@ export const Card = forwardRef<HTMLElement, CardPropsType>(function Card(
     );
   }
 
-  const resolvedPadding = padding === "0" ? "none" : padding;
   const hasHeader = Boolean(title || (actions && actions.length > 0));
   const hasFooter = Boolean(
     primaryFooterAction || (secondaryFooterActions && secondaryFooterActions.length > 0),
   );
 
   return (
-    <SSection ref={ref} padding={resolvedPadding} {...rest}>
+    <SSection ref={ref} {...rest}>
       {hasHeader && (
         <InlineStack justifyContent="space-between" alignItems="center" gap="base">
           {title ? (

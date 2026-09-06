@@ -1,8 +1,6 @@
 import type { CSSProperties, ReactNode } from "react";
 import type { PolarisPropsType } from "../../types/common";
 
-type NativeSectionProps = PolarisPropsType<"s-section">;
-
 export type CardActionType = {
   content: string;
   onAction?: () => void;
@@ -13,12 +11,9 @@ export type CardActionType = {
   destructive?: boolean;
 };
 
-export type CardPaddingType = (NativeSectionProps["padding"] & "0") | (string & {});
-
-export type CardPropsType = Omit<NativeSectionProps, "padding"> & {
+export type CardPropsType = PolarisPropsType<"s-section"> & {
   /** @deprecated use heading Rendered as a heading above the card content. */
   title?: ReactNode;
-  padding?: CardPaddingType;
   /**
    * @deprecated use
    */
@@ -31,7 +26,6 @@ export type CardPropsType = Omit<NativeSectionProps, "padding"> & {
   secondaryFooterActions?: CardActionType[];
   /** Card padding ('base' | 'none' | legacy '0'). */
   background?: string;
-  className?: string;
   id?: string;
   style?: CSSProperties;
   [key: `aria-${string}`]: unknown;
