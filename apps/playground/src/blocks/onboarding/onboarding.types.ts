@@ -1,10 +1,10 @@
 export type OnboardingStepIdType =
   | "initializing"
-  | "revenue-foundation"
-  | "default-configuration"
+  | "foundation"
+  | "configuration"
   | "add-tools"
   | "shopify-validation"
-  | "celebration";
+  | "end";
 
 export type StepBadgeIconType = "settings" | "cart" | "adjust" | "apps" | "code" | "star";
 

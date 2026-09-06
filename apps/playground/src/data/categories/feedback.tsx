@@ -9,6 +9,10 @@ import { TooltipExample } from "@/examples/feedback/TooltipExample";
 import TooltipExampleRaw from "@/examples/feedback/TooltipExample.tsx?raw";
 import { SkeletonBasicExample } from "@/examples/feedback/SkeletonBasicExample";
 import SkeletonBasicExampleRaw from "@/examples/feedback/SkeletonBasicExample.tsx?raw";
+import { ProgressBarExample } from "@/examples/feedback/ProgressBarExample";
+import ProgressBarExampleRaw from "@/examples/feedback/ProgressBarExample.tsx?raw";
+import { IconTileExample } from "@/examples/feedback/IconTileExample";
+import IconTileExampleRaw from "@/examples/feedback/IconTileExample.tsx?raw";
 
 export const feedbackComponents: ComponentEntry[] = [
   {
@@ -36,6 +40,34 @@ export const feedbackComponents: ComponentEntry[] = [
         title: "Dismissible",
         Example: BannerDismissible,
         code: BannerDismissibleRaw,
+      },
+    ],
+  },
+  {
+    name: "IconTile",
+    slug: "icon-tile",
+    category: "Feedback",
+    description:
+      "A stylized background tile for icons, frequently used in feature lists and onboarding steps.",
+    examples: [
+      {
+        title: "IconTile Variations",
+        Example: IconTileExample,
+        code: IconTileExampleRaw,
+      },
+    ],
+  },
+  {
+    name: "ProgressBar",
+    slug: "progress-bar",
+    category: "Feedback",
+    description:
+      "Visual indicator communicating the percentage completion of a task or goal.",
+    examples: [
+      {
+        title: "Progress Bar Variations",
+        Example: ProgressBarExample,
+        code: ProgressBarExampleRaw,
       },
     ],
   },

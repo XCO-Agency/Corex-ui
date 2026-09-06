@@ -8,26 +8,26 @@ import type {
 
 export const STEP_ORDER: OnboardingStepIdType[] = [
   "initializing",
-  "revenue-foundation",
-  "default-configuration",
+  "foundation",
+  "configuration",
   "add-tools",
   "shopify-validation",
-  "celebration",
+  "end",
 ];
 
 export const STEP_LABELS: Record<OnboardingStepIdType, string> = {
   initializing: "Setting up",
-  "revenue-foundation": "Revenue foundation",
-  "default-configuration": "Default configuration",
+  foundation: "Revenue foundation",
+  configuration: "Default configuration",
   "add-tools": "Add tools & presets",
   "shopify-validation": "Activate theme embed",
-  celebration: "You're live",
+  end: "You're live",
 };
 
 export const ONBOARDING_STEPS_CONFIG: StepConfigItemType[] = [
   { id: "initializing", label: "Setup", icon: "settings" },
-  { id: "revenue-foundation", label: "Foundation", icon: "cart" },
-  { id: "default-configuration", label: "Config", icon: "adjust" },
+  { id: "foundation", label: "Foundation", icon: "cart" },
+  { id: "configuration", label: "Config", icon: "adjust" },
   { id: "add-tools", label: "Tools", icon: "apps" },
   { id: "shopify-validation", label: "Theme Embed", icon: "code" },
 ];

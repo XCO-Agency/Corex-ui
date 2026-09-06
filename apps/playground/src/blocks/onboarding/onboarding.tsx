@@ -1,9 +1,9 @@
 import { ONBOARDING_STEPS_CONFIG } from "./constants";
-import { useOnboarding } from "./useOnboarding";
+import { useOnboarding } from "./use-onboarding";
 import { ProgressHeader } from "./ProgressHeader";
 import { Step1Initializing } from "./steps/step1-initializing";
-import { Step2RevenueFoundation } from "./steps/step2-foundation";
-import { Step3DefaultConfiguration } from "./steps/step3-configuration";
+import { Step2Foundation } from "./steps/step2-foundation";
+import { Step3Configuration } from "./steps/step3-configuration";
 import { Step4AddTools } from "./steps/step4-add-tools";
 import { Step5ShopifyValidation } from "./steps/step5-shopify-validation";
 import { Step6Celebration } from "./steps/step6-end";
@@ -27,15 +27,15 @@ export function Onboarding({ onGoToDashboard, onExit, onRestart }: OnboardingPro
     switch (state.currentStep) {
       case "initializing":
         return <Step1Initializing state={state} dispatch={dispatch} />;
-      case "revenue-foundation":
-        return <Step2RevenueFoundation state={state} dispatch={dispatch} />;
-      case "default-configuration":
-        return <Step3DefaultConfiguration state={state} dispatch={dispatch} />;
+      case "foundation":
+        return <Step2Foundation state={state} dispatch={dispatch} />;
+      case "configuration":
+        return <Step3Configuration state={state} dispatch={dispatch} />;
       case "add-tools":
         return <Step4AddTools state={state} dispatch={dispatch} />;
       case "shopify-validation":
         return <Step5ShopifyValidation state={state} dispatch={dispatch} />;
-      case "celebration":
+      case "end":
         return (
           <Step6Celebration
             state={state}

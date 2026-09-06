@@ -1,8 +1,11 @@
 import type { Dispatch } from "react";
-import type { CoreToolIdType, OnboardingActionType, OnboardingStateType } from "../types";
-import Content from "~/components/ui/typography/Content";
-import { IconTile } from "~/components/ui/IconTile";
+import type {
+  CoreToolIdType,
+  OnboardingActionType,
+  OnboardingStateType,
+} from "../onboarding.types";
 import styles from "../onboarding.module.css";
+import { Text, IconTile } from "@xco-agency/corex-ui";
 
 const CORE_ICONS: Record<CoreToolIdType, "cart" | "collection" | "chart-vertical"> = {
   "cart-drawer": "cart",
@@ -10,12 +13,12 @@ const CORE_ICONS: Record<CoreToolIdType, "cart" | "collection" | "chart-vertical
   analytics: "chart-vertical",
 };
 
-export type Step2RevenueFoundationPropsType = {
+export type Step2FoundationPropsType = {
   state: OnboardingStateType;
   dispatch: Dispatch<OnboardingActionType>;
 };
 
-export function Step2Foundation({ state, dispatch }: Step2RevenueFoundationPropsType) {
+export function Step2Foundation({ state, dispatch }: Step2FoundationPropsType) {
   return (
     <s-box paddingBlock="large">
       <s-stack direction="block" gap="large" alignItems="center">
@@ -25,8 +28,8 @@ export function Step2Foundation({ state, dispatch }: Step2RevenueFoundationProps
               <s-badge tone="caution" size="large" icon="check">
                 Activation complete
               </s-badge>
-              <Content
-                variant="headingMd"
+              <Text
+                variant="headingLg"
                 tooltip={
                   <>
                     <s-paragraph>Core conversion features Cart Drawer</s-paragraph>
@@ -38,11 +41,11 @@ export function Step2Foundation({ state, dispatch }: Step2RevenueFoundationProps
                 }
               >
                 Your revenue foundation is ready
-              </Content>
-              <Content subdue>
+              </Text>
+              <Text color="subdued">
                 We&rsquo;ve already configured the essentials nothing to set up, nothing
                 to break.
-              </Content>
+              </Text>
             </s-stack>
 
             <s-stack direction="block" gap="small" inlineSize="100%">
@@ -88,7 +91,7 @@ export function Step2Foundation({ state, dispatch }: Step2RevenueFoundationProps
                   Continue
                 </s-button>
               </s-stack>
-              <Content subdue>Fully customizable anytime from the Hub.</Content>
+              <Text color="subdued">Fully customizable anytime from the Hub.</Text>
             </s-stack>
           </s-stack>
         </s-box>

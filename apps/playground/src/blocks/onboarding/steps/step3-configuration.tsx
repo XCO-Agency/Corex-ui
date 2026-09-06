@@ -3,7 +3,7 @@ import type { OnboardingActionType, OnboardingStateType } from "../types";
 import { CURRENCIES, SAMPLE_CART_TOTAL } from "../constants";
 import Content from "~/components/ui/typography/Content";
 import { IconTile } from "~/components/ui/IconTile";
-import { ProgressTracker } from "~/components/ui/ProgressTracker";
+import { ProgressBar } from "@xco-agency/corex-ui";
 function formatCurrency(amount: number, currency: string): string {
   try {
     return new Intl.NumberFormat("en-US", {
@@ -15,15 +15,12 @@ function formatCurrency(amount: number, currency: string): string {
     return `${currency} ${amount}`;
   }
 }
-export type Step3DefaultConfigurationPropsType = {
+export type Step3ConfigurationPropsType = {
   state: OnboardingStateType;
   dispatch: Dispatch<OnboardingActionType>;
 };
 
-export function Step3DefaultConfiguration({
-  state,
-  dispatch,
-}: Step3DefaultConfigurationPropsType) {
+export function Step3Configuration({ state, dispatch }: Step3ConfigurationPropsType) {
   const threshold = state.freeShippingThreshold;
   const remaining = Math.max(0, threshold - SAMPLE_CART_TOTAL);
   const qualifies = SAMPLE_CART_TOTAL >= threshold && threshold > 0;
@@ -116,12 +113,7 @@ export function Step3DefaultConfiguration({
                   </s-text>
                 </s-stack>
 
-                <ProgressTracker
-                  progress={percent}
-                  size="lg"
-                  tone="success"
-                  trackColor="#e5e7eb"
-                />
+                <ProgressBar progress={percent} size="base" tone="neutral" />
 
                 <s-text tone="success" type="strong">
                   {qualifies

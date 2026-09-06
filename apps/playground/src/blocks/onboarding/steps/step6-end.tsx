@@ -1,7 +1,6 @@
 import { useEffect, type Dispatch } from "react";
-import type { OnboardingActionType, OnboardingStateType } from "../types";
-import { IconTile } from "~/components/ui/IconTile";
-import Content from "~/components/ui/typography/Content";
+import type { OnboardingActionType, OnboardingStateType } from "../onboarding.types";
+import { Button, Icon, IconTile, Text } from "@xco-agency/corex-ui";
 
 export type Step6CelebrationPropsType = {
   state: OnboardingStateType;
@@ -51,17 +50,17 @@ export function Step6Celebration({
           <s-stack direction="block" gap="large-100" alignItems="center">
             <s-stack direction="block" gap="small-100" alignItems="center">
               <IconTile tone="success" borderRadius="full" size="lg">
-                <s-icon type="check" tone="success" size="base" />
+                <Icon type="check" tone="success" size="base" />
               </IconTile>
-              <Content
-                variant="headingMd"
+              <Text
+                variant="headingLg"
                 tooltip="All revenue modules and default configurations have been deployed to your active storefront."
               >
                 You&rsquo;re all set 🎉
-              </Content>
-              <Content subdue>
+              </Text>
+              <Text color="subdue">
                 Journeva is live on your store and already working in the background.
-              </Content>
+              </Text>
             </s-stack>
 
             <s-stack direction="block" gap="small-200" inlineSize="100%">
@@ -87,18 +86,18 @@ export function Step6Celebration({
         </s-box>
         <s-stack direction="block" gap="small-200" alignItems="center" inlineSize="100%">
           <s-stack direction="inline" gap="small-200" alignItems="center">
-            <s-button onClick={() => dispatch({ type: "GO_BACK" })}>Back</s-button>
-            <s-button variant="primary" onClick={onGoToDashboard}>
+            <Button onClick={() => dispatch({ type: "GO_BACK" })}>Back</Button>
+            <Button variant="primary" onClick={onGoToDashboard}>
               Go to Revenue Dashboard
-            </s-button>
+            </Button>
           </s-stack>
-          <Content subdue>
+          <Text color="subdue">
             Need to change anything? Everything&rsquo;s editable anytime from the Hub.
-          </Content>
+          </Text>
           {onRestart ? (
-            <s-button variant="tertiary" onClick={onRestart}>
+            <Button variant="tertiary" onClick={onRestart}>
               Replay demo
-            </s-button>
+            </Button>
           ) : null}
         </s-stack>
       </s-stack>

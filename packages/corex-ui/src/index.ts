@@ -13,6 +13,8 @@ export * from "./components/InlineStack";
 export * from "./components/Grid";
 export * from "./components/MetricCard";
 export * from "./components/Skeleton";
+export * from "./components/ProgressBar";
+export * from "./components/IconTile";
 
 export * from "./components/Card";
 export * from "./components/Modal";
