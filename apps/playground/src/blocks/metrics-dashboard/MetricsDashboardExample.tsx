@@ -1,6 +1,22 @@
 import * as React from "react";
-import { MetricCard, DatePicker, BlockStack, Grid, Page } from "@xco-agency/corex-ui";
-import type { MetricCardPropsType, DateRangeType, ToneType } from "@xco-agency/corex-ui";
+import {
+  MetricCard,
+  DatePicker,
+  BlockStack,
+  Grid,
+  Page,
+  Text,
+  useStorage,
+  formatRangeDisplay,
+  resolveDateFilterValue,
+  resolveDateFilterComparison,
+} from "@xco-agency/corex-ui";
+import type {
+  MetricCardPropsType,
+  DateRangeType,
+  ToneType,
+  DateFilterValueType,
+} from "@xco-agency/corex-ui";
 
 export type MetricItemType = Omit<MetricCardPropsType, "onClick"> & {
   id: "sales" | "sessions" | "orders" | "conversion";
@@ -66,16 +82,50 @@ const METRICS: MetricItemType[] = [
   },
 ];
 
+// Default filter: a semantic preset id, not a resolved date. Whoever loads this
+// dashboard next month still sees "the last 7 days" relative to *that* day.
+const DEFAULT_DATE_FILTER: DateFilterValueType = { type: "preset", presetId: "last_7_days" };
+
 export function MetricsDashboardExample() {
-  const [selectedDate, setSelectedDate] = React.useState<DateRangeType>({
-    start: "",
-    end: "",
+  // Only the semantic filter value is persisted — a preset id (e.g. "last_7_days")
+  // or, for a manual calendar selection, an absolute { start, end } range. Never a
+  // resolved date for a relative preset, so the stored value stays dynamic across reloads.
+  const { value: dateFilter, setValue: setDateFilter } = useStorage<DateFilterValueType>({
+    key: "metrics-dashboard-date-filter",
+    initialValue: DEFAULT_DATE_FILTER,
+    storage: "local",
   });
+
+  // Resolution happens only here, at render time, turning the semantic definition
+  // into actual dates — the stored value itself never changes when "today" does.
+  const selectedRange = React.useMemo(() => resolveDateFilterValue(dateFilter), [dateFilter]);
+  const comparisonRange = React.useMemo(
+    () => resolveDateFilterComparison(dateFilter),
+    [dateFilter],
+  );
+
+  const handleApply = (range: DateRangeType, meta?: { presetId?: string }) => {
+    setDateFilter(
+      meta?.presetId
+        ? { type: "preset", presetId: meta.presetId }
+        : { type: "custom", range },
+    );
+  };
 
   return (
     <Page heading="Metrics dashboard">
       <BlockStack gap="400">
-        <DatePicker selected={selectedDate} presets onApply={setSelectedDate} />
+        <DatePicker selected={selectedRange} presets onApply={handleApply} />
+
+        <BlockStack gap="100">
+          <Text as="span">
+            Showing {formatRangeDisplay(selectedRange)}
+            {comparisonRange ? ` vs. previous period (${formatRangeDisplay(comparisonRange)})` : ""}
+          </Text>
+          <Text as="span" color="subdued">
+            Stored filter (never resolved dates): {JSON.stringify(dateFilter)}
+          </Text>
+        </BlockStack>
 
         {/* 4-card MetricCard Grid */}
         <Grid columns={{ xs: 1, sm: 2, md: 4 }} gap="base">

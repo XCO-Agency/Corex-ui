@@ -45,8 +45,12 @@ export const DatePicker: ForwardRefExoticComponent<
     }
   };
 
-  const handleApply = (range: DateRangeType) => {
-    onApply?.(range);
+  const handleApply = (range: DateRangeType, meta?: { presetId?: string }) => {
+    if (meta) {
+      onApply?.(range, meta);
+    } else {
+      onApply?.(range);
+    }
     handleRangeChange(range);
   };
 

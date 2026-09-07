@@ -151,7 +151,13 @@ export function DatePickerPanel({
       start: currentRange.start,
       end: currentRange.end || currentRange.start,
     };
-    onApply?.(finalRange);
+    // Only surface a presetId when a preset (not a manual/custom selection) is active,
+    // so consumers can persist the semantic preset id instead of the resolved range.
+    if (activePresetId && activePresetId !== "custom") {
+      onApply?.(finalRange, { presetId: activePresetId });
+    } else {
+      onApply?.(finalRange);
+    }
     onChangeRange?.(finalRange);
   };
 

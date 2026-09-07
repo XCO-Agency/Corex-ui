@@ -108,7 +108,10 @@ export function MetricsDashboardAdvancedExample() {
         <Collapsible
           expanded={!!expandedId}
           separator
-          content={<ActiveTabContent expandedId={expandedId} selectedDate={selectedDate} />}
+          framed
+          content={
+            <ActiveTabContent expandedId={expandedId} selectedDate={selectedDate} />
+          }
         >
           <Grid columns={{ xs: 1, sm: 2, md: 4 }} gap="base">
             {METRICS.map((item) => (

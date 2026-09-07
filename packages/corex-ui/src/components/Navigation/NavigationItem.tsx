@@ -76,7 +76,7 @@ export const NavigationItem = React.forwardRef<HTMLElement, NavigationItemPropsT
         >
           <InlineStack alignItems="center" gap="small">
             {icon && <Icon source={icon} />}
-            <Text truncate as="p">
+            <Text lineClamp={1} as="p">
               {children ?? label}
             </Text>
           </InlineStack>

@@ -37,8 +37,11 @@ export type DatePickerPropsType = NativeDatePickerProps & {
 
   /**
    * Callback fired when user clicks the "Apply" button.
+   * When the applied range came from a preset (rather than a manual/calendar selection),
+   * `meta.presetId` names it — persist that id instead of the resolved range so relative
+   * presets (e.g. "Last 7 days") stay dynamic across reloads instead of freezing to today's dates.
    */
-  onApply?: (range: DateRangeType) => void;
+  onApply?: (range: DateRangeType, meta?: { presetId?: string }) => void;
 
   /**
    * Callback fired when user clicks the "Cancel" button.
