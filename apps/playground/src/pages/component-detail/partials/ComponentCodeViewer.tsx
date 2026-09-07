@@ -62,6 +62,11 @@ export function ComponentCodeViewer({
 
   const hasMultipleFiles = Boolean(files && files.length > 0);
 
+  const languageLabel =
+    { tsx: "TS", ts: "TS", jsx: "JS", js: "JS", bash: "SH", sh: "SH", markup: "HTML", html: "HTML", json: "JSON" }[
+      language
+    ] ?? language.slice(0, 4).toUpperCase();
+
   return (
     <div
       className={cn(
@@ -84,7 +89,7 @@ export function ComponentCodeViewer({
         <div className="flex h-10 items-center justify-between border-b border-border/70 bg-muted/30 px-4">
           <div className="flex items-center gap-2">
             <span className="inline-flex items-center justify-center rounded bg-zinc-800 dark:bg-zinc-700 px-1.5 py-0.5 font-mono text-[10px] font-bold text-white tracking-wide">
-              TS
+              {languageLabel}
             </span>
             <span className="font-mono text-xs text-foreground/80 font-medium">
               {activeFile.path}

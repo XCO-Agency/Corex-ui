@@ -22,6 +22,12 @@ body {
   min-height: 100vh;
 }
 
+.thumbnail-svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
 @theme inline {
   --font-heading: var(--font-sans);
   --font-sans: "Inter Variable", sans-serif;

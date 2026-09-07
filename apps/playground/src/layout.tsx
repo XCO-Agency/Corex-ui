@@ -27,6 +27,7 @@ export default function Layout({ children }: LayoutPropsType) {
   const currentSlug = match ? match[2] : null;
   const currentEntry = currentSlug ? findEntryBySlug(currentSlug) : null;
   const isBlock = sectionType === "blocks";
+  const isInstallation = location.pathname === "/installation";
 
   return (
     <SidebarProvider>
@@ -40,9 +41,19 @@ export default function Layout({ children }: LayoutPropsType) {
               <BreadcrumbList>
                 <BreadcrumbItem className="hidden sm:block">
                   <BreadcrumbLink render={<Link to="/" />}>
-                    {isBlock ? "Blocks" : "Components"}
+                    {isInstallation ? "Corex UI" : isBlock ? "Blocks" : "Components"}
                   </BreadcrumbLink>
                 </BreadcrumbItem>
+                {isInstallation ? (
+                  <>
+                    <BreadcrumbSeparator className="hidden sm:block" />
+                    <BreadcrumbItem>
+                      <BreadcrumbPage className="font-medium text-foreground text-xs sm:text-sm">
+                        Installation
+                      </BreadcrumbPage>
+                    </BreadcrumbItem>
+                  </>
+                ) : null}
                 {currentEntry ? (
                   <>
                     <BreadcrumbSeparator className="hidden sm:block" />
