@@ -15,3 +15,12 @@ trigger: always_on
    - Types must always use `Type` as suffix (e.g., `MetricItemType`).
    - Split complex layouts into `partials/` and `examples/`.
    - Ensure all blocks are copy-pasteable or CLI-installable into any standard Shopify app without external CSS dependencies.
+
+3. **Component Prop Verification**:
+   - Never guess or assume props from Shopify Polaris or other libraries. Always inspect the exact TypeScript prop definitions in `packages/corex-ui/src/components/**` before using any `@xco-agency/corex-ui` component.
+
+4. **Polaris Spacing Tokens**:
+   - Always use modern Polaris spacing tokens (`"none"`, `"small-500"`, `"small-400"`, `"small-300"`, `"small-200"`, `"small-100"`, `"base"`, `"large-100"`, `"large-200"`, `"large-300"`, `"large-400"`, `"large-500"`) for all `gap` and `padding` props.
+   - Never use legacy numeric spacing tokens (`"100"`, `"200"`, `"300"`, `"400"`, etc.).
+
+

@@ -32,7 +32,7 @@ const TONE_STYLES: Record<IconTileToneType, { backgroundColor: string; color: st
       color: "#059669",
     },
     neutral: {
-      backgroundColor: "#f5f8f7",
+      backgroundColor: "#ededed",
       color: "#059669",
     },
     subdued: {
@@ -54,7 +54,7 @@ const TONE_STYLES: Record<IconTileToneType, { backgroundColor: string; color: st
   };
 
 const SIZE_STYLES: Record<IconTileSizeType, { width: string; height: string }> = {
-  sm: { width: "2rem", height: "2rem" },
+  sm: { width: "1.3rem", height: "1.3rem" },
   md: { width: "2.5rem", height: "2.5rem" },
   lg: { width: "2.75rem", height: "2.75rem" },
 };

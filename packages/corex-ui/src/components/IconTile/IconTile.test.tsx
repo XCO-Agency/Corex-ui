@@ -39,7 +39,7 @@ describe("IconTile", () => {
         Icon
       </IconTile>,
     );
-    expect(tile.style.width).toBe("2rem");
+    expect(tile.style.width).toBe("1.3rem");
     expect(tile.style.borderRadius).toBe("0px");
   });
 });

@@ -22,7 +22,7 @@ export type CardPropsType = PolarisPropsType<"s-section"> & {
   icon?: IconType;
   description?: ReactNode;
   tooltip?: ReactNode;
-  actions?: CardActionType[];
+  actions?: ReactNode;
   /** Primary action in the card footer. */
   primaryFooterAction?: CardActionType;
   /** Secondary actions in the card footer. */

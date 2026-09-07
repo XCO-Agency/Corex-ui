@@ -1,33 +1,50 @@
-import type { ReactNode } from "react";
-import { PolarisPropsType } from "../../types/common";
+import type {
+  CSSProperties,
+  ForwardRefExoticComponent,
+  HTMLAttributes,
+  ReactNode,
+  RefAttributes,
+} from "react";
 
-type NativePopoverProps = PolarisPropsType<"s-popover">;
+export type PopoverContextType = {
+  popoverId: string;
+};
 
-export type PopoverPropsType = NativePopoverProps & {
-  // /** The unique id of the popover, targeted by button's `commandFor` attribute. */
-  // id?: string;
-  // /** Content to display inside the popover. */
-  // /** Block dimension size. */
-  // /** Inline dimension size. */
-  // inlineSize?: string;
-  // /** Max block size. */
-  // maxBlockSize?: string;
-  // /** Max inline size. */
-  // maxInlineSize?: string;
-  // /** Min block size. */
-  // minBlockSize?: string;
-  // /** Min inline size. */
-  // minInlineSize?: string;
-  // /** Event triggered when popover starts hiding. */
-  // onHide?: (event: Event) => void;
-  // /** Event triggered when popover starts showing. */
-  // onShow?: (event: Event) => void;
-  // /** Event triggered after popover is hidden. */
-  // onAfterHide?: (event: Event) => void;
-  // /** Event triggered after popover is shown. */
-  // onAfterShow?: (event: Event) => void;
-  // /** Event triggered when popover toggles. */
-  // onToggle?: (event: Event) => void;
-  // /** Event triggered after popover toggle completes. */
-  // onAfterToggle?: (event: Event) => void;
+export type PopoverPropsType = {
+  /** Custom ID for the popover element. Auto-generated if omitted. */
+  id?: string;
+  children?: ReactNode;
+};
+
+export type PopoverTriggerPropsType = {
+  children: ReactNode;
+};
+
+export type PopoverContentPropsType = {
+  children?: ReactNode;
+  id?: string;
+  blockSize?: string | number;
+  inlineSize?: string | number;
+  maxBlockSize?: string | number;
+  maxInlineSize?: string | number;
+  minBlockSize?: string | number;
+  minInlineSize?: string | number;
+  onHide?: (event?: any) => void;
+  onShow?: (event?: any) => void;
+  onAfterHide?: (event?: any) => void;
+  onAfterShow?: (event?: any) => void;
+  onToggle?: (event?: any) => void;
+  onAfterToggle?: (event?: any) => void;
+  [key: string]: any;
+};
+
+export type PopoverComponentType = ForwardRefExoticComponent<
+  PopoverPropsType & RefAttributes<HTMLElement>
+> & {
+  Trigger: ForwardRefExoticComponent<
+    PopoverTriggerPropsType & RefAttributes<HTMLElement>
+  >;
+  Content: ForwardRefExoticComponent<
+    PopoverContentPropsType & RefAttributes<HTMLElement>
+  >;
 };

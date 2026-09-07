@@ -45,24 +45,24 @@ export type PolarisSpacingType = PaddingKeywordType;
 
 /** @deprecated Kept for backward compatibility. Use `PolarisSpacingType` values such as `small-200` or `base`. */
 export type LegacySpacingType =
-  | "0"
-  | "025"
-  | "050"
-  | "100"
-  | "150"
-  | "200"
-  | "300"
-  | "400"
-  | "500"
-  | "600"
-  | "800"
-  | "1000"
-  | "1200"
-  | "1600"
-  | "2000"
-  | "2400"
-  | "2800"
-  | "3200";
+  | /** @deprecated Use "none" */ "0"
+  | /** @deprecated Use "small-500" */ "025"
+  | /** @deprecated Use "small-400" */ "050"
+  | /** @deprecated Use "small-300" */ "100"
+  | /** @deprecated Use "small-200" */ "150"
+  | /** @deprecated Use "small-100" */ "200"
+  | /** @deprecated Use "small" or "small-100" */ "300"
+  | /** @deprecated Use "base" */ "400"
+  | /** @deprecated Use "large-100" */ "500"
+  | /** @deprecated Use "large-200" */ "600"
+  | /** @deprecated Use "large-300" */ "800"
+  | /** @deprecated Use "large-400" */ "1000"
+  | /** @deprecated Use "large-500" */ "1200"
+  | /** @deprecated Use Polaris token */ "1600"
+  | /** @deprecated Use Polaris token */ "2000"
+  | /** @deprecated Use Polaris token */ "2400"
+  | /** @deprecated Use Polaris token */ "2800"
+  | /** @deprecated Use Polaris token */ "3200";
 
 /** All accepted single-spacing token inputs. */
 export type SpacingTokenType = PolarisSpacingType | LegacySpacingType;

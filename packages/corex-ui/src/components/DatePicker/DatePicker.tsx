@@ -78,9 +78,9 @@ export const DatePicker: ForwardRefExoticComponent<
     );
   }
   return (
-    <>
+    <Popover id={popoverId}>
       {effectiveTrigger}
-      <Popover id={popoverId} ref={ref} maxBlockSize="none" {...rest}>
+      <Popover.Content ref={ref} maxBlockSize="none" {...rest}>
         <DatePickerPanel
           id={popoverId}
           selected={selected}
@@ -90,7 +90,7 @@ export const DatePicker: ForwardRefExoticComponent<
           onCancel={handleCancel}
           onChangeRange={handleRangeChange}
         />
-      </Popover>
-    </>
+      </Popover.Content>
+    </Popover>
   );
 });

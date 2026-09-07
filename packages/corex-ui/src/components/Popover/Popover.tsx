@@ -1,26 +1,85 @@
 import {
+  cloneElement,
+  createContext,
   forwardRef,
-  type ForwardRefExoticComponent,
-  type RefAttributes,
+  isValidElement,
+  useContext,
+  useId,
   type ReactElement,
 } from "react";
 import { createWebComponent } from "../../core/createWebComponent";
-import type { PopoverPropsType } from "./Popover.types";
+import type {
+  PopoverComponentType,
+  PopoverContentPropsType,
+  PopoverContextType,
+  PopoverPropsType,
+  PopoverTriggerPropsType,
+} from "./Popover.types";
 
-const SPopover = createWebComponent<HTMLElement>("s-popover");
+const SPopover = createWebComponent<HTMLElement>("s-popover", {
+  events: { onClick: "click" },
+});
+
+const PopoverContext = createContext<PopoverContextType | null>(null);
+
+export function usePopoverContext(): PopoverContextType {
+  const ctx = useContext(PopoverContext);
+  if (!ctx) {
+    throw new Error("Popover compound components must be used within a <Popover />");
+  }
+  return ctx;
+}
 
 /**
- * Wrapper over `<s-popover>`. Pair with an activator `Button` using `commandFor={popoverId}`.
+ * Trigger component for Popover. Injects `commandFor` onto child activator (e.g. Button).
  */
-export const Popover: ForwardRefExoticComponent<
-  PopoverPropsType & RefAttributes<HTMLElement>
-> = forwardRef<HTMLElement, PopoverPropsType>(function Popover(
-  { children, ...rest },
-  ref,
-): ReactElement {
+export const PopoverTrigger = forwardRef<HTMLElement, PopoverTriggerPropsType>(
+  function PopoverTrigger({ children, ...props }, ref) {
+    const { popoverId } = usePopoverContext();
+
+    if (isValidElement(children)) {
+      return cloneElement(children as ReactElement<any>, {
+        commandFor: popoverId,
+        ref: (children as any).ref ?? ref,
+        ...props,
+      });
+    }
+
+    return null;
+  },
+);
+PopoverTrigger.displayName = "PopoverTrigger";
+
+/**
+ * Content container for Popover. Renders `<s-popover>` bound to the Trigger ID.
+ */
+export const PopoverContent = forwardRef<HTMLElement, PopoverContentPropsType>(
+  function PopoverContent({ children, id, ...props }, ref) {
+    const { popoverId } = usePopoverContext();
+
+    return (
+      <SPopover ref={ref} id={popoverId} {...props}>
+        {children}
+      </SPopover>
+    );
+  },
+);
+PopoverContent.displayName = "PopoverContent";
+
+/**
+ * Root Popover component providing compound state/ID binding.
+ */
+export const Popover = forwardRef<HTMLElement, PopoverPropsType>(function Popover(
+  { children, id },
+  _ref,
+) {
+  const generatedId = useId();
+  const popoverId = id ?? `corex-popover-${generatedId.replace(/:/g, "")}`;
+
   return (
-    <SPopover ref={ref} {...rest}>
-      {children}
-    </SPopover>
+    <PopoverContext.Provider value={{ popoverId }}>{children}</PopoverContext.Provider>
   );
-});
+}) as unknown as PopoverComponentType;
+
+Popover.Trigger = PopoverTrigger;
+Popover.Content = PopoverContent;

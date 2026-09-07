@@ -22,6 +22,7 @@ export type MetricCardPropsType = {
   id?: string;
   title: string;
   fetching?: boolean;
+  expanded?: boolean;
   value: ReactNode;
   tooltip?: ReactNode;
   icon?: IconType;

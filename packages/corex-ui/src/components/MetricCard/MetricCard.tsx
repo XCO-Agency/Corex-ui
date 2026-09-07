@@ -205,6 +205,7 @@ export function MetricCard({
   sparklineColor,
   sparklineWidth,
   sparklineHeight,
+  expanded,
   fetching,
   onClick,
 }: MetricCardPropsType): JSX.Element {
@@ -266,17 +267,26 @@ export function MetricCard({
   }
 
   return (
-    <Card padding="none">
+    <Box
+      borderRadius="large"
+      padding="none"
+      border={expanded ? "none" : "base"}
+      background={expanded ? "none" : "base"}
+    >
       <Box padding="small-300">
         {onClick && !fetching ? (
-          <Clickable onClick={onClick} borderRadius="base">
+          <Clickable
+            onClick={onClick}
+            background={expanded ? "strong" : "transparent"}
+            borderRadius="base"
+          >
             {innerContent}
           </Clickable>
         ) : (
           innerContent
         )}
       </Box>
-    </Card>
+    </Box>
   );
 }
 

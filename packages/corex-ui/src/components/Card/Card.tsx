@@ -7,6 +7,8 @@ import type { CardPropsType } from "./Card.types";
 import { InlineStack } from "../InlineStack";
 import { BlockStack } from "../BlockStack";
 import { Icon } from "../Icon";
+import { IconTile } from "../IconTile";
+import { Box } from "../Box";
 
 const SSection = createWebComponent<HTMLElement>("s-section", {
   domProps: ["padding", "heading"],
@@ -41,7 +43,8 @@ export const Card = forwardRef<HTMLElement, CardPropsType>(function Card(
     );
   }
 
-  const hasHeader = Boolean(title || (actions && actions.length > 0));
+  const headerTitle = title || heading;
+  const hasHeader = Boolean(headerTitle || actions);
   const hasFooter = Boolean(
     primaryFooterAction || (secondaryFooterActions && secondaryFooterActions.length > 0),
   );
@@ -50,39 +53,37 @@ export const Card = forwardRef<HTMLElement, CardPropsType>(function Card(
     <SSection ref={ref} {...rest}>
       {hasHeader && (
         <InlineStack justifyContent="space-between" alignItems="center" gap="base">
-          <BlockStack gap="050">
-            {(title || heading) && (
-              <InlineStack gap="150" alignItems="center">
-                {icon && <Icon type={icon} size="small" />}
-                <Text tooltip={tooltip} heading>
-                  {title}
-                </Text>
+          <BlockStack gap="small-300">
+            {(headerTitle || icon) && (
+              <InlineStack gap="small" alignItems="center">
+                {icon && (
+                  <IconTile size="sm" tone="neutral">
+                    <Icon type={icon} size="small" />
+                  </IconTile>
+                )}
+                {headerTitle && (
+                  <Text tooltip={tooltip} heading>
+                    {headerTitle}
+                  </Text>
+                )}
               </InlineStack>
             )}
-            {description && <Text color="subdued">{description}</Text>}
           </BlockStack>
 
-          {actions && actions.length > 0 && (
-            <InlineStack gap="small">
-              {actions.map((act, index) => (
-                <Button
-                  key={index}
-                  variant="tertiary"
-                  onClick={act.onAction}
-                  url={act.url}
-                  external={act.external}
-                  disabled={act.disabled}
-                >
-                  {act.content}
-                </Button>
-              ))}
-            </InlineStack>
-          )}
+          {actions && <InlineStack gap="small">{actions}</InlineStack>}
         </InlineStack>
       )}
+      <BlockStack gap="small">
+        {description && (
+          <Box paddingBlock="small-300">
+            <Text color="subdued" as="p">
+              {description}
+            </Text>
+          </Box>
+        )}
 
-      {children}
-
+        {children}
+      </BlockStack>
       {hasFooter && (
         <InlineStack
           justifyContent="safe end"
