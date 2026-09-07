@@ -4,11 +4,10 @@ import type { PolarisPropsType } from "../../types/common";
 type NativeButtonProps = PolarisPropsType<"s-button">;
 
 export type ButtonPropsType = NativeButtonProps & {
-  /** @deprecated Use children instead */
-  content?: ReactNode;
   /** Renders the button as a link to this URL (legacy alias for `href`). */
+  /** @deprecated Use `href`. Kept for legacy-API compatibility. */
   url?: string;
-  /** Opens `url` in a new tab. */
+  /** @deprecated Use `target`. Kept for legacy-API compatibility. */
   external?: boolean;
   /** Sets button type to submit. */
   submit?: boolean;
@@ -24,8 +23,4 @@ export type ButtonPropsType = NativeButtonProps & {
   monochrome?: boolean;
   /** @deprecated Use `inlineSize="fill"`. */
   fullWidth?: boolean;
-  /** Visual pressed state indicator. */
-  pressed?: boolean;
-  className?: string;
-  style?: CSSProperties;
 };

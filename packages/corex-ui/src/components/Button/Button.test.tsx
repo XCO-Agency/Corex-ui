@@ -18,11 +18,6 @@ describe("Button", () => {
     expect(el).toHaveAttribute("target", "_blank");
   });
 
-  it("supports the legacy `content` prop as an alias for children", () => {
-    render(<Button content="Delete" />);
-    expect(screen.getByText("Delete")).toBeInTheDocument();
-  });
-
   it("binds onClick as a native click listener", () => {
     const onClick = vi.fn();
     render(<Button onClick={onClick}>Click me</Button>);

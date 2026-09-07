@@ -1,6 +1,6 @@
 import { createRef } from "react";
-import { describe, expect, it } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { describe, expect, it, vi } from "vitest";
+import { render, screen, act } from "@testing-library/react";
 import { Grid, GridItem } from "./index";
 
 describe("Grid", () => {
@@ -21,7 +21,7 @@ describe("Grid", () => {
     expect(el).toHaveAttribute("grid-template-rows", "auto 1fr");
   });
 
-  it("maps numeric columns prop to repeat(N, minmax(0, 1fr))", () => {
+  it("maps numeric columns prop to space-separated 1fr tracks", () => {
     render(
       <Grid columns={3} data-testid="grid-columns">
         <span>Cols</span>
@@ -29,7 +29,58 @@ describe("Grid", () => {
     );
 
     const el = screen.getByTestId("grid-columns");
-    expect(el).toHaveAttribute("grid-template-columns", "repeat(3, minmax(0, 1fr))");
+    expect(el).toHaveAttribute("grid-template-columns", "1fr 1fr 1fr");
+  });
+
+  it("resolves responsive columns dynamically based on dimension", () => {
+    vi.stubGlobal("innerWidth", 1200);
+    const { rerender } = render(
+      <Grid columns={{ xs: 1, sm: 2, md: 3, lg: 4 }} data-testid="grid-responsive-columns">
+        <span>Responsive</span>
+      </Grid>,
+    );
+
+    const el = screen.getByTestId("grid-responsive-columns");
+    expect(el).toHaveAttribute("grid-template-columns", "1fr 1fr 1fr 1fr");
+
+    act(() => {
+      vi.stubGlobal("innerWidth", 800);
+      window.dispatchEvent(new Event("resize"));
+    });
+
+    rerender(
+      <Grid columns={{ xs: 1, sm: 2, md: 3, lg: 4 }} data-testid="grid-responsive-columns">
+        <span>Responsive</span>
+      </Grid>,
+    );
+
+    expect(el).toHaveAttribute("grid-template-columns", "1fr 1fr 1fr");
+
+    act(() => {
+      vi.stubGlobal("innerWidth", 600);
+      window.dispatchEvent(new Event("resize"));
+    });
+
+    rerender(
+      <Grid columns={{ xs: 1, sm: 2, md: 3, lg: 4 }} data-testid="grid-responsive-columns">
+        <span>Responsive</span>
+      </Grid>,
+    );
+
+    expect(el).toHaveAttribute("grid-template-columns", "1fr 1fr");
+
+    act(() => {
+      vi.stubGlobal("innerWidth", 360);
+      window.dispatchEvent(new Event("resize"));
+    });
+
+    rerender(
+      <Grid columns={{ xs: 1, sm: 2, md: 3, lg: 4 }} data-testid="grid-responsive-columns">
+        <span>Responsive</span>
+      </Grid>,
+    );
+
+    expect(el).toHaveAttribute("grid-template-columns", "1fr");
   });
 
   it("maps legacy gap, rowGap, and columnGap tokens to modern tokens", () => {

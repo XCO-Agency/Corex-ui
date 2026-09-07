@@ -68,8 +68,7 @@ export const Tabs = forwardRef(function Tabs<T extends string | number = string 
 
               const button = (
                 <Button
-                  variant="tertiary"
-                  pressed={isSelected}
+                  variant={isSelected ? "secondary" : "tertiary"}
                   icon={tab.icon}
                   disabled={tab.disabled}
                   accessibilityLabel={tab.accessibilityLabel}

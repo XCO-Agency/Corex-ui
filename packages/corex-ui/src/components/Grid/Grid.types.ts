@@ -1,8 +1,4 @@
-import type {
-  CSSProperties,
-  ForwardRefExoticComponent,
-  RefAttributes,
-} from "react";
+import type { CSSProperties, ForwardRefExoticComponent, RefAttributes } from "react";
 import type {
   BoxPaddingDirectionType,
   BoxPaddingType,
@@ -21,9 +17,23 @@ type NativeGridItemProps = PolarisPropsType<"s-grid-item">;
 export type GridJustifyItemsKeywordType = NonNullable<NativeGridProps["justifyItems"]>;
 export type GridAlignItemsKeywordType = NonNullable<NativeGridProps["alignItems"]>;
 export type GridPlaceItemsKeywordType = NonNullable<NativeGridProps["placeItems"]>;
-export type GridJustifyContentKeywordType = NonNullable<NativeGridProps["justifyContent"]>;
+export type GridJustifyContentKeywordType = NonNullable<
+  NativeGridProps["justifyContent"]
+>;
 export type GridAlignContentKeywordType = NonNullable<NativeGridProps["alignContent"]>;
 export type GridPlaceContentKeywordType = NonNullable<NativeGridProps["placeContent"]>;
+
+export type GridResponsiveType<T> =
+  | T
+  | {
+      xs?: T;
+      sm?: T;
+      md?: T;
+      lg?: T;
+    };
+
+export type GridColumnsType = GridResponsiveType<number | string>;
+export type GridRowsType = GridResponsiveType<number | string>;
 
 export type GridPropsType = Omit<
   NativeGridProps,
@@ -51,15 +61,17 @@ export type GridPropsType = Omit<
      * Shorthand / convenience alias for columns.
      * If a number `n` is provided, maps to `repeat(${n}, minmax(0, 1fr))`.
      * If a string is provided, sets `gridTemplateColumns`.
+     * If an object is provided (e.g. `{ xs: 1, sm: 2, md: 4 }`), maps to responsive container queries.
      */
-    columns?: ResponsivePropType<number | string>;
+    columns?: GridColumnsType;
 
     /**
      * Shorthand / convenience alias for rows.
      * If a number `n` is provided, maps to `repeat(${n}, minmax(0, 1fr))`.
      * If a string is provided, sets `gridTemplateRows`.
+     * If an object is provided (e.g. `{ xs: 1, sm: 2, md: 4 }`), maps to responsive container queries.
      */
-    rows?: ResponsivePropType<number | string>;
+    rows?: GridRowsType;
 
     /**
      * Named grid areas specification.

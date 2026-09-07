@@ -14,7 +14,7 @@ describe("Tabs", () => {
         <span>Panel content</span>
       </Tabs>,
     );
-    expect(screen.getByText("All")).toHaveAttribute("pressed");
+    expect(screen.getByText("All")).toHaveAttribute("variant", "secondary");
     expect(screen.getByText("Panel content")).toBeInTheDocument();
   });
 
@@ -31,7 +31,7 @@ describe("Tabs", () => {
     const onTabChange = vi.fn();
     render(<Tabs tabs={tabs} selectedTab="drafts" onTabChange={onTabChange} />);
 
-    expect(screen.getByText("Drafts")).toHaveAttribute("pressed");
+    expect(screen.getByText("Drafts")).toHaveAttribute("variant", "secondary");
 
     screen.getByText("All").dispatchEvent(new MouseEvent("click", { bubbles: true }));
     expect(onTabChange).toHaveBeenCalledWith("all");

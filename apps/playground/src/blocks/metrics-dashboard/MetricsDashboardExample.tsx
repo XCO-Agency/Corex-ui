@@ -1,6 +1,6 @@
 import * as React from "react";
 import { MetricsPeriodComparison } from "./MetricsPeriodComparison";
-import { MetricCard, DatePicker, BlockStack, Box, Grid } from "@xco-agency/corex-ui";
+import { MetricCard, DatePicker, BlockStack, Grid, Page } from "@xco-agency/corex-ui";
 import type { MetricCardPropsType, DateRangeType, ToneType } from "@xco-agency/corex-ui";
 
 export type MetricItemType = Omit<MetricCardPropsType, "onClick"> & {
@@ -73,18 +73,12 @@ export function MetricsDashboardExample() {
   });
 
   return (
-    <Box
-      background="surface"
-      borderRadius="base"
-      borderWidth="050"
-      borderColor="subdued"
-      padding="400"
-    >
+    <Page heading="Metrics dashboard">
       <BlockStack gap="400">
-        <DatePicker selected={selectedDate} onApply={setSelectedDate} />
+        <DatePicker selected={selectedDate} presets onApply={setSelectedDate} />
 
         {/* 4-card MetricCard Grid */}
-        <Grid columns={4} gap="base">
+        <Grid columns={{ xs: 1, sm: 2, md: 4 }} gap="base">
           {METRICS.map((item) => (
             <MetricCard
               key={item.id}
@@ -114,6 +108,6 @@ export function MetricsDashboardExample() {
           metrics={METRICS}
         />
       </BlockStack>
-    </Box>
+    </Page>
   );
 }

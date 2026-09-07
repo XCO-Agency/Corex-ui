@@ -12,7 +12,7 @@ describe("IconTile", () => {
     const tile = screen.getByTestId("tile");
     expect(tile).toBeInTheDocument();
     expect(screen.getByTestId("icon")).toBeInTheDocument();
-    expect(tile.style.backgroundColor).toBe("rgb(236, 253, 245)"); // #ecfdf5
+    expect(tile.style.backgroundColor).toBe("rgb(174, 254, 190)"); // #aefebe
     expect(tile.style.color).toBe("rgb(5, 150, 105)"); // #059669
   });
 

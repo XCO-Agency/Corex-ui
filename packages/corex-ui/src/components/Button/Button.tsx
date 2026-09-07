@@ -15,7 +15,6 @@ const SButton = createWebComponent<HTMLElement, { onClick: "click" }>("s-button"
 export const Button = forwardRef<HTMLElement, ButtonPropsType>(function Button(
   {
     children,
-    content,
     primary,
     destructive,
     plain,
@@ -30,10 +29,6 @@ export const Button = forwardRef<HTMLElement, ButtonPropsType>(function Button(
     type,
     accessibilityLabel,
     fullWidth,
-    pressed,
-    command,
-    commandFor,
-    interestFor,
     ...rest
   },
   ref,
@@ -45,14 +40,7 @@ export const Button = forwardRef<HTMLElement, ButtonPropsType>(function Button(
   const resolvedType = type ?? (submit ? "submit" : undefined);
   const resolvedHref = href ?? url;
   const resolvedTarget = target ?? (external ? "_blank" : undefined);
-  const resolvedRel = external ? "noopener noreferrer" : undefined;
-
-  if (pressed !== undefined) {
-    devWarning(
-      "Button",
-      "`pressed` has no confirmed equivalent on the Polaris web component `s-button`; verify against your installed polaris-1.js before relying on it.",
-    );
-  }
+  const resolvedRel = external || target == "_blank" ? "noopener noreferrer" : undefined;
 
   return (
     <SButton
@@ -63,17 +51,15 @@ export const Button = forwardRef<HTMLElement, ButtonPropsType>(function Button(
       href={resolvedHref}
       target={resolvedTarget}
       rel={resolvedRel}
+
       accessibilityLabel={
-        accessibilityLabel ?? (typeof content === "string" ? content : undefined)
+        accessibilityLabel ??
+        (typeof children === "string" ? children : `Action  ${resolvedVariant}`)
       }
       inlineSize={rest.inlineSize ?? (fullWidth ? "fill" : undefined)}
-      pressed={pressed}
-      command={command}
-      commandFor={commandFor}
-      interestFor={interestFor}
       {...rest}
     >
-      {children ?? content}
+      {children}
     </SButton>
   );
 });

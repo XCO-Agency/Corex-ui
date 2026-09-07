@@ -1,5 +1,5 @@
 import { forwardRef, type ForwardRefExoticComponent, type RefAttributes } from "react";
-import type { CSSProperties } from "react";
+import type { CSSProperties, Ref } from "react";
 import { createWebComponent } from "../../core/createWebComponent";
 import {
   mapLegacyBackground,
@@ -8,6 +8,12 @@ import {
   mapLegacyBorderWidth,
   mapLegacySpacing,
 } from "../../core/legacySpacing";
+import {
+  useDimension,
+  resolveResponsiveValue,
+  type BreakpointType,
+  type ResponsivePropType,
+} from "../../hooks/useDimension";
 import { BOX_DOM_PROPS } from "../Box";
 import type { GridComponentType, GridItemPropsType, GridPropsType } from "./Grid.types";
 
@@ -32,31 +38,104 @@ const SGridItem = createWebComponent<HTMLElement>("s-grid-item", {
   domProps: [...BOX_DOM_PROPS, "gridColumn", "gridRow"],
 });
 
+function formatTrackValue(val: unknown): string {
+  if (typeof val === "number") {
+    if (val <= 0) return "1fr";
+    return Array.from({ length: val }, () => "1fr").join(" ");
+  }
+  if (typeof val === "string") {
+    const trimmed = val.trim();
+    if (!isNaN(Number(trimmed)) && trimmed !== "") {
+      const num = Number(trimmed);
+      if (num <= 0) return "1fr";
+      return Array.from({ length: num }, () => "1fr").join(" ");
+    }
+    return trimmed;
+  }
+  return String(val);
+}
+
+function resolveGridTrack(
+  templateTrack?: unknown,
+  trackProp?: unknown,
+  breakpoint: BreakpointType = "lg",
+): string | undefined {
+  if (templateTrack !== undefined && templateTrack !== null) {
+    if (typeof templateTrack === "object") {
+      const resolved = resolveResponsiveValue(
+        templateTrack as ResponsivePropType<string | number>,
+        breakpoint,
+      );
+      return resolved !== undefined ? formatTrackValue(resolved) : undefined;
+    }
+    return String(templateTrack);
+  }
+
+  if (trackProp === undefined || trackProp === null) return undefined;
+
+  if (typeof trackProp === "object") {
+    const resolved = resolveResponsiveValue(
+      trackProp as ResponsivePropType<string | number>,
+      breakpoint,
+    );
+    return resolved !== undefined ? formatTrackValue(resolved) : undefined;
+  }
+
+  return formatTrackValue(trackProp);
+}
+
 function resolveGridColumns(
   gridTemplateColumns?: unknown,
   columns?: unknown,
+  breakpoint: BreakpointType = "lg",
 ): string | undefined {
-  if (gridTemplateColumns) return String(gridTemplateColumns);
-  if (columns === undefined || columns === null) return undefined;
-  if (typeof columns === "number") return `repeat(${columns}, minmax(0, 1fr))`;
-  return String(columns);
+  return resolveGridTrack(gridTemplateColumns, columns, breakpoint);
 }
 
-function resolveGridRows(gridTemplateRows?: unknown, rows?: unknown): string | undefined {
-  if (gridTemplateRows) return String(gridTemplateRows);
-  if (rows === undefined || rows === null) return undefined;
-  if (typeof rows === "number") return `repeat(${rows}, minmax(0, 1fr))`;
-  return String(rows);
+function resolveGridRows(
+  gridTemplateRows?: unknown,
+  rows?: unknown,
+  breakpoint: BreakpointType = "lg",
+): string | undefined {
+  return resolveGridTrack(gridTemplateRows, rows, breakpoint);
 }
 
 function resolveGridColumn(
   gridColumn?: unknown,
   columnSpan?: unknown,
   column?: unknown,
+  breakpoint: BreakpointType = "lg",
 ): string | undefined {
-  if (gridColumn !== undefined && gridColumn !== null) return String(gridColumn);
-  if (columnSpan !== undefined && columnSpan !== null) return `span ${columnSpan}`;
-  if (column !== undefined && column !== null) return String(column);
+  if (gridColumn !== undefined && gridColumn !== null) {
+    if (typeof gridColumn === "object") {
+      const resolved = resolveResponsiveValue(
+        gridColumn as ResponsivePropType<string | number>,
+        breakpoint,
+      );
+      return resolved !== undefined ? String(resolved) : undefined;
+    }
+    return String(gridColumn);
+  }
+  if (columnSpan !== undefined && columnSpan !== null) {
+    if (typeof columnSpan === "object") {
+      const resolved = resolveResponsiveValue(
+        columnSpan as ResponsivePropType<string | number>,
+        breakpoint,
+      );
+      return resolved !== undefined ? `span ${resolved}` : undefined;
+    }
+    return `span ${columnSpan}`;
+  }
+  if (column !== undefined && column !== null) {
+    if (typeof column === "object") {
+      const resolved = resolveResponsiveValue(
+        column as ResponsivePropType<string | number>,
+        breakpoint,
+      );
+      return resolved !== undefined ? String(resolved) : undefined;
+    }
+    return String(column);
+  }
   return undefined;
 }
 
@@ -64,11 +143,51 @@ function resolveGridRow(
   gridRow?: unknown,
   rowSpan?: unknown,
   row?: unknown,
+  breakpoint: BreakpointType = "lg",
 ): string | undefined {
-  if (gridRow !== undefined && gridRow !== null) return String(gridRow);
-  if (rowSpan !== undefined && rowSpan !== null) return `span ${rowSpan}`;
-  if (row !== undefined && row !== null) return String(row);
+  if (gridRow !== undefined && gridRow !== null) {
+    if (typeof gridRow === "object") {
+      const resolved = resolveResponsiveValue(
+        gridRow as ResponsivePropType<string | number>,
+        breakpoint,
+      );
+      return resolved !== undefined ? String(resolved) : undefined;
+    }
+    return String(gridRow);
+  }
+  if (rowSpan !== undefined && rowSpan !== null) {
+    if (typeof rowSpan === "object") {
+      const resolved = resolveResponsiveValue(
+        rowSpan as ResponsivePropType<string | number>,
+        breakpoint,
+      );
+      return resolved !== undefined ? `span ${resolved}` : undefined;
+    }
+    return `span ${rowSpan}`;
+  }
+  if (row !== undefined && row !== null) {
+    if (typeof row === "object") {
+      const resolved = resolveResponsiveValue(
+        row as ResponsivePropType<string | number>,
+        breakpoint,
+      );
+      return resolved !== undefined ? String(resolved) : undefined;
+    }
+    return String(row);
+  }
   return undefined;
+}
+
+function mergeRefs<T>(...refs: (Ref<T> | undefined)[]) {
+  return (node: T) => {
+    for (const ref of refs) {
+      if (typeof ref === "function") {
+        ref(node);
+      } else if (ref && typeof ref === "object" && "current" in ref) {
+        (ref as React.MutableRefObject<T | null>).current = node;
+      }
+    }
+  };
 }
 
 /**
@@ -134,6 +253,8 @@ export const GridItem: ForwardRefExoticComponent<
   },
   ref,
 ) {
+  const { breakpoint } = useDimension();
+
   const resolvedAccessibilityVisibility =
     accessibilityVisibility ?? (visuallyHidden ? "exclusive" : undefined);
 
@@ -157,8 +278,8 @@ export const GridItem: ForwardRefExoticComponent<
   const resolvedPaddingInlineStart = mapLegacySpacing(paddingInlineStart);
   const resolvedPaddingInlineEnd = mapLegacySpacing(paddingInlineEnd);
 
-  const resolvedGridColumn = resolveGridColumn(gridColumn, columnSpan, column);
-  const resolvedGridRow = resolveGridRow(gridRow, rowSpan, row);
+  const resolvedGridColumn = resolveGridColumn(gridColumn, columnSpan, column, breakpoint);
+  const resolvedGridRow = resolveGridRow(gridRow, rowSpan, row, breakpoint);
 
   const legacyStyles: CSSProperties = {};
   if (color) legacyStyles.color = color;
@@ -224,7 +345,7 @@ export const GridItem: ForwardRefExoticComponent<
 /**
  * Grid component wrapping Polaris `<s-grid>`.
  * Extends `BoxElement` props with grid-template sizing, alignments, and spacing gaps.
- * Provides `<Grid.Item>` compound component.
+ * Provides `<Grid.Item>` compound component and dynamic responsive layout via `useDimension`.
  */
 const GridRoot = forwardRef<HTMLElement, GridPropsType>(function Grid(
   {
@@ -288,15 +409,18 @@ const GridRoot = forwardRef<HTMLElement, GridPropsType>(function Grid(
     areas,
     ...rest
   },
-  ref,
+  forwardedRef,
 ) {
+  const { breakpoint, ref: measureRef } = useDimension();
+  const mergedRef = forwardedRef ? mergeRefs(forwardedRef, measureRef) : measureRef;
+
   const resolvedAccessibilityVisibility =
     accessibilityVisibility ?? (visuallyHidden ? "exclusive" : undefined);
 
   const resolvedBlockSize = blockSize ?? height;
   const resolvedMinBlockSize = minBlockSize ?? minHeight;
   const resolvedMaxBlockSize = maxBlockSize ?? maxHeight;
-  const resolvedInlineSize = inlineSize ?? width;
+  const resolvedInlineSize = inlineSize ?? width ?? "100%";
   const resolvedMinInlineSize = minInlineSize ?? minWidth;
   const resolvedMaxInlineSize = maxInlineSize ?? maxWidth;
 
@@ -313,8 +437,8 @@ const GridRoot = forwardRef<HTMLElement, GridPropsType>(function Grid(
   const resolvedPaddingInlineStart = mapLegacySpacing(paddingInlineStart);
   const resolvedPaddingInlineEnd = mapLegacySpacing(paddingInlineEnd);
 
-  const resolvedColumns = resolveGridColumns(gridTemplateColumns, columns);
-  const resolvedRows = resolveGridRows(gridTemplateRows, rows);
+  const resolvedColumns = resolveGridColumns(gridTemplateColumns, columns, breakpoint);
+  const resolvedRows = resolveGridRows(gridTemplateRows, rows, breakpoint);
   const resolvedGap = mapLegacySpacing(gap);
   const resolvedRowGap = mapLegacySpacing(rowGap);
   const resolvedColumnGap = mapLegacySpacing(columnGap);
@@ -350,7 +474,7 @@ const GridRoot = forwardRef<HTMLElement, GridPropsType>(function Grid(
 
   return (
     <SGrid
-      ref={ref}
+      ref={mergedRef}
       blockSize={resolvedBlockSize}
       minBlockSize={resolvedMinBlockSize}
       maxBlockSize={resolvedMaxBlockSize}

@@ -1,7 +1,7 @@
 import { forwardRef } from "react";
 import { createWebComponent } from "../../core/createWebComponent";
 import type { BadgePropsType } from "./Badge.types";
-import type { ToneType } from "../../types/common";
+import type { IconType, ToneType } from "../../types/common";
 
 const SBadge = createWebComponent<HTMLElement>("s-badge");
 
@@ -10,7 +10,7 @@ const SBadge = createWebComponent<HTMLElement>("s-badge");
  * Translates legacy `status` values onto modern `tone` attributes while accepting `tone` directly.
  */
 export const Badge = forwardRef<HTMLElement, BadgePropsType>(function Badge(
-  { children, tone, status, color, icon, ...rest },
+  { children, tone, status, color, icon, progress, ...rest },
   ref,
 ) {
   const resolvedTone =
@@ -21,8 +21,21 @@ export const Badge = forwardRef<HTMLElement, BadgePropsType>(function Badge(
         ? "info"
         : (status as ToneType | undefined));
 
+  const resolveIcon = (): IconType => {
+    if (progress === "incomplete") {
+      return "incomplete";
+    }
+    if (progress === "partiallyComplete") {
+      return "in-progress";
+    }
+    if (progress === "complete") {
+      return "enabled";
+    }
+    return icon;
+  };
+
   return (
-    <SBadge ref={ref} tone={resolvedTone} color={color} icon={icon} {...rest}>
+    <SBadge ref={ref} tone={resolvedTone} color={color} icon={resolveIcon()} {...rest}>
       {children}
     </SBadge>
   );
