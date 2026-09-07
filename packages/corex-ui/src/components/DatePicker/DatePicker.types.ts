@@ -11,6 +11,8 @@ export type DatePresetItemType = {
   label: string;
   range?: DateRangeType | (() => DateRangeType);
   children?: DatePresetItemType[];
+  /** Renders a divider immediately before this item in its list. */
+  divider?: boolean;
 };
 
 export type NativeDatePickerProps = PolarisPropsType<"s-date-picker">;
@@ -67,6 +69,15 @@ export type DatePickerPropsType = NativeDatePickerProps & {
 
   /** Whether range selection is allowed (default: true). */
   allowRange?: boolean;
+
+  /** Earliest selectable date (inclusive), as an ISO date string (`"2026-01-01"`). Unset by default. */
+  minDate?: string;
+
+  /**
+   * Latest selectable date (inclusive), as an ISO date string (`"2026-12-31"`).
+   * Defaults to today, disabling future dates. Pass an explicit future date to allow picking beyond today.
+   */
+  maxDate?: string;
 
   disabled?: boolean;
   id?: string;

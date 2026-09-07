@@ -8,7 +8,7 @@ import type {
 import { DatePickerPresets } from "./DatePickerPresets";
 import { DatePickerManualInputs } from "./DatePickerManualInputs";
 import { DatePickerCalendar } from "./DatePickerCalendar";
-import { normalizeDateRange } from "./datePickerUtils";
+import { normalizeDateRange, toISODateString } from "./datePickerUtils";
 import { Button } from "../Button";
 import { Divider } from "../Divider";
 import { InlineStack } from "../InlineStack";
@@ -16,7 +16,7 @@ import { BlockStack } from "../BlockStack";
 
 export type DatePickerPanelPropsType = Pick<
   DatePickerPropsType,
-  "selected" | "defaultValue" | "presets" | "onApply" | "onCancel"
+  "selected" | "defaultValue" | "presets" | "onApply" | "onCancel" | "minDate" | "maxDate"
 > & {
   onChangeRange?: (range: DateRangeType) => void;
   id: string;
@@ -29,10 +29,14 @@ export function DatePickerPanel({
   id,
   inline,
   presets = true,
+  minDate,
+  maxDate,
   onApply,
   onCancel,
   onChangeRange,
 }: DatePickerPanelPropsType) {
+  // Requirement: future dates are disabled by default (maxDate defaults to today).
+  const effectiveMaxDate = maxDate ?? toISODateString(new Date());
   // Normalize initial range from selected / defaultValue prop
   const getInitialRange = (): DateRangeType => {
     return normalizeDateRange(selected ?? defaultValue);
@@ -94,6 +98,9 @@ export function DatePickerPanel({
   };
 
   const handleDateClick = (clickedDate: string) => {
+    if ((minDate && clickedDate < minDate) || (effectiveMaxDate && clickedDate > effectiveMaxDate)) {
+      return;
+    }
     // If range is already complete or no start, set new start date
     if (
       !currentRange.start ||
@@ -169,6 +176,8 @@ export function DatePickerPanel({
           startDate={currentRange.start}
           endDate={currentRange.end || currentRange.start}
           onChangeRange={handleManualRangeChange}
+          minDate={minDate}
+          maxDate={effectiveMaxDate}
         />
 
         <Divider />
@@ -179,6 +188,8 @@ export function DatePickerPanel({
           endDate={currentRange.end || currentRange.start}
           viewDate={viewDate}
           onSelectDate={handleDateClick}
+          minDate={minDate}
+          maxDate={effectiveMaxDate}
         />
 
         {!inline && (

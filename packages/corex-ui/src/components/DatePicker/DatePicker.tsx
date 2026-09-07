@@ -19,6 +19,8 @@ export const DatePicker: ForwardRefExoticComponent<
     inline = false,
     children,
     activator,
+    minDate,
+    maxDate,
     disabled = false,
     id,
     className,
@@ -70,6 +72,8 @@ export const DatePicker: ForwardRefExoticComponent<
         selected={selected}
         defaultValue={defaultValue}
         presets={presets}
+        minDate={minDate}
+        maxDate={maxDate}
         inline
         onApply={handleApply}
         onCancel={handleCancel}
@@ -86,6 +90,8 @@ export const DatePicker: ForwardRefExoticComponent<
           selected={selected}
           defaultValue={defaultValue}
           presets={presets}
+          minDate={minDate}
+          maxDate={maxDate}
           onApply={handleApply}
           onCancel={handleCancel}
           onChangeRange={handleRangeChange}

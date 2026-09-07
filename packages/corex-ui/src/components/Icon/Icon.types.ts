@@ -15,5 +15,6 @@ export type IconPropsType = Omit<NativeIconProps, "source" | "tone" | "type"> & 
   type?: IconType & string;
   accessibilityLabel?: string;
   id?: string;
+  /** works only on custom icon with source prop. */
   style?: React.CSSProperties;
 };

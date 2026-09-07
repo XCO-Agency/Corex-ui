@@ -30,7 +30,7 @@ export const VARIANT_SIZE_MAP: Record<
   },
   base: {
     fontSize: "0.8125rem",
-    lineHeight: "0.9rem",
+    lineHeight: "1.2rem",
     headingTag: "h3",
     headingWeight: 600,
   },

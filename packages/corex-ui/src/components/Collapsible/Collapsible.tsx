@@ -31,12 +31,10 @@ export const Collapsible: ForwardRefExoticComponent<
     onExpandedChange,
     children,
     content,
-    framed = true,
+    framed = false,
     duration = 240,
     easing = "cubic-bezier(0.2, 0, 0, 1)",
     accessibilityLabel,
-    className,
-    style,
     id,
   },
   ref,
@@ -72,8 +70,7 @@ export const Collapsible: ForwardRefExoticComponent<
 
   const resolvedTarget =
     typeof children === "function" ? children(renderProps) : children;
-  const resolvedContent =
-    typeof content === "function" ? content(renderProps) : content;
+  const resolvedContent = typeof content === "function" ? content(renderProps) : content;
 
   const trackStyles: CSSProperties = {
     display: "grid",
@@ -88,15 +85,19 @@ export const Collapsible: ForwardRefExoticComponent<
       background={framed && isExpanded ? "base" : "transparent"}
       border={framed && isExpanded ? "base" : "none"}
       borderRadius={framed && isExpanded ? "large" : "none"}
-      className={className}
-      style={style}
       accessibilityLabel={accessibilityLabel}
     >
       {resolvedTarget}
 
       {content !== undefined && (
         <div id={contentId} style={trackStyles} aria-hidden={!isExpanded}>
-          <div style={{ overflow: "hidden", minHeight: 0, pointerEvents: isExpanded ? "auto" : "none" }}>
+          <div
+            style={{
+              overflow: "hidden",
+              minHeight: 0,
+              pointerEvents: isExpanded ? "auto" : "none",
+            }}
+          >
             {resolvedContent}
           </div>
         </div>

@@ -8,6 +8,7 @@ import { Box } from "../Box";
 import { Divider } from "../Divider";
 import { Icon } from "../Icon";
 import { InlineStack } from "../InlineStack";
+import { Text } from "../Text";
 
 export type DatePickerPresetsPropsType = {
   presets?: boolean | DatePresetItemType[];
@@ -38,6 +39,7 @@ export function DatePickerPresets({
       list.push({
         id: "custom",
         label: "Custom range",
+        divider: true,
       });
     }
 
@@ -77,17 +79,17 @@ export function DatePickerPresets({
   };
 
   return (
-    <Box background="base" overflow="hidden" inlineSize="180px" className={className}>
+    <Box background="base" overflow="hidden" inlineSize="200px" className={className}>
       <div style={trackStyle}>
         {/* Main Presets Pane */}
         <div style={paneStyle}>
           {presetList.map((item) => {
             const isSelected = activePresetId === item.id;
-            const isCustom = item.id === "custom";
+            const hasChildren = Boolean(item.children && item.children.length > 0);
 
             return (
               <Fragment key={item.id}>
-                {isCustom && <Divider />}
+                {item.divider && <Divider />}
                 <Clickable
                   padding="small-400"
                   borderRadius="base"
@@ -95,7 +97,10 @@ export function DatePickerPresets({
                   type="button"
                   background={isSelected ? "strong" : "transparent"}
                 >
-                  {item.label}
+                  <InlineStack alignItems="center" justifyContent="space-between" gap="small-500">
+                    <span>{item.label}</span>
+                    {hasChildren && <Icon type="chevron-right" />}
+                  </InlineStack>
                 </Clickable>
               </Fragment>
             );
@@ -104,7 +109,7 @@ export function DatePickerPresets({
 
         {/* Nested Submenu Pane */}
         <div style={paneStyle}>
-          {/* Back button with arrow */}
+          {/* Back button with arrow + submenu title */}
           <Clickable
             padding="small-400 small-500"
             borderRadius="base"
@@ -112,6 +117,9 @@ export function DatePickerPresets({
           >
             <InlineStack alignItems="center" justifyContent="start" gap="small-500">
               <Icon type="arrow-left" />
+              <Text variant="small" heading>
+                {activeSubmenu?.label}
+              </Text>
             </InlineStack>
           </Clickable>
 
@@ -119,16 +127,18 @@ export function DatePickerPresets({
           {activeSubmenu?.children?.map((child) => {
             const isSelected = activePresetId === child.id;
             return (
-              <Clickable
-                key={child.id}
-                padding="small-400"
-                borderRadius="base"
-                onClick={(e) => handlePresetClick(child, e)}
-                type="button"
-                background={isSelected ? "strong" : "transparent"}
-              >
-                {child.label}
-              </Clickable>
+              <Fragment key={child.id}>
+                {child.divider && <Divider />}
+                <Clickable
+                  padding="small-400"
+                  borderRadius="base"
+                  onClick={(e) => handlePresetClick(child, e)}
+                  type="button"
+                  background={isSelected ? "strong" : "transparent"}
+                >
+                  {child.label}
+                </Clickable>
+              </Fragment>
             );
           })}
         </div>

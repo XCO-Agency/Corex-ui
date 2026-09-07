@@ -196,6 +196,18 @@ export function getMonthTitle(year: number, month: number): string {
   return `${MONTH_NAMES[month]} ${year}`;
 }
 
+function subtractDays(date: Date, days: number): Date {
+  const d = new Date(date);
+  d.setDate(d.getDate() - days);
+  return d;
+}
+
+function subtractMonths(date: Date, months: number): Date {
+  const d = new Date(date);
+  d.setMonth(d.getMonth() - months);
+  return d;
+}
+
 /**
  * Generates default presets based on reference date (defaults to current date).
  */
@@ -227,7 +239,7 @@ export function getDefaultPresets(referenceDate: Date = new Date()): DatePresetI
   const firstOfYear = new Date(ref.getFullYear(), 0, 1);
   const firstOfYearStr = toISODateString(firstOfYear);
 
-  // Last Quarter
+  // Last quarter (previous calendar quarter)
   const lastQuarterStart = new Date(
     ref.getFullYear(),
     (currentQuarter - 1) * 3,
@@ -238,6 +250,18 @@ export function getDefaultPresets(referenceDate: Date = new Date()): DatePresetI
     start: toISODateString(lastQuarterStart),
     end: toISODateString(lastQuarterEnd),
   };
+
+  // Last week (previous calendar week, Monday to Sunday)
+  const lastWeekStart = subtractDays(monday, 7);
+  const lastWeekEnd = subtractDays(monday, 1);
+
+  // Last month (previous calendar month)
+  const lastMonthStart = subtractMonths(firstOfMonth, 1);
+  const lastMonthEnd = subtractDays(firstOfMonth, 1);
+
+  // Last year (previous calendar year)
+  const lastYearStart = new Date(ref.getFullYear() - 1, 0, 1);
+  const lastYearEnd = new Date(ref.getFullYear() - 1, 11, 31);
 
   return [
     {
@@ -251,9 +275,74 @@ export function getDefaultPresets(referenceDate: Date = new Date()): DatePresetI
       range: { start: yesterdayStr, end: yesterdayStr },
     },
     {
-      id: "last_quarter",
-      label: "Last quarter",
-      range: lastQuarterRange,
+      id: "last",
+      label: "Last",
+      divider: true,
+      children: [
+        {
+          id: "last_30_minutes",
+          label: "Last 30 minutes",
+          range: {
+            start: toISODateString(new Date(ref.getTime() - 30 * 60 * 1000)),
+            end: todayStr,
+          },
+        },
+        {
+          id: "last_12_hours",
+          label: "Last 12 hours",
+          range: {
+            start: toISODateString(new Date(ref.getTime() - 12 * 60 * 60 * 1000)),
+            end: todayStr,
+          },
+        },
+        {
+          id: "last_7_days",
+          label: "Last 7 days",
+          divider: true,
+          range: { start: toISODateString(subtractDays(ref, 6)), end: todayStr },
+        },
+        {
+          id: "last_30_days",
+          label: "Last 30 days",
+          range: { start: toISODateString(subtractDays(ref, 29)), end: todayStr },
+        },
+        {
+          id: "last_90_days",
+          label: "Last 90 days",
+          range: { start: toISODateString(subtractDays(ref, 89)), end: todayStr },
+        },
+        {
+          id: "last_365_days",
+          label: "Last 365 days",
+          range: { start: toISODateString(subtractDays(ref, 364)), end: todayStr },
+        },
+        {
+          id: "last_week",
+          label: "Last week",
+          divider: true,
+          range: { start: toISODateString(lastWeekStart), end: toISODateString(lastWeekEnd) },
+        },
+        {
+          id: "last_month",
+          label: "Last month",
+          range: { start: toISODateString(lastMonthStart), end: toISODateString(lastMonthEnd) },
+        },
+        {
+          id: "last_quarter",
+          label: "Last quarter",
+          range: lastQuarterRange,
+        },
+        {
+          id: "last_12_months",
+          label: "Last 12 months",
+          range: { start: toISODateString(subtractMonths(ref, 12)), end: todayStr },
+        },
+        {
+          id: "last_year",
+          label: "Last year",
+          range: { start: toISODateString(lastYearStart), end: toISODateString(lastYearEnd) },
+        },
+      ],
     },
     {
       id: "period_to_date",
@@ -284,6 +373,7 @@ export function getDefaultPresets(referenceDate: Date = new Date()): DatePresetI
     {
       id: "bfcm",
       label: "Black Friday Cyber Monday",
+      divider: true,
       range: {
         start: `${ref.getFullYear()}-11-27`,
         end: `${ref.getFullYear()}-11-30`,
@@ -330,6 +420,7 @@ export function getDefaultPresets(referenceDate: Date = new Date()): DatePresetI
     {
       id: "custom",
       label: "Custom range",
+      divider: true,
     },
   ];
 }

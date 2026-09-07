@@ -34,7 +34,6 @@ export const Icon = forwardRef<HTMLElement, IconPropsType>(function Icon(
       type={type ?? source ?? undefined}
       tone={tone}
       aria-label={accessibilityLabel ?? source}
-      style={style}
       {...rest}
     />
   );

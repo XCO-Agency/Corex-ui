@@ -19,6 +19,10 @@ export type DatePickerCalendarPropsType = {
   endDate: string;
   onSelectDate: (dateStr: string) => void;
   viewDate?: string;
+  /** Earliest selectable date (inclusive), as an ISO date string. */
+  minDate?: string;
+  /** Latest selectable date (inclusive), as an ISO date string. */
+  maxDate?: string;
   className?: string;
 };
 
@@ -29,6 +33,8 @@ export function DatePickerCalendar({
   endDate,
   onSelectDate,
   viewDate,
+  minDate,
+  maxDate,
   className = "",
 }: DatePickerCalendarPropsType) {
   // Determine initial view year/month from viewDate, startDate or current date
@@ -162,6 +168,9 @@ export function DatePickerCalendar({
               isDateInRange(item.dateStr, effectiveStart, effectiveEnd);
 
             const isCurrent = item.isCurrentMonth;
+            const isDisabled = Boolean(
+              (minDate && item.dateStr < minDate) || (maxDate && item.dateStr > maxDate),
+            );
 
             // Background bridge for range selection
             const hasRangeBridge = inRange && isCurrent;
@@ -190,6 +199,7 @@ export function DatePickerCalendar({
                     type="button"
                     onClick={() => onSelectDate(item.dateStr)}
                     variant={isEnd || isStart ? "primary" : "tertiary"}
+                    disabled={isDisabled}
                   >
                     <span
                       style={{

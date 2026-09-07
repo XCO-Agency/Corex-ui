@@ -73,12 +73,6 @@ export type CollapsiblePropsType = {
   /** Accessible label for the root wrapper. */
   accessibilityLabel?: string;
 
-  /** Additional class name for the root wrapper. */
-  className?: string;
-
-  /** Additional inline styles for the root wrapper. */
-  style?: CSSProperties;
-
   /** Id applied to the content region (and used to derive `aria-controls`). */
   id?: string;
 };
