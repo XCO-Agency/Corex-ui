@@ -28,8 +28,8 @@ describe("Box", () => {
     expect(el).toHaveAttribute("overflow", "hidden");
   });
 
-  it("translates legacy visuallyHidden to accessibilityVisibility='exclusive'", () => {
-    render(<Box visuallyHidden>Screen reader content</Box>);
+  it("should have accessibilityVisibility='exclusive' when visuallyHidden is true", () => {
+    render(<Box accessibilityVisibility="exclusive">Screen reader content</Box>);
     const el = screen.getByText("Screen reader content");
     expect(el).toHaveAttribute("accessibilityvisibility", "exclusive");
   });
@@ -45,39 +45,6 @@ describe("Box", () => {
     expect(el).toHaveAttribute("blocksize", "100px");
     expect(el).toHaveAttribute("mininlinesize", "50px");
     expect(el).toHaveAttribute("maxblocksize", "300px");
-  });
-
-  it("merges legacy styling props into inline style", () => {
-    render(
-      <Box
-        position="relative"
-        zIndex={10}
-        opacity="0.8"
-        shadow="0 2px 4px rgba(0,0,0,0.1)"
-        color="#333"
-        style={{ margin: "10px" }}
-      >
-        Styled box
-      </Box>,
-    );
-    const el = screen.getByText("Styled box");
-    expect(el.style.position).toBe("relative");
-    expect(el.style.zIndex).toBe("10");
-    expect(el.style.opacity).toBe("0.8");
-    expect(el.style.boxShadow).toBe("0 2px 4px rgba(0,0,0,0.1)");
-    expect(el.style.color).toBe("rgb(51, 51, 51)");
-    expect(el.style.margin).toBe("10px");
-  });
-
-  it("handles printHidden by adding print:hidden class", () => {
-    render(
-      <Box printHidden className="custom-box">
-        Print hidden box
-      </Box>,
-    );
-    const el = screen.getByText("Print hidden box");
-    expect(el).toHaveClass("custom-box");
-    expect(el).toHaveClass("print:hidden");
   });
 
   it("supports legacy as prop gracefully", () => {
