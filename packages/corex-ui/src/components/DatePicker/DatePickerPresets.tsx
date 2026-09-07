@@ -79,7 +79,7 @@ export function DatePickerPresets({
   };
 
   return (
-    <Box background="base" overflow="hidden" inlineSize="200px" className={className}>
+    <Box background="base" overflow="hidden" inlineSize="200px">
       <div style={trackStyle}>
         {/* Main Presets Pane */}
         <div style={paneStyle}>
@@ -97,7 +97,11 @@ export function DatePickerPresets({
                   type="button"
                   background={isSelected ? "strong" : "transparent"}
                 >
-                  <InlineStack alignItems="center" justifyContent="space-between" gap="small-500">
+                  <InlineStack
+                    alignItems="center"
+                    justifyContent="space-between"
+                    gap="small-500"
+                  >
                     <span>{item.label}</span>
                     {hasChildren && <Icon type="chevron-right" />}
                   </InlineStack>
