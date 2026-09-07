@@ -24,5 +24,7 @@ export type InlineStackPropsType = Omit<
   /** @deprecated Use `alignItems` instead.*/
   blockAlign?: BlockAlignmentType;
   wrap?: boolean;
+  className?: string;
+  style?: import("react").CSSProperties;
   id?: string;
 };

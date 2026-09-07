@@ -34,8 +34,8 @@ export const VARIANT_SIZE_MAP: Record<
     headingWeight: 600,
   },
   large: {
-    fontSize: "1.25rem",
-    lineHeight: "1.75rem",
+    fontSize: "1.125rem",
+    lineHeight: "1.5rem",
     headingTag: "h2",
     headingWeight: 700,
   },
@@ -63,28 +63,54 @@ export const Text = forwardRef<HTMLElement, TextPropsType>(function Text(
 
   if (!children && children !== 0) return null;
   const config = VARIANT_SIZE_MAP[variant] || VARIANT_SIZE_MAP.base;
-  const WrapperTag: ElementType = as || (heading ? config.headingTag : "span");
+  const WrapperTag: ElementType | undefined =
+    as || (heading ? config.headingTag : undefined);
+
+  const textNode = (
+    <SText
+      ref={ref}
+      interestFor={hasTooltip ? (interestFor ?? id) : undefined}
+      className={!WrapperTag ? className : undefined}
+      style={{
+        ...(!WrapperTag ? { margin: 0 } : {}),
+        ...(!WrapperTag && hasTooltip && underline
+          ? { borderBlockEnd: "2px dotted var(--p-color-border-tertiary, #cccccc)" }
+          : {}),
+        ...(!WrapperTag ? { lineHeight: config.lineHeight } : {}),
+        ...(!WrapperTag ? { "--s-global-font-size-26021": config.fontSize } : {}),
+        ...(!WrapperTag && heading
+          ? { "--s-global-font-weight-26021": config.headingWeight }
+          : {}),
+        ...(!WrapperTag ? style : {}),
+      }}
+      {...rest}
+    >
+      {children}
+    </SText>
+  );
 
   return (
     <>
-      <WrapperTag
-        className={className}
-        style={{
-          margin: 0,
-          borderBlockEnd:
-            hasTooltip && underline
-              ? "2px dotted var(--p-color-border-tertiary, #cccccc)"
-              : "none",
-          lineHeight: config.lineHeight,
-          "--s-global-font-weight-26021": heading ? config.headingWeight : "medium",
-          "--s-global-font-size-26021": config.fontSize,
-        }}
-      >
-        <SText ref={ref} interestFor={hasTooltip ? id : interestFor} {...rest}>
-          {children}
-        </SText>
-        <s-text tone="critical" />
-      </WrapperTag>
+      {WrapperTag ? (
+        <WrapperTag
+          className={className}
+          style={{
+            margin: 0,
+            borderBlockEnd:
+              hasTooltip && underline
+                ? "2px dotted var(--p-color-border-tertiary, #cccccc)"
+                : "none",
+            lineHeight: config.lineHeight,
+            "--s-global-font-weight-26021": heading ? config.headingWeight : "medium",
+            "--s-global-font-size-26021": config.fontSize,
+            ...style,
+          }}
+        >
+          {textNode}
+        </WrapperTag>
+      ) : (
+        textNode
+      )}
       {tooltip && <STooltip id={id}>{tooltip}</STooltip>}
     </>
   );

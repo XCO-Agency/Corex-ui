@@ -46,7 +46,7 @@ export function Step6Celebration({
 
   return (
     <Box paddingBlock="large">
-      <BlockStack gap="large" align="center">
+      <BlockStack gap="large" alignItems="center">
         <Box
           padding="large-300"
           border="base"
@@ -90,8 +90,18 @@ export function Step6Celebration({
             </BlockStack>
           </BlockStack>
         </Box>
-        <BlockStack gap="small-200" align="center" inlineSize="100%">
-          <InlineStack gap="small-200" alignItems="center">
+        <BlockStack
+          gap="small-200"
+          alignItems="center"
+          inlineSize="100%"
+          maxInlineSize="460px"
+        >
+          <InlineStack
+            gap="small-200"
+            alignItems="center"
+            justifyContent="space-between"
+            inlineSize="100%"
+          >
             <Button onClick={() => dispatch({ type: "GO_BACK" })}>Back</Button>
             <Button variant="primary" onClick={onGoToDashboard}>
               Go to Revenue Dashboard

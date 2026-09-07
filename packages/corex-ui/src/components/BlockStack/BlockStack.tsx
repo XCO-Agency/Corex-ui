@@ -22,8 +22,8 @@ export const BlockStack: ForwardRefExoticComponent<
     <SStack
       ref={ref}
       gap={mapLegacyGap(gap)}
-      justifyContent={justifyContent ?? (align as any)}
-      alignItems={alignItems ?? (inlineAlign as any)}
+      justifyContent={justifyContent ?? (inlineAlign as any)}
+      alignItems={alignItems ?? (align as any)}
       {...rest}
     >
       {children}

@@ -41,6 +41,7 @@ const STUB_TAGS = [
   "s-button",
   "s-button-group",
   "s-text",
+  "s-paragraph",
   "s-heading",
   "s-badge",
   "s-banner",

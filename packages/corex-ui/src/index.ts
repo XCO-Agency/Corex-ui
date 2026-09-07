@@ -5,6 +5,7 @@
 export * from "./components/Button";
 export * from "./components/ButtonGroup";
 export * from "./components/Text";
+export * from "./components/Paragraph";
 export * from "./components/Badge";
 export * from "./components/Banner";
 export * from "./components/Box";

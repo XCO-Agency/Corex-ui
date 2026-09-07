@@ -55,7 +55,20 @@ export function Step5ShopifyValidation({
 
   return (
     <Box paddingBlock="large">
-      <BlockStack gap="large" align="center">
+      <BlockStack gap="large" alignItems="center">
+        <BlockStack gap="small-100" alignItems="center">
+          <Text
+            heading
+            variant="large"
+            tooltip="Enabling the theme app extension allows the cart drawer and revenue widgets to render seamlessly without modifying liquid code directly."
+          >
+            Activate your theme embed
+          </Text>
+          <Text color="subdued">
+            One click enables Journeva&rsquo;s cart drawer and upsells on your storefront.
+          </Text>
+        </BlockStack>
+
         <Box
           padding="large"
           border="base"
@@ -64,20 +77,7 @@ export function Step5ShopifyValidation({
           inlineSize="100%"
           maxInlineSize="460px"
         >
-          <BlockStack gap="large-100" align="center">
-            <BlockStack gap="small-100" align="center">
-              <Text
-                heading
-                tooltip="Enabling the theme app extension allows the cart drawer and revenue widgets to render seamlessly without modifying liquid code directly."
-              >
-                Activate your theme embed
-              </Text>
-              <Text color="subdued">
-                One click enables Journeva&rsquo;s cart drawer and upsells on your
-                storefront.
-              </Text>
-            </BlockStack>
-
+          <BlockStack gap="large-100" justifyContent="center">
             <BlockStack gap="base" inlineSize="100%">
               <Clickable onClick={openThemeEditor} borderRadius="large">
                 <Box
@@ -88,12 +88,12 @@ export function Step5ShopifyValidation({
                   inlineSize="100%"
                 >
                   <InlineStack
-                    align="space-between"
+                    justifyContent="space-between"
                     alignItems="center"
                     inlineSize="100%"
                   >
                     <BlockStack gap="none">
-                      <Text fontWeight="semibold">Open Theme Editor</Text>
+                      <Text>Open Theme Editor</Text>
                       <Text color="subdued">Opens Shopify in a new tab</Text>
                     </BlockStack>
                     <Icon type="external" tone="neutral" />
@@ -101,7 +101,11 @@ export function Step5ShopifyValidation({
                 </Box>
               </Clickable>
 
-              <InlineStack align="space-between" alignItems="center" inlineSize="100%">
+              <InlineStack
+                justifyContent="space-between"
+                alignItems="center"
+                inlineSize="100%"
+              >
                 <InlineStack gap="small-200" alignItems="center">
                   {state.embedStatus === "active" ? (
                     <Icon type="check-circle-filled" tone="success" />
@@ -130,7 +134,13 @@ export function Step5ShopifyValidation({
           </BlockStack>
         </Box>
 
-        <InlineStack gap="small-200" alignItems="center">
+        <InlineStack
+          gap="small-200"
+          alignItems="center"
+          justifyContent="space-between"
+          inlineSize="100%"
+          maxInlineSize="460px"
+        >
           <Button onClick={() => dispatch({ type: "GO_BACK" })}>Back</Button>
           <Button variant="primary" onClick={() => dispatch({ type: "GO_NEXT" })}>
             Continue

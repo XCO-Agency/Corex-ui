@@ -55,6 +55,7 @@ export function Step3Configuration({ state, dispatch }: Step3ConfigurationPropsT
           </IconTile>
           <Text
             heading
+            variant="large"
             tooltip="Customers will see a dynamic progress bar in the Cart Drawer encouraging them to add more items to earn free shipping."
           >
             One quick detail
@@ -72,7 +73,7 @@ export function Step3Configuration({ state, dispatch }: Step3ConfigurationPropsT
         >
           <BlockStack gap="large-100" alignItems="center" inlineSize="100%">
             <Box inlineSize="100%">
-              <InlineStack gap="small-200" blockAlign="start">
+              <InlineStack gap="small-200" alignItems="start">
                 <Box inlineSize="120px">
                   <Select
                     label="Currency"
@@ -106,16 +107,16 @@ export function Step3Configuration({ state, dispatch }: Step3ConfigurationPropsT
               inlineSize="100%"
             >
               <BlockStack gap="small-100">
-                <InlineStack align="space-between" alignItems="center">
+                <InlineStack justifyContent="space-between" alignItems="center">
                   <Text color="subdued">SAMPLE CART TOTAL</Text>
-                  <Text fontWeight="bold">
+                  <Text heading>
                     {formatCurrency(SAMPLE_CART_TOTAL, state.storeCurrency)}
                   </Text>
                 </InlineStack>
 
                 <ProgressBar progress={percent} size="base" tone="neutral" />
 
-                <Text tone="success" fontWeight="bold">
+                <Text tone="success" heading>
                   {qualifies
                     ? "This cart qualifies for free shipping."
                     : `Add ${formatCurrency(remaining, state.storeCurrency)} more for free shipping.`}

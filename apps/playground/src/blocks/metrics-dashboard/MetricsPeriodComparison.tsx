@@ -57,7 +57,7 @@ export function MetricsPeriodComparison({
                     <Icon type={iconType} tone={tone} />
                   </InlineStack>
 
-                  <InlineStack align="space-between" blockAlign="baseline">
+                  <InlineStack align="space-between" alignItems="baseline">
                     <Text as="span" heading>
                       {m.value}
                     </Text>

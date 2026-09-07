@@ -45,12 +45,14 @@ export function Step4AddTools({ state, dispatch }: Step4AddToolsPropsType) {
 
   return (
     <Box paddingBlock="large">
-      <BlockStack gap="large" align="center">
+      <BlockStack gap="large" alignItems="center">
         <Box inlineSize="100%" maxInlineSize="640px">
-          <BlockStack gap="large-100" align="center">
-            <BlockStack gap="small-100" align="center">
+          <BlockStack gap="large-100" alignItems="center">
+            <BlockStack gap="small-100" alignItems="center">
               <Text
                 heading
+                variant="large"
+
                 tooltip="Enable optional revenue drivers like Volume Discounts, Post-Purchase Upsells, and Checkout Bumps with one click."
               >
                 Add more revenue tools
@@ -100,7 +102,7 @@ export function Step4AddTools({ state, dispatch }: Step4AddToolsPropsType) {
                             }
                           />
                         </InlineStack>
-                        <Text fontWeight="semibold">{tool.name}</Text>
+                        <Text heading>{tool.name}</Text>
                         <Text color="subdued">{tool.description}</Text>
                         <InlineStack
                           align="space-between"
@@ -167,10 +169,10 @@ export function Step4AddTools({ state, dispatch }: Step4AddToolsPropsType) {
                               <InlineStack
                                 gap="base"
                                 alignItems="center"
-                                align="space-between"
+                                justifyContent="space-between"
                               >
                                 <BlockStack gap="none">
-                                  <Text fontWeight="semibold">{preset.label}</Text>
+                                  <Text heading>{preset.label}</Text>
                                   <Text color="subdued">{preset.description}</Text>
                                 </BlockStack>
                                 {isSelected && <Badge tone="success">Selected</Badge>}

@@ -14,6 +14,7 @@ import {
   Icon,
   IconTile,
   Text,
+  Paragraph,
 } from "@xco-agency/corex-ui";
 
 const CORE_ICONS: Record<CoreToolIdType, "cart" | "collection" | "chart-vertical"> = {
@@ -42,8 +43,8 @@ export function Step2Foundation({ state, dispatch }: Step2FoundationPropsType) {
                 heading
                 tooltip={
                   <>
-                    <Text as="p">Core conversion features Cart Drawer</Text>
-                    <Text as="p" tone="info">
+                    <Text>Core conversion features Cart Drawer </Text>
+                    <Text tone="info">
                       Frequently Bought Together, and Realtime Analytics are
                       pre-configured and live out of the box.
                     </Text>
@@ -82,7 +83,7 @@ export function Step2Foundation({ state, dispatch }: Step2FoundationPropsType) {
                           <Icon type={CORE_ICONS[tool.id]} tone="success" />
                         </IconTile>
                         <BlockStack gap="none">
-                          <Text fontWeight="semibold">{tool.name}</Text>
+                          <Text heading>{tool.name}</Text>
                           <Text color="subdued">{tool.description}</Text>
                         </BlockStack>
                       </InlineStack>
