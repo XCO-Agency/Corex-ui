@@ -22,7 +22,6 @@ export type SidebarCategoryItemPropsType = {
   icon: React.ComponentType<{ className?: string }>;
   basePath: "components" | "blocks";
   currentPath: string;
-  isSearching: boolean;
 };
 
 export function SidebarCategoryItem({
@@ -31,7 +30,6 @@ export function SidebarCategoryItem({
   icon: CategoryIcon,
   basePath,
   currentPath,
-  isSearching,
 }: SidebarCategoryItemPropsType) {
   const isCategoryActive = React.useMemo(() => {
     return components.some((c) => currentPath === `/${basePath}/${c.slug}`);
@@ -46,14 +44,10 @@ export function SidebarCategoryItem({
     }
   }, [isCategoryActive]);
 
-  const effectiveOpen = isSearching || isOpen;
+  const effectiveOpen = isOpen;
 
   return (
-    <Collapsible
-      open={effectiveOpen}
-      onOpenChange={setIsOpen}
-      className="group/category"
-    >
+    <Collapsible open={effectiveOpen} onOpenChange={setIsOpen} className="group/category">
       <SidebarMenuItem>
         <CollapsibleTrigger
           render={

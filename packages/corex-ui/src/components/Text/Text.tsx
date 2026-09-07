@@ -4,6 +4,7 @@ import { createWebComponent } from "../../core/createWebComponent";
 import type { TextPropsType } from "./Text.types";
 
 const SText = createWebComponent<HTMLElement>("s-text");
+const SHeading = createWebComponent<HTMLElement>("s-paragraph");
 const STooltip = createWebComponent<HTMLElement>("s-tooltip");
 
 export const VARIANT_SIZE_MAP: Record<
@@ -45,7 +46,6 @@ export const Text = forwardRef<HTMLElement, TextPropsType>(function Text(
   {
     children,
     as,
-    truncate,
     variant = "base",
     heading,
     underline = true,
@@ -53,6 +53,7 @@ export const Text = forwardRef<HTMLElement, TextPropsType>(function Text(
     className,
     tooltip,
     interestFor,
+    lineClamp,
     ...rest
   },
   ref,
@@ -67,14 +68,19 @@ export const Text = forwardRef<HTMLElement, TextPropsType>(function Text(
     as || (heading ? config.headingTag : undefined);
 
   const textNode = (
-    <SText
-      ref={ref}
-      interestFor={hasTooltip ? (interestFor ?? id) : undefined}
-      className={!WrapperTag ? className : undefined}
-
-      {...rest}
-    >
-      {children}
+    <SText ref={ref} interestFor={hasTooltip ? id : undefined} {...rest}>
+      {heading ? (
+        <SHeading
+          ref={ref}
+          interestFor={hasTooltip ? id : undefined}
+          lineClamp={lineClamp}
+          {...rest}
+        >
+          {children}
+        </SHeading>
+      ) : (
+        children
+      )}
     </SText>
   );
 

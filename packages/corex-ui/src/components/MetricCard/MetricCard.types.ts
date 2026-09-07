@@ -22,7 +22,19 @@ export type MetricCardPropsType = {
   id?: string;
   title: string;
   fetching?: boolean;
+  /**
+   * Drops this card's own border/background — use uniformly across a group
+   * of cards when any one of them is expanded, so they read as one grouped
+   * surface (e.g. inside a `Collapsible` wrapper) instead of each keeping
+   * its own outline.
+   */
   expanded?: boolean;
+  /**
+   * Highlights this specific card as the active/selected one within a group,
+   * independent of `expanded`. Use it to mark which card's content is
+   * currently shown (tab-like selection) without affecting the others.
+   */
+  pressed?: boolean;
   value: ReactNode;
   tooltip?: ReactNode;
   icon?: IconType;

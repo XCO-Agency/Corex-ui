@@ -48,6 +48,7 @@ export * from "./components/PasswordField";
 export * from "./components/UrlField";
 export * from "./components/Popover";
 export * from "./components/Floating";
+export * from "./components/Collapsible";
 export * from "./components/Menu";
 export * from "./components/Navigation";
 

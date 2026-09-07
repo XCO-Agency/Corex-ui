@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Command, Inbox, Search, Sparkles, X, ChevronDown } from "lucide-react";
+import { Command, Inbox, Search, Sparkles, ChevronDown } from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
@@ -29,12 +29,11 @@ export type AppSidebarPropsType = React.ComponentProps<typeof Sidebar> & {
 };
 
 export function AppSidebar({ onOpenSearch, ...props }: AppSidebarPropsType) {
-  const [search, setSearch] = React.useState("");
   const location = useLocation();
   const currentPath = location.pathname;
 
   const isBlockRoute = currentPath.startsWith("/blocks");
-  const [isComponentsOpen, setIsComponentsOpen] = React.useState(() => !isBlockRoute);
+  const [isComponentsOpen, setIsComponentsOpen] = React.useState(true);
   const [isBlocksOpen, setIsBlocksOpen] = React.useState(() => isBlockRoute);
 
   React.useEffect(() => {
@@ -45,41 +44,11 @@ export function AppSidebar({ onOpenSearch, ...props }: AppSidebarPropsType) {
     }
   }, [currentPath, isBlockRoute]);
 
-  const isSearching = search.trim().length > 0;
-  const effectiveComponentsOpen = isSearching || isComponentsOpen;
-  const effectiveBlocksOpen = isSearching || isBlocksOpen;
-
-  const filteredExamples = React.useMemo(() => {
-    const trimmed = search.trim().toLowerCase();
-    if (!trimmed) return registry;
-    return registry.filter((component) => {
-      const nameMatch = component.name.toLowerCase().includes(trimmed);
-      const slugMatch = component.slug.toLowerCase().includes(trimmed);
-      const categoryMatch = component.category.toLowerCase().includes(trimmed);
-      const descMatch = component.description.toLowerCase().includes(trimmed);
-      return nameMatch || slugMatch || categoryMatch || descMatch;
-    });
-  }, [search]);
-
-  const filteredBlocks = React.useMemo(() => {
-    const trimmed = search.trim().toLowerCase();
-    if (!trimmed) return blocks;
-    return blocks
-      .map(({ category, components }) => {
-        const matchingComponents = components.filter((component) => {
-          const nameMatch = component.name.toLowerCase().includes(trimmed);
-          const slugMatch = component.slug.toLowerCase().includes(trimmed);
-          const categoryMatch = category.toLowerCase().includes(trimmed);
-          const descMatch = component.description.toLowerCase().includes(trimmed);
-          return nameMatch || slugMatch || categoryMatch || descMatch;
-        });
-        return { category, components: matchingComponents };
-      })
-      .filter((group) => group.components.length > 0);
-  }, [search]);
+  // const isComponentsOpen = isComponentsOpen;
+  const effectiveBlocksOpen = isBlocksOpen;
 
   const groupedExamples = React.useMemo(() => {
-    const grouped = filteredExamples.reduce(
+    const grouped = registry.reduce(
       (acc, component) => {
         const groupName = component.category;
         if (!acc[groupName]) {
@@ -95,7 +64,7 @@ export function AppSidebar({ onOpenSearch, ...props }: AppSidebarPropsType) {
       category,
       components,
     }));
-  }, [filteredExamples]);
+  }, []);
 
   return (
     <Sidebar {...props}>
@@ -116,37 +85,21 @@ export function AppSidebar({ onOpenSearch, ...props }: AppSidebarPropsType) {
           </SidebarMenuItem>
         </SidebarMenu>
 
-        {/* In-sidebar Quick Filter */}
+        {/* Search / Command Dialog Button */}
         <div className="px-1">
-          <div className="relative flex items-center">
-            <Search className="absolute left-2.5 size-3.5 text-muted-foreground pointer-events-none" />
-            <input
-              type="text"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              placeholder="Filter components..."
-              className="h-8 w-full rounded-md border border-sidebar-border bg-sidebar-accent/40 pl-8 pr-7 text-xs text-sidebar-foreground placeholder:text-muted-foreground outline-none transition-colors focus:border-sidebar-ring focus:bg-sidebar-accent"
-            />
-            {search ? (
-              <button
-                type="button"
-                onClick={() => setSearch("")}
-                className="absolute right-2 text-muted-foreground hover:text-foreground"
-                title="Clear filter"
-              >
-                <X className="size-3" />
-              </button>
-            ) : (
-              <button
-                type="button"
-                onClick={onOpenSearch}
-                title="Open Command Palette (⌘K)"
-                className="absolute right-1.5 flex h-5 items-center rounded border border-sidebar-border bg-sidebar-accent/80 px-1 font-mono text-[10px] text-muted-foreground hover:text-foreground"
-              >
-                ⌘K
-              </button>
-            )}
-          </div>
+          <button
+            type="button"
+            onClick={onOpenSearch}
+            className="flex h-8 w-full cursor-pointer items-center justify-between rounded-md border border-sidebar-border bg-sidebar-accent/40 pl-2.5 pr-1.5 text-xs text-muted-foreground transition-colors hover:bg-sidebar-accent hover:text-sidebar-foreground"
+          >
+            <div className="flex items-center gap-2">
+              <Search className="size-3.5" />
+              <span>Search documentation...</span>
+            </div>
+            <kbd className="pointer-events-none flex h-5 select-none items-center gap-0.5 rounded  bg-gray-200 px-1.5 font-mono text-[10px] font-medium text-muted-foreground">
+              <span className="text-[14px]/1px">⌘</span>K
+            </kbd>
+          </button>
         </div>
       </SidebarHeader>
 
@@ -166,7 +119,8 @@ export function AppSidebar({ onOpenSearch, ...props }: AppSidebarPropsType) {
 
         {/* Components SidebarGroup */}
         <Collapsible
-          open={effectiveComponentsOpen}
+          open={isComponentsOpen}
+          defaultOpen={true}
           onOpenChange={setIsComponentsOpen}
           className="group/components-collapsible"
         >
@@ -179,12 +133,12 @@ export function AppSidebar({ onOpenSearch, ...props }: AppSidebarPropsType) {
               <span>Components</span>
               <div className="flex items-center gap-1.5">
                 <span className="text-[10px] font-mono text-muted-foreground">
-                  {filteredExamples.length}
+                  {registry.length}
                 </span>
                 <ChevronDown
                   className={cn(
                     "size-3.5 text-muted-foreground transition-transform duration-200",
-                    !effectiveComponentsOpen && "-rotate-90",
+                    !isComponentsOpen && "-rotate-90",
                   )}
                 />
               </div>
@@ -192,30 +146,23 @@ export function AppSidebar({ onOpenSearch, ...props }: AppSidebarPropsType) {
             <CollapsibleContent>
               <SidebarGroupContent>
                 <SidebarMenu>
-                  {groupedExamples.length === 0 ? (
-                    <div className="px-3 py-6 text-center text-xs text-muted-foreground">
-                      No components matching &ldquo;{search}&rdquo;
-                    </div>
-                  ) : (
-                    groupedExamples.map(({ category, components }) => (
-                      <SidebarCategoryItem
-                        key={category}
-                        category={category}
-                        components={components}
-                        icon={getCategoryIcon(category)}
-                        basePath="components"
-                        currentPath={currentPath}
-                        isSearching={isSearching}
-                      />
-                    ))
-                  )}
+                  {groupedExamples.map(({ category, components }) => (
+                    <SidebarCategoryItem
+                      key={category}
+                      category={category}
+                      components={components}
+                      icon={getCategoryIcon(category)}
+                      basePath="components"
+                      currentPath={currentPath}
+                    />
+                  ))}
                 </SidebarMenu>
               </SidebarGroupContent>
             </CollapsibleContent>
           </SidebarGroup>
         </Collapsible>
 
-        {filteredBlocks.length > 0 && (
+        {blocks.length > 0 && (
           <Collapsible
             open={effectiveBlocksOpen}
             onOpenChange={setIsBlocksOpen}
@@ -230,7 +177,7 @@ export function AppSidebar({ onOpenSearch, ...props }: AppSidebarPropsType) {
                 <span>Blocks</span>
                 <div className="flex items-center gap-1.5">
                   <span className="text-[10px] font-mono text-muted-foreground">
-                    {filteredBlocks.reduce((acc, g) => acc + g.components.length, 0)}
+                    {blocks.reduce((acc, g) => acc + g.components.length, 0)}
                   </span>
                   <ChevronDown
                     className={cn(
@@ -243,7 +190,7 @@ export function AppSidebar({ onOpenSearch, ...props }: AppSidebarPropsType) {
               <CollapsibleContent>
                 <SidebarGroupContent>
                   <SidebarMenu>
-                    {filteredBlocks.map(({ category, components }) => (
+                    {blocks.map(({ category, components }) => (
                       <SidebarCategoryItem
                         key={category}
                         category={category}
@@ -251,7 +198,6 @@ export function AppSidebar({ onOpenSearch, ...props }: AppSidebarPropsType) {
                         icon={getCategoryIcon(category)}
                         basePath="blocks"
                         currentPath={currentPath}
-                        isSearching={isSearching}
                       />
                     ))}
                   </SidebarMenu>

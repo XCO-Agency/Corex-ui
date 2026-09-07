@@ -3,7 +3,8 @@ import type { ComponentEntry } from "../types";
 import { MetricsDashboardExample } from "@/blocks/metrics-dashboard/MetricsDashboardExample";
 import MetricsDashboardExampleRaw from "@/blocks/metrics-dashboard/MetricsDashboardExample.tsx?raw";
 
-import MetricsPeriodComparisonRaw from "@/blocks/metrics-dashboard/MetricsPeriodComparison.tsx?raw";
+import { MetricsDashboardAdvancedExample } from "@/blocks/metrics-dashboard/MetricsDashboardAdvancedExample";
+import MetricsDashboardAdvancedExampleRaw from "@/blocks/metrics-dashboard/MetricsDashboardAdvancedExample.tsx?raw";
 
 export const metricsBlocks: ComponentEntry[] = [
   {
@@ -24,11 +25,19 @@ export const metricsBlocks: ComponentEntry[] = [
             path: "MetricsDashboardExample.tsx",
             code: MetricsDashboardExampleRaw,
           },
-
+        ],
+        npxCommand: "npx @xco-agency/corex-ui add metrics-dashboard",
+      },
+      {
+        title: "Independent Card Interactions (Expand vs External Click)",
+        Example: MetricsDashboardAdvancedExample,
+        code: MetricsDashboardAdvancedExampleRaw,
+        filename: "MetricsDashboardAdvancedExample.tsx",
+        files: [
           {
-            name: "MetricsPeriodComparison.tsx",
-            path: "MetricsPeriodComparison.tsx",
-            code: MetricsPeriodComparisonRaw,
+            name: "MetricsDashboardAdvancedExample.tsx",
+            path: "MetricsDashboardAdvancedExample.tsx",
+            code: MetricsDashboardAdvancedExampleRaw,
           },
         ],
         npxCommand: "npx @xco-agency/corex-ui add metrics-dashboard",

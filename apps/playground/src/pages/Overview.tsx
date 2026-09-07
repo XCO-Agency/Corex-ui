@@ -5,9 +5,9 @@ import { getCategoryIcon } from "@/lib/category-icons";
 
 export function Overview() {
   return (
-    <div className="page">
-      <h1>Components</h1>
-      <p className="page-intro">
+    <div className="max-w-5xl w-ful mx-auto px-3 md:px-4">
+      <h1 className="text-xl font-bold">Components</h1>
+      <p className="py-2 ">
         All {registry.length} components currently implemented in{" "}
         <code>@xco-agency/corex-ui</code>, grouped the same way as the sidebar. Pick one
         to see a live example and its code.
@@ -18,24 +18,22 @@ export function Overview() {
         if (items.length === 0) return null;
 
         return (
-          <section key={category} className="overview-section">
+          <section key={category} className="overview-section" id={category}>
             <h2>{category}</h2>
-            <div className="component-grid">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6">
               {items.map((item) => {
                 const Thumbnail = thumbnails[item.slug];
                 return (
                   <Link
                     to={`/components/${item.slug}`}
-                    className="component-card"
+                    className="border rounded-2xl shadow-xs hover:shadow-lg "
                     key={item.slug}
                   >
                     <div className="component-thumb">
                       {Thumbnail ? (
                         <Thumbnail />
                       ) : (
-                        <span className="component-thumb-fallback">
-                          {item.name}
-                        </span>
+                        <span className="component-thumb-fallback">{item.name}</span>
                       )}
                     </div>
                     <div className="component-card-body">
@@ -55,7 +53,8 @@ export function Overview() {
           <div className="space-y-1">
             <h2 className="text-2xl font-bold tracking-tight text-foreground">Blocks</h2>
             <p className="text-sm text-muted-foreground">
-              Production-ready multi-component compositions and layout patterns for Shopify apps.
+              Production-ready multi-component compositions and layout patterns for
+              Shopify apps.
             </p>
           </div>
 

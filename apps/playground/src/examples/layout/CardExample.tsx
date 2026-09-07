@@ -14,8 +14,10 @@ export function CardExample() {
               <Popover.Trigger>
                 <Button variant="tertiary" icon="menu-horizontal"></Button>
               </Popover.Trigger>
-              <Popover.Content minBlockSize="100px" minInlineSize="100px">
-                <Box padding="small"></Box>
+              <Popover.Content minBlockSize="100px" maxInlineSize="100px">
+                <Box padding="small">
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
+                </Box>
               </Popover.Content>
             </Popover>
           </>

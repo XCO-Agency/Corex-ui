@@ -15,11 +15,12 @@ export type TextPropsType = Omit<NativeTextProps, "children"> & {
   heading?: boolean;
   /** Custom tag override (e.g. `as="p"` or `as="span"`). */
   as?: ElementType;
+
   /** Modern Polaris text tone ('success' | 'warning' | 'critical' | 'info' | 'neutral'). */
   /** Shorthand for subdued color */
   underline?: boolean;
   alignment?: AlignmentType;
-  truncate?: boolean;
+  lineClamp?: number;
   breakWord?: boolean;
   numeric?: boolean;
   className?: string;

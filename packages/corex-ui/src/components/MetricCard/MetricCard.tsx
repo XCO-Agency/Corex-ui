@@ -206,13 +206,14 @@ export function MetricCard({
   sparklineWidth,
   sparklineHeight,
   expanded,
+  pressed,
   fetching,
   onClick,
 }: MetricCardPropsType): JSX.Element {
   const id = propID ?? useId();
 
   let innerContent = (
-    <Box padding="small-200">
+    <Box padding="small-300">
       <BlockStack gap="small-100">
         {/* Header: icon + title + tooltip + badge */}
         <InlineStack justifyContent="space-between" alignItems="center">
@@ -226,7 +227,7 @@ export function MetricCard({
             }}
           >
             {icon && <Icon type={icon} tone={iconTone} />}
-            <Text heading interestFor={id} tooltip={tooltip}>
+            <Text heading interestFor={id} lineClamp={1} tooltip={tooltip}>
               {title}
             </Text>
           </div>
@@ -273,11 +274,11 @@ export function MetricCard({
       border={expanded ? "none" : "base"}
       background={expanded ? "none" : "base"}
     >
-      <Box padding="small-300">
+      <Box padding="small-400">
         {onClick && !fetching ? (
           <Clickable
             onClick={onClick}
-            background={expanded ? "strong" : "transparent"}
+            background={pressed ? "strong" : "transparent"}
             borderRadius="base"
           >
             {innerContent}

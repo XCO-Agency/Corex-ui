@@ -15,6 +15,10 @@ import { MetricCardExample } from "@/examples/layout/MetricCardExample";
 import MetricCardExampleRaw from "@/examples/layout/MetricCardExample.tsx?raw";
 import { TableExample } from "@/examples/layout/TableExample";
 import TableExampleRaw from "@/examples/layout/TableExample.tsx?raw";
+import { CollapsibleExample } from "@/examples/layout/CollapsibleExample";
+import CollapsibleExampleRaw from "@/examples/layout/CollapsibleExample.tsx?raw";
+import { CollapsibleFaqExample } from "@/examples/layout/CollapsibleFaqExample";
+import CollapsibleFaqExampleRaw from "@/examples/layout/CollapsibleFaqExample.tsx?raw";
 
 export const layoutComponents: ComponentEntry[] = [
   {
@@ -122,6 +126,25 @@ export const layoutComponents: ComponentEntry[] = [
         title: "With expandable sub-rows",
         Example: TableExample,
         code: TableExampleRaw,
+      },
+    ],
+  },
+  {
+    name: "Collapsible",
+    slug: "collapsible",
+    category: "Layout",
+    description:
+      "A reusable expand/collapse wrapper for target-plus-content layouts, animated with a CSS grid-row transition.",
+    examples: [
+      {
+        title: "Basic disclosure",
+        Example: CollapsibleExample,
+        code: CollapsibleExampleRaw,
+      },
+      {
+        title: "Grouped FAQ rows (single open at a time)",
+        Example: CollapsibleFaqExample,
+        code: CollapsibleFaqExampleRaw,
       },
     ],
   },

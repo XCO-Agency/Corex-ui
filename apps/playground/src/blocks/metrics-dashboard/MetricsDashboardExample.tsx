@@ -1,13 +1,5 @@
 import * as React from "react";
-import { MetricsPeriodComparison } from "./MetricsPeriodComparison";
-import {
-  MetricCard,
-  DatePicker,
-  BlockStack,
-  Grid,
-  Page,
-  Box,
-} from "@xco-agency/corex-ui";
+import { MetricCard, DatePicker, BlockStack, Grid, Page } from "@xco-agency/corex-ui";
 import type { MetricCardPropsType, DateRangeType, ToneType } from "@xco-agency/corex-ui";
 
 export type MetricItemType = Omit<MetricCardPropsType, "onClick"> & {
@@ -79,9 +71,6 @@ export function MetricsDashboardExample() {
     start: "",
     end: "",
   });
-  const [activeMetric, setActiveMetric] = React.useState<
-    "sales" | "sessions" | "orders" | "conversion" | null
-  >(null);
 
   return (
     <Page heading="Metrics dashboard">
@@ -89,67 +78,30 @@ export function MetricsDashboardExample() {
         <DatePicker selected={selectedDate} presets onApply={setSelectedDate} />
 
         {/* 4-card MetricCard Grid */}
-        <Box
-          background={activeMetric ? "base" : "transparent"}
-          border={activeMetric ? "base" : "none"}
-          borderRadius={activeMetric ? "large" : "none"}
-        >
-          <Grid columns={{ xs: 1, sm: 2, md: 4 }} gap="base">
-            {METRICS.map((item) => (
-              <MetricCard
-                key={item.id}
-                id={`metric-${item.id}`}
-                title={item.title}
-                value={item.value}
-                icon={item.icon}
-                tooltip={item.tooltip}
-                badge={
-                  item.change
-                    ? {
-                        value: item.change,
-                        dir: item.changeDir,
-                        tone: item.changeTone,
-                      }
-                    : undefined
-                }
-                expanded={!!activeMetric}
-                onClick={() => setActiveMetric((id) => (id === item.id ? null : item.id))}
-                sparklineData={item.sparklineData}
-                sparklineColor={item.sparklineColor}
-              />
-            ))}
-          </Grid>
-          {activeMetric === "sales" && (
-            <MetricsPeriodComparison
-              selectedDate={selectedDate.start || "Selected Period"}
-              metrics={METRICS}
+        <Grid columns={{ xs: 1, sm: 2, md: 4 }} gap="base">
+          {METRICS.map((item) => (
+            <MetricCard
+              key={item.id}
+              id={`metric-${item.id}`}
+              title={item.title}
+              value={item.value}
+              icon={item.icon}
+              tooltip={item.tooltip}
+              badge={
+                item.change
+                  ? {
+                      value: item.change,
+                      dir: item.changeDir,
+                      tone: item.changeTone,
+                    }
+                  : undefined
+              }
+              onClick={() => alert("Clicked on " + item.title)}
+              sparklineData={item.sparklineData}
+              sparklineColor={item.sparklineColor}
             />
-          )}
-          {activeMetric === "orders" && (
-            <>
-              <MetricsPeriodComparison
-                selectedDate={selectedDate.start || "Selected Period"}
-                metrics={METRICS}
-              />
-            </>
-          )}
-          {activeMetric === "conversion" && (
-            <>
-              <MetricsPeriodComparison
-                selectedDate={selectedDate.start || "Selected Period"}
-                metrics={METRICS}
-              />
-            </>
-          )}
-          {activeMetric === "sessions" && (
-            <>
-              <MetricsPeriodComparison
-                selectedDate={selectedDate.start || "Selected Period"}
-                metrics={METRICS}
-              />
-            </>
-          )}
-        </Box>
+          ))}
+        </Grid>
       </BlockStack>
     </Page>
   );
