@@ -23,11 +23,11 @@ export function CardExample() {
           </>
         }
         primaryFooterAction={{
-          content: "dsasda",
+          content: "Primary action",
         }}
         secondaryFooterActions={[
           {
-            content: "footer",
+            content: "Secondary action",
           },
         ]}
       >

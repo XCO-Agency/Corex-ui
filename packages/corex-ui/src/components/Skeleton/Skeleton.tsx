@@ -1,5 +1,6 @@
 import {
   forwardRef,
+  useInsertionEffect,
   type CSSProperties,
   type ForwardRefExoticComponent,
   type RefAttributes,
@@ -23,7 +24,15 @@ const SKELETON_CSS = `
 }
 `;
 
-if (typeof document !== "undefined" && !document.getElementById(SKELETON_STYLE_ID)) {
+// Injected lazily from useInsertionEffect (not at module scope) so bundlers that
+// tree-shake this package via "sideEffects": false can't strip it, and so styles
+// land in whichever document the component actually mounts in (e.g. a Shopify
+// admin app-embed iframe), rather than being skipped if this module first
+// evaluates during SSR when `document` doesn't exist yet.
+function injectSkeletonStyles(): void {
+  if (typeof document === "undefined" || document.getElementById(SKELETON_STYLE_ID)) {
+    return;
+  }
   const styleEl = document.createElement("style");
   styleEl.id = SKELETON_STYLE_ID;
   styleEl.textContent = SKELETON_CSS;
@@ -64,6 +73,10 @@ export const Skeleton: ForwardRefExoticComponent<
   },
   ref,
 ) {
+  useInsertionEffect(() => {
+    injectSkeletonStyles();
+  }, []);
+
   const resolvedWidth = inlineSize ?? width ?? "100%";
   const resolvedHeight = blockSize ?? height ?? 16;
 

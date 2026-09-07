@@ -35,7 +35,7 @@ export type MetricCardPropsType = {
    * currently shown (tab-like selection) without affecting the others.
    */
   pressed?: boolean;
-  value: ReactNode;
+  value?: ReactNode;
   tooltip?: ReactNode;
   icon?: IconType;
   iconTone?: ToneType;

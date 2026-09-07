@@ -248,7 +248,7 @@ export function MetricCard({
         <InlineStack justifyContent="space-between" alignItems="end">
           <InlineStack gap="small-200" alignItems="end">
             <Text heading as="strong" variant="base" fontVariantNumeric="tabular-nums">
-              {value}
+              {value ?? "0"}
             </Text>
           </InlineStack>
           {sparklineData && (
@@ -301,7 +301,7 @@ function MetricsSkeleton({
     <Box padding="small-200">
       <BlockStack gap="small-100">
         {/* Header: icon + title + tooltip + badge */}
-        <s-stack direction="inline" justifyContent="space-between" alignItems="center">
+        <InlineStack justifyContent="space-between" alignItems="center">
           <div
             style={{
               display: "flex",
@@ -317,16 +317,16 @@ function MetricsSkeleton({
             </Text>
           </div>
           <Skeleton width="30px" height="20px" />
-        </s-stack>
+        </InlineStack>
 
         {/* Value + sparkline */}
-        <s-stack direction="inline" justifyContent="space-between" alignItems="end">
-          <s-stack direction="inline" gap="small-200" alignItems="end">
+        <InlineStack justifyContent="space-between" alignItems="end">
+          <InlineStack gap="small-200" alignItems="end">
             <Skeleton width="50px" height="20px" />
-          </s-stack>
+          </InlineStack>
 
           <Skeleton width="50px" height="20px" />
-        </s-stack>
+        </InlineStack>
       </BlockStack>
     </Box>
   );

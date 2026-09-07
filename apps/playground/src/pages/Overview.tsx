@@ -158,23 +158,30 @@ export function Overview() {
                   <span className="text-xs text-muted-foreground">{components.length}</span>
                 </div>
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                  {components.map((item) => (
-                    <Link
-                      to={`/blocks/${item.slug}`}
-                      key={item.slug}
-                      className="group flex flex-col overflow-hidden rounded-2xl border border-border bg-card transition-all duration-200 ease-out hover:-translate-y-0.5 hover:border-foreground/15 hover:shadow-lg"
-                    >
-                      <div className="flex aspect-8/5 items-center justify-center bg-muted/30 transition-colors duration-200 group-hover:bg-muted/50">
-                        <BlockIcon className="size-8 text-foreground/40" />
-                      </div>
-                      <div className="flex flex-1 flex-col gap-1 border-t border-border p-3.5">
-                        <h4 className="text-sm font-semibold text-foreground">{item.name}</h4>
-                        <p className="line-clamp-2 text-xs leading-relaxed text-muted-foreground">
-                          {item.description}
-                        </p>
-                      </div>
-                    </Link>
-                  ))}
+                  {components.map((item) => {
+                    const Thumbnail = thumbnails[item.slug];
+                    return (
+                      <Link
+                        to={`/blocks/${item.slug}`}
+                        key={item.slug}
+                        className="group flex flex-col overflow-hidden rounded-2xl border border-border bg-card transition-all duration-200 ease-out hover:-translate-y-0.5 hover:border-foreground/15 hover:shadow-lg"
+                      >
+                        <div className="flex aspect-8/5 items-center justify-center bg-muted/30 p-4 transition-colors duration-200 group-hover:bg-muted/50">
+                          {Thumbnail ? (
+                            <Thumbnail />
+                          ) : (
+                            <BlockIcon className="size-8 text-foreground/40" />
+                          )}
+                        </div>
+                        <div className="flex flex-1 flex-col gap-1 border-t border-border p-3.5">
+                          <h4 className="text-sm font-semibold text-foreground">{item.name}</h4>
+                          <p className="line-clamp-2 text-xs leading-relaxed text-muted-foreground">
+                            {item.description}
+                          </p>
+                        </div>
+                      </Link>
+                    );
+                  })}
                 </div>
               </section>
             );

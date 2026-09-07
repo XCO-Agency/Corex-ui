@@ -31,8 +31,7 @@ export type BoxBorderWidthType =
   | (string & {});
 
 export type BoxBorderStyleType =
-  | NonNullable<NativeBoxProps["borderStyle"]>
-  | (string & {});
+  NonNullable<NativeBoxProps["borderStyle"]> | (string & {});
 
 export type BoxBorderColorType =
   | NonNullable<NativeBoxProps["borderColor"]>
@@ -53,21 +52,15 @@ export type BoxBorderRadiusType =
   | "500"
   | (string & {});
 
-export type BoxOverflowType =
-  | NonNullable<NativeBoxProps["overflow"]>
-  | (string & {});
+export type BoxOverflowType = NonNullable<NativeBoxProps["overflow"]> | (string & {});
 
-export type BoxDisplayType =
-  | NonNullable<NativeBoxProps["display"]>
-  | (string & {});
+export type BoxDisplayType = NonNullable<NativeBoxProps["display"]> | (string & {});
 
 export type BoxAccessibilityVisibilityType =
-  | NonNullable<NativeBoxProps["accessibilityVisibility"]>
-  | (string & {});
+  NonNullable<NativeBoxProps["accessibilityVisibility"]> | (string & {});
 
 export type BoxAccessibilityRoleType =
-  | NonNullable<NativeBoxProps["accessibilityRole"]>
-  | (string & {});
+  NonNullable<NativeBoxProps["accessibilityRole"]> | (string & {});
 
 export type BoxPositionType =
   "relative" | "absolute" | "fixed" | "sticky" | (string & {});
@@ -242,17 +235,12 @@ export type LegacyBoxPropsType = {
   maxHeight?: string;
 };
 
-export type BoxPropsType = Omit<
-  NativeBoxProps,
-  keyof NativeBoxOverridesType | "slot"
-> &
+export type BoxPropsType = Omit<NativeBoxProps, keyof NativeBoxOverridesType | "slot"> &
   NativeBoxOverridesType &
   LegacyBoxPropsType & {
     role?: string;
     tabIndex?: number;
     id?: string;
-    className?: string;
-    style?: CSSProperties;
     slot?: string;
     [key: `aria-${string}`]: unknown;
     [key: `data-${string}`]: unknown;

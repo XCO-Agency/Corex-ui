@@ -8,7 +8,6 @@ export function MetricCardExample() {
           title="Total orders"
           value="1,234"
           tooltip="+10% from last month"
-          id="MetricCard-id"
           icon="order"
           badge={{ value: "10%", dir: "down", tone: "critical" }}
           sparklineData={[
@@ -18,10 +17,7 @@ export function MetricCardExample() {
           sparklineColor="critical"
         />
         <MetricCard
-          title="Total orders"
-          value="1,234"
-          tooltip="+10% from last month"
-          id="MetricCard-id"
+          title="A Skeleton metric"
           icon="order"
           fetching
           sparklineData={[]}
