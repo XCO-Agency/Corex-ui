@@ -51,7 +51,7 @@ export function Step3Configuration({ state, dispatch }: Step3ConfigurationPropsT
       <BlockStack gap="large" alignItems="center" inlineSize="100%">
         <BlockStack gap="small-300" alignItems="center">
           <IconTile tone="caution">
-            <Icon type="delivery" />
+            <Icon type="delivery" tone="caution" />
           </IconTile>
           <Text
             heading

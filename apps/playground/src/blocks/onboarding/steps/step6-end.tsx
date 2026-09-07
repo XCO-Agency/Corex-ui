@@ -47,6 +47,21 @@ export function Step6Celebration({
   return (
     <Box paddingBlock="large">
       <BlockStack gap="large" alignItems="center">
+        <BlockStack gap="small-100" alignItems="center">
+          <IconTile tone="success">
+            <Icon type="check-circle-filled" tone="success" />
+          </IconTile>
+          <Text
+            variant="large"
+            heading
+            tooltip="All revenue modules and default configurations have been deployed to your active storefront."
+          >
+            You&rsquo;re all set 🎉
+          </Text>
+          <Text color="subdued">
+            Journeva is live on your store and already working in the background.
+          </Text>
+        </BlockStack>
         <Box
           padding="large-300"
           border="base"
@@ -55,23 +70,7 @@ export function Step6Celebration({
           inlineSize="100%"
           maxInlineSize="460px"
         >
-          <BlockStack gap="large-100" align="center">
-            <BlockStack gap="small-100" align="center">
-              <IconTile tone="success" borderRadius="full" size="lg">
-                <Icon type="check" tone="success" />
-              </IconTile>
-              <Text
-                variant="large"
-                heading
-                tooltip="All revenue modules and default configurations have been deployed to your active storefront."
-              >
-                You&rsquo;re all set 🎉
-              </Text>
-              <Text color="subdued">
-                Journeva is live on your store and already working in the background.
-              </Text>
-            </BlockStack>
-
+          <BlockStack gap="large-100" alignItems="center">
             <BlockStack gap="small-200" inlineSize="100%">
               {rows.map((row) => (
                 <InlineStack
