@@ -15,11 +15,12 @@ function Tooltip({ ...props }: TooltipPrimitive.Root.Props) {
   return <TooltipPrimitive.Root data-slot="tooltip" {...props} />;
 }
 
-const TooltipTrigger = React.forwardRef<HTMLButtonElement, TooltipPrimitive.Trigger.Props>(
-  function TooltipTrigger({ ...props }, ref) {
-    return <TooltipPrimitive.Trigger ref={ref} data-slot="tooltip-trigger" {...props} />;
-  },
-);
+const TooltipTrigger = React.forwardRef<
+  HTMLButtonElement,
+  TooltipPrimitive.Trigger.Props
+>(function TooltipTrigger({ ...props }, ref) {
+  return <TooltipPrimitive.Trigger ref={ref} data-slot="tooltip-trigger" {...props} />;
+});
 
 function TooltipContent({
   className,

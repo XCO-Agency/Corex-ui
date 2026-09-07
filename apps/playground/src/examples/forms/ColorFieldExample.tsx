@@ -1,5 +1,12 @@
 import { useState } from "react";
-import { BlockStack, Box, Grid, InlineStack, ColorField, Text } from "@xco-agency/corex-ui";
+import {
+  BlockStack,
+  Box,
+  Grid,
+  InlineStack,
+  ColorField,
+  Text,
+} from "@xco-agency/corex-ui";
 
 export function ColorFieldExample() {
   const [brandColor, setBrandColor] = useState("#008060");
@@ -25,7 +32,9 @@ export function ColorFieldExample() {
                 border: "1px solid var(--p-color-border, #d4d4d4)",
               }}
             />
-            <Text variant="small" tone="subdued">{brandColor}</Text>
+            <Text variant="small" tone="subdued">
+              {brandColor}
+            </Text>
           </InlineStack>
         </BlockStack>
       </Grid.Item>
@@ -49,7 +58,9 @@ export function ColorFieldExample() {
                 border: "1px solid var(--p-color-border, #d4d4d4)",
               }}
             />
-            <Text variant="small" tone="subdued">{accentColor}</Text>
+            <Text variant="small" tone="subdued">
+              {accentColor}
+            </Text>
           </InlineStack>
         </BlockStack>
       </Grid.Item>

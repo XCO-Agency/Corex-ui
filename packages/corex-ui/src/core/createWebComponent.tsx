@@ -42,10 +42,7 @@ export function createWebComponent<
     function WebComponent(props, forwardedRef) {
       const innerRef = useRef<TElement>(null);
       const { children, ...rest } = props;
-      const mergedRef = useMemo(
-        () => mergeRefs(innerRef, forwardedRef),
-        [forwardedRef],
-      );
+      const mergedRef = useMemo(() => mergeRefs(innerRef, forwardedRef), [forwardedRef]);
 
       useLayoutEffect(() => {
         const node = innerRef.current;

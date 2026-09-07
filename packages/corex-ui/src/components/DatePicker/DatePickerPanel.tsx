@@ -98,7 +98,10 @@ export function DatePickerPanel({
   };
 
   const handleDateClick = (clickedDate: string) => {
-    if ((minDate && clickedDate < minDate) || (effectiveMaxDate && clickedDate > effectiveMaxDate)) {
+    if (
+      (minDate && clickedDate < minDate) ||
+      (effectiveMaxDate && clickedDate > effectiveMaxDate)
+    ) {
       return;
     }
     // If range is already complete or no start, set new start date

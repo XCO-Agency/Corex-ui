@@ -73,9 +73,13 @@ export function Installation() {
         </h1>
 
         <p className="max-w-2xl text-base leading-relaxed text-muted-foreground">
-          Add <code className="rounded bg-muted px-1.5 py-0.5 font-mono text-[13px] text-foreground">@xco-agency/corex-ui</code>{" "}
-          to your Shopify app in a few minutes. It's a drop-in, legacy-Polaris-React-compatible
-          component set backed by Shopify's actively maintained Polaris web components.
+          Add{" "}
+          <code className="rounded bg-muted px-1.5 py-0.5 font-mono text-[13px] text-foreground">
+            @xco-agency/corex-ui
+          </code>{" "}
+          to your Shopify app in a few minutes. It's a drop-in,
+          legacy-Polaris-React-compatible component set backed by Shopify's actively
+          maintained Polaris web components.
         </p>
       </header>
 
@@ -94,13 +98,20 @@ export function Installation() {
             <li className="flex items-start gap-2">
               <CheckCircle2 className="mt-0.5 size-4 shrink-0 text-emerald-600 dark:text-emerald-400" />
               <span>
-                A Shopify app shell that loads the Polaris web components CDN script &mdash;
-                Shopify CLI-scaffolded apps already do this.
+                A Shopify app shell that loads the Polaris web components CDN script
+                &mdash; Shopify CLI-scaffolded apps already do this.
               </span>
             </li>
             <li className="flex items-start gap-2">
               <CheckCircle2 className="mt-0.5 size-4 shrink-0 text-emerald-600 dark:text-emerald-400" />
-              <span>No <code className="rounded bg-muted px-1 py-0.5 font-mono text-xs">.npmrc</code> configuration or authentication tokens &mdash; it's published to the public npm registry.</span>
+              <span>
+                No{" "}
+                <code className="rounded bg-muted px-1 py-0.5 font-mono text-xs">
+                  .npmrc
+                </code>{" "}
+                configuration or authentication tokens &mdash; it's published to the
+                public npm registry.
+              </span>
             </li>
           </ul>
         </section>
@@ -109,7 +120,9 @@ export function Installation() {
         <section className="space-y-3">
           <div className="flex items-center gap-3">
             <StepNumber n={1} />
-            <h2 className="text-base font-semibold text-foreground">Install the package</h2>
+            <h2 className="text-base font-semibold text-foreground">
+              Install the package
+            </h2>
           </div>
 
           <div className="ml-10 space-y-3">
@@ -137,10 +150,10 @@ export function Installation() {
               language="bash"
             />
 
-            <p className="text-xs text-muted-foreground">
+            {/* <p className="text-xs text-muted-foreground">
               Optional but recommended &mdash; install prop types for editor autocomplete:
             </p>
-            <ComponentCodeViewer code={TYPES_CODE} filename="Terminal" language="bash" />
+            <ComponentCodeViewer code={TYPES_CODE} filename="Terminal" language="bash" /> */}
           </div>
         </section>
 
@@ -158,13 +171,18 @@ export function Installation() {
               <code className="rounded bg-muted px-1.5 py-0.5 font-mono text-xs text-foreground">
                 @xco-agency/corex-ui
               </code>{" "}
-              has no runtime dependency on Polaris &mdash; this script is what registers the{" "}
+              has no runtime dependency on Polaris &mdash; this script is what registers
+              the{" "}
               <code className="rounded bg-muted px-1.5 py-0.5 font-mono text-xs text-foreground">
                 s-*
               </code>{" "}
               custom elements the library wraps. Add it to your app's HTML shell:
             </p>
-            <ComponentCodeViewer code={CDN_SCRIPT_CODE} filename="index.html" language="markup" />
+            <ComponentCodeViewer
+              code={CDN_SCRIPT_CODE}
+              filename="index.html"
+              language="markup"
+            />
           </div>
         </section>
 
@@ -183,7 +201,11 @@ export function Installation() {
               </code>
               &mdash; prop names carry over one-to-one.
             </p>
-            <ComponentCodeViewer code={USAGE_CODE} filename="ProductForm.tsx" language="tsx" />
+            <ComponentCodeViewer
+              code={USAGE_CODE}
+              filename="ProductForm.tsx"
+              language="tsx"
+            />
           </div>
         </section>
 
@@ -194,8 +216,8 @@ export function Installation() {
             <h2 className="text-sm font-semibold text-foreground">Next steps</h2>
           </div>
           <p className="pb-4 text-sm text-muted-foreground">
-            Browse every component with a live example and copyable source, or jump straight
-            into the blocks library for ready-made page compositions.
+            Browse every component with a live example and copyable source, or jump
+            straight into the blocks library for ready-made page compositions.
           </p>
           <div className="flex flex-wrap gap-3">
             <Button render={<Link to="/" />}>

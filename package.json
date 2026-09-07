@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "packageManager": "pnpm@10.30.3",
   "description": "Workspace root for @xco-agency/corex-ui, a Polaris-web-component-backed, legacy-Polaris-React-compatible UI library for Shopify apps.",
+  "homepage": "https://corex-ui.xco.agency/",
   "scripts": {
     "build": "pnpm --filter @xco-agency/corex-ui run build",
     "build:playground": "pnpm --filter playground run build",

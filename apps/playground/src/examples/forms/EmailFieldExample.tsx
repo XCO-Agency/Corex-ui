@@ -16,7 +16,9 @@ export function EmailFieldExample() {
             details="Customers will see this address in automated receipt emails"
             onChange={(val) => setSupportEmail(val)}
           />
-          <Text variant="small" tone="subdued">Current: {supportEmail}</Text>
+          <Text variant="small" tone="subdued">
+            Current: {supportEmail}
+          </Text>
         </BlockStack>
       </Grid.Item>
 
@@ -30,7 +32,9 @@ export function EmailFieldExample() {
             details="Invoices and payout statements will be sent here"
             onChange={(val) => setBillingEmail(val)}
           />
-          <Text variant="small" tone="subdued">Current: {billingEmail || "(empty)"}</Text>
+          <Text variant="small" tone="subdued">
+            Current: {billingEmail || "(empty)"}
+          </Text>
         </BlockStack>
       </Grid.Item>
     </Grid>

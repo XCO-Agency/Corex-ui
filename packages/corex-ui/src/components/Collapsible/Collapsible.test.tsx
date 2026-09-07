@@ -33,7 +33,10 @@ describe("Collapsible", () => {
   it("toggles uncontrolled state and notifies onExpandedChange via render-prop helpers", () => {
     const onExpandedChange = vi.fn();
     render(
-      <Collapsible onExpandedChange={onExpandedChange} content={<div>Revealed content</div>}>
+      <Collapsible
+        onExpandedChange={onExpandedChange}
+        content={<div>Revealed content</div>}
+      >
         {({ expanded, toggle }) => (
           <button type="button" onClick={toggle}>
             {expanded ? "Hide" : "Show"}

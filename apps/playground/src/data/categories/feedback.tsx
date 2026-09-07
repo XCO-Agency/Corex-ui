@@ -75,8 +75,7 @@ export const feedbackComponents: ComponentEntry[] = [
     name: "Skeleton",
     slug: "skeleton",
     category: "Feedback",
-    description:
-      "Animated shimmer placeholder simulating content while data is loading.",
+    description: "Animated shimmer placeholder simulating content while data is loading.",
     examples: [
       {
         title: "Default Shimmer",

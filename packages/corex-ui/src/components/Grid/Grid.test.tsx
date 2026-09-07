@@ -35,7 +35,10 @@ describe("Grid", () => {
   it("resolves responsive columns dynamically based on dimension", () => {
     vi.stubGlobal("innerWidth", 1200);
     const { rerender } = render(
-      <Grid columns={{ xs: 1, sm: 2, md: 3, lg: 4 }} data-testid="grid-responsive-columns">
+      <Grid
+        columns={{ xs: 1, sm: 2, md: 3, lg: 4 }}
+        data-testid="grid-responsive-columns"
+      >
         <span>Responsive</span>
       </Grid>,
     );
@@ -49,7 +52,10 @@ describe("Grid", () => {
     });
 
     rerender(
-      <Grid columns={{ xs: 1, sm: 2, md: 3, lg: 4 }} data-testid="grid-responsive-columns">
+      <Grid
+        columns={{ xs: 1, sm: 2, md: 3, lg: 4 }}
+        data-testid="grid-responsive-columns"
+      >
         <span>Responsive</span>
       </Grid>,
     );
@@ -62,7 +68,10 @@ describe("Grid", () => {
     });
 
     rerender(
-      <Grid columns={{ xs: 1, sm: 2, md: 3, lg: 4 }} data-testid="grid-responsive-columns">
+      <Grid
+        columns={{ xs: 1, sm: 2, md: 3, lg: 4 }}
+        data-testid="grid-responsive-columns"
+      >
         <span>Responsive</span>
       </Grid>,
     );
@@ -75,7 +84,10 @@ describe("Grid", () => {
     });
 
     rerender(
-      <Grid columns={{ xs: 1, sm: 2, md: 3, lg: 4 }} data-testid="grid-responsive-columns">
+      <Grid
+        columns={{ xs: 1, sm: 2, md: 3, lg: 4 }}
+        data-testid="grid-responsive-columns"
+      >
         <span>Responsive</span>
       </Grid>,
     );

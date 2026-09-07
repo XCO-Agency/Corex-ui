@@ -5,7 +5,9 @@ import { ColorField } from "./ColorField";
 describe("ColorField", () => {
   it("sets `value` as a live DOM property", () => {
     render(<ColorField label="Brand Color" value="#008060" id="brand-color" />);
-    const el = document.querySelector("s-color-field") as HTMLElement & { value?: string };
+    const el = document.querySelector("s-color-field") as HTMLElement & {
+      value?: string;
+    };
     expect(el.value).toBe("#008060");
   });
 
@@ -13,7 +15,9 @@ describe("ColorField", () => {
     const onChange = vi.fn();
     render(<ColorField label="Brand Color" onChange={onChange} id="brand-color" />);
 
-    const el = document.querySelector("s-color-field") as HTMLElement & { value?: string };
+    const el = document.querySelector("s-color-field") as HTMLElement & {
+      value?: string;
+    };
     el.value = "#ff0000";
     el.dispatchEvent(new Event("input", { bubbles: true }));
 

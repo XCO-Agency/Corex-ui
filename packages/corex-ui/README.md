@@ -12,7 +12,6 @@ Polaris web components (`s-*` custom elements). Swap your import source, keep yo
 
 ```sh
 npm install @xco-agency/corex-ui
-npm install --save-dev @shopify/polaris-types # optional, recommended
 ```
 
 Your app must load Shopify's Polaris web components CDN script (Shopify CLI-scaffolded apps

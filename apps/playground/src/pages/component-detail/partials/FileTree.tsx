@@ -40,9 +40,7 @@ export function buildFileTree(files: FileItemType[]): FileTreeNodeType[] {
           file,
         });
       } else {
-        let folderNode = currentLevel.find(
-          (node) => node.isFolder && node.name === part,
-        );
+        let folderNode = currentLevel.find((node) => node.isFolder && node.name === part);
         if (!folderNode) {
           folderNode = {
             name: part,

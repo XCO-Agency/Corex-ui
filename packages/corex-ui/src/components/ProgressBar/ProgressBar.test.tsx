@@ -29,13 +29,7 @@ describe("ProgressBar", () => {
     const bar = screen.getByRole("progressbar");
     expect(bar.style.backgroundColor).toBe("rgb(254, 226, 226)"); // #fee2e2
 
-    rerender(
-      <ProgressBar
-        progress={50}
-        trackColor="#123456"
-        barColor="#654321"
-      />,
-    );
+    rerender(<ProgressBar progress={50} trackColor="#123456" barColor="#654321" />);
     expect(bar.style.backgroundColor).toBe("rgb(18, 52, 86)");
   });
 });

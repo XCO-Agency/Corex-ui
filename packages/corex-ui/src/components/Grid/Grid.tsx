@@ -283,7 +283,12 @@ export const GridItem: ForwardRefExoticComponent<
   const resolvedPaddingInlineStart = mapLegacySpacing(paddingInlineStart);
   const resolvedPaddingInlineEnd = mapLegacySpacing(paddingInlineEnd);
 
-  const resolvedGridColumn = resolveGridColumn(gridColumn, columnSpan, column, breakpoint);
+  const resolvedGridColumn = resolveGridColumn(
+    gridColumn,
+    columnSpan,
+    column,
+    breakpoint,
+  );
   const resolvedGridRow = resolveGridRow(gridRow, rowSpan, row, breakpoint);
 
   const legacyStyles: CSSProperties = {};

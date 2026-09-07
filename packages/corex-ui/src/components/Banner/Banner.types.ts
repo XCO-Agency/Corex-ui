@@ -10,10 +10,7 @@ export type BannerActionType = {
   external?: boolean;
 };
 
-export type BannerPropsType = Omit<
-  NativeBannerProps,
-  "heading" | "tone" | "children"
-> & {
+export type BannerPropsType = Omit<NativeBannerProps, "heading" | "tone" | "children"> & {
   children?: ReactNode;
   /** Modern Polaris web component heading prop. */
   heading?: ReactNode;

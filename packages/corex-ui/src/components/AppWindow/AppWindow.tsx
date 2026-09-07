@@ -15,9 +15,8 @@ const SAppWindow = createWebComponent<AppWindowElement>("s-app-window");
  * well with the declarative `<Button command="--show" commandFor="...">`
  * trigger pattern, exactly as Shopify's own examples show.
  */
-export const AppWindow = forwardRef<AppWindowElement, AppWindowPropsType>(function AppWindow(
-  { src, ...rest },
-  ref,
-) {
-  return <SAppWindow ref={ref} src={src} {...rest} />;
-});
+export const AppWindow = forwardRef<AppWindowElement, AppWindowPropsType>(
+  function AppWindow({ src, ...rest }, ref) {
+    return <SAppWindow ref={ref} src={src} {...rest} />;
+  },
+);

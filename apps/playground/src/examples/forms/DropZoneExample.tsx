@@ -18,7 +18,9 @@ export function DropZoneExample() {
               onChange={() => setStatus("Files selected via file browser / drag")}
               onDropRejected={() => setStatus("Dropped file was rejected")}
             />
-            <Text variant="small" tone="subdued">{status}</Text>
+            <Text variant="small" tone="subdued">
+              {status}
+            </Text>
           </BlockStack>
         </Card>
       </Grid.Item>

@@ -63,9 +63,17 @@ export function ComponentCodeViewer({
   const hasMultipleFiles = Boolean(files && files.length > 0);
 
   const languageLabel =
-    { tsx: "TS", ts: "TS", jsx: "JS", js: "JS", bash: "SH", sh: "SH", markup: "HTML", html: "HTML", json: "JSON" }[
-      language
-    ] ?? language.slice(0, 4).toUpperCase();
+    {
+      tsx: "TS",
+      ts: "TS",
+      jsx: "JS",
+      js: "JS",
+      bash: "SH",
+      sh: "SH",
+      markup: "HTML",
+      html: "HTML",
+      json: "JSON",
+    }[language] ?? language.slice(0, 4).toUpperCase();
 
   return (
     <div

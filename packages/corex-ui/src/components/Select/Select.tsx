@@ -36,11 +36,7 @@ export const Select = forwardRef<HTMLElement, SelectPropsType>(function Select(
       {...rest}
     >
       {options.map(normalizeOption).map((option) => (
-        <SOption
-          key={option.value}
-          value={option.value}
-          disabled={option.disabled}
-        >
+        <SOption key={option.value} value={option.value} disabled={option.disabled}>
           {option.label}
         </SOption>
       ))}

@@ -5,5 +5,3 @@
 - **Naming Conventions**: Always use `Type` as suffix for type definitions (e.g., `MetricItemType`).
 - **Component Prop Verification**: Never guess or assume props from Shopify Polaris or other libraries. Always inspect the exact TypeScript prop definitions in `packages/corex-ui/src/components/**` before using any `@xco-agency/corex-ui` component.
 - **Polaris Spacing Tokens**: Always use modern Polaris spacing tokens (`"none"`, `"small-500"`...`"small-100"`, `"base"`, `"large-100"`...`"large-500"`) for all `gap` and `padding` props. Never use legacy numeric tokens (`"100"`, `"200"`, `"300"`, `"400"`).
-
-

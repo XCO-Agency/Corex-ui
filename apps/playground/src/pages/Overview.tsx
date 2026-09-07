@@ -36,9 +36,12 @@ export function Overview() {
           </h1>
 
           <p className="text-base leading-relaxed text-muted-foreground sm:text-lg">
-            A legacy-<code className="rounded bg-muted px-1.5 py-0.5 font-mono text-[0.85em] text-foreground">@shopify/polaris</code>-compatible
-            component library backed by Shopify's actively maintained Polaris web components.
-            Swap the import, keep your code.
+            A legacy-
+            <code className="rounded bg-muted px-1.5 py-0.5 font-mono text-[0.85em] text-foreground">
+              @shopify/polaris
+            </code>
+            -compatible component library backed by Shopify's actively maintained Polaris
+            web components. Swap the import, keep your code.
           </p>
 
           <div className="flex flex-wrap items-center gap-3 pt-1">
@@ -124,7 +127,9 @@ export function Overview() {
                         )}
                       </div>
                       <div className="flex flex-1 flex-col gap-1 border-t border-border p-3.5">
-                        <h4 className="text-sm font-medium text-foreground">{item.name}</h4>
+                        <h4 className="text-sm font-medium text-foreground">
+                          {item.name}
+                        </h4>
                         <p className="line-clamp-2 text-xs leading-relaxed text-muted-foreground">
                           {item.description}
                         </p>
@@ -143,8 +148,8 @@ export function Overview() {
           <div className="space-y-1">
             <h2 className="text-xl font-bold tracking-tight text-foreground">Blocks</h2>
             <p className="text-sm text-muted-foreground">
-              Production-ready multi-component compositions and layout patterns for Shopify
-              apps.
+              Production-ready multi-component compositions and layout patterns for
+              Shopify apps.
             </p>
           </div>
 
@@ -155,7 +160,9 @@ export function Overview() {
                 <div className="mb-4 flex items-center gap-2">
                   <BlockIcon className="size-4 text-muted-foreground" />
                   <h3 className="text-base font-semibold text-foreground">{category}</h3>
-                  <span className="text-xs text-muted-foreground">{components.length}</span>
+                  <span className="text-xs text-muted-foreground">
+                    {components.length}
+                  </span>
                 </div>
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
                   {components.map((item) => {
@@ -174,7 +181,9 @@ export function Overview() {
                           )}
                         </div>
                         <div className="flex flex-1 flex-col gap-1 border-t border-border p-3.5">
-                          <h4 className="text-sm font-semibold text-foreground">{item.name}</h4>
+                          <h4 className="text-sm font-semibold text-foreground">
+                            {item.name}
+                          </h4>
                           <p className="line-clamp-2 text-xs leading-relaxed text-muted-foreground">
                             {item.description}
                           </p>
@@ -193,7 +202,9 @@ export function Overview() {
       <div className="mt-12 flex flex-col items-start gap-3 rounded-2xl border border-dashed border-border/80 p-6 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex items-center gap-2">
           <Sparkles className="size-4 text-foreground/60" />
-          <p className="text-sm text-foreground">New here? Set up the package in a few minutes.</p>
+          <p className="text-sm text-foreground">
+            New here? Set up the package in a few minutes.
+          </p>
         </div>
         <Button render={<Link to="/installation" />}>
           View installation guide

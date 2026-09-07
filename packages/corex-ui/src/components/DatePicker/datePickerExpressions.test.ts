@@ -35,7 +35,9 @@ describe("resolveDateExpression", () => {
     expect(resolveDateExpression("startOfMonth(-1m)", REF)).toBe("2026-08-01");
     expect(resolveDateExpression("endOfMonth(-1m)", REF)).toBe("2026-08-31");
     // Mar 31 - 1 month must clamp to Feb 28 (2026 is not a leap year), not overflow into March.
-    expect(resolveDateExpression("startOfMonth(-1m)", new Date(2026, 2, 31))).toBe("2026-02-01");
+    expect(resolveDateExpression("startOfMonth(-1m)", new Date(2026, 2, 31))).toBe(
+      "2026-02-01",
+    );
   });
 
   it("resolves quarter boundaries", () => {
@@ -59,7 +61,9 @@ describe("resolveDateExpression", () => {
 
 describe("resolveSemanticRange / resolveComparisonRange", () => {
   it("resolves a since/until pair", () => {
-    expect(resolveSemanticRange({ since: "startOfDay(-6d)", until: "today" }, REF)).toEqual({
+    expect(
+      resolveSemanticRange({ since: "startOfDay(-6d)", until: "today" }, REF),
+    ).toEqual({
       start: "2026-09-01",
       end: "2026-09-07",
     });
@@ -122,25 +126,43 @@ describe("preset definition tree", () => {
 describe("DateFilterValueType (storage-facing value)", () => {
   it("resolves a preset filter value dynamically from its id", () => {
     const value = { type: "preset" as const, presetId: "last_7_days" };
-    expect(resolveDateFilterValue(value, REF)).toEqual({ start: "2026-09-01", end: "2026-09-07" });
+    expect(resolveDateFilterValue(value, REF)).toEqual({
+      start: "2026-09-01",
+      end: "2026-09-07",
+    });
 
     // The same stored value resolves differently a month later — proof it never froze a date.
     const later = new Date(2026, 9, 7);
-    expect(resolveDateFilterValue(value, later)).toEqual({ start: "2026-10-01", end: "2026-10-07" });
+    expect(resolveDateFilterValue(value, later)).toEqual({
+      start: "2026-10-01",
+      end: "2026-10-07",
+    });
   });
 
   it("resolves a custom filter value to its stored absolute range", () => {
-    const value = { type: "custom" as const, range: { start: "2026-01-01", end: "2026-01-31" } };
+    const value = {
+      type: "custom" as const,
+      range: { start: "2026-01-01", end: "2026-01-31" },
+    };
     expect(resolveDateFilterValue(value, REF)).toEqual(value.range);
   });
 
   it("resolves the comparison range using the preset's own rule", () => {
     const value = { type: "preset" as const, presetId: "last_7_days" };
-    expect(resolveDateFilterComparison(value, REF)).toEqual({ start: "2026-08-25", end: "2026-08-31" });
+    expect(resolveDateFilterComparison(value, REF)).toEqual({
+      start: "2026-08-25",
+      end: "2026-08-31",
+    });
   });
 
   it("falls back to previous_period for custom ranges", () => {
-    const value = { type: "custom" as const, range: { start: "2026-09-01", end: "2026-09-07" } };
-    expect(resolveDateFilterComparison(value, REF)).toEqual({ start: "2026-08-25", end: "2026-08-31" });
+    const value = {
+      type: "custom" as const,
+      range: { start: "2026-09-01", end: "2026-09-07" },
+    };
+    expect(resolveDateFilterComparison(value, REF)).toEqual({
+      start: "2026-08-25",
+      end: "2026-08-31",
+    });
   });
 });

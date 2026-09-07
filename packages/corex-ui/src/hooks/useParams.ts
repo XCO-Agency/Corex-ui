@@ -1,6 +1,8 @@
 import { useState, useEffect, useCallback, useMemo } from "react";
 
-export type UseParamsResultType<T extends Record<string, string> = Record<string, string>> = {
+export type UseParamsResultType<
+  T extends Record<string, string> = Record<string, string>,
+> = {
   /**
    * Key-value map of all URL search parameters.
    */
@@ -81,35 +83,32 @@ export function useParams<
   const host = useMemo(() => params["host"] ?? null, [params]);
   const locale = useMemo(() => params["locale"] ?? null, [params]);
 
-  const setParams = useCallback(
-    (updates: Record<string, string | null | undefined>) => {
-      if (typeof window === "undefined") return;
+  const setParams = useCallback((updates: Record<string, string | null | undefined>) => {
+    if (typeof window === "undefined") return;
 
-      const searchParams = new URLSearchParams(window.location.search);
-      Object.entries(updates).forEach(([key, val]) => {
-        if (val === null || val === undefined || val === "") {
-          searchParams.delete(key);
-        } else {
-          searchParams.set(key, val);
-        }
-      });
-
-      const newQuery = searchParams.toString();
-      const newRelativePathQuery = newQuery
-        ? `${window.location.pathname}?${newQuery}${window.location.hash}`
-        : `${window.location.pathname}${window.location.hash}`;
-
-      try {
-        window.history.replaceState(window.history.state, "", newRelativePathQuery);
-      } catch {
-        // Fallback for restricted contexts
+    const searchParams = new URLSearchParams(window.location.search);
+    Object.entries(updates).forEach(([key, val]) => {
+      if (val === null || val === undefined || val === "") {
+        searchParams.delete(key);
+      } else {
+        searchParams.set(key, val);
       }
+    });
 
-      setParamsState(parseQueryParams<T>());
-      window.dispatchEvent(new CustomEvent(URL_CHANGE_EVENT));
-    },
-    [],
-  );
+    const newQuery = searchParams.toString();
+    const newRelativePathQuery = newQuery
+      ? `${window.location.pathname}?${newQuery}${window.location.hash}`
+      : `${window.location.pathname}${window.location.hash}`;
+
+    try {
+      window.history.replaceState(window.history.state, "", newRelativePathQuery);
+    } catch {
+      // Fallback for restricted contexts
+    }
+
+    setParamsState(parseQueryParams<T>());
+    window.dispatchEvent(new CustomEvent(URL_CHANGE_EVENT));
+  }, []);
 
   const setParam = useCallback(
     (key: string, value: string | null | undefined) => {

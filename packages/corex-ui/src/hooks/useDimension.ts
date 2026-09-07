@@ -93,7 +93,13 @@ export function resolveResponsiveValue<T>(
     if (responsiveObj.xs !== undefined) return responsiveObj.xs;
   }
 
-  return fallback ?? responsiveObj.xs ?? responsiveObj.sm ?? responsiveObj.md ?? responsiveObj.lg;
+  return (
+    fallback ??
+    responsiveObj.xs ??
+    responsiveObj.sm ??
+    responsiveObj.md ??
+    responsiveObj.lg
+  );
 }
 
 /**

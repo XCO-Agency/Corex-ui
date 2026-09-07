@@ -22,5 +22,3 @@ trigger: always_on
 4. **Polaris Spacing Tokens**:
    - Always use modern Polaris spacing tokens (`"none"`, `"small-500"`, `"small-400"`, `"small-300"`, `"small-200"`, `"small-100"`, `"base"`, `"large-100"`, `"large-200"`, `"large-300"`, `"large-400"`, `"large-500"`) for all `gap` and `padding` props.
    - Never use legacy numeric spacing tokens (`"100"`, `"200"`, `"300"`, `"400"`, etc.).
-
-

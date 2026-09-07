@@ -4,7 +4,11 @@ import { useParams } from "./useParams";
 
 describe("useParams", () => {
   beforeEach(() => {
-    window.history.replaceState(null, "", "/?shop=test-shop.myshopify.com&host=dGVzdC1zaG9w&locale=en");
+    window.history.replaceState(
+      null,
+      "",
+      "/?shop=test-shop.myshopify.com&host=dGVzdC1zaG9w&locale=en",
+    );
   });
 
   it("reads standard shopify embed parameters", () => {

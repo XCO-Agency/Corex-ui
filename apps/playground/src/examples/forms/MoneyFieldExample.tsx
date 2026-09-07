@@ -19,7 +19,9 @@ export function MoneyFieldExample() {
             details="Standard retail price excluding tax"
             onChange={(val) => setPrice(val)}
           />
-          <Text variant="small" tone="subdued">Current price: ${price}</Text>
+          <Text variant="small" tone="subdued">
+            Current price: ${price}
+          </Text>
         </BlockStack>
       </Grid.Item>
 
@@ -35,7 +37,9 @@ export function MoneyFieldExample() {
             details="Minimum monthly spend for ad placements"
             onChange={(val) => setBudget(val)}
           />
-          <Text variant="small" tone="subdued">Current budget: €{budget}</Text>
+          <Text variant="small" tone="subdued">
+            Current budget: €{budget}
+          </Text>
         </BlockStack>
       </Grid.Item>
     </Grid>

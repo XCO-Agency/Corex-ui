@@ -33,9 +33,7 @@ export const DatePicker: ForwardRefExoticComponent<
   const popoverId = id ?? `date-picker-popover-${generatedId.replace(/:/g, "")}`;
 
   // Normalize selected / default value into range
-  const currentRange: DateRangeType = normalizeDateRange(
-    selected ?? defaultValue,
-  );
+  const currentRange: DateRangeType = normalizeDateRange(selected ?? defaultValue);
 
   const handleRangeChange = (range: DateRangeType) => {
     if (typeof selected === "string") {

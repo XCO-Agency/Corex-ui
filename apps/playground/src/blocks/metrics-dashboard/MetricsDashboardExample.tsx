@@ -84,7 +84,10 @@ const METRICS: MetricItemType[] = [
 
 // Default filter: a semantic preset id, not a resolved date. Whoever loads this
 // dashboard next month still sees "the last 7 days" relative to *that* day.
-const DEFAULT_DATE_FILTER: DateFilterValueType = { type: "preset", presetId: "last_7_days" };
+const DEFAULT_DATE_FILTER: DateFilterValueType = {
+  type: "preset",
+  presetId: "last_7_days",
+};
 
 export function MetricsDashboardExample() {
   // Only the semantic filter value is persisted — a preset id (e.g. "last_7_days")
@@ -98,7 +101,10 @@ export function MetricsDashboardExample() {
 
   // Resolution happens only here, at render time, turning the semantic definition
   // into actual dates — the stored value itself never changes when "today" does.
-  const selectedRange = React.useMemo(() => resolveDateFilterValue(dateFilter), [dateFilter]);
+  const selectedRange = React.useMemo(
+    () => resolveDateFilterValue(dateFilter),
+    [dateFilter],
+  );
   const comparisonRange = React.useMemo(
     () => resolveDateFilterComparison(dateFilter),
     [dateFilter],
@@ -120,7 +126,9 @@ export function MetricsDashboardExample() {
         <BlockStack gap="100">
           <Text as="span">
             Showing {formatRangeDisplay(selectedRange)}
-            {comparisonRange ? ` vs. previous period (${formatRangeDisplay(comparisonRange)})` : ""}
+            {comparisonRange
+              ? ` vs. previous period (${formatRangeDisplay(comparisonRange)})`
+              : ""}
           </Text>
           <Text as="span" color="subdued">
             Stored filter (never resolved dates): {JSON.stringify(dateFilter)}

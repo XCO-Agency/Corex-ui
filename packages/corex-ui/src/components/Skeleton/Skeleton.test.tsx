@@ -28,14 +28,14 @@ describe("Skeleton", () => {
     ).toContain("border-radius: var(--p-border-radius-300, 12px)");
 
     const { container: cFull } = render(<Skeleton borderRadius="full" />);
-    expect(
-      cFull.querySelector("[data-corex-skeleton]")?.getAttribute("style"),
-    ).toContain("border-radius: var(--p-border-radius-full, 9999px)");
+    expect(cFull.querySelector("[data-corex-skeleton]")?.getAttribute("style")).toContain(
+      "border-radius: var(--p-border-radius-full, 9999px)",
+    );
 
     const { container: cNone } = render(<Skeleton borderRadius="none" />);
-    expect(
-      cNone.querySelector("[data-corex-skeleton]")?.getAttribute("style"),
-    ).toContain("border-radius: 0px");
+    expect(cNone.querySelector("[data-corex-skeleton]")?.getAttribute("style")).toContain(
+      "border-radius: 0px",
+    );
   });
 
   it("supports dynamic inlineSize and blockSize", () => {

@@ -339,10 +339,7 @@ export function AppWindowThumbnail() {
         strokeWidth="1.2"
       />
       {/* Titlebar */}
-      <path
-        d="M18 22 a6 6 0 0 1 6 -6 h112 a6 6 0 0 1 6 6 v9 h-124 Z"
-        fill={mutedBg}
-      />
+      <path d="M18 22 a6 6 0 0 1 6 -6 h112 a6 6 0 0 1 6 6 v9 h-124 Z" fill={mutedBg} />
       <line x1="18" y1="31" x2="142" y2="31" stroke={cardBorder} strokeWidth="0.8" />
       <circle cx="27" cy="23" r="2" fill="#ed6a5e" />
       <circle cx="34" cy="23" r="2" fill="#f5bf4f" />
@@ -350,14 +347,7 @@ export function AppWindowThumbnail() {
       <rect x="54" y="20" width="52" height="6" rx="3" fill={cardBg} />
 
       {/* Mini sidebar */}
-      <rect
-        x="18"
-        y="31"
-        width="26"
-        height="53"
-        fill={mutedBg}
-        fillOpacity="0.4"
-      />
+      <rect x="18" y="31" width="26" height="53" fill={mutedBg} fillOpacity="0.4" />
       <rect
         x="23"
         y="38"
@@ -611,15 +601,7 @@ export function SaveBarThumbnail() {
         strokeOpacity="0.3"
         strokeWidth="1"
       />
-      <rect
-        x="84"
-        y="57"
-        width="14"
-        height="4"
-        rx="2"
-        fill="#ffffff"
-        fillOpacity="0.6"
-      />
+      <rect x="84" y="57" width="14" height="4" rx="2" fill="#ffffff" fillOpacity="0.6" />
 
       {/* Save button */}
       <rect x="106" y="51" width="30" height="16" rx="4" fill={success} />
@@ -880,14 +862,7 @@ export function SkeletonThumbnail() {
 export function SpinnerThumbnail() {
   return (
     <Frame>
-      <circle
-        cx="80"
-        cy="50"
-        r="18"
-        fill="none"
-        stroke={mutedBg}
-        strokeWidth="3.5"
-      />
+      <circle cx="80" cy="50" r="18" fill="none" stroke={mutedBg} strokeWidth="3.5" />
       <path
         d="M80 32 a18 18 0 0 1 18 18"
         fill="none"
@@ -905,15 +880,7 @@ export function TooltipThumbnail() {
     <Frame>
       {/* Tooltip bubble */}
       <rect x="38" y="20" width="84" height="24" rx="6" fill="#202223" />
-      <rect
-        x="48"
-        y="29"
-        width="64"
-        height="6"
-        rx="3"
-        fill="#ffffff"
-        fillOpacity="0.9"
-      />
+      <rect x="48" y="29" width="64" height="6" rx="3" fill="#ffffff" fillOpacity="0.9" />
       <path d="M75 44 l5 6 l5 -6 Z" fill="#202223" />
 
       {/* Target button below */}
@@ -2079,10 +2046,7 @@ export function TableThumbnail() {
         strokeWidth="1.2"
       />
       {/* Header row */}
-      <path
-        d="M18 25 a7 7 0 0 1 7 -7 h110 a7 7 0 0 1 7 7 v10 h-124 Z"
-        fill={mutedBg}
-      />
+      <path d="M18 25 a7 7 0 0 1 7 -7 h110 a7 7 0 0 1 7 7 v10 h-124 Z" fill={mutedBg} />
       <line x1="18" y1="35" x2="142" y2="35" stroke={cardBorder} strokeWidth="1" />
       <rect
         x="26"
@@ -2560,12 +2524,7 @@ export function FloatingThumbnail() {
         stroke={cardBorder}
         strokeWidth="1.2"
       />
-      <path
-        d="M75 56 l5 6 l5 -6 Z"
-        fill={cardBg}
-        stroke={cardBorder}
-        strokeWidth="1.2"
-      />
+      <path d="M75 56 l5 6 l5 -6 Z" fill={cardBg} stroke={cardBorder} strokeWidth="1.2" />
       <rect
         x="44"
         y="26"
@@ -2973,14 +2932,7 @@ export function OnboardingThumbnail() {
       <rect x="109" y="63" width="16" height="3" rx="1.5" fill="#ffffff" />
 
       {/* Step 3: Pending */}
-      <circle
-        cx="32"
-        cy="78"
-        r="4"
-        fill={cardBg}
-        stroke={cardBorder}
-        strokeWidth="1"
-      />
+      <circle cx="32" cy="78" r="4" fill={cardBg} stroke={cardBorder} strokeWidth="1" />
       <rect
         x="42"
         y="76"
@@ -3083,15 +3035,7 @@ export function SettingsLayoutThumbnail() {
       {/* Bottom Save Bar */}
       <rect x="18" y="74" width="124" height="14" rx="4" fill="#202223" />
       <circle cx="26" cy="81" r="2" fill="#f5bf4f" />
-      <rect
-        x="32"
-        y="79"
-        width="34"
-        height="4"
-        rx="2"
-        fill="#ffffff"
-        fillOpacity="0.8"
-      />
+      <rect x="32" y="79" width="34" height="4" rx="2" fill="#ffffff" fillOpacity="0.8" />
       <rect x="114" y="77" width="22" height="8" rx="2.5" fill={success} />
       <rect x="119" y="80" width="12" height="2.5" rx="1.2" fill="#ffffff" />
     </Frame>

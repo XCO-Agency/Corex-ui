@@ -1,12 +1,7 @@
 import type { CSSProperties, ReactNode } from "react";
 
 export type SkeletonRadiusType =
-  | "small"
-  | "base"
-  | "large"
-  | "full"
-  | "none"
-  | (string & {});
+  "small" | "base" | "large" | "full" | "none" | (string & {});
 
 export type SkeletonPropsType = {
   /** Width or inlineSize of the skeleton. Default "100%". Accepts numbers (px) or CSS strings. */

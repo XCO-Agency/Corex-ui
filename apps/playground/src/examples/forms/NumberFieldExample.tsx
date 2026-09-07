@@ -19,7 +19,9 @@ export function NumberFieldExample() {
             details="Minimum units a customer must purchase per order"
             onChange={(val) => setQuantity(val)}
           />
-          <Text variant="small" tone="subdued">Quantity: {quantity} units</Text>
+          <Text variant="small" tone="subdued">
+            Quantity: {quantity} units
+          </Text>
         </BlockStack>
       </Grid.Item>
 
@@ -36,7 +38,9 @@ export function NumberFieldExample() {
             details="Percentage off during flash sale campaigns"
             onChange={(val) => setDiscountPercent(val)}
           />
-          <Text variant="small" tone="subdued">Discount: {discountPercent}%</Text>
+          <Text variant="small" tone="subdued">
+            Discount: {discountPercent}%
+          </Text>
         </BlockStack>
       </Grid.Item>
     </Grid>

@@ -15,7 +15,9 @@ export function PasswordFieldExample() {
             details="Masked for security. Used to authenticate webhook listeners"
             onChange={(val) => setApiKey(val)}
           />
-          <Text variant="small" tone="subdued">Token length: {apiKey.length} chars</Text>
+          <Text variant="small" tone="subdued">
+            Token length: {apiKey.length} chars
+          </Text>
         </BlockStack>
       </Grid.Item>
 
@@ -29,7 +31,9 @@ export function PasswordFieldExample() {
             details="Used to verify HMAC signatures of incoming events"
             onChange={(val) => setWebhookSecret(val)}
           />
-          <Text variant="small" tone="subdued">Secret configured: {webhookSecret ? "Yes" : "No"}</Text>
+          <Text variant="small" tone="subdued">
+            Secret configured: {webhookSecret ? "Yes" : "No"}
+          </Text>
         </BlockStack>
       </Grid.Item>
     </Grid>

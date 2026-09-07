@@ -203,6 +203,8 @@ export function getMonthTitle(year: number, month: number): string {
  * (Today, Last 7 days, Quarter to date, ...) is defined once as a semantic rule and
  * resolved to actual dates here, at render time — never stored as a resolved date.
  */
-export function getDefaultPresets(referenceDate: Date = new Date()): DatePresetItemType[] {
+export function getDefaultPresets(
+  referenceDate: Date = new Date(),
+): DatePresetItemType[] {
   return resolvePresetDefinitions(getPresetDefinitions(), referenceDate);
 }

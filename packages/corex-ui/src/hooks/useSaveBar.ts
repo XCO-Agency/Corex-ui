@@ -16,7 +16,8 @@ export function useSaveBar(): UseSaveBarResult {
   return useMemo(
     () => ({
       show(id?: string) {
-        const shopify = typeof window !== "undefined" ? (window.shopify as any) : undefined;
+        const shopify =
+          typeof window !== "undefined" ? (window.shopify as any) : undefined;
         if (shopify?.saveBar) {
           shopify.saveBar.show(id);
           return;
@@ -27,7 +28,8 @@ export function useSaveBar(): UseSaveBarResult {
         );
       },
       hide(id?: string) {
-        const shopify = typeof window !== "undefined" ? (window.shopify as any) : undefined;
+        const shopify =
+          typeof window !== "undefined" ? (window.shopify as any) : undefined;
         if (shopify?.saveBar) {
           shopify.saveBar.hide(id);
           return;

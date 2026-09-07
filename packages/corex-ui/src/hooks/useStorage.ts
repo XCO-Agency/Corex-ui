@@ -91,9 +91,7 @@ export function useStorage<T>(
     ? keyOrOptions.initialValue
     : (initialValueArg as T);
 
-  const mergedOptions = isObjectSignature
-    ? keyOrOptions
-    : (optionsArg ?? {});
+  const mergedOptions = isObjectSignature ? keyOrOptions : (optionsArg ?? {});
 
   const {
     storage = mergedOptions.type ?? "session",

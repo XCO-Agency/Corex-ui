@@ -108,7 +108,10 @@ export function AppSidebar({ onOpenSearch, ...props }: AppSidebarPropsType) {
           <SidebarGroupContent>
             <SidebarMenu>
               <SidebarMenuItem>
-                <SidebarMenuButton render={<Link to="/" />} isActive={currentPath === "/"}>
+                <SidebarMenuButton
+                  render={<Link to="/" />}
+                  isActive={currentPath === "/"}
+                >
                   <Inbox className="size-4" />
                   <span>Overview</span>
                 </SidebarMenuButton>

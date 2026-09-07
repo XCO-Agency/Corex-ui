@@ -262,9 +262,7 @@ export const Floating: ForwardRefExoticComponent<
       style={rootStyles}
     >
       <div style={contentStyles}>
-        {collapsible && isCollapsed
-          ? renderCollapsedContent()
-          : renderExpandedContent()}
+        {collapsible && isCollapsed ? renderCollapsedContent() : renderExpandedContent()}
       </div>
     </div>
   );

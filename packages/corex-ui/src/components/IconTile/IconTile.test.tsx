@@ -18,12 +18,7 @@ describe("IconTile", () => {
 
   it("applies tone, size, and border radius correctly", () => {
     const { rerender } = render(
-      <IconTile
-        data-testid="tile"
-        tone="caution"
-        size="lg"
-        borderRadius="full"
-      >
+      <IconTile data-testid="tile" tone="caution" size="lg" borderRadius="full">
         Icon
       </IconTile>,
     );

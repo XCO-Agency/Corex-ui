@@ -36,10 +36,7 @@ export const Modal = forwardRef<ModalElement, ModalPropsType>(function Modal(
 
   useDomEvent(innerRef, "hide", () => onClose());
 
-  const mergedRef = useMemo(
-    () => mergeRefs(innerRef, forwardedRef),
-    [forwardedRef],
-  );
+  const mergedRef = useMemo(() => mergeRefs(innerRef, forwardedRef), [forwardedRef]);
 
   return (
     <SModal ref={mergedRef} heading={title} {...rest}>
