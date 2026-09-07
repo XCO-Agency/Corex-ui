@@ -1,4 +1,4 @@
-import { forwardRef, useEffect, useRef } from "react";
+import { forwardRef, useEffect, useMemo, useRef } from "react";
 import { createWebComponent } from "../../core/createWebComponent";
 import { mergeRefs } from "../../core/mergeRefs";
 import { useDomEvent } from "../../core/useDomEvent";
@@ -36,8 +36,13 @@ export const Modal = forwardRef<ModalElement, ModalPropsType>(function Modal(
 
   useDomEvent(innerRef, "hide", () => onClose());
 
+  const mergedRef = useMemo(
+    () => mergeRefs(innerRef, forwardedRef),
+    [forwardedRef],
+  );
+
   return (
-    <SModal ref={mergeRefs(innerRef, forwardedRef)} heading={title} {...rest}>
+    <SModal ref={mergedRef} heading={title} {...rest}>
       {children}
       {primaryAction && (
         <Button

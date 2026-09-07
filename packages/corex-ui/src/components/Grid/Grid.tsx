@@ -1,4 +1,9 @@
-import { forwardRef, type ForwardRefExoticComponent, type RefAttributes } from "react";
+import {
+  forwardRef,
+  useMemo,
+  type ForwardRefExoticComponent,
+  type RefAttributes,
+} from "react";
 import type { CSSProperties, Ref } from "react";
 import { createWebComponent } from "../../core/createWebComponent";
 import {
@@ -412,7 +417,10 @@ const GridRoot = forwardRef<HTMLElement, GridPropsType>(function Grid(
   forwardedRef,
 ) {
   const { breakpoint, ref: measureRef } = useDimension();
-  const mergedRef = forwardedRef ? mergeRefs(forwardedRef, measureRef) : measureRef;
+  const mergedRef = useMemo(
+    () => (forwardedRef ? mergeRefs(forwardedRef, measureRef) : measureRef),
+    [forwardedRef, measureRef],
+  );
 
   const resolvedAccessibilityVisibility =
     accessibilityVisibility ?? (visuallyHidden ? "exclusive" : undefined);

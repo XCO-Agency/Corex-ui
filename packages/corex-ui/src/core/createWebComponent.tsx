@@ -1,4 +1,4 @@
-import { forwardRef, useLayoutEffect, useRef } from "react";
+import { forwardRef, useLayoutEffect, useMemo, useRef } from "react";
 import type { ReactNode } from "react";
 import { assignDomProp } from "./assignDomProp";
 import { mergeRefs } from "./mergeRefs";
@@ -42,6 +42,10 @@ export function createWebComponent<
     function WebComponent(props, forwardedRef) {
       const innerRef = useRef<TElement>(null);
       const { children, ...rest } = props;
+      const mergedRef = useMemo(
+        () => mergeRefs(innerRef, forwardedRef),
+        [forwardedRef],
+      );
 
       useLayoutEffect(() => {
         const node = innerRef.current;
@@ -105,7 +109,7 @@ export function createWebComponent<
       const Tag: any = tagName;
 
       return (
-        <Tag {...passthroughProps} ref={mergeRefs(innerRef, forwardedRef)}>
+        <Tag {...passthroughProps} ref={mergedRef}>
           {children}
         </Tag>
       );
