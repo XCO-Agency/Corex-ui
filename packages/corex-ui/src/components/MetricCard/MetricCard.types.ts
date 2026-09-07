@@ -21,6 +21,7 @@ export type MetricCardBadgeType = {
 export type MetricCardPropsType = {
   id: string;
   title: string;
+  fetching?: boolean;
   value: ReactNode;
   tooltip?: ReactNode;
   icon?: IconType;

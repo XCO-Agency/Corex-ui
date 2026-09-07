@@ -5,6 +5,10 @@ import { Box } from "../Box";
 import { BlockStack } from "../BlockStack";
 import { Icon } from "../Icon";
 import { Clickable } from "../Clickable";
+import { Skeleton } from "../Skeleton";
+import { InlineStack } from "../InlineStack";
+import { Badge } from "../Badge";
+import { Card } from "../Card";
 
 const SPARK_W = 64;
 const SPARK_H = 20;
@@ -201,13 +205,14 @@ export function MetricCard({
   sparklineColor,
   sparklineWidth,
   sparklineHeight,
+  fetching,
   onClick,
 }: MetricCardPropsType): JSX.Element {
-  const innerContent = (
+  let innerContent = (
     <Box padding="small-200">
       <BlockStack gap="small-100">
         {/* Header: icon + title + tooltip + badge */}
-        <s-stack direction="inline" justifyContent="space-between" alignItems="center">
+        <InlineStack justifyContent="space-between" alignItems="center">
           <div
             style={{
               display: "flex",
@@ -223,7 +228,7 @@ export function MetricCard({
             </Text>
           </div>
           {badge && badge.value && (
-            <s-badge
+            <Badge
               tone={badge?.tone ?? "neutral"}
 
               icon={
@@ -231,17 +236,17 @@ export function MetricCard({
               }
             >
               {badge.value}
-            </s-badge>
+            </Badge>
           )}
-        </s-stack>
+        </InlineStack>
 
         {/* Value + sparkline */}
-        <s-stack direction="inline" justifyContent="space-between" alignItems="end">
-          <s-stack direction="inline" gap="small-200" alignItems="end">
-            <s-text fontVariantNumeric="tabular-nums">
-              <strong>{value}</strong>
-            </s-text>
-          </s-stack>
+        <InlineStack justifyContent="space-between" alignItems="end">
+          <InlineStack gap="small-200" alignItems="end">
+            <Text heading as="strong" variant="base" fontVariantNumeric="tabular-nums">
+              {value}
+            </Text>
+          </InlineStack>
           {sparklineData && (
             <Sparkline
               data={sparklineData}
@@ -250,22 +255,66 @@ export function MetricCard({
               height={sparklineHeight}
             />
           )}
-        </s-stack>
+        </InlineStack>
       </BlockStack>
     </Box>
   );
+  if (fetching) {
+    innerContent = <MetricsSkeleton {...{ icon, iconTone, title, id }} />;
+  }
 
   return (
-    <s-section padding="none">
-      <s-box padding="small-300">
-        {onClick ? (
+    <Card padding="none">
+      <Box padding="small-300">
+        {onClick && !fetching ? (
           <Clickable onClick={onClick} borderRadius="base">
             {innerContent}
           </Clickable>
         ) : (
           innerContent
         )}
-      </s-box>
-    </s-section>
+      </Box>
+    </Card>
+  );
+}
+
+function MetricsSkeleton({
+  icon,
+  iconTone,
+  title,
+  id,
+}: Pick<MetricCardPropsType, "icon" | "iconTone" | "title" | "id">) {
+  return (
+    <Box padding="small-200">
+      <BlockStack gap="small-100">
+        {/* Header: icon + title + tooltip + badge */}
+        <s-stack direction="inline" justifyContent="space-between" alignItems="center">
+          <div
+            style={{
+              display: "flex",
+              gap: 8,
+              alignItems: "center",
+              flex: 1,
+              marginInlineStart: -4,
+            }}
+          >
+            {icon && <Icon type={icon} tone={iconTone} />}
+            <Text heading interestFor={id}>
+              {title}
+            </Text>
+          </div>
+          <Skeleton width="30px" height="20px" />
+        </s-stack>
+
+        {/* Value + sparkline */}
+        <s-stack direction="inline" justifyContent="space-between" alignItems="end">
+          <s-stack direction="inline" gap="small-200" alignItems="end">
+            <Skeleton width="50px" height="20px" />
+          </s-stack>
+
+          <Skeleton width="50px" height="20px" />
+        </s-stack>
+      </BlockStack>
+    </Box>
   );
 }

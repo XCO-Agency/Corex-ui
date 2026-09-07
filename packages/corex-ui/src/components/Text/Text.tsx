@@ -17,25 +17,25 @@ export const VARIANT_SIZE_MAP: Record<
 > = {
   xs: {
     fontSize: "0.7rem",
-    lineHeight: "1rem",
+    lineHeight: "0.9rem",
     headingTag: "h4",
     headingWeight: 600,
   },
   small: {
     fontSize: "0.75rem",
-    lineHeight: "1rem",
+    lineHeight: "0.9rem",
     headingTag: "h4",
     headingWeight: 600,
   },
   base: {
     fontSize: "0.8125rem",
-    lineHeight: "1.25rem",
+    lineHeight: "0.9rem",
     headingTag: "h3",
     headingWeight: 600,
   },
   large: {
     fontSize: "1.125rem",
-    lineHeight: "1.5rem",
+    lineHeight: "1.2rem",
     headingTag: "h2",
     headingWeight: 700,
   },
@@ -71,18 +71,7 @@ export const Text = forwardRef<HTMLElement, TextPropsType>(function Text(
       ref={ref}
       interestFor={hasTooltip ? (interestFor ?? id) : undefined}
       className={!WrapperTag ? className : undefined}
-      style={{
-        ...(!WrapperTag ? { margin: 0 } : {}),
-        ...(!WrapperTag && hasTooltip && underline
-          ? { borderBlockEnd: "2px dotted var(--p-color-border-tertiary, #cccccc)" }
-          : {}),
-        ...(!WrapperTag ? { lineHeight: config.lineHeight } : {}),
-        ...(!WrapperTag ? { "--s-global-font-size-26021": config.fontSize } : {}),
-        ...(!WrapperTag && heading
-          ? { "--s-global-font-weight-26021": config.headingWeight }
-          : {}),
-        ...(!WrapperTag ? style : {}),
-      }}
+
       {...rest}
     >
       {children}
@@ -96,11 +85,12 @@ export const Text = forwardRef<HTMLElement, TextPropsType>(function Text(
           className={className}
           style={{
             margin: 0,
+            display: "flex",
             borderBlockEnd:
               hasTooltip && underline
                 ? "2px dotted var(--p-color-border-tertiary, #cccccc)"
                 : "none",
-            lineHeight: config.lineHeight,
+            "--s-global-line-height-26021": config.lineHeight,
             "--s-global-font-weight-26021": heading ? config.headingWeight : "medium",
             "--s-global-font-size-26021": config.fontSize,
             ...style,

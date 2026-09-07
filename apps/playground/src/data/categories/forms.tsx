@@ -1,6 +1,20 @@
 import type { ComponentEntry } from "../types";
 import { TextFieldExample } from "@/examples/forms/TextFieldExample";
 import TextFieldExampleRaw from "@/examples/forms/TextFieldExample.tsx?raw";
+import { MoneyFieldExample } from "@/examples/forms/MoneyFieldExample";
+import MoneyFieldExampleRaw from "@/examples/forms/MoneyFieldExample.tsx?raw";
+import { ColorFieldExample } from "@/examples/forms/ColorFieldExample";
+import ColorFieldExampleRaw from "@/examples/forms/ColorFieldExample.tsx?raw";
+import { DropZoneExample } from "@/examples/forms/DropZoneExample";
+import DropZoneExampleRaw from "@/examples/forms/DropZoneExample.tsx?raw";
+import { EmailFieldExample } from "@/examples/forms/EmailFieldExample";
+import EmailFieldExampleRaw from "@/examples/forms/EmailFieldExample.tsx?raw";
+import { NumberFieldExample } from "@/examples/forms/NumberFieldExample";
+import NumberFieldExampleRaw from "@/examples/forms/NumberFieldExample.tsx?raw";
+import { PasswordFieldExample } from "@/examples/forms/PasswordFieldExample";
+import PasswordFieldExampleRaw from "@/examples/forms/PasswordFieldExample.tsx?raw";
+import { UrlFieldExample } from "@/examples/forms/UrlFieldExample";
+import UrlFieldExampleRaw from "@/examples/forms/UrlFieldExample.tsx?raw";
 import { SelectExample } from "@/examples/forms/SelectExample";
 import SelectExampleRaw from "@/examples/forms/SelectExample.tsx?raw";
 import { CheckboxExample } from "@/examples/forms/CheckboxExample";
@@ -23,6 +37,104 @@ export const formsComponents: ComponentEntry[] = [
         title: "Controlled input",
         Example: TextFieldExample,
         code: TextFieldExampleRaw,
+      },
+    ],
+  },
+  {
+    name: "MoneyField",
+    slug: "money-field",
+    category: "Forms",
+    description:
+      "Collects monetary values with built-in currency formatting, min/max limits, and validation.",
+    examples: [
+      {
+        title: "Price & budget inputs",
+        Example: MoneyFieldExample,
+        code: MoneyFieldExampleRaw,
+      },
+    ],
+  },
+  {
+    name: "ColorField",
+    slug: "color-field",
+    category: "Forms",
+    description:
+      "Select colors through an integrated color picker and hex/rgb/hsl text inputs with alpha support.",
+    examples: [
+      {
+        title: "Brand colors & alpha transparency",
+        Example: ColorFieldExample,
+        code: ColorFieldExampleRaw,
+      },
+    ],
+  },
+  {
+    name: "DropZone",
+    slug: "drop-zone",
+    category: "Forms",
+    description:
+      "Upload files through drag-and-drop or browsing with file type validation and multi-file support.",
+    examples: [
+      {
+        title: "File & media uploads",
+        Example: DropZoneExample,
+        code: DropZoneExampleRaw,
+      },
+    ],
+  },
+  {
+    name: "EmailField",
+    slug: "email-field",
+    category: "Forms",
+    description:
+      "Captures email address inputs with email keyboards on mobile and browser autofill support.",
+    examples: [
+      {
+        title: "Support & billing email inputs",
+        Example: EmailFieldExample,
+        code: EmailFieldExampleRaw,
+      },
+    ],
+  },
+  {
+    name: "NumberField",
+    slug: "number-field",
+    category: "Forms",
+    description:
+      "Captures numeric input with step increments, min/max bounds, prefix/suffix units, and mobile keypad support.",
+    examples: [
+      {
+        title: "Quantities & percentage rates",
+        Example: NumberFieldExample,
+        code: NumberFieldExampleRaw,
+      },
+    ],
+  },
+  {
+    name: "PasswordField",
+    slug: "password-field",
+    category: "Forms",
+    description:
+      "Securely collects passwords, API tokens, and secrets with masked characters.",
+    examples: [
+      {
+        title: "API tokens & secrets",
+        Example: PasswordFieldExample,
+        code: PasswordFieldExampleRaw,
+      },
+    ],
+  },
+  {
+    name: "UrlField",
+    slug: "url-field",
+    category: "Forms",
+    description:
+      "Collects website addresses, webhook destinations, and endpoints with URL validation.",
+    examples: [
+      {
+        title: "Domains & webhook URLs",
+        Example: UrlFieldExample,
+        code: UrlFieldExampleRaw,
       },
     ],
   },
