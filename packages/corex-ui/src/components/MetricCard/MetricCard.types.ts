@@ -19,7 +19,7 @@ export type MetricCardBadgeType = {
 };
 
 export type MetricCardPropsType = {
-  id: string;
+  id?: string;
   title: string;
   fetching?: boolean;
   value: ReactNode;

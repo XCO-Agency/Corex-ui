@@ -16,7 +16,9 @@ export function UrlFieldExample() {
             details="The public address where customers visit your storefront"
             onChange={(val) => setStoreUrl(val)}
           />
-          <Text variant="small" tone="subdued">Domain: {storeUrl}</Text>
+          <Text variant="small" color="subdued">
+            Domain: {storeUrl}
+          </Text>
         </BlockStack>
       </Grid.Item>
 
@@ -29,7 +31,9 @@ export function UrlFieldExample() {
             details="Shopify will POST event payloads to this HTTPS endpoint"
             onChange={(val) => setWebhookUrl(val)}
           />
-          <Text variant="small" tone="subdued">Endpoint: {webhookUrl}</Text>
+          <Text variant="small" color="subdued">
+            Endpoint: {webhookUrl}
+          </Text>
         </BlockStack>
       </Grid.Item>
     </Grid>

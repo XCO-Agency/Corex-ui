@@ -194,7 +194,7 @@ export function Sparkline({
 
 // ─── MetricCard Component ───────────────────────────────────────────────────────
 export function MetricCard({
-  id,
+  id: propID,
   title,
   value,
   icon,
@@ -208,6 +208,8 @@ export function MetricCard({
   fetching,
   onClick,
 }: MetricCardPropsType): JSX.Element {
+  const id = propID ?? useId();
+
   let innerContent = (
     <Box padding="small-200">
       <BlockStack gap="small-100">

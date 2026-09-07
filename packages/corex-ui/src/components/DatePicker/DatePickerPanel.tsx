@@ -8,7 +8,7 @@ import type {
 import { DatePickerPresets } from "./DatePickerPresets";
 import { DatePickerManualInputs } from "./DatePickerManualInputs";
 import { DatePickerCalendar } from "./DatePickerCalendar";
-import { toISODateString } from "./datePickerUtils";
+import { normalizeDateRange } from "./datePickerUtils";
 import { Button } from "../Button";
 import { Divider } from "../Divider";
 import { InlineStack } from "../InlineStack";
@@ -16,7 +16,7 @@ import { BlockStack } from "../BlockStack";
 
 export type DatePickerPanelPropsType = Pick<
   DatePickerPropsType,
-  "selected" | "presets" | "onApply" | "onCancel"
+  "selected" | "defaultValue" | "presets" | "onApply" | "onCancel"
 > & {
   onChangeRange?: (range: DateRangeType) => void;
   id: string;
@@ -25,6 +25,7 @@ export type DatePickerPanelPropsType = Pick<
 
 export function DatePickerPanel({
   selected,
+  defaultValue,
   id,
   inline,
   presets = true,
@@ -32,30 +33,49 @@ export function DatePickerPanel({
   onCancel,
   onChangeRange,
 }: DatePickerPanelPropsType) {
-  // Normalize initial range from selected prop
+  // Normalize initial range from selected / defaultValue prop
   const getInitialRange = (): DateRangeType => {
-    if (!selected) {
-      const today = toISODateString(new Date());
-      return { start: today, end: today };
-    }
-    if (typeof selected === "string") {
-      return { start: selected, end: selected };
-    }
-    return selected;
+    return normalizeDateRange(selected ?? defaultValue);
   };
 
   const [currentRange, setCurrentRange] = useState<DateRangeType>(getInitialRange);
+  const [viewDate, setViewDate] = useState<string>(() => getInitialRange().start);
   const [activePresetId, setActivePresetId] = useState<string>("custom");
 
   useEffect(() => {
-    if (selected) {
-      if (typeof selected === "string") {
-        setCurrentRange({ start: selected, end: selected });
-      } else {
-        setCurrentRange(selected);
+    const range = normalizeDateRange(selected ?? defaultValue);
+    setCurrentRange(range);
+    setViewDate(range.start);
+  }, [selected, defaultValue]);
+
+  // Sync / reset to default or selected date whenever the popover opens
+  useEffect(() => {
+    if (inline || !id) return;
+    const popoverEl = document.getElementById(id);
+    if (!popoverEl) return;
+
+    const handleToggle = (e: Event) => {
+      const toggleEvent = e as any;
+      const isOpen =
+        toggleEvent.newState === "open" ||
+        popoverEl.matches?.(":popover-open") ||
+        popoverEl.hasAttribute("open");
+
+      if (isOpen) {
+        const range = getInitialRange();
+        setCurrentRange(range);
+        setViewDate(range.start);
       }
-    }
-  }, [selected]);
+    };
+
+    popoverEl.addEventListener("toggle", handleToggle);
+    popoverEl.addEventListener("beforetoggle", handleToggle);
+
+    return () => {
+      popoverEl.removeEventListener("toggle", handleToggle);
+      popoverEl.removeEventListener("beforetoggle", handleToggle);
+    };
+  }, [id, inline, selected, defaultValue]);
 
   // Requirement 1: presets can be shown on left when available, otherwise hide
   const hasPresets = Boolean(presets);
@@ -66,6 +86,9 @@ export function DatePickerPanel({
     if (preset.range) {
       const range = typeof preset.range === "function" ? preset.range() : preset.range;
       setCurrentRange(range);
+      if (range.start) {
+        setViewDate(range.start);
+      }
       onChangeRange?.(range);
     }
   };
@@ -109,6 +132,9 @@ export function DatePickerPanel({
 
   const handleManualRangeChange = (newRange: DateRangeType) => {
     setCurrentRange(newRange);
+    if (newRange.start) {
+      setViewDate(newRange.start);
+    }
     setActivePresetId("custom");
     onChangeRange?.(newRange);
   };
@@ -151,6 +177,7 @@ export function DatePickerPanel({
         <DatePickerCalendar
           startDate={currentRange.start}
           endDate={currentRange.end || currentRange.start}
+          viewDate={viewDate}
           onSelectDate={handleDateClick}
         />
 

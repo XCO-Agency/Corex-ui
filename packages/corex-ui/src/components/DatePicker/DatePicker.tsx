@@ -1,25 +1,17 @@
 import { forwardRef, useId } from "react";
 import type { ForwardRefExoticComponent, RefAttributes } from "react";
-import { createWebComponent } from "../../core/createWebComponent";
 import { Popover } from "../Popover";
 import type { DatePickerPropsType, DateRangeType } from "./DatePicker.types";
 import { DatePickerPanel } from "./DatePickerPanel";
-import { formatRangeDisplay, toISODateString } from "./datePickerUtils";
+import { formatRangeDisplay, normalizeDateRange } from "./datePickerUtils";
 import { Button } from "../Button";
-
-const SDatePicker = createWebComponent<HTMLElement, { onChange: "change" }>(
-  "s-date-picker",
-  {
-    events: { onChange: "change" },
-    domProps: ["selected"],
-  },
-);
 
 export const DatePicker: ForwardRefExoticComponent<
   DatePickerPropsType & RefAttributes<HTMLElement>
 > = forwardRef<HTMLElement, DatePickerPropsType>(function DatePicker(
   {
     selected,
+    defaultValue,
     onChange,
     onApply,
     onCancel,
@@ -38,17 +30,10 @@ export const DatePicker: ForwardRefExoticComponent<
   const generatedId = useId();
   const popoverId = id ?? `date-picker-popover-${generatedId.replace(/:/g, "")}`;
 
-  // Normalize selected value into range
-  const currentRange: DateRangeType = (() => {
-    if (!selected) {
-      const today = toISODateString(new Date());
-      return { start: today, end: today };
-    }
-    if (typeof selected === "string") {
-      return { start: selected, end: selected };
-    }
-    return selected;
-  })();
+  // Normalize selected / default value into range
+  const currentRange: DateRangeType = normalizeDateRange(
+    selected ?? defaultValue,
+  );
 
   const handleRangeChange = (range: DateRangeType) => {
     if (typeof selected === "string") {
@@ -83,6 +68,7 @@ export const DatePicker: ForwardRefExoticComponent<
       <DatePickerPanel
         id={popoverId}
         selected={selected}
+        defaultValue={defaultValue}
         presets={presets}
         inline
         onApply={handleApply}
@@ -98,6 +84,7 @@ export const DatePicker: ForwardRefExoticComponent<
         <DatePickerPanel
           id={popoverId}
           selected={selected}
+          defaultValue={defaultValue}
           presets={presets}
           onApply={handleApply}
           onCancel={handleCancel}

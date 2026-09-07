@@ -15,11 +15,18 @@ export type DatePresetItemType = {
 
 export type NativeDatePickerProps = PolarisPropsType<"s-date-picker">;
 
+export type DatePickerValueType = string | DateRangeType | Date;
+
 export type DatePickerPropsType = NativeDatePickerProps & {
   /**
-   * Selected single date (`"2026-09-05"`) or date range object (`{ start: "2026-01-01", end: "2026-09-05" }`).
+   * Selected single date (`"2026-09-05"`), date range object (`{ start: "2026-01-01", end: "2026-09-05" }`), or Date.
    */
-  selected?: string | DateRangeType;
+  selected?: DatePickerValueType;
+
+  /**
+   * Default initial date or range when uncontrolled.
+   */
+  defaultValue?: DatePickerValueType;
 
   /**
    * Callback fired when date or range changes.

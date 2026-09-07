@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import type { CSSProperties, MouseEvent } from "react";
 import {
   getMonthMatrix,
@@ -18,6 +18,7 @@ export type DatePickerCalendarPropsType = {
   startDate: string;
   endDate: string;
   onSelectDate: (dateStr: string) => void;
+  viewDate?: string;
   className?: string;
 };
 
@@ -27,14 +28,50 @@ export function DatePickerCalendar({
   startDate,
   endDate,
   onSelectDate,
+  viewDate,
   className = "",
 }: DatePickerCalendarPropsType) {
-  // Determine initial view year/month from startDate or current date
-  const initialDate = parseISODate(startDate) || new Date();
+  // Determine initial view year/month from viewDate, startDate or current date
+  const getTargetDate = (val?: string) => {
+    return (val ? parseISODate(val) : null) || new Date();
+  };
+
+  const initialDate = getTargetDate(viewDate || startDate);
 
   const [viewYear, setViewYear] = useState<number>(initialDate.getFullYear());
   const [viewMonth, setViewMonth] = useState<number>(initialDate.getMonth());
   const [hoverDate, setHoverDate] = useState<string | null>(null);
+
+  // Sync calendar view when viewDate changes (e.g. preset clicked or date selected)
+  useEffect(() => {
+    if (viewDate) {
+      const parsed = parseISODate(viewDate);
+      if (parsed) {
+        setViewYear(parsed.getFullYear());
+        setViewMonth(parsed.getMonth());
+      }
+    }
+  }, [viewDate]);
+
+  // If viewDate is not explicitly passed, sync when startDate changes if outside current view
+  useEffect(() => {
+    if (!viewDate && startDate) {
+      const parsed = parseISODate(startDate);
+      if (parsed) {
+        const nextMonthDate = new Date(viewYear, viewMonth + 1, 1);
+        const inMonth1 =
+          parsed.getFullYear() === viewYear && parsed.getMonth() === viewMonth;
+        const inMonth2 =
+          parsed.getFullYear() === nextMonthDate.getFullYear() &&
+          parsed.getMonth() === nextMonthDate.getMonth();
+
+        if (!inMonth1 && !inMonth2) {
+          setViewYear(parsed.getFullYear());
+          setViewMonth(parsed.getMonth());
+        }
+      }
+    }
+  }, [startDate, viewDate, viewYear, viewMonth]);
 
   // Month 1: viewYear, viewMonth
   // Month 2: month 1 + 1 month
@@ -43,16 +80,14 @@ export function DatePickerCalendar({
   const nextMonth = nextMonthDate.getMonth();
 
   const handlePrev = (e?: any) => {
-    console.log(typeof e);
-
-    e.stopPropagation();
+    e?.stopPropagation?.();
     const prev = new Date(viewYear, viewMonth - 1, 1);
     setViewYear(prev.getFullYear());
     setViewMonth(prev.getMonth());
   };
 
   const handleNext = (e?: any) => {
-    e.stopPropagation();
+    e?.stopPropagation?.();
     const next = new Date(viewYear, viewMonth + 1, 1);
     setViewYear(next.getFullYear());
     setViewMonth(next.getMonth());

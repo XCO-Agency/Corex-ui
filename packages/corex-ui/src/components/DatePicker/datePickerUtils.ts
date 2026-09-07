@@ -50,6 +50,23 @@ export function parseISODate(dateStr: string): Date | null {
   return new Date(parts[0]!, parts[1]! - 1, parts[2]!);
 }
 
+export function normalizeDateRange(
+  value?: string | DateRangeType | Date | null,
+): DateRangeType {
+  if (!value) {
+    const today = toISODateString(new Date());
+    return { start: today, end: today };
+  }
+  if (value instanceof Date) {
+    const str = toISODateString(value);
+    return { start: str, end: str };
+  }
+  if (typeof value === "string") {
+    return { start: value, end: value };
+  }
+  return value;
+}
+
 export function formatDateDisplay(dateStr: string): string {
   const d = parseISODate(dateStr);
   if (!d) return dateStr || "";
