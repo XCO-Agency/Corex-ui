@@ -72,7 +72,7 @@ describe("useStorage", () => {
         key: "session-token",
         initialValue: "anon",
         storage: "local",
-        expiresIn: 5000, // 5 seconds
+        expiresIn: 1, // 1 minute
       }),
     );
 
@@ -83,27 +83,27 @@ describe("useStorage", () => {
     expect(result.current.value).toBe("token-xyz");
     unmount();
 
-    // 1. Check before expiration (at 3s)
-    vi.spyOn(Date, "now").mockReturnValue(now + 3000);
+    // 1. Check before expiration (at 30s)
+    vi.spyOn(Date, "now").mockReturnValue(now + 30 * 1000);
     const { result: unexpiredHook, unmount: unmountUnexpired } = renderHook(() =>
       useStorage({
         key: "session-token",
         initialValue: "anon",
         storage: "local",
-        expiresIn: 5000,
+        expiresIn: 1,
       }),
     );
     expect(unexpiredHook.current.value).toBe("token-xyz");
     unmountUnexpired();
 
-    // 2. Check after expiration (at 6s)
-    vi.spyOn(Date, "now").mockReturnValue(now + 6000);
+    // 2. Check after expiration (at 70s)
+    vi.spyOn(Date, "now").mockReturnValue(now + 70 * 1000);
     const { result: expiredHook } = renderHook(() =>
       useStorage({
         key: "session-token",
         initialValue: "anon",
         storage: "local",
-        expiresIn: 5000,
+        expiresIn: 1,
       }),
     );
     expect(expiredHook.current.value).toBe("anon");

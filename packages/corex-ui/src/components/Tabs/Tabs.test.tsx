@@ -3,22 +3,32 @@ import { render, screen } from "@testing-library/react";
 import { Tabs } from "./Tabs";
 
 const tabs = [
-  { id: "all", content: "All" },
-  { id: "drafts", content: "Drafts" },
+  { id: "all", label: "All" },
+  { id: "drafts", label: "Drafts" },
 ];
 
 describe("Tabs", () => {
-  it("supports uncontrolled selection, defaulting to the first tab", () => {
+  it("renders tabs and panel content", () => {
     render(
-      <Tabs tabs={tabs}>
+      <Tabs tabs={tabs} selected={0}>
         <span>Panel content</span>
       </Tabs>,
     );
-    expect(screen.getByText("All")).toHaveAttribute("variant", "secondary");
+    expect(screen.getByText("All")).toBeInTheDocument();
+    expect(screen.getByText("Drafts")).toBeInTheDocument();
     expect(screen.getByText("Panel content")).toBeInTheDocument();
   });
 
-  it("calls onSelect with the clicked tab's index in controlled mode", () => {
+  it("applies strong background to the selected tab", () => {
+    render(<Tabs tabs={tabs} selected={0} />);
+    const allTab = screen.getByText("All").closest("s-clickable");
+    const draftsTab = screen.getByText("Drafts").closest("s-clickable");
+
+    expect(allTab).toHaveAttribute("background", "strong");
+    expect(draftsTab).toHaveAttribute("background", "transparent");
+  });
+
+  it("calls onSelect with the clicked tab's index", () => {
     const onSelect = vi.fn();
     render(<Tabs tabs={tabs} selected={0} onSelect={onSelect} />);
 
@@ -27,37 +37,35 @@ describe("Tabs", () => {
     expect(onSelect).toHaveBeenCalledWith(1);
   });
 
-  it("supports extended selectedTab and onTabChange API with string IDs", () => {
-    const onTabChange = vi.fn();
-    render(<Tabs tabs={tabs} selectedTab="drafts" onTabChange={onTabChange} />);
+  it("does not call onSelect when clicking a disabled tab", () => {
+    const onSelect = vi.fn();
+    const disabledTabs = [
+      { id: "all", label: "All" },
+      { id: "archived", label: "Archived", disabled: true },
+    ];
+    render(<Tabs tabs={disabledTabs} selected={0} onSelect={onSelect} />);
 
-    expect(screen.getByText("Drafts")).toHaveAttribute("variant", "secondary");
+    screen.getByText("Archived").dispatchEvent(new MouseEvent("click", { bubbles: true }));
 
-    screen.getByText("All").dispatchEvent(new MouseEvent("click", { bubbles: true }));
-    expect(onTabChange).toHaveBeenCalledWith("all");
+    expect(onSelect).not.toHaveBeenCalled();
   });
 
-  it("automatically selects first active tab when selectedTab is null", () => {
-    const onTabChange = vi.fn();
-    render(<Tabs tabs={tabs} selectedTab={null} onTabChange={onTabChange} />);
-
-    expect(onTabChange).toHaveBeenCalledWith("all");
-  });
-
-  it("renders badge, label fallback, and rightSide content", () => {
+  it("renders badge, tooltip, and rightSide content", () => {
     const extendedTabs = [
-      { id: "orders", label: "Orders", badge: 5 },
-      { id: "products", content: "Products" },
+      { id: "orders", label: "Orders", badge: 5, tooltip: "View orders" },
+      { id: "products", label: "Products" },
     ];
     render(
       <Tabs
         tabs={extendedTabs}
-        selectedTab="orders"
+        selected={0}
         rightSide={<button type="button">Action</button>}
       />,
     );
 
-    expect(screen.getByText("Orders (5)")).toBeInTheDocument();
+    expect(screen.getByText("Orders")).toBeInTheDocument();
+    expect(screen.getByText("5")).toBeInTheDocument();
+    expect(screen.getByText("Products")).toBeInTheDocument();
     expect(screen.getByText("Action")).toBeInTheDocument();
   });
 });

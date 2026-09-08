@@ -55,7 +55,7 @@ export const NavigationItem = React.forwardRef<HTMLElement, NavigationItemPropsT
     return (
       <Clickable
         ref={ref}
-        inlineSize="100%"
+        inlineSize="fill"
         borderRadius="base"
         paddingBlock="small-400"
         paddingInline="small-300"

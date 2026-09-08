@@ -80,7 +80,7 @@ describe("Clickable", () => {
         display="auto"
         overflow="hidden"
         blockSize="40px"
-        inlineSize="120px"
+        inlineSize="fill"
         accessibilityRole="generic"
       >
         Box Styled Action
@@ -96,8 +96,16 @@ describe("Clickable", () => {
     expect(el).toHaveAttribute("display", "auto");
     expect(el).toHaveAttribute("overflow", "hidden");
     expect(el).toHaveAttribute("blocksize", "40px");
-    expect(el).toHaveAttribute("inlinesize", "120px");
     expect(el).toHaveAttribute("accessibilityrole", "generic");
+    expect(el.parentElement).toHaveStyle({ width: "100%" });
+  });
+
+  it("handles inlineSize auto and fill for wrapper width", () => {
+    const { rerender } = render(<Clickable inlineSize="auto">Action</Clickable>);
+    expect(screen.getByText("Action").parentElement).toHaveStyle({ width: "fit-content" });
+
+    rerender(<Clickable inlineSize="fill">Action</Clickable>);
+    expect(screen.getByText("Action").parentElement).toHaveStyle({ width: "100%" });
   });
 
   it("supports accessibilityLabel and invoker commands", () => {
