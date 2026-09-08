@@ -1,4 +1,6 @@
-import { forwardRef, useLayoutEffect, useMemo, useRef } from "react";
+import { forwardRef, useEffect, useLayoutEffect, useMemo, useRef } from "react";
+
+const useIsomorphicLayoutEffect = typeof window !== "undefined" ? useLayoutEffect : useEffect;
 import type { ReactNode } from "react";
 import { assignDomProp } from "./assignDomProp";
 import { mergeRefs } from "./mergeRefs";
@@ -44,7 +46,7 @@ export function createWebComponent<
       const { children, ...rest } = props;
       const mergedRef = useMemo(() => mergeRefs(innerRef, forwardedRef), [forwardedRef]);
 
-      useLayoutEffect(() => {
+      useIsomorphicLayoutEffect(() => {
         const node = innerRef.current;
         if (!node) return;
         for (const [attr, value] of Object.entries(staticAttributes)) {
@@ -54,7 +56,7 @@ export function createWebComponent<
         // eslint-disable-next-line react-hooks/exhaustive-deps
       }, []);
 
-      useLayoutEffect(() => {
+      useIsomorphicLayoutEffect(() => {
         const node = innerRef.current;
         if (!node) return;
         for (const key of domProps) {
