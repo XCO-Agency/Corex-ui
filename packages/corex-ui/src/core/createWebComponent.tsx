@@ -77,10 +77,17 @@ export function createWebComponent<
         );
       }
 
-      const passthroughProps: Record<string, unknown> = {};
+      const passthroughProps: Record<string, unknown> = { ...staticAttributes };
       for (const [key, value] of Object.entries(rest)) {
         if (key in events) continue;
         if (value === undefined) continue;
+
+        if (key === "commandFor") {
+          passthroughProps["commandfor"] = value;
+        }
+        if (key === "interestFor") {
+          passthroughProps["interestfor"] = value;
+        }
 
         if (key === "className") {
           passthroughProps["class"] = value;

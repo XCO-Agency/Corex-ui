@@ -40,6 +40,7 @@ export const PopoverTrigger = forwardRef<HTMLElement, PopoverTriggerPropsType>(
     if (isValidElement(children)) {
       return cloneElement(children as ReactElement<any>, {
         commandFor: popoverId,
+        command: (children.props as any)?.command ?? "--toggle",
         ref: (children as any).ref ?? ref,
         ...props,
       });

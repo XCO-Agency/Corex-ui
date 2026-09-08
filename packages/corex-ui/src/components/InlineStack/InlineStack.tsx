@@ -4,7 +4,7 @@ import { mapLegacyGap } from "../../core/legacySpacing";
 import type { InlineStackPropsType } from "./InlineStack.types";
 
 const SStack = createWebComponent<HTMLElement>("s-stack", {
-  staticAttributes: { direction: "inline" },
+  // staticAttributes: { direction: "inline" },
 });
 
 /** Composed pattern: `s-stack` pinned to `direction="inline"`. See `BlockStack`. */
@@ -17,6 +17,7 @@ export const InlineStack: ForwardRefExoticComponent<
   return (
     <SStack
       ref={ref}
+      direction="inline"
       gap={mapLegacyGap(gap)}
       justifyContent={justifyContent ?? (align as any)}
       alignItems={alignItems ?? (blockAlign as any)}

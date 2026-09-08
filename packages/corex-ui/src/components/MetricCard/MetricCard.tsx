@@ -213,8 +213,8 @@ export function MetricCard({
   const id = propID ?? useId();
 
   let innerContent = (
-    <Box padding="small-300">
-      <BlockStack gap="small-100">
+    <Box padding="small-300" inlineSize="100%">
+      <BlockStack gap="small-100" inlineSize="100%">
         {/* Header: icon + title + tooltip + badge */}
         <InlineStack justifyContent="space-between" alignItems="center">
           <div
@@ -271,6 +271,7 @@ export function MetricCard({
     <Box
       borderRadius="large"
       padding="none"
+      inlineSize="100%"
       border={expanded ? "none" : "base"}
       background={expanded ? "none" : "base"}
     >
@@ -298,7 +299,7 @@ function MetricsSkeleton({
   id,
 }: Pick<MetricCardPropsType, "icon" | "iconTone" | "title" | "id">) {
   return (
-    <Box padding="small-200">
+    <Box padding="small-200" inlineSize="100%">
       <BlockStack gap="small-100">
         {/* Header: icon + title + tooltip + badge */}
         <InlineStack justifyContent="space-between" alignItems="center">

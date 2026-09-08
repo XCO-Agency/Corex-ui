@@ -1,6 +1,6 @@
 import {
   forwardRef,
-  useInsertionEffect,
+  // useInsertionEffect,
   type CSSProperties,
   type ForwardRefExoticComponent,
   type RefAttributes,
@@ -73,9 +73,9 @@ export const Skeleton: ForwardRefExoticComponent<
   },
   ref,
 ) {
-  useInsertionEffect(() => {
-    injectSkeletonStyles();
-  }, []);
+  // useInsertionEffect(() => {
+  //   injectSkeletonStyles();
+  // }, []);
 
   const resolvedWidth = inlineSize ?? width ?? "100%";
   const resolvedHeight = blockSize ?? height ?? 16;
