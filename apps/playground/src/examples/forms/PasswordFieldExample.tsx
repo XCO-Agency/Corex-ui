@@ -15,7 +15,7 @@ export function PasswordFieldExample() {
             details="Masked for security. Used to authenticate webhook listeners"
             onChange={(val) => setApiKey(val)}
           />
-          <Text variant="small" tone="subdued">
+          <Text variant="small" color="subdued">
             Token length: {apiKey.length} chars
           </Text>
         </BlockStack>
@@ -31,7 +31,7 @@ export function PasswordFieldExample() {
             details="Used to verify HMAC signatures of incoming events"
             onChange={(val) => setWebhookSecret(val)}
           />
-          <Text variant="small" tone="subdued">
+          <Text variant="small" color="subdued">
             Secret configured: {webhookSecret ? "Yes" : "No"}
           </Text>
         </BlockStack>

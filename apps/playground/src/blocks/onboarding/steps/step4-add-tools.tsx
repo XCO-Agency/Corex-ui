@@ -82,7 +82,7 @@ export function Step4AddTools({ state, dispatch }: Step4AddToolsPropsType) {
                       inlineSize="100%"
                     >
                       <BlockStack gap="small-100">
-                        <InlineStack align="space-between" alignItems="center">
+                        <InlineStack justifyContent="space-between" alignItems="center">
                           <IconTile
                             size="sm"
                             tone={tool.selected ? "success" : "subdued"}
@@ -105,7 +105,7 @@ export function Step4AddTools({ state, dispatch }: Step4AddToolsPropsType) {
                         <Text heading>{tool.name}</Text>
                         <Text color="subdued">{tool.description}</Text>
                         <InlineStack
-                          align="space-between"
+                          justifyContent="space-between"
                           alignItems="center"
                           gap="base"
                           inlineSize="100%"
@@ -189,7 +189,7 @@ export function Step4AddTools({ state, dispatch }: Step4AddToolsPropsType) {
 
             <Box paddingBlockStart="small" inlineSize="100%">
               <InlineStack
-                align="space-between"
+                justifyContent="space-between"
                 alignItems="center"
                 gap="base"
                 inlineSize="100%"

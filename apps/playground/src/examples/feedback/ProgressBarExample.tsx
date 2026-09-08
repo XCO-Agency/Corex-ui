@@ -16,7 +16,7 @@ export function ProgressBarExample() {
     <BlockStack gap="large-200">
       <Card>
         <BlockStack gap="base">
-          <InlineStack align="space-between" alignItems="center">
+          <InlineStack justifyContent="space-between" alignItems="center">
             <Text heading as="h3">
               Interactive Progress
             </Text>

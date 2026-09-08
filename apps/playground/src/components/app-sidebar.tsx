@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Command, Inbox, Rocket, Search, Sparkles, ChevronDown } from "lucide-react";
+import { Command, Inbox, Rocket, Search, Sparkles, ChevronDown, Code2 } from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
@@ -123,6 +123,15 @@ export function AppSidebar({ onOpenSearch, ...props }: AppSidebarPropsType) {
                 >
                   <Rocket className="size-4" />
                   <span>Installation</span>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+              <SidebarMenuItem>
+                <SidebarMenuButton
+                  render={<Link to="/utils" />}
+                  isActive={currentPath === "/utils" || currentPath.startsWith("/utils")}
+                >
+                  <Code2 className="size-4 text-emerald-500" />
+                  <span>Utils &amp; Hooks</span>
                 </SidebarMenuButton>
               </SidebarMenuItem>
             </SidebarMenu>

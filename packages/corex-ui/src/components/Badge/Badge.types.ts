@@ -4,7 +4,7 @@ import type { PolarisPropsType, SizeType, ToneType } from "../../types/common";
 type NativeBadgeProps = PolarisPropsType<"s-badge">;
 
 export type BadgeStatusType =
-  "success" | "info" | "attention" | "warning" | "critical" | "new";
+  "success" | "info" | "caution" | "warning" | "critical" | "new";
 
 export type BadgePropsType = Omit<NativeBadgeProps, "children"> & {
   children?: ReactNode;

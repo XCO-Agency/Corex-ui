@@ -20,10 +20,10 @@ export function ColorFieldExample() {
             label="Brand primary color"
             value={brandColor}
             details="Used for primary buttons, banners, and links"
-            onChange={(val) => setBrandColor(val)}
+            onChange={(val: string) => setBrandColor(val)}
           />
           <InlineStack gap="small-200" align="center">
-            <Box
+            <div
               style={{
                 width: 20,
                 height: 20,
@@ -32,7 +32,7 @@ export function ColorFieldExample() {
                 border: "1px solid var(--p-color-border, #d4d4d4)",
               }}
             />
-            <Text variant="small" tone="subdued">
+            <Text variant="small" color="subdued">
               {brandColor}
             </Text>
           </InlineStack>
@@ -46,10 +46,10 @@ export function ColorFieldExample() {
             value={accentColor}
             alpha
             details="Supports opacity and transparency controls"
-            onChange={(val) => setAccentColor(val)}
+            onChange={(val: string) => setAccentColor(val)}
           />
           <InlineStack gap="small-200" align="center">
-            <Box
+            <div
               style={{
                 width: 20,
                 height: 20,
@@ -58,7 +58,7 @@ export function ColorFieldExample() {
                 border: "1px solid var(--p-color-border, #d4d4d4)",
               }}
             />
-            <Text variant="small" tone="subdued">
+            <Text variant="small" color="subdued">
               {accentColor}
             </Text>
           </InlineStack>

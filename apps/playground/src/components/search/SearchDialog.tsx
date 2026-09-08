@@ -65,13 +65,60 @@ export function SearchDialog({
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [isOpen, setOpen]);
 
-  // Filter components and blocks
+const UTILS_ENTRIES: ComponentEntry[] = [
+  {
+    name: "useSaveBar",
+    slug: "utils#use-save-bar",
+    category: "Utilities",
+    description: "App Bridge hook to show, hide, toggle, and manage confirmation for the SaveBar.",
+    examples: [],
+  },
+  {
+    name: "useAppWindowSaveBar",
+    slug: "utils#use-app-window-save-bar",
+    category: "Utilities",
+    description: "Bidirectional SaveBar bridge hook for iframe pages opened via <AppWindow saveBar />.",
+    examples: [],
+  },
+  {
+    name: "useToast",
+    slug: "utils#use-toast",
+    category: "Utilities",
+    description: "App Bridge hook to trigger native non-blocking toast notifications in Shopify admin.",
+    examples: [],
+  },
+  {
+    name: "useDimension",
+    slug: "utils#use-dimension",
+    category: "Utilities",
+    description: "Responsive container/window dimensions and Polaris breakpoints hook.",
+    examples: [],
+  },
+  {
+    name: "useParams",
+    slug: "utils#use-params",
+    category: "Utilities",
+    description: "URL search parameters hook with Shopify app embed param extraction (shop, host, locale).",
+    examples: [],
+  },
+  {
+    name: "useStorage",
+    slug: "utils#use-storage",
+    category: "Utilities",
+    description: "Reactive localStorage and sessionStorage hook with TTL expiration and multi-tab sync.",
+    examples: [],
+  },
+];
+
+const searchableEntries = [...allEntries, ...UTILS_ENTRIES];
+
+  // Filter components, blocks, and utils
   const results = React.useMemo(() => {
     const trimmed = query.trim().toLowerCase();
     if (!trimmed) {
-      return allEntries;
+      return searchableEntries;
     }
-    return allEntries.filter((component) => {
+    return searchableEntries.filter((component) => {
       const nameMatch = component.name.toLowerCase().includes(trimmed);
       const slugMatch = component.slug.toLowerCase().includes(trimmed);
       const categoryMatch = component.category.toLowerCase().includes(trimmed);
@@ -98,6 +145,10 @@ export function SearchDialog({
   const handleSelect = React.useCallback(
     (component: ComponentEntry) => {
       setOpen(false);
+      if (component.slug.startsWith("utils")) {
+        navigate(`/${component.slug}`);
+        return;
+      }
       const isBlock = blocks.some((b) =>
         b.components.some((c) => c.slug === component.slug),
       );

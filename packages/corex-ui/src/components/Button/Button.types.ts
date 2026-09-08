@@ -23,4 +23,10 @@ export type ButtonPropsType = NativeButtonProps & {
   monochrome?: boolean;
   /** @deprecated Use `inlineSize="fill"`. */
   fullWidth?: boolean;
+  /** @deprecated Inline styles are not supported on web component Button and are stripped. */
+  style?: CSSProperties;
+  /** Suppresses React hydration warnings when web component attributes are mutated externally. */
+  suppressHydrationWarning?: boolean;
+  /** Size token supported by Polaris Button. */
+  size?: import("../../types/common").SizeType;
 };

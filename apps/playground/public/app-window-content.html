@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Embedded App Window Content</title>
+    <script src="https://cdn.shopify.com/shopifycloud/polaris-1.js"></script>
+    <style>
+      body {
+        margin: 0;
+        padding: 24px;
+        font-family: -apple-system, BlinkMacSystemFont, "San Francisco", "Segoe UI", Roboto, Helvetica, sans-serif;
+        background: #f1f2f4;
+        color: #202223;
+        box-sizing: border-box;
+      }
+      .card {
+        background: #ffffff;
+        border-radius: 12px;
+        padding: 20px;
+        box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.05), 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+        max-width: 540px;
+        margin: 0 auto;
+      }
+      h2 {
+        margin-top: 0;
+        margin-bottom: 8px;
+        font-size: 18px;
+        font-weight: 600;
+      }
+      p {
+        margin: 0 0 16px 0;
+        font-size: 13px;
+        color: #6d7175;
+        line-height: 1.5;
+      }
+      .form-group {
+        margin-bottom: 16px;
+      }
+      label {
+        display: block;
+        margin-bottom: 6px;
+        font-size: 13px;
+        font-weight: 500;
+      }
+      input[type="text"] {
+        width: 100%;
+        padding: 8px 12px;
+        border: 1px solid #c9cccf;
+        border-radius: 8px;
+        font-size: 14px;
+        box-sizing: border-box;
+        outline: none;
+        transition: border-color 0.2s;
+      }
+      input[type="text"]:focus {
+        border-color: #008060;
+        box-shadow: 0 0 0 1px #008060;
+      }
+      .status-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 12px;
+        padding: 4px 10px;
+        border-radius: 20px;
+        background: #e4e5e7;
+        color: #202223;
+        font-weight: 500;
+      }
+      .status-pill.dirty {
+        background: #fed3d1;
+        color: #8a1f11;
+      }
+      .status-pill.saved {
+        background: #cbf4c9;
+        color: #0b6832;
+      }
+      .info-box {
+        margin-top: 16px;
+        padding: 12px;
+        background: #f6f6f7;
+        border-radius: 8px;
+        font-size: 12px;
+        color: #5c5f62;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+        <h2>AppWindow Embedded Frame</h2>
+        <div id="statusPill" class="status-pill">Pristine (No changes)</div>
+      </div>
+      <p>
+        This content is loaded inside <code>&lt;AppWindow src="/app-window-content.html" saveBar /&gt;</code>.
+        Type into the field below to mark the form dirty and see the host SaveBar appear.
+      </p>
+
+      <div class="form-group">
+        <label for="productTitle">Item Title</label>
+        <input type="text" id="productTitle" value="Winter Wool Jacket" />
+      </div>
+
+      <div class="info-box">
+        <strong>Bridge Status:</strong> <span id="log">Connected via BroadcastChannel &amp; postMessage</span>
+      </div>
+    </div>
+
+    <script>
+      const CHANNEL_NAME = "corex-app-window-save-bar";
+      const initialValue = "Winter Wool Jacket";
+      const input = document.getElementById("productTitle");
+      const statusPill = document.getElementById("statusPill");
+      const log = document.getElementById("log");
+
+      let isDirty = false;
+
+      function getBc() {
+        if (typeof BroadcastChannel !== "undefined") {
+          try {
+            return new BroadcastChannel(CHANNEL_NAME);
+          } catch (e) {
+            return null;
+          }
+        }
+        return null;
+      }
+
+      function syncToHost(open, loading = false) {
+        const payload = {
+          type: "COREX_APP_WINDOW_SAVE_BAR_SYNC",
+          open,
+          loading,
+          disabled: false,
+          saveText: "Save changes",
+          discardText: "Discard",
+        };
+
+        // BroadcastChannel
+        const bc = getBc();
+        if (bc) {
+          bc.postMessage(payload);
+          bc.close();
+        }
+
+        // postMessage to parent
+        if (window.parent && window.parent !== window) {
+          window.parent.postMessage(payload, "*");
+        }
+      }
+
+      function handleAction(action) {
+        if (action === "save") {
+          log.textContent = "Received 'save' from Host SaveBar. Saving...";
+          syncToHost(true, true);
+          setTimeout(() => {
+            isDirty = false;
+            statusPill.textContent = "Saved!";
+            statusPill.className = "status-pill saved";
+            syncToHost(false, false);
+            log.textContent = "Changes saved. SaveBar closed.";
+          }, 600);
+        } else if (action === "discard") {
+          input.value = initialValue;
+          isDirty = false;
+          statusPill.textContent = "Discarded!";
+          statusPill.className = "status-pill";
+          syncToHost(false, false);
+          log.textContent = "Discarded changes and restored original value.";
+        }
+      }
+
+      // Listen for actions from host
+      const bc = getBc();
+      if (bc) {
+        bc.onmessage = (event) => {
+          if (event.data?.type === "COREX_APP_WINDOW_SAVE_BAR_ACTION") {
+            handleAction(event.data.action);
+          }
+        };
+      }
+
+      window.addEventListener("message", (event) => {
+        if (event.data?.type === "COREX_APP_WINDOW_SAVE_BAR_ACTION") {
+          handleAction(event.data.action);
+        }
+      });
+
+      input.addEventListener("input", (e) => {
+        isDirty = e.target.value !== initialValue;
+        if (isDirty) {
+          statusPill.textContent = "Unsaved changes";
+          statusPill.className = "status-pill dirty";
+          log.textContent = "Form dirty → opened host SaveBar.";
+          syncToHost(true);
+        } else {
+          statusPill.textContent = "Pristine";
+          statusPill.className = "status-pill";
+          log.textContent = "Form restored → hid host SaveBar.";
+          syncToHost(false);
+        }
+      });
+    </script>
+  </body>
+</html>

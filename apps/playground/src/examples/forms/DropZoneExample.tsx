@@ -18,7 +18,7 @@ export function DropZoneExample() {
               onChange={() => setStatus("Files selected via file browser / drag")}
               onDropRejected={() => setStatus("Dropped file was rejected")}
             />
-            <Text variant="small" tone="subdued">
+            <Text variant="small" color="subdued">
               {status}
             </Text>
           </BlockStack>

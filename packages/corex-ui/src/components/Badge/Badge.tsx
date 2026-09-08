@@ -15,7 +15,7 @@ export const Badge = forwardRef<HTMLElement, BadgePropsType>(function Badge(
 ) {
   const resolvedTone =
     tone ??
-    (status === "attention"
+    (status === "caution"
       ? "warning"
       : status === "new"
         ? "info"

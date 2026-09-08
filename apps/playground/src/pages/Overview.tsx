@@ -49,14 +49,15 @@ export function Overview() {
               Get started
               <ArrowRight />
             </Button>
-            <Button size="lg" variant="outline" render={<a href="#components" />}>
-              Browse components
+            <Button size="lg" variant="outline" render={<Link to="/utils" />}>
+              Hooks &amp; Utils
             </Button>
           </div>
 
           <div className="flex flex-wrap gap-x-6 gap-y-2 pt-6">
             <Stat value={registry.length} label="Components" />
             <Stat value={totalBlocks} label="Blocks" />
+            <Stat value={6} label="Hooks & Utils" />
             <Stat value="MIT" label="Licensed" />
           </div>
         </div>

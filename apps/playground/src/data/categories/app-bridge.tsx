@@ -16,15 +16,86 @@ import SaveBarExampleRaw from "@/examples/app-bridge/SaveBarExample.tsx?raw";
 import { SaveBarFormExample } from "@/examples/app-bridge/SaveBarFormExample";
 import SaveBarFormExampleRaw from "@/examples/app-bridge/SaveBarFormExample.tsx?raw";
 
+import { AppWindowSaveBarExample } from "@/examples/app-bridge/AppWindowSaveBarExample";
+import AppWindowSaveBarExampleRaw from "@/examples/app-bridge/AppWindowSaveBarExample.tsx?raw";
+
+const CHILD_IFRAME_CODE = `import { useState } from "react";
+import {
+  useAppWindowSaveBar,
+  Page,
+  Card,
+  TextField,
+  BlockStack,
+} from "@xco-agency/corex-ui";
+
+export function ChildIframePage() {
+  const [title, setTitle] = useState("Winter Wool Jacket");
+  const [initialTitle] = useState("Winter Wool Jacket");
+  const [isSaving, setIsSaving] = useState(false);
+
+  const isDirty = title !== initialTitle;
+
+  // Bidirectional SaveBar hook inside child AppWindow iframe:
+  // Automatically syncs 'open', 'loading', 'disabled' to the host <AppWindow saveBar />
+  // and receives Save/Discard actions clicked by the merchant on the host page.
+  useAppWindowSaveBar({
+    windowId: "demo-app-window-savebar",
+    open: isDirty,
+    loading: isSaving,
+    saveText: "Save changes",
+    discardText: "Discard",
+    onSave: async () => {
+      setIsSaving(true);
+      await fakeApiSave({ title });
+      setIsSaving(false);
+    },
+    onDiscard: () => {
+      setTitle(initialTitle);
+    },
+  });
+
+  return (
+    <Page title="Child Window Content">
+      <Card>
+        <BlockStack gap="base">
+          <TextField
+            label="Product Title"
+            value={title}
+            onChange={setTitle}
+            helpText="Editing this input marks the form dirty and reveals the host SaveBar."
+          />
+        </BlockStack>
+      </Card>
+    </Page>
+  );
+}`;
+
 export const appBridgeComponents: ComponentEntry[] = [
   {
     name: "AppWindow",
     slug: "app-window",
     category: "App Bridge",
     description:
-      "Loads another page in an embedded window, shown/hidden via ref or command/commandFor.",
+      "Loads another page in an embedded window, shown/hidden via ref or command/commandFor. Supports automatic host SaveBar synchronization.",
     requiresEmbeddedContext: true,
     examples: [
+      {
+        title: "SaveBar two-way bridge (saveBar prop)",
+        Example: AppWindowSaveBarExample,
+        code: AppWindowSaveBarExampleRaw,
+        files: [
+          {
+            name: "HostPage.tsx",
+            path: "HostPage.tsx",
+            code: AppWindowSaveBarExampleRaw,
+          },
+          {
+            name: "ChildIframePage.tsx",
+            path: "ChildIframePage.tsx",
+            code: CHILD_IFRAME_CODE,
+          },
+        ],
+      },
       {
         title: "Imperative show/hide via ref",
         Example: AppWindowExample,

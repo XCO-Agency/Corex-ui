@@ -14,9 +14,9 @@ export function EmailFieldExample() {
             value={supportEmail}
             autoComplete="email"
             details="Customers will see this address in automated receipt emails"
-            onChange={(val) => setSupportEmail(val)}
+            onChange={(val: string) => setSupportEmail(val)}
           />
-          <Text variant="small" tone="subdued">
+          <Text variant="small" color="subdued">
             Current: {supportEmail}
           </Text>
         </BlockStack>
@@ -30,9 +30,9 @@ export function EmailFieldExample() {
             placeholder="billing@example.com"
             requiredIndicator
             details="Invoices and payout statements will be sent here"
-            onChange={(val) => setBillingEmail(val)}
+            onChange={(val: string) => setBillingEmail(val)}
           />
-          <Text variant="small" tone="subdued">
+          <Text variant="small" color="subdued">
             Current: {billingEmail || "(empty)"}
           </Text>
         </BlockStack>

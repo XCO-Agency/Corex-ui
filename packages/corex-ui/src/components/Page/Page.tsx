@@ -82,7 +82,7 @@ function renderSecondaryActions(
             id={item.id}
             onClick={item.onAction}
           >
-            {item.children}
+            {item.content ?? item.children}
           </Button>
         );
       }

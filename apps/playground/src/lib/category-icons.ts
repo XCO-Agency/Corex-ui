@@ -12,6 +12,7 @@ import {
   SlidersHorizontal,
   TrendingUp,
   Rocket,
+  Code2,
   type LucideIcon,
 } from "lucide-react";
 import type { CategoryType } from "@/data/types";
@@ -30,6 +31,7 @@ export const CATEGORY_ICONS: Record<CategoryType, LucideIcon> = {
   Settings: SlidersHorizontal,
   Metrics: TrendingUp,
   Onboarding: Rocket,
+  Utilities: Code2,
 };
 
 export function getCategoryIcon(category: string): LucideIcon {
