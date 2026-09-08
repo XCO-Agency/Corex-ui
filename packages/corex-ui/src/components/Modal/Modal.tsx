@@ -19,7 +19,16 @@ const SModal = createWebComponent<ModalElement>("s-modal");
  * DOM API in both directions.
  */
 export const Modal = forwardRef<ModalElement, ModalPropsType>(function Modal(
-  { children, open, onClose, title, primaryAction, secondaryActions, ...rest },
+  {
+    children,
+    open,
+    onClose,
+    title,
+    primaryAction,
+    secondaryActions,
+    accessibilityLabel,
+    ...rest
+  },
   forwardedRef,
 ) {
   const innerRef = useRef<ModalElement>(null);
@@ -39,7 +48,12 @@ export const Modal = forwardRef<ModalElement, ModalPropsType>(function Modal(
   const mergedRef = useMemo(() => mergeRefs(innerRef, forwardedRef), [forwardedRef]);
 
   return (
-    <SModal ref={mergedRef} heading={title} {...rest}>
+    <SModal
+      ref={mergedRef}
+      heading={title}
+      accessibilityLabel={title ?? "modal "}
+      {...rest}
+    >
       {children}
       {primaryAction && (
         <Button
@@ -57,6 +71,7 @@ export const Modal = forwardRef<ModalElement, ModalPropsType>(function Modal(
         <Button
           key={i}
           slot="secondary-actions"
+          variant="secondary"
           tone={action.destructive ? "critical" : undefined}
           disabled={action.disabled}
           loading={action.loading}
