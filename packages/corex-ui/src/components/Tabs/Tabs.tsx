@@ -1,9 +1,8 @@
-import { forwardRef, useEffect, useState } from "react";
-import type { ForwardedRef, ReactNode } from "react";
+import { Fragment, forwardRef } from "react";
+import type { ForwardedRef } from "react";
 import { createWebComponent } from "../../core/createWebComponent";
-import { Box } from "../Box";
 import { Tooltip } from "../Tooltip";
-import type { TabItemType, TabsPropsType } from "./Tabs.types";
+import type { TabItemType, TabsComponentType, TabsPropsType } from "./Tabs.types";
 import { Clickable } from "../Clickable";
 import { Icon } from "../Icon";
 import { Badge } from "../Badge";
@@ -11,27 +10,26 @@ import { Text } from "../Text";
 
 const SStack = createWebComponent<HTMLElement>("s-stack");
 
-/**
- * Tabs component supporting both legacy Polaris index-based selection
- * and the extended tab-ID selection API, with Polaris web-component stacks and buttons.
- */
-export const Tabs = forwardRef(function Tabs(
+function TabsInner<TId extends string | number = string>(
   {
     tabs,
     selected,
     onSelect,
+    value,
+    onChange,
     showBadge = true,
     rightSide,
     children,
     className,
     id,
     ...rest
-  }: TabsPropsType,
+  }: TabsPropsType<TId>,
   ref: ForwardedRef<HTMLDivElement>,
 ) {
-  const handleSelect = (tab: TabItemType, index: number) => {
+  const handleSelect = (tab: TabItemType<TId>, index: number) => {
     if (tab.disabled) return;
     onSelect?.(index);
+    onChange?.(tab.id);
   };
 
   return (
@@ -62,7 +60,12 @@ export const Tabs = forwardRef(function Tabs(
           }}
         >
           {tabs.map((tab, index) => {
-            const isSelected = selected === index;
+            const isSelected =
+              value !== undefined
+                ? value !== null && (tab.id === value || String(tab.id) === String(value))
+                : selected !== undefined && selected !== null
+                  ? selected === index
+                  : false;
 
             const button = (
               <Clickable
@@ -98,10 +101,14 @@ export const Tabs = forwardRef(function Tabs(
               </Clickable>
             );
 
-            return tab.tooltip ? (
-              <Tooltip content={tab.tooltip}>{button}</Tooltip>
-            ) : (
-              button
+            return (
+              <Fragment key={tab.id ?? index}>
+                {tab.tooltip ? (
+                  <Tooltip content={tab.tooltip}>{button}</Tooltip>
+                ) : (
+                  button
+                )}
+              </Fragment>
             );
           })}
         </div>
@@ -116,6 +123,14 @@ export const Tabs = forwardRef(function Tabs(
       {children && children}
     </div>
   );
-});
+}
+
+/**
+ * Tabs component supporting both legacy Polaris index-based selection (`selected`, `onSelect`)
+ * and id-based selection (`value`, `onChange`), with Polaris web-component stacks and buttons.
+ */
+export const Tabs = forwardRef(TabsInner) as unknown as TabsComponentType;
+Tabs.displayName = "Tabs";
 
 export default Tabs;
+

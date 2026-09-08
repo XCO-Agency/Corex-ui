@@ -7,28 +7,49 @@ from [`ButtonGroup`](./button-group.md) + [`Button`](./button.md) for the tab st
 [architecture.md](../architecture.md#3-composed--imperative-bridge).
 
 ```tsx
+import { useState } from "react";
 import { Tabs, Text } from "@xco-agency/corex-ui";
+
+// ID-based selection (recommended):
+const [selectedId, setSelectedId] = useState("all");
 
 <Tabs
   tabs={[
-    { id: "all", content: "All" },
-    { id: "drafts", content: "Drafts" },
+    { id: "all", label: "All" },
+    { id: "drafts", label: "Drafts" },
+  ]}
+  value={selectedId}
+  onChange={setSelectedId}
+>
+  <Text>Panel content for tab {selectedId}.</Text>
+</Tabs>;
+
+// Or index-based selection (legacy Polaris):
+const [selectedIndex, setSelectedIndex] = useState(0);
+
+<Tabs
+  tabs={[
+    { id: "all", label: "All" },
+    { id: "drafts", label: "Drafts" },
   ]}
   selected={selectedIndex}
   onSelect={setSelectedIndex}
 >
-  <Text>Panel content for the selected tab.</Text>
+  <Text>Panel content for index {selectedIndex}.</Text>
 </Tabs>;
 ```
 
 ## Prop mapping
 
-| Legacy prop | Behavior                                                                                                                                                                                                                     |
+| Prop | Behavior |
 | ----------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `tabs`      | Each `{ id, content, accessibilityLabel, disabled }` renders one tab `Button`.                                                                                                                                               |
-| `selected`  | Optional — omit for uncontrolled usage (defaults to the first tab and manages its own state).                                                                                                                                |
-| `onSelect`  | Called with the clicked tab's index.                                                                                                                                                                                         |
-| `children`  | Rendered as the panel content for whichever tab is currently selected — `Tabs` does not automatically show/hide per-tab content; render what you want for the current `selected` index yourself, exactly like legacy `Tabs`. |
+| `tabs`      | Array of `{ id, label, icon, badge, badgeTone, tooltip, accessibilityLabel, disabled }`. |
+| `value`     | ID of the currently selected tab (`string \| number`). Takes precedence over `selected`. |
+| `onChange`  | Callback fired when a tab is clicked, passed the selected tab's `id`. |
+| `selected`  | _(Deprecated: use `value`)_ Index of the currently selected tab (Polaris legacy index-based selection). |
+| `onSelect`  | _(Deprecated: use `onChange`)_ Callback fired when a tab is clicked, passed the selected tab's `index` (`number`). |
+| `children`  | Rendered as the panel content for whichever tab is currently selected. |
+| `rightSide` | Additional actions/content placed on the right side of the tab bar. |
 
 Because very custom `Tabs` styling from Polaris React (via `overrideStyles` or CSS overrides)
 targeted DOM structure that no longer exists, heavily customized legacy `Tabs` usage may need

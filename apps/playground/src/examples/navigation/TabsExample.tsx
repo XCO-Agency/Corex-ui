@@ -1,16 +1,23 @@
 import { useState } from "react";
-import { Button, Divider, Icon, Tabs, Text } from "@xco-agency/corex-ui";
-import { TabItemType } from "@xco-agency/corex-ui";
-import { Card } from "@xco-agency/corex-ui";
-import { Box } from "@xco-agency/corex-ui";
+import {
+  BlockStack,
+  Box,
+  Button,
+  Divider,
+  Icon,
+  Tabs,
+  Text,
+} from "@xco-agency/corex-ui";
+import type { TabItemType } from "@xco-agency/corex-ui";
 
 export function TabsExample() {
+  const [selectedId, setSelectedId] = useState("all");
   const [selected, setSelected] = useState(0);
+
   const tabs: TabItemType[] = [
     {
       id: "all",
       label: "With tooltip",
-
       icon: "layout-popup",
       tooltip: "Tooltip example",
     },
@@ -34,29 +41,53 @@ export function TabsExample() {
       badge: 2,
     },
     {
-      id: "no-icon",
+      id: "disabled",
       label: "Disabled Tab",
       disabled: true,
     },
   ];
+
   return (
-    <Box background="base" border="base" borderRadius="large" inlineSize="840px">
-      <Box padding="small-200">
-        <Tabs
-          tabs={tabs}
-          selected={selected}
-          onSelect={setSelected}
-          rightSide={
-            <Button icon="filter">
-              <Icon type="search" />
-            </Button>
-          }
-        />
+    <BlockStack gap="large-100">
+      <Box background="base" border="base" borderRadius="large" inlineSize="840px">
+        <Box padding="small-200">
+          <Tabs
+            tabs={tabs}
+            value={selectedId}
+            onChange={setSelectedId}
+            rightSide={
+              <Button icon="filter">
+                <Icon type="search" />
+              </Button>
+            }
+          />
+        </Box>
+        <Divider />
+        <Box padding="small">
+          <Text>
+            ID-based panel content for tab id &ldquo;{selectedId}&rdquo; (
+            {tabs.find((t) => t.id === selectedId)?.label}).
+          </Text>
+        </Box>
       </Box>
-      <Divider />
-      <Box padding="small">
-        <Text>Panel content for &ldquo;{tabs[selected]!.label}&rdquo;.</Text>
+
+      <Box background="base" border="base" borderRadius="large" inlineSize="840px">
+        <Box padding="small-200">
+          <Tabs
+            tabs={tabs}
+            selected={selected}
+            onSelect={setSelected}
+          />
+        </Box>
+        <Divider />
+        <Box padding="small">
+          <Text>
+            Index-based panel content for index {selected} (&ldquo;
+            {tabs[selected]?.label}&rdquo;).
+          </Text>
+        </Box>
       </Box>
-    </Box>
+    </BlockStack>
   );
 }
+
