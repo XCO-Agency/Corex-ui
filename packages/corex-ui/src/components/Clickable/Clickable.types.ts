@@ -8,12 +8,19 @@ export type ClickableButtonType = "button" | "submit" | "reset" | (string & {});
 
 export type ClickablePropsType = Omit<
   NativeClickableProps,
-  keyof NativeBoxOverridesType | "target" | "type" | "onClick" | "slot" | "children"
+  | keyof NativeBoxOverridesType
+  | "target"
+  | "type"
+  | "onClick"
+  | "slot"
+  | "children"
+  | "inlineSize"
 > &
   NativeBoxOverridesType &
   LegacyBoxPropsType & {
     /** Target browsing context for navigation ('_blank' | '_self' | '_parent' | '_top'). */
     target?: TargetType;
+    inlineSize?: "fill" | "auto";
     /** Convenience prop: opens link in a new tab with rel="noopener noreferrer". */
     external?: boolean;
     /** Button behavior type ('button' | 'submit' | 'reset'). */

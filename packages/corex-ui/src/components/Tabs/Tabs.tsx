@@ -1,126 +1,121 @@
 import { forwardRef, useEffect, useState } from "react";
 import type { ForwardedRef, ReactNode } from "react";
 import { createWebComponent } from "../../core/createWebComponent";
-import { Button } from "../Button";
 import { Box } from "../Box";
 import { Tooltip } from "../Tooltip";
 import type { TabItemType, TabsPropsType } from "./Tabs.types";
+import { Clickable } from "../Clickable";
+import { Icon } from "../Icon";
+import { Badge } from "../Badge";
+import { Text } from "../Text";
 
 const SStack = createWebComponent<HTMLElement>("s-stack");
-
-export type TabsComponentType = <T extends string | number = string | number>(
-  props: TabsPropsType<T> & { ref?: ForwardedRef<HTMLDivElement> },
-) => ReactNode;
 
 /**
  * Tabs component supporting both legacy Polaris index-based selection
  * and the extended tab-ID selection API, with Polaris web-component stacks and buttons.
  */
-export const Tabs = forwardRef(function Tabs<T extends string | number = string | number>(
+export const Tabs = forwardRef(function Tabs(
   {
     tabs,
     selected,
     onSelect,
-    selectedTab,
-    onTabChange,
     showBadge = true,
-    showContent = true,
-    showTooltip = false,
     rightSide,
     children,
     className,
     id,
     ...rest
-  }: TabsPropsType<T>,
+  }: TabsPropsType,
   ref: ForwardedRef<HTMLDivElement>,
 ) {
-  const [uncontrolledSelected, setUncontrolledSelected] = useState(0);
-
-  useEffect(() => {
-    if (selectedTab === null && tabs.length > 0 && onTabChange) {
-      const firstActiveTab = tabs.find((tab) => !tab.disabled) ?? tabs[0];
-      if (firstActiveTab) {
-        onTabChange(firstActiveTab.id as T);
-      }
-    }
-  }, [selectedTab, tabs, onTabChange]);
-
   const handleSelect = (tab: TabItemType, index: number) => {
     if (tab.disabled) return;
-    if (selected === undefined && selectedTab === undefined) {
-      setUncontrolledSelected(index);
-    }
     onSelect?.(index);
-    onTabChange?.(tab.id as T);
   };
 
   return (
-    <div ref={ref} className={className} id={id} {...rest}>
-      <SStack direction="inline" justifyContent="space-between" alignItems="center">
-        <SStack direction="inline" gap="small-300" alignItems="center">
-          {tabs
-            .filter((tab) => !tab.disabled)
-            .map((tab, index) => {
-              const isSelected =
-                selectedTab !== undefined
-                  ? selectedTab === tab.id
-                  : (selected ?? uncontrolledSelected) === index;
+    <div
+      ref={ref}
+      className={className}
+      id={id}
+      {...rest}
+      style={{
+        width: "100%",
+        display: "flex",
+        flexDirection: "column",
+      }}
+    >
+      <div
+        style={{
+          flex: 1,
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
+        <div
+          style={{
+            flex: 1,
+            display: "flex",
+            gap: 3,
+          }}
+        >
+          {tabs.map((tab, index) => {
+            const isSelected = selected === index;
 
-              const button = (
-                <Button
-                  variant={isSelected ? "secondary" : "tertiary"}
-                  icon={tab.icon}
-                  disabled={tab.disabled}
-                  accessibilityLabel={tab.accessibilityLabel}
-                  onClick={() => handleSelect(tab, index)}
-                >
-                  {tab.icon && (
-                    <span
-                      style={{
-                        marginRight: "0.25rem",
-                        display: "inline-flex",
-                        alignItems: "center",
-                      }}
-                    >
-                      {tab.icon}
-                    </span>
-                  )}
-                  {showContent && (tab.content ?? tab.label)}
-                  {showBadge && tab.badge !== undefined ? ` (${tab.badge})` : ""}
-                </Button>
-              );
-
-              const tabNode =
-                showTooltip && tab.tooltip ? (
-                  <Tooltip content={tab.tooltip}>{button}</Tooltip>
-                ) : (
-                  button
-                );
-
-              return (
+            const button = (
+              <Clickable
+                background={isSelected ? "strong" : "transparent"}
+                disabled={tab.disabled}
+                paddingInline="small-300"
+                blockSize="28px"
+                maxInlineSize="none"
+                borderRadius="base"
+                accessibilityLabel={tab.accessibilityLabel}
+                onClick={() => handleSelect(tab, index)}
+              >
                 <div
-                  key={`tab-${tab.id}`}
                   style={{
-                    borderRadius: "0.5rem",
-                    backgroundColor: isSelected ? "#f0f0f0" : "transparent",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 8,
+                    opacity: tab.disabled ? 0.5 : 1,
                   }}
                 >
-                  {tabNode}
+                  {tab.icon && <Icon type={tab.icon} />}
+                  {tab.label && (
+                    <Text variant="small" lineClamp={1} color="subdued" heading>
+                      {tab.label}
+                    </Text>
+                  )}
+                  {showBadge && tab.badge !== undefined && (
+                    <Badge color="strong" tone={tab.disabled ? "neutral" : tab.badgeTone}>
+                      {tab.badge}
+                    </Badge>
+                  )}
                 </div>
-              );
-            })}
-        </SStack>
+              </Clickable>
+            );
+
+            return tab.tooltip ? (
+              <Tooltip content={tab.tooltip}>{button}</Tooltip>
+            ) : (
+              button
+            );
+          })}
+        </div>
 
         {rightSide && (
           <SStack direction="inline" gap="small-200">
             {rightSide}
           </SStack>
         )}
-      </SStack>
+      </div>
 
-      {children && <Box padding="base">{children}</Box>}
+      {children && children}
     </div>
   );
-}) as TabsComponentType;
+});
 
 export default Tabs;

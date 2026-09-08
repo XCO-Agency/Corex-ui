@@ -4,7 +4,7 @@ import { createWebComponent } from "../../core/createWebComponent";
 import type { TextPropsType } from "./Text.types";
 
 const SText = createWebComponent<HTMLElement>("s-text");
-const SHeading = createWebComponent<HTMLElement>("s-heading");
+const SParagraph = createWebComponent<HTMLElement>("s-paragraph");
 const STooltip = createWebComponent<HTMLElement>("s-tooltip");
 
 export const VARIANT_SIZE_MAP: Record<
@@ -70,14 +70,14 @@ export const Text = forwardRef<HTMLElement, TextPropsType>(function Text(
   const textNode = (
     <SText ref={ref} interestFor={hasTooltip ? id : undefined} {...rest}>
       {heading ? (
-        <SHeading
+        <SParagraph
           ref={ref}
           interestFor={hasTooltip ? id : undefined}
           lineClamp={lineClamp}
           {...rest}
         >
           {children}
-        </SHeading>
+        </SParagraph>
       ) : (
         children
       )}

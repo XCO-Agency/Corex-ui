@@ -1,30 +1,24 @@
 import type { ReactNode } from "react";
-import { IconType } from "../../types/common";
+import { IconType, ToneType } from "../../types/common";
 
 export type TabItemType = {
   id: string | number;
-  content?: ReactNode;
   label?: string;
   tooltip?: string;
-  badge?: string | number;
   icon?: IconType;
+  badge?: ReactNode;
+  badgeTone?: ToneType;
   disabled?: boolean;
   accessibilityLabel?: string;
 };
 
-export type TabsPropsType<T = string | number> = {
+export type TabsPropsType = {
   tabs: TabItemType[];
-  /** @deprecated selected use selectedTab instead */
-  selected?: number;
-  /** @deprecated onSelect use onTabChange instead  */
-  onSelect?: (selectedTabIndex: number) => void;
   /** ID of the currently selected tab (extended API). */
-  selectedTab?: T | null;
+  selected?: number | null;
   /** Callback when a tab ID changes (extended API). */
-  onTabChange?: (tabId: T) => void;
+  onSelect?: (index: number) => void;
   showBadge?: boolean;
-  showContent?: boolean;
-  showTooltip?: boolean;
   rightSide?: ReactNode;
   /** Content of the currently selected tab's panel. */
   children?: ReactNode;
