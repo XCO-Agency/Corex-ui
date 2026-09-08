@@ -3,12 +3,15 @@ import type { PolarisPropsType } from "../../types/common";
 
 type NativeModalProps = PolarisPropsType<"s-modal">;
 
+export type ModalCommandType = "--auto" | "--show" | "--hide" | "--toggle" | "--copy";
+
 export type ModalActionType = {
   content: ReactNode;
   onAction?: () => void;
   destructive?: boolean;
   disabled?: boolean;
   loading?: boolean;
+  command?: ModalCommandType;
 };
 
 export type ModalPropsType = Omit<NativeModalProps, "children" | "title"> & {

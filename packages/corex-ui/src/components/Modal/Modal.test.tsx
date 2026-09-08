@@ -39,10 +39,26 @@ describe("Modal", () => {
     expect(onClose).toHaveBeenCalledTimes(1);
   });
 
-  it("renders primary and secondary actions as Buttons in the matching slots", () => {
+  it("calls onClose when the element dispatches an afterhide event", () => {
+    const onClose = vi.fn();
+    render(
+      <Modal open onClose={onClose} title="Delete item">
+        Are you sure?
+      </Modal>,
+    );
+
+    screen
+      .getByText("Are you sure?")
+      .closest("s-modal")!
+      .dispatchEvent(new Event("afterhide"));
+    expect(onClose).toHaveBeenCalledTimes(1);
+  });
+
+  it("renders primary and secondary actions as Buttons in matching slots with commands", () => {
     render(
       <Modal
         open
+        id="custom-modal-id"
         onClose={() => {}}
         primaryAction={{ content: "Delete", destructive: true, onAction: () => {} }}
         secondaryActions={[{ content: "Cancel", onAction: () => {} }]}
@@ -55,6 +71,26 @@ describe("Modal", () => {
     expect(primary).toHaveAttribute("slot", "primary-action");
     expect(primary).toHaveAttribute("variant", "primary");
     expect(primary).toHaveAttribute("tone", "critical");
-    expect(screen.getByText("Cancel")).toHaveAttribute("slot", "secondary-actions");
+
+    const cancel = screen.getByText("Cancel");
+    expect(cancel).toHaveAttribute("slot", "secondary-actions");
+    expect(cancel).toHaveAttribute("command", "--hide");
+    expect(cancel).toHaveAttribute("commandfor", "custom-modal-id");
+  });
+
+  it("cleans up and hides overlay when unmounted while open", () => {
+    const { unmount } = render(
+      <Modal open onClose={() => {}} title="Test">
+        Content
+      </Modal>,
+    );
+
+    const el = screen.getByText("Content").closest("s-modal") as HTMLElement & {
+      hasAttribute: (name: string) => boolean;
+    };
+    expect(el.hasAttribute("data-stub-open")).toBe(true);
+
+    unmount();
+    expect(el.hasAttribute("data-stub-open")).toBe(false);
   });
 });
