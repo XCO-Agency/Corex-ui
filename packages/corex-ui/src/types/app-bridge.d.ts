@@ -4,21 +4,21 @@
 // non-`s-`-prefixed `<ui-save-bar>` element, plus the imperative
 // `window.shopify.toast`/`window.shopify.saveBar` global API. See
 // `docs/app-bridge.md`.
+//
+// The official source of truth is `@shopify/app-bridge-types` (kept as a
+// devDependency, versioned to match the `app-bridge.js` CDN script your app
+// loads). We reference it here so contributors and consumers get IntelliSense
+// against the full official Shopify App Bridge API.
 
-export interface ShopifyToastOptions {
-  isError?: boolean;
-  duration?: number;
-}
+/// <reference types="@shopify/app-bridge-types" />
 
-export interface ShopifyGlobal {
-  toast: {
-    show(message: string, options?: ShopifyToastOptions): void;
-  };
-  saveBar: {
-    show(id?: string): void;
-    hide(id?: string): void;
-  };
-}
+import type {
+  ShopifyGlobal as AppBridgeShopifyGlobal,
+  ToastOptions as AppBridgeToastOptions,
+} from "@shopify/app-bridge-types";
+
+export type ShopifyGlobal = AppBridgeShopifyGlobal;
+export type ShopifyToastOptions = AppBridgeToastOptions;
 
 /** `s-app-window`'s imperative API, per Shopify's own usage examples (`el.show()` / `el.hide()`). */
 export interface SAppWindowElement extends HTMLElement {

@@ -90,6 +90,9 @@ importers:
 
   packages/corex-ui:
     devDependencies:
+      '@shopify/app-bridge-types':
+        specifier: ^0.7.2
+        version: 0.7.2
       '@shopify/polaris-types':
         specifier: ^1.0.7
         version: 1.0.7
@@ -1389,6 +1392,9 @@ packages:
   '@sec-ant/readable-stream@0.4.1':
     resolution: {integrity: sha512-831qok9r2t8AlxLko40y2ebgSDhenenCatLVeW/uBtnHPyhHOvG0C7TvfgecV+wHzIm5KUICgzmVpWS+IMEAeg==}
 
+  '@shopify/app-bridge-types@0.7.2':
+    resolution: {integrity: sha512-Fl4GnQXzJ3h43kvD/i8e1iWP+ynIxue0L1Eezf7GVoGiIYjvu3BqX3au+kHXGx7Us6nQ4Ku6lKdFZP+nAFepCQ==}
+
   '@shopify/polaris-types@1.0.7':
     resolution: {integrity: sha512-e4OKlNHkDNHe9RCOnNgUuAkeTEH028YxS2pGEWhO/f1cHQyekhLVdY8AWznqfvgMlobwwvfgIaF+rc1jtNbYnw==}
     engines: {node: '>=22.18.0', pnpm: '>=10.2.0'}
@@ -1403,6 +1409,9 @@ packages:
 
   '@speed-highlight/core@1.2.24':
     resolution: {integrity: sha512-qeW2e1l78afw8VhRPfPQ1Gjj+KU5XFQ/OFV5ti6eTa9bruO7mJyZtA4vw0ofqmA3tKCkROE9xLk3VZoeRc98nw==}
+
+  '@standard-schema/spec@1.1.0':
+    resolution: {integrity: sha512-l2aFy5jALhniG5HgqrD6jXLi/rUWrKvqN/qJx6yoJsgKhblVd+iqqU4RCXavm/jPityDo5TCvKMnpjKnOriy0w==}
 
   '@tailwindcss/node@4.3.3':
     resolution: {integrity: sha512-/T8IKEsf9VTU6tLjgC7+sv2mOPtQxzE2jMw7u4Tt40Tx+QSZxpzh95/H6cMKoja9XuW7iMdLJYBB0o9G1CaAgg==}
@@ -4342,6 +4351,10 @@ snapshots:
 
   '@sec-ant/readable-stream@0.4.1': {}
 
+  '@shopify/app-bridge-types@0.7.2':
+    dependencies:
+      '@standard-schema/spec': 1.1.0
+
   '@shopify/polaris-types@1.0.7': {}
 
   '@sindresorhus/is@7.2.0': {}
@@ -4349,6 +4362,8 @@ snapshots:
   '@sindresorhus/merge-streams@4.0.0': {}
 
   '@speed-highlight/core@1.2.24': {}
+
+  '@standard-schema/spec@1.1.0': {}
 
   '@tailwindcss/node@4.3.3':
     dependencies:

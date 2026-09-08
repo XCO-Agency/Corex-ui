@@ -9,7 +9,7 @@ describe("useToast", () => {
 
   it("calls window.shopify.toast.show when available", () => {
     const show = vi.fn();
-    window.shopify = { toast: { show }, saveBar: { show: vi.fn(), hide: vi.fn() } };
+    window.shopify = { toast: { show }, saveBar: { show: vi.fn(), hide: vi.fn() } } as any;
 
     const { result } = renderHook(() => useToast());
     result.current.show("Saved", { isError: false });

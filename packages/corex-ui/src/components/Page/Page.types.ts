@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import type { IconType, PolarisPropsType } from "../../types/common";
+import { ButtonPropsType } from "../Button";
 
 type NativePageProps = PolarisPropsType<"s-page">;
 
@@ -36,28 +37,12 @@ export type PagePrimaryActionType = {
 /**
  * Action descriptor for secondary page actions.
  */
-export type PageMenuActionDescriptorType = {
+export type PageMenuActionDescriptorType = ButtonPropsType & {
   /** Text content or React node displayed inside the button */
   content?: ReactNode;
   /** Callback fired when the action is triggered */
   onAction?: () => void;
   /** Whether the action button is disabled */
-  disabled?: boolean;
-  /** Whether the action button is in a loading state */
-  loading?: boolean;
-  /** Destructive styling (red/critical) */
-  destructive?: boolean;
-  /** URL to navigate to if the action behaves as a link */
-  url?: string;
-  /** Whether to open the link in a new tab */
-  external?: boolean;
-  /** Optional icon identifier */
-  icon?: IconType;
-  /** Accessibility label for screen readers */
-  accessibilityLabel?: string;
-  /** Unique ID for the action element */
-  id?: string;
-  [key: string]: unknown;
 };
 
 /**

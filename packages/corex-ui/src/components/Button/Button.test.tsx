@@ -28,4 +28,15 @@ describe("Button", () => {
 
     expect(onClick).toHaveBeenCalledTimes(1);
   });
+
+  it("does not pass style prop down to s-button", () => {
+    render(
+      <Button style={{ color: "red" } as any}>
+        Styled
+      </Button>,
+    );
+
+    const el = screen.getByText("Styled");
+    expect(el).not.toHaveAttribute("style");
+  });
 });

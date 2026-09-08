@@ -1,6 +1,7 @@
 import { forwardRef, useEffect, useLayoutEffect, useMemo, useRef } from "react";
 
-const useIsomorphicLayoutEffect = typeof window !== "undefined" ? useLayoutEffect : useEffect;
+const useIsomorphicLayoutEffect =
+  typeof window !== "undefined" ? useLayoutEffect : useEffect;
 import type { ReactNode } from "react";
 import { assignDomProp } from "./assignDomProp";
 import { mergeRefs } from "./mergeRefs";
@@ -86,9 +87,17 @@ export function createWebComponent<
 
         if (key === "commandFor") {
           passthroughProps["commandfor"] = value;
+          continue;
         }
         if (key === "interestFor") {
           passthroughProps["interestfor"] = value;
+          continue;
+        }
+        if (key === "discardConfirmation") {
+          if (value) {
+            passthroughProps["discardConfirmation"] = "";
+          }
+          continue;
         }
 
         if (key === "className") {
@@ -102,7 +111,12 @@ export function createWebComponent<
         }
 
         // Convert camelCase prop names to kebab-case HTML attributes for custom elements
-        if (!key.includes("-") && key !== "style" && /[A-Z]/.test(key)) {
+        if (
+          !key.includes("-") &&
+          key !== "style" &&
+          key !== "suppressHydrationWarning" &&
+          /[A-Z]/.test(key)
+        ) {
           passthroughProps[toKebabCase(key)] = value;
         }
         passthroughProps[key] = value;
@@ -115,7 +129,7 @@ export function createWebComponent<
       const Tag: any = tagName;
 
       return (
-        <Tag {...passthroughProps} ref={mergedRef}>
+        <Tag suppressHydrationWarning {...passthroughProps} ref={mergedRef}>
           {children}
         </Tag>
       );

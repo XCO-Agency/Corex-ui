@@ -51,7 +51,6 @@ export const Button = forwardRef<HTMLElement, ButtonPropsType>(function Button(
       href={resolvedHref}
       target={resolvedTarget}
       rel={resolvedRel}
-
       accessibilityLabel={
         accessibilityLabel ??
         (typeof children === "string" ? children : `Action  ${resolvedVariant}`)

@@ -2,7 +2,13 @@ export { useToast } from "./useToast";
 export type { UseToastResult } from "./useToast";
 
 export { useSaveBar } from "./useSaveBar";
-export type { UseSaveBarResult } from "./useSaveBar";
+export type { UseSaveBarResult, UseSaveBarResultType } from "./useSaveBar";
+
+export { useAppWindowSaveBar } from "./useAppWindowSaveBar";
+export type {
+  UseAppWindowSaveBarOptionsType,
+  UseAppWindowSaveBarResultType,
+} from "./useAppWindowSaveBar";
 
 export { useDimension } from "./useDimension";
 export type { BreakpointType, UseDimensionResultType } from "./useDimension";

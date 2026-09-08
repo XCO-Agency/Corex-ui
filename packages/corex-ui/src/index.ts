@@ -58,10 +58,20 @@ export * from "./components/SaveBar";
 
 export type * from "./types/common";
 
-export { useToast, useSaveBar, useDimension, useParams, useStorage } from "./hooks";
+export {
+  useToast,
+  useSaveBar,
+  useAppWindowSaveBar,
+  useDimension,
+  useParams,
+  useStorage,
+} from "./hooks";
 export type {
   UseToastResult,
   UseSaveBarResult,
+  UseSaveBarResultType,
+  UseAppWindowSaveBarOptionsType,
+  UseAppWindowSaveBarResultType,
   BreakpointType,
   UseDimensionResultType,
   UseParamsResultType,
