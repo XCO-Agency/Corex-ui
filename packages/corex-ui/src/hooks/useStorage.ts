@@ -26,7 +26,7 @@ export type UseStorageOptionsType<T> = {
    */
   type?: StorageTypeType;
   /**
-   * Expiration duration in milliseconds (e.g. `1000 * 60 * 60 * 24` for 1 day).
+   * Expiration duration in minutes (e.g. ` 60 * 24` for 1 day).
    */
   expiresIn?: number;
   /**
@@ -153,7 +153,7 @@ export function useStorage<T>(
           const storageProvider = getStorageInstance(storage);
           const data: StorageValueType<T> = {
             value: resolvedValue,
-            ...(expiresIn ? { expiresAt: Date.now() + expiresIn } : {}),
+            ...(expiresIn ? { expiresAt: Date.now() + expiresIn * 1000 * 60 } : {}),
           };
 
           const serialized = serialize(data);

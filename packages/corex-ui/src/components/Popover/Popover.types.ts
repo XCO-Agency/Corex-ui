@@ -1,10 +1,4 @@
-import type {
-  CSSProperties,
-  ForwardRefExoticComponent,
-  HTMLAttributes,
-  ReactNode,
-  RefAttributes,
-} from "react";
+import type { ForwardRefExoticComponent, ReactNode, RefAttributes } from "react";
 
 export type PopoverContextType = {
   popoverId: string;

@@ -67,7 +67,7 @@ export type DatePickerPropsType = NativeDatePickerProps & {
    * @param id - Date picker popover id.
    */
   children?: (formattedRange: string, id: string) => React.ReactNode;
-  /** @deprecated use children */
+  /** @deprecated use `children` instead  */
   activator?: React.ReactNode;
 
   /** Whether range selection is allowed (default: true). */
