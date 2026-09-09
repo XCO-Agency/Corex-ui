@@ -25,6 +25,8 @@ import { DateFieldExample } from "@/examples/forms/DateFieldExample";
 import DateFieldExampleRaw from "@/examples/forms/DateFieldExample.tsx?raw";
 import { DatePickerExample } from "@/examples/forms/DatePickerExample";
 import DatePickerExampleRaw from "@/examples/forms/DatePickerExample.tsx?raw";
+import { RangeSliderExample } from "@/examples/forms/RangeSliderExample";
+import RangeSliderExampleRaw from "@/examples/forms/RangeSliderExample.tsx?raw";
 
 export const formsComponents: ComponentEntry[] = [
   {
@@ -202,6 +204,20 @@ export const formsComponents: ComponentEntry[] = [
         title: "Controlled date picker",
         Example: DatePickerExample,
         code: DatePickerExampleRaw,
+      },
+    ],
+  },
+  {
+    name: "RangeSlider",
+    slug: "range-slider",
+    category: "Forms",
+    description:
+      "A slider control for selecting a numeric value or a range between two bounds.",
+    examples: [
+      {
+        title: "Single and dual-thumb range sliders",
+        Example: RangeSliderExample,
+        code: RangeSliderExampleRaw,
       },
     ],
   },

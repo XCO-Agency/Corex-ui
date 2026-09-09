@@ -19,29 +19,30 @@ omitted — if you need one of the "Not yet" rows, it's a good candidate to add 
 
 ## Feedback and status indicators
 
-| Web component | Status                                                                          |
-| ------------- | ------------------------------------------------------------------------------- |
-| `s-badge`     | ✅ `Badge`                                                                      |
-| `s-banner`    | ✅ `Banner`                                                                     |
-| `s-spinner`   | ✅ `Spinner`                                                                    |
-| — (extension) | ✅ `IconTile` — Stylized icon tile with `base` and `strong` color intensities.   |
+| Web component | Status                                                                         |
+| ------------- | ------------------------------------------------------------------------------ |
+| `s-badge`     | ✅ `Badge`                                                                     |
+| `s-banner`    | ✅ `Banner`                                                                    |
+| `s-spinner`   | ✅ `Spinner`                                                                   |
+| — (extension) | ✅ `IconTile` — Stylized icon tile with `base` and `strong` color intensities. |
 
 ## Forms
 
-| Web component                                                                          | Status                                                                                                                                                       |
-| -------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `s-text-field`                                                                         | ✅ `TextField`                                                                                                                                               |
-| `s-text-area`                                                                          | ✅ `TextField` (`multiline`)                                                                                                                                 |
-| `s-select`                                                                             | ✅ `Select`                                                                                                                                                  |
-| `s-checkbox`                                                                           | ✅ `Checkbox`                                                                                                                                                |
-| `s-choice-list`                                                                        | ✅ `ChoiceList`                                                                                                                                              |
-| `s-date-field`                                                                         | ✅ `DateField`                                                                                                                                               |
-| `s-date-picker`                                                                        | ✅ `DatePicker` — **single-date only**, no range mode yet.                                                                                                   |
-| `s-email-field`, `s-url-field`, `s-number-field`, `s-password-field`, `s-search-field` | Covered by `TextField`'s `type` prop (`type="email"` etc.) rather than separate components, matching how legacy Polaris React only ever had one `TextField`. |
-| `s-color-field`, `s-color-picker`                                                      | Not yet — color selection UI is more involved than a straight attribute mapping; deferred pending real-world demand.                                         |
-| `s-money-field`                                                                        | Not yet — needs currency-formatting decisions best made against a real use case rather than guessed.                                                         |
-| `s-switch`                                                                             | Not yet — legacy Polaris React has no direct `Switch`; `Checkbox` already covers on/off toggles for parity purposes.                                         |
-| `s-drop-zone`                                                                          | Not yet — file upload/drag-drop has meaningfully more surface area (progress, previews, validation) than the rest of this pass.                              |
+| Web component                                                                          | Status                                                                                                                                                                                       |
+| -------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `s-text-field`                                                                         | ✅ `TextField`                                                                                                                                                                               |
+| `s-text-area`                                                                          | ✅ `TextField` (`multiline`)                                                                                                                                                                 |
+| `s-select`                                                                             | ✅ `Select`                                                                                                                                                                                  |
+| `s-checkbox`                                                                           | ✅ `Checkbox`                                                                                                                                                                                |
+| `s-choice-list`                                                                        | ✅ `ChoiceList`                                                                                                                                                                              |
+| `s-date-field`                                                                         | ✅ `DateField`                                                                                                                                                                               |
+| `s-date-picker`                                                                        | ✅ `DatePicker` — **single-date only**, no range mode yet.                                                                                                                                   |
+| `s-email-field`, `s-url-field`, `s-number-field`, `s-password-field`, `s-search-field` | Covered by `TextField`'s `type` prop (`type="email"` etc.) rather than separate components, matching how legacy Polaris React only ever had one `TextField`.                                 |
+| `s-color-field`, `s-color-picker`                                                      | Not yet — color selection UI is more involved than a straight attribute mapping; deferred pending real-world demand.                                                                         |
+| `s-money-field`                                                                        | Not yet — needs currency-formatting decisions best made against a real use case rather than guessed.                                                                                         |
+| `s-switch`                                                                             | Not yet — legacy Polaris React has no direct `Switch`; `Checkbox` already covers on/off toggles for parity purposes.                                                                         |
+| `s-drop-zone`                                                                          | Not yet — file upload/drag-drop has meaningfully more surface area (progress, previews, validation) than the rest of this pass.                                                              |
+| — (no catalog equivalent)                                                              | ✅ `RangeSlider` — no `s-range-slider` exists; ported directly from legacy Polaris React's implementation instead. See [architecture.md](./architecture.md#4-self-contained-custom-control). |
 
 ## Layout and structure
 

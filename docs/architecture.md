@@ -52,7 +52,7 @@ three places where React conventions and web-component conventions diverge:
    `useImperativeHandle` wrapper — consumers may need DOM methods this library doesn't know
    about yet.
 
-## Four component authoring patterns
+## Five component authoring patterns
 
 Every component in `src/components/` follows one of these. Pick whichever fits when adding a
 new one — none of them require touching `core/`.
@@ -97,7 +97,22 @@ legacy declarative API:
   `.show()`/`.hide()` calls, like `Modal`, but — unlike `Modal` — has no controlled `open`/
   `onClose` prop, since there's no confirmed close event for it.
 
-### 4. App Bridge hook bridge
+### 4. Self-contained custom control
+
+Used by `ProgressBar`, `Skeleton`, `RangeSlider`. There's no `s-*` element to wrap at all — the
+Polaris web component catalog simply doesn't cover this control — so the component renders its
+own DOM and owns its own visuals, styled with inline `style` objects and Polaris CSS tokens
+(`var(--p-color-*, fallback)`) rather than a stylesheet. When a visual needs a pseudo-element or
+pseudo-class that inline styles can't express (`::-webkit-slider-thumb`, `:focus-visible`,
+`prefers-reduced-motion`), a small static stylesheet is injected into `document.head` once, the
+first time the component mounts (guarded by a stable `id` so it's never inserted twice); dynamic,
+per-instance values are still passed in as CSS custom properties on the element's inline style, so
+the injected stylesheet itself never needs to change at runtime. `RangeSlider` in particular is a
+direct behavioral port of legacy Polaris React's own `RangeSlider` (drag/keyboard/touch handling,
+value clamping) — there's no upstream Shopify implementation to delegate to, so its interaction
+logic is owned here rather than bridged to anything.
+
+### 5. App Bridge hook bridge
 
 Used by `useToast`/`useSaveBar` (`src/hooks/`). Some App Bridge functionality isn't a custom
 element at all — it's an imperative global JS API (`window.shopify.toast.show(...)`,
@@ -118,7 +133,7 @@ silently dropping behavior.
 
 1. Create `src/components/<Name>/` with `<Name>.tsx`, `<Name>.types.ts`, `<Name>.test.tsx`,
    `index.ts`.
-2. Pick the closest of the four patterns above.
+2. Pick the closest of the five patterns above.
 3. Call `createWebComponent` (directly, or via a component you compose from) — declare
    `events` for anything the legacy API expects as a callback prop, and `domProps` for any
    value that must be a live property (objects, arrays, or anything a controlled component

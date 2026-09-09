@@ -16,6 +16,7 @@ export * from "./components/QueryContainer";
 export * from "./components/MetricCard";
 export * from "./components/Skeleton";
 export * from "./components/ProgressBar";
+export * from "./components/RangeSlider";
 export * from "./components/IconTile";
 
 export * from "./components/Card";
