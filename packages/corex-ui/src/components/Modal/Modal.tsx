@@ -13,12 +13,22 @@ function showModal(node: ModalElement | null, id: string) {
   if (node) {
     if (typeof node.showOverlay === "function") {
       node.showOverlay();
-    } else if (typeof (node as any).show === "function") {
+      return;
+    }
+    if (typeof (node as any).show === "function") {
       (node as any).show();
+      return;
     }
   }
   if (typeof window !== "undefined" && (window as any).shopify?.modal?.show) {
-    (window as any).shopify.modal.show(id);
+    try {
+      const res = (window as any).shopify.modal.show(id);
+      if (res && typeof res.catch === "function") {
+        res.catch(() => {});
+      }
+    } catch {
+      // ignore
+    }
   }
 }
 
@@ -26,12 +36,22 @@ function hideModal(node: ModalElement | null, id: string) {
   if (node) {
     if (typeof node.hideOverlay === "function") {
       node.hideOverlay();
-    } else if (typeof (node as any).hide === "function") {
+      return;
+    }
+    if (typeof (node as any).hide === "function") {
       (node as any).hide();
+      return;
     }
   }
   if (typeof window !== "undefined" && (window as any).shopify?.modal?.hide) {
-    (window as any).shopify.modal.hide(id);
+    try {
+      const res = (window as any).shopify.modal.hide(id);
+      if (res && typeof res.catch === "function") {
+        res.catch(() => {});
+      }
+    } catch {
+      // ignore
+    }
   }
 }
 

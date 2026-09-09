@@ -1,4 +1,4 @@
-import { Children, cloneElement, forwardRef, isValidElement } from "react";
+import { forwardRef } from "react";
 import { createWebComponent } from "../../core/createWebComponent";
 import type { ButtonGroupPropsType } from "./ButtonGroup.types";
 
@@ -15,11 +15,7 @@ export const ButtonGroup = forwardRef<HTMLElement, ButtonGroupPropsType>(
         gap={gap ?? (variant === "segmented" ? "none" : undefined)}
         {...rest}
       >
-        {Children.map(children, (child) =>
-          isValidElement(child)
-            ? cloneElement(child, { slot: "secondary-actions" })
-            : child,
-        )}
+        {children}
       </SButtonGroup>
     );
   },
