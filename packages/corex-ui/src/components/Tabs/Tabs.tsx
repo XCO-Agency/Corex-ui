@@ -69,7 +69,7 @@ function TabsInner<TId extends string | number = string>(
 
             const button = (
               <Clickable
-                background={isSelected ? "strong" : "subdued"}
+                background={isSelected ? "strong" : "transparent"}
                 disabled={tab.disabled}
                 paddingInline="small-300"
                 blockSize="28px"
