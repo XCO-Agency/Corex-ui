@@ -1550,6 +1550,178 @@ export function DatePickerThumbnail() {
   );
 }
 
+export function RangeSliderThumbnail() {
+  return (
+    <Frame>
+      {/* Label and value suffix badge */}
+      <rect
+        x="28"
+        y="20"
+        width="38"
+        height="6"
+        rx="3"
+        fill={textPrimary}
+        fillOpacity="0.8"
+      />
+      <rect
+        x="108"
+        y="16"
+        width="24"
+        height="13"
+        rx="4"
+        fill={cardBg}
+        stroke={cardBorder}
+        strokeWidth="1"
+      />
+      <rect
+        x="113"
+        y="21"
+        width="14"
+        height="3"
+        rx="1.5"
+        fill={textPrimary}
+        fillOpacity="0.75"
+      />
+
+      {/* Floating output tooltip above active thumb */}
+      <rect
+        x="79"
+        y="30"
+        width="26"
+        height="14"
+        rx="4"
+        fill={textPrimary}
+      />
+      <path d="M89 44 L92 47.5 L95 44 Z" fill={textPrimary} />
+      <rect
+        x="84"
+        y="35"
+        width="16"
+        height="4"
+        rx="1.5"
+        fill={cardBg}
+      />
+
+      {/* Inactive track */}
+      <rect
+        x="28"
+        y="54"
+        width="104"
+        height="5"
+        rx="2.5"
+        fill={mutedBg}
+        stroke={cardBorder}
+        strokeWidth="0.8"
+      />
+
+      {/* Active track progress */}
+      <rect
+        x="28"
+        y="54"
+        width="64"
+        height="5"
+        rx="2.5"
+        fill={accent}
+      />
+
+      {/* Draggable thumb */}
+      <circle cx="92" cy="57.5" r="8.5" fill="rgba(0, 0, 0, 0.12)" />
+      <circle
+        cx="92"
+        cy="56.5"
+        r="8"
+        fill={cardBg}
+        stroke={accent}
+        strokeWidth="2"
+      />
+      <circle cx="92" cy="56.5" r="2.5" fill={accent} />
+
+      {/* Scale tick marks & bound labels */}
+      <line
+        x1="28"
+        y1="63"
+        x2="28"
+        y2="66"
+        stroke={cardBorder}
+        strokeWidth="1.2"
+        strokeLinecap="round"
+      />
+      <rect
+        x="25"
+        y="69"
+        width="6"
+        height="4"
+        rx="2"
+        fill={textMuted}
+        fillOpacity="0.45"
+      />
+
+      <line
+        x1="54"
+        y1="63"
+        x2="54"
+        y2="65.5"
+        stroke={cardBorder}
+        strokeWidth="0.8"
+        strokeLinecap="round"
+        opacity="0.6"
+      />
+      <line
+        x1="80"
+        y1="63"
+        x2="80"
+        y2="65.5"
+        stroke={cardBorder}
+        strokeWidth="0.8"
+        strokeLinecap="round"
+        opacity="0.6"
+      />
+      <line
+        x1="106"
+        y1="63"
+        x2="106"
+        y2="65.5"
+        stroke={cardBorder}
+        strokeWidth="0.8"
+        strokeLinecap="round"
+        opacity="0.6"
+      />
+
+      <line
+        x1="132"
+        y1="63"
+        x2="132"
+        y2="66"
+        stroke={cardBorder}
+        strokeWidth="1.2"
+        strokeLinecap="round"
+      />
+      <rect
+        x="121"
+        y="69"
+        width="14"
+        height="4"
+        rx="2"
+        fill={textMuted}
+        fillOpacity="0.45"
+      />
+
+      {/* Help text */}
+      <rect
+        x="28"
+        y="79"
+        width="56"
+        height="4"
+        rx="2"
+        fill={textMuted}
+        fillOpacity="0.3"
+      />
+    </Frame>
+  );
+}
+
+export const RangeSliderMedia = RangeSliderThumbnail;
+
 /* =========================================================================
    LAYOUT
    ========================================================================= */
@@ -3084,6 +3256,8 @@ export const thumbnails: Record<string, React.ComponentType> = {
   "choice-list": ChoiceListThumbnail,
   "date-field": DateFieldThumbnail,
   "date-picker": DatePickerThumbnail,
+  "range-slider": RangeSliderThumbnail,
+  "range-slide": RangeSliderThumbnail,
 
   // Layout
   box: BoxThumbnail,
