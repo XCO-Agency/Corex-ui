@@ -1,5 +1,5 @@
 import { Fragment, forwardRef } from "react";
-import type { ForwardedRef } from "react";
+import type { CSSProperties, ForwardedRef } from "react";
 import { createWebComponent } from "../../core/createWebComponent";
 import { Tooltip } from "../Tooltip";
 import type { TabItemType, TabsComponentType, TabsPropsType } from "./Tabs.types";
@@ -69,7 +69,7 @@ function TabsInner<TId extends string | number = string>(
 
             const button = (
               <Clickable
-                background={isSelected ? "strong" : "transparent"}
+                background={isSelected ? "strong" : "subdued"}
                 disabled={tab.disabled}
                 paddingInline="small-300"
                 blockSize="28px"
@@ -88,7 +88,13 @@ function TabsInner<TId extends string | number = string>(
                 >
                   {tab.icon && <Icon type={tab.icon} />}
                   {tab.label && (
-                    <Text variant="small" lineClamp={1} color="subdued" heading>
+                    <Text
+                      variant="small"
+                      lineClamp={1}
+                      color="base"
+                      tone="neutral"
+                      heading
+                    >
                       {tab.label}
                     </Text>
                   )}
@@ -102,13 +108,19 @@ function TabsInner<TId extends string | number = string>(
             );
 
             return (
-              <Fragment key={tab.id ?? index}>
-                {tab.tooltip ? (
-                  <Tooltip content={tab.tooltip}>{button}</Tooltip>
-                ) : (
-                  button
-                )}
-              </Fragment>
+              <div
+                key={tab.id ?? index}
+                style={
+                  {
+                    display: "contents",
+                    "--t-surface-tertiary-26021": isSelected ? "#dcdcdc" : "transparent",
+                    "--t-surface-secondary-hover-26021": "#dcdcdc",
+                    "--t-surface-tertiary-hover-26021": "#dcdcdc",
+                  } as CSSProperties
+                }
+              >
+                {tab.tooltip ? <Tooltip content={tab.tooltip}>{button}</Tooltip> : button}
+              </div>
             );
           })}
         </div>
@@ -133,4 +145,3 @@ export const Tabs = forwardRef(TabsInner) as unknown as TabsComponentType;
 Tabs.displayName = "Tabs";
 
 export default Tabs;
-
