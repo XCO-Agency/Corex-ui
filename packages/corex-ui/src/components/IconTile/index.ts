@@ -1,2 +1,2 @@
 export { IconTile } from "./IconTile";
-export type { IconTilePropsType } from "./IconTile";
+export type { IconTilePropsType, IconTileColorType } from "./IconTile";

@@ -49,7 +49,7 @@ function ProductForm() {
 
 `Button`, `ButtonGroup`, `Text`, `Badge`, `Banner`, `Box`, `BlockStack`, `InlineStack`, `Card`,
 `Modal`, `TextField`, `Select`, `Checkbox`, `Spinner`, `Page`, `Tabs`, `Link`, `Icon`, `Divider`,
-`Avatar`, `Thumbnail`, `Tooltip`, `ChoiceList`, `DateField`, `DatePicker`, `Menu`.
+`Avatar`, `Thumbnail`, `Tooltip`, `ChoiceList`, `DateField`, `DatePicker`, `Menu`, `IconTile`.
 
 Plus the [App Bridge](../../docs/app-bridge.md) subsystem: `AppWindow`, `AppNav`, `SaveBar`,
 `useToast`, `useSaveBar`.

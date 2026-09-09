@@ -8,13 +8,14 @@ export type IconSourceType =
   | React.FunctionComponent<React.SVGProps<SVGSVGElement>>
   | React.ComponentType<{ className?: string }>;
 
+export type IconToneType = ToneType | "white";
+
 export type IconPropsType = Omit<NativeIconProps, "source" | "tone" | "type"> & {
   /** Icon name (e.g. `"save"`, `"search"`, `"star"`) or a Polaris SVG component. */
   source?: IconSourceType;
-  tone?: ToneType;
+  tone?: IconToneType;
   type?: IconType & string;
   accessibilityLabel?: string;
   id?: string;
-  /** works only on custom icon with source prop. */
   style?: React.CSSProperties;
 };

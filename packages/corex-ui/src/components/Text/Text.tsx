@@ -100,6 +100,9 @@ export const Text = forwardRef<HTMLElement, TextPropsType>(function Text(
             "--s-global-font-weight-26021": heading ? config.headingWeight : "medium",
             "--s-global-font-size-26021": config.fontSize,
             ...style,
+            ...(rest.tone === "white"
+              ? { "--s-global-color-26021": style?.color || "#fff" }
+              : undefined),
           }}
         >
           {textNode}

@@ -37,4 +37,24 @@ describe("IconTile", () => {
     expect(tile.style.width).toBe("1.3rem");
     expect(tile.style.borderRadius).toBe("0px");
   });
+
+  it("applies strong color intensity with bold background and white text", () => {
+    const { rerender } = render(
+      <IconTile data-testid="tile" tone="critical" color="strong">
+        Icon
+      </IconTile>,
+    );
+    const tile = screen.getByTestId("tile");
+    expect(tile.style.backgroundColor).toBe("rgb(220, 38, 38)"); // #dc2626
+    expect(tile.style.color).toBe("rgb(255, 255, 255)"); // #ffffff
+
+    rerender(
+      <IconTile data-testid="tile" tone="success" color="strong">
+        Icon
+      </IconTile>,
+    );
+    expect(tile.style.backgroundColor).toBe("rgb(5, 150, 105)"); // #059669
+    expect(tile.style.color).toBe("rgb(255, 255, 255)");
+  });
 });
+

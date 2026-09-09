@@ -19,11 +19,12 @@ omitted — if you need one of the "Not yet" rows, it's a good candidate to add 
 
 ## Feedback and status indicators
 
-| Web component | Status       |
-| ------------- | ------------ |
-| `s-badge`     | ✅ `Badge`   |
-| `s-banner`    | ✅ `Banner`  |
-| `s-spinner`   | ✅ `Spinner` |
+| Web component | Status                                                                          |
+| ------------- | ------------------------------------------------------------------------------- |
+| `s-badge`     | ✅ `Badge`                                                                      |
+| `s-banner`    | ✅ `Banner`                                                                     |
+| `s-spinner`   | ✅ `Spinner`                                                                    |
+| — (extension) | ✅ `IconTile` — Stylized icon tile with `base` and `strong` color intensities.   |
 
 ## Forms
 

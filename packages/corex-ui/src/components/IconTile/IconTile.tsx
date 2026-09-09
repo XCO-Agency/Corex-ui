@@ -3,6 +3,7 @@ import type { CSSProperties, ReactNode } from "react";
 
 type IconTileToneType =
   "success" | "neutral" | "subdued" | "caution" | "info" | "critical";
+export type IconTileColorType = "base" | "strong";
 type IconTileBorderRadiusType = "none" | "small" | "base" | "large" | "full";
 type IconTileSizeType = "sm" | "md" | "lg";
 
@@ -10,6 +11,8 @@ export type IconTilePropsType = {
   children?: ReactNode;
   /** Visual tone (background & icon color) */
   tone?: IconTileToneType;
+  /** Color intensity ('base' for subtle/light tint, 'strong' for saturated solid color) */
+  color?: IconTileColorType;
   /** Rounded corner style */
   borderRadius?: IconTileBorderRadiusType;
   /** Size dimensions ('sm' = 32px, 'md' = 40px, 'lg' = 44px) */
@@ -25,8 +28,11 @@ export type IconTilePropsType = {
   "aria-label"?: string;
 };
 
-const TONE_STYLES: Record<IconTileToneType, { backgroundColor: string; color: string }> =
-  {
+const TONE_STYLES: Record<
+  IconTileColorType,
+  Record<IconTileToneType, { backgroundColor: string; color: string }>
+> = {
+  base: {
     success: {
       backgroundColor: "#aefebe",
       color: "#059669",
@@ -51,12 +57,39 @@ const TONE_STYLES: Record<IconTileToneType, { backgroundColor: string; color: st
       backgroundColor: "#fecaca",
       color: "#dc2626",
     },
-  };
+  },
+  strong: {
+    success: {
+      backgroundColor: "#059669",
+      color: "#ffffff",
+    },
+    neutral: {
+      backgroundColor: "#303030",
+      color: "#ffffff",
+    },
+    subdued: {
+      backgroundColor: "#4b5563",
+      color: "#ffffff",
+    },
+    caution: {
+      backgroundColor: "#d97706",
+      color: "#ffffff",
+    },
+    info: {
+      backgroundColor: "#0284c7",
+      color: "#ffffff",
+    },
+    critical: {
+      backgroundColor: "#dc2626",
+      color: "#ffffff",
+    },
+  },
+};
 
 const SIZE_STYLES: Record<IconTileSizeType, { width: string; height: string }> = {
-  sm: { width: "1.3rem", height: "1.3rem" },
-  md: { width: "2.5rem", height: "2.5rem" },
-  lg: { width: "2.75rem", height: "2.75rem" },
+  sm: { width: "auto", height: "1.35rem" },
+  md: { width: "auto", height: "2.125rem" },
+  lg: { width: "auto", height: "2.75rem" },
 };
 
 const BORDER_RADIUS_STYLES: Record<IconTileBorderRadiusType, { borderRadius: string }> = {
@@ -75,6 +108,7 @@ export const IconTile = forwardRef<HTMLDivElement, IconTilePropsType>(function I
   {
     children,
     tone = "success",
+    color = "base",
     borderRadius = "base",
     size = "md",
     style,
@@ -83,7 +117,8 @@ export const IconTile = forwardRef<HTMLDivElement, IconTilePropsType>(function I
   },
   ref,
 ) {
-  const toneStyle = TONE_STYLES[tone] ?? TONE_STYLES.success;
+  const colorGroup = TONE_STYLES[color] ?? TONE_STYLES.base;
+  const toneStyle = colorGroup[tone] ?? colorGroup.success;
   const sizeStyle = SIZE_STYLES[size] ?? SIZE_STYLES.md;
   const radiusStyle = BORDER_RADIUS_STYLES[borderRadius] ?? BORDER_RADIUS_STYLES.base;
 
@@ -96,9 +131,11 @@ export const IconTile = forwardRef<HTMLDivElement, IconTilePropsType>(function I
         alignItems: "center",
         justifyContent: "center",
         flexShrink: 0,
+        aspectRatio: "1/1",
         ...sizeStyle,
         ...radiusStyle,
         ...toneStyle,
+        ...(color === "strong" ? { "--s-icon-color-26021": "#fff" } : {}),
         ...style,
       }}
       {...rest}

@@ -8,9 +8,10 @@ import type {
 
 type NativeTextProps = PolarisPropsType<"s-text">;
 
-export type TextPropsType = Omit<NativeTextProps, "children"> & {
+export type TextPropsType = Omit<NativeTextProps, "children" | "tone"> & {
   children?: ReactNode;
   variant?: "xs" | "small" | "base" | "large";
+  tone?: ToneType | "white";
   /** Applies heading weight and semantic h* wrapper tag per variant */
   heading?: boolean;
   /** Custom tag override (e.g. `as="p"` or `as="span"`). */
