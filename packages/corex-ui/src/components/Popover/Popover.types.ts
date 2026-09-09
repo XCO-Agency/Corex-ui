@@ -2,6 +2,7 @@ import type { ForwardRefExoticComponent, ReactNode, RefAttributes } from "react"
 
 export type PopoverContextType = {
   popoverId: string;
+  close: () => void;
 };
 
 export type PopoverPropsType = {

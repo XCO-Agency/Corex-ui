@@ -5,6 +5,8 @@ import { FloatingControlsExample } from "@/examples/overlays/FloatingControlsExa
 import FloatingControlsExampleRaw from "@/examples/overlays/FloatingControlsExample.tsx?raw";
 import { FloatingAbsoluteExample } from "@/examples/overlays/FloatingAbsoluteExample";
 import FloatingAbsoluteExampleRaw from "@/examples/overlays/FloatingAbsoluteExample.tsx?raw";
+import { PopoverExample } from "@/examples/overlays/PopoverExample";
+import PopoverExampleRaw from "@/examples/overlays/PopoverExample.tsx?raw";
 
 export const overlaysComponents: ComponentEntry[] = [
   {
@@ -36,6 +38,20 @@ export const overlaysComponents: ComponentEntry[] = [
         title: "Confirmation modal",
         Example: ModalExample,
         code: ModalExampleRaw,
+      },
+    ],
+  },
+  {
+    name: "Popover",
+    slug: "popover",
+    category: "Overlays",
+    description:
+      "A non-modal contextual overlay anchored to a trigger, with programmatic close actions via usePopover.",
+    examples: [
+      {
+        title: "Filter Popover with programmatic close",
+        Example: PopoverExample,
+        code: PopoverExampleRaw,
       },
     ],
   },

@@ -37,6 +37,23 @@ class AppWindowStub extends HTMLElement {
   }
 }
 
+/** `s-popover` supports imperative `showOverlay()` / `hideOverlay()` and `hide()`. */
+class PopoverStub extends HTMLElement {
+  showOverlay() {
+    this.setAttribute("data-stub-open", "true");
+  }
+
+  hideOverlay() {
+    this.removeAttribute("data-stub-open");
+    this.dispatchEvent(new Event("hide", { bubbles: true }));
+  }
+
+  hide() {
+    this.removeAttribute("data-stub-open");
+    this.dispatchEvent(new Event("hide", { bubbles: true }));
+  }
+}
+
 const STUB_TAGS = [
   "s-button",
   "s-button-group",
@@ -84,4 +101,5 @@ export function registerPolarisStubs() {
   }
   defineStub("s-modal", ModalStub);
   defineStub("s-app-window", AppWindowStub);
+  defineStub("s-popover", PopoverStub);
 }
