@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Command, Inbox, Rocket, Search, Sparkles, ChevronDown, Code2 } from "lucide-react";
+import { Command, Inbox, Rocket, Search, Sparkles, ChevronDown, Code2, Grid } from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
@@ -123,6 +123,15 @@ export function AppSidebar({ onOpenSearch, ...props }: AppSidebarPropsType) {
                 >
                   <Rocket className="size-4" />
                   <span>Installation</span>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+              <SidebarMenuItem>
+                <SidebarMenuButton
+                  render={<Link to="/icons" />}
+                  isActive={currentPath === "/icons"}
+                >
+                  <Grid className="size-4 text-sky-500" />
+                  <span>Icons</span>
                 </SidebarMenuButton>
               </SidebarMenuItem>
               <SidebarMenuItem>

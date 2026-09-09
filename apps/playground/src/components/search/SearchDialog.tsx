@@ -110,7 +110,15 @@ const UTILS_ENTRIES: ComponentEntry[] = [
   },
 ];
 
-const searchableEntries = [...allEntries, ...UTILS_ENTRIES];
+const ICONS_ENTRY: ComponentEntry = {
+  name: "Icons Library",
+  slug: "icons",
+  category: "Media",
+  description: "Browse, search, preview, and copy all 517 official Shopify Polaris icons with tones and keywords.",
+  examples: [],
+};
+
+const searchableEntries = [...allEntries, ...UTILS_ENTRIES, ICONS_ENTRY];
 
   // Filter components, blocks, and utils
   const results = React.useMemo(() => {
@@ -145,6 +153,10 @@ const searchableEntries = [...allEntries, ...UTILS_ENTRIES];
   const handleSelect = React.useCallback(
     (component: ComponentEntry) => {
       setOpen(false);
+      if (component.slug === "icons") {
+        navigate("/icons");
+        return;
+      }
       if (component.slug.startsWith("utils")) {
         navigate(`/${component.slug}`);
         return;

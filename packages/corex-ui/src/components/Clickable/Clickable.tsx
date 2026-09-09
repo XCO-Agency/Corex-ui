@@ -111,7 +111,16 @@ export const Clickable: ForwardRefExoticComponent<
     typeof download === "boolean" ? (download ? "" : undefined) : download;
 
   return (
-    <div style={{ width: inlineSize === "auto" ? "fit-content" : "100%" }}>
+    <div
+      style={{
+        width:
+          inlineSize === "auto"
+            ? "fit-content"
+            : inlineSize === "fill"
+              ? "100%"
+              : inlineSize,
+      }}
+    >
       <SClickable
         ref={ref}
         href={href}

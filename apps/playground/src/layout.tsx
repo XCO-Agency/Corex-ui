@@ -28,6 +28,7 @@ export default function Layout({ children }: LayoutPropsType) {
   const currentEntry = currentSlug ? findEntryBySlug(currentSlug) : null;
   const isBlock = sectionType === "blocks";
   const isInstallation = location.pathname === "/installation";
+  const isIcons = location.pathname === "/icons";
   const isUtils = location.pathname.startsWith("/utils");
 
   return (
@@ -42,7 +43,7 @@ export default function Layout({ children }: LayoutPropsType) {
               <BreadcrumbList>
                 <BreadcrumbItem className="hidden sm:block">
                   <BreadcrumbLink render={<Link to="/" />}>
-                    {isInstallation || isUtils ? "Corex UI" : isBlock ? "Blocks" : "Components"}
+                    {isInstallation || isIcons || isUtils ? "Corex UI" : isBlock ? "Blocks" : "Components"}
                   </BreadcrumbLink>
                 </BreadcrumbItem>
                 {isInstallation ? (
@@ -51,6 +52,16 @@ export default function Layout({ children }: LayoutPropsType) {
                     <BreadcrumbItem>
                       <BreadcrumbPage className="font-medium text-foreground text-xs sm:text-sm">
                         Installation
+                      </BreadcrumbPage>
+                    </BreadcrumbItem>
+                  </>
+                ) : null}
+                {isIcons ? (
+                  <>
+                    <BreadcrumbSeparator className="hidden sm:block" />
+                    <BreadcrumbItem>
+                      <BreadcrumbPage className="font-medium text-foreground text-xs sm:text-sm">
+                        Icons
                       </BreadcrumbPage>
                     </BreadcrumbItem>
                   </>

@@ -1,0 +1,9831 @@
+[
+  {
+    "name": "adjust",
+    "title": "Adjust",
+    "category": "Actions & Controls",
+    "keywords": [
+      "adjust",
+      "actions",
+      "controls",
+      "slider",
+      "sliders",
+      "settings",
+      "configure",
+      "level",
+      "parameters",
+      "filter",
+      "tune",
+      "equalizer",
+      "knob",
+      "sort",
+      "funnel",
+      "refine",
+      "order",
+      "arrange",
+      "gear",
+      "cog",
+      "preferences",
+      "config",
+      "configuration",
+      "setup",
+      "options"
+    ]
+  },
+  {
+    "name": "affiliate",
+    "title": "Affiliate",
+    "category": "Communication & Social",
+    "keywords": [
+      "affiliate",
+      "communication",
+      "social"
+    ]
+  },
+  {
+    "name": "airplane",
+    "title": "Airplane",
+    "category": "General & Objects",
+    "keywords": [
+      "airplane",
+      "general",
+      "objects"
+    ]
+  },
+  {
+    "name": "alert-bubble",
+    "title": "Alert Bubble",
+    "category": "Feedback & Security",
+    "keywords": [
+      "alert-bubble",
+      "alert bubble",
+      "alertbubble",
+      "alert",
+      "bubble",
+      "ab",
+      "feedback",
+      "security",
+      "warning",
+      "warn",
+      "caution",
+      "danger",
+      "error",
+      "critical",
+      "exclamation",
+      "problem",
+      "issue",
+      "notice",
+      "attention",
+      "bug",
+      "bell"
+    ]
+  },
+  {
+    "name": "alert-circle",
+    "title": "Alert Circle",
+    "category": "Feedback & Security",
+    "keywords": [
+      "alert-circle",
+      "alert circle",
+      "alertcircle",
+      "alert",
+      "circle",
+      "ac",
+      "feedback",
+      "security",
+      "warning",
+      "warn",
+      "caution",
+      "danger",
+      "error",
+      "critical",
+      "exclamation",
+      "problem",
+      "issue",
+      "notice",
+      "attention",
+      "bug",
+      "bell"
+    ]
+  },
+  {
+    "name": "alert-diamond",
+    "title": "Alert Diamond",
+    "category": "Feedback & Security",
+    "keywords": [
+      "alert-diamond",
+      "alert diamond",
+      "alertdiamond",
+      "alert",
+      "diamond",
+      "ad",
+      "feedback",
+      "security",
+      "warning",
+      "warn",
+      "caution",
+      "danger",
+      "error",
+      "critical",
+      "exclamation",
+      "problem",
+      "issue",
+      "notice",
+      "attention",
+      "bug",
+      "bell"
+    ]
+  },
+  {
+    "name": "alert-location",
+    "title": "Alert Location",
+    "category": "Feedback & Security",
+    "keywords": [
+      "alert-location",
+      "alert location",
+      "alertlocation",
+      "alert",
+      "location",
+      "al",
+      "feedback",
+      "security",
+      "warning",
+      "warn",
+      "caution",
+      "danger",
+      "error",
+      "critical",
+      "exclamation",
+      "problem",
+      "issue",
+      "notice",
+      "attention",
+      "bug",
+      "bell"
+    ]
+  },
+  {
+    "name": "alert-octagon",
+    "title": "Alert Octagon",
+    "category": "Feedback & Security",
+    "keywords": [
+      "alert-octagon",
+      "alert octagon",
+      "alertoctagon",
+      "alert",
+      "octagon",
+      "ao",
+      "feedback",
+      "security",
+      "warning",
+      "warn",
+      "caution",
+      "danger",
+      "error",
+      "critical",
+      "exclamation",
+      "problem",
+      "issue",
+      "notice",
+      "attention",
+      "bug",
+      "bell"
+    ]
+  },
+  {
+    "name": "alert-octagon-filled",
+    "title": "Alert Octagon Filled",
+    "category": "Feedback & Security",
+    "keywords": [
+      "alert-octagon-filled",
+      "alert octagon filled",
+      "alertoctagonfilled",
+      "alert",
+      "octagon",
+      "filled",
+      "aof",
+      "feedback",
+      "security",
+      "warning",
+      "warn",
+      "caution",
+      "danger",
+      "error",
+      "critical",
+      "exclamation",
+      "problem",
+      "issue",
+      "notice",
+      "attention",
+      "bug",
+      "bell"
+    ]
+  },
+  {
+    "name": "alert-triangle",
+    "title": "Alert Triangle",
+    "category": "Feedback & Security",
+    "keywords": [
+      "alert-triangle",
+      "alert triangle",
+      "alerttriangle",
+      "alert",
+      "triangle",
+      "at",
+      "feedback",
+      "security",
+      "warning",
+      "warn",
+      "caution",
+      "danger",
+      "error",
+      "critical",
+      "exclamation",
+      "problem",
+      "issue",
+      "notice",
+      "attention",
+      "bug",
+      "bell"
+    ]
+  },
+  {
+    "name": "align-horizontal-centers",
+    "title": "Align Horizontal Centers",
+    "category": "Formatting & Text",
+    "keywords": [
+      "align-horizontal-centers",
+      "align horizontal centers",
+      "alignhorizontalcenters",
+      "align",
+      "horizontal",
+      "centers",
+      "ahc",
+      "formatting",
+      "text"
+    ]
+  },
+  {
+    "name": "app-extension",
+    "title": "App Extension",
+    "category": "Devices & Layout",
+    "keywords": [
+      "app-extension",
+      "app extension",
+      "appextension",
+      "app",
+      "extension",
+      "ae",
+      "devices",
+      "layout"
+    ]
+  },
+  {
+    "name": "apps",
+    "title": "Apps",
+    "category": "Devices & Layout",
+    "keywords": [
+      "apps",
+      "devices",
+      "layout"
+    ]
+  },
+  {
+    "name": "archive",
+    "title": "Archive",
+    "category": "General & Objects",
+    "keywords": [
+      "archive",
+      "general",
+      "objects",
+      "storage",
+      "box",
+      "history",
+      "backup",
+      "package",
+      "store",
+      "file",
+      "vault",
+      "old",
+      "cabinet"
+    ]
+  },
+  {
+    "name": "arrow-down",
+    "title": "Arrow Down",
+    "category": "Navigation & Arrows",
+    "keywords": [
+      "arrow-down",
+      "arrow down",
+      "arrowdown",
+      "arrow",
+      "down",
+      "ad",
+      "navigation",
+      "arrows",
+      "direction",
+      "pointer",
+      "navigate",
+      "move",
+      "forward",
+      "back",
+      "up",
+      "left",
+      "right",
+      "next",
+      "prev",
+      "previous"
+    ]
+  },
+  {
+    "name": "arrow-down-circle",
+    "title": "Arrow Down Circle",
+    "category": "Navigation & Arrows",
+    "keywords": [
+      "arrow-down-circle",
+      "arrow down circle",
+      "arrowdowncircle",
+      "arrow",
+      "down",
+      "circle",
+      "adc",
+      "navigation",
+      "arrows",
+      "direction",
+      "pointer",
+      "navigate",
+      "move",
+      "forward",
+      "back",
+      "up",
+      "left",
+      "right",
+      "next",
+      "prev",
+      "previous"
+    ]
+  },
+  {
+    "name": "arrow-left",
+    "title": "Arrow Left",
+    "category": "Navigation & Arrows",
+    "keywords": [
+      "arrow-left",
+      "arrow left",
+      "arrowleft",
+      "arrow",
+      "left",
+      "al",
+      "navigation",
+      "arrows",
+      "direction",
+      "pointer",
+      "navigate",
+      "move",
+      "forward",
+      "back",
+      "up",
+      "down",
+      "right",
+      "next",
+      "prev",
+      "previous"
+    ]
+  },
+  {
+    "name": "arrow-left-circle",
+    "title": "Arrow Left Circle",
+    "category": "Navigation & Arrows",
+    "keywords": [
+      "arrow-left-circle",
+      "arrow left circle",
+      "arrowleftcircle",
+      "arrow",
+      "left",
+      "circle",
+      "alc",
+      "navigation",
+      "arrows",
+      "direction",
+      "pointer",
+      "navigate",
+      "move",
+      "forward",
+      "back",
+      "up",
+      "down",
+      "right",
+      "next",
+      "prev",
+      "previous"
+    ]
+  },
+  {
+    "name": "arrow-right",
+    "title": "Arrow Right",
+    "category": "Navigation & Arrows",
+    "keywords": [
+      "arrow-right",
+      "arrow right",
+      "arrowright",
+      "arrow",
+      "right",
+      "ar",
+      "navigation",
+      "arrows",
+      "direction",
+      "pointer",
+      "navigate",
+      "move",
+      "forward",
+      "back",
+      "up",
+      "down",
+      "left",
+      "next",
+      "prev",
+      "previous"
+    ]
+  },
+  {
+    "name": "arrow-right-circle",
+    "title": "Arrow Right Circle",
+    "category": "Navigation & Arrows",
+    "keywords": [
+      "arrow-right-circle",
+      "arrow right circle",
+      "arrowrightcircle",
+      "arrow",
+      "right",
+      "circle",
+      "arc",
+      "navigation",
+      "arrows",
+      "direction",
+      "pointer",
+      "navigate",
+      "move",
+      "forward",
+      "back",
+      "up",
+      "down",
+      "left",
+      "next",
+      "prev",
+      "previous"
+    ]
+  },
+  {
+    "name": "arrow-up",
+    "title": "Arrow Up",
+    "category": "Navigation & Arrows",
+    "keywords": [
+      "arrow-up",
+      "arrow up",
+      "arrowup",
+      "arrow",
+      "up",
+      "au",
+      "navigation",
+      "arrows",
+      "direction",
+      "pointer",
+      "navigate",
+      "move",
+      "forward",
+      "back",
+      "down",
+      "left",
+      "right",
+      "next",
+      "prev",
+      "previous"
+    ]
+  },
+  {
+    "name": "arrow-up-circle",
+    "title": "Arrow Up Circle",
+    "category": "Navigation & Arrows",
+    "keywords": [
+      "arrow-up-circle",
+      "arrow up circle",
+      "arrowupcircle",
+      "arrow",
+      "up",
+      "circle",
+      "auc",
+      "navigation",
+      "arrows",
+      "direction",
+      "pointer",
+      "navigate",
+      "move",
+      "forward",
+      "back",
+      "down",
+      "left",
+      "right",
+      "next",
+      "prev",
+      "previous"
+    ]
+  },
+  {
+    "name": "arrow-up-right",
+    "title": "Arrow Up Right",
+    "category": "Navigation & Arrows",
+    "keywords": [
+      "arrow-up-right",
+      "arrow up right",
+      "arrowupright",
+      "arrow",
+      "up",
+      "right",
+      "aur",
+      "navigation",
+      "arrows",
+      "direction",
+      "pointer",
+      "navigate",
+      "move",
+      "forward",
+      "back",
+      "down",
+      "left",
+      "next",
+      "prev",
+      "previous"
+    ]
+  },
+  {
+    "name": "arrows-in-horizontal",
+    "title": "Arrows In Horizontal",
+    "category": "Navigation & Arrows",
+    "keywords": [
+      "arrows-in-horizontal",
+      "arrows in horizontal",
+      "arrowsinhorizontal",
+      "arrows",
+      "in",
+      "horizontal",
+      "aih",
+      "navigation"
+    ]
+  },
+  {
+    "name": "arrows-out-horizontal",
+    "title": "Arrows Out Horizontal",
+    "category": "Navigation & Arrows",
+    "keywords": [
+      "arrows-out-horizontal",
+      "arrows out horizontal",
+      "arrowsouthorizontal",
+      "arrows",
+      "out",
+      "horizontal",
+      "aoh",
+      "navigation"
+    ]
+  },
+  {
+    "name": "asterisk",
+    "title": "Asterisk",
+    "category": "Feedback & Security",
+    "keywords": [
+      "asterisk",
+      "feedback",
+      "security"
+    ]
+  },
+  {
+    "name": "attachment",
+    "title": "Attachment",
+    "category": "Content & Media",
+    "keywords": [
+      "attachment",
+      "content",
+      "media",
+      "link",
+      "url",
+      "hyperlink",
+      "chain",
+      "web",
+      "connect",
+      "href"
+    ]
+  },
+  {
+    "name": "automation",
+    "title": "Automation",
+    "category": "Actions & Controls",
+    "keywords": [
+      "automation",
+      "actions",
+      "controls",
+      "gear",
+      "cog",
+      "settings",
+      "preferences",
+      "config",
+      "configuration",
+      "setup",
+      "options",
+      "tune"
+    ]
+  },
+  {
+    "name": "backspace",
+    "title": "Backspace",
+    "category": "Actions & Controls",
+    "keywords": [
+      "backspace",
+      "actions",
+      "controls",
+      "delete",
+      "remove",
+      "erase",
+      "key",
+      "clear",
+      "back",
+      "undo",
+      "trash",
+      "bin",
+      "garbage",
+      "rubbish",
+      "waste"
+    ]
+  },
+  {
+    "name": "bag",
+    "title": "Bag",
+    "category": "Commerce & Orders",
+    "keywords": [
+      "bag",
+      "commerce",
+      "orders",
+      "shopping",
+      "cart",
+      "tote",
+      "store",
+      "retail",
+      "purchase",
+      "checkout",
+      "goods",
+      "shop",
+      "basket",
+      "buy",
+      "ecommerce"
+    ]
+  },
+  {
+    "name": "bank",
+    "title": "Bank",
+    "category": "Commerce & Orders",
+    "keywords": [
+      "bank",
+      "commerce",
+      "orders",
+      "money",
+      "cash",
+      "currency",
+      "finance",
+      "payment",
+      "price",
+      "cost",
+      "pay",
+      "dollar"
+    ]
+  },
+  {
+    "name": "barcode",
+    "title": "Barcode",
+    "category": "Products & Inventory",
+    "keywords": [
+      "barcode",
+      "products",
+      "inventory"
+    ]
+  },
+  {
+    "name": "bill",
+    "title": "Bill",
+    "category": "Commerce & Orders",
+    "keywords": [
+      "bill",
+      "commerce",
+      "orders",
+      "invoice",
+      "payment",
+      "receipt",
+      "finance",
+      "money",
+      "charge",
+      "due",
+      "billing",
+      "cash",
+      "currency",
+      "price",
+      "cost",
+      "pay",
+      "dollar"
+    ]
+  },
+  {
+    "name": "blank",
+    "title": "Blank",
+    "category": "General & Objects",
+    "keywords": [
+      "blank",
+      "general",
+      "objects"
+    ]
+  },
+  {
+    "name": "blog",
+    "title": "Blog",
+    "category": "Content & Media",
+    "keywords": [
+      "blog",
+      "content",
+      "media"
+    ]
+  },
+  {
+    "name": "bolt",
+    "title": "Bolt",
+    "category": "General & Objects",
+    "keywords": [
+      "bolt",
+      "general",
+      "objects",
+      "lightning",
+      "flash",
+      "electricity",
+      "power",
+      "fast",
+      "quick",
+      "instant",
+      "energy",
+      "speed"
+    ]
+  },
+  {
+    "name": "bolt-filled",
+    "title": "Bolt Filled",
+    "category": "General & Objects",
+    "keywords": [
+      "bolt-filled",
+      "bolt filled",
+      "boltfilled",
+      "bolt",
+      "filled",
+      "bf",
+      "general",
+      "objects",
+      "lightning",
+      "flash",
+      "electricity",
+      "power",
+      "fast",
+      "quick",
+      "instant",
+      "energy",
+      "speed"
+    ]
+  },
+  {
+    "name": "book",
+    "title": "Book",
+    "category": "Content & Media",
+    "keywords": [
+      "book",
+      "content",
+      "media"
+    ]
+  },
+  {
+    "name": "book-open",
+    "title": "Book Open",
+    "category": "Content & Media",
+    "keywords": [
+      "book-open",
+      "book open",
+      "bookopen",
+      "book",
+      "open",
+      "bo",
+      "content",
+      "media"
+    ]
+  },
+  {
+    "name": "brain",
+    "title": "Brain",
+    "category": "General & Objects",
+    "keywords": [
+      "brain",
+      "general",
+      "objects",
+      "ai",
+      "intelligence",
+      "smart",
+      "thinking",
+      "mind",
+      "machine learning",
+      "neural",
+      "artificial intelligence",
+      "logic",
+      "magic",
+      "generate",
+      "sparkle",
+      "wizard",
+      "automated"
+    ]
+  },
+  {
+    "name": "bug",
+    "title": "Bug",
+    "category": "General & Objects",
+    "keywords": [
+      "bug",
+      "general",
+      "objects",
+      "warning",
+      "warn",
+      "caution",
+      "danger",
+      "error",
+      "critical",
+      "problem",
+      "issue",
+      "notice",
+      "exclamation"
+    ]
+  },
+  {
+    "name": "bullet",
+    "title": "Bullet",
+    "category": "Formatting & Text",
+    "keywords": [
+      "bullet",
+      "formatting",
+      "text"
+    ]
+  },
+  {
+    "name": "business-entity",
+    "title": "Business Entity",
+    "category": "Organization & People",
+    "keywords": [
+      "business-entity",
+      "business entity",
+      "businessentity",
+      "business",
+      "entity",
+      "be",
+      "organization",
+      "people"
+    ]
+  },
+  {
+    "name": "button",
+    "title": "Button",
+    "category": "Actions & Controls",
+    "keywords": [
+      "button",
+      "actions",
+      "controls"
+    ]
+  },
+  {
+    "name": "button-press",
+    "title": "Button Press",
+    "category": "Actions & Controls",
+    "keywords": [
+      "button-press",
+      "button press",
+      "buttonpress",
+      "button",
+      "press",
+      "bp",
+      "actions",
+      "controls"
+    ]
+  },
+  {
+    "name": "calculator",
+    "title": "Calculator",
+    "category": "Analytics & Data",
+    "keywords": [
+      "calculator",
+      "analytics",
+      "data"
+    ]
+  },
+  {
+    "name": "calendar",
+    "title": "Calendar",
+    "category": "Analytics & Data",
+    "keywords": [
+      "calendar",
+      "analytics",
+      "data",
+      "date",
+      "event",
+      "schedule",
+      "day",
+      "month",
+      "year",
+      "appointment",
+      "planner",
+      "when",
+      "time",
+      "hour",
+      "minute",
+      "timer"
+    ]
+  },
+  {
+    "name": "calendar-check",
+    "title": "Calendar Check",
+    "category": "Analytics & Data",
+    "keywords": [
+      "calendar-check",
+      "calendar check",
+      "calendarcheck",
+      "calendar",
+      "check",
+      "cc",
+      "analytics",
+      "data",
+      "tick",
+      "mark",
+      "done",
+      "complete",
+      "completed",
+      "finished",
+      "success",
+      "ok",
+      "valid",
+      "verified",
+      "confirm",
+      "approved",
+      "accept",
+      "yes",
+      "pass",
+      "right",
+      "date",
+      "event",
+      "schedule",
+      "day",
+      "month",
+      "year",
+      "appointment",
+      "planner",
+      "when",
+      "time",
+      "hour",
+      "minute",
+      "timer"
+    ]
+  },
+  {
+    "name": "calendar-compare",
+    "title": "Calendar Compare",
+    "category": "Analytics & Data",
+    "keywords": [
+      "calendar-compare",
+      "calendar compare",
+      "calendarcompare",
+      "calendar",
+      "compare",
+      "cc",
+      "analytics",
+      "data",
+      "date",
+      "event",
+      "schedule",
+      "day",
+      "month",
+      "year",
+      "appointment",
+      "planner",
+      "when",
+      "time",
+      "hour",
+      "minute",
+      "timer"
+    ]
+  },
+  {
+    "name": "calendar-list",
+    "title": "Calendar List",
+    "category": "Analytics & Data",
+    "keywords": [
+      "calendar-list",
+      "calendar list",
+      "calendarlist",
+      "calendar",
+      "list",
+      "cl",
+      "analytics",
+      "data",
+      "date",
+      "event",
+      "schedule",
+      "day",
+      "month",
+      "year",
+      "appointment",
+      "planner",
+      "when",
+      "time",
+      "hour",
+      "minute",
+      "timer"
+    ]
+  },
+  {
+    "name": "calendar-time",
+    "title": "Calendar Time",
+    "category": "Analytics & Data",
+    "keywords": [
+      "calendar-time",
+      "calendar time",
+      "calendartime",
+      "calendar",
+      "time",
+      "ct",
+      "analytics",
+      "data",
+      "date",
+      "event",
+      "schedule",
+      "day",
+      "month",
+      "year",
+      "appointment",
+      "planner",
+      "when",
+      "hour",
+      "minute",
+      "timer"
+    ]
+  },
+  {
+    "name": "camera",
+    "title": "Camera",
+    "category": "Content & Media",
+    "keywords": [
+      "camera",
+      "content",
+      "media",
+      "photo",
+      "picture",
+      "snapshot",
+      "video",
+      "shoot",
+      "capture",
+      "lens",
+      "image",
+      "graphic",
+      "pic",
+      "gallery"
+    ]
+  },
+  {
+    "name": "camera-flip",
+    "title": "Camera Flip",
+    "category": "Content & Media",
+    "keywords": [
+      "camera-flip",
+      "camera flip",
+      "cameraflip",
+      "camera",
+      "flip",
+      "cf",
+      "content",
+      "media",
+      "photo",
+      "picture",
+      "snapshot",
+      "video",
+      "shoot",
+      "capture",
+      "lens",
+      "image",
+      "graphic",
+      "pic",
+      "gallery"
+    ]
+  },
+  {
+    "name": "caret-down",
+    "title": "Caret Down",
+    "category": "Navigation & Arrows",
+    "keywords": [
+      "caret-down",
+      "caret down",
+      "caretdown",
+      "caret",
+      "down",
+      "cd",
+      "navigation",
+      "arrows",
+      "arrow",
+      "pointer",
+      "dropdown",
+      "triangle",
+      "expand",
+      "collapse",
+      "direction"
+    ]
+  },
+  {
+    "name": "caret-left",
+    "title": "Caret Left",
+    "category": "Navigation & Arrows",
+    "keywords": [
+      "caret-left",
+      "caret left",
+      "caretleft",
+      "caret",
+      "left",
+      "cl",
+      "navigation",
+      "arrows",
+      "arrow",
+      "pointer",
+      "dropdown",
+      "triangle",
+      "expand",
+      "collapse",
+      "direction"
+    ]
+  },
+  {
+    "name": "caret-right",
+    "title": "Caret Right",
+    "category": "Navigation & Arrows",
+    "keywords": [
+      "caret-right",
+      "caret right",
+      "caretright",
+      "caret",
+      "right",
+      "cr",
+      "navigation",
+      "arrows",
+      "arrow",
+      "pointer",
+      "dropdown",
+      "triangle",
+      "expand",
+      "collapse",
+      "direction"
+    ]
+  },
+  {
+    "name": "caret-up",
+    "title": "Caret Up",
+    "category": "Navigation & Arrows",
+    "keywords": [
+      "caret-up",
+      "caret up",
+      "caretup",
+      "caret",
+      "up",
+      "cu",
+      "navigation",
+      "arrows",
+      "arrow",
+      "pointer",
+      "dropdown",
+      "triangle",
+      "expand",
+      "collapse",
+      "direction"
+    ]
+  },
+  {
+    "name": "cart",
+    "title": "Cart",
+    "category": "Commerce & Orders",
+    "keywords": [
+      "cart",
+      "commerce",
+      "orders",
+      "shopping",
+      "basket",
+      "bag",
+      "tote",
+      "checkout",
+      "buy",
+      "purchase",
+      "ecommerce",
+      "shop",
+      "store",
+      "order",
+      "retail",
+      "items",
+      "merchandise"
+    ]
+  },
+  {
+    "name": "cart-abandoned",
+    "title": "Cart Abandoned",
+    "category": "Commerce & Orders",
+    "keywords": [
+      "cart-abandoned",
+      "cart abandoned",
+      "cartabandoned",
+      "cart",
+      "abandoned",
+      "ca",
+      "commerce",
+      "orders",
+      "shopping",
+      "basket",
+      "bag",
+      "tote",
+      "checkout",
+      "buy",
+      "purchase",
+      "ecommerce",
+      "shop",
+      "store",
+      "order",
+      "retail",
+      "items",
+      "merchandise"
+    ]
+  },
+  {
+    "name": "cart-discount",
+    "title": "Cart Discount",
+    "category": "Commerce & Orders",
+    "keywords": [
+      "cart-discount",
+      "cart discount",
+      "cartdiscount",
+      "cart",
+      "discount",
+      "cd",
+      "commerce",
+      "orders",
+      "shopping",
+      "basket",
+      "bag",
+      "tote",
+      "checkout",
+      "buy",
+      "purchase",
+      "ecommerce",
+      "shop",
+      "store",
+      "order",
+      "retail",
+      "items",
+      "merchandise",
+      "coupon",
+      "voucher",
+      "promo",
+      "percent",
+      "sale",
+      "deal",
+      "rebate",
+      "offer",
+      "bargain",
+      "off"
+    ]
+  },
+  {
+    "name": "cart-down",
+    "title": "Cart Down",
+    "category": "Commerce & Orders",
+    "keywords": [
+      "cart-down",
+      "cart down",
+      "cartdown",
+      "cart",
+      "down",
+      "cd",
+      "commerce",
+      "orders",
+      "shopping",
+      "basket",
+      "bag",
+      "tote",
+      "checkout",
+      "buy",
+      "purchase",
+      "ecommerce",
+      "shop",
+      "store",
+      "order",
+      "retail",
+      "items",
+      "merchandise"
+    ]
+  },
+  {
+    "name": "cart-sale",
+    "title": "Cart Sale",
+    "category": "Commerce & Orders",
+    "keywords": [
+      "cart-sale",
+      "cart sale",
+      "cartsale",
+      "cart",
+      "sale",
+      "cs",
+      "commerce",
+      "orders",
+      "shopping",
+      "basket",
+      "bag",
+      "tote",
+      "checkout",
+      "buy",
+      "purchase",
+      "ecommerce",
+      "shop",
+      "store",
+      "order",
+      "retail",
+      "items",
+      "merchandise"
+    ]
+  },
+  {
+    "name": "cart-up",
+    "title": "Cart Up",
+    "category": "Commerce & Orders",
+    "keywords": [
+      "cart-up",
+      "cart up",
+      "cartup",
+      "cart",
+      "up",
+      "cu",
+      "commerce",
+      "orders",
+      "shopping",
+      "basket",
+      "bag",
+      "tote",
+      "checkout",
+      "buy",
+      "purchase",
+      "ecommerce",
+      "shop",
+      "store",
+      "order",
+      "retail",
+      "items",
+      "merchandise"
+    ]
+  },
+  {
+    "name": "cash-dollar",
+    "title": "Cash Dollar",
+    "category": "Commerce & Orders",
+    "keywords": [
+      "cash-dollar",
+      "cash dollar",
+      "cashdollar",
+      "cash",
+      "dollar",
+      "cd",
+      "commerce",
+      "orders",
+      "money",
+      "currency",
+      "bills",
+      "euro",
+      "pound",
+      "payment",
+      "funds",
+      "banknotes",
+      "coins",
+      "usd",
+      "eur",
+      "gbp",
+      "finance",
+      "price",
+      "cost",
+      "pay"
+    ]
+  },
+  {
+    "name": "cash-euro",
+    "title": "Cash Euro",
+    "category": "Commerce & Orders",
+    "keywords": [
+      "cash-euro",
+      "cash euro",
+      "casheuro",
+      "cash",
+      "euro",
+      "ce",
+      "commerce",
+      "orders",
+      "money",
+      "currency",
+      "bills",
+      "dollar",
+      "pound",
+      "payment",
+      "funds",
+      "banknotes",
+      "coins",
+      "usd",
+      "eur",
+      "gbp",
+      "finance",
+      "price",
+      "cost",
+      "pay"
+    ]
+  },
+  {
+    "name": "cash-pound",
+    "title": "Cash Pound",
+    "category": "Commerce & Orders",
+    "keywords": [
+      "cash-pound",
+      "cash pound",
+      "cashpound",
+      "cash",
+      "pound",
+      "cp",
+      "commerce",
+      "orders",
+      "money",
+      "currency",
+      "bills",
+      "dollar",
+      "euro",
+      "payment",
+      "funds",
+      "banknotes",
+      "coins",
+      "usd",
+      "eur",
+      "gbp",
+      "finance",
+      "price",
+      "cost",
+      "pay"
+    ]
+  },
+  {
+    "name": "cash-rupee",
+    "title": "Cash Rupee",
+    "category": "Commerce & Orders",
+    "keywords": [
+      "cash-rupee",
+      "cash rupee",
+      "cashrupee",
+      "cash",
+      "rupee",
+      "cr",
+      "commerce",
+      "orders",
+      "money",
+      "currency",
+      "bills",
+      "dollar",
+      "euro",
+      "pound",
+      "payment",
+      "funds",
+      "banknotes",
+      "coins",
+      "usd",
+      "eur",
+      "gbp",
+      "finance",
+      "price",
+      "cost",
+      "pay"
+    ]
+  },
+  {
+    "name": "cash-yen",
+    "title": "Cash Yen",
+    "category": "Commerce & Orders",
+    "keywords": [
+      "cash-yen",
+      "cash yen",
+      "cashyen",
+      "cash",
+      "yen",
+      "cy",
+      "commerce",
+      "orders",
+      "money",
+      "currency",
+      "bills",
+      "dollar",
+      "euro",
+      "pound",
+      "payment",
+      "funds",
+      "banknotes",
+      "coins",
+      "usd",
+      "eur",
+      "gbp",
+      "finance",
+      "price",
+      "cost",
+      "pay"
+    ]
+  },
+  {
+    "name": "catalog-product",
+    "title": "Catalog Product",
+    "category": "Products & Inventory",
+    "keywords": [
+      "catalog-product",
+      "catalog product",
+      "catalogproduct",
+      "catalog",
+      "product",
+      "cp",
+      "products",
+      "inventory"
+    ]
+  },
+  {
+    "name": "categories",
+    "title": "Categories",
+    "category": "General & Objects",
+    "keywords": [
+      "categories",
+      "general",
+      "objects"
+    ]
+  },
+  {
+    "name": "channels",
+    "title": "Channels",
+    "category": "Organization & People",
+    "keywords": [
+      "channels",
+      "organization",
+      "people"
+    ]
+  },
+  {
+    "name": "channels-filled",
+    "title": "Channels Filled",
+    "category": "Organization & People",
+    "keywords": [
+      "channels-filled",
+      "channels filled",
+      "channelsfilled",
+      "channels",
+      "filled",
+      "cf",
+      "organization",
+      "people"
+    ]
+  },
+  {
+    "name": "chart-cohort",
+    "title": "Chart Cohort",
+    "category": "Analytics & Data",
+    "keywords": [
+      "chart-cohort",
+      "chart cohort",
+      "chartcohort",
+      "chart",
+      "cohort",
+      "cc",
+      "analytics",
+      "data"
+    ]
+  },
+  {
+    "name": "chart-donut",
+    "title": "Chart Donut",
+    "category": "Analytics & Data",
+    "keywords": [
+      "chart-donut",
+      "chart donut",
+      "chartdonut",
+      "chart",
+      "donut",
+      "cd",
+      "analytics",
+      "data"
+    ]
+  },
+  {
+    "name": "chart-funnel",
+    "title": "Chart Funnel",
+    "category": "Analytics & Data",
+    "keywords": [
+      "chart-funnel",
+      "chart funnel",
+      "chartfunnel",
+      "chart",
+      "funnel",
+      "cf",
+      "analytics",
+      "data"
+    ]
+  },
+  {
+    "name": "chart-histogram-first",
+    "title": "Chart Histogram First",
+    "category": "Analytics & Data",
+    "keywords": [
+      "chart-histogram-first",
+      "chart histogram first",
+      "charthistogramfirst",
+      "chart",
+      "histogram",
+      "first",
+      "chf",
+      "analytics",
+      "data"
+    ]
+  },
+  {
+    "name": "chart-histogram-first-last",
+    "title": "Chart Histogram First Last",
+    "category": "Analytics & Data",
+    "keywords": [
+      "chart-histogram-first-last",
+      "chart histogram first last",
+      "charthistogramfirstlast",
+      "chart",
+      "histogram",
+      "first",
+      "last",
+      "chfl",
+      "analytics",
+      "data"
+    ]
+  },
+  {
+    "name": "chart-histogram-flat",
+    "title": "Chart Histogram Flat",
+    "category": "Analytics & Data",
+    "keywords": [
+      "chart-histogram-flat",
+      "chart histogram flat",
+      "charthistogramflat",
+      "chart",
+      "histogram",
+      "flat",
+      "chf",
+      "analytics",
+      "data"
+    ]
+  },
+  {
+    "name": "chart-histogram-full",
+    "title": "Chart Histogram Full",
+    "category": "Analytics & Data",
+    "keywords": [
+      "chart-histogram-full",
+      "chart histogram full",
+      "charthistogramfull",
+      "chart",
+      "histogram",
+      "full",
+      "chf",
+      "analytics",
+      "data"
+    ]
+  },
+  {
+    "name": "chart-histogram-growth",
+    "title": "Chart Histogram Growth",
+    "category": "Analytics & Data",
+    "keywords": [
+      "chart-histogram-growth",
+      "chart histogram growth",
+      "charthistogramgrowth",
+      "chart",
+      "histogram",
+      "growth",
+      "chg",
+      "analytics",
+      "data"
+    ]
+  },
+  {
+    "name": "chart-histogram-last",
+    "title": "Chart Histogram Last",
+    "category": "Analytics & Data",
+    "keywords": [
+      "chart-histogram-last",
+      "chart histogram last",
+      "charthistogramlast",
+      "chart",
+      "histogram",
+      "last",
+      "chl",
+      "analytics",
+      "data"
+    ]
+  },
+  {
+    "name": "chart-histogram-second-last",
+    "title": "Chart Histogram Second Last",
+    "category": "Analytics & Data",
+    "keywords": [
+      "chart-histogram-second-last",
+      "chart histogram second last",
+      "charthistogramsecondlast",
+      "chart",
+      "histogram",
+      "second",
+      "last",
+      "chsl",
+      "analytics",
+      "data"
+    ]
+  },
+  {
+    "name": "chart-horizontal",
+    "title": "Chart Horizontal",
+    "category": "Analytics & Data",
+    "keywords": [
+      "chart-horizontal",
+      "chart horizontal",
+      "charthorizontal",
+      "chart",
+      "horizontal",
+      "ch",
+      "analytics",
+      "data"
+    ]
+  },
+  {
+    "name": "chart-line",
+    "title": "Chart Line",
+    "category": "Analytics & Data",
+    "keywords": [
+      "chart-line",
+      "chart line",
+      "chartline",
+      "chart",
+      "line",
+      "cl",
+      "analytics",
+      "data"
+    ]
+  },
+  {
+    "name": "chart-popular",
+    "title": "Chart Popular",
+    "category": "Analytics & Data",
+    "keywords": [
+      "chart-popular",
+      "chart popular",
+      "chartpopular",
+      "chart",
+      "popular",
+      "cp",
+      "analytics",
+      "data"
+    ]
+  },
+  {
+    "name": "chart-stacked",
+    "title": "Chart Stacked",
+    "category": "Analytics & Data",
+    "keywords": [
+      "chart-stacked",
+      "chart stacked",
+      "chartstacked",
+      "chart",
+      "stacked",
+      "cs",
+      "analytics",
+      "data"
+    ]
+  },
+  {
+    "name": "chart-vertical",
+    "title": "Chart Vertical",
+    "category": "Analytics & Data",
+    "keywords": [
+      "chart-vertical",
+      "chart vertical",
+      "chartvertical",
+      "chart",
+      "vertical",
+      "cv",
+      "analytics",
+      "data"
+    ]
+  },
+  {
+    "name": "chat",
+    "title": "Chat",
+    "category": "Communication & Social",
+    "keywords": [
+      "chat",
+      "communication",
+      "social",
+      "message",
+      "conversation",
+      "talk",
+      "dialogue",
+      "support",
+      "contact",
+      "discuss",
+      "bubble",
+      "inbox",
+      "comment",
+      "mail",
+      "email",
+      "letter",
+      "send",
+      "receive"
+    ]
+  },
+  {
+    "name": "chat-new",
+    "title": "Chat New",
+    "category": "Communication & Social",
+    "keywords": [
+      "chat-new",
+      "chat new",
+      "chatnew",
+      "chat",
+      "new",
+      "cn",
+      "communication",
+      "social",
+      "message",
+      "conversation",
+      "talk",
+      "dialogue",
+      "support",
+      "contact",
+      "discuss",
+      "bubble",
+      "inbox",
+      "comment",
+      "mail",
+      "email",
+      "letter",
+      "send",
+      "receive"
+    ]
+  },
+  {
+    "name": "chat-referral",
+    "title": "Chat Referral",
+    "category": "Communication & Social",
+    "keywords": [
+      "chat-referral",
+      "chat referral",
+      "chatreferral",
+      "chat",
+      "referral",
+      "cr",
+      "communication",
+      "social",
+      "message",
+      "conversation",
+      "talk",
+      "dialogue",
+      "support",
+      "contact",
+      "discuss",
+      "bubble",
+      "inbox",
+      "comment",
+      "mail",
+      "email",
+      "letter",
+      "send",
+      "receive"
+    ]
+  },
+  {
+    "name": "check",
+    "title": "Check",
+    "category": "Feedback & Security",
+    "keywords": [
+      "check",
+      "feedback",
+      "security",
+      "tick",
+      "mark",
+      "done",
+      "complete",
+      "completed",
+      "finished",
+      "success",
+      "ok",
+      "valid",
+      "verified",
+      "confirm",
+      "approved",
+      "accept",
+      "yes",
+      "pass",
+      "right"
+    ]
+  },
+  {
+    "name": "check-circle",
+    "title": "Check Circle",
+    "category": "Feedback & Security",
+    "keywords": [
+      "check-circle",
+      "check circle",
+      "checkcircle",
+      "check",
+      "circle",
+      "cc",
+      "feedback",
+      "security",
+      "tick",
+      "mark",
+      "done",
+      "complete",
+      "completed",
+      "finished",
+      "success",
+      "ok",
+      "valid",
+      "verified",
+      "confirm",
+      "approved",
+      "accept",
+      "yes",
+      "pass",
+      "right"
+    ]
+  },
+  {
+    "name": "check-circle-filled",
+    "title": "Check Circle Filled",
+    "category": "Feedback & Security",
+    "keywords": [
+      "check-circle-filled",
+      "check circle filled",
+      "checkcirclefilled",
+      "check",
+      "circle",
+      "filled",
+      "ccf",
+      "feedback",
+      "security",
+      "tick",
+      "mark",
+      "done",
+      "complete",
+      "completed",
+      "finished",
+      "success",
+      "ok",
+      "valid",
+      "verified",
+      "confirm",
+      "approved",
+      "accept",
+      "yes",
+      "pass",
+      "right"
+    ]
+  },
+  {
+    "name": "checkbox",
+    "title": "Checkbox",
+    "category": "Feedback & Security",
+    "keywords": [
+      "checkbox",
+      "feedback",
+      "security",
+      "tick",
+      "box",
+      "toggle",
+      "option",
+      "form",
+      "selection",
+      "check",
+      "square",
+      "done",
+      "ok",
+      "success",
+      "verified",
+      "confirm",
+      "complete",
+      "yes",
+      "pass"
+    ]
+  },
+  {
+    "name": "chevron-down",
+    "title": "Chevron Down",
+    "category": "Navigation & Arrows",
+    "keywords": [
+      "chevron-down",
+      "chevron down",
+      "chevrondown",
+      "chevron",
+      "down",
+      "cd",
+      "navigation",
+      "arrows",
+      "arrow",
+      "angle",
+      "dropdown",
+      "toggle",
+      "expand",
+      "collapse",
+      "direction",
+      "next",
+      "prev",
+      "up",
+      "left",
+      "right"
+    ]
+  },
+  {
+    "name": "chevron-down-circle",
+    "title": "Chevron Down Circle",
+    "category": "Navigation & Arrows",
+    "keywords": [
+      "chevron-down-circle",
+      "chevron down circle",
+      "chevrondowncircle",
+      "chevron",
+      "down",
+      "circle",
+      "cdc",
+      "navigation",
+      "arrows",
+      "arrow",
+      "angle",
+      "dropdown",
+      "toggle",
+      "expand",
+      "collapse",
+      "direction",
+      "next",
+      "prev",
+      "up",
+      "left",
+      "right"
+    ]
+  },
+  {
+    "name": "chevron-left",
+    "title": "Chevron Left",
+    "category": "Navigation & Arrows",
+    "keywords": [
+      "chevron-left",
+      "chevron left",
+      "chevronleft",
+      "chevron",
+      "left",
+      "cl",
+      "navigation",
+      "arrows",
+      "arrow",
+      "angle",
+      "dropdown",
+      "toggle",
+      "expand",
+      "collapse",
+      "direction",
+      "next",
+      "prev",
+      "up",
+      "down",
+      "right"
+    ]
+  },
+  {
+    "name": "chevron-left-circle",
+    "title": "Chevron Left Circle",
+    "category": "Navigation & Arrows",
+    "keywords": [
+      "chevron-left-circle",
+      "chevron left circle",
+      "chevronleftcircle",
+      "chevron",
+      "left",
+      "circle",
+      "clc",
+      "navigation",
+      "arrows",
+      "arrow",
+      "angle",
+      "dropdown",
+      "toggle",
+      "expand",
+      "collapse",
+      "direction",
+      "next",
+      "prev",
+      "up",
+      "down",
+      "right"
+    ]
+  },
+  {
+    "name": "chevron-right",
+    "title": "Chevron Right",
+    "category": "Navigation & Arrows",
+    "keywords": [
+      "chevron-right",
+      "chevron right",
+      "chevronright",
+      "chevron",
+      "right",
+      "cr",
+      "navigation",
+      "arrows",
+      "arrow",
+      "angle",
+      "dropdown",
+      "toggle",
+      "expand",
+      "collapse",
+      "direction",
+      "next",
+      "prev",
+      "up",
+      "down",
+      "left"
+    ]
+  },
+  {
+    "name": "chevron-right-circle",
+    "title": "Chevron Right Circle",
+    "category": "Navigation & Arrows",
+    "keywords": [
+      "chevron-right-circle",
+      "chevron right circle",
+      "chevronrightcircle",
+      "chevron",
+      "right",
+      "circle",
+      "crc",
+      "navigation",
+      "arrows",
+      "arrow",
+      "angle",
+      "dropdown",
+      "toggle",
+      "expand",
+      "collapse",
+      "direction",
+      "next",
+      "prev",
+      "up",
+      "down",
+      "left"
+    ]
+  },
+  {
+    "name": "chevron-up",
+    "title": "Chevron Up",
+    "category": "Navigation & Arrows",
+    "keywords": [
+      "chevron-up",
+      "chevron up",
+      "chevronup",
+      "chevron",
+      "up",
+      "cu",
+      "navigation",
+      "arrows",
+      "arrow",
+      "angle",
+      "dropdown",
+      "toggle",
+      "expand",
+      "collapse",
+      "direction",
+      "next",
+      "prev",
+      "down",
+      "left",
+      "right"
+    ]
+  },
+  {
+    "name": "chevron-up-circle",
+    "title": "Chevron Up Circle",
+    "category": "Navigation & Arrows",
+    "keywords": [
+      "chevron-up-circle",
+      "chevron up circle",
+      "chevronupcircle",
+      "chevron",
+      "up",
+      "circle",
+      "cuc",
+      "navigation",
+      "arrows",
+      "arrow",
+      "angle",
+      "dropdown",
+      "toggle",
+      "expand",
+      "collapse",
+      "direction",
+      "next",
+      "prev",
+      "down",
+      "left",
+      "right"
+    ]
+  },
+  {
+    "name": "circle",
+    "title": "Circle",
+    "category": "General & Objects",
+    "keywords": [
+      "circle",
+      "general",
+      "objects"
+    ]
+  },
+  {
+    "name": "circle-dashed",
+    "title": "Circle Dashed",
+    "category": "General & Objects",
+    "keywords": [
+      "circle-dashed",
+      "circle dashed",
+      "circledashed",
+      "circle",
+      "dashed",
+      "cd",
+      "general",
+      "objects"
+    ]
+  },
+  {
+    "name": "clipboard",
+    "title": "Clipboard",
+    "category": "Content & Media",
+    "keywords": [
+      "clipboard",
+      "content",
+      "media",
+      "copy",
+      "paste",
+      "checklist",
+      "tasks",
+      "notes",
+      "board",
+      "review",
+      "todo"
+    ]
+  },
+  {
+    "name": "clipboard-check",
+    "title": "Clipboard Check",
+    "category": "Content & Media",
+    "keywords": [
+      "clipboard-check",
+      "clipboard check",
+      "clipboardcheck",
+      "clipboard",
+      "check",
+      "cc",
+      "content",
+      "media",
+      "tick",
+      "mark",
+      "done",
+      "complete",
+      "completed",
+      "finished",
+      "success",
+      "ok",
+      "valid",
+      "verified",
+      "confirm",
+      "approved",
+      "accept",
+      "yes",
+      "pass",
+      "right",
+      "copy",
+      "paste",
+      "checklist",
+      "tasks",
+      "notes",
+      "board",
+      "review",
+      "todo"
+    ]
+  },
+  {
+    "name": "clipboard-checklist",
+    "title": "Clipboard Checklist",
+    "category": "Content & Media",
+    "keywords": [
+      "clipboard-checklist",
+      "clipboard checklist",
+      "clipboardchecklist",
+      "clipboard",
+      "checklist",
+      "cc",
+      "content",
+      "media",
+      "copy",
+      "paste",
+      "tasks",
+      "notes",
+      "board",
+      "review",
+      "todo",
+      "tick",
+      "done",
+      "ok",
+      "success",
+      "verified",
+      "confirm",
+      "complete",
+      "yes",
+      "pass"
+    ]
+  },
+  {
+    "name": "clock",
+    "title": "Clock",
+    "category": "Analytics & Data",
+    "keywords": [
+      "clock",
+      "analytics",
+      "data",
+      "time",
+      "hour",
+      "minute",
+      "timer",
+      "watch",
+      "duration",
+      "schedule",
+      "history",
+      "recent",
+      "when",
+      "date"
+    ]
+  },
+  {
+    "name": "clock-list",
+    "title": "Clock List",
+    "category": "Analytics & Data",
+    "keywords": [
+      "clock-list",
+      "clock list",
+      "clocklist",
+      "clock",
+      "list",
+      "cl",
+      "analytics",
+      "data",
+      "time",
+      "hour",
+      "minute",
+      "timer",
+      "watch",
+      "duration",
+      "schedule",
+      "history",
+      "recent",
+      "when",
+      "date"
+    ]
+  },
+  {
+    "name": "clock-revert",
+    "title": "Clock Revert",
+    "category": "Analytics & Data",
+    "keywords": [
+      "clock-revert",
+      "clock revert",
+      "clockrevert",
+      "clock",
+      "revert",
+      "cr",
+      "analytics",
+      "data",
+      "time",
+      "hour",
+      "minute",
+      "timer",
+      "watch",
+      "duration",
+      "schedule",
+      "history",
+      "recent",
+      "when",
+      "date"
+    ]
+  },
+  {
+    "name": "code",
+    "title": "Code",
+    "category": "Formatting & Text",
+    "keywords": [
+      "code",
+      "formatting",
+      "text",
+      "html",
+      "programming",
+      "dev",
+      "developer",
+      "script",
+      "tag",
+      "embed",
+      "software",
+      "source",
+      "markup"
+    ]
+  },
+  {
+    "name": "code-add",
+    "title": "Code Add",
+    "category": "Formatting & Text",
+    "keywords": [
+      "code-add",
+      "code add",
+      "codeadd",
+      "code",
+      "add",
+      "ca",
+      "formatting",
+      "text",
+      "plus",
+      "new",
+      "create",
+      "insert",
+      "append",
+      "more",
+      "positive",
+      "include",
+      "build",
+      "extra",
+      "html",
+      "programming",
+      "dev",
+      "developer",
+      "script",
+      "tag",
+      "embed",
+      "software",
+      "source",
+      "markup"
+    ]
+  },
+  {
+    "name": "collection",
+    "title": "Collection",
+    "category": "Products & Inventory",
+    "keywords": [
+      "collection",
+      "products",
+      "inventory"
+    ]
+  },
+  {
+    "name": "collection-featured",
+    "title": "Collection Featured",
+    "category": "Products & Inventory",
+    "keywords": [
+      "collection-featured",
+      "collection featured",
+      "collectionfeatured",
+      "collection",
+      "featured",
+      "cf",
+      "products",
+      "inventory"
+    ]
+  },
+  {
+    "name": "collection-list",
+    "title": "Collection List",
+    "category": "Products & Inventory",
+    "keywords": [
+      "collection-list",
+      "collection list",
+      "collectionlist",
+      "collection",
+      "list",
+      "cl",
+      "products",
+      "inventory"
+    ]
+  },
+  {
+    "name": "collection-reference",
+    "title": "Collection Reference",
+    "category": "Products & Inventory",
+    "keywords": [
+      "collection-reference",
+      "collection reference",
+      "collectionreference",
+      "collection",
+      "reference",
+      "cr",
+      "products",
+      "inventory"
+    ]
+  },
+  {
+    "name": "color",
+    "title": "Color",
+    "category": "Formatting & Text",
+    "keywords": [
+      "color",
+      "formatting",
+      "text",
+      "palette",
+      "picker",
+      "tint",
+      "paint",
+      "theme",
+      "design",
+      "hex",
+      "rgb",
+      "swatch"
+    ]
+  },
+  {
+    "name": "color-none",
+    "title": "Color None",
+    "category": "Formatting & Text",
+    "keywords": [
+      "color-none",
+      "color none",
+      "colornone",
+      "color",
+      "none",
+      "cn",
+      "formatting",
+      "text",
+      "palette",
+      "picker",
+      "tint",
+      "paint",
+      "theme",
+      "design",
+      "hex",
+      "rgb",
+      "swatch"
+    ]
+  },
+  {
+    "name": "compass",
+    "title": "Compass",
+    "category": "Navigation & Arrows",
+    "keywords": [
+      "compass",
+      "navigation",
+      "arrows"
+    ]
+  },
+  {
+    "name": "compose",
+    "title": "Compose",
+    "category": "Actions & Controls",
+    "keywords": [
+      "compose",
+      "actions",
+      "controls",
+      "write",
+      "edit",
+      "create",
+      "new",
+      "message",
+      "pen",
+      "draft",
+      "author"
+    ]
+  },
+  {
+    "name": "confetti",
+    "title": "Confetti",
+    "category": "General & Objects",
+    "keywords": [
+      "confetti",
+      "general",
+      "objects"
+    ]
+  },
+  {
+    "name": "connect",
+    "title": "Connect",
+    "category": "General & Objects",
+    "keywords": [
+      "connect",
+      "general",
+      "objects",
+      "link",
+      "url",
+      "hyperlink",
+      "chain",
+      "web",
+      "href"
+    ]
+  },
+  {
+    "name": "content",
+    "title": "Content",
+    "category": "Content & Media",
+    "keywords": [
+      "content",
+      "media"
+    ]
+  },
+  {
+    "name": "contract",
+    "title": "Contract",
+    "category": "Actions & Controls",
+    "keywords": [
+      "contract",
+      "actions",
+      "controls"
+    ]
+  },
+  {
+    "name": "corner-pill",
+    "title": "Corner Pill",
+    "category": "General & Objects",
+    "keywords": [
+      "corner-pill",
+      "corner pill",
+      "cornerpill",
+      "corner",
+      "pill",
+      "cp",
+      "general",
+      "objects"
+    ]
+  },
+  {
+    "name": "corner-round",
+    "title": "Corner Round",
+    "category": "General & Objects",
+    "keywords": [
+      "corner-round",
+      "corner round",
+      "cornerround",
+      "corner",
+      "round",
+      "cr",
+      "general",
+      "objects"
+    ]
+  },
+  {
+    "name": "corner-square",
+    "title": "Corner Square",
+    "category": "General & Objects",
+    "keywords": [
+      "corner-square",
+      "corner square",
+      "cornersquare",
+      "corner",
+      "square",
+      "cs",
+      "general",
+      "objects"
+    ]
+  },
+  {
+    "name": "credit-card",
+    "title": "Credit Card",
+    "category": "Commerce & Orders",
+    "keywords": [
+      "credit-card",
+      "credit card",
+      "creditcard",
+      "credit",
+      "card",
+      "cc",
+      "commerce",
+      "orders"
+    ]
+  },
+  {
+    "name": "credit-card-cancel",
+    "title": "Credit Card Cancel",
+    "category": "Commerce & Orders",
+    "keywords": [
+      "credit-card-cancel",
+      "credit card cancel",
+      "creditcardcancel",
+      "credit",
+      "card",
+      "cancel",
+      "ccc",
+      "commerce",
+      "orders",
+      "cross",
+      "close",
+      "exit",
+      "dismiss",
+      "remove",
+      "clear"
+    ]
+  },
+  {
+    "name": "credit-card-percent",
+    "title": "Credit Card Percent",
+    "category": "Commerce & Orders",
+    "keywords": [
+      "credit-card-percent",
+      "credit card percent",
+      "creditcardpercent",
+      "credit",
+      "card",
+      "percent",
+      "ccp",
+      "commerce",
+      "orders"
+    ]
+  },
+  {
+    "name": "credit-card-reader",
+    "title": "Credit Card Reader",
+    "category": "Commerce & Orders",
+    "keywords": [
+      "credit-card-reader",
+      "credit card reader",
+      "creditcardreader",
+      "credit",
+      "card",
+      "reader",
+      "ccr",
+      "commerce",
+      "orders"
+    ]
+  },
+  {
+    "name": "credit-card-reader-chip",
+    "title": "Credit Card Reader Chip",
+    "category": "Commerce & Orders",
+    "keywords": [
+      "credit-card-reader-chip",
+      "credit card reader chip",
+      "creditcardreaderchip",
+      "credit",
+      "card",
+      "reader",
+      "chip",
+      "ccrc",
+      "commerce",
+      "orders"
+    ]
+  },
+  {
+    "name": "credit-card-reader-tap",
+    "title": "Credit Card Reader Tap",
+    "category": "Commerce & Orders",
+    "keywords": [
+      "credit-card-reader-tap",
+      "credit card reader tap",
+      "creditcardreadertap",
+      "credit",
+      "card",
+      "reader",
+      "tap",
+      "ccrt",
+      "commerce",
+      "orders"
+    ]
+  },
+  {
+    "name": "credit-card-secure",
+    "title": "Credit Card Secure",
+    "category": "Commerce & Orders",
+    "keywords": [
+      "credit-card-secure",
+      "credit card secure",
+      "creditcardsecure",
+      "credit",
+      "card",
+      "secure",
+      "ccs",
+      "commerce",
+      "orders"
+    ]
+  },
+  {
+    "name": "credit-card-tap-chip",
+    "title": "Credit Card Tap Chip",
+    "category": "Commerce & Orders",
+    "keywords": [
+      "credit-card-tap-chip",
+      "credit card tap chip",
+      "creditcardtapchip",
+      "credit",
+      "card",
+      "tap",
+      "chip",
+      "cctc",
+      "commerce",
+      "orders"
+    ]
+  },
+  {
+    "name": "crop",
+    "title": "Crop",
+    "category": "Actions & Controls",
+    "keywords": [
+      "crop",
+      "actions",
+      "controls"
+    ]
+  },
+  {
+    "name": "currency-convert",
+    "title": "Currency Convert",
+    "category": "General & Objects",
+    "keywords": [
+      "currency-convert",
+      "currency convert",
+      "currencyconvert",
+      "currency",
+      "convert",
+      "cc",
+      "general",
+      "objects"
+    ]
+  },
+  {
+    "name": "cursor",
+    "title": "Cursor",
+    "category": "General & Objects",
+    "keywords": [
+      "cursor",
+      "general",
+      "objects"
+    ]
+  },
+  {
+    "name": "cursor-banner",
+    "title": "Cursor Banner",
+    "category": "General & Objects",
+    "keywords": [
+      "cursor-banner",
+      "cursor banner",
+      "cursorbanner",
+      "cursor",
+      "banner",
+      "cb",
+      "general",
+      "objects"
+    ]
+  },
+  {
+    "name": "cursor-option",
+    "title": "Cursor Option",
+    "category": "General & Objects",
+    "keywords": [
+      "cursor-option",
+      "cursor option",
+      "cursoroption",
+      "cursor",
+      "option",
+      "co",
+      "general",
+      "objects"
+    ]
+  },
+  {
+    "name": "data-presentation",
+    "title": "Data Presentation",
+    "category": "Analytics & Data",
+    "keywords": [
+      "data-presentation",
+      "data presentation",
+      "datapresentation",
+      "data",
+      "presentation",
+      "dp",
+      "analytics"
+    ]
+  },
+  {
+    "name": "data-table",
+    "title": "Data Table",
+    "category": "Analytics & Data",
+    "keywords": [
+      "data-table",
+      "data table",
+      "datatable",
+      "data",
+      "table",
+      "dt",
+      "analytics"
+    ]
+  },
+  {
+    "name": "database",
+    "title": "Database",
+    "category": "Analytics & Data",
+    "keywords": [
+      "database",
+      "analytics",
+      "data"
+    ]
+  },
+  {
+    "name": "database-add",
+    "title": "Database Add",
+    "category": "Analytics & Data",
+    "keywords": [
+      "database-add",
+      "database add",
+      "databaseadd",
+      "database",
+      "add",
+      "da",
+      "analytics",
+      "data",
+      "plus",
+      "new",
+      "create",
+      "insert",
+      "append",
+      "more",
+      "positive",
+      "include",
+      "build",
+      "extra"
+    ]
+  },
+  {
+    "name": "database-connect",
+    "title": "Database Connect",
+    "category": "Analytics & Data",
+    "keywords": [
+      "database-connect",
+      "database connect",
+      "databaseconnect",
+      "database",
+      "connect",
+      "dc",
+      "analytics",
+      "data"
+    ]
+  },
+  {
+    "name": "delete",
+    "title": "Delete",
+    "category": "Actions & Controls",
+    "keywords": [
+      "delete",
+      "actions",
+      "controls",
+      "trash",
+      "bin",
+      "garbage",
+      "rubbish",
+      "waste",
+      "remove",
+      "erase",
+      "discard",
+      "destroy",
+      "cancel",
+      "drop",
+      "clear",
+      "purge",
+      "basket",
+      "dump",
+      "wipe"
+    ]
+  },
+  {
+    "name": "delivery",
+    "title": "Delivery",
+    "category": "Products & Inventory",
+    "keywords": [
+      "delivery",
+      "products",
+      "inventory"
+    ]
+  },
+  {
+    "name": "desktop",
+    "title": "Desktop",
+    "category": "Devices & Layout",
+    "keywords": [
+      "desktop",
+      "devices",
+      "layout",
+      "computer",
+      "monitor",
+      "pc",
+      "mac",
+      "screen",
+      "display",
+      "device",
+      "workstation"
+    ]
+  },
+  {
+    "name": "disabled",
+    "title": "Disabled",
+    "category": "Feedback & Security",
+    "keywords": [
+      "disabled",
+      "feedback",
+      "security"
+    ]
+  },
+  {
+    "name": "discount",
+    "title": "Discount",
+    "category": "Commerce & Orders",
+    "keywords": [
+      "discount",
+      "commerce",
+      "orders",
+      "coupon",
+      "voucher",
+      "promo",
+      "percent",
+      "sale",
+      "deal",
+      "rebate",
+      "offer",
+      "bargain",
+      "off"
+    ]
+  },
+  {
+    "name": "discount-add",
+    "title": "Discount Add",
+    "category": "Commerce & Orders",
+    "keywords": [
+      "discount-add",
+      "discount add",
+      "discountadd",
+      "discount",
+      "add",
+      "da",
+      "commerce",
+      "orders",
+      "plus",
+      "new",
+      "create",
+      "insert",
+      "append",
+      "more",
+      "positive",
+      "include",
+      "build",
+      "extra",
+      "coupon",
+      "voucher",
+      "promo",
+      "percent",
+      "sale",
+      "deal",
+      "rebate",
+      "offer",
+      "bargain",
+      "off"
+    ]
+  },
+  {
+    "name": "discount-code",
+    "title": "Discount Code",
+    "category": "Commerce & Orders",
+    "keywords": [
+      "discount-code",
+      "discount code",
+      "discountcode",
+      "discount",
+      "code",
+      "dc",
+      "commerce",
+      "orders",
+      "coupon",
+      "voucher",
+      "promo",
+      "percent",
+      "sale",
+      "deal",
+      "rebate",
+      "offer",
+      "bargain",
+      "off",
+      "html",
+      "programming",
+      "dev",
+      "developer",
+      "script",
+      "tag",
+      "embed",
+      "software",
+      "source",
+      "markup"
+    ]
+  },
+  {
+    "name": "dns-settings",
+    "title": "Dns Settings",
+    "category": "General & Objects",
+    "keywords": [
+      "dns-settings",
+      "dns settings",
+      "dnssettings",
+      "dns",
+      "settings",
+      "ds",
+      "general",
+      "objects",
+      "gear",
+      "cog",
+      "preferences",
+      "config",
+      "configuration",
+      "options",
+      "customize",
+      "controls",
+      "setup",
+      "admin",
+      "tune",
+      "tools",
+      "parameters",
+      "system",
+      "sliders"
+    ]
+  },
+  {
+    "name": "dock-floating",
+    "title": "Dock Floating",
+    "category": "Devices & Layout",
+    "keywords": [
+      "dock-floating",
+      "dock floating",
+      "dockfloating",
+      "dock",
+      "floating",
+      "df",
+      "devices",
+      "layout"
+    ]
+  },
+  {
+    "name": "dock-side",
+    "title": "Dock Side",
+    "category": "Devices & Layout",
+    "keywords": [
+      "dock-side",
+      "dock side",
+      "dockside",
+      "dock",
+      "side",
+      "ds",
+      "devices",
+      "layout"
+    ]
+  },
+  {
+    "name": "domain",
+    "title": "Domain",
+    "category": "Devices & Layout",
+    "keywords": [
+      "domain",
+      "devices",
+      "layout"
+    ]
+  },
+  {
+    "name": "domain-landing-page",
+    "title": "Domain Landing Page",
+    "category": "Devices & Layout",
+    "keywords": [
+      "domain-landing-page",
+      "domain landing page",
+      "domainlandingpage",
+      "domain",
+      "landing",
+      "page",
+      "dlp",
+      "devices",
+      "layout"
+    ]
+  },
+  {
+    "name": "domain-new",
+    "title": "Domain New",
+    "category": "Devices & Layout",
+    "keywords": [
+      "domain-new",
+      "domain new",
+      "domainnew",
+      "domain",
+      "new",
+      "dn",
+      "devices",
+      "layout"
+    ]
+  },
+  {
+    "name": "domain-redirect",
+    "title": "Domain Redirect",
+    "category": "Devices & Layout",
+    "keywords": [
+      "domain-redirect",
+      "domain redirect",
+      "domainredirect",
+      "domain",
+      "redirect",
+      "dr",
+      "devices",
+      "layout"
+    ]
+  },
+  {
+    "name": "download",
+    "title": "Download",
+    "category": "Actions & Controls",
+    "keywords": [
+      "download",
+      "actions",
+      "controls"
+    ]
+  },
+  {
+    "name": "drag-drop",
+    "title": "Drag Drop",
+    "category": "Actions & Controls",
+    "keywords": [
+      "drag-drop",
+      "drag drop",
+      "dragdrop",
+      "drag",
+      "drop",
+      "dd",
+      "actions",
+      "controls"
+    ]
+  },
+  {
+    "name": "drag-handle",
+    "title": "Drag Handle",
+    "category": "Actions & Controls",
+    "keywords": [
+      "drag-handle",
+      "drag handle",
+      "draghandle",
+      "drag",
+      "handle",
+      "dh",
+      "actions",
+      "controls"
+    ]
+  },
+  {
+    "name": "duplicate",
+    "title": "Duplicate",
+    "category": "Actions & Controls",
+    "keywords": [
+      "duplicate",
+      "actions",
+      "controls"
+    ]
+  },
+  {
+    "name": "edit",
+    "title": "Edit",
+    "category": "Actions & Controls",
+    "keywords": [
+      "edit",
+      "actions",
+      "controls",
+      "modify",
+      "change",
+      "pencil",
+      "pen",
+      "update",
+      "revise",
+      "write",
+      "tweak",
+      "author",
+      "custom",
+      "customize",
+      "draft",
+      "compose"
+    ]
+  },
+  {
+    "name": "email",
+    "title": "Email",
+    "category": "Communication & Social",
+    "keywords": [
+      "email",
+      "communication",
+      "social",
+      "mail",
+      "message",
+      "envelope",
+      "inbox",
+      "letter",
+      "newsletter",
+      "contact",
+      "send",
+      "receive"
+    ]
+  },
+  {
+    "name": "email-follow-up",
+    "title": "Email Follow Up",
+    "category": "Communication & Social",
+    "keywords": [
+      "email-follow-up",
+      "email follow up",
+      "emailfollowup",
+      "email",
+      "follow",
+      "up",
+      "efu",
+      "communication",
+      "social",
+      "mail",
+      "message",
+      "envelope",
+      "inbox",
+      "letter",
+      "newsletter",
+      "contact",
+      "send",
+      "receive"
+    ]
+  },
+  {
+    "name": "email-newsletter",
+    "title": "Email Newsletter",
+    "category": "Communication & Social",
+    "keywords": [
+      "email-newsletter",
+      "email newsletter",
+      "emailnewsletter",
+      "email",
+      "newsletter",
+      "en",
+      "communication",
+      "social",
+      "mail",
+      "message",
+      "envelope",
+      "inbox",
+      "letter",
+      "contact",
+      "send",
+      "receive"
+    ]
+  },
+  {
+    "name": "enabled",
+    "title": "Enabled",
+    "category": "Feedback & Security",
+    "keywords": [
+      "enabled",
+      "feedback",
+      "security"
+    ]
+  },
+  {
+    "name": "enter",
+    "title": "Enter",
+    "category": "Navigation & Arrows",
+    "keywords": [
+      "enter",
+      "navigation",
+      "arrows"
+    ]
+  },
+  {
+    "name": "envelope",
+    "title": "Envelope",
+    "category": "Communication & Social",
+    "keywords": [
+      "envelope",
+      "communication",
+      "social",
+      "mail",
+      "email",
+      "letter",
+      "message",
+      "post",
+      "packaging",
+      "inbox",
+      "send",
+      "receive"
+    ]
+  },
+  {
+    "name": "envelope-soft-pack",
+    "title": "Envelope Soft Pack",
+    "category": "Communication & Social",
+    "keywords": [
+      "envelope-soft-pack",
+      "envelope soft pack",
+      "envelopesoftpack",
+      "envelope",
+      "soft",
+      "pack",
+      "esp",
+      "communication",
+      "social",
+      "mail",
+      "email",
+      "letter",
+      "message",
+      "post",
+      "packaging",
+      "inbox",
+      "send",
+      "receive"
+    ]
+  },
+  {
+    "name": "eraser",
+    "title": "Eraser",
+    "category": "Actions & Controls",
+    "keywords": [
+      "eraser",
+      "actions",
+      "controls",
+      "clear",
+      "wipe",
+      "remove",
+      "delete",
+      "rub",
+      "undo",
+      "clean",
+      "brush",
+      "trash",
+      "bin",
+      "garbage",
+      "rubbish",
+      "waste",
+      "erase"
+    ]
+  },
+  {
+    "name": "exchange",
+    "title": "Exchange",
+    "category": "Actions & Controls",
+    "keywords": [
+      "exchange",
+      "actions",
+      "controls"
+    ]
+  },
+  {
+    "name": "exit",
+    "title": "Exit",
+    "category": "Navigation & Arrows",
+    "keywords": [
+      "exit",
+      "navigation",
+      "arrows"
+    ]
+  },
+  {
+    "name": "export",
+    "title": "Export",
+    "category": "Actions & Controls",
+    "keywords": [
+      "export",
+      "actions",
+      "controls"
+    ]
+  },
+  {
+    "name": "external",
+    "title": "External",
+    "category": "Navigation & Arrows",
+    "keywords": [
+      "external",
+      "navigation",
+      "arrows",
+      "link",
+      "open",
+      "window",
+      "new",
+      "outward",
+      "website",
+      "outside",
+      "redirect",
+      "url",
+      "hyperlink",
+      "chain",
+      "web",
+      "connect",
+      "href"
+    ]
+  },
+  {
+    "name": "eye-check-mark",
+    "title": "Eye Check Mark",
+    "category": "General & Objects",
+    "keywords": [
+      "eye-check-mark",
+      "eye check mark",
+      "eyecheckmark",
+      "eye",
+      "check",
+      "mark",
+      "ecm",
+      "general",
+      "objects",
+      "show",
+      "visible",
+      "visibility",
+      "display",
+      "reveal",
+      "see",
+      "preview",
+      "look",
+      "watch",
+      "inspect",
+      "sight",
+      "view",
+      "tick",
+      "done",
+      "complete",
+      "completed",
+      "finished",
+      "success",
+      "ok",
+      "valid",
+      "verified",
+      "confirm",
+      "approved",
+      "accept",
+      "yes",
+      "pass",
+      "right"
+    ]
+  },
+  {
+    "name": "eye-dropper",
+    "title": "Eye Dropper",
+    "category": "Content & Media",
+    "keywords": [
+      "eye-dropper",
+      "eye dropper",
+      "eyedropper",
+      "eye",
+      "dropper",
+      "ed",
+      "content",
+      "media",
+      "show",
+      "visible",
+      "visibility",
+      "display",
+      "reveal",
+      "see",
+      "preview",
+      "look",
+      "watch",
+      "inspect",
+      "sight",
+      "view"
+    ]
+  },
+  {
+    "name": "eye-dropper-list",
+    "title": "Eye Dropper List",
+    "category": "Content & Media",
+    "keywords": [
+      "eye-dropper-list",
+      "eye dropper list",
+      "eyedropperlist",
+      "eye",
+      "dropper",
+      "list",
+      "edl",
+      "content",
+      "media",
+      "show",
+      "visible",
+      "visibility",
+      "display",
+      "reveal",
+      "see",
+      "preview",
+      "look",
+      "watch",
+      "inspect",
+      "sight",
+      "view"
+    ]
+  },
+  {
+    "name": "eye-first",
+    "title": "Eye First",
+    "category": "General & Objects",
+    "keywords": [
+      "eye-first",
+      "eye first",
+      "eyefirst",
+      "eye",
+      "first",
+      "ef",
+      "general",
+      "objects",
+      "show",
+      "visible",
+      "visibility",
+      "display",
+      "reveal",
+      "see",
+      "preview",
+      "look",
+      "watch",
+      "inspect",
+      "sight",
+      "view"
+    ]
+  },
+  {
+    "name": "eyeglasses",
+    "title": "Eyeglasses",
+    "category": "Devices & Layout",
+    "keywords": [
+      "eyeglasses",
+      "devices",
+      "layout",
+      "show",
+      "display",
+      "visible",
+      "visibility",
+      "reveal",
+      "preview"
+    ]
+  },
+  {
+    "name": "favicon",
+    "title": "Favicon",
+    "category": "Content & Media",
+    "keywords": [
+      "favicon",
+      "content",
+      "media",
+      "image",
+      "picture",
+      "photo",
+      "graphic",
+      "pic",
+      "gallery"
+    ]
+  },
+  {
+    "name": "file",
+    "title": "File",
+    "category": "Content & Media",
+    "keywords": [
+      "file",
+      "content",
+      "media"
+    ]
+  },
+  {
+    "name": "file-list",
+    "title": "File List",
+    "category": "Content & Media",
+    "keywords": [
+      "file-list",
+      "file list",
+      "filelist",
+      "file",
+      "list",
+      "fl",
+      "content",
+      "media"
+    ]
+  },
+  {
+    "name": "filter",
+    "title": "Filter",
+    "category": "Actions & Controls",
+    "keywords": [
+      "filter",
+      "actions",
+      "controls",
+      "sort",
+      "funnel",
+      "refine",
+      "order",
+      "arrange"
+    ]
+  },
+  {
+    "name": "filter-active",
+    "title": "Filter Active",
+    "category": "Actions & Controls",
+    "keywords": [
+      "filter-active",
+      "filter active",
+      "filteractive",
+      "filter",
+      "active",
+      "fa",
+      "actions",
+      "controls",
+      "sort",
+      "funnel",
+      "refine",
+      "order",
+      "arrange"
+    ]
+  },
+  {
+    "name": "flag",
+    "title": "Flag",
+    "category": "General & Objects",
+    "keywords": [
+      "flag",
+      "general",
+      "objects"
+    ]
+  },
+  {
+    "name": "flip-horizontal",
+    "title": "Flip Horizontal",
+    "category": "Formatting & Text",
+    "keywords": [
+      "flip-horizontal",
+      "flip horizontal",
+      "fliphorizontal",
+      "flip",
+      "horizontal",
+      "fh",
+      "formatting",
+      "text"
+    ]
+  },
+  {
+    "name": "flip-vertical",
+    "title": "Flip Vertical",
+    "category": "Formatting & Text",
+    "keywords": [
+      "flip-vertical",
+      "flip vertical",
+      "flipvertical",
+      "flip",
+      "vertical",
+      "fv",
+      "formatting",
+      "text"
+    ]
+  },
+  {
+    "name": "flower",
+    "title": "Flower",
+    "category": "General & Objects",
+    "keywords": [
+      "flower",
+      "general",
+      "objects"
+    ]
+  },
+  {
+    "name": "folder",
+    "title": "Folder",
+    "category": "Actions & Controls",
+    "keywords": [
+      "folder",
+      "actions",
+      "controls"
+    ]
+  },
+  {
+    "name": "folder-add",
+    "title": "Folder Add",
+    "category": "Actions & Controls",
+    "keywords": [
+      "folder-add",
+      "folder add",
+      "folderadd",
+      "folder",
+      "add",
+      "fa",
+      "actions",
+      "controls",
+      "plus",
+      "new",
+      "create",
+      "insert",
+      "append",
+      "more",
+      "positive",
+      "include",
+      "build",
+      "extra"
+    ]
+  },
+  {
+    "name": "folder-down",
+    "title": "Folder Down",
+    "category": "Actions & Controls",
+    "keywords": [
+      "folder-down",
+      "folder down",
+      "folderdown",
+      "folder",
+      "down",
+      "fd",
+      "actions",
+      "controls"
+    ]
+  },
+  {
+    "name": "folder-remove",
+    "title": "Folder Remove",
+    "category": "Actions & Controls",
+    "keywords": [
+      "folder-remove",
+      "folder remove",
+      "folderremove",
+      "folder",
+      "remove",
+      "fr",
+      "actions",
+      "controls",
+      "delete",
+      "trash",
+      "bin",
+      "erase",
+      "discard",
+      "clear",
+      "drop",
+      "strip",
+      "cancel",
+      "minus",
+      "take away",
+      "garbage",
+      "rubbish",
+      "waste",
+      "subtract",
+      "reduce"
+    ]
+  },
+  {
+    "name": "folder-up",
+    "title": "Folder Up",
+    "category": "Actions & Controls",
+    "keywords": [
+      "folder-up",
+      "folder up",
+      "folderup",
+      "folder",
+      "up",
+      "fu",
+      "actions",
+      "controls"
+    ]
+  },
+  {
+    "name": "food",
+    "title": "Food",
+    "category": "General & Objects",
+    "keywords": [
+      "food",
+      "general",
+      "objects"
+    ]
+  },
+  {
+    "name": "foreground",
+    "title": "Foreground",
+    "category": "Formatting & Text",
+    "keywords": [
+      "foreground",
+      "formatting",
+      "text"
+    ]
+  },
+  {
+    "name": "forklift",
+    "title": "Forklift",
+    "category": "Products & Inventory",
+    "keywords": [
+      "forklift",
+      "products",
+      "inventory"
+    ]
+  },
+  {
+    "name": "forms",
+    "title": "Forms",
+    "category": "Content & Media",
+    "keywords": [
+      "forms",
+      "content",
+      "media"
+    ]
+  },
+  {
+    "name": "games",
+    "title": "Games",
+    "category": "General & Objects",
+    "keywords": [
+      "games",
+      "general",
+      "objects"
+    ]
+  },
+  {
+    "name": "gauge",
+    "title": "Gauge",
+    "category": "Analytics & Data",
+    "keywords": [
+      "gauge",
+      "analytics",
+      "data"
+    ]
+  },
+  {
+    "name": "gift-card",
+    "title": "Gift Card",
+    "category": "Commerce & Orders",
+    "keywords": [
+      "gift-card",
+      "gift card",
+      "giftcard",
+      "gift",
+      "card",
+      "gc",
+      "commerce",
+      "orders"
+    ]
+  },
+  {
+    "name": "git-branch",
+    "title": "Git Branch",
+    "category": "General & Objects",
+    "keywords": [
+      "git-branch",
+      "git branch",
+      "gitbranch",
+      "git",
+      "branch",
+      "gb",
+      "general",
+      "objects"
+    ]
+  },
+  {
+    "name": "git-commit",
+    "title": "Git Commit",
+    "category": "General & Objects",
+    "keywords": [
+      "git-commit",
+      "git commit",
+      "gitcommit",
+      "git",
+      "commit",
+      "gc",
+      "general",
+      "objects"
+    ]
+  },
+  {
+    "name": "git-repository",
+    "title": "Git Repository",
+    "category": "General & Objects",
+    "keywords": [
+      "git-repository",
+      "git repository",
+      "gitrepository",
+      "git",
+      "repository",
+      "gr",
+      "general",
+      "objects"
+    ]
+  },
+  {
+    "name": "globe",
+    "title": "Globe",
+    "category": "General & Objects",
+    "keywords": [
+      "globe",
+      "general",
+      "objects",
+      "world",
+      "international",
+      "earth",
+      "planet",
+      "global",
+      "internet",
+      "translate",
+      "language",
+      "web",
+      "country"
+    ]
+  },
+  {
+    "name": "globe-asia",
+    "title": "Globe Asia",
+    "category": "General & Objects",
+    "keywords": [
+      "globe-asia",
+      "globe asia",
+      "globeasia",
+      "globe",
+      "asia",
+      "ga",
+      "general",
+      "objects",
+      "world",
+      "international",
+      "earth",
+      "planet",
+      "global",
+      "internet",
+      "translate",
+      "language",
+      "web",
+      "country"
+    ]
+  },
+  {
+    "name": "globe-europe",
+    "title": "Globe Europe",
+    "category": "General & Objects",
+    "keywords": [
+      "globe-europe",
+      "globe europe",
+      "globeeurope",
+      "globe",
+      "europe",
+      "ge",
+      "general",
+      "objects",
+      "world",
+      "international",
+      "earth",
+      "planet",
+      "global",
+      "internet",
+      "translate",
+      "language",
+      "web",
+      "country"
+    ]
+  },
+  {
+    "name": "globe-lines",
+    "title": "Globe Lines",
+    "category": "General & Objects",
+    "keywords": [
+      "globe-lines",
+      "globe lines",
+      "globelines",
+      "globe",
+      "lines",
+      "gl",
+      "general",
+      "objects",
+      "world",
+      "international",
+      "earth",
+      "planet",
+      "global",
+      "internet",
+      "translate",
+      "language",
+      "web",
+      "country"
+    ]
+  },
+  {
+    "name": "globe-list",
+    "title": "Globe List",
+    "category": "General & Objects",
+    "keywords": [
+      "globe-list",
+      "globe list",
+      "globelist",
+      "globe",
+      "list",
+      "gl",
+      "general",
+      "objects",
+      "world",
+      "international",
+      "earth",
+      "planet",
+      "global",
+      "internet",
+      "translate",
+      "language",
+      "web",
+      "country"
+    ]
+  },
+  {
+    "name": "grid",
+    "title": "Grid",
+    "category": "Devices & Layout",
+    "keywords": [
+      "grid",
+      "devices",
+      "layout"
+    ]
+  },
+  {
+    "name": "hashtag",
+    "title": "Hashtag",
+    "category": "Formatting & Text",
+    "keywords": [
+      "hashtag",
+      "formatting",
+      "text"
+    ]
+  },
+  {
+    "name": "hashtag-decimal",
+    "title": "Hashtag Decimal",
+    "category": "Formatting & Text",
+    "keywords": [
+      "hashtag-decimal",
+      "hashtag decimal",
+      "hashtagdecimal",
+      "hashtag",
+      "decimal",
+      "hd",
+      "formatting",
+      "text"
+    ]
+  },
+  {
+    "name": "hashtag-list",
+    "title": "Hashtag List",
+    "category": "Formatting & Text",
+    "keywords": [
+      "hashtag-list",
+      "hashtag list",
+      "hashtaglist",
+      "hashtag",
+      "list",
+      "hl",
+      "formatting",
+      "text"
+    ]
+  },
+  {
+    "name": "heart",
+    "title": "Heart",
+    "category": "General & Objects",
+    "keywords": [
+      "heart",
+      "general",
+      "objects",
+      "love",
+      "like",
+      "favorite",
+      "wishlist",
+      "health",
+      "passion",
+      "care",
+      "liked",
+      "rating",
+      "review",
+      "bookmark",
+      "starred"
+    ]
+  },
+  {
+    "name": "hide",
+    "title": "Hide",
+    "category": "Actions & Controls",
+    "keywords": [
+      "hide",
+      "actions",
+      "controls",
+      "hidden",
+      "invisible",
+      "conceal",
+      "mask",
+      "eye-slash",
+      "secret",
+      "private",
+      "blind",
+      "close",
+      "off",
+      "obscure",
+      "stealth"
+    ]
+  },
+  {
+    "name": "hide-filled",
+    "title": "Hide Filled",
+    "category": "Actions & Controls",
+    "keywords": [
+      "hide-filled",
+      "hide filled",
+      "hidefilled",
+      "hide",
+      "filled",
+      "hf",
+      "actions",
+      "controls",
+      "hidden",
+      "invisible",
+      "conceal",
+      "mask",
+      "eye-slash",
+      "secret",
+      "private",
+      "blind",
+      "close",
+      "off",
+      "obscure",
+      "stealth"
+    ]
+  },
+  {
+    "name": "home",
+    "title": "Home",
+    "category": "General & Objects",
+    "keywords": [
+      "home",
+      "general",
+      "objects"
+    ]
+  },
+  {
+    "name": "icons",
+    "title": "Icons",
+    "category": "Content & Media",
+    "keywords": [
+      "icons",
+      "content",
+      "media"
+    ]
+  },
+  {
+    "name": "identity-card",
+    "title": "Identity Card",
+    "category": "Organization & People",
+    "keywords": [
+      "identity-card",
+      "identity card",
+      "identitycard",
+      "identity",
+      "card",
+      "ic",
+      "organization",
+      "people",
+      "user",
+      "account",
+      "profile",
+      "customer",
+      "member",
+      "human",
+      "avatar"
+    ]
+  },
+  {
+    "name": "image",
+    "title": "Image",
+    "category": "Content & Media",
+    "keywords": [
+      "image",
+      "content",
+      "media",
+      "picture",
+      "photo",
+      "graphic",
+      "artwork",
+      "visual",
+      "jpg",
+      "png",
+      "gallery",
+      "pic"
+    ]
+  },
+  {
+    "name": "image-add",
+    "title": "Image Add",
+    "category": "Content & Media",
+    "keywords": [
+      "image-add",
+      "image add",
+      "imageadd",
+      "image",
+      "add",
+      "ia",
+      "content",
+      "media",
+      "plus",
+      "new",
+      "create",
+      "insert",
+      "append",
+      "more",
+      "positive",
+      "include",
+      "build",
+      "extra",
+      "picture",
+      "photo",
+      "graphic",
+      "artwork",
+      "visual",
+      "jpg",
+      "png",
+      "gallery",
+      "pic"
+    ]
+  },
+  {
+    "name": "image-alt",
+    "title": "Image Alt",
+    "category": "Content & Media",
+    "keywords": [
+      "image-alt",
+      "image alt",
+      "imagealt",
+      "image",
+      "alt",
+      "ia",
+      "content",
+      "media",
+      "picture",
+      "photo",
+      "graphic",
+      "artwork",
+      "visual",
+      "jpg",
+      "png",
+      "gallery",
+      "pic"
+    ]
+  },
+  {
+    "name": "image-explore",
+    "title": "Image Explore",
+    "category": "Content & Media",
+    "keywords": [
+      "image-explore",
+      "image explore",
+      "imageexplore",
+      "image",
+      "explore",
+      "ie",
+      "content",
+      "media",
+      "picture",
+      "photo",
+      "graphic",
+      "artwork",
+      "visual",
+      "jpg",
+      "png",
+      "gallery",
+      "pic"
+    ]
+  },
+  {
+    "name": "image-magic",
+    "title": "Image Magic",
+    "category": "Content & Media",
+    "keywords": [
+      "image-magic",
+      "image magic",
+      "imagemagic",
+      "image",
+      "magic",
+      "im",
+      "content",
+      "media",
+      "picture",
+      "photo",
+      "graphic",
+      "artwork",
+      "visual",
+      "jpg",
+      "png",
+      "gallery",
+      "ai",
+      "smart",
+      "artificial intelligence",
+      "generate",
+      "sparkle",
+      "wizard",
+      "machine learning",
+      "automated",
+      "pic"
+    ]
+  },
+  {
+    "name": "image-none",
+    "title": "Image None",
+    "category": "Content & Media",
+    "keywords": [
+      "image-none",
+      "image none",
+      "imagenone",
+      "image",
+      "none",
+      "in",
+      "content",
+      "media",
+      "picture",
+      "photo",
+      "graphic",
+      "artwork",
+      "visual",
+      "jpg",
+      "png",
+      "gallery",
+      "pic"
+    ]
+  },
+  {
+    "name": "image-with-text-overlay",
+    "title": "Image With Text Overlay",
+    "category": "Content & Media",
+    "keywords": [
+      "image-with-text-overlay",
+      "image with text overlay",
+      "imagewithtextoverlay",
+      "image",
+      "with",
+      "text",
+      "overlay",
+      "iwto",
+      "content",
+      "media",
+      "picture",
+      "photo",
+      "graphic",
+      "artwork",
+      "visual",
+      "jpg",
+      "png",
+      "gallery",
+      "pic"
+    ]
+  },
+  {
+    "name": "images",
+    "title": "Images",
+    "category": "Content & Media",
+    "keywords": [
+      "images",
+      "content",
+      "media",
+      "image",
+      "picture",
+      "photo",
+      "graphic",
+      "pic",
+      "gallery"
+    ]
+  },
+  {
+    "name": "import",
+    "title": "Import",
+    "category": "Actions & Controls",
+    "keywords": [
+      "import",
+      "actions",
+      "controls"
+    ]
+  },
+  {
+    "name": "in-progress",
+    "title": "In Progress",
+    "category": "Feedback & Security",
+    "keywords": [
+      "in-progress",
+      "in progress",
+      "inprogress",
+      "in",
+      "progress",
+      "ip",
+      "feedback",
+      "security"
+    ]
+  },
+  {
+    "name": "incentive",
+    "title": "Incentive",
+    "category": "General & Objects",
+    "keywords": [
+      "incentive",
+      "general",
+      "objects"
+    ]
+  },
+  {
+    "name": "incoming",
+    "title": "Incoming",
+    "category": "General & Objects",
+    "keywords": [
+      "incoming",
+      "general",
+      "objects"
+    ]
+  },
+  {
+    "name": "incomplete",
+    "title": "Incomplete",
+    "category": "Feedback & Security",
+    "keywords": [
+      "incomplete",
+      "feedback",
+      "security"
+    ]
+  },
+  {
+    "name": "info",
+    "title": "Info",
+    "category": "Feedback & Security",
+    "keywords": [
+      "info",
+      "feedback",
+      "security",
+      "information",
+      "help",
+      "details",
+      "about",
+      "hint",
+      "tip",
+      "notice",
+      "guide",
+      "assist",
+      "support",
+      "faq"
+    ]
+  },
+  {
+    "name": "inheritance",
+    "title": "Inheritance",
+    "category": "General & Objects",
+    "keywords": [
+      "inheritance",
+      "general",
+      "objects"
+    ]
+  },
+  {
+    "name": "inventory",
+    "title": "Inventory",
+    "category": "Products & Inventory",
+    "keywords": [
+      "inventory",
+      "products"
+    ]
+  },
+  {
+    "name": "inventory-updated",
+    "title": "Inventory Updated",
+    "category": "Products & Inventory",
+    "keywords": [
+      "inventory-updated",
+      "inventory updated",
+      "inventoryupdated",
+      "inventory",
+      "updated",
+      "iu",
+      "products"
+    ]
+  },
+  {
+    "name": "iq",
+    "title": "Iq",
+    "category": "General & Objects",
+    "keywords": [
+      "iq",
+      "general",
+      "objects",
+      "smart",
+      "intelligence",
+      "brain",
+      "ai",
+      "score",
+      "logic",
+      "magic",
+      "artificial intelligence",
+      "generate",
+      "sparkle",
+      "wizard",
+      "machine learning",
+      "automated"
+    ]
+  },
+  {
+    "name": "key",
+    "title": "Key",
+    "category": "Feedback & Security",
+    "keywords": [
+      "key",
+      "feedback",
+      "security",
+      "secret",
+      "password",
+      "access",
+      "auth",
+      "lock",
+      "credentials",
+      "token"
+    ]
+  },
+  {
+    "name": "keyboard",
+    "title": "Keyboard",
+    "category": "Devices & Layout",
+    "keywords": [
+      "keyboard",
+      "devices",
+      "layout"
+    ]
+  },
+  {
+    "name": "keyboard-filled",
+    "title": "Keyboard Filled",
+    "category": "Devices & Layout",
+    "keywords": [
+      "keyboard-filled",
+      "keyboard filled",
+      "keyboardfilled",
+      "keyboard",
+      "filled",
+      "kf",
+      "devices",
+      "layout"
+    ]
+  },
+  {
+    "name": "keyboard-hide",
+    "title": "Keyboard Hide",
+    "category": "Devices & Layout",
+    "keywords": [
+      "keyboard-hide",
+      "keyboard hide",
+      "keyboardhide",
+      "keyboard",
+      "hide",
+      "kh",
+      "devices",
+      "layout",
+      "hidden",
+      "invisible",
+      "conceal",
+      "mask",
+      "eye-slash",
+      "secret",
+      "private",
+      "blind",
+      "close",
+      "off",
+      "obscure",
+      "stealth"
+    ]
+  },
+  {
+    "name": "label-printer",
+    "title": "Label Printer",
+    "category": "Products & Inventory",
+    "keywords": [
+      "label-printer",
+      "label printer",
+      "labelprinter",
+      "label",
+      "printer",
+      "lp",
+      "products",
+      "inventory"
+    ]
+  },
+  {
+    "name": "language",
+    "title": "Language",
+    "category": "General & Objects",
+    "keywords": [
+      "language",
+      "general",
+      "objects"
+    ]
+  },
+  {
+    "name": "language-translate",
+    "title": "Language Translate",
+    "category": "General & Objects",
+    "keywords": [
+      "language-translate",
+      "language translate",
+      "languagetranslate",
+      "language",
+      "translate",
+      "lt",
+      "general",
+      "objects"
+    ]
+  },
+  {
+    "name": "layer",
+    "title": "Layer",
+    "category": "Devices & Layout",
+    "keywords": [
+      "layer",
+      "devices",
+      "layout"
+    ]
+  },
+  {
+    "name": "layout-block",
+    "title": "Layout Block",
+    "category": "Devices & Layout",
+    "keywords": [
+      "layout-block",
+      "layout block",
+      "layoutblock",
+      "layout",
+      "block",
+      "lb",
+      "devices"
+    ]
+  },
+  {
+    "name": "layout-buy-button",
+    "title": "Layout Buy Button",
+    "category": "Devices & Layout",
+    "keywords": [
+      "layout-buy-button",
+      "layout buy button",
+      "layoutbuybutton",
+      "layout",
+      "buy",
+      "button",
+      "lbb",
+      "devices"
+    ]
+  },
+  {
+    "name": "layout-buy-button-horizontal",
+    "title": "Layout Buy Button Horizontal",
+    "category": "Devices & Layout",
+    "keywords": [
+      "layout-buy-button-horizontal",
+      "layout buy button horizontal",
+      "layoutbuybuttonhorizontal",
+      "layout",
+      "buy",
+      "button",
+      "horizontal",
+      "lbbh",
+      "devices"
+    ]
+  },
+  {
+    "name": "layout-buy-button-vertical",
+    "title": "Layout Buy Button Vertical",
+    "category": "Devices & Layout",
+    "keywords": [
+      "layout-buy-button-vertical",
+      "layout buy button vertical",
+      "layoutbuybuttonvertical",
+      "layout",
+      "buy",
+      "button",
+      "vertical",
+      "lbbv",
+      "devices"
+    ]
+  },
+  {
+    "name": "layout-column-1",
+    "title": "Layout Column 1",
+    "category": "Devices & Layout",
+    "keywords": [
+      "layout-column-1",
+      "layout column 1",
+      "layoutcolumn1",
+      "layout",
+      "column",
+      "1",
+      "lc1",
+      "devices"
+    ]
+  },
+  {
+    "name": "layout-columns-2",
+    "title": "Layout Columns 2",
+    "category": "Devices & Layout",
+    "keywords": [
+      "layout-columns-2",
+      "layout columns 2",
+      "layoutcolumns2",
+      "layout",
+      "columns",
+      "2",
+      "lc2",
+      "devices"
+    ]
+  },
+  {
+    "name": "layout-columns-3",
+    "title": "Layout Columns 3",
+    "category": "Devices & Layout",
+    "keywords": [
+      "layout-columns-3",
+      "layout columns 3",
+      "layoutcolumns3",
+      "layout",
+      "columns",
+      "3",
+      "lc3",
+      "devices"
+    ]
+  },
+  {
+    "name": "layout-footer",
+    "title": "Layout Footer",
+    "category": "Devices & Layout",
+    "keywords": [
+      "layout-footer",
+      "layout footer",
+      "layoutfooter",
+      "layout",
+      "footer",
+      "lf",
+      "devices"
+    ]
+  },
+  {
+    "name": "layout-header",
+    "title": "Layout Header",
+    "category": "Devices & Layout",
+    "keywords": [
+      "layout-header",
+      "layout header",
+      "layoutheader",
+      "layout",
+      "header",
+      "lh",
+      "devices"
+    ]
+  },
+  {
+    "name": "layout-logo-block",
+    "title": "Layout Logo Block",
+    "category": "Devices & Layout",
+    "keywords": [
+      "layout-logo-block",
+      "layout logo block",
+      "layoutlogoblock",
+      "layout",
+      "logo",
+      "block",
+      "llb",
+      "devices"
+    ]
+  },
+  {
+    "name": "layout-popup",
+    "title": "Layout Popup",
+    "category": "Devices & Layout",
+    "keywords": [
+      "layout-popup",
+      "layout popup",
+      "layoutpopup",
+      "layout",
+      "popup",
+      "lp",
+      "devices"
+    ]
+  },
+  {
+    "name": "layout-rows-2",
+    "title": "Layout Rows 2",
+    "category": "Devices & Layout",
+    "keywords": [
+      "layout-rows-2",
+      "layout rows 2",
+      "layoutrows2",
+      "layout",
+      "rows",
+      "2",
+      "lr2",
+      "devices"
+    ]
+  },
+  {
+    "name": "layout-section",
+    "title": "Layout Section",
+    "category": "Devices & Layout",
+    "keywords": [
+      "layout-section",
+      "layout section",
+      "layoutsection",
+      "layout",
+      "section",
+      "ls",
+      "devices"
+    ]
+  },
+  {
+    "name": "layout-sidebar-left",
+    "title": "Layout Sidebar Left",
+    "category": "Devices & Layout",
+    "keywords": [
+      "layout-sidebar-left",
+      "layout sidebar left",
+      "layoutsidebarleft",
+      "layout",
+      "sidebar",
+      "left",
+      "lsl",
+      "devices"
+    ]
+  },
+  {
+    "name": "layout-sidebar-right",
+    "title": "Layout Sidebar Right",
+    "category": "Devices & Layout",
+    "keywords": [
+      "layout-sidebar-right",
+      "layout sidebar right",
+      "layoutsidebarright",
+      "layout",
+      "sidebar",
+      "right",
+      "lsr",
+      "devices"
+    ]
+  },
+  {
+    "name": "lightbulb",
+    "title": "Lightbulb",
+    "category": "General & Objects",
+    "keywords": [
+      "lightbulb",
+      "general",
+      "objects"
+    ]
+  },
+  {
+    "name": "link",
+    "title": "Link",
+    "category": "General & Objects",
+    "keywords": [
+      "link",
+      "general",
+      "objects",
+      "chain",
+      "url",
+      "hyperlink",
+      "connect",
+      "webpage",
+      "attach",
+      "href",
+      "web"
+    ]
+  },
+  {
+    "name": "link-list",
+    "title": "Link List",
+    "category": "General & Objects",
+    "keywords": [
+      "link-list",
+      "link list",
+      "linklist",
+      "link",
+      "list",
+      "ll",
+      "general",
+      "objects",
+      "chain",
+      "url",
+      "hyperlink",
+      "connect",
+      "webpage",
+      "attach",
+      "href",
+      "web"
+    ]
+  },
+  {
+    "name": "list-bulleted",
+    "title": "List Bulleted",
+    "category": "Formatting & Text",
+    "keywords": [
+      "list-bulleted",
+      "list bulleted",
+      "listbulleted",
+      "list",
+      "bulleted",
+      "lb",
+      "formatting",
+      "text"
+    ]
+  },
+  {
+    "name": "list-numbered",
+    "title": "List Numbered",
+    "category": "Formatting & Text",
+    "keywords": [
+      "list-numbered",
+      "list numbered",
+      "listnumbered",
+      "list",
+      "numbered",
+      "ln",
+      "formatting",
+      "text"
+    ]
+  },
+  {
+    "name": "live",
+    "title": "Live",
+    "category": "Analytics & Data",
+    "keywords": [
+      "live",
+      "analytics",
+      "data"
+    ]
+  },
+  {
+    "name": "location",
+    "title": "Location",
+    "category": "General & Objects",
+    "keywords": [
+      "location",
+      "general",
+      "objects"
+    ]
+  },
+  {
+    "name": "location-none",
+    "title": "Location None",
+    "category": "General & Objects",
+    "keywords": [
+      "location-none",
+      "location none",
+      "locationnone",
+      "location",
+      "none",
+      "ln",
+      "general",
+      "objects"
+    ]
+  },
+  {
+    "name": "lock",
+    "title": "Lock",
+    "category": "Feedback & Security",
+    "keywords": [
+      "lock",
+      "feedback",
+      "security",
+      "secure",
+      "private",
+      "password",
+      "protect",
+      "safe",
+      "encrypted",
+      "padlock",
+      "closed",
+      "auth"
+    ]
+  },
+  {
+    "name": "map",
+    "title": "Map",
+    "category": "General & Objects",
+    "keywords": [
+      "map",
+      "general",
+      "objects"
+    ]
+  },
+  {
+    "name": "markets",
+    "title": "Markets",
+    "category": "Commerce & Orders",
+    "keywords": [
+      "markets",
+      "commerce",
+      "orders",
+      "money",
+      "cash",
+      "currency",
+      "finance",
+      "payment",
+      "price",
+      "cost",
+      "pay",
+      "dollar"
+    ]
+  },
+  {
+    "name": "markets-euro",
+    "title": "Markets Euro",
+    "category": "Commerce & Orders",
+    "keywords": [
+      "markets-euro",
+      "markets euro",
+      "marketseuro",
+      "markets",
+      "euro",
+      "me",
+      "commerce",
+      "orders",
+      "money",
+      "cash",
+      "currency",
+      "finance",
+      "payment",
+      "price",
+      "cost",
+      "pay",
+      "dollar"
+    ]
+  },
+  {
+    "name": "markets-rupee",
+    "title": "Markets Rupee",
+    "category": "Commerce & Orders",
+    "keywords": [
+      "markets-rupee",
+      "markets rupee",
+      "marketsrupee",
+      "markets",
+      "rupee",
+      "mr",
+      "commerce",
+      "orders",
+      "money",
+      "cash",
+      "currency",
+      "finance",
+      "payment",
+      "price",
+      "cost",
+      "pay",
+      "dollar"
+    ]
+  },
+  {
+    "name": "markets-yen",
+    "title": "Markets Yen",
+    "category": "Commerce & Orders",
+    "keywords": [
+      "markets-yen",
+      "markets yen",
+      "marketsyen",
+      "markets",
+      "yen",
+      "my",
+      "commerce",
+      "orders",
+      "money",
+      "cash",
+      "currency",
+      "finance",
+      "payment",
+      "price",
+      "cost",
+      "pay",
+      "dollar"
+    ]
+  },
+  {
+    "name": "maximize",
+    "title": "Maximize",
+    "category": "Actions & Controls",
+    "keywords": [
+      "maximize",
+      "actions",
+      "controls"
+    ]
+  },
+  {
+    "name": "measurement-size",
+    "title": "Measurement Size",
+    "category": "Products & Inventory",
+    "keywords": [
+      "measurement-size",
+      "measurement size",
+      "measurementsize",
+      "measurement",
+      "size",
+      "ms",
+      "products",
+      "inventory"
+    ]
+  },
+  {
+    "name": "measurement-size-list",
+    "title": "Measurement Size List",
+    "category": "Products & Inventory",
+    "keywords": [
+      "measurement-size-list",
+      "measurement size list",
+      "measurementsizelist",
+      "measurement",
+      "size",
+      "list",
+      "msl",
+      "products",
+      "inventory"
+    ]
+  },
+  {
+    "name": "measurement-volume",
+    "title": "Measurement Volume",
+    "category": "Products & Inventory",
+    "keywords": [
+      "measurement-volume",
+      "measurement volume",
+      "measurementvolume",
+      "measurement",
+      "volume",
+      "mv",
+      "products",
+      "inventory"
+    ]
+  },
+  {
+    "name": "measurement-volume-list",
+    "title": "Measurement Volume List",
+    "category": "Products & Inventory",
+    "keywords": [
+      "measurement-volume-list",
+      "measurement volume list",
+      "measurementvolumelist",
+      "measurement",
+      "volume",
+      "list",
+      "mvl",
+      "products",
+      "inventory"
+    ]
+  },
+  {
+    "name": "measurement-weight",
+    "title": "Measurement Weight",
+    "category": "Products & Inventory",
+    "keywords": [
+      "measurement-weight",
+      "measurement weight",
+      "measurementweight",
+      "measurement",
+      "weight",
+      "mw",
+      "products",
+      "inventory"
+    ]
+  },
+  {
+    "name": "measurement-weight-list",
+    "title": "Measurement Weight List",
+    "category": "Products & Inventory",
+    "keywords": [
+      "measurement-weight-list",
+      "measurement weight list",
+      "measurementweightlist",
+      "measurement",
+      "weight",
+      "list",
+      "mwl",
+      "products",
+      "inventory"
+    ]
+  },
+  {
+    "name": "media-receiver",
+    "title": "Media Receiver",
+    "category": "Devices & Layout",
+    "keywords": [
+      "media-receiver",
+      "media receiver",
+      "mediareceiver",
+      "media",
+      "receiver",
+      "mr",
+      "devices",
+      "layout"
+    ]
+  },
+  {
+    "name": "megaphone",
+    "title": "Megaphone",
+    "category": "Communication & Social",
+    "keywords": [
+      "megaphone",
+      "communication",
+      "social"
+    ]
+  },
+  {
+    "name": "mention",
+    "title": "Mention",
+    "category": "Communication & Social",
+    "keywords": [
+      "mention",
+      "communication",
+      "social",
+      "user",
+      "account",
+      "profile",
+      "customer",
+      "member",
+      "human",
+      "avatar",
+      "people",
+      "mail",
+      "email",
+      "message",
+      "inbox",
+      "letter",
+      "send",
+      "receive"
+    ]
+  },
+  {
+    "name": "menu",
+    "title": "Menu",
+    "category": "Devices & Layout",
+    "keywords": [
+      "menu",
+      "devices",
+      "layout"
+    ]
+  },
+  {
+    "name": "menu-horizontal",
+    "title": "Menu Horizontal",
+    "category": "Devices & Layout",
+    "keywords": [
+      "menu-horizontal",
+      "menu horizontal",
+      "menuhorizontal",
+      "menu",
+      "horizontal",
+      "mh",
+      "devices",
+      "layout"
+    ]
+  },
+  {
+    "name": "menu-vertical",
+    "title": "Menu Vertical",
+    "category": "Devices & Layout",
+    "keywords": [
+      "menu-vertical",
+      "menu vertical",
+      "menuvertical",
+      "menu",
+      "vertical",
+      "mv",
+      "devices",
+      "layout"
+    ]
+  },
+  {
+    "name": "merge",
+    "title": "Merge",
+    "category": "General & Objects",
+    "keywords": [
+      "merge",
+      "general",
+      "objects"
+    ]
+  },
+  {
+    "name": "metafields",
+    "title": "Metafields",
+    "category": "General & Objects",
+    "keywords": [
+      "metafields",
+      "general",
+      "objects"
+    ]
+  },
+  {
+    "name": "metaobject",
+    "title": "Metaobject",
+    "category": "General & Objects",
+    "keywords": [
+      "metaobject",
+      "general",
+      "objects"
+    ]
+  },
+  {
+    "name": "metaobject-list",
+    "title": "Metaobject List",
+    "category": "General & Objects",
+    "keywords": [
+      "metaobject-list",
+      "metaobject list",
+      "metaobjectlist",
+      "metaobject",
+      "list",
+      "ml",
+      "general",
+      "objects"
+    ]
+  },
+  {
+    "name": "metaobject-reference",
+    "title": "Metaobject Reference",
+    "category": "General & Objects",
+    "keywords": [
+      "metaobject-reference",
+      "metaobject reference",
+      "metaobjectreference",
+      "metaobject",
+      "reference",
+      "mr",
+      "general",
+      "objects"
+    ]
+  },
+  {
+    "name": "microphone",
+    "title": "Microphone",
+    "category": "Communication & Social",
+    "keywords": [
+      "microphone",
+      "communication",
+      "social",
+      "mic",
+      "voice",
+      "audio",
+      "record",
+      "speak",
+      "sound",
+      "talk",
+      "input"
+    ]
+  },
+  {
+    "name": "microphone-muted",
+    "title": "Microphone Muted",
+    "category": "Communication & Social",
+    "keywords": [
+      "microphone-muted",
+      "microphone muted",
+      "microphonemuted",
+      "microphone",
+      "muted",
+      "mm",
+      "communication",
+      "social",
+      "mic",
+      "voice",
+      "audio",
+      "record",
+      "speak",
+      "sound",
+      "talk",
+      "input"
+    ]
+  },
+  {
+    "name": "minimize",
+    "title": "Minimize",
+    "category": "Actions & Controls",
+    "keywords": [
+      "minimize",
+      "actions",
+      "controls"
+    ]
+  },
+  {
+    "name": "minus",
+    "title": "Minus",
+    "category": "Actions & Controls",
+    "keywords": [
+      "minus",
+      "actions",
+      "controls",
+      "subtract",
+      "remove",
+      "decrease",
+      "reduce",
+      "less",
+      "deduct",
+      "negative",
+      "strip",
+      "hyphen",
+      "dash",
+      "delete"
+    ]
+  },
+  {
+    "name": "minus-circle",
+    "title": "Minus Circle",
+    "category": "Actions & Controls",
+    "keywords": [
+      "minus-circle",
+      "minus circle",
+      "minuscircle",
+      "minus",
+      "circle",
+      "mc",
+      "actions",
+      "controls",
+      "subtract",
+      "remove",
+      "decrease",
+      "reduce",
+      "less",
+      "deduct",
+      "negative",
+      "strip",
+      "hyphen",
+      "dash",
+      "delete"
+    ]
+  },
+  {
+    "name": "mobile",
+    "title": "Mobile",
+    "category": "Devices & Layout",
+    "keywords": [
+      "mobile",
+      "devices",
+      "layout",
+      "phone",
+      "cell",
+      "smartphone",
+      "device",
+      "responsive",
+      "handheld",
+      "iphone",
+      "android"
+    ]
+  },
+  {
+    "name": "money",
+    "title": "Money",
+    "category": "Commerce & Orders",
+    "keywords": [
+      "money",
+      "commerce",
+      "orders",
+      "cash",
+      "currency",
+      "finance",
+      "payment",
+      "price",
+      "cost",
+      "pay",
+      "dollar"
+    ]
+  },
+  {
+    "name": "money-none",
+    "title": "Money None",
+    "category": "Commerce & Orders",
+    "keywords": [
+      "money-none",
+      "money none",
+      "moneynone",
+      "money",
+      "none",
+      "mn",
+      "commerce",
+      "orders"
+    ]
+  },
+  {
+    "name": "moon",
+    "title": "Moon",
+    "category": "General & Objects",
+    "keywords": [
+      "moon",
+      "general",
+      "objects",
+      "night",
+      "dark mode",
+      "sleep",
+      "bedtime",
+      "lunar",
+      "evening",
+      "dark"
+    ]
+  },
+  {
+    "name": "nature",
+    "title": "Nature",
+    "category": "General & Objects",
+    "keywords": [
+      "nature",
+      "general",
+      "objects"
+    ]
+  },
+  {
+    "name": "note",
+    "title": "Note",
+    "category": "Content & Media",
+    "keywords": [
+      "note",
+      "content",
+      "media"
+    ]
+  },
+  {
+    "name": "note-add",
+    "title": "Note Add",
+    "category": "Content & Media",
+    "keywords": [
+      "note-add",
+      "note add",
+      "noteadd",
+      "note",
+      "add",
+      "na",
+      "content",
+      "media",
+      "plus",
+      "new",
+      "create",
+      "insert",
+      "append",
+      "more",
+      "positive",
+      "include",
+      "build",
+      "extra"
+    ]
+  },
+  {
+    "name": "notification",
+    "title": "Notification",
+    "category": "Communication & Social",
+    "keywords": [
+      "notification",
+      "communication",
+      "social"
+    ]
+  },
+  {
+    "name": "number-one",
+    "title": "Number One",
+    "category": "General & Objects",
+    "keywords": [
+      "number-one",
+      "number one",
+      "numberone",
+      "number",
+      "one",
+      "no",
+      "general",
+      "objects"
+    ]
+  },
+  {
+    "name": "order",
+    "title": "Order",
+    "category": "General & Objects",
+    "keywords": [
+      "order",
+      "general",
+      "objects",
+      "purchase",
+      "sale",
+      "receipt",
+      "invoice",
+      "transaction",
+      "fulfillment",
+      "customer",
+      "bought",
+      "items"
+    ]
+  },
+  {
+    "name": "order-batches",
+    "title": "Order Batches",
+    "category": "General & Objects",
+    "keywords": [
+      "order-batches",
+      "order batches",
+      "orderbatches",
+      "order",
+      "batches",
+      "ob",
+      "general",
+      "objects",
+      "purchase",
+      "sale",
+      "receipt",
+      "invoice",
+      "transaction",
+      "fulfillment",
+      "customer",
+      "bought",
+      "items"
+    ]
+  },
+  {
+    "name": "order-draft",
+    "title": "Order Draft",
+    "category": "General & Objects",
+    "keywords": [
+      "order-draft",
+      "order draft",
+      "orderdraft",
+      "order",
+      "draft",
+      "od",
+      "general",
+      "objects",
+      "purchase",
+      "sale",
+      "receipt",
+      "invoice",
+      "transaction",
+      "fulfillment",
+      "customer",
+      "bought",
+      "items"
+    ]
+  },
+  {
+    "name": "order-first",
+    "title": "Order First",
+    "category": "General & Objects",
+    "keywords": [
+      "order-first",
+      "order first",
+      "orderfirst",
+      "order",
+      "first",
+      "of",
+      "general",
+      "objects",
+      "purchase",
+      "sale",
+      "receipt",
+      "invoice",
+      "transaction",
+      "fulfillment",
+      "customer",
+      "bought",
+      "items"
+    ]
+  },
+  {
+    "name": "order-fulfilled",
+    "title": "Order Fulfilled",
+    "category": "General & Objects",
+    "keywords": [
+      "order-fulfilled",
+      "order fulfilled",
+      "orderfulfilled",
+      "order",
+      "fulfilled",
+      "of",
+      "general",
+      "objects",
+      "purchase",
+      "sale",
+      "receipt",
+      "invoice",
+      "transaction",
+      "fulfillment",
+      "customer",
+      "bought",
+      "items"
+    ]
+  },
+  {
+    "name": "order-repeat",
+    "title": "Order Repeat",
+    "category": "General & Objects",
+    "keywords": [
+      "order-repeat",
+      "order repeat",
+      "orderrepeat",
+      "order",
+      "repeat",
+      "or",
+      "general",
+      "objects",
+      "purchase",
+      "sale",
+      "receipt",
+      "invoice",
+      "transaction",
+      "fulfillment",
+      "customer",
+      "bought",
+      "items"
+    ]
+  },
+  {
+    "name": "order-unfulfilled",
+    "title": "Order Unfulfilled",
+    "category": "General & Objects",
+    "keywords": [
+      "order-unfulfilled",
+      "order unfulfilled",
+      "orderunfulfilled",
+      "order",
+      "unfulfilled",
+      "ou",
+      "general",
+      "objects",
+      "purchase",
+      "sale",
+      "receipt",
+      "invoice",
+      "transaction",
+      "fulfillment",
+      "customer",
+      "bought",
+      "items"
+    ]
+  },
+  {
+    "name": "orders-status",
+    "title": "Orders Status",
+    "category": "General & Objects",
+    "keywords": [
+      "orders-status",
+      "orders status",
+      "ordersstatus",
+      "orders",
+      "status",
+      "os",
+      "general",
+      "objects"
+    ]
+  },
+  {
+    "name": "organization",
+    "title": "Organization",
+    "category": "Organization & People",
+    "keywords": [
+      "organization",
+      "people",
+      "company",
+      "business",
+      "hierarchy",
+      "team",
+      "enterprise",
+      "agency",
+      "corp",
+      "firm"
+    ]
+  },
+  {
+    "name": "outdent",
+    "title": "Outdent",
+    "category": "Formatting & Text",
+    "keywords": [
+      "outdent",
+      "formatting",
+      "text"
+    ]
+  },
+  {
+    "name": "outgoing",
+    "title": "Outgoing",
+    "category": "General & Objects",
+    "keywords": [
+      "outgoing",
+      "general",
+      "objects"
+    ]
+  },
+  {
+    "name": "package",
+    "title": "Package",
+    "category": "Products & Inventory",
+    "keywords": [
+      "package",
+      "products",
+      "inventory"
+    ]
+  },
+  {
+    "name": "package-fulfilled",
+    "title": "Package Fulfilled",
+    "category": "Products & Inventory",
+    "keywords": [
+      "package-fulfilled",
+      "package fulfilled",
+      "packagefulfilled",
+      "package",
+      "fulfilled",
+      "pf",
+      "products",
+      "inventory"
+    ]
+  },
+  {
+    "name": "package-on-hold",
+    "title": "Package On Hold",
+    "category": "Products & Inventory",
+    "keywords": [
+      "package-on-hold",
+      "package on hold",
+      "packageonhold",
+      "package",
+      "on",
+      "hold",
+      "poh",
+      "products",
+      "inventory"
+    ]
+  },
+  {
+    "name": "package-returned",
+    "title": "Package Returned",
+    "category": "Products & Inventory",
+    "keywords": [
+      "package-returned",
+      "package returned",
+      "packagereturned",
+      "package",
+      "returned",
+      "pr",
+      "products",
+      "inventory"
+    ]
+  },
+  {
+    "name": "page",
+    "title": "Page",
+    "category": "Content & Media",
+    "keywords": [
+      "page",
+      "content",
+      "media"
+    ]
+  },
+  {
+    "name": "page-add",
+    "title": "Page Add",
+    "category": "Content & Media",
+    "keywords": [
+      "page-add",
+      "page add",
+      "pageadd",
+      "page",
+      "add",
+      "pa",
+      "content",
+      "media",
+      "plus",
+      "new",
+      "create",
+      "insert",
+      "append",
+      "more",
+      "positive",
+      "include",
+      "build",
+      "extra"
+    ]
+  },
+  {
+    "name": "page-attachment",
+    "title": "Page Attachment",
+    "category": "Content & Media",
+    "keywords": [
+      "page-attachment",
+      "page attachment",
+      "pageattachment",
+      "page",
+      "attachment",
+      "pa",
+      "content",
+      "media"
+    ]
+  },
+  {
+    "name": "page-clock",
+    "title": "Page Clock",
+    "category": "Content & Media",
+    "keywords": [
+      "page-clock",
+      "page clock",
+      "pageclock",
+      "page",
+      "clock",
+      "pc",
+      "content",
+      "media",
+      "time",
+      "hour",
+      "minute",
+      "timer",
+      "watch",
+      "duration",
+      "schedule",
+      "history",
+      "recent",
+      "when"
+    ]
+  },
+  {
+    "name": "page-down",
+    "title": "Page Down",
+    "category": "Content & Media",
+    "keywords": [
+      "page-down",
+      "page down",
+      "pagedown",
+      "page",
+      "down",
+      "pd",
+      "content",
+      "media"
+    ]
+  },
+  {
+    "name": "page-heart",
+    "title": "Page Heart",
+    "category": "Content & Media",
+    "keywords": [
+      "page-heart",
+      "page heart",
+      "pageheart",
+      "page",
+      "heart",
+      "ph",
+      "content",
+      "media",
+      "love",
+      "like",
+      "favorite",
+      "wishlist",
+      "health",
+      "passion",
+      "care",
+      "liked"
+    ]
+  },
+  {
+    "name": "page-list",
+    "title": "Page List",
+    "category": "Content & Media",
+    "keywords": [
+      "page-list",
+      "page list",
+      "pagelist",
+      "page",
+      "list",
+      "pl",
+      "content",
+      "media"
+    ]
+  },
+  {
+    "name": "page-reference",
+    "title": "Page Reference",
+    "category": "Content & Media",
+    "keywords": [
+      "page-reference",
+      "page reference",
+      "pagereference",
+      "page",
+      "reference",
+      "pr",
+      "content",
+      "media"
+    ]
+  },
+  {
+    "name": "page-remove",
+    "title": "Page Remove",
+    "category": "Content & Media",
+    "keywords": [
+      "page-remove",
+      "page remove",
+      "pageremove",
+      "page",
+      "remove",
+      "pr",
+      "content",
+      "media",
+      "delete",
+      "trash",
+      "bin",
+      "erase",
+      "discard",
+      "clear",
+      "drop",
+      "strip",
+      "cancel",
+      "minus",
+      "take away",
+      "garbage",
+      "rubbish",
+      "waste",
+      "subtract",
+      "reduce"
+    ]
+  },
+  {
+    "name": "page-report",
+    "title": "Page Report",
+    "category": "Content & Media",
+    "keywords": [
+      "page-report",
+      "page report",
+      "pagereport",
+      "page",
+      "report",
+      "pr",
+      "content",
+      "media"
+    ]
+  },
+  {
+    "name": "page-up",
+    "title": "Page Up",
+    "category": "Content & Media",
+    "keywords": [
+      "page-up",
+      "page up",
+      "pageup",
+      "page",
+      "up",
+      "pu",
+      "content",
+      "media"
+    ]
+  },
+  {
+    "name": "pagination-end",
+    "title": "Pagination End",
+    "category": "Navigation & Arrows",
+    "keywords": [
+      "pagination-end",
+      "pagination end",
+      "paginationend",
+      "pagination",
+      "end",
+      "pe",
+      "navigation",
+      "arrows"
+    ]
+  },
+  {
+    "name": "pagination-start",
+    "title": "Pagination Start",
+    "category": "Navigation & Arrows",
+    "keywords": [
+      "pagination-start",
+      "pagination start",
+      "paginationstart",
+      "pagination",
+      "start",
+      "ps",
+      "navigation",
+      "arrows"
+    ]
+  },
+  {
+    "name": "paint-brush-flat",
+    "title": "Paint Brush Flat",
+    "category": "Content & Media",
+    "keywords": [
+      "paint-brush-flat",
+      "paint brush flat",
+      "paintbrushflat",
+      "paint",
+      "brush",
+      "flat",
+      "pbf",
+      "content",
+      "media",
+      "color",
+      "art",
+      "design",
+      "draw",
+      "style",
+      "customize",
+      "theme",
+      "palette"
+    ]
+  },
+  {
+    "name": "paint-brush-round",
+    "title": "Paint Brush Round",
+    "category": "Content & Media",
+    "keywords": [
+      "paint-brush-round",
+      "paint brush round",
+      "paintbrushround",
+      "paint",
+      "brush",
+      "round",
+      "pbr",
+      "content",
+      "media",
+      "color",
+      "art",
+      "design",
+      "draw",
+      "style",
+      "customize",
+      "theme",
+      "palette"
+    ]
+  },
+  {
+    "name": "paper-check",
+    "title": "Paper Check",
+    "category": "General & Objects",
+    "keywords": [
+      "paper-check",
+      "paper check",
+      "papercheck",
+      "paper",
+      "check",
+      "pc",
+      "general",
+      "objects",
+      "tick",
+      "mark",
+      "done",
+      "complete",
+      "completed",
+      "finished",
+      "success",
+      "ok",
+      "valid",
+      "verified",
+      "confirm",
+      "approved",
+      "accept",
+      "yes",
+      "pass",
+      "right"
+    ]
+  },
+  {
+    "name": "passkey",
+    "title": "Passkey",
+    "category": "Feedback & Security",
+    "keywords": [
+      "passkey",
+      "feedback",
+      "security",
+      "biometric",
+      "auth",
+      "passwordless",
+      "faceid",
+      "touchid",
+      "login",
+      "credentials"
+    ]
+  },
+  {
+    "name": "paste",
+    "title": "Paste",
+    "category": "Actions & Controls",
+    "keywords": [
+      "paste",
+      "actions",
+      "controls",
+      "insert",
+      "clipboard",
+      "copy",
+      "put",
+      "attach",
+      "place"
+    ]
+  },
+  {
+    "name": "pause-circle",
+    "title": "Pause Circle",
+    "category": "Actions & Controls",
+    "keywords": [
+      "pause-circle",
+      "pause circle",
+      "pausecircle",
+      "pause",
+      "circle",
+      "pc",
+      "actions",
+      "controls"
+    ]
+  },
+  {
+    "name": "payment",
+    "title": "Payment",
+    "category": "Commerce & Orders",
+    "keywords": [
+      "payment",
+      "commerce",
+      "orders"
+    ]
+  },
+  {
+    "name": "payment-capture",
+    "title": "Payment Capture",
+    "category": "Commerce & Orders",
+    "keywords": [
+      "payment-capture",
+      "payment capture",
+      "paymentcapture",
+      "payment",
+      "capture",
+      "pc",
+      "commerce",
+      "orders"
+    ]
+  },
+  {
+    "name": "payout",
+    "title": "Payout",
+    "category": "Commerce & Orders",
+    "keywords": [
+      "payout",
+      "commerce",
+      "orders",
+      "earnings",
+      "withdraw",
+      "deposit",
+      "revenue",
+      "funds",
+      "income",
+      "bank",
+      "transfer",
+      "salary",
+      "money",
+      "cash",
+      "currency",
+      "finance",
+      "payment",
+      "price",
+      "cost",
+      "pay",
+      "dollar"
+    ]
+  },
+  {
+    "name": "payout-dollar",
+    "title": "Payout Dollar",
+    "category": "Commerce & Orders",
+    "keywords": [
+      "payout-dollar",
+      "payout dollar",
+      "payoutdollar",
+      "payout",
+      "dollar",
+      "pd",
+      "commerce",
+      "orders",
+      "earnings",
+      "withdraw",
+      "deposit",
+      "revenue",
+      "funds",
+      "income",
+      "bank",
+      "transfer",
+      "salary",
+      "money",
+      "cash",
+      "currency",
+      "finance",
+      "payment",
+      "price",
+      "cost",
+      "pay"
+    ]
+  },
+  {
+    "name": "payout-euro",
+    "title": "Payout Euro",
+    "category": "Commerce & Orders",
+    "keywords": [
+      "payout-euro",
+      "payout euro",
+      "payouteuro",
+      "payout",
+      "euro",
+      "pe",
+      "commerce",
+      "orders",
+      "earnings",
+      "withdraw",
+      "deposit",
+      "revenue",
+      "funds",
+      "income",
+      "bank",
+      "transfer",
+      "salary",
+      "money",
+      "cash",
+      "currency",
+      "finance",
+      "payment",
+      "price",
+      "cost",
+      "pay",
+      "dollar"
+    ]
+  },
+  {
+    "name": "payout-pound",
+    "title": "Payout Pound",
+    "category": "Commerce & Orders",
+    "keywords": [
+      "payout-pound",
+      "payout pound",
+      "payoutpound",
+      "payout",
+      "pound",
+      "pp",
+      "commerce",
+      "orders",
+      "earnings",
+      "withdraw",
+      "deposit",
+      "revenue",
+      "funds",
+      "income",
+      "bank",
+      "transfer",
+      "salary",
+      "money",
+      "cash",
+      "currency",
+      "finance",
+      "payment",
+      "price",
+      "cost",
+      "pay",
+      "dollar"
+    ]
+  },
+  {
+    "name": "payout-rupee",
+    "title": "Payout Rupee",
+    "category": "Commerce & Orders",
+    "keywords": [
+      "payout-rupee",
+      "payout rupee",
+      "payoutrupee",
+      "payout",
+      "rupee",
+      "pr",
+      "commerce",
+      "orders",
+      "earnings",
+      "withdraw",
+      "deposit",
+      "revenue",
+      "funds",
+      "income",
+      "bank",
+      "transfer",
+      "salary",
+      "money",
+      "cash",
+      "currency",
+      "finance",
+      "payment",
+      "price",
+      "cost",
+      "pay",
+      "dollar"
+    ]
+  },
+  {
+    "name": "payout-yen",
+    "title": "Payout Yen",
+    "category": "Commerce & Orders",
+    "keywords": [
+      "payout-yen",
+      "payout yen",
+      "payoutyen",
+      "payout",
+      "yen",
+      "py",
+      "commerce",
+      "orders",
+      "earnings",
+      "withdraw",
+      "deposit",
+      "revenue",
+      "funds",
+      "income",
+      "bank",
+      "transfer",
+      "salary",
+      "money",
+      "cash",
+      "currency",
+      "finance",
+      "payment",
+      "price",
+      "cost",
+      "pay",
+      "dollar"
+    ]
+  },
+  {
+    "name": "person",
+    "title": "Person",
+    "category": "Organization & People",
+    "keywords": [
+      "person",
+      "organization",
+      "people",
+      "user",
+      "customer",
+      "human",
+      "profile",
+      "account",
+      "member",
+      "individual",
+      "avatar",
+      "identity",
+      "who",
+      "client",
+      "buyer"
+    ]
+  },
+  {
+    "name": "person-add",
+    "title": "Person Add",
+    "category": "Organization & People",
+    "keywords": [
+      "person-add",
+      "person add",
+      "personadd",
+      "person",
+      "add",
+      "pa",
+      "organization",
+      "people",
+      "plus",
+      "new",
+      "create",
+      "insert",
+      "append",
+      "more",
+      "positive",
+      "include",
+      "build",
+      "extra",
+      "user",
+      "customer",
+      "human",
+      "profile",
+      "account",
+      "member",
+      "individual",
+      "avatar",
+      "identity",
+      "who",
+      "client",
+      "buyer"
+    ]
+  },
+  {
+    "name": "person-exit",
+    "title": "Person Exit",
+    "category": "Organization & People",
+    "keywords": [
+      "person-exit",
+      "person exit",
+      "personexit",
+      "person",
+      "exit",
+      "pe",
+      "organization",
+      "people",
+      "user",
+      "customer",
+      "human",
+      "profile",
+      "account",
+      "member",
+      "individual",
+      "avatar",
+      "identity",
+      "who",
+      "client",
+      "buyer"
+    ]
+  },
+  {
+    "name": "person-list",
+    "title": "Person List",
+    "category": "Organization & People",
+    "keywords": [
+      "person-list",
+      "person list",
+      "personlist",
+      "person",
+      "list",
+      "pl",
+      "organization",
+      "people",
+      "user",
+      "customer",
+      "human",
+      "profile",
+      "account",
+      "member",
+      "individual",
+      "avatar",
+      "identity",
+      "who",
+      "client",
+      "buyer"
+    ]
+  },
+  {
+    "name": "person-lock",
+    "title": "Person Lock",
+    "category": "Organization & People",
+    "keywords": [
+      "person-lock",
+      "person lock",
+      "personlock",
+      "person",
+      "lock",
+      "pl",
+      "organization",
+      "people",
+      "user",
+      "customer",
+      "human",
+      "profile",
+      "account",
+      "member",
+      "individual",
+      "avatar",
+      "identity",
+      "who",
+      "client",
+      "buyer",
+      "secure",
+      "private",
+      "password",
+      "protect",
+      "safe",
+      "security",
+      "encrypted",
+      "padlock",
+      "closed",
+      "auth"
+    ]
+  },
+  {
+    "name": "person-remove",
+    "title": "Person Remove",
+    "category": "Organization & People",
+    "keywords": [
+      "person-remove",
+      "person remove",
+      "personremove",
+      "person",
+      "remove",
+      "pr",
+      "organization",
+      "people",
+      "delete",
+      "trash",
+      "bin",
+      "erase",
+      "discard",
+      "clear",
+      "drop",
+      "strip",
+      "cancel",
+      "minus",
+      "take away",
+      "user",
+      "customer",
+      "human",
+      "profile",
+      "account",
+      "member",
+      "individual",
+      "avatar",
+      "identity",
+      "who",
+      "client",
+      "buyer",
+      "garbage",
+      "rubbish",
+      "waste",
+      "subtract",
+      "reduce"
+    ]
+  },
+  {
+    "name": "person-segment",
+    "title": "Person Segment",
+    "category": "Organization & People",
+    "keywords": [
+      "person-segment",
+      "person segment",
+      "personsegment",
+      "person",
+      "segment",
+      "ps",
+      "organization",
+      "people",
+      "user",
+      "customer",
+      "human",
+      "profile",
+      "account",
+      "member",
+      "individual",
+      "avatar",
+      "identity",
+      "who",
+      "client",
+      "buyer"
+    ]
+  },
+  {
+    "name": "personalized-text",
+    "title": "Personalized Text",
+    "category": "Formatting & Text",
+    "keywords": [
+      "personalized-text",
+      "personalized text",
+      "personalizedtext",
+      "personalized",
+      "text",
+      "pt",
+      "formatting",
+      "user",
+      "account",
+      "profile",
+      "customer",
+      "member",
+      "human",
+      "avatar",
+      "people"
+    ]
+  },
+  {
+    "name": "phone",
+    "title": "Phone",
+    "category": "Communication & Social",
+    "keywords": [
+      "phone",
+      "communication",
+      "social",
+      "telephone",
+      "call",
+      "ring",
+      "mobile",
+      "dial",
+      "contact",
+      "hotline",
+      "talk",
+      "support"
+    ]
+  },
+  {
+    "name": "phone-down",
+    "title": "Phone Down",
+    "category": "Communication & Social",
+    "keywords": [
+      "phone-down",
+      "phone down",
+      "phonedown",
+      "phone",
+      "down",
+      "pd",
+      "communication",
+      "social",
+      "telephone",
+      "call",
+      "ring",
+      "mobile",
+      "dial",
+      "contact",
+      "hotline",
+      "talk",
+      "support"
+    ]
+  },
+  {
+    "name": "phone-down-filled",
+    "title": "Phone Down Filled",
+    "category": "Communication & Social",
+    "keywords": [
+      "phone-down-filled",
+      "phone down filled",
+      "phonedownfilled",
+      "phone",
+      "down",
+      "filled",
+      "pdf",
+      "communication",
+      "social",
+      "telephone",
+      "call",
+      "ring",
+      "mobile",
+      "dial",
+      "contact",
+      "hotline",
+      "talk",
+      "support"
+    ]
+  },
+  {
+    "name": "phone-in",
+    "title": "Phone In",
+    "category": "Communication & Social",
+    "keywords": [
+      "phone-in",
+      "phone in",
+      "phonein",
+      "phone",
+      "in",
+      "pi",
+      "communication",
+      "social",
+      "telephone",
+      "call",
+      "ring",
+      "mobile",
+      "dial",
+      "contact",
+      "hotline",
+      "talk",
+      "support"
+    ]
+  },
+  {
+    "name": "phone-out",
+    "title": "Phone Out",
+    "category": "Communication & Social",
+    "keywords": [
+      "phone-out",
+      "phone out",
+      "phoneout",
+      "phone",
+      "out",
+      "po",
+      "communication",
+      "social",
+      "telephone",
+      "call",
+      "ring",
+      "mobile",
+      "dial",
+      "contact",
+      "hotline",
+      "talk",
+      "support"
+    ]
+  },
+  {
+    "name": "pin",
+    "title": "Pin",
+    "category": "General & Objects",
+    "keywords": [
+      "pin",
+      "general",
+      "objects"
+    ]
+  },
+  {
+    "name": "pin-remove",
+    "title": "Pin Remove",
+    "category": "General & Objects",
+    "keywords": [
+      "pin-remove",
+      "pin remove",
+      "pinremove",
+      "pin",
+      "remove",
+      "pr",
+      "general",
+      "objects",
+      "delete",
+      "trash",
+      "bin",
+      "erase",
+      "discard",
+      "clear",
+      "drop",
+      "strip",
+      "cancel",
+      "minus",
+      "take away",
+      "garbage",
+      "rubbish",
+      "waste",
+      "subtract",
+      "reduce"
+    ]
+  },
+  {
+    "name": "plan",
+    "title": "Plan",
+    "category": "General & Objects",
+    "keywords": [
+      "plan",
+      "general",
+      "objects"
+    ]
+  },
+  {
+    "name": "play",
+    "title": "Play",
+    "category": "Actions & Controls",
+    "keywords": [
+      "play",
+      "actions",
+      "controls"
+    ]
+  },
+  {
+    "name": "play-circle",
+    "title": "Play Circle",
+    "category": "Actions & Controls",
+    "keywords": [
+      "play-circle",
+      "play circle",
+      "playcircle",
+      "play",
+      "circle",
+      "pc",
+      "actions",
+      "controls"
+    ]
+  },
+  {
+    "name": "plus",
+    "title": "Plus",
+    "category": "Actions & Controls",
+    "keywords": [
+      "plus",
+      "actions",
+      "controls",
+      "add",
+      "new",
+      "create",
+      "insert",
+      "append",
+      "more",
+      "positive",
+      "include",
+      "build",
+      "extra"
+    ]
+  },
+  {
+    "name": "plus-circle",
+    "title": "Plus Circle",
+    "category": "Actions & Controls",
+    "keywords": [
+      "plus-circle",
+      "plus circle",
+      "pluscircle",
+      "plus",
+      "circle",
+      "pc",
+      "actions",
+      "controls",
+      "add",
+      "new",
+      "create",
+      "insert",
+      "append",
+      "more",
+      "positive",
+      "include",
+      "build",
+      "extra"
+    ]
+  },
+  {
+    "name": "plus-circle-down",
+    "title": "Plus Circle Down",
+    "category": "Actions & Controls",
+    "keywords": [
+      "plus-circle-down",
+      "plus circle down",
+      "pluscircledown",
+      "plus",
+      "circle",
+      "down",
+      "pcd",
+      "actions",
+      "controls",
+      "add",
+      "new",
+      "create",
+      "insert",
+      "append",
+      "more",
+      "positive",
+      "include",
+      "build",
+      "extra"
+    ]
+  },
+  {
+    "name": "plus-circle-filled",
+    "title": "Plus Circle Filled",
+    "category": "Actions & Controls",
+    "keywords": [
+      "plus-circle-filled",
+      "plus circle filled",
+      "pluscirclefilled",
+      "plus",
+      "circle",
+      "filled",
+      "pcf",
+      "actions",
+      "controls",
+      "add",
+      "new",
+      "create",
+      "insert",
+      "append",
+      "more",
+      "positive",
+      "include",
+      "build",
+      "extra"
+    ]
+  },
+  {
+    "name": "plus-circle-up",
+    "title": "Plus Circle Up",
+    "category": "Actions & Controls",
+    "keywords": [
+      "plus-circle-up",
+      "plus circle up",
+      "pluscircleup",
+      "plus",
+      "circle",
+      "up",
+      "pcu",
+      "actions",
+      "controls",
+      "add",
+      "new",
+      "create",
+      "insert",
+      "append",
+      "more",
+      "positive",
+      "include",
+      "build",
+      "extra"
+    ]
+  },
+  {
+    "name": "point-of-sale",
+    "title": "Point Of Sale",
+    "category": "Commerce & Orders",
+    "keywords": [
+      "point-of-sale",
+      "point of sale",
+      "pointofsale",
+      "point",
+      "of",
+      "sale",
+      "pos",
+      "commerce",
+      "orders",
+      "shop",
+      "shopping",
+      "store",
+      "cart",
+      "basket",
+      "buy",
+      "checkout",
+      "ecommerce"
+    ]
+  },
+  {
+    "name": "price-list",
+    "title": "Price List",
+    "category": "Commerce & Orders",
+    "keywords": [
+      "price-list",
+      "price list",
+      "pricelist",
+      "price",
+      "list",
+      "pl",
+      "commerce",
+      "orders",
+      "cost",
+      "rate",
+      "tag",
+      "amount",
+      "value",
+      "fee",
+      "pricing",
+      "charge",
+      "money",
+      "cash",
+      "currency",
+      "finance",
+      "payment",
+      "pay",
+      "dollar"
+    ]
+  },
+  {
+    "name": "print",
+    "title": "Print",
+    "category": "Actions & Controls",
+    "keywords": [
+      "print",
+      "actions",
+      "controls"
+    ]
+  },
+  {
+    "name": "product",
+    "title": "Product",
+    "category": "Products & Inventory",
+    "keywords": [
+      "product",
+      "products",
+      "inventory"
+    ]
+  },
+  {
+    "name": "product-add",
+    "title": "Product Add",
+    "category": "Products & Inventory",
+    "keywords": [
+      "product-add",
+      "product add",
+      "productadd",
+      "product",
+      "add",
+      "pa",
+      "products",
+      "inventory",
+      "plus",
+      "new",
+      "create",
+      "insert",
+      "append",
+      "more",
+      "positive",
+      "include",
+      "build",
+      "extra"
+    ]
+  },
+  {
+    "name": "product-cost",
+    "title": "Product Cost",
+    "category": "Products & Inventory",
+    "keywords": [
+      "product-cost",
+      "product cost",
+      "productcost",
+      "product",
+      "cost",
+      "pc",
+      "products",
+      "inventory"
+    ]
+  },
+  {
+    "name": "product-list",
+    "title": "Product List",
+    "category": "Products & Inventory",
+    "keywords": [
+      "product-list",
+      "product list",
+      "productlist",
+      "product",
+      "list",
+      "pl",
+      "products",
+      "inventory"
+    ]
+  },
+  {
+    "name": "product-reference",
+    "title": "Product Reference",
+    "category": "Products & Inventory",
+    "keywords": [
+      "product-reference",
+      "product reference",
+      "productreference",
+      "product",
+      "reference",
+      "pr",
+      "products",
+      "inventory"
+    ]
+  },
+  {
+    "name": "product-remove",
+    "title": "Product Remove",
+    "category": "Products & Inventory",
+    "keywords": [
+      "product-remove",
+      "product remove",
+      "productremove",
+      "product",
+      "remove",
+      "pr",
+      "products",
+      "inventory",
+      "delete",
+      "trash",
+      "bin",
+      "erase",
+      "discard",
+      "clear",
+      "drop",
+      "strip",
+      "cancel",
+      "minus",
+      "take away",
+      "garbage",
+      "rubbish",
+      "waste",
+      "subtract",
+      "reduce"
+    ]
+  },
+  {
+    "name": "product-return",
+    "title": "Product Return",
+    "category": "Products & Inventory",
+    "keywords": [
+      "product-return",
+      "product return",
+      "productreturn",
+      "product",
+      "return",
+      "pr",
+      "products",
+      "inventory"
+    ]
+  },
+  {
+    "name": "product-unavailable",
+    "title": "Product Unavailable",
+    "category": "Products & Inventory",
+    "keywords": [
+      "product-unavailable",
+      "product unavailable",
+      "productunavailable",
+      "product",
+      "unavailable",
+      "pu",
+      "products",
+      "inventory"
+    ]
+  },
+  {
+    "name": "profile",
+    "title": "Profile",
+    "category": "Organization & People",
+    "keywords": [
+      "profile",
+      "organization",
+      "people",
+      "user",
+      "person",
+      "account",
+      "bio",
+      "details",
+      "identity",
+      "avatar",
+      "photo",
+      "customer",
+      "member",
+      "human"
+    ]
+  },
+  {
+    "name": "profile-filled",
+    "title": "Profile Filled",
+    "category": "Organization & People",
+    "keywords": [
+      "profile-filled",
+      "profile filled",
+      "profilefilled",
+      "profile",
+      "filled",
+      "pf",
+      "organization",
+      "people",
+      "user",
+      "person",
+      "account",
+      "bio",
+      "details",
+      "identity",
+      "avatar",
+      "photo",
+      "customer",
+      "member",
+      "human"
+    ]
+  },
+  {
+    "name": "question-circle",
+    "title": "Question Circle",
+    "category": "Feedback & Security",
+    "keywords": [
+      "question-circle",
+      "question circle",
+      "questioncircle",
+      "question",
+      "circle",
+      "qc",
+      "feedback",
+      "security",
+      "help",
+      "faq",
+      "support",
+      "info",
+      "inquiry",
+      "ask",
+      "mark",
+      "mystery"
+    ]
+  },
+  {
+    "name": "question-circle-filled",
+    "title": "Question Circle Filled",
+    "category": "Feedback & Security",
+    "keywords": [
+      "question-circle-filled",
+      "question circle filled",
+      "questioncirclefilled",
+      "question",
+      "circle",
+      "filled",
+      "qcf",
+      "feedback",
+      "security",
+      "help",
+      "faq",
+      "support",
+      "info",
+      "inquiry",
+      "ask",
+      "mark",
+      "mystery"
+    ]
+  },
+  {
+    "name": "radio-control",
+    "title": "Radio Control",
+    "category": "Devices & Layout",
+    "keywords": [
+      "radio-control",
+      "radio control",
+      "radiocontrol",
+      "radio",
+      "control",
+      "rc",
+      "devices",
+      "layout"
+    ]
+  },
+  {
+    "name": "receipt",
+    "title": "Receipt",
+    "category": "Commerce & Orders",
+    "keywords": [
+      "receipt",
+      "commerce",
+      "orders",
+      "proof",
+      "invoice",
+      "order",
+      "paper",
+      "slip",
+      "transaction",
+      "bill",
+      "payment",
+      "money",
+      "cash",
+      "currency",
+      "finance",
+      "price",
+      "cost",
+      "pay",
+      "dollar"
+    ]
+  },
+  {
+    "name": "receipt-dollar",
+    "title": "Receipt Dollar",
+    "category": "Commerce & Orders",
+    "keywords": [
+      "receipt-dollar",
+      "receipt dollar",
+      "receiptdollar",
+      "receipt",
+      "dollar",
+      "rd",
+      "commerce",
+      "orders",
+      "proof",
+      "invoice",
+      "order",
+      "paper",
+      "slip",
+      "transaction",
+      "bill",
+      "payment",
+      "money",
+      "cash",
+      "currency",
+      "finance",
+      "price",
+      "cost",
+      "pay"
+    ]
+  },
+  {
+    "name": "receipt-euro",
+    "title": "Receipt Euro",
+    "category": "Commerce & Orders",
+    "keywords": [
+      "receipt-euro",
+      "receipt euro",
+      "receipteuro",
+      "receipt",
+      "euro",
+      "re",
+      "commerce",
+      "orders",
+      "proof",
+      "invoice",
+      "order",
+      "paper",
+      "slip",
+      "transaction",
+      "bill",
+      "payment",
+      "money",
+      "cash",
+      "currency",
+      "finance",
+      "price",
+      "cost",
+      "pay",
+      "dollar"
+    ]
+  },
+  {
+    "name": "receipt-paid",
+    "title": "Receipt Paid",
+    "category": "Commerce & Orders",
+    "keywords": [
+      "receipt-paid",
+      "receipt paid",
+      "receiptpaid",
+      "receipt",
+      "paid",
+      "rp",
+      "commerce",
+      "orders",
+      "proof",
+      "invoice",
+      "order",
+      "paper",
+      "slip",
+      "transaction",
+      "bill",
+      "payment",
+      "money",
+      "cash",
+      "currency",
+      "finance",
+      "price",
+      "cost",
+      "pay",
+      "dollar"
+    ]
+  },
+  {
+    "name": "receipt-pound",
+    "title": "Receipt Pound",
+    "category": "Commerce & Orders",
+    "keywords": [
+      "receipt-pound",
+      "receipt pound",
+      "receiptpound",
+      "receipt",
+      "pound",
+      "rp",
+      "commerce",
+      "orders",
+      "proof",
+      "invoice",
+      "order",
+      "paper",
+      "slip",
+      "transaction",
+      "bill",
+      "payment",
+      "money",
+      "cash",
+      "currency",
+      "finance",
+      "price",
+      "cost",
+      "pay",
+      "dollar"
+    ]
+  },
+  {
+    "name": "receipt-refund",
+    "title": "Receipt Refund",
+    "category": "Commerce & Orders",
+    "keywords": [
+      "receipt-refund",
+      "receipt refund",
+      "receiptrefund",
+      "receipt",
+      "refund",
+      "rr",
+      "commerce",
+      "orders",
+      "proof",
+      "invoice",
+      "order",
+      "paper",
+      "slip",
+      "transaction",
+      "bill",
+      "payment",
+      "money",
+      "cash",
+      "currency",
+      "finance",
+      "price",
+      "cost",
+      "pay",
+      "dollar"
+    ]
+  },
+  {
+    "name": "receipt-rupee",
+    "title": "Receipt Rupee",
+    "category": "Commerce & Orders",
+    "keywords": [
+      "receipt-rupee",
+      "receipt rupee",
+      "receiptrupee",
+      "receipt",
+      "rupee",
+      "rr",
+      "commerce",
+      "orders",
+      "proof",
+      "invoice",
+      "order",
+      "paper",
+      "slip",
+      "transaction",
+      "bill",
+      "payment",
+      "money",
+      "cash",
+      "currency",
+      "finance",
+      "price",
+      "cost",
+      "pay",
+      "dollar"
+    ]
+  },
+  {
+    "name": "receipt-yen",
+    "title": "Receipt Yen",
+    "category": "Commerce & Orders",
+    "keywords": [
+      "receipt-yen",
+      "receipt yen",
+      "receiptyen",
+      "receipt",
+      "yen",
+      "ry",
+      "commerce",
+      "orders",
+      "proof",
+      "invoice",
+      "order",
+      "paper",
+      "slip",
+      "transaction",
+      "bill",
+      "payment",
+      "money",
+      "cash",
+      "currency",
+      "finance",
+      "price",
+      "cost",
+      "pay",
+      "dollar"
+    ]
+  },
+  {
+    "name": "receivables",
+    "title": "Receivables",
+    "category": "Commerce & Orders",
+    "keywords": [
+      "receivables",
+      "commerce",
+      "orders"
+    ]
+  },
+  {
+    "name": "redo",
+    "title": "Redo",
+    "category": "Navigation & Arrows",
+    "keywords": [
+      "redo",
+      "navigation",
+      "arrows"
+    ]
+  },
+  {
+    "name": "referral-code",
+    "title": "Referral Code",
+    "category": "Communication & Social",
+    "keywords": [
+      "referral-code",
+      "referral code",
+      "referralcode",
+      "referral",
+      "code",
+      "rc",
+      "communication",
+      "social",
+      "html",
+      "programming",
+      "dev",
+      "developer",
+      "script",
+      "tag",
+      "embed",
+      "software",
+      "source",
+      "markup"
+    ]
+  },
+  {
+    "name": "refresh",
+    "title": "Refresh",
+    "category": "Navigation & Arrows",
+    "keywords": [
+      "refresh",
+      "navigation",
+      "arrows"
+    ]
+  },
+  {
+    "name": "remove-background",
+    "title": "Remove Background",
+    "category": "Content & Media",
+    "keywords": [
+      "remove-background",
+      "remove background",
+      "removebackground",
+      "remove",
+      "background",
+      "rb",
+      "content",
+      "media",
+      "delete",
+      "trash",
+      "bin",
+      "erase",
+      "discard",
+      "clear",
+      "drop",
+      "strip",
+      "cancel",
+      "minus",
+      "take away",
+      "garbage",
+      "rubbish",
+      "waste",
+      "subtract",
+      "reduce"
+    ]
+  },
+  {
+    "name": "replace",
+    "title": "Replace",
+    "category": "Actions & Controls",
+    "keywords": [
+      "replace",
+      "actions",
+      "controls"
+    ]
+  },
+  {
+    "name": "replay",
+    "title": "Replay",
+    "category": "Navigation & Arrows",
+    "keywords": [
+      "replay",
+      "navigation",
+      "arrows"
+    ]
+  },
+  {
+    "name": "reset",
+    "title": "Reset",
+    "category": "Navigation & Arrows",
+    "keywords": [
+      "reset",
+      "navigation",
+      "arrows"
+    ]
+  },
+  {
+    "name": "return",
+    "title": "Return",
+    "category": "General & Objects",
+    "keywords": [
+      "return",
+      "general",
+      "objects"
+    ]
+  },
+  {
+    "name": "reward",
+    "title": "Reward",
+    "category": "General & Objects",
+    "keywords": [
+      "reward",
+      "general",
+      "objects"
+    ]
+  },
+  {
+    "name": "rocket",
+    "title": "Rocket",
+    "category": "General & Objects",
+    "keywords": [
+      "rocket",
+      "general",
+      "objects"
+    ]
+  },
+  {
+    "name": "rotate-left",
+    "title": "Rotate Left",
+    "category": "Navigation & Arrows",
+    "keywords": [
+      "rotate-left",
+      "rotate left",
+      "rotateleft",
+      "rotate",
+      "left",
+      "rl",
+      "navigation",
+      "arrows"
+    ]
+  },
+  {
+    "name": "rotate-right",
+    "title": "Rotate Right",
+    "category": "Navigation & Arrows",
+    "keywords": [
+      "rotate-right",
+      "rotate right",
+      "rotateright",
+      "rotate",
+      "right",
+      "rr",
+      "navigation",
+      "arrows"
+    ]
+  },
+  {
+    "name": "sandbox",
+    "title": "Sandbox",
+    "category": "Actions & Controls",
+    "keywords": [
+      "sandbox",
+      "actions",
+      "controls"
+    ]
+  },
+  {
+    "name": "save",
+    "title": "Save",
+    "category": "Actions & Controls",
+    "keywords": [
+      "save",
+      "actions",
+      "controls",
+      "disk",
+      "floppy",
+      "store",
+      "keep",
+      "persist",
+      "write",
+      "commit",
+      "export",
+      "download",
+      "record",
+      "backup"
+    ]
+  },
+  {
+    "name": "search",
+    "title": "Search",
+    "category": "Actions & Controls",
+    "keywords": [
+      "search",
+      "actions",
+      "controls",
+      "find",
+      "lookup",
+      "glass",
+      "magnifier",
+      "magnifying",
+      "zoom",
+      "query",
+      "seek",
+      "explore",
+      "detect",
+      "inspect",
+      "filter",
+      "browse",
+      "scan"
+    ]
+  },
+  {
+    "name": "search-add",
+    "title": "Search Add",
+    "category": "Actions & Controls",
+    "keywords": [
+      "search-add",
+      "search add",
+      "searchadd",
+      "search",
+      "add",
+      "sa",
+      "actions",
+      "controls",
+      "plus",
+      "new",
+      "create",
+      "insert",
+      "append",
+      "more",
+      "positive",
+      "include",
+      "build",
+      "extra",
+      "find",
+      "lookup",
+      "glass",
+      "magnifier",
+      "magnifying",
+      "zoom",
+      "query",
+      "seek",
+      "explore",
+      "detect",
+      "inspect",
+      "filter",
+      "browse",
+      "scan"
+    ]
+  },
+  {
+    "name": "search-list",
+    "title": "Search List",
+    "category": "Actions & Controls",
+    "keywords": [
+      "search-list",
+      "search list",
+      "searchlist",
+      "search",
+      "list",
+      "sl",
+      "actions",
+      "controls",
+      "find",
+      "lookup",
+      "glass",
+      "magnifier",
+      "magnifying",
+      "zoom",
+      "query",
+      "seek",
+      "explore",
+      "detect",
+      "inspect",
+      "filter",
+      "browse",
+      "scan"
+    ]
+  },
+  {
+    "name": "search-recent",
+    "title": "Search Recent",
+    "category": "Actions & Controls",
+    "keywords": [
+      "search-recent",
+      "search recent",
+      "searchrecent",
+      "search",
+      "recent",
+      "sr",
+      "actions",
+      "controls",
+      "find",
+      "lookup",
+      "glass",
+      "magnifier",
+      "magnifying",
+      "zoom",
+      "query",
+      "seek",
+      "explore",
+      "detect",
+      "inspect",
+      "filter",
+      "browse",
+      "scan"
+    ]
+  },
+  {
+    "name": "search-resource",
+    "title": "Search Resource",
+    "category": "Actions & Controls",
+    "keywords": [
+      "search-resource",
+      "search resource",
+      "searchresource",
+      "search",
+      "resource",
+      "sr",
+      "actions",
+      "controls",
+      "find",
+      "lookup",
+      "glass",
+      "magnifier",
+      "magnifying",
+      "zoom",
+      "query",
+      "seek",
+      "explore",
+      "detect",
+      "inspect",
+      "filter",
+      "browse",
+      "scan"
+    ]
+  },
+  {
+    "name": "select",
+    "title": "Select",
+    "category": "Actions & Controls",
+    "keywords": [
+      "select",
+      "actions",
+      "controls"
+    ]
+  },
+  {
+    "name": "send",
+    "title": "Send",
+    "category": "Actions & Controls",
+    "keywords": [
+      "send",
+      "actions",
+      "controls"
+    ]
+  },
+  {
+    "name": "settings",
+    "title": "Settings",
+    "category": "Actions & Controls",
+    "keywords": [
+      "settings",
+      "actions",
+      "controls",
+      "gear",
+      "cog",
+      "preferences",
+      "config",
+      "configuration",
+      "options",
+      "customize",
+      "setup",
+      "admin",
+      "tune",
+      "tools",
+      "parameters",
+      "system",
+      "sliders"
+    ]
+  },
+  {
+    "name": "share",
+    "title": "Share",
+    "category": "Actions & Controls",
+    "keywords": [
+      "share",
+      "actions",
+      "controls"
+    ]
+  },
+  {
+    "name": "shield-check-mark",
+    "title": "Shield Check Mark",
+    "category": "Feedback & Security",
+    "keywords": [
+      "shield-check-mark",
+      "shield check mark",
+      "shieldcheckmark",
+      "shield",
+      "check",
+      "mark",
+      "scm",
+      "feedback",
+      "security",
+      "tick",
+      "done",
+      "complete",
+      "completed",
+      "finished",
+      "success",
+      "ok",
+      "valid",
+      "verified",
+      "confirm",
+      "approved",
+      "accept",
+      "yes",
+      "pass",
+      "right",
+      "protect",
+      "safe",
+      "defend",
+      "armor",
+      "guard",
+      "verify",
+      "trust",
+      "protection"
+    ]
+  },
+  {
+    "name": "shield-none",
+    "title": "Shield None",
+    "category": "Feedback & Security",
+    "keywords": [
+      "shield-none",
+      "shield none",
+      "shieldnone",
+      "shield",
+      "none",
+      "sn",
+      "feedback",
+      "security",
+      "protect",
+      "safe",
+      "defend",
+      "armor",
+      "guard",
+      "verify",
+      "trust",
+      "protection"
+    ]
+  },
+  {
+    "name": "shield-pending",
+    "title": "Shield Pending",
+    "category": "Feedback & Security",
+    "keywords": [
+      "shield-pending",
+      "shield pending",
+      "shieldpending",
+      "shield",
+      "pending",
+      "sp",
+      "feedback",
+      "security",
+      "protect",
+      "safe",
+      "defend",
+      "armor",
+      "guard",
+      "verify",
+      "trust",
+      "protection"
+    ]
+  },
+  {
+    "name": "shield-person",
+    "title": "Shield Person",
+    "category": "Feedback & Security",
+    "keywords": [
+      "shield-person",
+      "shield person",
+      "shieldperson",
+      "shield",
+      "person",
+      "sp",
+      "feedback",
+      "security",
+      "user",
+      "customer",
+      "human",
+      "profile",
+      "account",
+      "member",
+      "people",
+      "individual",
+      "avatar",
+      "identity",
+      "who",
+      "client",
+      "buyer",
+      "protect",
+      "safe",
+      "defend",
+      "armor",
+      "guard",
+      "verify",
+      "trust",
+      "protection"
+    ]
+  },
+  {
+    "name": "shipping-label",
+    "title": "Shipping Label",
+    "category": "Products & Inventory",
+    "keywords": [
+      "shipping-label",
+      "shipping label",
+      "shippinglabel",
+      "shipping",
+      "label",
+      "sl",
+      "products",
+      "inventory"
+    ]
+  },
+  {
+    "name": "shopcodes",
+    "title": "Shopcodes",
+    "category": "General & Objects",
+    "keywords": [
+      "shopcodes",
+      "general",
+      "objects"
+    ]
+  },
+  {
+    "name": "slideshow",
+    "title": "Slideshow",
+    "category": "Content & Media",
+    "keywords": [
+      "slideshow",
+      "content",
+      "media",
+      "presentation",
+      "slides",
+      "carousel",
+      "gallery",
+      "deck",
+      "show",
+      "display",
+      "slider"
+    ]
+  },
+  {
+    "name": "smiley-happy",
+    "title": "Smiley Happy",
+    "category": "General & Objects",
+    "keywords": [
+      "smiley-happy",
+      "smiley happy",
+      "smileyhappy",
+      "smiley",
+      "happy",
+      "sh",
+      "general",
+      "objects"
+    ]
+  },
+  {
+    "name": "smiley-joy",
+    "title": "Smiley Joy",
+    "category": "General & Objects",
+    "keywords": [
+      "smiley-joy",
+      "smiley joy",
+      "smileyjoy",
+      "smiley",
+      "joy",
+      "sj",
+      "general",
+      "objects"
+    ]
+  },
+  {
+    "name": "smiley-neutral",
+    "title": "Smiley Neutral",
+    "category": "General & Objects",
+    "keywords": [
+      "smiley-neutral",
+      "smiley neutral",
+      "smileyneutral",
+      "smiley",
+      "neutral",
+      "sn",
+      "general",
+      "objects"
+    ]
+  },
+  {
+    "name": "smiley-sad",
+    "title": "Smiley Sad",
+    "category": "General & Objects",
+    "keywords": [
+      "smiley-sad",
+      "smiley sad",
+      "smileysad",
+      "smiley",
+      "sad",
+      "ss",
+      "general",
+      "objects"
+    ]
+  },
+  {
+    "name": "social-ad",
+    "title": "Social Ad",
+    "category": "Communication & Social",
+    "keywords": [
+      "social-ad",
+      "social ad",
+      "socialad",
+      "social",
+      "ad",
+      "sa",
+      "communication"
+    ]
+  },
+  {
+    "name": "social-post",
+    "title": "Social Post",
+    "category": "Communication & Social",
+    "keywords": [
+      "social-post",
+      "social post",
+      "socialpost",
+      "social",
+      "post",
+      "sp",
+      "communication"
+    ]
+  },
+  {
+    "name": "sort",
+    "title": "Sort",
+    "category": "Actions & Controls",
+    "keywords": [
+      "sort",
+      "actions",
+      "controls",
+      "filter",
+      "funnel",
+      "refine",
+      "order",
+      "arrange"
+    ]
+  },
+  {
+    "name": "sort-ascending",
+    "title": "Sort Ascending",
+    "category": "Actions & Controls",
+    "keywords": [
+      "sort-ascending",
+      "sort ascending",
+      "sortascending",
+      "sort",
+      "ascending",
+      "sa",
+      "actions",
+      "controls",
+      "filter",
+      "funnel",
+      "refine",
+      "order",
+      "arrange"
+    ]
+  },
+  {
+    "name": "sort-descending",
+    "title": "Sort Descending",
+    "category": "Actions & Controls",
+    "keywords": [
+      "sort-descending",
+      "sort descending",
+      "sortdescending",
+      "sort",
+      "descending",
+      "sd",
+      "actions",
+      "controls",
+      "filter",
+      "funnel",
+      "refine",
+      "order",
+      "arrange"
+    ]
+  },
+  {
+    "name": "sound",
+    "title": "Sound",
+    "category": "Communication & Social",
+    "keywords": [
+      "sound",
+      "communication",
+      "social",
+      "audio",
+      "volume",
+      "speaker",
+      "hear",
+      "music",
+      "noise",
+      "soundwave",
+      "listen"
+    ]
+  },
+  {
+    "name": "split",
+    "title": "Split",
+    "category": "Actions & Controls",
+    "keywords": [
+      "split",
+      "actions",
+      "controls"
+    ]
+  },
+  {
+    "name": "sports",
+    "title": "Sports",
+    "category": "General & Objects",
+    "keywords": [
+      "sports",
+      "general",
+      "objects"
+    ]
+  },
+  {
+    "name": "star",
+    "title": "Star",
+    "category": "Feedback & Security",
+    "keywords": [
+      "star",
+      "feedback",
+      "security",
+      "favorite",
+      "fav",
+      "bookmark",
+      "rating",
+      "review",
+      "featured",
+      "priority",
+      "quality",
+      "starred",
+      "best",
+      "popular",
+      "gold",
+      "like",
+      "wishlist"
+    ]
+  },
+  {
+    "name": "star-filled",
+    "title": "Star Filled",
+    "category": "Feedback & Security",
+    "keywords": [
+      "star-filled",
+      "star filled",
+      "starfilled",
+      "star",
+      "filled",
+      "sf",
+      "feedback",
+      "security",
+      "favorite",
+      "fav",
+      "bookmark",
+      "rating",
+      "review",
+      "featured",
+      "priority",
+      "quality",
+      "starred",
+      "best",
+      "popular",
+      "gold",
+      "like",
+      "wishlist"
+    ]
+  },
+  {
+    "name": "star-list",
+    "title": "Star List",
+    "category": "Feedback & Security",
+    "keywords": [
+      "star-list",
+      "star list",
+      "starlist",
+      "star",
+      "list",
+      "sl",
+      "feedback",
+      "security",
+      "favorite",
+      "fav",
+      "bookmark",
+      "rating",
+      "review",
+      "featured",
+      "priority",
+      "quality",
+      "starred",
+      "best",
+      "popular",
+      "gold",
+      "like",
+      "wishlist"
+    ]
+  },
+  {
+    "name": "status",
+    "title": "Status",
+    "category": "Analytics & Data",
+    "keywords": [
+      "status",
+      "analytics",
+      "data"
+    ]
+  },
+  {
+    "name": "status-active",
+    "title": "Status Active",
+    "category": "Analytics & Data",
+    "keywords": [
+      "status-active",
+      "status active",
+      "statusactive",
+      "status",
+      "active",
+      "sa",
+      "analytics",
+      "data"
+    ]
+  },
+  {
+    "name": "stop-circle",
+    "title": "Stop Circle",
+    "category": "Actions & Controls",
+    "keywords": [
+      "stop-circle",
+      "stop circle",
+      "stopcircle",
+      "stop",
+      "circle",
+      "sc",
+      "actions",
+      "controls"
+    ]
+  },
+  {
+    "name": "store",
+    "title": "Store",
+    "category": "Organization & People",
+    "keywords": [
+      "store",
+      "organization",
+      "people",
+      "shop",
+      "merchant",
+      "storefront",
+      "retail",
+      "boutique",
+      "online",
+      "market",
+      "commerce",
+      "business",
+      "shopping",
+      "cart",
+      "basket",
+      "buy",
+      "checkout",
+      "ecommerce"
+    ]
+  },
+  {
+    "name": "store-import",
+    "title": "Store Import",
+    "category": "Organization & People",
+    "keywords": [
+      "store-import",
+      "store import",
+      "storeimport",
+      "store",
+      "import",
+      "si",
+      "organization",
+      "people",
+      "shop",
+      "merchant",
+      "storefront",
+      "retail",
+      "boutique",
+      "online",
+      "market",
+      "commerce",
+      "business",
+      "shopping",
+      "cart",
+      "basket",
+      "buy",
+      "checkout",
+      "ecommerce"
+    ]
+  },
+  {
+    "name": "store-managed",
+    "title": "Store Managed",
+    "category": "Organization & People",
+    "keywords": [
+      "store-managed",
+      "store managed",
+      "storemanaged",
+      "store",
+      "managed",
+      "sm",
+      "organization",
+      "people",
+      "shop",
+      "merchant",
+      "storefront",
+      "retail",
+      "boutique",
+      "online",
+      "market",
+      "commerce",
+      "business",
+      "shopping",
+      "cart",
+      "basket",
+      "buy",
+      "checkout",
+      "ecommerce"
+    ]
+  },
+  {
+    "name": "store-online",
+    "title": "Store Online",
+    "category": "Organization & People",
+    "keywords": [
+      "store-online",
+      "store online",
+      "storeonline",
+      "store",
+      "online",
+      "so",
+      "organization",
+      "people",
+      "shop",
+      "merchant",
+      "storefront",
+      "retail",
+      "boutique",
+      "market",
+      "commerce",
+      "business",
+      "shopping",
+      "cart",
+      "basket",
+      "buy",
+      "checkout",
+      "ecommerce"
+    ]
+  },
+  {
+    "name": "sun",
+    "title": "Sun",
+    "category": "General & Objects",
+    "keywords": [
+      "sun",
+      "general",
+      "objects",
+      "light",
+      "brightness",
+      "day",
+      "weather",
+      "solar",
+      "daylight",
+      "shine",
+      "light mode"
+    ]
+  },
+  {
+    "name": "table",
+    "title": "Table",
+    "category": "Analytics & Data",
+    "keywords": [
+      "table",
+      "analytics",
+      "data"
+    ]
+  },
+  {
+    "name": "table-masonry",
+    "title": "Table Masonry",
+    "category": "Analytics & Data",
+    "keywords": [
+      "table-masonry",
+      "table masonry",
+      "tablemasonry",
+      "table",
+      "masonry",
+      "tm",
+      "analytics",
+      "data"
+    ]
+  },
+  {
+    "name": "tablet",
+    "title": "Tablet",
+    "category": "Analytics & Data",
+    "keywords": [
+      "tablet",
+      "analytics",
+      "data",
+      "ipad",
+      "device",
+      "touch",
+      "screen",
+      "slate",
+      "mobile"
+    ]
+  },
+  {
+    "name": "target",
+    "title": "Target",
+    "category": "Analytics & Data",
+    "keywords": [
+      "target",
+      "analytics",
+      "data"
+    ]
+  },
+  {
+    "name": "tax",
+    "title": "Tax",
+    "category": "Commerce & Orders",
+    "keywords": [
+      "tax",
+      "commerce",
+      "orders",
+      "duty",
+      "levy",
+      "vat",
+      "gst",
+      "customs",
+      "government",
+      "calculation",
+      "taxes"
+    ]
+  },
+  {
+    "name": "team",
+    "title": "Team",
+    "category": "Organization & People",
+    "keywords": [
+      "team",
+      "organization",
+      "people",
+      "group",
+      "members",
+      "collaboration",
+      "staff",
+      "crew",
+      "users",
+      "company",
+      "user",
+      "account",
+      "profile",
+      "customer",
+      "member",
+      "human",
+      "avatar"
+    ]
+  },
+  {
+    "name": "text",
+    "title": "Text",
+    "category": "Formatting & Text",
+    "keywords": [
+      "text",
+      "formatting"
+    ]
+  },
+  {
+    "name": "text-align-center",
+    "title": "Text Align Center",
+    "category": "Formatting & Text",
+    "keywords": [
+      "text-align-center",
+      "text align center",
+      "textaligncenter",
+      "text",
+      "align",
+      "center",
+      "tac",
+      "formatting"
+    ]
+  },
+  {
+    "name": "text-align-left",
+    "title": "Text Align Left",
+    "category": "Formatting & Text",
+    "keywords": [
+      "text-align-left",
+      "text align left",
+      "textalignleft",
+      "text",
+      "align",
+      "left",
+      "tal",
+      "formatting"
+    ]
+  },
+  {
+    "name": "text-align-right",
+    "title": "Text Align Right",
+    "category": "Formatting & Text",
+    "keywords": [
+      "text-align-right",
+      "text align right",
+      "textalignright",
+      "text",
+      "align",
+      "right",
+      "tar",
+      "formatting"
+    ]
+  },
+  {
+    "name": "text-block",
+    "title": "Text Block",
+    "category": "Formatting & Text",
+    "keywords": [
+      "text-block",
+      "text block",
+      "textblock",
+      "text",
+      "block",
+      "tb",
+      "formatting"
+    ]
+  },
+  {
+    "name": "text-bold",
+    "title": "Text Bold",
+    "category": "Formatting & Text",
+    "keywords": [
+      "text-bold",
+      "text bold",
+      "textbold",
+      "text",
+      "bold",
+      "tb",
+      "formatting"
+    ]
+  },
+  {
+    "name": "text-color",
+    "title": "Text Color",
+    "category": "Formatting & Text",
+    "keywords": [
+      "text-color",
+      "text color",
+      "textcolor",
+      "text",
+      "color",
+      "tc",
+      "formatting",
+      "palette",
+      "picker",
+      "tint",
+      "paint",
+      "theme",
+      "design",
+      "hex",
+      "rgb",
+      "swatch"
+    ]
+  },
+  {
+    "name": "text-font",
+    "title": "Text Font",
+    "category": "Formatting & Text",
+    "keywords": [
+      "text-font",
+      "text font",
+      "textfont",
+      "text",
+      "font",
+      "tf",
+      "formatting"
+    ]
+  },
+  {
+    "name": "text-font-list",
+    "title": "Text Font List",
+    "category": "Formatting & Text",
+    "keywords": [
+      "text-font-list",
+      "text font list",
+      "textfontlist",
+      "text",
+      "font",
+      "list",
+      "tfl",
+      "formatting"
+    ]
+  },
+  {
+    "name": "text-grammar",
+    "title": "Text Grammar",
+    "category": "Formatting & Text",
+    "keywords": [
+      "text-grammar",
+      "text grammar",
+      "textgrammar",
+      "text",
+      "grammar",
+      "tg",
+      "formatting"
+    ]
+  },
+  {
+    "name": "text-in-columns",
+    "title": "Text In Columns",
+    "category": "Formatting & Text",
+    "keywords": [
+      "text-in-columns",
+      "text in columns",
+      "textincolumns",
+      "text",
+      "in",
+      "columns",
+      "tic",
+      "formatting"
+    ]
+  },
+  {
+    "name": "text-in-rows",
+    "title": "Text In Rows",
+    "category": "Formatting & Text",
+    "keywords": [
+      "text-in-rows",
+      "text in rows",
+      "textinrows",
+      "text",
+      "in",
+      "rows",
+      "tir",
+      "formatting"
+    ]
+  },
+  {
+    "name": "text-indent",
+    "title": "Text Indent",
+    "category": "Formatting & Text",
+    "keywords": [
+      "text-indent",
+      "text indent",
+      "textindent",
+      "text",
+      "indent",
+      "ti",
+      "formatting"
+    ]
+  },
+  {
+    "name": "text-italic",
+    "title": "Text Italic",
+    "category": "Formatting & Text",
+    "keywords": [
+      "text-italic",
+      "text italic",
+      "textitalic",
+      "text",
+      "italic",
+      "ti",
+      "formatting"
+    ]
+  },
+  {
+    "name": "text-quote",
+    "title": "Text Quote",
+    "category": "Formatting & Text",
+    "keywords": [
+      "text-quote",
+      "text quote",
+      "textquote",
+      "text",
+      "quote",
+      "tq",
+      "formatting"
+    ]
+  },
+  {
+    "name": "text-title",
+    "title": "Text Title",
+    "category": "Formatting & Text",
+    "keywords": [
+      "text-title",
+      "text title",
+      "texttitle",
+      "text",
+      "title",
+      "tt",
+      "formatting"
+    ]
+  },
+  {
+    "name": "text-underline",
+    "title": "Text Underline",
+    "category": "Formatting & Text",
+    "keywords": [
+      "text-underline",
+      "text underline",
+      "textunderline",
+      "text",
+      "underline",
+      "tu",
+      "formatting"
+    ]
+  },
+  {
+    "name": "text-with-image",
+    "title": "Text With Image",
+    "category": "Formatting & Text",
+    "keywords": [
+      "text-with-image",
+      "text with image",
+      "textwithimage",
+      "text",
+      "with",
+      "image",
+      "twi",
+      "formatting",
+      "picture",
+      "photo",
+      "graphic",
+      "artwork",
+      "visual",
+      "jpg",
+      "png",
+      "media",
+      "gallery"
+    ]
+  },
+  {
+    "name": "theme",
+    "title": "Theme",
+    "category": "Devices & Layout",
+    "keywords": [
+      "theme",
+      "devices",
+      "layout"
+    ]
+  },
+  {
+    "name": "theme-cart",
+    "title": "Theme Cart",
+    "category": "Devices & Layout",
+    "keywords": [
+      "theme-cart",
+      "theme cart",
+      "themecart",
+      "theme",
+      "cart",
+      "tc",
+      "devices",
+      "layout",
+      "shopping",
+      "basket",
+      "bag",
+      "tote",
+      "checkout",
+      "buy",
+      "purchase",
+      "ecommerce",
+      "shop",
+      "store",
+      "order",
+      "retail",
+      "items",
+      "merchandise"
+    ]
+  },
+  {
+    "name": "theme-edit",
+    "title": "Theme Edit",
+    "category": "Devices & Layout",
+    "keywords": [
+      "theme-edit",
+      "theme edit",
+      "themeedit",
+      "theme",
+      "edit",
+      "te",
+      "devices",
+      "layout",
+      "modify",
+      "change",
+      "pencil",
+      "pen",
+      "update",
+      "revise",
+      "write",
+      "tweak",
+      "author",
+      "custom",
+      "customize",
+      "draft",
+      "compose"
+    ]
+  },
+  {
+    "name": "theme-store",
+    "title": "Theme Store",
+    "category": "Devices & Layout",
+    "keywords": [
+      "theme-store",
+      "theme store",
+      "themestore",
+      "theme",
+      "store",
+      "ts",
+      "devices",
+      "layout",
+      "shop",
+      "merchant",
+      "storefront",
+      "retail",
+      "boutique",
+      "online",
+      "market",
+      "commerce",
+      "business"
+    ]
+  },
+  {
+    "name": "theme-template",
+    "title": "Theme Template",
+    "category": "Devices & Layout",
+    "keywords": [
+      "theme-template",
+      "theme template",
+      "themetemplate",
+      "theme",
+      "template",
+      "tt",
+      "devices",
+      "layout"
+    ]
+  },
+  {
+    "name": "three-d-environment",
+    "title": "Three D Environment",
+    "category": "Devices & Layout",
+    "keywords": [
+      "three-d-environment",
+      "three d environment",
+      "threedenvironment",
+      "three",
+      "d",
+      "environment",
+      "tde",
+      "devices",
+      "layout"
+    ]
+  },
+  {
+    "name": "thumbs-down",
+    "title": "Thumbs Down",
+    "category": "Feedback & Security",
+    "keywords": [
+      "thumbs-down",
+      "thumbs down",
+      "thumbsdown",
+      "thumbs",
+      "down",
+      "td",
+      "feedback",
+      "security"
+    ]
+  },
+  {
+    "name": "thumbs-up",
+    "title": "Thumbs Up",
+    "category": "Feedback & Security",
+    "keywords": [
+      "thumbs-up",
+      "thumbs up",
+      "thumbsup",
+      "thumbs",
+      "up",
+      "tu",
+      "feedback",
+      "security"
+    ]
+  },
+  {
+    "name": "tip-jar",
+    "title": "Tip Jar",
+    "category": "Commerce & Orders",
+    "keywords": [
+      "tip-jar",
+      "tip jar",
+      "tipjar",
+      "tip",
+      "jar",
+      "tj",
+      "commerce",
+      "orders"
+    ]
+  },
+  {
+    "name": "toggle-off",
+    "title": "Toggle Off",
+    "category": "Actions & Controls",
+    "keywords": [
+      "toggle-off",
+      "toggle off",
+      "toggleoff",
+      "toggle",
+      "off",
+      "to",
+      "actions",
+      "controls"
+    ]
+  },
+  {
+    "name": "toggle-on",
+    "title": "Toggle On",
+    "category": "Actions & Controls",
+    "keywords": [
+      "toggle-on",
+      "toggle on",
+      "toggleon",
+      "toggle",
+      "on",
+      "to",
+      "actions",
+      "controls"
+    ]
+  },
+  {
+    "name": "transaction",
+    "title": "Transaction",
+    "category": "Commerce & Orders",
+    "keywords": [
+      "transaction",
+      "commerce",
+      "orders",
+      "money",
+      "cash",
+      "currency",
+      "finance",
+      "payment",
+      "price",
+      "cost",
+      "pay",
+      "dollar"
+    ]
+  },
+  {
+    "name": "transaction-fee-dollar",
+    "title": "Transaction Fee Dollar",
+    "category": "Commerce & Orders",
+    "keywords": [
+      "transaction-fee-dollar",
+      "transaction fee dollar",
+      "transactionfeedollar",
+      "transaction",
+      "fee",
+      "dollar",
+      "tfd",
+      "commerce",
+      "orders",
+      "money",
+      "cash",
+      "currency",
+      "finance",
+      "payment",
+      "price",
+      "cost",
+      "pay"
+    ]
+  },
+  {
+    "name": "transaction-fee-euro",
+    "title": "Transaction Fee Euro",
+    "category": "Commerce & Orders",
+    "keywords": [
+      "transaction-fee-euro",
+      "transaction fee euro",
+      "transactionfeeeuro",
+      "transaction",
+      "fee",
+      "euro",
+      "tfe",
+      "commerce",
+      "orders",
+      "money",
+      "cash",
+      "currency",
+      "finance",
+      "payment",
+      "price",
+      "cost",
+      "pay",
+      "dollar"
+    ]
+  },
+  {
+    "name": "transaction-fee-pound",
+    "title": "Transaction Fee Pound",
+    "category": "Commerce & Orders",
+    "keywords": [
+      "transaction-fee-pound",
+      "transaction fee pound",
+      "transactionfeepound",
+      "transaction",
+      "fee",
+      "pound",
+      "tfp",
+      "commerce",
+      "orders",
+      "money",
+      "cash",
+      "currency",
+      "finance",
+      "payment",
+      "price",
+      "cost",
+      "pay",
+      "dollar"
+    ]
+  },
+  {
+    "name": "transaction-fee-rupee",
+    "title": "Transaction Fee Rupee",
+    "category": "Commerce & Orders",
+    "keywords": [
+      "transaction-fee-rupee",
+      "transaction fee rupee",
+      "transactionfeerupee",
+      "transaction",
+      "fee",
+      "rupee",
+      "tfr",
+      "commerce",
+      "orders",
+      "money",
+      "cash",
+      "currency",
+      "finance",
+      "payment",
+      "price",
+      "cost",
+      "pay",
+      "dollar"
+    ]
+  },
+  {
+    "name": "transaction-fee-yen",
+    "title": "Transaction Fee Yen",
+    "category": "Commerce & Orders",
+    "keywords": [
+      "transaction-fee-yen",
+      "transaction fee yen",
+      "transactionfeeyen",
+      "transaction",
+      "fee",
+      "yen",
+      "tfy",
+      "commerce",
+      "orders",
+      "money",
+      "cash",
+      "currency",
+      "finance",
+      "payment",
+      "price",
+      "cost",
+      "pay",
+      "dollar"
+    ]
+  },
+  {
+    "name": "transfer",
+    "title": "Transfer",
+    "category": "Navigation & Arrows",
+    "keywords": [
+      "transfer",
+      "navigation",
+      "arrows"
+    ]
+  },
+  {
+    "name": "transfer-in",
+    "title": "Transfer In",
+    "category": "Navigation & Arrows",
+    "keywords": [
+      "transfer-in",
+      "transfer in",
+      "transferin",
+      "transfer",
+      "in",
+      "ti",
+      "navigation",
+      "arrows"
+    ]
+  },
+  {
+    "name": "transfer-internal",
+    "title": "Transfer Internal",
+    "category": "Navigation & Arrows",
+    "keywords": [
+      "transfer-internal",
+      "transfer internal",
+      "transferinternal",
+      "transfer",
+      "internal",
+      "ti",
+      "navigation",
+      "arrows"
+    ]
+  },
+  {
+    "name": "transfer-out",
+    "title": "Transfer Out",
+    "category": "Navigation & Arrows",
+    "keywords": [
+      "transfer-out",
+      "transfer out",
+      "transferout",
+      "transfer",
+      "out",
+      "to",
+      "navigation",
+      "arrows"
+    ]
+  },
+  {
+    "name": "undo",
+    "title": "Undo",
+    "category": "Navigation & Arrows",
+    "keywords": [
+      "undo",
+      "navigation",
+      "arrows"
+    ]
+  },
+  {
+    "name": "unknown-device",
+    "title": "Unknown Device",
+    "category": "Devices & Layout",
+    "keywords": [
+      "unknown-device",
+      "unknown device",
+      "unknowndevice",
+      "unknown",
+      "device",
+      "ud",
+      "devices",
+      "layout"
+    ]
+  },
+  {
+    "name": "unlock",
+    "title": "Unlock",
+    "category": "Feedback & Security",
+    "keywords": [
+      "unlock",
+      "feedback",
+      "security",
+      "open",
+      "access",
+      "unrestricted",
+      "public",
+      "unprotect",
+      "free",
+      "padlock",
+      "insecure"
+    ]
+  },
+  {
+    "name": "upload",
+    "title": "Upload",
+    "category": "Actions & Controls",
+    "keywords": [
+      "upload",
+      "actions",
+      "controls"
+    ]
+  },
+  {
+    "name": "variant",
+    "title": "Variant",
+    "category": "Products & Inventory",
+    "keywords": [
+      "variant",
+      "products",
+      "inventory"
+    ]
+  },
+  {
+    "name": "variant-list",
+    "title": "Variant List",
+    "category": "Products & Inventory",
+    "keywords": [
+      "variant-list",
+      "variant list",
+      "variantlist",
+      "variant",
+      "list",
+      "vl",
+      "products",
+      "inventory"
+    ]
+  },
+  {
+    "name": "video",
+    "title": "Video",
+    "category": "Content & Media",
+    "keywords": [
+      "video",
+      "content",
+      "media",
+      "movie",
+      "film",
+      "clip",
+      "recording",
+      "stream",
+      "play",
+      "camera",
+      "visual"
+    ]
+  },
+  {
+    "name": "video-list",
+    "title": "Video List",
+    "category": "Content & Media",
+    "keywords": [
+      "video-list",
+      "video list",
+      "videolist",
+      "video",
+      "list",
+      "vl",
+      "content",
+      "media",
+      "movie",
+      "film",
+      "clip",
+      "recording",
+      "stream",
+      "play",
+      "camera",
+      "visual"
+    ]
+  },
+  {
+    "name": "view",
+    "title": "View",
+    "category": "Actions & Controls",
+    "keywords": [
+      "view",
+      "actions",
+      "controls",
+      "show",
+      "visible",
+      "visibility",
+      "display",
+      "reveal",
+      "see",
+      "preview",
+      "look",
+      "watch",
+      "inspect",
+      "sight",
+      "eye",
+      "open",
+      "read"
+    ]
+  },
+  {
+    "name": "viewport-narrow",
+    "title": "Viewport Narrow",
+    "category": "Devices & Layout",
+    "keywords": [
+      "viewport-narrow",
+      "viewport narrow",
+      "viewportnarrow",
+      "viewport",
+      "narrow",
+      "vn",
+      "devices",
+      "layout"
+    ]
+  },
+  {
+    "name": "viewport-short",
+    "title": "Viewport Short",
+    "category": "Devices & Layout",
+    "keywords": [
+      "viewport-short",
+      "viewport short",
+      "viewportshort",
+      "viewport",
+      "short",
+      "vs",
+      "devices",
+      "layout"
+    ]
+  },
+  {
+    "name": "viewport-tall",
+    "title": "Viewport Tall",
+    "category": "Devices & Layout",
+    "keywords": [
+      "viewport-tall",
+      "viewport tall",
+      "viewporttall",
+      "viewport",
+      "tall",
+      "vt",
+      "devices",
+      "layout"
+    ]
+  },
+  {
+    "name": "viewport-wide",
+    "title": "Viewport Wide",
+    "category": "Devices & Layout",
+    "keywords": [
+      "viewport-wide",
+      "viewport wide",
+      "viewportwide",
+      "viewport",
+      "wide",
+      "vw",
+      "devices",
+      "layout"
+    ]
+  },
+  {
+    "name": "wallet",
+    "title": "Wallet",
+    "category": "Commerce & Orders",
+    "keywords": [
+      "wallet",
+      "commerce",
+      "orders",
+      "money",
+      "purse",
+      "pocket",
+      "cards",
+      "payments",
+      "crypto",
+      "cash",
+      "balance",
+      "finance",
+      "currency",
+      "payment",
+      "price",
+      "cost",
+      "pay",
+      "dollar"
+    ]
+  },
+  {
+    "name": "wand",
+    "title": "Wand",
+    "category": "General & Objects",
+    "keywords": [
+      "wand",
+      "general",
+      "objects",
+      "magic",
+      "ai",
+      "generate",
+      "wizard",
+      "auto",
+      "sparkle",
+      "automate",
+      "intelligent",
+      "creative",
+      "smart",
+      "artificial intelligence",
+      "machine learning",
+      "automated"
+    ]
+  },
+  {
+    "name": "watch",
+    "title": "Watch",
+    "category": "Devices & Layout",
+    "keywords": [
+      "watch",
+      "devices",
+      "layout",
+      "time",
+      "clock",
+      "smart watch",
+      "wearable",
+      "wrist",
+      "duration",
+      "date",
+      "schedule",
+      "hour",
+      "minute",
+      "when",
+      "timer"
+    ]
+  },
+  {
+    "name": "wifi",
+    "title": "Wifi",
+    "category": "Devices & Layout",
+    "keywords": [
+      "wifi",
+      "devices",
+      "layout",
+      "internet",
+      "connection",
+      "wireless",
+      "network",
+      "signal",
+      "radio",
+      "online"
+    ]
+  },
+  {
+    "name": "work",
+    "title": "Work",
+    "category": "Organization & People",
+    "keywords": [
+      "work",
+      "organization",
+      "people"
+    ]
+  },
+  {
+    "name": "work-list",
+    "title": "Work List",
+    "category": "Organization & People",
+    "keywords": [
+      "work-list",
+      "work list",
+      "worklist",
+      "work",
+      "list",
+      "wl",
+      "organization",
+      "people"
+    ]
+  },
+  {
+    "name": "wrench",
+    "title": "Wrench",
+    "category": "Actions & Controls",
+    "keywords": [
+      "wrench",
+      "actions",
+      "controls",
+      "tool",
+      "fix",
+      "repair",
+      "maintenance",
+      "settings",
+      "mechanics",
+      "hardware",
+      "build",
+      "service",
+      "gear",
+      "cog",
+      "preferences",
+      "config",
+      "configuration",
+      "setup",
+      "options",
+      "tune"
+    ]
+  },
+  {
+    "name": "x",
+    "title": "X",
+    "category": "Feedback & Security",
+    "keywords": [
+      "x",
+      "feedback",
+      "security",
+      "cross",
+      "close",
+      "cancel",
+      "reject",
+      "dismiss",
+      "remove",
+      "clear",
+      "no",
+      "fail",
+      "failure",
+      "error",
+      "wrong",
+      "stop",
+      "exit",
+      "abort",
+      "delete"
+    ]
+  },
+  {
+    "name": "x-circle",
+    "title": "X Circle",
+    "category": "Feedback & Security",
+    "keywords": [
+      "x-circle",
+      "x circle",
+      "xcircle",
+      "x",
+      "circle",
+      "xc",
+      "feedback",
+      "security",
+      "cross",
+      "close",
+      "cancel",
+      "reject",
+      "dismiss",
+      "remove",
+      "clear",
+      "no",
+      "fail",
+      "failure",
+      "error",
+      "wrong",
+      "stop",
+      "exit",
+      "abort",
+      "delete"
+    ]
+  }
+]

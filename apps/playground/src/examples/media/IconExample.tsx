@@ -1,8 +1,21 @@
-import { Box, BlockStack, Icon, InlineStack, Text, IconTile } from "@xco-agency/corex-ui";
+import { Box, BlockStack, Icon, InlineStack, Text, IconTile, Banner } from "@xco-agency/corex-ui";
 
 export function IconExample() {
   return (
     <BlockStack gap="base">
+      <Banner
+        tone="info"
+        title="517 Polaris Icons Available"
+        action={{
+          content: "Explore All 517 Icons",
+          url: "/icons",
+        }}
+      >
+        <Text as="p" variant="small">
+          Looking for a specific symbol? Browse our full interactive Icon Library with advanced search, keywords, and ready-to-copy JSX code.
+        </Text>
+      </Banner>
+
       <BlockStack gap="small-200">
         <Text as="span" variant="small" color="subdued">
           Standard &amp; Tone Icons
