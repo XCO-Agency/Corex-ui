@@ -281,6 +281,7 @@ export function MetricCard({
             onClick={onClick}
             background={pressed ? "strong" : "transparent"}
             borderRadius="base"
+            inlineSize="fill"
           >
             {innerContent}
           </Clickable>
