@@ -25,3 +25,6 @@ export type {
 
 export { useEvents, eventBus } from "./useEvents";
 export type { EventHandler, UseEventsResult } from "./useEvents";
+
+export { useDebounce, useDebouncedCallback } from "./useDebounce";
+

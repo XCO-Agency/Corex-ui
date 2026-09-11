@@ -1,6 +1,8 @@
 import type { ComponentEntry } from "../types";
 import { TextFieldExample } from "@/examples/forms/TextFieldExample";
 import TextFieldExampleRaw from "@/examples/forms/TextFieldExample.tsx?raw";
+import { SearchFieldExample } from "@/examples/forms/SearchFieldExample";
+import SearchFieldExampleRaw from "@/examples/forms/SearchFieldExample.tsx?raw";
 import { MoneyFieldExample } from "@/examples/forms/MoneyFieldExample";
 import MoneyFieldExampleRaw from "@/examples/forms/MoneyFieldExample.tsx?raw";
 import { ColorFieldExample } from "@/examples/forms/ColorFieldExample";
@@ -39,6 +41,19 @@ export const formsComponents: ComponentEntry[] = [
         title: "Controlled input",
         Example: TextFieldExample,
         code: TextFieldExampleRaw,
+      },
+    ],
+  },
+  {
+    name: "SearchField",
+    slug: "search-field",
+    category: "Forms",
+    description: "A search input backed by Polaris s-search-field with integrated debounce support.",
+    examples: [
+      {
+        title: "Debounced search",
+        Example: SearchFieldExample,
+        code: SearchFieldExampleRaw,
       },
     ],
   },

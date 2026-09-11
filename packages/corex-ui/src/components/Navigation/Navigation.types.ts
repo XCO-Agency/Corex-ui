@@ -31,6 +31,8 @@ export type NavigationLabelPropsType = {
   action?: NavigationActionType;
 };
 
+import type { SearchFieldPropsType } from "../SearchField";
+
 export type NavigationSectionPropsType = {
   title?: string;
   action?: NavigationActionType;
@@ -40,12 +42,7 @@ export type NavigationSectionPropsType = {
 
 export type NavigationSectionType = NavigationSectionPropsType;
 
-export type NavigationSearchPropsType = Omit<
-  PolarisPropsType<"s-search-field">,
-  "onChange"
-> & {
-  onChange?: (value: string) => void;
-};
+export type NavigationSearchPropsType = SearchFieldPropsType;
 
 export type NavigationFooterPropsType = {
   children?: React.ReactNode;
@@ -64,4 +61,5 @@ export type NavigationContextType = {
 export type NavigationPropsType = BoxPropsType & {
   defaultSelected?: string;
   sectionned?: boolean;
+  sticky?: boolean | number;
 };

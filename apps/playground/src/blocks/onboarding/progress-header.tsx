@@ -17,9 +17,8 @@ export function ProgressHeader({
     <InlineStack
       gap="small-300"
       justifyContent="center"
-      inlineSize="100%"
-      maxInlineSize="640px"
       alignItems="center"
+      style={{ width: "100%", maxWidth: "640px" }}
     >
       {steps.map((item, idx) => {
         const isCompleted = idx < stepIndex;

@@ -57,8 +57,7 @@ export const NavigationItem = React.forwardRef<HTMLElement, NavigationItemPropsT
         ref={ref}
         inlineSize="fill"
         borderRadius="base"
-        paddingBlock="small-400"
-        paddingInline="small-300"
+        padding="small-400"
         background={isSelected ? "strong" : undefined}
         href={url}
         disabled={disabled}
@@ -72,9 +71,9 @@ export const NavigationItem = React.forwardRef<HTMLElement, NavigationItemPropsT
           inlineSize="100%"
           alignItems="center"
           justifyContent="space-between"
-          gap="base"
+          gap="small-300"
         >
-          <InlineStack alignItems="center" gap="small">
+          <InlineStack alignItems="center" gap="small-300">
             {icon && <Icon source={icon} />}
             <Text lineClamp={1} as="p">
               {children ?? label}

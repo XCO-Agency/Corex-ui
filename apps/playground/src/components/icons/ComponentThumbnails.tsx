@@ -947,6 +947,43 @@ export function TextFieldThumbnail() {
   );
 }
 
+export function SearchFieldThumbnail() {
+  return (
+    <Frame>
+      <rect
+        x="28"
+        y="26"
+        width="36"
+        height="6"
+        rx="3"
+        fill={textPrimary}
+        fillOpacity="0.8"
+      />
+      <rect
+        x="28"
+        y="38"
+        width="104"
+        height="28"
+        rx="6"
+        fill={cardBg}
+        stroke={accent}
+        strokeWidth="1.5"
+      />
+      <circle cx="42" cy="52" r="4" fill="none" stroke={textMuted} strokeWidth="1.5" />
+      <line x1="45" y1="55" x2="49" y2="59" stroke={textMuted} strokeWidth="1.5" strokeLinecap="round" />
+      <rect
+        x="54"
+        y="49"
+        width="42"
+        height="6"
+        rx="3"
+        fill={textMuted}
+        fillOpacity="0.4"
+      />
+    </Frame>
+  );
+}
+
 export function MoneyFieldThumbnail() {
   return (
     <Frame>
@@ -2523,6 +2560,30 @@ export function ThumbnailThumbnail() {
   );
 }
 
+export function ImageThumbnail() {
+  return (
+    <Frame>
+      <rect
+        x="36"
+        y="18"
+        width="88"
+        height="56"
+        rx="8"
+        fill={cardBg}
+        stroke={cardBorder}
+        strokeWidth="1.2"
+      />
+      <circle cx="56" cy="34" r="6" fill="#f5bf4f" />
+      <path
+        d="M42 66 l22 -20 l18 16 l16 -18 l22 22 Z"
+        fill={mutedBg}
+        stroke={cardBorder}
+        strokeWidth="1"
+      />
+    </Frame>
+  );
+}
+
 /* =========================================================================
    NAVIGATION
    ========================================================================= */
@@ -3244,6 +3305,7 @@ export const thumbnails: Record<string, React.ComponentType> = {
 
   // Forms
   "text-field": TextFieldThumbnail,
+  "search-field": SearchFieldThumbnail,
   "money-field": MoneyFieldThumbnail,
   "color-field": ColorFieldThumbnail,
   "drop-zone": DropZoneThumbnail,
@@ -3274,6 +3336,7 @@ export const thumbnails: Record<string, React.ComponentType> = {
   icon: IconThumbnail,
   avatar: AvatarThumbnail,
   thumbnail: ThumbnailThumbnail,
+  image: ImageThumbnail,
 
   // Navigation
   tabs: TabsThumbnail,

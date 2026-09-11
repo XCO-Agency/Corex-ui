@@ -48,7 +48,7 @@ export function Step3Configuration({ state, dispatch }: Step3ConfigurationPropsT
 
   return (
     <Box paddingBlock="large">
-      <BlockStack gap="large" alignItems="center" inlineSize="100%">
+      <BlockStack gap="large" alignItems="center" style={{ width: "100%" }}>
         <BlockStack gap="small-300" alignItems="center">
           <IconTile tone="caution">
             <Icon type="delivery" tone="caution" />
@@ -71,7 +71,7 @@ export function Step3Configuration({ state, dispatch }: Step3ConfigurationPropsT
           inlineSize="100%"
           background="base"
         >
-          <BlockStack gap="large-100" alignItems="center" inlineSize="100%">
+          <BlockStack gap="large-100" alignItems="center" style={{ width: "100%" }}>
             <Box inlineSize="100%">
               <InlineStack gap="small-200" alignItems="start">
                 <Box inlineSize="120px">
@@ -125,8 +125,8 @@ export function Step3Configuration({ state, dispatch }: Step3ConfigurationPropsT
             </Box>
           </BlockStack>
         </Box>
-        <BlockStack gap="small-200" inlineSize="100%" alignItems="center">
-          <InlineStack gap="small-200" inlineSize="100%" justifyContent="space-between">
+        <BlockStack gap="small-200" style={{ width: "100%" }} alignItems="center">
+          <InlineStack gap="small-200" style={{ width: "100%" }} justifyContent="space-between">
             <Button onClick={() => dispatch({ type: "GO_BACK" })}>Back</Button>
             <Button
               variant="primary"

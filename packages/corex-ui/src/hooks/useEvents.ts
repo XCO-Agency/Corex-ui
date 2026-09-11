@@ -3,10 +3,10 @@ import { useCallback } from "react";
 export type EventHandler<T = unknown> = (payload: T) => void;
 
 // Shared listeners map across module boundaries and browser contexts
-const listeners: Map<string, Set<EventHandler<any>>> =
-  typeof globalThis !== "undefined" && (globalThis as any).__corex_event_listeners__
-    ? (globalThis as any).__corex_event_listeners__
-    : new Map();
+const listeners: Map<string, Set<EventHandler<any>>> = typeof globalThis !==
+  "undefined" && (globalThis as any).__corex_event_listeners__
+  ? (globalThis as any).__corex_event_listeners__
+  : new Map();
 
 if (typeof globalThis !== "undefined" && !(globalThis as any).__corex_event_listeners__) {
   (globalThis as any).__corex_event_listeners__ = listeners;
@@ -46,26 +46,17 @@ if (typeof globalThis !== "undefined") {
 }
 
 export function useEvents() {
-  const off = useCallback(
-    <T = unknown>(event: string, handler?: EventHandler<T>) => {
-      eventBus.off(event, handler);
-    },
-    []
-  );
+  const off = useCallback(<T = unknown>(event: string, handler?: EventHandler<T>) => {
+    eventBus.off(event, handler);
+  }, []);
 
-  const on = useCallback(
-    <T = unknown>(event: string, handler: EventHandler<T>) => {
-      return eventBus.on(event, handler);
-    },
-    []
-  );
+  const on = useCallback(<T = unknown>(event: string, handler: EventHandler<T>) => {
+    return eventBus.on(event, handler);
+  }, []);
 
-  const emit = useCallback(
-    <T = unknown>(event: string, payload?: T) => {
-      eventBus.emit(event, payload);
-    },
-    []
-  );
+  const emit = useCallback(<T = unknown>(event: string, payload?: T) => {
+    eventBus.emit(event, payload);
+  }, []);
 
   return {
     emit,

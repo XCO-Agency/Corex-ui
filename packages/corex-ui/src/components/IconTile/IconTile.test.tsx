@@ -25,7 +25,7 @@ describe("IconTile", () => {
     const tile = screen.getByTestId("tile");
     expect(tile.style.backgroundColor).toBe("rgb(254, 243, 199)"); // #fef3c7
     expect(tile.style.color).toBe("rgb(217, 119, 6)"); // #d97706
-    expect(tile.style.width).toBe("2.75rem");
+    expect(tile.style.width).toBe("auto");
     expect(tile.style.height).toBe("2.75rem");
     expect(tile.style.borderRadius).toBe("9999px");
 
@@ -34,7 +34,8 @@ describe("IconTile", () => {
         Icon
       </IconTile>,
     );
-    expect(tile.style.width).toBe("1.3rem");
+    expect(tile.style.width).toBe("auto");
+    expect(tile.style.height).toBe("1.35rem");
     expect(tile.style.borderRadius).toBe("0px");
   });
 

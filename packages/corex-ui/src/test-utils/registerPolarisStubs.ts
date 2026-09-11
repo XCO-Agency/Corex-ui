@@ -77,6 +77,8 @@ const STUB_TAGS = [
   "s-divider",
   "s-avatar",
   "s-thumbnail",
+  "s-image",
+  "s-search-field",
   "s-tooltip",
   "s-choice-list",
   "s-choice",

@@ -23,4 +23,15 @@ describe("Link", () => {
       .dispatchEvent(new MouseEvent("click", { bubbles: true }));
     expect(onClick).toHaveBeenCalledTimes(1);
   });
+
+  it("applies monochrome and removeUnderline styles", () => {
+    render(
+      <Link url="https://example.com" monochrome removeUnderline>
+        Styled Link
+      </Link>,
+    );
+    const el = screen.getByText("Styled Link");
+    expect(el.style.color).toBe("inherit");
+    expect(el.style.textDecoration).toBe("none");
+  });
 });

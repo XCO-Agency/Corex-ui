@@ -78,7 +78,7 @@ export function Step5ShopifyValidation({
           maxInlineSize="460px"
         >
           <BlockStack gap="large-100" justifyContent="center">
-            <BlockStack gap="base" inlineSize="100%">
+            <BlockStack gap="base" style={{ width: "100%" }}>
               <Clickable onClick={openThemeEditor} borderRadius="large">
                 <Box
                   padding="base"
@@ -90,7 +90,7 @@ export function Step5ShopifyValidation({
                   <InlineStack
                     justifyContent="space-between"
                     alignItems="center"
-                    inlineSize="100%"
+                    style={{ width: "100%" }}
                   >
                     <BlockStack gap="none">
                       <Text>Open Theme Editor</Text>
@@ -104,7 +104,7 @@ export function Step5ShopifyValidation({
               <InlineStack
                 justifyContent="space-between"
                 alignItems="center"
-                inlineSize="100%"
+                style={{ width: "100%" }}
               >
                 <InlineStack gap="small-200" alignItems="center">
                   {state.embedStatus === "active" ? (
@@ -138,8 +138,7 @@ export function Step5ShopifyValidation({
           gap="small-200"
           alignItems="center"
           justifyContent="space-between"
-          inlineSize="100%"
-          maxInlineSize="460px"
+          style={{ width: "100%", maxWidth: "460px" }}
         >
           <Button onClick={() => dispatch({ type: "GO_BACK" })}>Back</Button>
           <Button variant="primary" onClick={() => dispatch({ type: "GO_NEXT" })}>

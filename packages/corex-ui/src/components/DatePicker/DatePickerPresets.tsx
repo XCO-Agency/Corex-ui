@@ -95,12 +95,14 @@ export function DatePickerPresets({
                   borderRadius="base"
                   onClick={(e) => handlePresetClick(item, e)}
                   type="button"
+                  inlineSize="fill"
                   background={isSelected ? "strong" : "transparent"}
                 >
                   <InlineStack
                     alignItems="center"
                     justifyContent="space-between"
                     gap="small-500"
+                    grow
                   >
                     <span>{item.label}</span>
                     {hasChildren && <Icon type="chevron-right" />}

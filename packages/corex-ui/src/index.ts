@@ -23,6 +23,7 @@ export * from "./components/Card";
 export * from "./components/Table";
 export * from "./components/Modal";
 export * from "./components/TextField";
+export * from "./components/SearchField";
 export * from "./components/Select";
 export * from "./components/Checkbox";
 export * from "./components/Switch";
@@ -36,6 +37,7 @@ export * from "./components/Icon";
 export * from "./components/Divider";
 export * from "./components/Avatar";
 export * from "./components/Thumbnail";
+export * from "./components/Image";
 export * from "./components/Tooltip";
 export * from "./components/ChoiceList";
 export * from "./components/DateField";
@@ -68,6 +70,8 @@ export {
   useStorage,
   useEvents,
   eventBus,
+  useDebounce,
+  useDebouncedCallback,
 } from "./hooks";
 export type {
   UseToastResult,

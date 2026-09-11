@@ -214,7 +214,7 @@ export function MetricCard({
 
   let innerContent = (
     <Box padding="small-300" inlineSize="100%">
-      <BlockStack gap="small-100" inlineSize="100%">
+      <BlockStack gap="small-100" style={{ width: "100%" }}>
         {/* Header: icon + title + tooltip + badge */}
         <InlineStack justifyContent="space-between" alignItems="center">
           <div

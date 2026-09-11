@@ -108,7 +108,7 @@ export function Step4AddTools({ state, dispatch }: Step4AddToolsPropsType) {
                           justifyContent="space-between"
                           alignItems="center"
                           gap="base"
-                          inlineSize="100%"
+                          style={{ width: "100%" }}
                         >
                           <Badge tone="neutral">{tool.impact}</Badge>
                           <Button
@@ -192,7 +192,7 @@ export function Step4AddTools({ state, dispatch }: Step4AddToolsPropsType) {
                 justifyContent="space-between"
                 alignItems="center"
                 gap="base"
-                inlineSize="100%"
+                style={{ width: "100%" }}
               >
                 <Text color="subdued">
                   {selectedCount === 0

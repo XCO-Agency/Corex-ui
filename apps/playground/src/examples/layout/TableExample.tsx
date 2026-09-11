@@ -126,7 +126,7 @@ export function TableExample() {
   };
 
   return (
-    <BlockStack inlineSize="100%" maxInlineSize="760px">
+    <BlockStack style={{ width: "100%", maxWidth: "760px" }}>
       <Card padding="none">
         <Table variant="auto">
           <Table.HeaderRow>

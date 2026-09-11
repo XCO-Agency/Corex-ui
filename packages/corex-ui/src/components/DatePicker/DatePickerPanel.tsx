@@ -179,7 +179,7 @@ export function DatePickerPanel({
       )}
 
       {/* Right Content */}
-      <BlockStack minInlineSize="480px">
+      <BlockStack style={{ minWidth: "480px" }}>
         {/* Top Manual Inputs */}
         <DatePickerManualInputs
           startDate={currentRange.start}

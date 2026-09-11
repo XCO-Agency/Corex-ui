@@ -5,6 +5,8 @@ import { AvatarExample } from "@/examples/media/AvatarExample";
 import AvatarExampleRaw from "@/examples/media/AvatarExample.tsx?raw";
 import { ThumbnailExample } from "@/examples/media/ThumbnailExample";
 import ThumbnailExampleRaw from "@/examples/media/ThumbnailExample.tsx?raw";
+import { ImageExample } from "@/examples/media/ImageExample";
+import ImageExampleRaw from "@/examples/media/ImageExample.tsx?raw";
 
 export const mediaComponents: ComponentEntry[] = [
   {
@@ -43,6 +45,19 @@ export const mediaComponents: ComponentEntry[] = [
         title: "Product photo",
         Example: ThumbnailExample,
         code: ThumbnailExampleRaw,
+      },
+    ],
+  },
+  {
+    name: "Image",
+    slug: "image",
+    category: "Media",
+    description: "Renders responsive images with aspect ratio, object-fit, and Polaris styling.",
+    examples: [
+      {
+        title: "Responsive images",
+        Example: ImageExample,
+        code: ImageExampleRaw,
       },
     ],
   },

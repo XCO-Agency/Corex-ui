@@ -25,7 +25,7 @@ describe("Tabs", () => {
     const draftsTab = screen.getByText("Drafts").closest("s-clickable");
 
     expect(allTab).toHaveAttribute("background", "strong");
-    expect(draftsTab).toHaveAttribute("background", "subdued");
+    expect(draftsTab).toHaveAttribute("background", "transparent");
   });
 
   it("calls onSelect with the clicked tab's index", () => {
@@ -74,7 +74,7 @@ describe("Tabs", () => {
     const allTab = screen.getByText("All").closest("s-clickable");
     const draftsTab = screen.getByText("Drafts").closest("s-clickable");
 
-    expect(allTab).toHaveAttribute("background", "subdued");
+    expect(allTab).toHaveAttribute("background", "transparent");
     expect(draftsTab).toHaveAttribute("background", "strong");
   });
 
@@ -98,7 +98,7 @@ describe("Tabs", () => {
     const tab10 = screen.getByText("Tab 10").closest("s-clickable");
     const tab20 = screen.getByText("Tab 20").closest("s-clickable");
     expect(tab10).toHaveAttribute("background", "strong");
-    expect(tab20).toHaveAttribute("background", "subdued");
+    expect(tab20).toHaveAttribute("background", "transparent");
 
     screen.getByText("Tab 20").dispatchEvent(new MouseEvent("click", { bubbles: true }));
     expect(onChange).toHaveBeenCalledWith(20);
@@ -141,7 +141,7 @@ describe("Tabs", () => {
     const allTab = screen.getByText("All").closest("s-clickable");
     const draftsTab = screen.getByText("Drafts").closest("s-clickable");
 
-    expect(allTab).toHaveAttribute("background", "subdued");
-    expect(draftsTab).toHaveAttribute("background", "subdued");
+    expect(allTab).toHaveAttribute("background", "transparent");
+    expect(draftsTab).toHaveAttribute("background", "transparent");
   });
 });

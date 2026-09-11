@@ -2,7 +2,7 @@ import { BlockStack, InlineStack, Card, Skeleton } from "@xco-agency/corex-ui";
 
 export function SkeletonBasicExample() {
   return (
-    <BlockStack gap="base" inlineSize="100%">
+    <BlockStack gap="base" style={{ width: "100%" }}>
       <Card>
         <BlockStack gap="base">
           {/* Avatar and title row with small and full radius */}

@@ -32,12 +32,12 @@ export const NavigationLabel = React.forwardRef<HTMLDivElement, NavigationLabelP
         alignItems="center"
         justifyContent="space-between"
         paddingBlockStart="small"
-        paddingBlockEnd="none"
+        paddingBlockEnd="small-400"
         paddingInline="small-200"
         {...rest}
       >
         {typeof children === "string" ? (
-          <Text color="subdued" variant="small">
+          <Text color="subdued" as="span" heading variant="xs">
             {children}
           </Text>
         ) : (

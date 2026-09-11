@@ -71,13 +71,13 @@ export function Step6Celebration({
           maxInlineSize="460px"
         >
           <BlockStack gap="large-100" alignItems="center">
-            <BlockStack gap="small-200" inlineSize="100%">
+            <BlockStack gap="small-200" style={{ width: "100%" }}>
               {rows.map((row) => (
                 <InlineStack
                   key={row.label}
                   gap="small-200"
                   alignItems="center"
-                  inlineSize="100%"
+                  style={{ width: "100%" }}
                 >
                   <Icon
                     type={row.done ? "check-circle-filled" : "clock"}
@@ -92,14 +92,13 @@ export function Step6Celebration({
         <BlockStack
           gap="small-200"
           alignItems="center"
-          inlineSize="100%"
-          maxInlineSize="460px"
+          style={{ width: "100%", maxWidth: "460px" }}
         >
           <InlineStack
             gap="small-200"
             alignItems="center"
             justifyContent="space-between"
-            inlineSize="100%"
+            style={{ width: "100%" }}
           >
             <Button onClick={() => dispatch({ type: "GO_BACK" })}>Back</Button>
             <Button variant="primary" onClick={onGoToDashboard}>

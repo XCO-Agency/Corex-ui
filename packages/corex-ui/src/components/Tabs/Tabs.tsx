@@ -1,14 +1,12 @@
 import { Fragment, forwardRef } from "react";
 import type { CSSProperties, ForwardedRef } from "react";
-import { createWebComponent } from "../../core/createWebComponent";
 import { Tooltip } from "../Tooltip";
 import type { TabItemType, TabsComponentType, TabsPropsType } from "./Tabs.types";
 import { Clickable } from "../Clickable";
 import { Icon } from "../Icon";
 import { Badge } from "../Badge";
 import { Text } from "../Text";
-
-const SStack = createWebComponent<HTMLElement>("s-stack");
+import { InlineStack } from "../InlineStack";
 
 function TabsInner<TId extends string | number = string>(
   {
@@ -126,9 +124,9 @@ function TabsInner<TId extends string | number = string>(
         </div>
 
         {rightSide && (
-          <SStack direction="inline" gap="small-200">
+          <InlineStack gap="small-200">
             {rightSide}
-          </SStack>
+          </InlineStack>
         )}
       </div>
 

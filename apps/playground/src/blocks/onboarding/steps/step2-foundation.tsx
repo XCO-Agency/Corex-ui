@@ -59,7 +59,7 @@ export function Step2Foundation({ state, dispatch }: Step2FoundationPropsType) {
               </Text>
             </BlockStack>
 
-            <BlockStack gap="small" inlineSize="100%">
+            <BlockStack gap="small" style={{ width: "100%" }}>
               {state.coreTools.map((tool, i) => (
                 <div
                   key={tool.id}
@@ -93,7 +93,7 @@ export function Step2Foundation({ state, dispatch }: Step2FoundationPropsType) {
                 </div>
               ))}
             </BlockStack>
-            <InlineStack gap="small-200" justifyContent="space-between" inlineSize="100%">
+            <InlineStack gap="small-200" justifyContent="space-between" style={{ width: "100%" }}>
               <Button onClick={() => dispatch({ type: "GO_BACK" })}>Back</Button>
               <Button variant="primary" onClick={() => dispatch({ type: "GO_NEXT" })}>
                 Continue

@@ -21,11 +21,6 @@ const blockFiles: FileItemType[] = [
     path: "examples/AnnotatedSettingsExample.tsx",
     code: AnnotatedSettingsExampleRaw,
   },
-  {
-    name: "NavigationSettingsExample.tsx",
-    path: "examples/NavigationSettingsExample.tsx",
-    code: NavigationSettingsExampleRaw,
-  },
 
   {
     name: "AnnotatedSection.tsx",
@@ -90,7 +85,13 @@ export const settingsBlocks: ComponentEntry[] = [
         Example: NavigationSettingsExample,
         code: NavigationSettingsExampleRaw,
         filename: "NavigationSettingsExample.tsx",
-        files: blockFiles,
+        files: [
+          {
+            name: "NavigationSettingsExample.tsx",
+            path: "examples/NavigationSettingsExample.tsx",
+            code: NavigationSettingsExampleRaw,
+          },
+        ],
         npxCommand: "npx @xco-agency/corex-ui add settings-layout",
       },
     ],
