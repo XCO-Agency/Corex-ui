@@ -82,7 +82,6 @@ export const Card = forwardRef<HTMLElement, CardPropsType>(function Card(
           </Box>
         )}
 
-        <span></span>
         {children}
       </BlockStack>
       {hasFooter && (

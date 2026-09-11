@@ -22,3 +22,6 @@ export type {
   UseStorageOptionsType,
   UseStorageResultType,
 } from "./useStorage";
+
+export { useEvents, eventBus } from "./useEvents";
+export type { EventHandler, UseEventsResult } from "./useEvents";

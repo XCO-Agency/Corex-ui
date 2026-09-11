@@ -66,6 +66,8 @@ export {
   useDimension,
   useParams,
   useStorage,
+  useEvents,
+  eventBus,
 } from "./hooks";
 export type {
   UseToastResult,
@@ -79,5 +81,7 @@ export type {
   StorageTypeType,
   UseStorageOptionsType,
   UseStorageResultType,
+  EventHandler,
+  UseEventsResult,
 } from "./hooks";
 export type { ShopifyGlobal, ShopifyToastOptions } from "./types/app-bridge";
