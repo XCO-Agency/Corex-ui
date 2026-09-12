@@ -23,6 +23,7 @@ import { type ComponentEntry, registry, blocks } from "@/data/registry";
 import { getCategoryIcon } from "@/lib/category-icons";
 import { Link, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
+import { VERSION_LABEL } from "@/lib/version";
 
 export type AppSidebarPropsType = React.ComponentProps<typeof Sidebar> & {
   onOpenSearch?: () => void;
@@ -246,7 +247,7 @@ export function AppSidebar({ onOpenSearch, ...props }: AppSidebarPropsType) {
               className="text-muted-foreground hover:text-foreground"
             >
               <Sparkles className="size-4 text-emerald-500" />
-              <span>v0.1.0 Ready</span>
+              <span>{VERSION_LABEL}</span>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>

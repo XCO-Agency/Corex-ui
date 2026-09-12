@@ -1,5 +1,6 @@
-import { Sparkles, ShoppingBag } from "lucide-react";
+import { ShoppingBag } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { VersionBadge } from "@/components/VersionBadge";
 import { getCategoryIcon } from "@/lib/category-icons";
 
 export type ComponentHeaderPropsType = {
@@ -26,10 +27,7 @@ export function ComponentHeader({
           <span>{category}</span>
         </Badge>
 
-        <Badge variant="success" className="gap-1.5 px-2.5 py-1 text-xs font-medium">
-          <Sparkles className="size-3" />
-          <span>v0.1.0 Ready</span>
-        </Badge>
+        <VersionBadge />
 
         {requiresEmbeddedContext && (
           <Badge

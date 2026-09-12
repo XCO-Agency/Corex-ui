@@ -3,6 +3,8 @@ import { BadgeVariants } from "@/examples/feedback/BadgeVariants";
 import BadgeVariantsRaw from "@/examples/feedback/BadgeVariants.tsx?raw";
 import { BannerDismissible } from "@/examples/feedback/BannerDismissible";
 import BannerDismissibleRaw from "@/examples/feedback/BannerDismissible.tsx?raw";
+import { EmptyStateExample } from "@/examples/feedback/EmptyStateExample";
+import EmptyStateExampleRaw from "@/examples/feedback/EmptyStateExample.tsx?raw";
 import { SpinnerExample } from "@/examples/feedback/SpinnerExample";
 import SpinnerExampleRaw from "@/examples/feedback/SpinnerExample.tsx?raw";
 import { TooltipExample } from "@/examples/feedback/TooltipExample";
@@ -40,6 +42,20 @@ export const feedbackComponents: ComponentEntry[] = [
         title: "Dismissible",
         Example: BannerDismissible,
         code: BannerDismissibleRaw,
+      },
+    ],
+  },
+  {
+    name: "EmptyState",
+    slug: "empty-state",
+    category: "Feedback",
+    description:
+      "Communicates when there is no content to show, with guidance on how to get started.",
+    examples: [
+      {
+        title: "EmptyState Variations",
+        Example: EmptyStateExample,
+        code: EmptyStateExampleRaw,
       },
     ],
   },

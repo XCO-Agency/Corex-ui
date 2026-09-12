@@ -6,10 +6,10 @@ import {
   Package,
   Rocket,
   ShieldCheck,
-  Sparkles,
   Terminal,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { VersionBadge } from "@/components/VersionBadge";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { ComponentCodeViewer } from "./component-detail/partials/ComponentCodeViewer";
@@ -62,10 +62,7 @@ export function Installation() {
             <Rocket className="size-3.5 text-muted-foreground" />
             <span>Getting started</span>
           </Badge>
-          <Badge variant="success" className="gap-1.5 px-2.5 py-1 text-xs font-medium">
-            <Sparkles className="size-3" />
-            <span>v0.1.0 Ready</span>
-          </Badge>
+          <VersionBadge />
         </div>
 
         <h1 className="text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl">

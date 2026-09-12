@@ -54,6 +54,7 @@ export * from "./components/Floating";
 export * from "./components/Collapsible";
 export * from "./components/Menu";
 export * from "./components/Navigation";
+export * from "./components/EmptyState";
 
 export * from "./components/AppWindow";
 export * from "./components/AppNav";
@@ -89,3 +90,5 @@ export type {
   UseEventsResult,
 } from "./hooks";
 export type { ShopifyGlobal, ShopifyToastOptions } from "./types/app-bridge";
+export * from "./version";
+
