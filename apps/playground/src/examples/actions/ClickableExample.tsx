@@ -18,7 +18,7 @@ export function ClickableExample() {
 
   const items = [
     { id: "orders", title: "Manage Orders", badge: "12 Pending", icon: "package" },
-    { id: "customers", title: "Customer Audiences", badge: "Active", icon: "customer" },
+    { id: "customers", title: "Customer Audiences", badge: "Active", icon: "person" },
     {
       id: "discounts",
       title: "Promotions & Discounts",
@@ -73,6 +73,7 @@ export function ClickableExample() {
                 background="base"
                 borderWidth="small-100"
                 borderColor="subdued"
+                inlineSize="fill"
                 borderRadius="base"
                 padding="base"
                 accessibilityLabel={item.title}
@@ -117,10 +118,12 @@ export function ClickableExample() {
               padding="small"
               onClick={handleSimulatedAsyncAction}
             >
-              <Icon type="bolt" />
-              <Text as="span">
-                {isLoading ? "Processing..." : "Trigger Async Action"}
-              </Text>
+              <InlineStack gap="small" alignItems="center">
+                <Icon type="bolt" />
+                <Text as="span">
+                  {isLoading ? "Processing..." : "Trigger Async Action"}
+                </Text>
+              </InlineStack>
             </Clickable>
 
             {/* External Navigation Link */}
@@ -133,8 +136,10 @@ export function ClickableExample() {
               borderRadius="base"
               padding="small"
             >
-              <Icon type="link" />
-              <Text as="span">Shopify Web Components Docs</Text>
+              <InlineStack gap="small" alignItems="center">
+                <Icon type="link" />
+                <Text as="span">Shopify Web Components Docs</Text>
+              </InlineStack>
             </Clickable>
 
             {/* Disabled Action */}
