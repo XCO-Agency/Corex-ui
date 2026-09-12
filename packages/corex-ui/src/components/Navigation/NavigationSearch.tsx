@@ -1,9 +1,8 @@
 import * as React from "react";
 import { Box } from "../Box";
+import { SearchField } from "../SearchField";
 import { useNavigationContext } from "./Navigation.context";
 import type { NavigationSearchPropsType } from "./Navigation.types";
-import type { CallbackEvent } from "../../types/polaris";
-import { useDebounce } from "../../hooks/useDebounce";
 
 export const NavigationSearch = React.forwardRef<HTMLElement, NavigationSearchPropsType>(
   function NavigationSearch(
@@ -13,6 +12,9 @@ export const NavigationSearch = React.forwardRef<HTMLElement, NavigationSearchPr
       onDebouncedChange,
       debounceDelay = 300,
       placeholder = "Search (Ctrl + K)",
+      label = "Search",
+      labelAccessibilityVisibility = "exclusive",
+      autoComplete = "additional-name",
       ...rest
     },
     ref,
@@ -26,28 +28,31 @@ export const NavigationSearch = React.forwardRef<HTMLElement, NavigationSearchPr
       }
     }, [value]);
 
-    const debouncedSearch = useDebounce(searchTerm, debounceDelay);
+    const handleDebouncedChange = React.useCallback(
+      (debouncedVal: string) => {
+        context?.setSearch?.(debouncedVal);
+        onDebouncedChange?.(debouncedVal);
+      },
+      [context, onDebouncedChange],
+    );
 
-    React.useEffect(() => {
-      context?.setSearch?.(debouncedSearch);
-      onDebouncedChange?.(debouncedSearch);
-    }, [debouncedSearch, context, onDebouncedChange]);
-
-    const handleChange = (e: CallbackEvent<"s-search-field">) => {
-      const val = e.currentTarget.value;
+    const handleChange = (val: string, id?: string) => {
       setSearchTerm(val);
-      onChange?.(val);
+      onChange?.(val, id);
     };
 
     return (
       <Box paddingBlockEnd="small">
-        <s-search-field
-          ref={ref as React.Ref<any>}
+        <SearchField
+          ref={ref}
           value={searchTerm}
-          labelAccessibilityVisibility="exclusive"
+          label={label}
+          labelAccessibilityVisibility={labelAccessibilityVisibility}
           placeholder={placeholder}
-          autocomplete="additional-name"
+          autoComplete={autoComplete}
+          debounceDelay={debounceDelay}
           onChange={handleChange}
+          onDebouncedChange={handleDebouncedChange}
           {...rest}
         />
       </Box>

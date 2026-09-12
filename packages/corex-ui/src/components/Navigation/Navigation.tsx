@@ -42,15 +42,7 @@ const NavigationBase = React.forwardRef<HTMLElement, NavigationPropsType>(
           border={sectionned ? "base" : rest.border}
           padding={sectionned ? "small-200" : rest.padding}
         >
-          <BlockStack
-            style={
-              sticky !== undefined
-                ? { top: typeof sticky === "number" ? sticky : 0, position: "sticky" }
-                : undefined
-            }
-          >
-            {children}
-          </BlockStack>
+          <BlockStack blockSize="100%">{children}</BlockStack>
         </Box>
       </NavigationContext.Provider>
     );

@@ -9,7 +9,7 @@ export const NavigationSection = React.forwardRef<
   NavigationSectionPropsType
 >(function NavigationSection({ title, action, items, children, ...rest }, ref) {
   return (
-    <BlockStack ref={ref} gap="small-500" {...rest}>
+    <BlockStack ref={ref} gap="small-400" {...rest}>
       {title && <NavigationLabel action={action}>{title}</NavigationLabel>}
 
       {items &&

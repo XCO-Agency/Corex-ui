@@ -12,7 +12,7 @@ export const NavigationFooter = React.forwardRef<
 ) {
   return (
     <>
-      <Box paddingBlock="small">{divider && <Divider />}</Box>
+      <span style={{ flex: 1 }}></span>
       <div
         ref={ref}
         className={className}
@@ -30,6 +30,8 @@ export const NavigationFooter = React.forwardRef<
         }}
         {...rest}
       >
+        <Box paddingBlock="small-300">{divider && <Divider />}</Box>
+
         {children}
       </div>
     </>

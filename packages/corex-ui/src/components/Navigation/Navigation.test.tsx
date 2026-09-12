@@ -1,5 +1,5 @@
-import { render, screen } from "@testing-library/react";
-import { describe, it, expect } from "vitest";
+import { act, fireEvent, render, screen } from "@testing-library/react";
+import { describe, it, expect, vi } from "vitest";
 import { Navigation, Navigations } from "./index";
 import { NavigationItem } from "./NavigationItem";
 import { NavigationLabel } from "./NavigationLabel";
@@ -35,6 +35,37 @@ describe("Navigation", () => {
 
     const searchField = document.querySelector("s-search-field");
     expect(searchField).toBeInTheDocument();
+  });
+
+  it("supports debounced search and input events on Navigation.Search", () => {
+    vi.useFakeTimers();
+    const onChange = vi.fn();
+    const onDebouncedChange = vi.fn();
+
+    render(
+      <Navigation>
+        <Navigation.Search
+          placeholder="Search navigation..."
+          onChange={onChange}
+          onDebouncedChange={onDebouncedChange}
+          debounceDelay={200}
+        />
+        <Navigation.Item id="analytics" label="Analytics" />
+      </Navigation>,
+    );
+
+    const searchField = document.querySelector("s-search-field")!;
+    (searchField as any).value = "orders";
+    fireEvent(searchField, new CustomEvent("input", { bubbles: true }));
+
+    expect(onChange).toHaveBeenCalledWith("orders", undefined);
+
+    act(() => {
+      vi.advanceTimersByTime(200);
+    });
+
+    expect(onDebouncedChange).toHaveBeenCalledWith("orders");
+    vi.useRealTimers();
   });
 
   it("renders link url on Clickable when url prop is passed to item", () => {
