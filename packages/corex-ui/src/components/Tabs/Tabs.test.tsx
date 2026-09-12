@@ -144,4 +144,29 @@ describe("Tabs", () => {
     expect(allTab).toHaveAttribute("background", "transparent");
     expect(draftsTab).toHaveAttribute("background", "transparent");
   });
+
+  it("supports union literal id types with selected and onSelect passing tab ID", () => {
+    type DrawerTab = "cart" | "saved" | "upsells";
+    const drawerTabs: { id: DrawerTab; label: string }[] = [
+      { id: "cart", label: "Cart" },
+      { id: "saved", label: "Saved" },
+      { id: "upsells", label: "Upsells" },
+    ];
+    const onSelect = vi.fn();
+    const onChange = vi.fn();
+
+    render(
+      <Tabs
+        tabs={drawerTabs}
+        selected="cart"
+        onSelect={onSelect}
+        onChange={onChange}
+      />,
+    );
+
+    screen.getByText("Saved").dispatchEvent(new MouseEvent("click", { bubbles: true }));
+    expect(onSelect).toHaveBeenCalledWith("saved", 1);
+    expect(onChange).toHaveBeenCalledWith("saved");
+  });
 });
+

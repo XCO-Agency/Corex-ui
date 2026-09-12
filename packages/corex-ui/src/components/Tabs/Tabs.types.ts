@@ -15,15 +15,14 @@ export type TabItemType<TId extends string | number = string> = {
 export type TabsPropsType<TId extends string | number = string> = {
   tabs: TabItemType<TId>[];
   /**
-   * Index of the currently selected tab (Polaris index-based API).
-   * @deprecated Use `value` instead to select tabs by ID.
+   * Index or ID of the currently selected tab.
+   * Can be a tab index (number) for Polaris compatibility or tab ID (`TId`).
    */
-  selected?: number | null;
+  selected?: TId | number | null;
   /**
-   * Callback when a tab index changes (Polaris index-based API).
-   * @deprecated Use `onChange` instead to handle selection by tab ID.
+   * Callback when a tab is selected. Receives tab ID (`TId`) or index (`number`).
    */
-  onSelect?: (index: number) => void;
+  onSelect?: ((selected: TId) => void) | ((index: number) => void);
   /** ID of the currently selected tab. */
   value?: TId | null;
   /** Callback when a tab is selected, passing the tab ID. */

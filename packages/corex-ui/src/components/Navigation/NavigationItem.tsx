@@ -4,85 +4,90 @@ import { Clickable } from "../Clickable";
 import { InlineStack } from "../InlineStack";
 import { Text } from "../Text";
 import { useNavigationContext } from "./Navigation.context";
-import type { NavigationItemPropsType } from "./Navigation.types";
+import type { NavigationItemComponentType, NavigationItemPropsType } from "./Navigation.types";
 
-export const NavigationItem = React.forwardRef<HTMLElement, NavigationItemPropsType>(
-  function NavigationItem(
-    {
-      id,
-      label,
-      icon,
-      url,
-      badge,
-      disabled = false,
-      selected,
-      onClick,
-      children,
-      ariaLabel,
-      ...rest
-    },
-    ref,
+
+function NavigationItemInner<TId extends string | number = string>(
+  {
+    id,
+    label,
+    icon,
+    url,
+    badge,
+    disabled = false,
+    selected,
+    onClick,
+    children,
+    ariaLabel,
+    ...rest
+  }: NavigationItemPropsType<TId>,
+  ref: React.ForwardedRef<HTMLElement>,
+) {
+  const context = useNavigationContext<TId>();
+
+  const displayLabel = label ?? (typeof children === "string" ? children : undefined);
+  const activeSearch = context?.search?.trim().toLowerCase();
+
+  // Search filtering if active in context
+  if (
+    activeSearch &&
+    displayLabel &&
+    !displayLabel.toLowerCase().includes(activeSearch)
   ) {
-    const context = useNavigationContext();
+    return null;
+  }
 
-    const displayLabel = label ?? (typeof children === "string" ? children : undefined);
-    const activeSearch = context?.search?.trim().toLowerCase();
+  const isSelected =
+    selected !== undefined
+      ? selected
+      : id !== undefined && context?.selectedId !== undefined
+        ? context.selectedId === id || String(context.selectedId) === String(id)
+        : false;
 
-    // Search filtering if active in context
-    if (
-      activeSearch &&
-      displayLabel &&
-      !displayLabel.toLowerCase().includes(activeSearch)
-    ) {
-      return null;
+  const handleClick = () => {
+    if (disabled) return;
+    onClick?.();
+    if (id !== undefined) {
+      context?.onSelect?.(id);
     }
+  };
 
-    const isSelected =
-      selected !== undefined
-        ? selected
-        : id !== undefined && context?.selectedId !== undefined
-          ? context.selectedId === id
-          : false;
-
-    const handleClick = () => {
-      if (disabled) return;
-      onClick?.();
-      if (id !== undefined) {
-        context?.onSelect?.(id);
+  return (
+    <Clickable
+      ref={ref}
+      inlineSize="fill"
+      borderRadius="base"
+      paddingInline="small-400"
+      paddingBlock="small-300"
+      background={isSelected ? "strong" : undefined}
+      href={url}
+      disabled={disabled}
+      onClick={handleClick}
+      aria-label={
+        ariaLabel || (typeof displayLabel === "string" ? displayLabel : undefined)
       }
-    };
-
-    return (
-      <Clickable
-        ref={ref}
-        inlineSize="fill"
-        borderRadius="base"
-        paddingInline="small-400"
-        paddingBlock="small-300"
-        background={isSelected ? "strong" : undefined}
-        href={url}
-        disabled={disabled}
-        onClick={handleClick}
-        aria-label={
-          ariaLabel || (typeof displayLabel === "string" ? displayLabel : undefined)
-        }
-        {...rest}
+      {...rest}
+    >
+      <InlineStack
+        inlineSize="100%"
+        alignItems="center"
+        justifyContent="space-between"
+        gap="small-300"
       >
-        <InlineStack
-          inlineSize="100%"
-          alignItems="center"
-          justifyContent="space-between"
-          gap="small-300"
-        >
-          <InlineStack alignItems="center" gap="small-300">
-            {icon && <Icon source={icon} />}
-            <Text lineClamp={1} as="p">
-              {children ?? label}
-            </Text>
-          </InlineStack>
-          {badge}
+        <InlineStack alignItems="center" gap="small-300">
+          {icon && <Icon source={icon} />}
+          <Text lineClamp={1} as="p">
+            {children ?? label}
+          </Text>
         </InlineStack>
-      </Clickable>
-    );
-  },
-);
+        {badge}
+      </InlineStack>
+    </Clickable>
+  );
+}
+
+export const NavigationItem = React.forwardRef(
+  NavigationItemInner,
+) as unknown as NavigationItemComponentType;
+NavigationItem.displayName = "NavigationItem";
+

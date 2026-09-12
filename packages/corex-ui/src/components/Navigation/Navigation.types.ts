@@ -1,9 +1,10 @@
 import type * as React from "react";
 import type { IconType, PolarisPropsType } from "../../types/common";
 import { BoxPropsType } from "../Box";
+import type { SearchFieldPropsType } from "../SearchField";
 
-export type NavigationItemPropsType = {
-  id?: string;
+export type NavigationItemPropsType<TId extends string | number = string> = {
+  id?: TId;
   label?: string;
   /** Polaris icon name (e.g. `"import"`, `"search"`, `"star"`) or Polaris SVG component */
   icon?: IconType;
@@ -16,7 +17,7 @@ export type NavigationItemPropsType = {
   ariaLabel?: string;
 };
 
-export type NavigationItemType = NavigationItemPropsType;
+export type NavigationItemType<TId extends string | number = string> = NavigationItemPropsType<TId>;
 
 export type NavigationActionType =
   | {
@@ -31,16 +32,14 @@ export type NavigationLabelPropsType = {
   action?: NavigationActionType;
 };
 
-import type { SearchFieldPropsType } from "../SearchField";
-
-export type NavigationSectionPropsType = {
+export type NavigationSectionPropsType<TId extends string | number = string> = {
   title?: string;
   action?: NavigationActionType;
-  items?: NavigationItemPropsType[];
+  items?: NavigationItemPropsType<TId>[];
   children?: React.ReactNode;
 };
 
-export type NavigationSectionType = NavigationSectionPropsType;
+export type NavigationSectionType<TId extends string | number = string> = NavigationSectionPropsType<TId>;
 
 export type NavigationSearchPropsType = SearchFieldPropsType;
 
@@ -51,23 +50,52 @@ export type NavigationFooterPropsType = {
   style?: React.CSSProperties;
 };
 
-export type NavigationContextType = {
+export type NavigationContextType<TId extends string | number = string> = {
   search?: string;
   setSearch?: (val: string) => void;
-  selectedId?: string;
-  onSelect?: (id: string) => void;
+  selectedId?: TId;
+  onSelect?: (id: TId) => void;
 };
 
-export type NavigationPropsType = BoxPropsType & {
+export type NavigationPropsType<TId extends string | number = string> = BoxPropsType & {
   /** Currently selected navigation item ID (controlled mode). */
-  selected?: string;
+  selected?: TId;
   /** Initial selected navigation item ID (uncontrolled mode). */
-  defaultSelected?: string;
+  defaultSelected?: TId;
   /** Callback fired when the selected navigation item changes. */
-  onChange?: (selected: string) => void;
+  onChange?: (selected: TId) => void;
   /** Callback fired when the selected navigation item changes. Alias for `onChange`. */
-  onSelect?: (selected: string) => void;
+  onSelect?: (selected: TId) => void;
+  /** Callback fired when the selected navigation item changes. Alias for `onChange`. */
+  onChanged?: (selected: TId) => void;
   sectionned?: boolean;
   sticky?: boolean | number;
+};
+
+export type NavigationItemComponentType = {
+  <TId extends string | number = string>(
+    props: NavigationItemPropsType<TId> & { ref?: React.Ref<HTMLElement> },
+  ): React.ReactElement | null;
+  displayName?: string;
+};
+
+export type NavigationComponentType = {
+  <TId extends string | number = string>(
+    props: NavigationPropsType<TId> & { ref?: React.Ref<HTMLElement> },
+  ): React.ReactElement | null;
+  displayName?: string;
+  Item: NavigationItemComponentType;
+  Label: React.ForwardRefExoticComponent<
+    NavigationLabelPropsType & React.RefAttributes<HTMLDivElement>
+  >;
+  Section: React.ForwardRefExoticComponent<
+    NavigationSectionPropsType<any> & React.RefAttributes<HTMLDivElement>
+  >;
+  Search: React.ForwardRefExoticComponent<
+    NavigationSearchPropsType & React.RefAttributes<HTMLElement>
+  >;
+  Footer: React.ForwardRefExoticComponent<
+    NavigationFooterPropsType & React.RefAttributes<HTMLDivElement>
+  >;
 };
 

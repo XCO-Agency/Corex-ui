@@ -1,3 +1,4 @@
+import * as React from "react";
 import { act, fireEvent, render, screen } from "@testing-library/react";
 import { describe, it, expect, vi } from "vitest";
 import { Navigation, Navigations } from "./index";
@@ -165,7 +166,85 @@ describe("Navigation", () => {
     expect(onChange).not.toHaveBeenCalled();
   });
 
+  it("supports dynamic union literal id types with React useState Dispatch", () => {
+    type DrawerTab = "cart" | "saved" | "upsells";
+    const onChangeValues: DrawerTab[] = [];
+    const onSelectValues: DrawerTab[] = [];
+
+    function TestComponent() {
+      const [selected, setSelected] = React.useState<DrawerTab>("cart");
+
+      return (
+        <Navigation
+          selected={selected}
+          onChange={(val) => {
+            setSelected(val);
+            onChangeValues.push(val);
+          }}
+          onSelect={(val) => {
+            setSelected(val);
+            onSelectValues.push(val);
+          }}
+        >
+          <Navigation.Item id="cart" label="Cart" />
+          <Navigation.Item id="saved" label="Saved" />
+          <Navigation.Item id="upsells" label="Upsells" />
+        </Navigation>
+      );
+    }
+
+    render(<TestComponent />);
+
+    fireEvent.click(screen.getByText("Saved"));
+    expect(onChangeValues).toEqual(["saved"]);
+    expect(onSelectValues).toEqual(["saved"]);
+
+    fireEvent.click(screen.getByText("Upsells"));
+    expect(onChangeValues).toEqual(["saved", "upsells"]);
+    expect(onSelectValues).toEqual(["saved", "upsells"]);
+  });
+
+  it("supports direct Dispatch<SetStateAction<T>> passing to onChange and onSelect", () => {
+    type DrawerTab = "cart" | "saved" | "upsells";
+
+    function TestDirectDispatch() {
+      const [tab, setTab] = React.useState<DrawerTab>("cart");
+
+      // Directly passing setTab to onChange and onSelect without wrapper functions:
+      return (
+        <Navigation
+          selected={tab}
+          onChange={setTab}
+          onSelect={setTab}
+        >
+          <Navigation.Item id="cart" label="Cart" />
+          <Navigation.Item id="saved" label="Saved" />
+        </Navigation>
+      );
+    }
+
+    render(<TestDirectDispatch />);
+    fireEvent.click(screen.getByText("Saved"));
+  });
+
+  it("supports numeric IDs in Navigation and Navigation.Item", () => {
+    type NumericId = 1 | 2 | 3;
+    const onChange = vi.fn();
+
+    render(
+      <Navigation<NumericId> defaultSelected={1} onChange={onChange}>
+        <Navigation.Item id={1} label="First" />
+        <Navigation.Item id={2} label="Second" />
+        <Navigation.Item id={3} label="Third" />
+      </Navigation>,
+    );
+
+    fireEvent.click(screen.getByText("Second"));
+    expect(onChange).toHaveBeenCalledWith(2);
+  });
+
   it("exports Navigations as alias", () => {
     expect(Navigations).toBe(Navigation);
   });
 });
+

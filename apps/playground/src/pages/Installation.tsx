@@ -224,7 +224,7 @@ export function Installation() {
               Browse components
               <ArrowRight />
             </Button>
-            <Button variant="outline" render={<Link to="/#Layouts" />}>
+            <Button render={<Link to="/#Layouts" />}>
               <Terminal />
               Explore blocks
             </Button>

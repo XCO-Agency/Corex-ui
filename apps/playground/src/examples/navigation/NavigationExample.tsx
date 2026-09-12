@@ -19,7 +19,7 @@ export function NavigationExample() {
         <Navigation
           sectionned
           inlineSize="240px"
-          onChanged={setSelected}
+          onChange={setSelected}
           defaultSelected={selected}
         >
           <Navigation.Search />

@@ -26,7 +26,13 @@ function TabsInner<TId extends string | number = string>(
 ) {
   const handleSelect = (tab: TabItemType<TId>, index: number) => {
     if (tab.disabled) return;
-    onSelect?.(index);
+    if (onSelect) {
+      if (typeof selected === "number") {
+        (onSelect as (index: number) => void)(index);
+      } else {
+        (onSelect as (selected: TId, index?: number) => void)(tab.id, index);
+      }
+    }
     onChange?.(tab.id);
   };
 
@@ -62,7 +68,7 @@ function TabsInner<TId extends string | number = string>(
               value !== undefined
                 ? value !== null && (tab.id === value || String(tab.id) === String(value))
                 : selected !== undefined && selected !== null
-                  ? selected === index
+                  ? selected === index || selected === tab.id || String(tab.id) === String(selected)
                   : false;
 
             const button = (
