@@ -108,7 +108,12 @@ export function NavigationSettingsExample() {
     <Page inlineSize="base">
       {/* Left Sidebar: Vertical Navigation */}
       <InlineStack gap="large">
-        <Navigation inlineSize="220px" sectionned defaultSelected="social">
+        <Navigation
+          inlineSize="220px"
+          onChange={setSelectedNav}
+          sectionned
+          defaultSelected="social"
+        >
           <Navigation.Search onChange={(e) => console.log(e)} />
 
           {navigationSections.map((item, index) => (

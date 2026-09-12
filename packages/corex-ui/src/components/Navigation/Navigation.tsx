@@ -20,20 +20,54 @@ export type NavigationComponentType = React.ForwardRefExoticComponent<
 };
 
 const NavigationBase = React.forwardRef<HTMLElement, NavigationPropsType>(
-  function Navigation({ sectionned, children, sticky, defaultSelected, ...rest }, ref) {
-    const [selectedId, onSelect] = React.useState(defaultSelected);
+  function Navigation(
+    {
+      sectionned,
+      children,
+      sticky,
+      selected,
+      defaultSelected,
+      onChange,
+      onSelect,
+      ...rest
+    },
+    ref,
+  ) {
+    const [internalSelectedId, setInternalSelectedId] = React.useState(
+      selected ?? defaultSelected,
+    );
     const [search, setSearch] = React.useState("");
+
+    React.useEffect(() => {
+      if (selected !== undefined) {
+        setInternalSelectedId(selected);
+      }
+    }, [selected]);
+
+    const handleSelect = React.useCallback(
+      (id: string) => {
+        if (selected === undefined) {
+          setInternalSelectedId(id);
+        }
+        onChange?.(id);
+        onSelect?.(id);
+      },
+      [selected, onChange, onSelect],
+    );
+
+    const activeSelectedId = selected !== undefined ? selected : internalSelectedId;
 
     return (
       <NavigationContext.Provider
         value={{
           search,
           setSearch,
-          selectedId,
-          onSelect,
+          selectedId: activeSelectedId,
+          onSelect: handleSelect,
         }}
       >
         <Box
+          ref={ref}
           {...rest}
           background={sectionned ? "base" : rest.background}
           inlineSize={rest.inlineSize || "100%"}

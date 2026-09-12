@@ -59,7 +59,15 @@ export type NavigationContextType = {
 };
 
 export type NavigationPropsType = BoxPropsType & {
+  /** Currently selected navigation item ID (controlled mode). */
+  selected?: string;
+  /** Initial selected navigation item ID (uncontrolled mode). */
   defaultSelected?: string;
+  /** Callback fired when the selected navigation item changes. */
+  onChange?: (selected: string) => void;
+  /** Callback fired when the selected navigation item changes. Alias for `onChange`. */
+  onSelect?: (selected: string) => void;
   sectionned?: boolean;
   sticky?: boolean | number;
 };
+

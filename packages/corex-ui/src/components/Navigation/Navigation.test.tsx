@@ -96,6 +96,75 @@ describe("Navigation", () => {
     expect(screen.getByText("Footer Content")).toBeInTheDocument();
   });
 
+  it("triggers onChange and updates selection when item is clicked in uncontrolled mode", () => {
+    const onChange = vi.fn();
+
+    render(
+      <Navigation defaultSelected="home" onChange={onChange}>
+        <Navigation.Item id="home" label="Home" />
+        <Navigation.Item id="settings" label="Settings" />
+      </Navigation>,
+    );
+
+    const settingsItem = screen.getByText("Settings");
+    fireEvent.click(settingsItem);
+
+    expect(onChange).toHaveBeenCalledTimes(1);
+    expect(onChange).toHaveBeenCalledWith("settings");
+  });
+
+  it("supports controlled mode with selected and onChange", () => {
+    const onChange = vi.fn();
+
+    const { rerender } = render(
+      <Navigation selected="home" onChange={onChange}>
+        <Navigation.Item id="home" label="Home" />
+        <Navigation.Item id="settings" label="Settings" />
+      </Navigation>,
+    );
+
+    fireEvent.click(screen.getByText("Settings"));
+    expect(onChange).toHaveBeenCalledWith("settings");
+
+    rerender(
+      <Navigation selected="settings" onChange={onChange}>
+        <Navigation.Item id="home" label="Home" />
+        <Navigation.Item id="settings" label="Settings" />
+      </Navigation>,
+    );
+
+    // Clicking home now
+    fireEvent.click(screen.getByText("Home"));
+    expect(onChange).toHaveBeenCalledWith("home");
+  });
+
+  it("triggers onSelect callback when item is clicked", () => {
+    const onSelect = vi.fn();
+
+    render(
+      <Navigation onSelect={onSelect}>
+        <Navigation.Item id="orders" label="Orders" />
+      </Navigation>,
+    );
+
+    fireEvent.click(screen.getByText("Orders"));
+    expect(onSelect).toHaveBeenCalledTimes(1);
+    expect(onSelect).toHaveBeenCalledWith("orders");
+  });
+
+  it("does not trigger onChange when a disabled item is clicked", () => {
+    const onChange = vi.fn();
+
+    render(
+      <Navigation onChange={onChange}>
+        <Navigation.Item id="disabled-route" label="Disabled Route" disabled />
+      </Navigation>,
+    );
+
+    fireEvent.click(screen.getByText("Disabled Route"));
+    expect(onChange).not.toHaveBeenCalled();
+  });
+
   it("exports Navigations as alias", () => {
     expect(Navigations).toBe(Navigation);
   });

@@ -16,7 +16,12 @@ export function NavigationExample() {
   return (
     <Page>
       <InlineStack gap="600" alignItems="start">
-        <Navigation sectionned inlineSize="240px" defaultSelected={selected}>
+        <Navigation
+          sectionned
+          inlineSize="240px"
+          onChanged={setSelected}
+          defaultSelected={selected}
+        >
           <Navigation.Search />
           <Navigation.Section title="Settings">
             <Navigation.Item id="reviews" label="Reviews" icon="star" />
