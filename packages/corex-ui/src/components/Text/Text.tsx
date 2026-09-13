@@ -35,10 +35,10 @@ export const VARIANT_SIZE_MAP: Record<
     headingWeight: 600,
   },
   large: {
-    fontSize: "1.125rem",
+    fontSize: "1rem",
     lineHeight: "1.2rem",
     headingTag: "h2",
-    headingWeight: 700,
+    headingWeight: 600,
   },
 };
 

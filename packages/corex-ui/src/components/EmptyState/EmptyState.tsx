@@ -62,6 +62,7 @@ export const EmptyState = React.forwardRef<HTMLDivElement, EmptyStatePropsType>(
       icon,
       footerContent,
       fullWidth = false,
+      sectionned = false,
       children,
       padding = "large-300",
       className,
@@ -83,7 +84,7 @@ export const EmptyState = React.forwardRef<HTMLDivElement, EmptyStatePropsType>(
             src={effectiveImage}
             alt={imageAlt}
             style={{
-              maxWidth: imageContained ? "200px" : "100%",
+              maxWidth: imageContained ? "80px" : "100%",
               maxHeight: "240px",
               objectFit: "contain",
               display: "block",
@@ -102,7 +103,9 @@ export const EmptyState = React.forwardRef<HTMLDivElement, EmptyStatePropsType>(
     }
 
     const hasActions = Boolean(action || secondaryAction);
-
+    const stateContainer = sectionned
+      ? { border: "1px dashed #e0e0e0", borderRadius: "10px", background: "#f7f7f7" }
+      : {};
     return (
       <InlineStack
         ref={ref}
@@ -110,10 +113,14 @@ export const EmptyState = React.forwardRef<HTMLDivElement, EmptyStatePropsType>(
         className={className}
         justifyContent="center"
         alignItems="center"
-        style={style}
+        style={{
+          ...style,
+
+          ...stateContainer,
+        }}
         padding={padding}
       >
-        <BlockStack gap="large-100" alignItems="center">
+        <BlockStack gap="small-200" alignItems="center">
           {imageNode && (
             <div
               style={{
@@ -130,7 +137,7 @@ export const EmptyState = React.forwardRef<HTMLDivElement, EmptyStatePropsType>(
           {(effectiveHeading || children) && (
             <BlockStack gap="small-200" alignItems="center">
               {effectiveHeading && (
-                <Text as="h2" variant="large" heading alignment="center">
+                <Text as="h2" heading alignment="center">
                   {effectiveHeading}
                 </Text>
               )}
@@ -143,7 +150,14 @@ export const EmptyState = React.forwardRef<HTMLDivElement, EmptyStatePropsType>(
           )}
 
           {hasActions && (
-            <InlineStack gap="small-300" alignItems="center" justifyContent="center" wrap>
+            <InlineStack
+              gap="small-300"
+              paddingBlockStart="small"
+              paddingBlockEnd="small-300"
+              alignItems="center"
+              justifyContent="center"
+              wrap
+            >
               {renderAction(action, "primary", "primary-action")}
               {renderAction(secondaryAction, "secondary", "secondary-action")}
             </InlineStack>

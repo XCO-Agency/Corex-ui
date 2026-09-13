@@ -56,11 +56,7 @@ export const Card = forwardRef<HTMLElement, CardPropsType>(function Card(
           <BlockStack gap="small-300">
             {(headerTitle || icon) && (
               <InlineStack gap="small" alignItems="center">
-                {icon && (
-                  <IconTile size="sm" tone="neutral">
-                    <Icon type={icon} size="small" />
-                  </IconTile>
-                )}
+                {icon && <Icon type={icon} />}
                 {headerTitle && (
                   <Text tooltip={tooltip} heading>
                     {headerTitle}
@@ -81,6 +77,7 @@ export const Card = forwardRef<HTMLElement, CardPropsType>(function Card(
             </Text>
           </Box>
         )}
+        {hasHeader && <span />}
 
         {children}
       </BlockStack>
@@ -95,8 +92,8 @@ export const Card = forwardRef<HTMLElement, CardPropsType>(function Card(
             <Button
               key={index}
               onClick={act.onAction}
-              url={act.url}
-              external={act.external}
+              href={act.url}
+              target={act.external ? "_blank" : undefined}
               disabled={act.disabled}
             >
               {act.content}
@@ -107,8 +104,8 @@ export const Card = forwardRef<HTMLElement, CardPropsType>(function Card(
               variant="primary"
               tone={primaryFooterAction.destructive ? "critical" : undefined}
               onClick={primaryFooterAction.onAction}
-              url={primaryFooterAction.url}
-              external={primaryFooterAction.external}
+              href={primaryFooterAction.url}
+              target={primaryFooterAction.external ? "_blank" : undefined}
               disabled={primaryFooterAction.disabled}
               loading={primaryFooterAction.loading}
             >

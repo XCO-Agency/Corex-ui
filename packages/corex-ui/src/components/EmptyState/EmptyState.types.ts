@@ -68,6 +68,7 @@ export type EmptyStatePropsType = {
    * Whether the image should be constrained within a contained width.
    */
   imageContained?: boolean;
+  sectionned?: boolean;
   /**
    * Alternative text for the image illustration.
    */
