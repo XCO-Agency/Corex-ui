@@ -5,3 +5,4 @@
 - **Naming Conventions**: Always use `Type` as suffix for type definitions (e.g., `MetricItemType`).
 - **Component Prop Verification**: Never guess or assume props from Shopify Polaris or other libraries. Always inspect the exact TypeScript prop definitions in `packages/corex-ui/src/components/**` before using any `@xco-agency/corex-ui` component.
 - **Polaris Spacing Tokens**: Always use modern Polaris spacing tokens (`"none"`, `"small-500"`...`"small-100"`, `"base"`, `"large-100"`...`"large-500"`) for all `gap` and `padding` props. Never use legacy numeric tokens (`"100"`, `"200"`, `"300"`, `"400"`).
+- **No `style` prop on `Card`**: The `Card` component renders the `<s-section>` web component, so inline `style` does not reliably penetrate or style the surface. Never pass `style` to `<Card>`. If container styling, positioning, or custom borders are needed, wrap `<Card>` in a container element or apply styles to internal children.

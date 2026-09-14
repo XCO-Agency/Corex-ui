@@ -15,6 +15,10 @@ export type AppWindowPropsType = Omit<NativeAppWindowProps, "src"> & {
   src: string;
   id?: string;
   className?: string;
+  /** Callback fired when the window is closed or hidden. */
+  onClose?: () => void;
+  /** Callback fired when the window is closed or hidden. */
+  onHide?: () => void;
   /**
    * When enabled, automatically mounts a SaveBar on the host parent page for this AppWindow
    * and bridges Save/Discard actions to the iframe via `useAppWindowSaveBar`.

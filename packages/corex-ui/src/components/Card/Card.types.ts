@@ -1,4 +1,4 @@
-import type { CSSProperties, ReactNode } from "react";
+import type { ReactNode } from "react";
 import type { IconType, PolarisPropsType } from "../../types/common";
 
 export type CardActionType = {
@@ -11,6 +11,12 @@ export type CardActionType = {
   destructive?: boolean;
 };
 
+/**
+ * Props for `<Card>`.
+ * Note: `<Card>` wraps Shopify's `<s-section>` web component.
+ * Do not rely on passing inline `style` to `<Card>` as styles will not reliably apply
+ * to the underlying web component surface. Use an outer wrapper or internal child elements instead.
+ */
 export type CardPropsType = PolarisPropsType<"s-section"> & {
   /** @deprecated use "@heading" Rendered as a heading above the card content. */
   title?: ReactNode;
@@ -30,7 +36,6 @@ export type CardPropsType = PolarisPropsType<"s-section"> & {
   /** Card padding ('base' | 'none' | legacy '0'). */
   background?: string;
   id?: string;
-  style?: CSSProperties;
   [key: `aria-${string}`]: unknown;
   [key: `data-${string}`]: unknown;
 };

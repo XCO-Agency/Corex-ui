@@ -1,6 +1,7 @@
-import { forwardRef, useEffect, useMemo, useRef, useState } from "react";
+import { forwardRef, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { createWebComponent } from "../../core/createWebComponent";
 import { mergeRefs } from "../../core/mergeRefs";
+import { useDomEvent } from "../../core/useDomEvent";
 import { SaveBar } from "../SaveBar";
 import type { AppWindowPropsType, AppWindowSaveBarConfigType } from "./AppWindow.types";
 
@@ -34,7 +35,7 @@ function getBrowserBroadcastChannel(name: string): BroadcastChannel | null {
  * - Save and Discard clicks in the host SaveBar are forwarded to the child iframe.
  */
 export const AppWindow = forwardRef<AppWindowElement, AppWindowPropsType>(
-  function AppWindow({ src, id, saveBar, ...rest }, forwardedRef) {
+  function AppWindow({ src, id, saveBar, onClose, onHide, ...rest }, forwardedRef) {
     const innerRef = useRef<AppWindowElement>(null);
     const mergedRef = useMemo(() => mergeRefs(innerRef, forwardedRef), [forwardedRef]);
 
@@ -43,6 +44,29 @@ export const AppWindow = forwardRef<AppWindowElement, AppWindowPropsType>(
 
     const saveBarId = id ? `${id}-save-bar` : "corex-app-window-save-bar";
 
+
+    const handleDismiss = useCallback(() => {
+      setChildState((prev) => (prev.open ? { ...prev, open: false } : prev));
+      if (saveBar) {
+        const shopify = typeof window !== "undefined" ? (window as any).shopify : undefined;
+        shopify?.saveBar?.hide(saveBarId);
+      }
+      onHide?.();
+      onClose?.();
+    }, [saveBar, saveBarId, onHide, onClose]);
+
+    useDomEvent(innerRef, "hide", handleDismiss);
+    useDomEvent(innerRef, "afterhide", handleDismiss);
+    useDomEvent(innerRef, "close", handleDismiss);
+
+    useEffect(() => {
+      return () => {
+        if (saveBar) {
+          const shopify = typeof window !== "undefined" ? (window as any).shopify : undefined;
+          shopify?.saveBar?.hide(saveBarId);
+        }
+      };
+    }, [saveBar, saveBarId]);
     const [childState, setChildState] = useState<{
       open?: boolean;
       loading?: boolean;

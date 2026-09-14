@@ -22,3 +22,8 @@ trigger: always_on
 4. **Polaris Spacing Tokens**:
    - Always use modern Polaris spacing tokens (`"none"`, `"small-500"`, `"small-400"`, `"small-300"`, `"small-200"`, `"small-100"`, `"base"`, `"large-100"`, `"large-200"`, `"large-300"`, `"large-400"`, `"large-500"`) for all `gap` and `padding` props.
    - Never use legacy numeric spacing tokens (`"100"`, `"200"`, `"300"`, `"400"`, etc.).
+
+5. **No `style` prop on `Card`**:
+   - `<Card>` is composed on top of Shopify's `<s-section>` web component, meaning inline `style={{ ... }}` does not reliably penetrate or style the surface element.
+   - **Never pass `style` directly to `<Card>`**.
+   - If container styling (such as fixed positioning, custom borders, or wrappers) is required, wrap `<Card>` in an outer element (`<div>` or `<Box>`) or apply styles to internal child components.

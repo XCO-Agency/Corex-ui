@@ -8,6 +8,11 @@ import { typographyComponents } from "./categories/typography";
 import { navigationComponents } from "./categories/navigation";
 import { appBridgeComponents } from "./categories/app-bridge";
 import { settingsBlocks } from "./blocks/settings";
+import { resourceTableBlocks } from "./blocks/resource-table";
+import { pricingBlocks } from "./blocks/pricing";
+import { offerEditorBlocks } from "./blocks/offer-editor";
+import { integrationsBlocks } from "./blocks/integrations";
+import { activityFeedBlocks } from "./blocks/activity-feed";
 import { metricsBlocks } from "./blocks/metrics";
 import { onboardingBlocks } from "./blocks/onboarding";
 import type { ComponentEntry } from "./types";
@@ -41,7 +46,14 @@ export type BlockGroupType = {
 export const blocks: BlockGroupType[] = [
   {
     category: "Layouts",
-    components: settingsBlocks,
+    components: [
+      ...settingsBlocks,
+      ...resourceTableBlocks,
+      ...pricingBlocks,
+      ...offerEditorBlocks,
+      ...integrationsBlocks,
+      ...activityFeedBlocks,
+    ],
   },
   {
     category: "Metrics",

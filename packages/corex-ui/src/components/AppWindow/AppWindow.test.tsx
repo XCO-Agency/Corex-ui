@@ -98,4 +98,51 @@ describe("AppWindow", () => {
 
     window.removeEventListener("message", messageListener);
   });
+  it("calls onHide and onClose and hides SaveBar when s-app-window dispatches hide event", () => {
+    const onHide = vi.fn();
+    const onClose = vi.fn();
+    const hideSpy = vi.fn();
+    (window as any).shopify = {
+      saveBar: {
+        hide: hideSpy,
+        show: vi.fn(),
+      },
+    };
+
+    render(
+      <AppWindow
+        src="/builder"
+        id="dismiss-window"
+        saveBar
+        onHide={onHide}
+        onClose={onClose}
+      />
+    );
+
+    const el = document.querySelector("s-app-window#dismiss-window");
+    expect(el).not.toBeNull();
+
+    fireEvent(el!, new Event("hide"));
+
+    expect(onHide).toHaveBeenCalledTimes(1);
+    expect(onClose).toHaveBeenCalledTimes(1);
+    expect(hideSpy).toHaveBeenCalledWith("dismiss-window-save-bar");
+  });
+
+  it("cleans up SaveBar in shopify API on unmount", () => {
+    const hideSpy = vi.fn();
+    (window as any).shopify = {
+      saveBar: {
+        hide: hideSpy,
+        show: vi.fn(),
+      },
+    };
+
+    const { unmount } = render(
+      <AppWindow src="/builder" id="unmount-window" saveBar />
+    );
+
+    unmount();
+    expect(hideSpy).toHaveBeenCalledWith("unmount-window-save-bar");
+  });
 });
