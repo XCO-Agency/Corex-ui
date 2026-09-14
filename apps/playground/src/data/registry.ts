@@ -15,6 +15,14 @@ import { integrationsBlocks } from "./blocks/integrations";
 import { activityFeedBlocks } from "./blocks/activity-feed";
 import { metricsBlocks } from "./blocks/metrics";
 import { onboardingBlocks } from "./blocks/onboarding";
+import { upsellBuilderBlocks } from "./blocks/upsell-builder";
+import { discountRulesBlocks } from "./blocks/discount-rules";
+import { workflowBuilderBlocks } from "./blocks/workflow-builder";
+import { customerSegmentsBlocks } from "./blocks/customer-segments";
+import { notificationTemplatesBlocks } from "./blocks/notification-templates";
+import { inventoryTransferBlocks } from "./blocks/inventory-transfer";
+import { reviewModerationBlocks } from "./blocks/review-moderation";
+import { subscriptionManagementBlocks } from "./blocks/subscription-management";
 import type { ComponentEntry } from "./types";
 
 export { categories } from "./types";
@@ -45,13 +53,42 @@ export type BlockGroupType = {
 
 export const blocks: BlockGroupType[] = [
   {
-    category: "Layouts",
+    category: "E-Commerce & Merchandising",
+    components: [
+      ...upsellBuilderBlocks,
+      ...discountRulesBlocks,
+      ...offerEditorBlocks,
+      ...pricingBlocks,
+    ],
+  },
+  {
+    category: "Marketing & Automation",
+    components: [
+      ...workflowBuilderBlocks,
+      ...customerSegmentsBlocks,
+      ...notificationTemplatesBlocks,
+    ],
+  },
+  {
+    category: "Operations & Logistics",
+    components: [
+      ...inventoryTransferBlocks,
+      ...integrationsBlocks,
+    ],
+  },
+  {
+    category: "Customer Feedback",
+    components: reviewModerationBlocks,
+  },
+  {
+    category: "Billing & SaaS",
+    components: subscriptionManagementBlocks,
+  },
+  {
+    category: "Layouts & Administration",
     components: [
       ...settingsBlocks,
       ...resourceTableBlocks,
-      ...pricingBlocks,
-      ...offerEditorBlocks,
-      ...integrationsBlocks,
       ...activityFeedBlocks,
     ],
   },

@@ -5,7 +5,15 @@ import type { ThumbnailPropsType } from "./Thumbnail.types";
 const SThumbnail = createWebComponent<HTMLElement>("s-thumbnail");
 
 export const Thumbnail = forwardRef<HTMLElement, ThumbnailPropsType>(
-  function Thumbnail(props, ref) {
-    return <SThumbnail ref={ref} {...props} />;
+  function Thumbnail({ source, src, ...rest }, ref) {
+    const finalSrc = src ?? source;
+    return (
+      <SThumbnail
+        ref={ref}
+        src={finalSrc}
+        {...(source ? { source } : finalSrc ? { source: finalSrc } : {})}
+        {...rest}
+      />
+    );
   },
 );

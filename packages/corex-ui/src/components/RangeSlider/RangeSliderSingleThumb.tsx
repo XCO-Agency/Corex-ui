@@ -59,9 +59,11 @@ export function RangeSliderSingleThumb(props: RangeSliderSingleThumbPropsType) {
           height: 28,
           display: "flex",
           alignItems: "center",
-          "--p-color-border": "#cccccc",
-          "--p-color-bg-fill-brand": "#303030",
-          "--p-color-bg-surface": "#ffffff",
+          ...({
+            "--p-color-border": "#cccccc",
+            "--p-color-bg-fill-brand": "#303030",
+            "--p-color-bg-surface": "#ffffff",
+          } as React.CSSProperties),
           ...style,
         }}
       >

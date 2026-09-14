@@ -3,7 +3,8 @@ import type { PolarisPropsType } from "../../types/common";
 
 type NativeButtonProps = PolarisPropsType<"s-button">;
 
-export type ButtonPropsType = NativeButtonProps & {
+export type ButtonPropsType = Omit<NativeButtonProps, "variant"> & {
+  variant?: import("../../types/common").ButtonVariantType;
   /** Renders the button as a link to this URL (legacy alias for `href`). */
   /** @deprecated Use `href`. Kept for legacy-API compatibility. */
   url?: string;

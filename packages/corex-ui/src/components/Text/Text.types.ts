@@ -8,10 +8,25 @@ import type {
 
 type NativeTextProps = PolarisPropsType<"s-text">;
 
-export type TextPropsType = Omit<NativeTextProps, "children" | "tone"> & {
+export type TextPropsType = Omit<NativeTextProps, "children" | "tone" | "color"> & {
   children?: ReactNode;
-  variant?: "xs" | "small" | "base" | "large";
+  variant?:
+    | "xs"
+    | "small"
+    | "base"
+    | "large"
+    | "bodySm"
+    | "bodyMd"
+    | "bodyLg"
+    | "headingSm"
+    | "headingMd"
+    | "headingLg"
+    | "headingXl";
   tone?: ToneType | "white";
+  /** Text color: supports Polaris keywords ('base', 'subdued', 'strong') and legacy Polaris 'subdued' */
+  color?: "subdued" | "base" | "strong" | "success" | "critical" | "warning" | "info" | (string & {});
+  /** Font weight: supports regular, medium, semibold, bold */
+  fontWeight?: "regular" | "medium" | "semibold" | "bold" | (string & {});
   /** Applies heading weight and semantic h* wrapper tag per variant */
   heading?: boolean;
   /** Custom tag override (e.g. `as="p"` or `as="span"`). */
