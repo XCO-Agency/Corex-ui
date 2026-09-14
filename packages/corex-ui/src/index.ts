@@ -59,6 +59,7 @@ export * from "./components/EmptyState";
 export * from "./components/AppWindow";
 export * from "./components/AppNav";
 export * from "./components/SaveBar";
+export * from "./components/TitleBar";
 
 export type * from "./types/common";
 
@@ -66,6 +67,7 @@ export {
   useToast,
   useSaveBar,
   useAppWindowSaveBar,
+  useModalSaveBar,
   useDimension,
   useParams,
   useStorage,
@@ -80,6 +82,8 @@ export type {
   UseSaveBarResultType,
   UseAppWindowSaveBarOptionsType,
   UseAppWindowSaveBarResultType,
+  UseModalSaveBarOptionsType,
+  UseModalSaveBarResultType,
   BreakpointType,
   UseDimensionResultType,
   UseParamsResultType,
@@ -91,4 +95,5 @@ export type {
 } from "./hooks";
 export type { ShopifyGlobal, ShopifyToastOptions } from "./types/app-bridge";
 export * from "./version";
+
 

@@ -16,10 +16,10 @@ export type UseSaveBarResultType = UseSaveBarResult;
  * Pair with a `SaveBar` (`<ui-save-bar>`) of the same `id` — see `docs/app-bridge.md`.
  * No-ops with a dev-mode warning when `window.shopify` isn't available.
  */
-export function useSaveBar(): UseSaveBarResult {
+export function useSaveBar(propID: string = "corex-ui-save-bar"): UseSaveBarResult {
   return useMemo(
     () => ({
-      show(id: string = "corex-ui-save-bar") {
+      show(id: string = propID) {
         const shopify =
           typeof window !== "undefined" ? (window.shopify as any) : undefined;
         if (shopify?.saveBar?.show) {
@@ -30,7 +30,7 @@ export function useSaveBar(): UseSaveBarResult {
           "window.shopify is not available — the save bar only works inside a real embedded Shopify admin session.",
         );
       },
-      hide(id: string = "corex-ui-save-bar") {
+      hide(id: string = propID) {
         const shopify =
           typeof window !== "undefined" ? (window.shopify as any) : undefined;
         if (shopify?.saveBar?.hide) {
@@ -41,7 +41,7 @@ export function useSaveBar(): UseSaveBarResult {
           "window.shopify is not available — the save bar only works inside a real embedded Shopify admin session.",
         );
       },
-      toggle(id: string = "corex-ui-save-bar") {
+      toggle(id: string = propID) {
         const shopify =
           typeof window !== "undefined" ? (window.shopify as any) : undefined;
         if (shopify?.saveBar?.toggle) {

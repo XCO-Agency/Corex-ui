@@ -1,12 +1,12 @@
-# App Bridge: AppWindow, AppNav, Menu, SaveBar, Toast
+# App Bridge: AppWindow, Modal (variant="max"), TitleBar, AppNav, Menu, SaveBar, Toast
 
 This is a distinct subsystem from the rest of `@xco-agency/corex-ui`. Everything else in this library
 wraps **Polaris design components** (`s-button`, `s-card`, ...); this page covers Shopify **App
-Bridge**'s embedded-app window, navigation, and notification layer — `s-app-window`, `s-app-nav`,
+Bridge**'s embedded-app window, navigation, and notification layer — `s-app-window`, `ui-modal`, `ui-title-bar`, `s-app-nav`,
 `ui-save-bar` (a different custom element namespace, not `s-*`), and the imperative
 `window.shopify.toast`/`window.shopify.saveBar` global API. See
 [component-coverage.md](./component-coverage.md#app-bridge-separate-subsystem--see-app-bridgemd)
-for what's wrapped.
+for what's wrapped. For full details on Max Modal + SaveBar patterns, see [modal.md](./components/modal.md).
 
 All of this only works inside a real embedded Shopify admin session — `window.shopify` and the
 `s-app-window`/`ui-save-bar` elements' real behavior don't exist in a plain browser tab (this

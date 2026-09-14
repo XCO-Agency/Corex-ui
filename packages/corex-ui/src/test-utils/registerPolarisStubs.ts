@@ -95,7 +95,25 @@ const STUB_TAGS = [
   "s-app-nav",
   "s-clickable",
   "ui-save-bar",
+  "ui-title-bar",
 ];
+
+/** `ui-modal` supports imperative `show()` / `hide()` and dispatches `hide` events. */
+class UiModalStub extends HTMLElement {
+  show() {
+    this.setAttribute("data-stub-open", "true");
+  }
+
+  hide() {
+    this.removeAttribute("data-stub-open");
+    this.dispatchEvent(new Event("hide", { bubbles: true }));
+  }
+
+  hideOverlay() {
+    this.removeAttribute("data-stub-open");
+    this.dispatchEvent(new Event("hide", { bubbles: true }));
+  }
+}
 
 export function registerPolarisStubs() {
   for (const tag of STUB_TAGS) {
@@ -104,4 +122,5 @@ export function registerPolarisStubs() {
   defineStub("s-modal", ModalStub);
   defineStub("s-app-window", AppWindowStub);
   defineStub("s-popover", PopoverStub);
+  defineStub("ui-modal", UiModalStub);
 }

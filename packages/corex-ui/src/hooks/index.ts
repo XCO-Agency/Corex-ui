@@ -28,3 +28,9 @@ export type { EventHandler, UseEventsResult } from "./useEvents";
 
 export { useDebounce, useDebouncedCallback } from "./useDebounce";
 
+export { useModalSaveBar } from "./useModalSaveBar";
+export type {
+  UseModalSaveBarOptionsType,
+  UseModalSaveBarResultType,
+} from "./useModalSaveBar";
+

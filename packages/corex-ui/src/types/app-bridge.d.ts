@@ -26,6 +26,17 @@ export interface SAppWindowElement extends HTMLElement {
   hide(): void;
 }
 
+/** `ui-modal` imperative API in App Bridge. */
+export interface UiModalElement extends HTMLElement {
+  show(): void;
+  hide(): void;
+}
+
+/** `ui-title-bar` element in App Bridge. */
+export interface UiTitleBarElement extends HTMLElement {
+  title?: string;
+}
+
 declare global {
   namespace JSX {
     interface IntrinsicElements {
@@ -39,6 +50,20 @@ declare global {
       > & {
         src?: string;
       };
+      "ui-modal": import("react").DetailedHTMLProps<
+        import("react").HTMLAttributes<HTMLElement>,
+        HTMLElement
+      > & {
+        variant?: "small" | "base" | "large" | "max";
+        src?: string;
+        open?: boolean;
+      };
+      "ui-title-bar": import("react").DetailedHTMLProps<
+        import("react").HTMLAttributes<HTMLElement>,
+        HTMLElement
+      > & {
+        title?: string;
+      };
     }
   }
 
@@ -49,5 +74,7 @@ declare global {
   interface HTMLElementTagNameMap {
     "s-app-window": SAppWindowElement;
     "s-app-nav": HTMLElement;
+    "ui-modal": UiModalElement;
+    "ui-title-bar": UiTitleBarElement;
   }
 }
