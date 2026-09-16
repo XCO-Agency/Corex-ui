@@ -1,8 +1,8 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" class="corex-app-icon corex-app-icon--recyclable-100">
-  <path d="m7 19-3-5h4l2 3.5" />
-  <path d="m17 19 3-5h-4l-2 3.5" />
-  <path d="M12 4 9 9h6l-3-5z" />
-  <path d="M4 14l3.5-6h2" />
-  <path d="M20 14l-3.5-6h-2" />
-  <path d="M8.5 19h7" />
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" class="corex-app-icon corex-app-icon--recyclable-100">
+  <path d="M7 19H4.8a1.8 1.8 0 0 1 -1.6 -0.9 1.8 1.8 0 0 1 0 -1.8L7.2 9.5" />
+  <path d="M11 19h8.2a1.8 1.8 0 0 0 1.6 -0.9 1.8 1.8 0 0 0 0 -1.8l-1.2 -2.1" />
+  <path d="m14 16 -3 3 3 3" />
+  <path d="M8.3 4.6A1.8 1.8 0 0 1 9.9 3.7h4.3a1.8 1.8 0 0 1 1.6 0.9l1.6 2.8" />
+  <path d="m20.5 8 -3 -3 -3 3" />
+  <path d="m4.5 12 3 -3 3 3" />
 </svg>

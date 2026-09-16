@@ -168,5 +168,117 @@ describe("Tabs", () => {
     expect(onSelect).toHaveBeenCalledWith("saved", 1);
     expect(onChange).toHaveBeenCalledWith("saved");
   });
+
+  describe("compact mode", () => {
+    it("renders compact trigger with selected tab label and select icon", () => {
+      render(<Tabs tabs={tabs} value="all" compact />);
+
+      const popoverEl = document.querySelector("s-popover");
+      expect(popoverEl).toBeInTheDocument();
+
+      const trigger = document.querySelector('s-clickable[commandfor^="corex-tabs-popover"]');
+      expect(trigger).toBeInTheDocument();
+      expect(trigger).toHaveAttribute("accessibilitylabel", "All");
+
+      const selectIcon = document.querySelector('s-icon[type="select"]');
+      expect(selectIcon).toBeInTheDocument();
+    });
+
+    it("renders dropdown menu items and checkmark for selected tab", () => {
+      render(<Tabs tabs={tabs} value="all" compact />);
+
+      const popoverEl = document.querySelector("s-popover");
+      expect(popoverEl).toBeInTheDocument();
+
+      // Checkmark is rendered for selected tab
+      const checkIcon = popoverEl?.querySelector('s-icon[type="check"]');
+      expect(checkIcon).toBeInTheDocument();
+
+      // Both tabs are rendered in dropdown
+      expect(screen.getAllByText("All").length).toBeGreaterThanOrEqual(1);
+      expect(screen.getAllByText("Drafts").length).toBeGreaterThanOrEqual(1);
+    });
+
+    it("calls onSelect and onChange when clicking a tab in the compact dropdown", () => {
+      const onSelect = vi.fn();
+      const onChange = vi.fn();
+
+      render(
+        <Tabs
+          tabs={tabs}
+          value="all"
+          selected={0}
+          onSelect={onSelect}
+          onChange={onChange}
+          compact
+        />,
+      );
+
+      const popoverEl = document.querySelector("s-popover");
+      const draftsItem = popoverEl?.querySelector('s-clickable[accessibilitylabel="Drafts"]');
+      expect(draftsItem).toBeInTheDocument();
+
+      draftsItem?.dispatchEvent(new MouseEvent("click", { bubbles: true }));
+
+      expect(onSelect).toHaveBeenCalledWith(1);
+      expect(onChange).toHaveBeenCalledWith("drafts");
+    });
+
+    it("does not call onSelect or onChange when clicking a disabled tab in compact dropdown", () => {
+      const onSelect = vi.fn();
+      const onChange = vi.fn();
+      const tabsWithDisabled = [
+        { id: "all", label: "All" },
+        { id: "archived", label: "Archived", disabled: true },
+      ];
+
+      render(
+        <Tabs
+          tabs={tabsWithDisabled}
+          value="all"
+          onSelect={onSelect}
+          onChange={onChange}
+          compact
+        />,
+      );
+
+      const popoverEl = document.querySelector("s-popover");
+      const archivedItem = popoverEl?.querySelector('s-clickable[accessibilitylabel="Archived"]');
+      expect(archivedItem).toBeInTheDocument();
+
+      archivedItem?.dispatchEvent(new MouseEvent("click", { bubbles: true }));
+
+      expect(onSelect).not.toHaveBeenCalled();
+      expect(onChange).not.toHaveBeenCalled();
+    });
+
+    it("renders badge in compact mode", () => {
+      const richTabs = [
+        {
+          id: "all",
+          label: "All",
+          badge: 42,
+        },
+        { id: "active", label: "Active" },
+      ];
+
+      render(<Tabs tabs={richTabs} value="all" compact />);
+
+      expect(screen.getAllByText("42").length).toBeGreaterThanOrEqual(1);
+    });
+
+    it("renders rightSide alongside the compact trigger", () => {
+      render(
+        <Tabs
+          tabs={tabs}
+          value="all"
+          compact
+          rightSide={<button type="button">Filter</button>}
+        />,
+      );
+
+      expect(screen.getByText("Filter")).toBeInTheDocument();
+    });
+  });
 });
 

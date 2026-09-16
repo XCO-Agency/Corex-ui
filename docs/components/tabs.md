@@ -50,6 +50,7 @@ const [selectedIndex, setSelectedIndex] = useState(0);
 | `onSelect`  | _(Deprecated: use `onChange`)_ Callback fired when a tab is clicked, passed the selected tab's `index` (`number`). |
 | `children`  | Rendered as the panel content for whichever tab is currently selected. |
 | `rightSide` | Additional actions/content placed on the right side of the tab bar. |
+| `compact`   | Boolean. When `true`, renders as a minimalist dropdown selector (inspired by Polaris IndexFilters view switcher) instead of a horizontal tab strip. |
 
 Because very custom `Tabs` styling from Polaris React (via `overrideStyles` or CSS overrides)
 targeted DOM structure that no longer exists, heavily customized legacy `Tabs` usage may need

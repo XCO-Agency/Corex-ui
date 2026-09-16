@@ -1,8 +1,8 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" class="corex-app-icon corex-app-icon--help-center">
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" class="corex-app-icon corex-app-icon--help-center">
   <circle cx="12" cy="12" r="9" />
-  <circle cx="12" cy="12" r="4" />
-  <path d="m4.93 4.93 3.54 3.54" />
-  <path d="m15.53 15.53 3.54 3.54" />
-  <path d="m4.93 19.07 3.54-3.54" />
-  <path d="m15.53 8.47 3.54-3.54" />
+  <circle cx="12" cy="12" r="4.5" />
+  <path d="m5.6 5.6 3.2 3.2" />
+  <path d="m15.2 15.2 3.2 3.2" />
+  <path d="m5.6 18.4 3.2 -3.2" />
+  <path d="m15.2 8.8 3.2 -3.2" />
 </svg>

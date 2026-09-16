@@ -13,6 +13,14 @@ import type { TabItemType } from "@xco-agency/corex-ui";
 export function TabsExample() {
   const [selectedId, setSelectedId] = useState("all");
   const [selected, setSelected] = useState(0);
+  const [compactTab, setCompactTab] = useState("all");
+
+  const compactTabs: TabItemType[] = [
+    { id: "all", label: "All" },
+    { id: "active", label: "Active" },
+    { id: "draft", label: "Draft" },
+    { id: "archived", label: "Archived" },
+  ];
 
   const tabs: TabItemType[] = [
     {
@@ -49,6 +57,31 @@ export function TabsExample() {
 
   return (
     <BlockStack gap="large-100">
+      {/* Compact Dropdown Mode (Polaris IndexFilters style) */}
+      <Box background="base" border="base" borderRadius="large" inlineSize="840px">
+        <Box padding="small-200">
+          <Tabs
+            tabs={compactTabs}
+            value={compactTab}
+            onChange={setCompactTab}
+            compact
+            rightSide={
+              <Button icon="search" variant="tertiary">
+                Search and filter
+              </Button>
+            }
+          />
+        </Box>
+        <Divider />
+        <Box padding="base">
+          <Text>
+            Compact dropdown active view: &ldquo;{compactTab}&rdquo; (
+            {compactTabs.find((t) => t.id === compactTab)?.label}).
+          </Text>
+        </Box>
+      </Box>
+
+      {/* Standard ID-based Tabs */}
       <Box background="base" border="base" borderRadius="large" inlineSize="840px">
         <Box padding="small-200">
           <Tabs
@@ -63,7 +96,7 @@ export function TabsExample() {
           />
         </Box>
         <Divider />
-        <Box padding="small">
+        <Box padding="base">
           <Text>
             ID-based panel content for tab id &ldquo;{selectedId}&rdquo; (
             {tabs.find((t) => t.id === selectedId)?.label}).
@@ -71,6 +104,7 @@ export function TabsExample() {
         </Box>
       </Box>
 
+      {/* Standard Index-based Tabs */}
       <Box background="base" border="base" borderRadius="large" inlineSize="840px">
         <Box padding="small-200">
           <Tabs
@@ -80,7 +114,7 @@ export function TabsExample() {
           />
         </Box>
         <Divider />
-        <Box padding="small">
+        <Box padding="base">
           <Text>
             Index-based panel content for index {selected} (&ldquo;
             {tabs[selected]?.label}&rdquo;).
@@ -90,4 +124,5 @@ export function TabsExample() {
     </BlockStack>
   );
 }
+
 

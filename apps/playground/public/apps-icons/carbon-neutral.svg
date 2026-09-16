@@ -1,5 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" class="corex-app-icon corex-app-icon--carbon-neutral">
-  <path d="M17.5 19H9a5 5 0 0 1-.2-10 6 6 0 0 1 11.2 2 4 4 0 0 1-2.5 8z" />
-  <path d="M12 11c1.5-2 3-1.5 3 0s-1.5 2-3 0z" />
-  <path d="M12 11v5" />
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" class="corex-app-icon corex-app-icon--carbon-neutral">
+  <path d="M17.5 19H9a5 5 0 0 1 -0.2 -10 6 6 0 0 1 11.2 2 4 4 0 0 1 -2.5 8Z" />
+  <circle cx="12" cy="13" r="2.5" />
+  <path d="m10 15 4 -4" />
 </svg>

@@ -1,0 +1,1049 @@
+// scripts/sync-apps-icons.mjs
+// Automated verification, formatting, and file-sync tool for Corex UI Apps Icons.
+import fs from "node:fs";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const rootDir = path.resolve(__dirname, "..");
+const dataFile = path.resolve(rootDir, "src/data/apps-icons.tsx");
+const publicDir = path.resolve(rootDir, "public/apps-icons");
+
+export const APP_ICON_CATEGORIES = [
+  "All",
+  "Shipping & Delivery",
+  "Returns & Guarantees",
+  "Security & Trust",
+  "Payments & Checkout",
+  "Customer Support",
+  "Quality & Authenticity",
+  "Eco-Friendly & Ethics",
+  "Promotions & Perks",
+];
+
+export const APP_ICONS_DATA = [
+  // ==========================================
+  // 1. SHIPPING & DELIVERY (9 icons)
+  // ==========================================
+  {
+    id: "free-shipping",
+    title: "Free Shipping",
+    category: "Shipping & Delivery",
+    description: "Delivery truck with cargo checkmark badge indicating free delivery on all eligible orders.",
+    keywords: ["shipping", "free", "truck", "delivery", "order", "parcel", "transport", "freight", "express"],
+    placements: ["Product page below Add to Cart", "Announcement bar", "Cart drawer footer", "Checkout footer"],
+    elements: [
+      '<path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2" />',
+      '<path d="M14 8h4.5a2 2 0 0 1 1.6.8L22 12v5a1 1 0 0 1-1 1h-2" />',
+      '<circle cx="7.5" cy="18.5" r="2.5" />',
+      '<circle cx="16.5" cy="18.5" r="2.5" />',
+      '<path d="M10 18h4" />',
+      '<path d="m6 10 2 2 4-4" />',
+    ],
+  },
+  {
+    id: "fast-delivery",
+    title: "Fast Delivery",
+    category: "Shipping & Delivery",
+    description: "Expedited delivery van with aerodynamic trailing speed motion lines.",
+    keywords: ["fast", "delivery", "speed", "quick", "express", "rush", "same day", "haste"],
+    placements: ["Product page shipping estimate", "Cart drawer", "Store announcement banner"],
+    elements: [
+      '<path d="M14 18V6a2 2 0 0 0-2-2H8" />',
+      '<path d="M14 8h4.5a2 2 0 0 1 1.6.8L22 12v5a1 1 0 0 1-1 1h-2" />',
+      '<circle cx="8" cy="18.5" r="2.5" />',
+      '<circle cx="16.5" cy="18.5" r="2.5" />',
+      '<path d="M10.5 18h3.5" />',
+      '<path d="M2 8h4" />',
+      '<path d="M1 12h5" />',
+      '<path d="M3 16h3" />',
+    ],
+  },
+  {
+    id: "express-shipping",
+    title: "Express Air Shipping",
+    category: "Shipping & Delivery",
+    description: "Air freight airplane with parcel package indicating priority overnight or 2-day delivery.",
+    keywords: ["express", "air", "plane", "priority", "overnight", "flight", "airplane", "rapid"],
+    placements: ["Shipping method selector", "Product page", "Checkout express options"],
+    elements: [
+      '<path d="M17.8 19.2 16 11l3.5-3.5a2.12 2.12 0 0 0-3-3L13 8 4.8 6.2a1 1 0 0 0-1.1.4l-.5.7 6.3 4.5-3.2 3.2-2.1-.5-.8.5 2.2 2.2 2.2 2.2.5-.8-.5-2.1 3.2-3.2 4.5 6.3.7-.5a1 1 0 0 0 .4-1.1Z" />',
+      '<path d="m3 21 3-3" />',
+      '<path d="M2 16h3" />',
+      '<path d="M8 22v-3" />',
+    ],
+  },
+  {
+    id: "worldwide-shipping",
+    title: "Worldwide Shipping",
+    category: "Shipping & Delivery",
+    description: "Global earth sphere with shipping parallels representing global international dispatch.",
+    keywords: ["global", "worldwide", "international", "globe", "earth", "export", "world", "cross border"],
+    placements: ["Store header top bar", "Footer", "Shipping policy banner"],
+    elements: [
+      '<circle cx="12" cy="12" r="9" />',
+      '<path d="M3 12h18" />',
+      '<path d="M12 3a14.5 14.5 0 0 1 4.5 9 14.5 14.5 0 0 1 -4.5 9 14.5 14.5 0 0 1 -4.5 -9A14.5 14.5 0 0 1 12 3Z" />',
+      '<path d="M4.5 7.5h15" />',
+      '<path d="M4.5 16.5h15" />',
+    ],
+  },
+  {
+    id: "local-pickup",
+    title: "Local Store Pickup",
+    category: "Shipping & Delivery",
+    description: "Storefront building with retail entrance for click & collect or curbside pickup.",
+    keywords: ["pickup", "local", "store", "curbside", "click and collect", "retail", "shop"],
+    placements: ["Cart drawer delivery toggle", "Checkout fulfillment choices", "Header"],
+    elements: [
+      '<path d="M3 9V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v4" />',
+      '<path d="M2 9h20l-1.5 4.5a2 2 0 0 1 -1.9 1.5H5.4a2 2 0 0 1 -1.9 -1.5L2 9Z" />',
+      '<path d="M4 15v5a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-5" />',
+      '<path d="M9 22v-6a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v6" />',
+      '<circle cx="12" cy="7" r="1.5" />',
+    ],
+  },
+  {
+    id: "order-tracking",
+    title: "Real-Time Tracking",
+    category: "Shipping & Delivery",
+    description: "Unfolded delivery map with location pinpoint marker indicating real-time order tracking.",
+    keywords: ["tracking", "order", "gps", "status", "shipment", "locate", "pin", "map", "carrier"],
+    placements: ["Order confirmation page", "Customer account dashboard", "Footer navigation"],
+    elements: [
+      '<path d="M3 6.5 9 4l6 2.5L21 4v13.5l-6 2.5-6-2.5-6 2.5V6.5Z" />',
+      '<path d="M9 4v13.5" />',
+      '<path d="M15 6.5V20" />',
+      '<circle cx="12" cy="9" r="2" />',
+      '<path d="M12 11v2" />',
+    ],
+  },
+  {
+    id: "safe-packaging",
+    title: "Safe Fragile Packaging",
+    category: "Shipping & Delivery",
+    description: "Carefully sealed carton box protected against impact, moisture, and rough transit.",
+    keywords: ["package", "packaging", "box", "safe", "fragile", "protection", "cushioned", "care"],
+    placements: ["Product page specifications", "Cart drawer trust badge"],
+    elements: [
+      '<path d="M21 8a2 2 0 0 0 -1 -1.73l-7 -4a2 2 0 0 0 -2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7 -4A2 2 0 0 0 21 16Z" />',
+      '<path d="m3.3 7 8.7 5 8.7-5" />',
+      '<path d="M12 22V12" />',
+      '<path d="m7.5 4.5 9 5" />',
+    ],
+  },
+  {
+    id: "same-day-delivery",
+    title: "Same-Day Dispatch",
+    category: "Shipping & Delivery",
+    description: "Stopwatch with speed markers guaranteeing orders leave the fulfillment center today.",
+    keywords: ["same day", "today", "instant", "stopwatch", "dispatch", "fast", "clock", "timer"],
+    placements: ["Product page buy box countdown", "Announcement bar"],
+    elements: [
+      '<circle cx="12" cy="13" r="8" />',
+      '<path d="M12 9v4l3 2" />',
+      '<path d="M10 2h4" />',
+      '<path d="M12 2v3" />',
+      '<path d="m18 5 1.5 1.5" />',
+      '<path d="m4.5 6.5 1.5-1.5" />',
+    ],
+  },
+  {
+    id: "contactless-delivery",
+    title: "Contactless Delivery",
+    category: "Shipping & Delivery",
+    description: "Safe doorstep drop-off package with contactless wireless signal indicator.",
+    keywords: ["contactless", "safe", "doorstep", "drop off", "hygiene", "delivery", "distancing"],
+    placements: ["Cart drawer note", "Checkout shipping instructions"],
+    elements: [
+      '<rect x="5" y="11" width="14" height="10" rx="2" />',
+      '<path d="M5 15h14" />',
+      '<path d="M12 11v10" />',
+      '<path d="M8.5 7a5 5 0 0 1 7 0" />',
+      '<path d="M6 4.5a8.5 8.5 0 0 1 12 0" />',
+    ],
+  },
+
+  // ==========================================
+  // 2. RETURNS & GUARANTEES (6 icons)
+  // ==========================================
+  {
+    id: "easy-returns",
+    title: "Easy Returns",
+    category: "Returns & Guarantees",
+    description: "Circular return loop with package symbolizing straightforward, stress-free return policies.",
+    keywords: ["returns", "easy", "exchange", "refund", "policy", "loop", "satisfaction", "risk free"],
+    placements: ["Product page key benefits", "Cart drawer", "Footer", "Order confirmation"],
+    elements: [
+      '<path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0 -6.74 2.74L3 8" />',
+      '<path d="M3 3v5h5" />',
+      '<rect x="9.5" y="9.5" width="5" height="5" rx="1" />',
+      '<path d="M9.5 12h5" />',
+    ],
+  },
+  {
+    id: "money-back-guarantee",
+    title: "Money-Back Guarantee",
+    category: "Returns & Guarantees",
+    description: "Official guarantee rosette with currency symbol assuring a complete refund if unsatisfied.",
+    keywords: ["guarantee", "money back", "refund", "warranty", "confidence", "100%", "trust"],
+    placements: ["Product page trust badges", "Hero section banner", "Checkout header"],
+    elements: [
+      '<circle cx="12" cy="10" r="7" />',
+      '<path d="m8.5 15.5 -2.5 6.5 6 -3 6 3 -2.5 -6.5" />',
+      '<path d="M12 6.5v7" />',
+      '<path d="M14 8.5h-3a1.5 1.5 0 0 0 0 3h2a1.5 1.5 0 0 1 0 3h-3" />',
+    ],
+  },
+  {
+    id: "30-day-returns",
+    title: "30-Day Free Returns",
+    category: "Returns & Guarantees",
+    description: "Calendar tile with circular return arrow marking an extended risk-free trial window.",
+    keywords: ["30 days", "trial", "return window", "calendar", "free returns", "satisfaction"],
+    placements: ["Product page specifications", "Announcement banner", "Sticky cart"],
+    elements: [
+      '<rect x="3" y="4" width="18" height="17" rx="2.5" />',
+      '<path d="M16 2v4" />',
+      '<path d="M8 2v4" />',
+      '<path d="M3 9h18" />',
+      '<path d="M8 14.5a4 4 0 1 1 0.5 3.5" />',
+      '<path d="m8 12 -2.5 2.5 2.5 2.5" />',
+    ],
+  },
+  {
+    id: "hassle-free-exchange",
+    title: "Hassle-Free Exchange",
+    category: "Returns & Guarantees",
+    description: "Bidirectional circular exchange arrows for effortless sizing or color substitutions.",
+    keywords: ["exchange", "swap", "size exchange", "replace", "trade", "reverse", "switch"],
+    placements: ["Size guide drawer", "Return portal link", "Product page returns tab"],
+    elements: [
+      '<path d="m4 8 3-3 3 3" />',
+      '<path d="M7 5v8a4 4 0 0 0 4 4h9" />',
+      '<path d="m20 16 -3 3 -3 -3" />',
+      '<path d="M17 19v-8a4 4 0 0 0 -4 -4H4" />',
+    ],
+  },
+  {
+    id: "instant-refund",
+    title: "Instant Refund",
+    category: "Returns & Guarantees",
+    description: "Payment card with lightning bolt signifying quick automated refunds with no delays.",
+    keywords: ["refund", "instant", "fast", "payout", "store credit", "automatic", "swift"],
+    placements: ["Returns & FAQ page", "Customer service hub", "Cart drawer policy"],
+    elements: [
+      '<rect x="2" y="5" width="20" height="14" rx="2.5" />',
+      '<path d="M2 10h20" />',
+      '<path d="m13 12 -3 4h4l-2 4" />',
+    ],
+  },
+  {
+    id: "lifetime-warranty",
+    title: "Lifetime Warranty",
+    category: "Returns & Guarantees",
+    description: "Security shield with infinity ribbon symbol promising lifetime repair or replacement.",
+    keywords: ["lifetime", "warranty", "infinity", "guarantee", "durable", "built to last", "shield"],
+    placements: ["Product page value props", "Footer trust bar", "Brand story section"],
+    elements: [
+      '<path d="M12 22s8 -4 8 -10V5l-8 -3 -8 3v7c0 6 8 10 8 10Z" />',
+      '<path d="M8.5 10a2.5 2.5 0 0 0 0 5c1.8 0 2.5 -2.5 3.5 -2.5s1.7 2.5 3.5 2.5a2.5 2.5 0 0 0 0 -5c-1.8 0 -2.5 2.5 -3.5 2.5s-1.7 -2.5 -3.5 -2.5Z" />',
+    ],
+  },
+
+  // ==========================================
+  // 3. SECURITY & TRUST (7 icons)
+  // ==========================================
+  {
+    id: "secure-checkout",
+    title: "Secure Checkout",
+    category: "Security & Trust",
+    description: "Shopping cart protected with a security padlock assuring total checkout safety.",
+    keywords: ["secure", "checkout", "lock", "safety", "padlock", "ssl", "encrypted", "cart"],
+    placements: ["Cart drawer checkout button", "Checkout page header", "Payment step summary"],
+    elements: [
+      '<circle cx="8" cy="21" r="1.5" />',
+      '<circle cx="17" cy="21" r="1.5" />',
+      '<path d="M2 3h3l2.4 11.2a1.5 1.5 0 0 0 1.5 1.2h8.6a1.5 1.5 0 0 0 1.5 -1.2L21 7H7" />',
+      '<rect x="11" y="7" width="6" height="5" rx="1" />',
+      '<path d="M12.5 7V5.5a1.5 1.5 0 0 1 3 0V7" />',
+    ],
+  },
+  {
+    id: "ssl-encryption",
+    title: "256-Bit SSL Encryption",
+    category: "Security & Trust",
+    description: "Heavy shield with padlock representing bank-standard cryptographic data protection.",
+    keywords: ["ssl", "encryption", "256 bit", "tls", "https", "security", "firewall", "bank grade"],
+    placements: ["Footer badges", "Checkout payment step", "Account creation form"],
+    elements: [
+      '<path d="M12 2 4 5.5v6c0 5.5 3.8 10.7 8 12 4.2 -1.3 8 -6.5 8 -12v-6L12 2Z" />',
+      '<rect x="9" y="10" width="6" height="5" rx="1.5" />',
+      '<path d="M10.5 10V8.5a1.5 1.5 0 0 1 3 0V10" />',
+      '<circle cx="12" cy="12.5" r="0.75" />',
+    ],
+  },
+  {
+    id: "privacy-protected",
+    title: "Privacy Protected / GDPR",
+    category: "Security & Trust",
+    description: "Shield with private eye safeguard promising personal customer data is never sold or shared.",
+    keywords: ["privacy", "gdpr", "confidential", "ccpa", "data protection", "anonymous", "private"],
+    placements: ["Newsletter signup popup", "Account settings", "Footer privacy link"],
+    elements: [
+      '<path d="M12 22s8 -4 8 -10V5l-8 -3 -8 3v7c0 6 8 10 8 10Z" />',
+      '<path d="M6.5 12s2.5 -4 5.5 -4 5.5 4 5.5 4 -2.5 4 -5.5 4 -5.5 -4 -5.5 -4Z" />',
+      '<circle cx="12" cy="12" r="1.75" />',
+    ],
+  },
+  {
+    id: "buyer-protection",
+    title: "Buyer Protection",
+    category: "Security & Trust",
+    description: "Protective shield enveloping a shopping bag with guaranteed order resolution.",
+    keywords: ["buyer protection", "escrow", "order safety", "coverage", "dispute", "resolution"],
+    placements: ["Product page trust block", "Order summary sidebar", "Cart drawer"],
+    elements: [
+      '<path d="M12 22s8 -4 8 -10V5l-8 -3 -8 3v7c0 6 8 10 8 10Z" />',
+      '<path d="M8.5 11h7a1 1 0 0 1 1 1v4.5a1.5 1.5 0 0 1 -1.5 1.5h-6A1.5 1.5 0 0 1 7.5 16.5V12a1 1 0 0 1 1-1Z" />',
+      '<path d="M10 11V9.5a2 2 0 0 1 4 0V11" />',
+      '<path d="m10.5 14.5 1 1 2-2" />',
+    ],
+  },
+  {
+    id: "verified-merchant",
+    title: "Verified Merchant",
+    category: "Security & Trust",
+    description: "Smooth scalloped verified merchant seal with checkmark verifying certified store identity.",
+    keywords: ["verified", "merchant", "authentic", "official", "check", "legitimate", "trusted store"],
+    placements: ["Store header next to logo", "Footer credentials", "Product page author box"],
+    elements: [
+      '<path d="M12 2.5a2.5 2.5 0 0 1 1.77 0.73l1.5 1.5a2.5 2.5 0 0 0 2.12 0.72l2.1 -0.3a2.5 2.5 0 0 1 2.48 2.48l-0.3 2.1a2.5 2.5 0 0 0 0.72 2.12l1.5 1.5a2.5 2.5 0 0 1 0 3.54l-1.5 1.5a2.5 2.5 0 0 0 -0.72 2.12l0.3 2.1a2.5 2.5 0 0 1 -2.48 2.48l-2.1 -0.3a2.5 2.5 0 0 0 -2.12 0.72l-1.5 1.5a2.5 2.5 0 0 1 -3.54 0l-1.5 -1.5a2.5 2.5 0 0 0 -2.12 -0.72l-2.1 0.3a2.5 2.5 0 0 1 -2.48 -2.48l0.3 -2.1a2.5 2.5 0 0 0 -0.72 -2.12l-1.5 -1.5a2.5 2.5 0 0 1 0 -3.54l1.5 -1.5a2.5 2.5 0 0 0 0.72 -2.12l-0.3 -2.1a2.5 2.5 0 0 1 2.48 -2.48l2.1 0.3a2.5 2.5 0 0 0 2.12 -0.72l1.5 -1.5A2.5 2.5 0 0 1 12 2.5Z" />',
+      '<path d="m8.5 12 2.5 2.5 5-5" />',
+    ],
+  },
+  {
+    id: "fraud-prevention",
+    title: "Fraud Prevention",
+    category: "Security & Trust",
+    description: "Radar security shield scanning and blocking unauthorized fraudulent activity.",
+    keywords: ["fraud", "anti fraud", "radar", "detection", "security", "scanner", "risk free"],
+    placements: ["Payment gateway details", "Security policy popup", "Footer trust bar"],
+    elements: [
+      '<path d="M12 22s8 -4 8 -10V5l-8 -3 -8 3v7c0 6 8 10 8 10Z" />',
+      '<circle cx="12" cy="11.5" r="4" />',
+      '<path d="M12 7.5v8" />',
+      '<path d="M8 11.5h8" />',
+    ],
+  },
+  {
+    id: "anti-counterfeit",
+    title: "100% Authentic Guarantee",
+    category: "Security & Trust",
+    description: "Official stamp certification ensuring genuine merchandise straight from authorized makers.",
+    keywords: ["authentic", "genuine", "original", "anti counterfeit", "licensed", "real", "maker"],
+    placements: ["Product page description badge", "Brand verification drawer"],
+    elements: [
+      '<circle cx="12" cy="12" r="9" />',
+      '<circle cx="12" cy="12" r="6" />',
+      '<path d="M12 8.5l1 2.3 2.5 0.2 -1.9 1.6 0.6 2.4 -2.2 -1.3 -2.2 1.3 0.6 -2.4 -1.9 -1.6 2.5 -0.2Z" />',
+    ],
+  },
+
+  // ==========================================
+  // 4. PAYMENTS & CHECKOUT (6 icons)
+  // ==========================================
+  {
+    id: "credit-card-secure",
+    title: "Secure Card Payments",
+    category: "Payments & Checkout",
+    description: "Credit card with EMV smart chip and padlock for secure Visa/Mastercard processing.",
+    keywords: ["credit card", "visa", "mastercard", "amex", "chip", "debit", "card payment"],
+    placements: ["Checkout payment options", "Footer payment icons list", "Cart drawer badges"],
+    elements: [
+      '<path d="M16 19H4.5A2.5 2.5 0 0 1 2 16.5v-9A2.5 2.5 0 0 1 4.5 5h15A2.5 2.5 0 0 1 22 7.5v5" />',
+      '<path d="M2 10h20" />',
+      '<rect x="5" y="13" width="3.5" height="2.5" rx=".5" />',
+      '<rect x="17" y="15" width="5" height="4" rx="1" />',
+      '<path d="M18.5 15v-1a1 1 0 0 1 2 0v1" />',
+    ],
+  },
+  {
+    id: "cash-on-delivery",
+    title: "Cash on Delivery (COD)",
+    category: "Payments & Checkout",
+    description: "Currency banknotes for customers paying physical cash on arrival.",
+    keywords: ["cod", "cash on delivery", "banknote", "cash", "pay on arrival", "money", "paper"],
+    placements: ["Payment method selection", "Cart drawer payment badges", "Product page FAQs"],
+    elements: [
+      '<rect x="2" y="6" width="16" height="10" rx="2" />',
+      '<circle cx="10" cy="11" r="2.5" />',
+      '<path d="M18 9h2a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2v-1" />',
+    ],
+  },
+  {
+    id: "flexible-installments",
+    title: "Buy Now, Pay Later (BNPL)",
+    category: "Payments & Checkout",
+    description: "Split payment card slices for 4 interest-free installments (Klarna, Afterpay, Shop Pay).",
+    keywords: ["bnpl", "installments", "klarna", "afterpay", "sezzle", "split pay", "4 payments", "shop pay"],
+    placements: ["Product page price breakdown", "Cart drawer subtotal", "Checkout payment method"],
+    elements: [
+      '<rect x="2" y="5" width="20" height="14" rx="2.5" />',
+      '<path d="M2 10h20" />',
+      '<rect x="5" y="13" width="2.5" height="2.5" rx=".5" />',
+      '<rect x="9" y="13" width="2.5" height="2.5" rx=".5" />',
+      '<rect x="13" y="13" width="2.5" height="2.5" rx=".5" />',
+      '<rect x="17" y="13" width="2.5" height="2.5" rx=".5" />',
+    ],
+  },
+  {
+    id: "zero-fees",
+    title: "No Hidden Fees / 0% Interest",
+    category: "Payments & Checkout",
+    description: "Discount tag with zero percent sign indicating 100% upfront transparent pricing.",
+    keywords: ["zero fees", "0%", "no interest", "transparent", "free", "no surcharge", "no hidden cost"],
+    placements: ["Pricing table", "Checkout order summary", "Installment widget popup"],
+    elements: [
+      '<path d="M20.6 13.4 13.4 20.6a2 2 0 0 1-2.8 0L2 12V2h10l8.6 8.6a2 2 0 0 1 0 2.8Z" />',
+      '<circle cx="7.5" cy="7.5" r="1.5" />',
+      '<path d="m10 15 4-4" />',
+      '<circle cx="10.5" cy="11.5" r="1" />',
+      '<circle cx="13.5" cy="14.5" r="1" />',
+    ],
+  },
+  {
+    id: "wallet-pay",
+    title: "Apple & Google Pay / NFC",
+    category: "Payments & Checkout",
+    description: "Smartphone radiating contactless NFC waves for one-tap express mobile checkout.",
+    keywords: ["apple pay", "google pay", "nfc", "contactless", "wallet", "mobile pay", "one tap"],
+    placements: ["Fast checkout buttons banner", "Cart drawer express buttons", "Footer"],
+    elements: [
+      '<rect x="5" y="3" width="11" height="18" rx="2" />',
+      '<path d="M9 6h3" />',
+      '<circle cx="10.5" cy="17.5" r="1" />',
+      '<path d="M19 8a4 4 0 0 1 0 6" />',
+      '<path d="M21.5 6a7.5 7.5 0 0 1 0 10" />',
+    ],
+  },
+  {
+    id: "crypto-accepted",
+    title: "Crypto Payments Accepted",
+    category: "Payments & Checkout",
+    description: "Digital blockchain cryptocurrency token for Web3 and decentralized checkout.",
+    keywords: ["crypto", "bitcoin", "ethereum", "usdt", "web3", "wallet", "blockchain", "btc"],
+    placements: ["Footer payment icons", "Checkout payment options", "Store header ticker"],
+    elements: [
+      '<circle cx="12" cy="12" r="9" />',
+      '<path d="M9.5 8h4a2 2 0 0 1 0 4H9.5" />',
+      '<path d="M9.5 12h4.5a2 2 0 0 1 0 4H9.5" />',
+      '<path d="M9.5 6v12" />',
+      '<path d="M12 6v2" />',
+      '<path d="M12 16v2" />',
+      '<path d="M13.5 6v2" />',
+      '<path d="M13.5 16v2" />',
+    ],
+  },
+
+  // ==========================================
+  // 5. CUSTOMER SUPPORT (5 icons)
+  // ==========================================
+  {
+    id: "support-24-7",
+    title: "24/7 Customer Support",
+    category: "Customer Support",
+    description: "Support headset with clock indicator ensuring round-the-clock merchant help.",
+    keywords: ["24/7", "support", "helpdesk", "always open", "customer service", "agent", "headset"],
+    placements: ["Store header contact bar", "Contact us page", "Footer support links", "Help drawer"],
+    elements: [
+      '<path d="M3 12a9 9 0 1 1 18 0" />',
+      '<rect x="2" y="11" width="3" height="6" rx="1.5" />',
+      '<rect x="19" y="11" width="3" height="6" rx="1.5" />',
+      '<path d="M20 17v1a3 3 0 0 1-3 3h-4" />',
+      '<circle cx="12" cy="12" r="3.5" />',
+      '<path d="M12 10.5v1.5l1 1" />',
+    ],
+  },
+  {
+    id: "live-chat",
+    title: "Live Chat Support",
+    category: "Customer Support",
+    description: "Interactive chat speech bubble with typing indicators for instantaneous responses.",
+    keywords: ["live chat", "chat", "messaging", "bubble", "instant message", "agent", "talk"],
+    placements: ["Sticky bottom-right chat launcher", "Contact popup", "Customer service page"],
+    elements: [
+      '<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2Z" />',
+      '<circle cx="8" cy="10" r="1" />',
+      '<circle cx="12" cy="10" r="1" />',
+      '<circle cx="16" cy="10" r="1" />',
+    ],
+  },
+  {
+    id: "phone-assistance",
+    title: "Toll-Free Phone Support",
+    category: "Customer Support",
+    description: "Telephone receiver with signal broadcast waves for direct spoken telephone support.",
+    keywords: ["phone", "call", "hotline", "toll free", "telephone", "direct line", "dial"],
+    placements: ["Store top bar", "Header dropdown", "Contact page", "Footer"],
+    elements: [
+      '<path d="M22 16.92v3a2 2 0 0 1 -2.18 2 19.79 19.79 0 0 1 -8.63 -3.07 19.5 19.5 0 0 1 -6 -6 19.79 19.79 0 0 1 -3.07 -8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 0.7 2.81 2 2 0 0 1 -0.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27 -1.27a2 2 0 0 1 2.11 -0.45 12.84 12.84 0 0 0 2.81 0.7A2 2 0 0 1 22 16.92Z" />',
+      '<path d="M14 3a8 8 0 0 1 7 7" />',
+      '<path d="M14 7a4 4 0 0 1 3 3" />',
+    ],
+  },
+  {
+    id: "email-support",
+    title: "Fast Email Assistance",
+    category: "Customer Support",
+    description: "Postal envelope with response checkmark signifying rapid email tickets.",
+    keywords: ["email", "inbox", "mail", "contact form", "ticket", "response", "reply"],
+    placements: ["Contact page grid", "Footer newsletter", "FAQ accordions"],
+    elements: [
+      '<rect x="2" y="5" width="20" height="14" rx="2.5" />',
+      '<path d="m2 7 8.97 5.7a2 2 0 0 0 2.06 0L22 7" />',
+      '<path d="m10 14 2 2 4-4" />',
+    ],
+  },
+  {
+    id: "help-center",
+    title: "Knowledge Base / Help Center",
+    category: "Customer Support",
+    description: "Lifebuoy life preserver ring providing self-service answers and troubleshooting guides.",
+    keywords: ["help center", "knowledge base", "lifebuoy", "faq", "guides", "documentation", "self service"],
+    placements: ["Header navigation", "Footer resources", "Account portal"],
+    elements: [
+      '<circle cx="12" cy="12" r="9" />',
+      '<circle cx="12" cy="12" r="4.5" />',
+      '<path d="m5.6 5.6 3.2 3.2" />',
+      '<path d="m15.2 15.2 3.2 3.2" />',
+      '<path d="m5.6 18.4 3.2 -3.2" />',
+      '<path d="m15.2 8.8 3.2 -3.2" />',
+    ],
+  },
+
+  // ==========================================
+  // 6. QUALITY & AUTHENTICITY (7 icons)
+  // ==========================================
+  {
+    id: "premium-quality",
+    title: "Premium Quality",
+    category: "Quality & Authenticity",
+    description: "Royal crown with sparkles representing superior craftsmanship and top-tier materials.",
+    keywords: ["quality", "premium", "crown", "luxury", "craftsmanship", "grade a", "superior"],
+    placements: ["Product page key features", "Brand values banner", "Cart drawer reassurance"],
+    elements: [
+      '<path d="M4 18h16l-2 -10 -4 4 -2 -6 -2 6 -4 -4Z" />',
+      '<circle cx="12" cy="6" r="1" />',
+      '<circle cx="6" cy="12" r="1" />',
+      '<circle cx="18" cy="12" r="1" />',
+      '<path d="M5 21h14" />',
+    ],
+  },
+  {
+    id: "five-star-rating",
+    title: "5-Star Rated Product",
+    category: "Quality & Authenticity",
+    description: "Radiant five-point star with celebration pedestal reflecting top customer ratings.",
+    keywords: ["rating", "reviews", "5 star", "customer loved", "acclaimed", "bestseller", "top rated"],
+    placements: ["Hero social proof badge", "Product title subtitle", "Cart drawer review snippet"],
+    elements: [
+      '<path d="M12 2.5 14.8 8l6 0.9 -4.4 4.3 1 6 -5.4 -2.8 -5.4 2.8 1 -6L3.2 8.9l6 -0.9L12 2.5Z" />',
+      '<path d="M6 21.5h12" />',
+    ],
+  },
+  {
+    id: "award-winning",
+    title: "Award-Winning Products",
+    category: "Quality & Authenticity",
+    description: "Champion trophy cup with celebration handles recognizing industry awards.",
+    keywords: ["award", "trophy", "winner", "industry choice", "gold medal", "honored", "champion"],
+    placements: ["About Us page", "Press / As Seen On bar", "Product details column"],
+    elements: [
+      '<path d="M6 9H4a2 2 0 0 1 -2 -2V5a2 2 0 0 1 2 -2h2" />',
+      '<path d="M18 9h2a2 2 0 0 0 2 -2V5a2 2 0 0 0 -2 -2h-2" />',
+      '<path d="M6 3h12v7a6 6 0 0 1 -12 0V3Z" />',
+      '<path d="M12 16v4" />',
+      '<path d="M8 20h8" />',
+    ],
+  },
+  {
+    id: "satisfaction-guaranteed",
+    title: "100% Satisfaction Guaranteed",
+    category: "Quality & Authenticity",
+    description: "Rosette award ribbon emblem guaranteeing total customer delight.",
+    keywords: ["satisfaction", "guaranteed", "delight", "rosette", "confidence", "happiness", "pledge"],
+    placements: ["Hero trust strip", "Product page sticky bar", "Cart checkout assurance"],
+    elements: [
+      '<circle cx="12" cy="9" r="7" />',
+      '<path d="m8.5 15 -2.5 6 6 -2.5 6 2.5 -2.5 -6" />',
+      '<path d="m9 9 2 2 4 -4" />',
+    ],
+  },
+  {
+    id: "handmade-craft",
+    title: "Handmade / Artisanal",
+    category: "Quality & Authenticity",
+    description: "Artisan hand nurturing a craft sparkle in small batches with personal dedication.",
+    keywords: ["handmade", "artisan", "handcrafted", "small batch", "craft", "bespoke", "unique"],
+    placements: ["Product story tab", "Specification list", "Ethical production callout"],
+    elements: [
+      '<path d="M2 13.5V17a4 4 0 0 0 4 4h4a9 9 0 0 0 9 -9v-1a2 2 0 0 0 -2 -2 2 2 0 0 0 -2 2v2" />',
+      '<path d="M11 12V8a2 2 0 0 0 -4 0v5" />',
+      '<path d="M12 3l1 2 2 1 -2 1 -1 2 -1 -2 -2 -1 2 -1Z" />',
+    ],
+  },
+  {
+    id: "lab-tested",
+    title: "Lab Tested / Clinically Proven",
+    category: "Quality & Authenticity",
+    description: "Laboratory beaker with verified checkmark denoting third-party purity testing.",
+    keywords: ["lab tested", "clinically proven", "beaker", "science", "dermatologist", "pure", "tested"],
+    placements: ["Ingredients / formula section", "Product certifications block", "Drawer specs"],
+    elements: [
+      '<path d="M10 3h4" />',
+      '<path d="M11 3v4.5L5.5 17a2.5 2.5 0 0 0 2.1 3.5h8.8a2.5 2.5 0 0 0 2.1 -3.5L13 7.5V3" />',
+      '<path d="M7.5 14h9" />',
+      '<circle cx="10" cy="17" r=".75" />',
+      '<circle cx="13.5" cy="16.5" r=".75" />',
+    ],
+  },
+  {
+    id: "authentic-original",
+    title: "Certified Authentic Seal",
+    category: "Quality & Authenticity",
+    description: "Rosette medal with central checkmark proving licensed, genuine manufacturer provenance.",
+    keywords: ["authentic", "certified", "seal", "original", "genuine", "hallmark", "provenance"],
+    placements: ["Product authenticity modal", "Brand trust carousel", "Warranty registration page"],
+    elements: [
+      '<circle cx="12" cy="9" r="6" />',
+      '<path d="m9.5 9 1.5 1.5 3.5 -3.5" />',
+      '<path d="m8 14.5 -3 6.5 7 -2.5 7 2.5 -3 -6.5" />',
+    ],
+  },
+
+  // ==========================================
+  // 7. ECO-FRIENDLY & ETHICS (6 icons)
+  // ==========================================
+  {
+    id: "eco-friendly",
+    title: "Eco-Friendly / Sustainable",
+    category: "Eco-Friendly & Ethics",
+    description: "Botanical leaf renewal cycle safeguarding planet Earth and natural resources.",
+    keywords: ["eco friendly", "sustainable", "green", "planet", "earth", "leaf", "environment"],
+    placements: ["Eco commitment banner", "Packaging notice", "Footer sustainability badge"],
+    elements: [
+      '<path d="M11 20A7 7 0 0 1 4 13C4 7.5 8 3.5 14 3.5c4 0 6 2 6 6a7 7 0 0 1 -7 7l-2 3.5Z" />',
+      '<path d="M14 3.5v7a4 4 0 0 1 -4 4H5" />',
+    ],
+  },
+  {
+    id: "recyclable-100",
+    title: "100% Recyclable Packaging",
+    category: "Eco-Friendly & Ethics",
+    description: "Mobius continuous 3-arrow recycling loop for zero-plastic, circular packaging.",
+    keywords: ["recyclable", "recycle", "loop", "packaging", "cardboard", "circular", "zero waste"],
+    placements: ["Unboxing guide", "Product sustainability pill", "Shipping drawer"],
+    elements: [
+      '<path d="M7 19H4.8a1.8 1.8 0 0 1 -1.6 -0.9 1.8 1.8 0 0 1 0 -1.8L7.2 9.5" />',
+      '<path d="M11 19h8.2a1.8 1.8 0 0 0 1.6 -0.9 1.8 1.8 0 0 0 0 -1.8l-1.2 -2.1" />',
+      '<path d="m14 16 -3 3 3 3" />',
+      '<path d="M8.3 4.6A1.8 1.8 0 0 1 9.9 3.7h4.3a1.8 1.8 0 0 1 1.6 0.9l1.6 2.8" />',
+      '<path d="m20.5 8 -3 -3 -3 3" />',
+      '<path d="m4.5 12 3 -3 3 3" />',
+    ],
+  },
+  {
+    id: "cruelty-free",
+    title: "Cruelty-Free / Leaping Bunny",
+    category: "Eco-Friendly & Ethics",
+    description: "Gentle leaping bunny silhouette guaranteeing no animal testing throughout creation.",
+    keywords: ["cruelty free", "leaping bunny", "no animal testing", "ethical", "compassionate", "bunny"],
+    placements: ["Cosmetics specs list", "Product certifications strip", "Brand philosophy section"],
+    elements: [
+      '<path d="M4 14c1 -3 3 -5 6 -5 2 0 3.5 1 4.5 2.5 1 -1.5 2 -4 1.5 -6.5 -0.5 -2 -2 -3 -2 -3s3 0.5 4.5 2.5c1.5 2 1.5 4.5 1 6.5 1.5 1 2.5 2.5 2.5 4.5 0 3 -2.5 5.5 -5.5 5.5 -2 0 -3.5 -0.8 -4.5 -2 -1.5 1.2 -3.5 2 -5.5 2 -2 0 -3.5 -1 -4 -2.5 1 -0.5 1.5 -1.5 1.5 -2.5 0 -1 -0.5 -2 -1.5 -2.5Z" />',
+      '<circle cx="15.5" cy="13.5" r="1" />',
+    ],
+  },
+  {
+    id: "organic-natural",
+    title: "100% Organic & Natural",
+    category: "Eco-Friendly & Ethics",
+    description: "Botanical seedling emerging from fertile ground signifying pesticide-free ingredients.",
+    keywords: ["organic", "natural", "bio", "clean beauty", "non toxic", "plant derived", "herbal"],
+    placements: ["Ingredient breakdown", "Product header subtitle", "Wellness filter badge"],
+    elements: [
+      '<path d="M12 22v-9" />',
+      '<path d="M12 13a6 6 0 0 0 6 -6c-3.3 0 -6 2.7 -6 6Z" />',
+      '<path d="M12 15a5 5 0 0 1 -5 -5c2.8 0 5 2.2 5 5Z" />',
+      '<path d="M4 22h16" />',
+    ],
+  },
+  {
+    id: "carbon-neutral",
+    title: "Carbon Neutral Delivery",
+    category: "Eco-Friendly & Ethics",
+    description: "Atmospheric cloud with balanced zero carbon marker denoting offset freight.",
+    keywords: ["carbon neutral", "zero carbon", "net zero", "climate friendly", "offset", "co2"],
+    placements: ["Shipping policy popup", "Cart drawer environmental contribution", "Footer"],
+    elements: [
+      '<path d="M17.5 19H9a5 5 0 0 1 -0.2 -10 6 6 0 0 1 11.2 2 4 4 0 0 1 -2.5 8Z" />',
+      '<circle cx="12" cy="13" r="2.5" />',
+      '<path d="m10 15 4 -4" />',
+    ],
+  },
+  {
+    id: "vegan-certified",
+    title: "Certified Vegan",
+    category: "Eco-Friendly & Ethics",
+    description: "Certified emblem with branching vegan leaf insignia for 100% animal-free products.",
+    keywords: ["vegan", "plant based", "dairy free", "cruelty free", "vegetarian", "ethical food"],
+    placements: ["Dietary specification table", "Product tag carousel", "Footer icons"],
+    elements: [
+      '<circle cx="12" cy="12" r="9" />',
+      '<path d="m7.5 8 4.5 9 4.5 -9" />',
+      '<path d="M12 17c0 -4 3 -7 7 -7" />',
+      '<path d="M15.5 10c1.5 0 3 0.5 3.5 1.5" />',
+    ],
+  },
+
+  // ==========================================
+  // 8. PROMOTIONS & PERKS (5 icons)
+  // ==========================================
+  {
+    id: "free-gift",
+    title: "Free Gift with Purchase",
+    category: "Promotions & Perks",
+    description: "Celebratory gift box wrapped in ribbon bow with surprise bonus sparkles.",
+    keywords: ["gift", "free gift", "bonus", "gwp", "present", "reward", "surprise", "perk"],
+    placements: ["Cart progress bar reward tier", "Promotional popup", "Product page gift alert"],
+    elements: [
+      '<rect x="3" y="8" width="18" height="4" rx="1.5" />',
+      '<rect x="4.5" y="12" width="15" height="9" rx="1.5" />',
+      '<path d="M12 8v13" />',
+      '<path d="M12 8H8.5a2.5 2.5 0 1 1 0 -5c2.5 0 3.5 5 3.5 5Z" />',
+      '<path d="M12 8h3.5a2.5 2.5 0 1 0 0 -5c-2.5 0 -3.5 5 -3.5 5Z" />',
+    ],
+  },
+  {
+    id: "best-price-guarantee",
+    title: "Best Price Guarantee",
+    category: "Promotions & Perks",
+    description: "Retail sales tag with downward price guarantee arrow promising lowest market price.",
+    keywords: ["best price", "price match", "lowest price", "bargain", "discount guarantee", "deal"],
+    placements: ["Product buy box", "Cart drawer pricing guarantee", "Comparison table footer"],
+    elements: [
+      '<path d="M20.6 13.4 13.4 20.6a2 2 0 0 1 -2.8 0L2 12V2h10l8.6 8.6a2 2 0 0 1 0 2.8Z" />',
+      '<circle cx="7.5" cy="7.5" r="1.5" />',
+      '<path d="M12 11v5" />',
+      '<path d="m9.5 13.5 2.5 2.5 2.5 -2.5" />',
+    ],
+  },
+  {
+    id: "loyalty-rewards",
+    title: "Member Rewards / Points",
+    category: "Promotions & Perks",
+    description: "Faceted diamond gem accumulating loyalty reward points on every transaction.",
+    keywords: ["rewards", "points", "loyalty", "club", "vip points", "diamond", "cashback", "perks"],
+    placements: ["Loyalty widget in cart", "Customer account dashboard", "Floating reward bubble"],
+    elements: [
+      '<path d="M6 3h12l4 6 -10 12L2 9l4 -6Z" />',
+      '<path d="M2 9h20" />',
+      '<path d="m12 21 3.5 -12" />',
+      '<path d="M12 21 8.5 9" />',
+      '<path d="m6 3 2.5 6" />',
+      '<path d="m18 3 -2.5 6" />',
+    ],
+  },
+  {
+    id: "vip-member",
+    title: "VIP Exclusive Perk",
+    category: "Promotions & Perks",
+    description: "Royal crown seal medal unlocked for top-tier VIP community members.",
+    keywords: ["vip", "exclusive", "perk", "crown", "elite", "insider", "member only", "status"],
+    placements: ["VIP collection lock screen", "Tier benefits breakdown", "Account badge"],
+    elements: [
+      '<circle cx="12" cy="12" r="9" />',
+      '<path d="M7 15l-1.5 -6 3.5 2.5 3 -4.5 3 4.5 3.5 -2.5L17 15Z" />',
+      '<path d="M7 16.5h10" />',
+    ],
+  },
+  {
+    id: "special-discount",
+    title: "Special Coupon / Promo",
+    category: "Promotions & Perks",
+    description: "Authentic coupon voucher with border punch notches, dashed tear line, and promo mark.",
+    keywords: ["discount", "coupon", "promo", "voucher", "deal", "sale", "percent", "save", "code"],
+    placements: ["Cart discount box", "Announcement bar", "Exit intent popup"],
+    elements: [
+      '<path d="M5 5h14a2 2 0 0 1 2 2v3.5a2 2 0 0 0 0 3V17a2 2 0 0 1 -2 2H5a2 2 0 0 1 -2 -2v-3.5a2 2 0 0 0 0 -3V7a2 2 0 0 1 2 -2Z" />',
+      '<path d="M13 5v14" stroke-dasharray="2 2" />',
+      '<circle cx="8" cy="10" r="1" />',
+      '<circle cx="10" cy="14" r="1" />',
+      '<path d="m7.5 14.5 3 -5" />',
+    ],
+  },
+];
+
+/**
+ * Generate TypeScript code for apps-icons.tsx
+ */
+export function generateTsxFile() {
+  const jsonIcons = JSON.stringify(APP_ICONS_DATA, null, 2);
+
+  return `// Autogenerated by sync-apps-icons.mjs - E-commerce Store & Apps Icons
+import * as React from "react";
+
+export type AppIconCategoryType =
+  | "All"
+  | "Shipping & Delivery"
+  | "Returns & Guarantees"
+  | "Security & Trust"
+  | "Payments & Checkout"
+  | "Customer Support"
+  | "Quality & Authenticity"
+  | "Eco-Friendly & Ethics"
+  | "Promotions & Perks";
+
+export type AppIconItemType = {
+  id: string;
+  title: string;
+  category: AppIconCategoryType;
+  description: string;
+  keywords: string[];
+  placements: string[];
+  viewBox?: string;
+  elements: string[];
+};
+
+export const APP_ICON_CATEGORIES: AppIconCategoryType[] = [
+  "All",
+  "Shipping & Delivery",
+  "Returns & Guarantees",
+  "Security & Trust",
+  "Payments & Checkout",
+  "Customer Support",
+  "Quality & Authenticity",
+  "Eco-Friendly & Ethics",
+  "Promotions & Perks",
+];
+
+export const APP_ICONS_DATA: AppIconItemType[] = ${jsonIcons};
+
+export function getIconById(id: string): AppIconItemType | undefined {
+  return APP_ICONS_DATA.find((i) => i.id === id);
+}
+
+export type AppIconProps = React.SVGProps<SVGSVGElement> & {
+  name: string;
+  size?: number | string;
+  strokeWidth?: number;
+  color?: string;
+};
+
+/**
+ * Universal vector AppIcon component rendering pure inline SVG.
+ */
+export function AppIcon({
+  name,
+  size = 24,
+  strokeWidth = 1.75,
+  color = "currentColor",
+  className,
+  style,
+  ...props
+}: AppIconProps) {
+  const icon = getIconById(name);
+  if (!icon) return null;
+
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke={color}
+      strokeWidth={strokeWidth}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+      style={style}
+      dangerouslySetInnerHTML={{ __html: icon.elements.join("\\n") }}
+      {...props}
+    />
+  );
+}
+
+/**
+ * Returns formatted standalone raw SVG code for a given icon.
+ */
+export function getRawSvg(
+  icon: AppIconItemType,
+  options?: {
+    color?: string;
+    strokeWidth?: number;
+    size?: number;
+    className?: string;
+  }
+): string {
+  const color = options?.color || "currentColor";
+  const strokeWidth = options?.strokeWidth || 1.75;
+  const size = options?.size || 24;
+  const cls = options?.className || \`corex-app-icon corex-app-icon--\${icon.id}\`;
+
+  return [
+    \`<svg xmlns="http://www.w3.org/2000/svg" width="\${size}" height="\${size}" viewBox="0 0 24 24" fill="none" stroke="\${color}" stroke-width="\${strokeWidth}" stroke-linecap="round" stroke-linejoin="round" class="\${cls}">\`,
+    ...icon.elements.map((el) => \`  \${el}\`),
+    "</svg>",
+  ].join("\\n");
+}
+
+/**
+ * Returns a ready-to-use React JSX component snippet.
+ */
+export function getReactSnippet(icon: AppIconItemType): string {
+  const componentName =
+    icon.title
+      .replace(/[^a-zA-Z0-9]/g, " ")
+      .split(" ")
+      .filter(Boolean)
+      .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+      .join("") + "Icon";
+
+  const jsxElements = icon.elements
+    .map(
+      (el) =>
+        "    " +
+        el
+          .replace(/stroke-width/g, "strokeWidth")
+          .replace(/stroke-linecap/g, "strokeLinecap")
+          .replace(/stroke-linejoin/g, "strokeLinejoin")
+          .replace(/stroke-dasharray/g, "strokeDasharray")
+    )
+    .join("\\n");
+
+  return \`import * as React from "react";
+
+export interface \${componentName}Props extends React.SVGProps<SVGSVGElement> {
+  size?: number | string;
+  color?: string;
+  strokeWidth?: number;
+}
+
+export function \${componentName}({
+  size = 24,
+  color = "currentColor",
+  strokeWidth = 1.75,
+  className,
+  ...props
+}: \${componentName}Props) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke={color}
+      strokeWidth={strokeWidth}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+      {...props}
+    >
+\${jsxElements}
+    </svg>
+  );
+}\`;
+}
+
+/**
+ * Returns a ready-to-use Shopify Liquid theme snippet.
+ */
+export function getLiquidSnippet(icon: AppIconItemType): string {
+  const rawSvg = getRawSvg(icon, { size: 24 });
+  return \`{% comment %}
+  Store Trust Badge: \${icon.title}
+  File: snippets/icon-\${icon.id}.liquid
+{% endcomment %}
+<span class="store-badge-icon store-badge-icon--\${icon.id}" aria-hidden="true">
+\${rawSvg}
+</span>\`;
+}
+
+/**
+ * Returns a CSS Data URI (data:image/svg+xml;utf8,...).
+ */
+export function getDataUri(icon: AppIconItemType, color = "#111827"): string {
+  const svg = getRawSvg(icon, { color });
+  return \`data:image/svg+xml;utf8,\${encodeURIComponent(svg)}\`;
+}
+`;
+}
+
+/**
+ * Generate public SVG file string
+ */
+export function generatePublicSvg(icon) {
+  return [
+    `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" class="corex-app-icon corex-app-icon--${icon.id}">`,
+    ...icon.elements.map((el) => `  ${el}`),
+    `</svg>\n`,
+  ].join("\n");
+}
+
+/**
+ * Main execution: validates, writes data TSX, and writes public SVGs.
+ */
+export function runSync() {
+  console.log(`Starting sync for ${APP_ICONS_DATA.length} icons...`);
+
+  // 1. Validation check
+  const idSet = new Set();
+  for (const icon of APP_ICONS_DATA) {
+    if (idSet.has(icon.id)) {
+      throw new Error(`Duplicate icon id found: ${icon.id}`);
+    }
+    idSet.add(icon.id);
+
+    if (!APP_ICON_CATEGORIES.includes(icon.category)) {
+      throw new Error(`Invalid category for ${icon.id}: ${icon.category}`);
+    }
+
+    if (!icon.elements || icon.elements.length === 0) {
+      throw new Error(`Icon ${icon.id} has no SVG elements.`);
+    }
+
+    for (const el of icon.elements) {
+      if (!el.startsWith("<") || !el.endsWith("/>")) {
+        throw new Error(`Malformed SVG element in ${icon.id}: ${el}`);
+      }
+    }
+  }
+
+  // 2. Write data TSX
+  const tsxContent = generateTsxFile();
+  fs.writeFileSync(dataFile, tsxContent, "utf-8");
+  console.log(`✓ Updated ${dataFile}`);
+
+  // 3. Ensure public directory exists & sync public SVGs
+  if (!fs.existsSync(publicDir)) {
+    fs.mkdirSync(publicDir, { recursive: true });
+  }
+
+  for (const icon of APP_ICONS_DATA) {
+    const filePath = path.join(publicDir, `${icon.id}.svg`);
+    const svgContent = generatePublicSvg(icon);
+    fs.writeFileSync(filePath, svgContent, "utf-8");
+  }
+  console.log(`✓ Synchronized ${APP_ICONS_DATA.length} SVGs to ${publicDir}`);
+
+  console.log("All apps icons successfully verified and synchronized!");
+}
+
+// Run if called directly
+if (process.argv[1] === fileURLToPath(import.meta.url)) {
+  runSync();
+}

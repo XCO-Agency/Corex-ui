@@ -1,7 +1,7 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" class="corex-app-icon corex-app-icon--local-pickup">
-  <path d="m2 7 2-4h16l2 4" />
-  <path d="M4 7v13a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V7" />
-  <path d="M9 21v-7a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v7" />
-  <path d="M2 7h20" />
-  <circle cx="12" cy="10" r="1.5" />
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" class="corex-app-icon corex-app-icon--local-pickup">
+  <path d="M3 9V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v4" />
+  <path d="M2 9h20l-1.5 4.5a2 2 0 0 1 -1.9 1.5H5.4a2 2 0 0 1 -1.9 -1.5L2 9Z" />
+  <path d="M4 15v5a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-5" />
+  <path d="M9 22v-6a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v6" />
+  <circle cx="12" cy="7" r="1.5" />
 </svg>
