@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" class="corex-app-icon corex-app-icon--money-back-guarantee">
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9h-3.5a1.5 1.5 0 0 0 0 3h2a1.5 1.5 0 0 1 0 3H9" />
+  <path d="M12 7v10" />
+  <path d="m8 19-3 3v-5" />
+  <path d="m16 19 3 3v-5" />
+</svg>

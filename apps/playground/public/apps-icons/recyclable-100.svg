@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" class="corex-app-icon corex-app-icon--recyclable-100">
+  <path d="m7 19-3-5h4l2 3.5" />
+  <path d="m17 19 3-5h-4l-2 3.5" />
+  <path d="M12 4 9 9h6l-3-5z" />
+  <path d="M4 14l3.5-6h2" />
+  <path d="M20 14l-3.5-6h-2" />
+  <path d="M8.5 19h7" />
+</svg>
