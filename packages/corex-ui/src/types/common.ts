@@ -14,7 +14,7 @@ export type ToneType =
 
 export type SparklineColorType = ToneType | (string & {});
 
-export type ButtonVariantType = "primary" | "secondary" | "tertiary" | "plain";
+export type ButtonVariantType = "auto" | "primary" | "secondary" | "tertiary" | "plain";
 
 export type SizeType = "small" | "medium" | "large";
 

@@ -13,7 +13,7 @@ export function ProgressBarExample() {
   const [progress, setProgress] = useState(65);
 
   return (
-    <BlockStack gap="large-200">
+    <BlockStack gap="large-200" minInlineSize="500px">
       <Card>
         <BlockStack gap="base">
           <InlineStack justifyContent="space-between" alignItems="center">
@@ -21,13 +21,10 @@ export function ProgressBarExample() {
               Interactive Progress
             </Text>
             <ButtonGroup>
-              <Button size="slim" onClick={() => setProgress((p) => Math.max(0, p - 10))}>
+              <Button onClick={() => setProgress((p) => Math.max(0, p - 10))}>
                 -10%
               </Button>
-              <Button
-                size="slim"
-                onClick={() => setProgress((p) => Math.min(100, p + 10))}
-              >
+              <Button onClick={() => setProgress((p) => Math.min(100, p + 10))}>
                 +10%
               </Button>
             </ButtonGroup>

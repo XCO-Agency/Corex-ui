@@ -1,10 +1,10 @@
 import type { CSSProperties, ReactNode } from "react";
-import type { PolarisPropsType } from "../../types/common";
+import type { ButtonVariantType, PolarisPropsType, SizeType } from "../../types/common";
 
 type NativeButtonProps = PolarisPropsType<"s-button">;
 
 export type ButtonPropsType = Omit<NativeButtonProps, "variant"> & {
-  variant?: import("../../types/common").ButtonVariantType;
+  variant?: ButtonVariantType;
   /** Renders the button as a link to this URL (legacy alias for `href`). */
   /** @deprecated Use `href`. Kept for legacy-API compatibility. */
   url?: string;
@@ -29,5 +29,5 @@ export type ButtonPropsType = Omit<NativeButtonProps, "variant"> & {
   /** Suppresses React hydration warnings when web component attributes are mutated externally. */
   suppressHydrationWarning?: boolean;
   /** Size token supported by Polaris Button. */
-  size?: import("../../types/common").SizeType;
+  size?: SizeType;
 };

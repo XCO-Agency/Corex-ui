@@ -1,5 +1,15 @@
 import * as React from "react";
-import { Command, Inbox, Rocket, Search, Sparkles, ChevronDown, Code2, Grid } from "lucide-react";
+import {
+  Command,
+  Inbox,
+  Rocket,
+  Search,
+  Sparkles,
+  ChevronDown,
+  Code2,
+  Grid,
+  BadgeCheck,
+} from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
@@ -137,6 +147,20 @@ export function AppSidebar({ onOpenSearch, ...props }: AppSidebarPropsType) {
               </SidebarMenuItem>
               <SidebarMenuItem>
                 <SidebarMenuButton
+                  render={<Link to="/apps-icons" />}
+                  isActive={currentPath === "/apps-icons" || currentPath === "/app-icons"}
+                >
+                  <BadgeCheck className="size-4 text-amber-500" />
+                  <span className="flex flex-1 items-center justify-between">
+                    <span>Apps Icons</span>
+                    <span className="rounded bg-amber-500/15 px-1 py-0.2 font-mono text-[9px] font-semibold text-amber-600 dark:text-amber-400">
+                      51
+                    </span>
+                  </span>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+              <SidebarMenuItem>
+                <SidebarMenuButton
                   render={<Link to="/utils" />}
                   isActive={currentPath === "/utils" || currentPath.startsWith("/utils")}
                 >
@@ -195,7 +219,7 @@ export function AppSidebar({ onOpenSearch, ...props }: AppSidebarPropsType) {
 
         {blocks.length > 0 && (
           <Collapsible
-            open={effectiveBlocksOpen}
+            open={true}
             onOpenChange={setIsBlocksOpen}
             className="group/blocks-collapsible"
           >

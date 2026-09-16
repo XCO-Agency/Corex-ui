@@ -27,6 +27,7 @@ export function ComponentIframe({ children, className }: ComponentIframePropsTyp
             <head>
               <meta charset="utf-8" />
               <meta name="viewport" content="width=device-width, initial-scale=1" />
+              <base href="${window.location.origin}/" />
               <!-- Shopify Polaris Web Components CDN -->
               <script src="https://cdn.shopify.com/shopifycloud/polaris-1.js"></script>
               <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" />

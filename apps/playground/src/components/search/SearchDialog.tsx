@@ -118,7 +118,15 @@ const ICONS_ENTRY: ComponentEntry = {
   examples: [],
 };
 
-const searchableEntries = [...allEntries, ...UTILS_ENTRIES, ICONS_ENTRY];
+const APPS_ICONS_ENTRY: ComponentEntry = {
+  name: "Apps Icons & Trust Badges",
+  slug: "apps-icons",
+  category: "Media",
+  description: "High-converting store trust badges, free shipping, easy returns, secure checkout, 24/7 support, and payment vector SVGs.",
+  examples: [],
+};
+
+const searchableEntries = [...allEntries, ...UTILS_ENTRIES, ICONS_ENTRY, APPS_ICONS_ENTRY];
 
   // Filter components, blocks, and utils
   const results = React.useMemo(() => {
@@ -155,6 +163,10 @@ const searchableEntries = [...allEntries, ...UTILS_ENTRIES, ICONS_ENTRY];
       setOpen(false);
       if (component.slug === "icons") {
         navigate("/icons");
+        return;
+      }
+      if (component.slug === "apps-icons") {
+        navigate("/apps-icons");
         return;
       }
       if (component.slug.startsWith("utils")) {

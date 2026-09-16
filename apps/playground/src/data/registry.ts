@@ -10,19 +10,17 @@ import { appBridgeComponents } from "./categories/app-bridge";
 import { settingsBlocks } from "./blocks/settings";
 import { resourceTableBlocks } from "./blocks/resource-table";
 import { pricingBlocks } from "./blocks/pricing";
-import { offerEditorBlocks } from "./blocks/offer-editor";
 import { integrationsBlocks } from "./blocks/integrations";
 import { activityFeedBlocks } from "./blocks/activity-feed";
 import { metricsBlocks } from "./blocks/metrics";
 import { onboardingBlocks } from "./blocks/onboarding";
-import { upsellBuilderBlocks } from "./blocks/upsell-builder";
 import { discountRulesBlocks } from "./blocks/discount-rules";
 import { workflowBuilderBlocks } from "./blocks/workflow-builder";
-import { customerSegmentsBlocks } from "./blocks/customer-segments";
 import { notificationTemplatesBlocks } from "./blocks/notification-templates";
-import { inventoryTransferBlocks } from "./blocks/inventory-transfer";
-import { reviewModerationBlocks } from "./blocks/review-moderation";
 import { subscriptionManagementBlocks } from "./blocks/subscription-management";
+import { appCrossSellBlocks } from "./blocks/app-cross-sell";
+import { videoTutorialBlocks } from "./blocks/video-tutorial";
+import { supportHubBlocks } from "./blocks/support-hub";
 import type { ComponentEntry } from "./types";
 
 export { categories } from "./types";
@@ -55,9 +53,7 @@ export const blocks: BlockGroupType[] = [
   {
     category: "E-Commerce & Merchandising",
     components: [
-      ...upsellBuilderBlocks,
       ...discountRulesBlocks,
-      ...offerEditorBlocks,
       ...pricingBlocks,
     ],
   },
@@ -65,20 +61,14 @@ export const blocks: BlockGroupType[] = [
     category: "Marketing & Automation",
     components: [
       ...workflowBuilderBlocks,
-      ...customerSegmentsBlocks,
       ...notificationTemplatesBlocks,
     ],
   },
   {
     category: "Operations & Logistics",
     components: [
-      ...inventoryTransferBlocks,
       ...integrationsBlocks,
     ],
-  },
-  {
-    category: "Customer Feedback",
-    components: reviewModerationBlocks,
   },
   {
     category: "Billing & SaaS",
@@ -99,6 +89,14 @@ export const blocks: BlockGroupType[] = [
   {
     category: "Onboarding",
     components: onboardingBlocks,
+  },
+  {
+    category: "Growth & Ecosystem",
+    components: [
+      ...appCrossSellBlocks,
+      ...videoTutorialBlocks,
+      ...supportHubBlocks,
+    ],
   },
 ];
 

@@ -13,11 +13,12 @@ import {
   TrendingUp,
   Rocket,
   Code2,
+  Sparkles,
   type LucideIcon,
 } from "lucide-react";
 import type { CategoryType } from "@/data/types";
 
-export const CATEGORY_ICONS: Record<CategoryType, LucideIcon> = {
+export const CATEGORY_ICONS: Record<string, LucideIcon> = {
   Actions: MousePointerClick,
   Forms: CheckSquare,
   Layout: LayoutGrid,
@@ -32,6 +33,7 @@ export const CATEGORY_ICONS: Record<CategoryType, LucideIcon> = {
   Metrics: TrendingUp,
   Onboarding: Rocket,
   Utilities: Code2,
+  "Growth & Ecosystem": Sparkles,
 };
 
 export function getCategoryIcon(category: string): LucideIcon {

@@ -59,7 +59,7 @@ export function SidebarCategoryItem({
         >
           <div className="flex items-center gap-2 min-w-0">
             <CategoryIcon className="size-4 shrink-0" />
-            <span className="truncate">{category}</span>
+            <span className="truncate font-medium">{category}</span>
           </div>
           <ChevronRight
             className={cn(
@@ -78,7 +78,7 @@ export function SidebarCategoryItem({
                   <SidebarMenuSubButton
                     isActive={isActive}
                     render={
-                      <Link to={itemPath}>
+                      <Link to={itemPath} className="opacity-80">
                         <span>{component.name}</span>
                       </Link>
                     }

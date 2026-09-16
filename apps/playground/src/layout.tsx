@@ -29,6 +29,8 @@ export default function Layout({ children }: LayoutPropsType) {
   const isBlock = sectionType === "blocks";
   const isInstallation = location.pathname === "/installation";
   const isIcons = location.pathname === "/icons";
+  const isAppsIcons =
+    location.pathname === "/apps-icons" || location.pathname === "/app-icons";
   const isUtils = location.pathname.startsWith("/utils");
 
   return (
@@ -43,7 +45,11 @@ export default function Layout({ children }: LayoutPropsType) {
               <BreadcrumbList>
                 <BreadcrumbItem className="hidden sm:block">
                   <BreadcrumbLink render={<Link to="/" />}>
-                    {isInstallation || isIcons || isUtils ? "Corex UI" : isBlock ? "Blocks" : "Components"}
+                    {isInstallation || isIcons || isAppsIcons || isUtils
+                      ? "Corex UI"
+                      : isBlock
+                      ? "Blocks"
+                      : "Components"}
                   </BreadcrumbLink>
                 </BreadcrumbItem>
                 {isInstallation ? (
@@ -62,6 +68,16 @@ export default function Layout({ children }: LayoutPropsType) {
                     <BreadcrumbItem>
                       <BreadcrumbPage className="font-medium text-foreground text-xs sm:text-sm">
                         Icons
+                      </BreadcrumbPage>
+                    </BreadcrumbItem>
+                  </>
+                ) : null}
+                {isAppsIcons ? (
+                  <>
+                    <BreadcrumbSeparator className="hidden sm:block" />
+                    <BreadcrumbItem>
+                      <BreadcrumbPage className="font-medium text-foreground text-xs sm:text-sm">
+                        Apps Icons
                       </BreadcrumbPage>
                     </BreadcrumbItem>
                   </>

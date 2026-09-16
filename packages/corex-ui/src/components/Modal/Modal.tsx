@@ -163,7 +163,8 @@ export const Modal = forwardRef<ModalElement, ModalPropsType>(function Modal(
         hideModal(nodeRef.current, modalId);
       }
       if (saveBar) {
-        const shopify = typeof window !== "undefined" ? (window as any).shopify : undefined;
+        const shopify =
+          typeof window !== "undefined" ? (window as any).shopify : undefined;
         shopify?.saveBar?.hide(saveBarId);
       }
     };
@@ -383,4 +384,3 @@ export const Modal = forwardRef<ModalElement, ModalPropsType>(function Modal(
     </SModal>
   );
 });
-
