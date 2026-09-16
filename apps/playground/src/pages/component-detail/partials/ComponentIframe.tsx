@@ -69,6 +69,40 @@ export function ComponentIframe({ children, className }: ComponentIframePropsTyp
                   display: block;
                   width: 100%;
                 }
+                @keyframes spin {
+                  to {
+                    transform: rotate(360deg);
+                  }
+                }
+                @keyframes shimmer {
+                  0% {
+                    background-position: 260% 0;
+                  }
+                  100% {
+                    background-position: -260% 0;
+                  }
+                }
+                @keyframes scanPulse {
+                  0% {
+                    transform: scale(0.65);
+                    opacity: 0.55;
+                  }
+                  100% {
+                    transform: scale(1.35);
+                    opacity: 0;
+                  }
+                }
+                @keyframes swatchPop {
+                  0% {
+                    transform: scale(1);
+                  }
+                  40% {
+                    transform: scale(1.08);
+                  }
+                  100% {
+                    transform: scale(1);
+                  }
+                }
               </style>
             </head>
             <body>
@@ -78,6 +112,27 @@ export function ComponentIframe({ children, className }: ComponentIframePropsTyp
         `);
         doc.close();
       }
+
+      // Sync styles from parent document into iframe head
+      const parentStyles = document.querySelectorAll("style, link[rel='stylesheet']");
+      parentStyles.forEach((el) => {
+        if (el.tagName === "LINK") {
+          const href = (el as HTMLLinkElement).href;
+          if (href.includes("fonts.googleapis.com")) return;
+          if (doc.querySelector(`link[href="${href}"]`)) return;
+          const link = doc.createElement("link");
+          link.rel = "stylesheet";
+          link.href = href;
+          doc.head.appendChild(link);
+        } else if (el.tagName === "STYLE") {
+          const viteId = el.getAttribute("data-vite-dev-id");
+          if (viteId && doc.querySelector(`style[data-vite-dev-id="${viteId}"]`)) return;
+          const style = doc.createElement("style");
+          if (viteId) style.setAttribute("data-vite-dev-id", viteId);
+          style.textContent = el.textContent;
+          doc.head.appendChild(style);
+        }
+      });
 
       // Sync dark mode class
       const isDark = document.documentElement.classList.contains("dark");

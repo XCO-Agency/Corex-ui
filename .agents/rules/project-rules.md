@@ -4,12 +4,12 @@ trigger: always_on
 
 # Corex UI Project Rules
 
-1. **No Tailwind CSS in Blocks or UI Component Examples**:
-   - Consuming Shopify apps do not have Tailwind CSS installed and do not support it.
+1. **Strictly Use Corex UI Components (No Tailwind CSS, Custom HTML, or Inline Styles)**:
+   - Consuming Shopify apps do not have Tailwind CSS installed and do not support custom CSS or inline styling hacks.
    - Tailwind CSS is **strictly limited** to the playground app shell itself (e.g. playground sidebar, overview, layout shell).
-   - In all UI component examples (`apps/playground/src/examples/**`) and blocks (`apps/playground/src/blocks/**`), **NEVER use Tailwind CSS classes**.
-   - Instead, compose layouts exclusively using `corex-ui` components (`Box`, `BlockStack`, `InlineStack`, `Grid`, `Card`, `Text`, `Badge`, `Divider`, `Button`, `Icon`, etc.).
-   - If a layout requirement cannot be achieved with `corex-ui` primitives, use standard inline or module css styles with Polaris CSS custom properties (`var(--p-color-*)`, `var(--p-space-*)`, etc.), avoiding custom CSS unless strictly necessary.
+   - In all UI component examples (`apps/playground/src/examples/**`) and blocks (`apps/playground/src/blocks/**`), **NEVER use Tailwind CSS classes, custom HTML tags (`<div>`, `<button>`, `<input>`, `<textarea>`, `<svg>`, `<span>`, `<p>`, `<a>`, etc.), or inline `style={{ ... }}` objects**.
+   - **Always remember this rule**: You must compose layouts exclusively using `@xco-agency/corex-ui` components (`Box`, `BlockStack`, `InlineStack`, `Grid`, `Card`, `Text`, `Badge`, `Divider`, `Button`, `Icon`, `Avatar`, `Thumbnail`, `Modal`, `ProgressBar`, `Link`, `Clickable`, etc.). *(Exception: 3rd-party App/Partner logos such as in `AppIconBadge` represent external brand identities and use dedicated branded vector logos/images).*
+   - Use `Box` (with its props: `padding`, `background`, `borderWidth`, `borderColor`, `borderRadius`, `inlineSize`, `maxInlineSize`, `position`, etc.), `BlockStack`, `InlineStack`, and `Grid` for all layout structures instead of raw HTML elements or inline CSS.
 
 2. **Modular Architecture & Conventions**:
    - Types must always use `Type` as suffix (e.g., `MetricItemType`).
@@ -26,4 +26,4 @@ trigger: always_on
 5. **No `style` prop on `Card`**:
    - `<Card>` is composed on top of Shopify's `<s-section>` web component, meaning inline `style={{ ... }}` does not reliably penetrate or style the surface element.
    - **Never pass `style` directly to `<Card>`**.
-   - If container styling (such as fixed positioning, custom borders, or wrappers) is required, wrap `<Card>` in an outer element (`<div>` or `<Box>`) or apply styles to internal child components.
+   - If container styling (such as fixed positioning, custom borders, or wrappers) is required, wrap `<Card>` in a `<Box>` component or apply layout props to internal child components.

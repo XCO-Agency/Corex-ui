@@ -24,7 +24,15 @@ export type TextPropsType = Omit<NativeTextProps, "children" | "tone" | "color">
     | "headingXl";
   tone?: ToneType | "white";
   /** Text color: supports Polaris keywords ('base', 'subdued', 'strong') and legacy Polaris 'subdued' */
-  color?: "subdued" | "base" | "strong" | "success" | "critical" | "warning" | "info" | (string & {});
+  color?:
+    | "subdued"
+    | "base"
+    | "strong"
+    | "success"
+    | "critical"
+    | "warning"
+    | "info"
+    | (string & {});
   /** Font weight: supports regular, medium, semibold, bold */
   fontWeight?: "regular" | "medium" | "semibold" | "bold" | (string & {});
   /** Applies heading weight and semantic h* wrapper tag per variant */
@@ -35,7 +43,6 @@ export type TextPropsType = Omit<NativeTextProps, "children" | "tone" | "color">
   /** Modern Polaris text tone ('success' | 'warning' | 'critical' | 'info' | 'neutral'). */
   /** Shorthand for subdued color */
   underline?: boolean;
-  alignment?: AlignmentType;
   lineClamp?: number;
   breakWord?: boolean;
   numeric?: boolean;

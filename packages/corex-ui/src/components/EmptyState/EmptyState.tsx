@@ -61,7 +61,7 @@ export const EmptyState = React.forwardRef<HTMLDivElement, EmptyStatePropsType>(
       imageAlt = "",
       icon,
       footerContent,
-      fullWidth = false,
+
       sectionned = false,
       children,
       padding = "large-300",
@@ -135,15 +135,15 @@ export const EmptyState = React.forwardRef<HTMLDivElement, EmptyStatePropsType>(
           )}
 
           {(effectiveHeading || children) && (
-            <BlockStack gap="small-200" alignItems="center">
+            <BlockStack gap="small-200" alignItems="center" maxInlineSize="450px">
               {effectiveHeading && (
-                <Text as="h2" heading alignment="center">
+                <Text as="h2" heading>
                   {effectiveHeading}
                 </Text>
               )}
               {children && (
-                <Text as="div" color="subdued" alignment="center">
-                  {children}
+                <Text as="div" color="subdued">
+                  <div style={{ textAlign: "center" }}>{children}</div>
                 </Text>
               )}
             </BlockStack>
@@ -169,7 +169,7 @@ export const EmptyState = React.forwardRef<HTMLDivElement, EmptyStatePropsType>(
                 paddingTop: "var(--p-space-200, 8px)",
               }}
             >
-              <Text as="div" color="subdued" alignment="center">
+              <Text as="div" color="subdued">
                 {footerContent}
               </Text>
             </div>

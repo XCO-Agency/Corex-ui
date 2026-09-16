@@ -81,11 +81,7 @@ export type EmptyStatePropsType = {
    * Additional footer content displayed below the action buttons (e.g. help link).
    */
   footerContent?: ReactNode;
-  /**
-   * Whether the empty state should span full container width instead of bounded max width.
-   * @default false
-   */
-  fullWidth?: boolean;
+
   /**
    * Main description or additional content of the empty state.
    */

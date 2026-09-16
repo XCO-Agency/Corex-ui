@@ -14,6 +14,7 @@ import { integrationsBlocks } from "./blocks/integrations";
 import { activityFeedBlocks } from "./blocks/activity-feed";
 import { metricsBlocks } from "./blocks/metrics";
 import { onboardingBlocks } from "./blocks/onboarding";
+import { onboardingNewBlocks } from "./blocks/onboarding-new";
 import { discountRulesBlocks } from "./blocks/discount-rules";
 import { workflowBuilderBlocks } from "./blocks/workflow-builder";
 import { notificationTemplatesBlocks } from "./blocks/notification-templates";
@@ -88,7 +89,10 @@ export const blocks: BlockGroupType[] = [
   },
   {
     category: "Onboarding",
-    components: onboardingBlocks,
+    components: [
+      ...onboardingBlocks,
+      ...onboardingNewBlocks,
+    ],
   },
   {
     category: "Growth & Ecosystem",

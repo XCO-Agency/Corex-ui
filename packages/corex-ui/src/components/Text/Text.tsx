@@ -126,7 +126,7 @@ export const Text = forwardRef<HTMLElement, TextPropsType>(function Text(
   if (!children && children !== 0) return null;
   const config = VARIANT_SIZE_MAP?.[variant] ?? VARIANT_SIZE_MAP.base;
   const WrapperTag: ElementType | undefined =
-    as || (heading ? config.headingTag : undefined);
+    as || (heading ? config.headingTag : variant !== "base" ? "span" : undefined);
 
   const resolvedWeight = fontWeight
     ? (FONT_WEIGHT_MAP[fontWeight] ?? fontWeight)

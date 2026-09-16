@@ -11,6 +11,7 @@ const corexPkg = JSON.parse(
   ),
 );
 
+// Vite reload trigger
 export default defineConfig({
   plugins: [react(), tailwindcss()],
   define: {
@@ -25,4 +26,5 @@ export default defineConfig({
     },
   },
 });
+
 

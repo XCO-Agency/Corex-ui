@@ -11,23 +11,16 @@ export function SupportTeamAvatars({ members }: SupportTeamAvatarsPropsType) {
     <InlineStack gap="base" alignItems="center">
       {members.map((member) => (
         <BlockStack key={member.name} gap="small-400" inlineAlign="center">
-          <Box
-            inlineSize="56px"
-            blockSize="56px"
-            borderRadius="full"
-            overflow="hidden"
-          >
+          <Box inlineSize="56px" blockSize="56px" borderRadius="full" overflow="hidden">
             <Image
               src={member.avatarUrl}
               alt={member.name}
               aspectRatio="1/1"
               objectFit="cover"
-              borderRadius="full"
+              borderRadius="large-200"
             />
           </Box>
-          <Text variant="bodySm">
-            {member.name}
-          </Text>
+          <Text variant="bodySm">{member.name}</Text>
         </BlockStack>
       ))}
     </InlineStack>

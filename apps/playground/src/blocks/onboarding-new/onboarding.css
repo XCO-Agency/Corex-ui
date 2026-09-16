@@ -1,0 +1,194 @@
+/*
+  onboarding.css
+  Holds keyframes, interactive pseudo-classes, toggle-switch knob, and responsive breakpoints.
+*/
+
+/* ---------- keyframes ---------- */
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 260% 0;
+  }
+  100% {
+    background-position: -260% 0;
+  }
+}
+
+@keyframes scanPulse {
+  0% {
+    transform: scale(0.65);
+    opacity: 0.55;
+  }
+  100% {
+    transform: scale(1.35);
+    opacity: 0;
+  }
+}
+
+@keyframes swatchPop {
+  0% {
+    transform: scale(1);
+  }
+  40% {
+    transform: scale(1.08);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* ---------- animated classes ---------- */
+
+.spinner {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 3px solid #e3e3e3;
+  border-top-color: #008060;
+  animation: spin 0.75s linear infinite !important;
+  flex-shrink: 0;
+}
+
+.processing-text {
+  font-size: clamp(1.25rem, 3.2vw, 1.75rem);
+  font-weight: 600;
+  display: inline-block;
+  background-image: linear-gradient(90deg, #6d7175 0%, #1a1a1a 22%, #008060 42%, #1a1a1a 62%, #6d7175 84%);
+  background-size: 260% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  animation: shimmer 2.4s linear infinite !important;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.scan-orbit {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 2px solid #008060;
+  opacity: 0.35;
+  animation: scanPulse 1.8s ease-out infinite !important;
+}
+
+.mini-spinner {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  border-top-color: #ffffff;
+  animation: spin 0.7s linear infinite !important;
+}
+
+/* ---------- hover / active states ---------- */
+
+.q-option:hover {
+  border-color: #c9cccf !important;
+}
+
+.btn:not(:disabled):hover {
+  background: #006e52 !important;
+  box-shadow: 0 6px 16px rgba(0, 128, 96, 0.25) !important;
+}
+
+.btn:not(:disabled):active {
+  transform: scale(0.98) !important;
+}
+
+.scan-cta:hover:not(:disabled) {
+  background: #006e52 !important;
+}
+
+.swatch-color:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 0 0 1px #c9cccf,
+    0 6px 14px rgba(0, 0, 0, 0.1) !important;
+}
+
+.q-input:focus {
+  outline: none;
+  border-color: #008060 !important;
+  box-shadow: 0 0 0 3px #e3f1ec !important;
+}
+
+/* Accessible focus ring */
+button:focus-visible,
+[tabindex]:focus-visible,
+input:focus-visible {
+  outline: 2px solid #008060;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* ---------- toggle switch knob ---------- */
+
+.toggle-switch {
+  position: relative;
+}
+
+.toggle-switch::after {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #fff;
+  transition: transform 0.2s ease;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+}
+
+.toggle-switch.is-on::after {
+  transform: translateX(16px);
+}
+
+/* Replays when swatch element is updated */
+.swatch-color.is-updated {
+  animation: swatchPop 0.5s ease;
+}
+
+/* ---------- responsive layout ---------- */
+
+.toggle-grid,
+.preset-grid {
+  grid-template-columns: 1fr 1fr;
+}
+
+.panel {
+  padding: 32px 30px;
+}
+
+@media (max-width: 560px) {
+  .toggle-grid,
+  .preset-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .panel {
+    padding: 26px 20px !important;
+  }
+
+  .brand-swatches {
+    flex-wrap: wrap !important;
+  }
+
+  .scan-card {
+    flex-wrap: wrap !important;
+  }
+
+  .scan-cta {
+    width: 100% !important;
+    justify-content: center !important;
+  }
+}
+
+/* ---------- end of onboarding.css ---------- */
