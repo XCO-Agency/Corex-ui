@@ -29,13 +29,15 @@ export const ChoiceList = forwardRef<HTMLElement, ChoiceListPropsType>(
     return (
       <SChoiceList
         ref={ref}
-        label={title}
+        label={title ?? name}
         values={selected}
         multiple={allowMultiple}
         name={name}
         onChange={handleChange}
+        labelAccessibilityVisibility={title ? undefined : "exclusive"}
         {...rest}
       >
+        {/* <s-choice-list labelAccessibilityVisibility="exclusive"></s-choice-list> */}
         {choices.map((choice) => (
           <SChoice
             key={choice.value}

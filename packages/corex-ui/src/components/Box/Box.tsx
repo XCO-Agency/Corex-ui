@@ -122,7 +122,7 @@ export const Box: ForwardRefExoticComponent<BoxPropsType & RefAttributes<HTMLEle
     const resolvedPaddingInlineStart = mapLegacySpacing(paddingInlineStart);
     const resolvedPaddingInlineEnd = mapLegacySpacing(paddingInlineEnd);
 
-    // Merge legacy layout and styling properties into inline styles for seamless rendering
+    // Collect layout and styling properties that require a CSS wrapper
     const legacyStyles: CSSProperties = {};
     if (color) legacyStyles.color = color;
     if (shadow) legacyStyles.boxShadow = shadow;
@@ -140,9 +140,25 @@ export const Box: ForwardRefExoticComponent<BoxPropsType & RefAttributes<HTMLEle
     if (overflowX) legacyStyles.overflowX = overflowX as CSSProperties["overflowX"];
     if (overflowY) legacyStyles.overflowY = overflowY as CSSProperties["overflowY"];
 
-    return (
+    const {
+      style: userStyle,
+      className,
+      ...restWithoutStyle
+    } = rest as {
+      style?: CSSProperties;
+      className?: string;
+      [key: string]: unknown;
+    };
+
+    const combinedStyles: CSSProperties = {
+      ...legacyStyles,
+      ...userStyle,
+    };
+    const hasStyles = Object.keys(combinedStyles).length > 0;
+
+    const sboxElement = (
       <SBox
-        ref={ref}
+        ref={hasStyles ? undefined : ref}
         blockSize={resolvedBlockSize}
         minBlockSize={resolvedMinBlockSize}
         maxBlockSize={resolvedMaxBlockSize}
@@ -161,9 +177,20 @@ export const Box: ForwardRefExoticComponent<BoxPropsType & RefAttributes<HTMLEle
         borderColor={resolvedBorderColor}
         borderRadius={resolvedBorderRadius}
         borderWidth={resolvedBorderWidth}
-        {...rest}
+        {...(restWithoutStyle as any)}
       >
         {children}
       </SBox>
     );
+
+    if (hasStyles) {
+      const WrapperComponent = (_as || "div") as "div";
+      return (
+        <WrapperComponent ref={ref as any} className={className} style={combinedStyles}>
+          {sboxElement}
+        </WrapperComponent>
+      );
+    }
+
+    return sboxElement;
   });

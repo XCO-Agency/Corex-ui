@@ -1,0 +1,177 @@
+/*
+  onboarding.css
+
+  OnboardingFlow.jsx is styled almost entirely with inline `style` props.
+  This file only holds what inline styles genuinely cannot express:
+
+    - @keyframes definitions (inline `animation` props reference these by name)
+    - :hover / :focus-visible pseudo-classes
+    - the ::after pseudo-element for the toggle switch knob
+    - @media breakpoints (including the reduced-motion override)
+
+  Nothing here duplicates a value that's already set inline — where a
+  property (like grid-template-columns) needs to change per breakpoint,
+  it's deliberately left OUT of the inline style object so this file can
+  own it without needing `!important`.
+*/
+
+/* ---------- keyframes (referenced via inline `animation` props) ---------- */
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 260% 0;
+  }
+  100% {
+    background-position: -260% 0;
+  }
+}
+
+@keyframes scanPulse {
+  0% {
+    transform: scale(0.65);
+    opacity: 0.55;
+  }
+  100% {
+    transform: scale(1.35);
+    opacity: 0;
+  }
+}
+
+@keyframes swatchPop {
+  0% {
+    transform: scale(1);
+  }
+  40% {
+    transform: scale(1.08);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* ---------- hover / active states ---------- */
+
+.q-option:hover {
+  border-color: #c9cccf;
+}
+
+.btn:not(:disabled):hover {
+  background: #006e52;
+  box-shadow: 0 6px 16px rgba(0, 128, 96, 0.25);
+}
+
+.btn:not(:disabled):active {
+  transform: scale(0.98);
+}
+
+.scan-cta:hover:not(:disabled) {
+  background: #006e52;
+}
+
+.swatch-color:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 0 0 1px #c9cccf,
+    0 6px 14px rgba(0, 0, 0, 0.1);
+}
+
+.q-input:focus {
+  outline: none;
+  border-color: #008060;
+  box-shadow: 0 0 0 3px #e3f1ec;
+}
+
+/* Accessible focus ring for every interactive element in the flow,
+   targeted by tag/attribute so it applies without extra classNames */
+button:focus-visible,
+[tabindex]:focus-visible,
+input:focus-visible {
+  outline: 2px solid #008060;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* ---------- toggle switch knob (requires a pseudo-element) ---------- */
+
+.toggle-switch {
+  position: relative;
+}
+
+.toggle-switch::after {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #fff;
+  transition: transform 0.2s ease;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+}
+
+.toggle-switch.is-on::after {
+  transform: translateX(16px);
+}
+
+/* Replays whenever the swatch element is remounted with a fresh key
+   right after a scan completes */
+.swatch-color.is-updated {
+  animation: swatchPop 0.5s ease;
+}
+
+/* ---------- responsive layout ---------- */
+/* grid-template-columns and panel padding are intentionally left out of
+   the inline styles so this stylesheet can own the breakpoint behavior
+   without fighting inline specificity. */
+
+.toggle-grid,
+.preset-grid {
+  grid-template-columns: 1fr 1fr;
+}
+
+.panel {
+  padding: 32px 30px;
+}
+
+@media (max-width: 560px) {
+  .toggle-grid,
+  .preset-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .panel {
+    padding: 26px 20px;
+  }
+
+  .brand-swatches {
+    flex-wrap: wrap;
+  }
+
+  .scan-card {
+    flex-wrap: wrap;
+  }
+
+  .scan-cta {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* ---------- reduced motion ---------- */
+/* `!important` is required here specifically because the animations are
+   set via inline `animation` shorthand in JSX — a stylesheet rule needs
+   `!important` to win over an inline declaration for the same property. */
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}

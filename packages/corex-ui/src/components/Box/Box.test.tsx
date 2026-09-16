@@ -110,4 +110,48 @@ describe("Box", () => {
     expect(el).toHaveAttribute("border-radius", "max");
     expect(el).toHaveAttribute("border-width", "base");
   });
+
+  it("never passes style directly to s-box and wraps in a div when positioning or legacy layout styles are applied", () => {
+    render(
+      <Box
+        position="absolute"
+        insetBlockStart="0"
+        insetInlineStart="0"
+        zIndex={10}
+        padding="base"
+      >
+        Positioned Content
+      </Box>,
+    );
+    const content = screen.getByText("Positioned Content");
+    expect(content.tagName.toLowerCase()).toBe("s-box");
+    expect(content).not.toHaveAttribute("style");
+
+    const wrapper = content.parentElement;
+    expect(wrapper?.tagName.toLowerCase()).toBe("div");
+    expect(wrapper).toHaveStyle({
+      position: "absolute",
+      top: "0px",
+      left: "0px",
+      zIndex: 10,
+    });
+  });
+
+  it("wraps in a div when user-provided style prop is passed", () => {
+    render(
+      <Box style={{ cursor: "pointer" }}>
+        Custom Styled Content
+      </Box>,
+    );
+    const content = screen.getByText("Custom Styled Content");
+    expect(content.tagName.toLowerCase()).toBe("s-box");
+    expect(content).not.toHaveAttribute("style");
+
+    const wrapper = content.parentElement;
+    expect(wrapper?.tagName.toLowerCase()).toBe("div");
+    expect(wrapper).toHaveStyle({
+      cursor: "pointer",
+    });
+  });
 });
+

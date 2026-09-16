@@ -15,7 +15,17 @@ const FONT_WEIGHT_MAP: Record<string, number> = {
 };
 
 export const VARIANT_SIZE_MAP: Record<
-  string,
+  | "xs"
+  | "small"
+  | "bodySm"
+  | "base"
+  | "bodyMd"
+  | "large"
+  | "bodyLg"
+  | "headingSm"
+  | "headingMd"
+  | "headingLg"
+  | "headingXl",
   {
     fontSize: string;
     lineHeight: string;
@@ -114,7 +124,7 @@ export const Text = forwardRef<HTMLElement, TextPropsType>(function Text(
   const hasTooltip = Boolean(tooltip);
 
   if (!children && children !== 0) return null;
-  const config = VARIANT_SIZE_MAP[variant] || VARIANT_SIZE_MAP.base;
+  const config = VARIANT_SIZE_MAP?.[variant] ?? VARIANT_SIZE_MAP.base;
   const WrapperTag: ElementType | undefined =
     as || (heading ? config.headingTag : undefined);
 
