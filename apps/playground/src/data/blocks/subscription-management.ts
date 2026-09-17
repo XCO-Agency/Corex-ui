@@ -68,7 +68,7 @@ export const subscriptionManagementBlocks: ComponentEntry[] = [
         code: SubscriptionManagementExampleRaw,
         filename: "SubscriptionManagementExample.tsx",
         files: blockFiles,
-        npxCommand: "npx @xco-agency/corex-ui add subscription-management",
+        npxCommand: "npx @xco-agency/corex-ui@latest add subscription-management",
       },
     ],
   },

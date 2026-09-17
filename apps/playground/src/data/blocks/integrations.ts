@@ -68,7 +68,7 @@ export const integrationsBlocks: ComponentEntry[] = [
         code: IntegrationsHubExampleRaw,
         filename: "IntegrationsHubExample.tsx",
         files: blockFiles,
-        npxCommand: "npx @xco-agency/corex-ui add integrations-hub",
+        npxCommand: "npx @xco-agency/corex-ui@latest add integrations-hub",
       },
     ],
   },

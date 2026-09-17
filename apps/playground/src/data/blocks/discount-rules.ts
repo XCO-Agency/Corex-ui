@@ -68,7 +68,7 @@ export const discountRulesBlocks: ComponentEntry[] = [
         code: DiscountRulesExampleRaw,
         filename: "DiscountRulesExample.tsx",
         files: blockFiles,
-        npxCommand: "npx @xco-agency/corex-ui add discount-rules",
+        npxCommand: "npx @xco-agency/corex-ui@latest add discount-rules",
       },
     ],
   },

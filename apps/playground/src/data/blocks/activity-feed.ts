@@ -68,7 +68,7 @@ export const activityFeedBlocks: ComponentEntry[] = [
         code: ActivityFeedExampleRaw,
         filename: "ActivityFeedExample.tsx",
         files: blockFiles,
-        npxCommand: "npx @xco-agency/corex-ui add activity-feed",
+        npxCommand: "npx @xco-agency/corex-ui@latest add activity-feed",
       },
     ],
   },

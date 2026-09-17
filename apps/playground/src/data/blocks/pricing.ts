@@ -86,7 +86,7 @@ export const pricingBlocks: ComponentEntry[] = [
         code: PricingPlansExampleRaw,
         filename: "PricingPlansExample.tsx",
         files: blockFiles,
-        npxCommand: "npx @xco-agency/corex-ui add pricing-plans",
+        npxCommand: "npx @xco-agency/corex-ui@latest add pricing-plans",
       },
     ],
   },

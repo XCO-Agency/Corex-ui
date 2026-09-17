@@ -58,7 +58,7 @@ export const videoTutorialBlocks: ComponentEntry[] = [
         code: VideoTutorialExampleRaw,
         filename: "VideoTutorialExample.tsx",
         files: blockFiles,
-        npxCommand: "npx @xco-agency/corex-ui add video-tutorial",
+        npxCommand: "npx @xco-agency/corex-ui@latest add video-tutorial",
       },
       {
         title: "Compact Sidebar Video Card",
@@ -66,7 +66,7 @@ export const videoTutorialBlocks: ComponentEntry[] = [
         code: VideoTutorialCompactExampleRaw,
         filename: "VideoTutorialCompactExample.tsx",
         files: blockFiles,
-        npxCommand: "npx @xco-agency/corex-ui add video-tutorial",
+        npxCommand: "npx @xco-agency/corex-ui@latest add video-tutorial",
       },
     ],
   },

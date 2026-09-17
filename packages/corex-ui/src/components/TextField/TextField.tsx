@@ -20,56 +20,26 @@ const STextArea = createWebComponent<HTMLElement, FieldEvents>("s-text-area", {
  * switches the rendered element to `s-text-area`.
  */
 export const TextField = forwardRef<HTMLElement, TextFieldPropsType>(function TextField(
-  {
-    label,
-    value,
-    onChange,
-    onBlur,
-    onFocus,
-    helpText,
-    details,
-    multiline,
-    prefix,
-    suffix,
-    requiredIndicator,
-    id,
-    ...rest
-  },
+  { onChange, helpText, details, multiline, requiredIndicator, ...rest },
   ref,
 ) {
   const handleInput = (event: Event) => {
     const target = event.currentTarget as (EventTarget & { value?: string }) | null;
-    onChange?.(target?.value ?? "", id ?? "");
+    onChange?.(target?.value ?? "", rest.id ?? "");
   };
-
-  const slots = (
-    <>
-      {prefix ? <span slot="prefix">{prefix}</span> : null}
-      {suffix ? <span slot="suffix">{suffix}</span> : null}
-    </>
-  );
 
   const sharedProps = {
     ref,
-    id,
-    label,
-    value: value ?? "",
     details: details ?? helpText,
-    required: requiredIndicator,
+    required: rest.required ?? requiredIndicator,
     onInput: handleInput,
-    onBlur,
-    onFocus,
     ...rest,
   };
 
   if (multiline) {
     const rows = typeof multiline === "number" ? multiline : undefined;
-    return (
-      <STextArea rows={rows} {...sharedProps}>
-        {slots}
-      </STextArea>
-    );
+    return <STextArea rows={rows} {...sharedProps} />;
   }
 
-  return <STextField {...sharedProps}>{slots}</STextField>;
+  return <STextField {...sharedProps} />;
 });

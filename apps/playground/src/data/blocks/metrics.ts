@@ -26,7 +26,7 @@ export const metricsBlocks: ComponentEntry[] = [
             code: MetricsDashboardExampleRaw,
           },
         ],
-        npxCommand: "npx @xco-agency/corex-ui add metrics-dashboard",
+        npxCommand: "npx @xco-agency/corex-ui@latest add metrics-dashboard",
       },
       {
         title: "Independent Card Interactions (Expand vs External Click)",
@@ -40,7 +40,7 @@ export const metricsBlocks: ComponentEntry[] = [
             code: MetricsDashboardAdvancedExampleRaw,
           },
         ],
-        npxCommand: "npx @xco-agency/corex-ui add metrics-dashboard",
+        npxCommand: "npx @xco-agency/corex-ui@latest add metrics-dashboard",
       },
     ],
   },

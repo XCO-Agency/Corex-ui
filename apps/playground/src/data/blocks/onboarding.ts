@@ -104,7 +104,7 @@ export const onboardingBlocks: ComponentEntry[] = [
         code: OnboardingExampleRaw,
         filename: "OnboardingExample.tsx",
         files: blockFiles,
-        npxCommand: "npx @xco-agency/corex-ui add onboarding",
+        npxCommand: "npx @xco-agency/corex-ui@latest add onboarding",
       },
     ],
   },

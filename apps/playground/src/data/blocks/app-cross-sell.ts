@@ -84,7 +84,7 @@ export const appCrossSellBlocks: ComponentEntry[] = [
         code: AppCrossSellExampleRaw,
         filename: "AppCrossSellExample.tsx",
         files: blockFiles,
-        npxCommand: "npx @xco-agency/corex-ui add app-cross-sell",
+        npxCommand: "npx @xco-agency/corex-ui@latest add app-cross-sell",
       },
       {
         title: "App Cards Grid Layout",
@@ -92,7 +92,7 @@ export const appCrossSellBlocks: ComponentEntry[] = [
         code: AppCrossSellGridExampleRaw,
         filename: "AppCrossSellGridExample.tsx",
         files: blockFiles,
-        npxCommand: "npx @xco-agency/corex-ui add app-cross-sell",
+        npxCommand: "npx @xco-agency/corex-ui@latest add app-cross-sell",
       },
       {
         title: "Compact Sidebar Layout",
@@ -100,7 +100,7 @@ export const appCrossSellBlocks: ComponentEntry[] = [
         code: AppCrossSellCompactExampleRaw,
         filename: "AppCrossSellCompactExample.tsx",
         files: blockFiles,
-        npxCommand: "npx @xco-agency/corex-ui add app-cross-sell",
+        npxCommand: "npx @xco-agency/corex-ui@latest add app-cross-sell",
       },
     ],
   },

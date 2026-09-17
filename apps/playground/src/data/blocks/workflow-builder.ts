@@ -68,7 +68,7 @@ export const workflowBuilderBlocks: ComponentEntry[] = [
         code: WorkflowBuilderExampleRaw,
         filename: "WorkflowBuilderExample.tsx",
         files: blockFiles,
-        npxCommand: "npx @xco-agency/corex-ui add workflow-builder",
+        npxCommand: "npx @xco-agency/corex-ui@latest add workflow-builder",
       },
     ],
   },

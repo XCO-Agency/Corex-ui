@@ -84,7 +84,7 @@ export const supportHubBlocks: ComponentEntry[] = [
         code: SupportHubExampleRaw,
         filename: "SupportHubExample.tsx",
         files: blockFiles,
-        npxCommand: "npx @xco-agency/corex-ui add support-hub",
+        npxCommand: "npx @xco-agency/corex-ui@latest add support-hub",
       },
       {
         title: "Full-Width Horizontal Banner Layout",
@@ -92,7 +92,7 @@ export const supportHubBlocks: ComponentEntry[] = [
         code: SupportHubBannerExampleRaw,
         filename: "SupportHubBannerExample.tsx",
         files: blockFiles,
-        npxCommand: "npx @xco-agency/corex-ui add support-hub",
+        npxCommand: "npx @xco-agency/corex-ui@latest add support-hub",
       },
       {
         title: "3-Column Symmetrical Resource Grid",
@@ -100,7 +100,7 @@ export const supportHubBlocks: ComponentEntry[] = [
         code: SupportHubGridExampleRaw,
         filename: "SupportHubGridExample.tsx",
         files: blockFiles,
-        npxCommand: "npx @xco-agency/corex-ui add support-hub",
+        npxCommand: "npx @xco-agency/corex-ui@latest add support-hub",
       },
     ],
   },

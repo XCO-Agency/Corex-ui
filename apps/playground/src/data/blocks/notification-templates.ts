@@ -68,7 +68,7 @@ export const notificationTemplatesBlocks: ComponentEntry[] = [
         code: NotificationTemplatesExampleRaw,
         filename: "NotificationTemplatesExample.tsx",
         files: blockFiles,
-        npxCommand: "npx @xco-agency/corex-ui add notification-templates",
+        npxCommand: "npx @xco-agency/corex-ui@latest add notification-templates",
       },
     ],
   },

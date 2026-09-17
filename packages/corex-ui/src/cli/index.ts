@@ -200,7 +200,7 @@ export async function runCLI(argv: string[]) {
 ${c.boldCyan("Corex UI CLI")} - Add blocks directly to your Shopify app
 
 ${c.bold("Usage:")}
-  npx @xco-agency/corex-ui add [block-name] [options]
+  npx @xco-agency/corex-ui@latest add [block-name] [options]
 
 ${c.bold("Options:")}
   -y, --yes          Skip confirmation prompts and accept defaults
@@ -210,15 +210,15 @@ ${c.bold("Options:")}
   -v, --version      Show version
 
 ${c.bold("Examples:")}
-  npx @xco-agency/corex-ui add onboarding
-  npx @xco-agency/corex-ui add pricing-plans
-  npx @xco-agency/corex-ui add --dir app/components
+  npx @xco-agency/corex-ui@latest add onboarding
+  npx @xco-agency/corex-ui@latest add pricing-plans
+  npx @xco-agency/corex-ui@latest add --dir app/components
 `);
     return;
   }
 
   if (args.includes("-v") || args.includes("--version")) {
-    console.log("0.1.5");
+    console.log("0.1.7");
     return;
   }
 
@@ -373,10 +373,8 @@ function toPascalCase(str: string): string {
     .join("");
 }
 
-// Auto-run if executed as script
-if (process.argv[1] && (process.argv[1].endsWith("cli.js") || process.argv[1].endsWith("cli.ts") || process.argv[1].endsWith("cli.mjs"))) {
-  runCLI(process.argv).catch((err) => {
-    console.error(`\n${c.red("Unexpected error:")}`, err);
-    process.exit(1);
-  });
-}
+// Run CLI directly
+runCLI(process.argv).catch((err) => {
+  console.error(`\n${c.red("Unexpected error:")}`, err);
+  process.exit(1);
+});

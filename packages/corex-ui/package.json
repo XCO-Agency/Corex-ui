@@ -1,6 +1,6 @@
 {
   "name": "@xco-agency/corex-ui",
-  "version": "0.1.5",
+  "version": "0.1.7",
   "description": "Legacy-Polaris-React-compatible React components, backed by Shopify's Polaris web components.",
   "license": "MIT",
   "type": "module",
@@ -17,8 +17,7 @@
     }
   },
   "bin": {
-    "corex-ui": "./dist/cli.js",
-    "@xco-agency/corex-ui": "./dist/cli.js"
+    "corex-ui": "./dist/cli.js"
   },
   "files": [
     "dist"

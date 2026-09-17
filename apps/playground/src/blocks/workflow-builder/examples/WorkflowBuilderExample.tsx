@@ -1,10 +1,5 @@
 import * as React from "react";
-import {
-  Page,
-  BlockStack,
-  Banner,
-  SaveBar,
-} from "@xco-agency/corex-ui";
+import { Page, BlockStack, Banner, SaveBar } from "@xco-agency/corex-ui";
 import { INITIAL_WORKFLOW_FORM } from "../constants";
 import { WorkflowTriggerCard } from "../partials/WorkflowTriggerCard";
 import { WorkflowConditionsCard } from "../partials/WorkflowConditionsCard";
@@ -93,14 +88,15 @@ export function WorkflowBuilderExample() {
   };
 
   const handleSimulateRun = () => {
-    setNotification("Dry run passed: All 2 conditions matched. 2 simulated actions succeeded.");
+    setNotification(
+      "Dry run passed: All 2 conditions matched. 2 simulated actions succeeded.",
+    );
   };
 
   return (
     <Page
       heading="Automation Workflow Builder"
       subheading="Construct trigger-condition-action flows to automate customer tags, alerts, and store logic."
-      inlineSize="large"
     >
       <BlockStack gap="base">
         {notification && (

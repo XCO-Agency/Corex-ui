@@ -94,7 +94,7 @@ export const resourceTableBlocks: ComponentEntry[] = [
         code: ResourceTableExampleRaw,
         filename: "ResourceTableExample.tsx",
         files: blockFiles,
-        npxCommand: "npx @xco-agency/corex-ui add resource-table",
+        npxCommand: "npx @xco-agency/corex-ui@latest add resource-table",
       },
       {
         title: "Empty Zero-Records State",
@@ -102,7 +102,7 @@ export const resourceTableBlocks: ComponentEntry[] = [
         code: ResourceEmptyExampleRaw,
         filename: "ResourceEmptyExample.tsx",
         files: blockFiles,
-        npxCommand: "npx @xco-agency/corex-ui add resource-table",
+        npxCommand: "npx @xco-agency/corex-ui@latest add resource-table",
       },
     ],
   },

@@ -78,7 +78,7 @@ export const settingsBlocks: ComponentEntry[] = [
         code: AnnotatedSettingsExampleRaw,
         filename: "AnnotatedSettingsExample.tsx",
         files: blockFiles,
-        npxCommand: "npx @xco-agency/corex-ui add settings-layout",
+        npxCommand: "npx @xco-agency/corex-ui@latest add settings-layout",
       },
       {
         title: "Vertical Navigation Settings",
@@ -92,7 +92,7 @@ export const settingsBlocks: ComponentEntry[] = [
             code: NavigationSettingsExampleRaw,
           },
         ],
-        npxCommand: "npx @xco-agency/corex-ui add settings-layout",
+        npxCommand: "npx @xco-agency/corex-ui@latest add settings-layout",
       },
     ],
   },
