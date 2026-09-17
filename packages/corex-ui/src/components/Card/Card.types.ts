@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import type { IconType, PolarisPropsType } from "../../types/common";
+import type { IconType, PolarisPropsType, StackGapType } from "../../types/common";
 
 export type CardActionType = {
   content: string;
@@ -24,6 +24,7 @@ export type CardPropsType = PolarisPropsType<"s-section"> & {
    * @deprecated use
    */
   sectioned?: boolean;
+  gap?: StackGapType;
   /** Card header actions. */
   icon?: IconType;
   description?: ReactNode;

@@ -32,6 +32,7 @@ export const Card = forwardRef<HTMLElement, CardPropsType>(function Card(
     icon,
     description,
     heading,
+    gap = "small",
     ...rest
   },
   ref,
@@ -69,7 +70,7 @@ export const Card = forwardRef<HTMLElement, CardPropsType>(function Card(
           {actions && <InlineStack gap="small">{actions}</InlineStack>}
         </InlineStack>
       )}
-      <BlockStack gap="small">
+      <BlockStack gap={gap}>
         {description && (
           <Box paddingBlock="small-300">
             <Text color="subdued" as="p">

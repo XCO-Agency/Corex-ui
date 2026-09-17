@@ -13,6 +13,7 @@ import type {
   CollapsiblePropsType,
   CollapsibleRenderPropsType,
 } from "./Collapsible.types";
+import { Divider } from "../Divider";
 
 /**
  * Generic expand/collapse wrapper for "target + revealed content" layouts —
@@ -33,8 +34,9 @@ export const Collapsible: ForwardRefExoticComponent<
     content,
     framed = false,
     duration = 240,
-    easing = "cubic-bezier(0.2, 0, 0, 1)",
+    easing = "ease-in-out",
     accessibilityLabel,
+    separator,
     id,
   },
   ref,
@@ -88,7 +90,7 @@ export const Collapsible: ForwardRefExoticComponent<
       accessibilityLabel={accessibilityLabel}
     >
       {resolvedTarget}
-
+      {isExpanded && separator && <Divider />}
       {content !== undefined && (
         <div id={contentId} style={trackStyles} aria-hidden={!isExpanded}>
           <div

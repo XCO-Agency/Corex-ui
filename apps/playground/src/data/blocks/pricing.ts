@@ -3,6 +3,8 @@ import type { ComponentEntry, FileItemType } from "../types";
 import { PricingPlansExample } from "@/blocks/pricing-plans/examples/PricingPlansExample";
 import PricingPlansExampleRaw from "@/blocks/pricing-plans/examples/PricingPlansExample.tsx?raw";
 
+import ActivePlanCardRaw from "@/blocks/pricing-plans/partials/ActivePlanCard.tsx?raw";
+import PlanAvatarRaw from "@/blocks/pricing-plans/partials/PlanAvatar.tsx?raw";
 import PricingIntervalToggleRaw from "@/blocks/pricing-plans/partials/PricingIntervalToggle.tsx?raw";
 import PricingCardRaw from "@/blocks/pricing-plans/partials/PricingCard.tsx?raw";
 import PricingUsageMeterRaw from "@/blocks/pricing-plans/partials/PricingUsageMeter.tsx?raw";
@@ -17,6 +19,16 @@ const blockFiles: FileItemType[] = [
     name: "PricingPlansExample.tsx",
     path: "examples/PricingPlansExample.tsx",
     code: PricingPlansExampleRaw,
+  },
+  {
+    name: "ActivePlanCard.tsx",
+    path: "partials/ActivePlanCard.tsx",
+    code: ActivePlanCardRaw,
+  },
+  {
+    name: "PlanAvatar.tsx",
+    path: "partials/PlanAvatar.tsx",
+    code: PlanAvatarRaw,
   },
   {
     name: "PricingIntervalToggle.tsx",

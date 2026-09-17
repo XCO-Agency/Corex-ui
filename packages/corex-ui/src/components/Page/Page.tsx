@@ -20,7 +20,6 @@ function renderPrimaryAction(primaryAction?: PagePrimaryActionType | ReactNode) 
     const slot = (primaryAction.props as { slot?: string })?.slot;
     return cloneElement(primaryAction, {
       slot: slot ?? "primary-action",
-      suppressHydrationWarning: true,
     } as Record<string, unknown>);
   }
 
@@ -62,7 +61,6 @@ function renderSecondaryActions(
         return cloneElement(action, {
           key: (action.key as string) ?? index,
           slot: slot ?? "secondary-actions",
-          suppressHydrationWarning: true,
         } as Record<string, unknown>);
       }
 

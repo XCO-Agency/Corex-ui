@@ -36,7 +36,7 @@ function CompactTabsMenu<TId extends string | number = string>({
               disabled={tab.disabled}
               background="transparent"
               paddingInline="small-200"
-              blockSize="32px"
+              blockSize="28px"
               borderRadius="base"
               inlineSize="fill"
               commandFor={popoverId}
@@ -134,14 +134,18 @@ function TabsInner<TId extends string | number = string>(
   ref: ForwardedRef<HTMLDivElement>,
 ) {
   const generatedId = useId();
-  const popoverId = id ? `${id}-popover` : `corex-tabs-popover-${generatedId.replace(/:/g, "")}`;
+  const popoverId = id
+    ? `${id}-popover`
+    : `corex-tabs-popover-${generatedId.replace(/:/g, "")}`;
 
   const isTabSelected = (tab: TabItemType<TId>, index: number) => {
     if (value !== undefined) {
       return value !== null && (tab.id === value || String(tab.id) === String(value));
     }
     if (selected !== undefined && selected !== null) {
-      return selected === index || selected === tab.id || String(tab.id) === String(selected);
+      return (
+        selected === index || selected === tab.id || String(tab.id) === String(selected)
+      );
     }
     return false;
   };
@@ -160,11 +164,7 @@ function TabsInner<TId extends string | number = string>(
 
   const selectedIndex = tabs.findIndex((tab, idx) => isTabSelected(tab, idx));
   const currentTab =
-    selectedIndex >= 0
-      ? tabs[selectedIndex]
-      : value === null
-        ? undefined
-        : tabs[0];
+    selectedIndex >= 0 ? tabs[selectedIndex] : value === null ? undefined : tabs[0];
 
   return (
     <div
@@ -173,14 +173,14 @@ function TabsInner<TId extends string | number = string>(
       id={id}
       {...rest}
       style={{
-        width: "100%",
+        width: compact ? "auto" : "100%",
         display: "flex",
         flexDirection: "column",
       }}
     >
       <div
         style={{
-          flex: 1,
+          flex: compact ? "auto" : 1,
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
@@ -190,7 +190,7 @@ function TabsInner<TId extends string | number = string>(
           <Popover id={popoverId}>
             <Popover.Trigger>
               <Clickable
-                background="strong"
+                background="transparent"
                 disabled={tabs.length === 0}
                 paddingInline="small-200"
                 blockSize="28px"
@@ -206,15 +206,18 @@ function TabsInner<TId extends string | number = string>(
                       alignItems: "center",
                       gap: 6,
                       height: "100%",
-                      "--t-surface-tertiary-26021": "#ebebeb",
-                      "--t-surface-secondary-hover-26021": "#e1e1e1",
-                      "--t-surface-tertiary-hover-26021": "#e1e1e1",
                     } as CSSProperties
                   }
                 >
                   {currentTab?.icon && <Icon type={currentTab.icon} />}
                   {currentTab?.label && (
-                    <Text variant="small" heading color="base" tone="neutral" lineClamp={1}>
+                    <Text
+                      variant="small"
+                      heading
+                      color="base"
+                      tone="neutral"
+                      lineClamp={1}
+                    >
                       {currentTab.label}
                     </Text>
                   )}
@@ -282,7 +285,10 @@ function TabsInner<TId extends string | number = string>(
                       </Text>
                     )}
                     {showBadge && tab.badge !== undefined && (
-                      <Badge color="strong" tone={tab.disabled ? "neutral" : tab.badgeTone}>
+                      <Badge
+                        color="strong"
+                        tone={tab.disabled ? "neutral" : tab.badgeTone}
+                      >
                         {tab.badge}
                       </Badge>
                     )}
@@ -296,24 +302,26 @@ function TabsInner<TId extends string | number = string>(
                   style={
                     {
                       display: "contents",
-                      "--t-surface-tertiary-26021": isSelected ? "#dcdcdc" : "transparent",
-                      "--t-surface-secondary-hover-26021": "#dcdcdc",
-                      "--t-surface-tertiary-hover-26021": "#dcdcdc",
+                      "--t-surface-tertiary-26021": isSelected
+                        ? "#ddddddad"
+                        : "transparent",
+                      "--t-surface-secondary-hover-26021": "#ddddddad",
+                      "--t-surface-tertiary-hover-26021": "#ddddddad",
                     } as CSSProperties
                   }
                 >
-                  {tab.tooltip ? <Tooltip content={tab.tooltip}>{button}</Tooltip> : button}
+                  {tab.tooltip ? (
+                    <Tooltip content={tab.tooltip}>{button}</Tooltip>
+                  ) : (
+                    button
+                  )}
                 </div>
               );
             })}
           </div>
         )}
 
-        {rightSide && (
-          <InlineStack gap="small-200">
-            {rightSide}
-          </InlineStack>
-        )}
+        {rightSide && <InlineStack gap="small-200">{rightSide}</InlineStack>}
       </div>
 
       {children && children}

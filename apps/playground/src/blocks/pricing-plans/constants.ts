@@ -4,6 +4,22 @@ import type {
   PricingPlanType,
 } from "./types";
 
+export const FREE_PLAN: PricingPlanType = {
+  id: "free",
+  name: "Free",
+  monthlyPrice: 0,
+  annualPrice: 0,
+  description: "Core revenue essentials to get started with zero monthly cost.",
+  features: [
+    { title: "Up to 100 monthly tracked orders", included: true },
+    { title: "Standard cart drawer add-ons", included: true },
+    { title: "Basic analytics & revenue tracking", included: true },
+    { title: "Standard email support", included: true },
+    { title: "Custom CSS & branded styling", included: false },
+    { title: "Dedicated account manager", included: false },
+  ],
+};
+
 export const PRICING_PLANS: PricingPlanType[] = [
   {
     id: "starter",
@@ -52,6 +68,11 @@ export const PRICING_PLANS: PricingPlanType[] = [
       { title: "Dedicated CSM & onboarding engineer", included: true },
     ],
   },
+];
+
+export const ALL_PRICING_PLANS: PricingPlanType[] = [
+  FREE_PLAN,
+  ...PRICING_PLANS,
 ];
 
 export const CURRENT_USAGE_LIMITS: PlanUsageLimitType[] = [

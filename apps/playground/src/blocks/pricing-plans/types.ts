@@ -2,7 +2,7 @@ import type * as React from "react";
 
 export type BillingIntervalType = "monthly" | "annual";
 
-export type PlanTierIdType = "starter" | "growth" | "scale";
+export type PlanTierIdType = "free" | "starter" | "growth" | "scale" | "enterprise";
 
 export type PlanFeatureType = {
   title: string;
@@ -32,6 +32,26 @@ export type FaqItemType = {
   id: string;
   question: string;
   answer: string;
+};
+
+export type PlanAvatarPropsType = {
+  planId: PlanTierIdType | string;
+  size?: number;
+  customSvg?: React.ReactNode;
+};
+
+export type ActivePlanCardVariantType = "banner" | "card";
+
+export type ActivePlanCardPropsType = {
+  plan: PricingPlanType;
+  interval?: BillingIntervalType;
+  statusText?: string;
+  statusTone?: "info" | "success" | "warning" | "neutral";
+  billingNote?: string;
+  nextBillingDate?: string;
+  variant?: ActivePlanCardVariantType;
+  onChangePlan?: () => void;
+  onManageBilling?: () => void;
 };
 
 export type PricingIntervalTogglePropsType = {
@@ -68,3 +88,4 @@ export type PricingPlansExamplePropsType = {
   initialPlanId?: PlanTierIdType;
   initialInterval?: BillingIntervalType;
 };
+

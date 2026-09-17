@@ -48,9 +48,7 @@ export function RangeSliderLabelled({
           }
         >
           <label htmlFor={id} id={`${id}Label`}>
-            <Text as="span" variant="small">
-              {label}
-            </Text>
+            <Text as="span">{label}</Text>
           </label>
           {labelAction ? (
             <button

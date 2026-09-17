@@ -94,7 +94,7 @@ export function useStorage<T>(
   const mergedOptions = isObjectSignature ? keyOrOptions : (optionsArg ?? {});
 
   const {
-    storage = mergedOptions.type ?? "session",
+    storage = mergedOptions.type ?? "local",
     expiresIn = mergedOptions.expiresIn,
     serialize = (val: StorageValueType<T>) => JSON.stringify(val),
     deserialize = (raw: string) => JSON.parse(raw) as StorageValueType<T>,

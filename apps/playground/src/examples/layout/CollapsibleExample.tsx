@@ -27,7 +27,7 @@ export function CollapsibleExample() {
         {({ expanded, toggle }) => (
           <Clickable
             background="transparent"
-
+            inlineSize="fill"
             padding="base"
             onClick={toggle}
           >

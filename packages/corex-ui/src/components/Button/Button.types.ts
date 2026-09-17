@@ -27,7 +27,5 @@ export type ButtonPropsType = Omit<NativeButtonProps, "variant"> & {
   /** @deprecated Inline styles are not supported on web component Button and are stripped. */
   style?: CSSProperties;
   /** Suppresses React hydration warnings when web component attributes are mutated externally. */
-  suppressHydrationWarning?: boolean;
-  /** Size token supported by Polaris Button. */
   size?: SizeType;
 };

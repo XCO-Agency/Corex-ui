@@ -3,6 +3,8 @@ import { TextFieldExample } from "@/examples/forms/TextFieldExample";
 import TextFieldExampleRaw from "@/examples/forms/TextFieldExample.tsx?raw";
 import { SearchFieldExample } from "@/examples/forms/SearchFieldExample";
 import SearchFieldExampleRaw from "@/examples/forms/SearchFieldExample.tsx?raw";
+import { FiltersExample } from "@/examples/forms/FiltersExample";
+import FiltersExampleRaw from "@/examples/forms/FiltersExample.tsx?raw";
 import { MoneyFieldExample } from "@/examples/forms/MoneyFieldExample";
 import MoneyFieldExampleRaw from "@/examples/forms/MoneyFieldExample.tsx?raw";
 import { ColorFieldExample } from "@/examples/forms/ColorFieldExample";
@@ -54,6 +56,20 @@ export const formsComponents: ComponentEntry[] = [
         title: "Debounced search",
         Example: SearchFieldExample,
         code: SearchFieldExampleRaw,
+      },
+    ],
+  },
+  {
+    name: "Filters",
+    slug: "filters",
+    category: "Forms",
+    description:
+      "A minimalist search and filter bar providing classic Polaris Filters functionality with view switcher, column visibility/sorting popover, filter shortcuts, and applied filter pills.",
+    examples: [
+      {
+        title: "Filters with Views, Shortcuts & Column Settings",
+        Example: FiltersExample,
+        code: FiltersExampleRaw,
       },
     ],
   },
