@@ -1,0 +1,47 @@
+{
+  "name": "video-tutorial",
+  "type": "registry:block",
+  "title": "Video Tutorial",
+  "description": "Interactive video lesson viewer with timestamps, resources, and checklist.",
+  "dependencies": [
+    "@xco-agency/corex-ui"
+  ],
+  "files": [
+    {
+      "path": "VideoTutorialCard.tsx",
+      "content": "import * as React from \"react\";\nimport {\n  Card,\n  Box,\n  InlineStack,\n  BlockStack,\n  Text,\n  Button,\n  Image,\n} from \"@xco-agency/corex-ui\";\nimport type { VideoTutorialBlockPropsType } from \"./types\";\nimport { DEFAULT_VIDEO_TUTORIAL_DATA } from \"./constants\";\n\nexport function VideoTutorialCard({\n  title = DEFAULT_VIDEO_TUTORIAL_DATA.title,\n  description = DEFAULT_VIDEO_TUTORIAL_DATA.description,\n  thumbnailUrl = DEFAULT_VIDEO_TUTORIAL_DATA.thumbnailUrl,\n  onPlay,\n  onOptionsClick,\n}: VideoTutorialBlockPropsType) {\n  return (\n    <Card>\n      <InlineStack gap=\"large-100\" alignItems=\"center\" wrap={false}>\n        <Box\n          minInlineSize=\"340px\"\n          maxInlineSize=\"380px\"\n          borderRadius=\"large-100\"\n          overflow=\"hidden\"\n          onClick={onPlay}\n        >\n          <Image\n            src={thumbnailUrl}\n            alt={title}\n            aspectRatio=\"16/9\"\n            objectFit=\"cover\"\n            borderRadius=\"large-100\"\n          />\n        </Box>\n\n        <Box minInlineSize=\"0\">\n          <BlockStack gap=\"small-200\">\n            <InlineStack justifyContent=\"space-between\" alignItems=\"center\" wrap={false} gap=\"base\">\n              <Text variant=\"headingMd\" as=\"h2\" fontWeight=\"semibold\">\n                {title}\n              </Text>\n              <Button\n                variant=\"tertiary\"\n                icon=\"menu-horizontal\"\n                accessibilityLabel=\"More options\"\n                onClick={onOptionsClick}\n              />\n            </InlineStack>\n\n            <Text as=\"p\" tone=\"subdued\" variant=\"bodyMd\">\n              {description}\n            </Text>\n          </BlockStack>\n        </Box>\n      </InlineStack>\n    </Card>\n  );\n}\n",
+      "type": "registry:block",
+      "target": "components/video-tutorial/VideoTutorialCard.tsx"
+    },
+    {
+      "path": "constants.ts",
+      "content": "import cartDrawerThumbnail from \"./cart-drawer-video-thumbnail.png\";\n\nexport const DEFAULT_VIDEO_TUTORIAL_DATA = {\n  title: \"Learn how to set up a fully optimized Shopify cart drawer\",\n  description:\n    \"In this video, I walk you through the exact steps to customize your cart design, add smart upsells, set free-shipping thresholds, and use Kaching Cart Drawer to turn every cart into a high-converting checkout flow.\",\n  duration: \"3:40\",\n  thumbnailUrl: cartDrawerThumbnail || \"/cart-drawer-video-thumbnail.png\",\n};\n",
+      "type": "registry:block",
+      "target": "components/video-tutorial/constants.ts"
+    },
+    {
+      "path": "examples/VideoTutorialCompactExample.tsx",
+      "content": "import * as React from \"react\";\nimport {\n  Card,\n  Box,\n  BlockStack,\n  InlineStack,\n  Text,\n  Button,\n  Image,\n} from \"@xco-agency/corex-ui\";\nimport { DEFAULT_VIDEO_TUTORIAL_DATA } from \"../constants\";\n\nexport function VideoTutorialCompactExample() {\n  return (\n    <Box maxInlineSize=\"420px\">\n      <Card>\n        <BlockStack gap=\"base\">\n          <Box borderRadius=\"large-100\" overflow=\"hidden\">\n            <Image\n              src={DEFAULT_VIDEO_TUTORIAL_DATA.thumbnailUrl}\n              alt={DEFAULT_VIDEO_TUTORIAL_DATA.title}\n              aspectRatio=\"16/9\"\n              objectFit=\"cover\"\n              borderRadius=\"large-100\"\n            />\n          </Box>\n          <BlockStack gap=\"small-200\">\n            <InlineStack justifyContent=\"space-between\" alignItems=\"center\" wrap={false} gap=\"base\">\n              <Text variant=\"headingSm\" as=\"h3\" fontWeight=\"semibold\">\n                {DEFAULT_VIDEO_TUTORIAL_DATA.title}\n              </Text>\n              <Button\n                variant=\"tertiary\"\n                icon=\"menu-horizontal\"\n                accessibilityLabel=\"More options\"\n              />\n            </InlineStack>\n            <Text as=\"p\" tone=\"subdued\" variant=\"bodySm\">\n              {DEFAULT_VIDEO_TUTORIAL_DATA.description}\n            </Text>\n          </BlockStack>\n        </BlockStack>\n      </Card>\n    </Box>\n  );\n}\n",
+      "type": "registry:block",
+      "target": "components/video-tutorial/examples/VideoTutorialCompactExample.tsx"
+    },
+    {
+      "path": "examples/VideoTutorialExample.tsx",
+      "content": "import * as React from \"react\";\nimport { VideoTutorialCard } from \"../VideoTutorialCard\";\n\nexport function VideoTutorialExample() {\n  return <VideoTutorialCard />;\n}\n",
+      "type": "registry:block",
+      "target": "components/video-tutorial/examples/VideoTutorialExample.tsx"
+    },
+    {
+      "path": "index.ts",
+      "content": "export { VideoTutorialCard } from \"./VideoTutorialCard\";\nexport { VideoTutorialExample } from \"./examples/VideoTutorialExample\";\nexport { VideoTutorialCompactExample } from \"./examples/VideoTutorialCompactExample\";\nexport * from \"./types\";\nexport * from \"./constants\";\n",
+      "type": "registry:block",
+      "target": "components/video-tutorial/index.ts"
+    },
+    {
+      "path": "types.ts",
+      "content": "export type VideoTutorialBlockPropsType = {\n  title?: string;\n  description?: string;\n  thumbnailUrl?: string;\n  duration?: string;\n  onPlay?: () => void;\n  onOptionsClick?: () => void;\n};\n",
+      "type": "registry:block",
+      "target": "components/video-tutorial/types.ts"
+    }
+  ]
+}

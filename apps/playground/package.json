@@ -6,7 +6,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build:registry": "node scripts/build-registry.mjs",
+    "build": "node scripts/build-registry.mjs && vite build",
     "typecheck": "tsc --noEmit",
     "sync:apps-icons": "node scripts/sync-apps-icons.mjs"
   },

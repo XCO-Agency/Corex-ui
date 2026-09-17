@@ -1,0 +1,92 @@
+[
+  {
+    "name": "activity-feed",
+    "title": "Activity Feed",
+    "description": "Chronological audit log and real-time merchant events feed.",
+    "filesCount": 8
+  },
+  {
+    "name": "app-cross-sell",
+    "title": "App Cross-Sell",
+    "description": "Ecosystem app promotion card with one-click installation trigger.",
+    "filesCount": 10
+  },
+  {
+    "name": "discount-rules",
+    "title": "Discount Rules",
+    "description": "Volume tiers, free gifts, and automated BOGO promotional rules.",
+    "filesCount": 8
+  },
+  {
+    "name": "integrations-hub",
+    "title": "Integrations Hub",
+    "description": "Third-party ERP, CRM, and marketing connectors management.",
+    "filesCount": 8
+  },
+  {
+    "name": "metrics-dashboard",
+    "title": "Metrics Dashboard",
+    "description": "Executive revenue, conversion, and order KPI overview with comparison trends.",
+    "filesCount": 2
+  },
+  {
+    "name": "notification-templates",
+    "title": "Notification Templates",
+    "description": "Email & SMS transactional template customizer with variable insertion.",
+    "filesCount": 8
+  },
+  {
+    "name": "onboarding",
+    "title": "Merchant Onboarding",
+    "description": "Multi-step Shopify onboarding wizard with theme embed verification.",
+    "filesCount": 14
+  },
+  {
+    "name": "onboarding-new",
+    "title": "Modern Onboarding Flow",
+    "description": "Streamlined interactive checklist onboarding with progress tracking.",
+    "filesCount": 12
+  },
+  {
+    "name": "pricing-plans",
+    "title": "Pricing Plans",
+    "description": "Subscription plan selection with billing interval toggle and Shopify confirmation modal.",
+    "filesCount": 11
+  },
+  {
+    "name": "resource-table",
+    "title": "Resource Table",
+    "description": "Data table with multi-criteria filtering, bulk actions, and pagination.",
+    "filesCount": 12
+  },
+  {
+    "name": "settings-layout",
+    "title": "Settings Layout",
+    "description": "Two-column annotated configuration layout matching Shopify Admin conventions.",
+    "filesCount": 10
+  },
+  {
+    "name": "subscription-management",
+    "title": "Subscription Management",
+    "description": "Recurring revenue plan management, usage limits, and plan tier modifiers.",
+    "filesCount": 8
+  },
+  {
+    "name": "support-hub",
+    "title": "Support Hub",
+    "description": "Knowledge base FAQ accordion, diagnostic system health, and priority support.",
+    "filesCount": 11
+  },
+  {
+    "name": "video-tutorial",
+    "title": "Video Tutorial",
+    "description": "Interactive video lesson viewer with timestamps, resources, and checklist.",
+    "filesCount": 6
+  },
+  {
+    "name": "workflow-builder",
+    "title": "Workflow Builder",
+    "description": "Visual logic automation editor with triggers, conditional branches, and actions.",
+    "filesCount": 8
+  }
+]

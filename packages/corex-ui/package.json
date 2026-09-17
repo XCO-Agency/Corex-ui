@@ -16,6 +16,10 @@
       "require": "./dist/index.cjs"
     }
   },
+  "bin": {
+    "corex-ui": "./dist/cli.js",
+    "@xco-agency/corex-ui": "./dist/cli.js"
+  },
   "files": [
     "dist"
   ],
