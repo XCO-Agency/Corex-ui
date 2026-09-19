@@ -12,6 +12,12 @@
     "filesCount": 10
   },
   {
+    "name": "cards",
+    "title": "Cards",
+    "description": "Three versatile card layouts: minimalist, media showcase, and media with actions.",
+    "filesCount": 12
+  },
+  {
     "name": "discount-rules",
     "title": "Discount Rules",
     "description": "Volume tiers, free gifts, and automated BOGO promotional rules.",

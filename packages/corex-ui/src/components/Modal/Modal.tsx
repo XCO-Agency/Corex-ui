@@ -302,7 +302,7 @@ export const Modal = forwardRef<ModalElement, ModalPropsType>(function Modal(
   const resolvedAccessibilityLabel =
     accessibilityLabel ?? (typeof title === "string" ? title : "Modal");
 
-  const isAppBridgeModal = Boolean(variant || src);
+  const isAppBridgeModal = Boolean(variant === "max" || src);
 
   const actionsContent = (
     <>
@@ -370,12 +370,16 @@ export const Modal = forwardRef<ModalElement, ModalPropsType>(function Modal(
     );
   }
 
+  const resolvedSize =
+    (rest as any).size ?? (variant && variant !== "max" ? variant : undefined);
+
   return (
     <SModal
       ref={mergedRef}
       id={modalId}
       heading={title}
       accessibilityLabel={resolvedAccessibilityLabel}
+      size={resolvedSize}
       {...rest}
     >
       {automatedSaveBar}

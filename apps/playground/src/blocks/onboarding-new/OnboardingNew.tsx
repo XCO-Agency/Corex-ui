@@ -1,5 +1,5 @@
-import { useState, useEffect, useCallback } from "react";
-import type { CSSProperties, Dispatch, SetStateAction } from "react";
+import { useState, useCallback } from "react";
+import type { Dispatch, SetStateAction } from "react";
 import "./onboarding.css";
 import onboardingCss from "./onboarding.css?inline";
 import type {
@@ -11,49 +11,24 @@ import type {
   StageStylePresetType,
   StageToggleGridType,
   StageBrandColorType,
-  StageTransitionPropsType,
 } from "./types";
-import { FLOW, styles } from "./constants";
+import { FLOW } from "./constants";
 import { ProcessingStage } from "./partials/ProcessingStage";
 import { ChoiceQuestions } from "./partials/ChoiceQuestions";
 import { ToggleGrid } from "./partials/ToggleGrid";
 import { StylePreset } from "./partials/StylePreset";
 import { BrandColor } from "./partials/BrandColor";
 import { CompleteStage } from "./partials/CompleteStage";
-import { InlineStack } from "@xco-agency/corex-ui";
-
-function StageTransition({ children, leaving }: StageTransitionPropsType) {
-  const [entered, setEntered] = useState(false);
-
-  useEffect(() => {
-    const raf1 = requestAnimationFrame(() => {
-      requestAnimationFrame(() => setEntered(true));
-    });
-    return () => cancelAnimationFrame(raf1);
-  }, []);
-
-  return (
-    <div
-      style={{
-        width: "100%",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        opacity: leaving ? 0 : entered ? 1 : 0,
-        transform: leaving
-          ? "translateY(-14px) scale(.96)"
-          : entered
-            ? "translateY(0) scale(1)"
-            : "translateY(8px) scale(.96)",
-        transition: leaving
-          ? "opacity .35s ease, transform .35s ease"
-          : "opacity .35s cubic-bezier(.22,1,.36,1), transform .35s cubic-bezier(.22,1,.36,1)",
-      }}
-    >
-      {children}
-    </div>
-  );
-}
+import {
+  BlockStack,
+  Box,
+  Button,
+  Card,
+  InlineStack,
+  ProgressBar,
+  Text,
+  Transition,
+} from "@xco-agency/corex-ui";
 
 function getStageValidity(
   stage: FlowStageType,
@@ -63,10 +38,9 @@ function getStageValidity(
     if (stage.kind === "choice") {
       return stage.questions.every((q) => {
         const val = answers[q.id];
-        if (q.type === "single") return !!val;
-        if (q.type === "multi") return val instanceof Set && val.size > 0;
-        if (q.type === "input") return !!val && parseFloat(String(val)) > 0;
-        return true;
+        if (Array.isArray(val)) return val.length > 0;
+        if (val instanceof Set) return val.size > 0;
+        return !!val;
       });
     }
     if (stage.kind === "style-preset") return !!answers[stage.id];
@@ -94,44 +68,30 @@ function QuestionsStage({
   const isValid = getStageValidity(stage, answers);
 
   return (
-    <>
-      <div className="panel" style={styles.panel as CSSProperties}>
-        {stage.kind !== "choice" && (
-          <>
-            <h3 style={styles.batchTitle as CSSProperties}>{stage.title}</h3>
-            {stage.subtitle && (
-              <p style={styles.batchSubtitle as CSSProperties}>{stage.subtitle}</p>
-            )}
-          </>
-        )}
+    <BlockStack gap="base" inlineSize="100%">
+      {stage.kind === "choice" && (
+        <ChoiceQuestions stage={stage} answers={answers} setAnswers={setAnswers} />
+      )}
+      {stage.kind === "toggle-grid" && (
+        <ToggleGrid stage={stage} answers={answers} setAnswers={setAnswers} />
+      )}
+      {stage.kind === "style-preset" && (
+        <StylePreset stage={stage} answers={answers} setAnswers={setAnswers} />
+      )}
+      {stage.kind === "brand-color" && (
+        <BrandColor stage={stage} answers={answers} setAnswers={setAnswers} />
+      )}
 
-        {stage.kind === "choice" && (
-          <ChoiceQuestions stage={stage} answers={answers} setAnswers={setAnswers} />
-        )}
-        {stage.kind === "toggle-grid" && (
-          <ToggleGrid stage={stage} answers={answers} setAnswers={setAnswers} />
-        )}
-        {stage.kind === "style-preset" && (
-          <StylePreset stage={stage} answers={answers} setAnswers={setAnswers} />
-        )}
-        {stage.kind === "brand-color" && (
-          <BrandColor stage={stage} answers={answers} setAnswers={setAnswers} />
-        )}
-      </div>
-
-      <button
-        type="button"
-        className="btn"
-        style={{
-          ...(styles.btn as CSSProperties),
-          ...(isValid ? {} : (styles.btnDisabled as CSSProperties)),
-        }}
+      <Button
+        variant="primary"
+        size="large"
+        inlineSize="fill"
         disabled={!isValid}
         onClick={onContinue}
       >
         Continue
-      </button>
-    </>
+      </Button>
+    </BlockStack>
   );
 }
 
@@ -172,63 +132,61 @@ export function OnboardingNew({
   const showProgress = currentStage.type !== "complete";
 
   return (
-    <InlineStack
-      justifyContent="center"
-      alignItems="center"
-      inlineSize="100%"
-      blockSize="800px"
-    >
+    <BlockStack inlineSize="100%" minBlockSize="760px" alignItems="center" padding="base">
       <style dangerouslySetInnerHTML={{ __html: onboardingCss }} />
 
-      <div
-        style={{
-          ...(styles.progressPill as CSSProperties),
-          opacity: showProgress ? 1 : 0,
-          transform: showProgress ? "translate(-50%, 0)" : "translate(-50%, -14px)",
-          pointerEvents: showProgress ? "auto" : "none",
-        }}
+      {showProgress && (
+        <Box className="progress-pill" paddingInline="large-100" paddingBlock="small-200">
+          <InlineStack alignItems="center" gap="base">
+            <Box inlineSize="90px">
+              <ProgressBar progress={progressPct} size="xs" tone="success" />
+            </Box>
+            <Text variant="bodySm" color="subdued" fontWeight="semibold">
+              Step {shownStep} of {totalQuestionStages}
+            </Text>
+          </InlineStack>
+        </Box>
+      )}
+      <BlockStack
+        flex={1}
+        gap="base"
+        alignItems="center"
+        justifyContent="center"
+        inlineSize="100%"
+        maxInlineSize="520px"
       >
-        <div style={styles.progressTrack as CSSProperties}>
-          <div
-            style={{
-              ...(styles.progressFill as CSSProperties),
-              width: `${progressPct}%`,
-            }}
-          />
-        </div>
-        <span style={styles.progressLabel as CSSProperties}>
-          Step {shownStep} of {totalQuestionStages}
-        </span>
-      </div>
-
-      <div style={styles.stageWrap as CSSProperties}>
-        <StageTransition key={stageIndex} leaving={leaving}>
-          {currentStage.type === "processing" && (
-            <ProcessingStage
-              texts={(currentStage as StageProcessingType).texts}
-              onDone={advance}
-            />
-          )}
-          {currentStage.type === "questions" && (
-            <QuestionsStage
-              stage={
-                currentStage as
-                  | StageChoiceQuestionsType
-                  | StageToggleGridType
-                  | StageStylePresetType
-                  | StageBrandColorType
-              }
-              answers={answers}
-              setAnswers={setAnswers}
-              onContinue={handleContinue}
-            />
-          )}
-          {currentStage.type === "complete" && (
-            <CompleteStage onRestart={handleReset} onGoToDashboard={onGoToDashboard} />
-          )}
-        </StageTransition>
-      </div>
-    </InlineStack>
+        <Box inlineSize="100%">
+          <Transition
+            reverse
+            key={stageIndex}
+            animate="fade-up"
+            leaving={leaving}
+            inlineSize="100%"
+            display="flex"
+            flexDirection="column"
+            alignItems="center"
+          >
+            {currentStage.type === "processing" && (
+              <ProcessingStage
+                texts={(currentStage as StageProcessingType).texts}
+                onDone={advance}
+              />
+            )}
+            {currentStage.type === "questions" && (
+              <QuestionsStage
+                stage={currentStage}
+                answers={answers}
+                setAnswers={setAnswers}
+                onContinue={handleContinue}
+              />
+            )}
+            {currentStage.type === "complete" && (
+              <CompleteStage onRestart={handleReset} onGoToDashboard={onGoToDashboard} />
+            )}
+          </Transition>
+        </Box>
+      </BlockStack>
+    </BlockStack>
   );
 }
 

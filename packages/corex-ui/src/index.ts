@@ -53,6 +53,7 @@ export * from "./components/UrlField";
 export * from "./components/Popover";
 export * from "./components/Floating";
 export * from "./components/Collapsible";
+export * from "./components/Transition";
 export * from "./components/Menu";
 export * from "./components/Navigation";
 export * from "./components/EmptyState";

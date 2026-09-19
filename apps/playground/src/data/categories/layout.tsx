@@ -19,6 +19,8 @@ import { CollapsibleExample } from "@/examples/layout/CollapsibleExample";
 import CollapsibleExampleRaw from "@/examples/layout/CollapsibleExample.tsx?raw";
 import { CollapsibleFaqExample } from "@/examples/layout/CollapsibleFaqExample";
 import CollapsibleFaqExampleRaw from "@/examples/layout/CollapsibleFaqExample.tsx?raw";
+import { TransitionExample } from "@/examples/layout/TransitionExample";
+import TransitionExampleRaw from "@/examples/layout/TransitionExample.tsx?raw";
 
 export const layoutComponents: ComponentEntry[] = [
   {
@@ -145,6 +147,20 @@ export const layoutComponents: ComponentEntry[] = [
         title: "Grouped FAQ rows (single open at a time)",
         Example: CollapsibleFaqExample,
         code: CollapsibleFaqExampleRaw,
+      },
+    ],
+  },
+  {
+    name: "Transition",
+    slug: "transition",
+    category: "Layout",
+    description:
+      "A reusable, lightweight animation primitive supporting preset variants (fade-up, scale, pop, slide-up, etc.) with automatic bi-directional in/out transitions.",
+    examples: [
+      {
+        title: "Variant Presets & In/Out Controls",
+        Example: TransitionExample,
+        code: TransitionExampleRaw,
       },
     ],
   },

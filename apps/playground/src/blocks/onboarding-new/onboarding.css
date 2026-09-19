@@ -1,9 +1,7 @@
 /*
   onboarding.css
-  Holds keyframes, interactive pseudo-classes, toggle-switch knob, and responsive breakpoints.
+  Keyframes for processing text shimmer and pulse animations.
 */
-
-/* ---------- keyframes ---------- */
 
 @keyframes spin {
   to {
@@ -31,35 +29,19 @@
   }
 }
 
-@keyframes swatchPop {
-  0% {
-    transform: scale(1);
-  }
-  40% {
-    transform: scale(1.08);
-  }
-  100% {
-    transform: scale(1);
-  }
-}
-
-/* ---------- animated classes ---------- */
-
-.spinner {
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  border: 3px solid #e3e3e3;
-  border-top-color: #008060;
-  animation: spin 0.75s linear infinite !important;
-  flex-shrink: 0;
-}
-
+/* Dark gray / light metallic shimmer (no green) */
 .processing-text {
   font-size: clamp(1.25rem, 3.2vw, 1.75rem);
   font-weight: 600;
   display: inline-block;
-  background-image: linear-gradient(90deg, #6d7175 0%, #1a1a1a 22%, #008060 42%, #1a1a1a 62%, #6d7175 84%);
+  background-image: linear-gradient(
+    90deg,
+    #6d7175 0%,
+    #1a1a1a 22%,
+    #e4e5e7 42%,
+    #1a1a1a 62%,
+    #6d7175 84%
+  );
   background-size: 260% 100%;
   -webkit-background-clip: text;
   background-clip: text;
@@ -69,126 +51,31 @@
   transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
-.scan-orbit {
-  position: absolute;
-  inset: 0;
-  border-radius: 50%;
-  border: 2px solid #008060;
-  opacity: 0.35;
-  animation: scanPulse 1.8s ease-out infinite !important;
+.progress-pill {
+  border-radius: 9999px !important;
+  background: var(--p-color-bg-surface, #ffffff);
+  border: 1px solid var(--p-color-border, #e3e3e3);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04), 0 14px 34px rgba(0, 0, 0, 0.07);
+  transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
-.mini-spinner {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  border: 2px solid rgba(255, 255, 255, 0.4);
-  border-top-color: #ffffff;
-  animation: spin 0.7s linear infinite !important;
+.choice-indicator {
+  width: 18px;
+  height: 18px;
+  border-radius: 50% !important;
+  border: 2px solid #c9cccf;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: border-color 0.15s ease, background 0.15s ease;
 }
 
-/* ---------- hover / active states ---------- */
-
-.q-option:hover {
-  border-color: #c9cccf !important;
+.choice-indicator.is-multi {
+  border-radius: 4px !important;
 }
 
-.btn:not(:disabled):hover {
-  background: #006e52 !important;
-  box-shadow: 0 6px 16px rgba(0, 128, 96, 0.25) !important;
-}
-
-.btn:not(:disabled):active {
-  transform: scale(0.98) !important;
-}
-
-.scan-cta:hover:not(:disabled) {
-  background: #006e52 !important;
-}
-
-.swatch-color:hover {
-  transform: translateY(-2px);
-  box-shadow:
-    0 0 0 1px #c9cccf,
-    0 6px 14px rgba(0, 0, 0, 0.1) !important;
-}
-
-.q-input:focus {
-  outline: none;
+.choice-indicator.is-selected {
   border-color: #008060 !important;
-  box-shadow: 0 0 0 3px #e3f1ec !important;
+  background: #008060 !important;
 }
-
-/* Accessible focus ring */
-button:focus-visible,
-[tabindex]:focus-visible,
-input:focus-visible {
-  outline: 2px solid #008060;
-  outline-offset: 2px;
-  border-radius: 4px;
-}
-
-/* ---------- toggle switch knob ---------- */
-
-.toggle-switch {
-  position: relative;
-}
-
-.toggle-switch::after {
-  content: "";
-  position: absolute;
-  top: 2px;
-  left: 2px;
-  width: 16px;
-  height: 16px;
-  border-radius: 50%;
-  background: #fff;
-  transition: transform 0.2s ease;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
-}
-
-.toggle-switch.is-on::after {
-  transform: translateX(16px);
-}
-
-/* Replays when swatch element is updated */
-.swatch-color.is-updated {
-  animation: swatchPop 0.5s ease;
-}
-
-/* ---------- responsive layout ---------- */
-
-.toggle-grid,
-.preset-grid {
-  grid-template-columns: 1fr 1fr;
-}
-
-.panel {
-  padding: 32px 30px;
-}
-
-@media (max-width: 560px) {
-  .toggle-grid,
-  .preset-grid {
-    grid-template-columns: 1fr !important;
-  }
-
-  .panel {
-    padding: 26px 20px !important;
-  }
-
-  .brand-swatches {
-    flex-wrap: wrap !important;
-  }
-
-  .scan-card {
-    flex-wrap: wrap !important;
-  }
-
-  .scan-cta {
-    width: 100% !important;
-    justify-content: center !important;
-  }
-}
-
-/* ---------- end of onboarding.css ---------- */

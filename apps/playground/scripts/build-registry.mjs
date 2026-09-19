@@ -20,6 +20,10 @@ const BLOCK_METADATA = {
     title: "App Cross-Sell",
     description: "Ecosystem app promotion card with one-click installation trigger.",
   },
+  "cards": {
+    title: "Cards",
+    description: "Three versatile card layouts: minimalist, media showcase, and media with actions.",
+  },
   "discount-rules": {
     title: "Discount Rules",
     description: "Volume tiers, free gifts, and automated BOGO promotional rules.",

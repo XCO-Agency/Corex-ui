@@ -1,20 +1,22 @@
-import { useState, useEffect } from "react";
-import type { CSSProperties } from "react";
-import { styles } from "../constants";
+import {
+  BlockStack,
+  Box,
+  Button,
+  Card,
+  Icon,
+  IconTile,
+  Text,
+} from "@xco-agency/corex-ui";
 
 export type CompleteStagePropsType = {
   onRestart?: () => void;
   onGoToDashboard?: () => void;
 };
 
-export function CompleteStage({ onRestart, onGoToDashboard }: CompleteStagePropsType) {
-  const [drawn, setDrawn] = useState(false);
-
-  useEffect(() => {
-    const raf = requestAnimationFrame(() => requestAnimationFrame(() => setDrawn(true)));
-    return () => cancelAnimationFrame(raf);
-  }, []);
-
+export function CompleteStage({
+  onRestart,
+  onGoToDashboard,
+}: CompleteStagePropsType) {
   const handleAction = () => {
     if (onGoToDashboard) {
       onGoToDashboard();
@@ -24,35 +26,33 @@ export function CompleteStage({ onRestart, onGoToDashboard }: CompleteStageProps
   };
 
   return (
-    <>
-      <div className="panel" style={styles.panel as CSSProperties}>
-        <div style={styles.complete as CSSProperties}>
-          <div style={styles.checkWrap as CSSProperties}>
-            <div style={styles.checkCircle as CSSProperties}>
-              <svg viewBox="0 0 24 24" style={styles.checkSvg as CSSProperties}>
-                <path
-                  d="M4 12l6 6 10-12"
-                  style={{
-                    ...(styles.checkPathComplete as CSSProperties),
-                    strokeDashoffset: drawn ? 0 : 24,
-                    transition: "stroke-dashoffset .5s ease .2s",
-                  }}
-                />
-              </svg>
-            </div>
-          </div>
-          <h2 style={styles.completeH2 as CSSProperties}>You&apos;re all set</h2>
-          <p style={styles.completeP as CSSProperties}>Your revenue tools are configured and ready to go.</p>
-        </div>
-      </div>
-      <button
-        type="button"
-        className="btn"
-        style={styles.btn as CSSProperties}
+    <BlockStack gap="base" inlineSize="100%">
+      <Card>
+        <Box paddingBlock="large-100">
+          <BlockStack gap="base" alignItems="center" inlineAlign="center">
+            <IconTile tone="success" size="lg" borderRadius="full">
+              <Icon type="check" tone="success" />
+            </IconTile>
+            <BlockStack gap="small-400" alignItems="center" inlineAlign="center">
+              <Text variant="headingLg" heading>
+                You&apos;re all set
+              </Text>
+              <Text variant="bodyMd" color="subdued">
+                Your revenue tools are configured and ready to go.
+              </Text>
+            </BlockStack>
+          </BlockStack>
+        </Box>
+      </Card>
+
+      <Button
+        variant="primary"
+        size="large"
+        inlineSize="fill"
         onClick={handleAction}
       >
         Enter dashboard
-      </button>
-    </>
+      </Button>
+    </BlockStack>
   );
 }

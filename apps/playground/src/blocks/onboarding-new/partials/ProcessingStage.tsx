@@ -1,7 +1,5 @@
 import { useState, useEffect } from "react";
-import type { CSSProperties } from "react";
-import { styles } from "../constants";
-import { Spinner, Text } from "@xco-agency/corex-ui";
+import { BlockStack, Box, Spinner, Text } from "@xco-agency/corex-ui";
 
 export type ProcessingStagePropsType = {
   texts: string[];
@@ -19,40 +17,31 @@ export function ProcessingStage({ texts, onDone }: ProcessingStagePropsType) {
         setTextIndex((i) => (i + 1) % texts.length);
         setChanging(false);
       }, 200);
-    }, 2000);
+    }, 1000);
 
     const apiTimer = setTimeout(
       () => {
         onDone();
       },
-      8600 + Math.random() * 400,
+      2600 + Math.random() * 400,
     );
 
     return () => {
       clearInterval(textTimer);
       clearTimeout(apiTimer);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [texts, onDone]);
 
   return (
-    <div style={styles.processing as CSSProperties}>
-      <span style={{ scale: "1.5" }}>
-        <Spinner />
-      </span>
-      <span
-        className="processing-text"
-        style={{
-          ...(styles.processingText as CSSProperties),
-          WebkitTextFillColor: "transparent",
-          opacity: changing ? 0 : 1,
-          transform: changing ? "translateY(6px)" : "translateY(0)",
-        }}
-      >
-        <Text variant="headingXl" lineClamp={1} heading>
-          {texts[textIndex]}
-        </Text>
-      </span>
-    </div>
+    <Box paddingBlock="large-500" inlineSize="100%">
+      <BlockStack gap="large-100" alignItems="center" inlineAlign="center">
+        <Spinner size="large" accessibilityLabel="Loading stage" />
+        <Box className="processing-text" opacity={changing ? "0" : "1"}>
+          <Text variant="headingXl" lineClamp={1} heading>
+            {texts[textIndex]}
+          </Text>
+        </Box>
+      </BlockStack>
+    </Box>
   );
 }

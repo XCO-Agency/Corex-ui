@@ -35,8 +35,8 @@ export function ComponentDetail() {
   );
 
   return (
-    <div className="mx-auto w-full max-w-7xl px-2 sm:px-4 lg:px-6 py-2 pb-16">
-      <div className="grid grid-cols-1 gap-8 lg:grid-cols-[minmax(0,1fr)_220px]">
+    <div className="mx-auto w-full max-w-8xl pb-16">
+      <div className="grid grid-cols-1 gap-3 sm:gap-5 md:gap-8 lg:grid-cols-[minmax(0,1fr)_220px]">
         {/* Main Content Column */}
         <div className="min-w-0 space-y-8">
           <ComponentHeader

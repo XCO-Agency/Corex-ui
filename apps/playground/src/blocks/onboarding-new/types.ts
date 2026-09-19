@@ -27,14 +27,19 @@ export type RevenueToolOptionType = {
   badge?: string;
 };
 
+export type ChoiceOptionItemType = {
+  label: string;
+  value: string;
+  helpText?: string;
+  disabled?: boolean;
+};
+
 export type QuestionSingleChoiceType = {
   id: string;
-  type: "single" | "multi" | "input";
+  type?: "single" | "multi";
   question: string;
   subtitle?: string;
-  options?: string[];
-  prefix?: string;
-  placeholder?: string;
+  options: ChoiceOptionItemType[];
 };
 
 export type StageKindType = "choice" | "toggle-grid" | "style-preset" | "brand-color";

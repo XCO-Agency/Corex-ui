@@ -22,6 +22,7 @@ import { subscriptionManagementBlocks } from "./blocks/subscription-management";
 import { appCrossSellBlocks } from "./blocks/app-cross-sell";
 import { videoTutorialBlocks } from "./blocks/video-tutorial";
 import { supportHubBlocks } from "./blocks/support-hub";
+import { cardsBlocks } from "./blocks/cards";
 import type { ComponentEntry } from "./types";
 
 export { categories } from "./types";
@@ -78,6 +79,7 @@ export const blocks: BlockGroupType[] = [
   {
     category: "Layouts & Administration",
     components: [
+      ...cardsBlocks,
       ...settingsBlocks,
       ...resourceTableBlocks,
       ...activityFeedBlocks,

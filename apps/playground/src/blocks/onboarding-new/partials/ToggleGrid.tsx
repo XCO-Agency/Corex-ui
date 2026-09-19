@@ -1,7 +1,17 @@
 import { useEffect } from "react";
-import type { CSSProperties, Dispatch, SetStateAction } from "react";
+import type { Dispatch, SetStateAction } from "react";
+import {
+  Badge,
+  BlockStack,
+  Box,
+  Clickable,
+  Grid,
+  IconTile,
+  InlineStack,
+  Switch,
+  Text,
+} from "@xco-agency/corex-ui";
 import type { OnboardingNewAnswersType, StageToggleGridType } from "../types";
-import { styles } from "../constants";
 
 export type ToggleGridPropsType = {
   stage: StageToggleGridType;
@@ -33,51 +43,76 @@ export function ToggleGrid({ stage, answers, setAnswers }: ToggleGridPropsType) 
   };
 
   return (
-    <>
-      <div className="toggle-grid" style={styles.toggleGrid as CSSProperties}>
+    <BlockStack gap="base">
+      <Grid columns={{ xs: 1, sm: 2 }} gap="base">
         {stage.options.map((opt) => {
           const isOn = selected.has(opt.id);
           return (
-            <div
-              key={opt.id}
-              role="switch"
-              aria-checked={isOn}
-              tabIndex={0}
-              style={{
-                ...(styles.toggleCard as CSSProperties),
-                ...(isOn ? (styles.toggleCardOn as CSSProperties) : {}),
-              }}
-              onClick={() => toggle(opt.id)}
-              onKeyDown={(e) => {
-                if (e.key === " " || e.key === "Enter") {
-                  e.preventDefault();
-                  toggle(opt.id);
-                }
-              }}
-            >
-              {opt.badge && <span style={styles.badge as CSSProperties}>{opt.badge}</span>}
-              <div
-                style={{
-                  ...(styles.toggleIconWrap as CSSProperties),
-                  ...(isOn ? (styles.toggleIconWrapOn as CSSProperties) : {}),
-                }}
+            <Grid.Item key={opt.id}>
+              <Clickable
+                onClick={() => toggle(opt.id)}
+                inlineSize="fill"
+                borderRadius="base"
               >
-                {opt.icon}
-              </div>
-              <div style={styles.toggleTitle as CSSProperties}>{opt.title}</div>
-              <div style={styles.toggleDesc as CSSProperties}>{opt.desc}</div>
-              <div
-                className={`toggle-switch${isOn ? " is-on" : ""}`}
-                style={{
-                  ...(styles.toggleSwitch as CSSProperties),
-                  ...(isOn ? (styles.toggleSwitchOn as CSSProperties) : {}),
-                }}
-              />
-            </div>
+                <Box
+                  position="relative"
+                  padding="base"
+                  borderRadius="base"
+                  borderWidth={isOn ? "050" : "0165"}
+                  borderColor={isOn ? "strong" : "border"}
+                  background={isOn ? "bg-surface-secondary" : "bg-surface"}
+                  blockSize="100%"
+                >
+                  {opt.badge && (
+                    <Box
+                      position="absolute"
+                      insetBlockStart="8px"
+                      insetInlineEnd="8px"
+                      zIndex={1}
+                    >
+                      <Badge tone="success">{opt.badge}</Badge>
+                    </Box>
+                  )}
+
+                  <BlockStack gap="small">
+                    <IconTile
+                      tone={isOn ? "success" : "subdued"}
+                      size="md"
+                      borderRadius="base"
+                    >
+                      <Text variant="headingSm">{opt.icon}</Text>
+                    </IconTile>
+
+                    <Text variant="bodyMd" fontWeight="semibold">
+                      {opt.title}
+                    </Text>
+
+                    <Text variant="bodySm" color="subdued">
+                      {opt.desc}
+                    </Text>
+
+                    <InlineStack justifyContent="flex-end" alignItems="center">
+                      <Clickable onClick={(e) => e.stopPropagation()}>
+                        <Switch
+                          checked={isOn}
+                          onChange={() => toggle(opt.id)}
+                          accessibilityLabel={`Toggle ${opt.title}`}
+                        />
+                      </Clickable>
+                    </InlineStack>
+                  </BlockStack>
+                </Box>
+              </Clickable>
+            </Grid.Item>
           );
         })}
-      </div>
-      <p style={styles.hintNote as CSSProperties}>You can add or remove these anytime from your dashboard.</p>
-    </>
+      </Grid>
+
+      <Box paddingBlockStart="small-200">
+        <Text variant="bodySm" color="subdued">
+          You can add or remove these anytime from your dashboard.
+        </Text>
+      </Box>
+    </BlockStack>
   );
 }

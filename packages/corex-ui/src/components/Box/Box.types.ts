@@ -242,6 +242,8 @@ export type BoxPropsType = Omit<NativeBoxProps, keyof NativeBoxOverridesType | "
     tabIndex?: number;
     id?: string;
     slot?: string;
+    style?: CSSProperties;
+    className?: string;
     [key: `aria-${string}`]: unknown;
     [key: `data-${string}`]: unknown;
   };
