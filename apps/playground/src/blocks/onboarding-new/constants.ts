@@ -72,10 +72,26 @@ export const FLOW: FlowStageType[] = [
         question: "What's your average monthly order volume?",
         subtitle: "This helps us tailor performance settings to your store size.",
         options: [
-          { label: "Under 100 orders", value: "under-100" },
-          { label: "100–500 orders", value: "100-500" },
-          { label: "500–2,000 orders", value: "500-2000" },
-          { label: "2,000+ orders", value: "2000-plus" },
+          {
+            label: "Under 100 orders",
+            helpText: "Helper text to explain more about this option",
+            value: "under-100",
+          },
+          {
+            label: "100–500 orders",
+            helpText: "Helper text to explain more about this option",
+            value: "100-500",
+          },
+          {
+            label: "500–2,000 orders",
+            helpText: "Helper text to explain more about this option",
+            value: "500-2000",
+          },
+          {
+            label: "2,000+ orders",
+            helpText: "Helper text to explain more about this option",
+            value: "2000-plus",
+          },
         ],
       },
     ],

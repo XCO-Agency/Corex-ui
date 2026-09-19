@@ -1,5 +1,5 @@
 import type { Dispatch, SetStateAction } from "react";
-import { BlockStack, ChoiceList, Text } from "@xco-agency/corex-ui";
+import { BlockStack, Card, ChoiceList, Text } from "@xco-agency/corex-ui";
 import type { OnboardingNewAnswersType, StageChoiceQuestionsType } from "../types";
 
 export type ChoiceQuestionsPropsType = {
@@ -14,7 +14,7 @@ export function ChoiceQuestions({
   setAnswers,
 }: ChoiceQuestionsPropsType) {
   return (
-    <BlockStack gap="base">
+    <Card heading="What's your average">
       {stage.questions.map((q) => {
         const isMulti = q.type === "multi";
         const val = answers[q.id];
@@ -25,27 +25,21 @@ export function ChoiceQuestions({
             : [];
 
         return (
-          <BlockStack key={q.id} gap="small-200">
-            {q.subtitle && (
-              <Text variant="bodySm" color="subdued">
-                {q.subtitle}
-              </Text>
-            )}
-            <ChoiceList
-              title={q.question}
-              choices={q.options}
-              selected={selectedValues}
-              allowMultiple={isMulti}
-              onChange={(newSelected) => {
-                setAnswers((prev) => ({
-                  ...prev,
-                  [q.id]: isMulti ? newSelected : (newSelected[0] ?? ""),
-                }));
-              }}
-            />
-          </BlockStack>
+          <ChoiceList
+            key={q.id}
+            label={q.subtitle}
+            choices={q.options}
+            selected={selectedValues}
+            multiple={isMulti}
+            onChange={(values) => {
+              setAnswers((prev) => ({
+                ...prev,
+                [q.id]: isMulti ? values : (values[0] ?? ""),
+              }));
+            }}
+          />
         );
       })}
-    </BlockStack>
+    </Card>
   );
 }

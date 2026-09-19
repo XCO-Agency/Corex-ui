@@ -29,7 +29,6 @@ export const Button = forwardRef<HTMLElement, ButtonPropsType>(function Button(
     type,
     accessibilityLabel,
     fullWidth,
-    style,
     ...rest
   },
   ref,

@@ -1,5 +1,5 @@
-import type { ReactNode } from "react";
-
+import { PolarisPropsType } from "../../types/common";
+type SchoiceListPropsType = PolarisPropsType<"s-choice-list">;
 export type ChoiceListOptionType = {
   label: string;
   value: string;
@@ -7,14 +7,8 @@ export type ChoiceListOptionType = {
   disabled?: boolean;
 };
 
-export type ChoiceListPropsType = {
-  title?: ReactNode;
-  choices: ChoiceListOptionType[];
-  selected: string[];
-  onChange?: (selected: string[], name: string) => void;
-  allowMultiple?: boolean;
-  name?: string;
-  error?: ReactNode;
-  id?: string;
-  className?: string;
+export type ChoiceListPropsType = Omit<SchoiceListPropsType, "onChange"> & {
+  choices?: ChoiceListOptionType[];
+  selected?: string[];
+  onChange?: (values: string[], name: string) => void;
 };

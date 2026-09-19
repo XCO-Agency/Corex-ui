@@ -23,7 +23,7 @@ import {
   BlockStack,
   Box,
   Button,
-  Card,
+  Grid,
   InlineStack,
   ProgressBar,
   Text,
@@ -57,6 +57,8 @@ type QuestionsStagePropsType = {
   answers: OnboardingNewAnswersType;
   setAnswers: Dispatch<SetStateAction<OnboardingNewAnswersType>>;
   onContinue: () => void;
+  onBack: () => void;
+  canGoBack: boolean;
 };
 
 function QuestionsStage({
@@ -64,11 +66,13 @@ function QuestionsStage({
   answers,
   setAnswers,
   onContinue,
+  onBack,
+  canGoBack,
 }: QuestionsStagePropsType) {
   const isValid = getStageValidity(stage, answers);
 
   return (
-    <BlockStack gap="base" inlineSize="100%">
+    <BlockStack gap="large" inlineSize="100%" alignItems="center">
       {stage.kind === "choice" && (
         <ChoiceQuestions stage={stage} answers={answers} setAnswers={setAnswers} />
       )}
@@ -82,15 +86,26 @@ function QuestionsStage({
         <BrandColor stage={stage} answers={answers} setAnswers={setAnswers} />
       )}
 
-      <Button
-        variant="primary"
-        size="large"
-        inlineSize="fill"
-        disabled={!isValid}
-        onClick={onContinue}
-      >
-        Continue
-      </Button>
+      <InlineStack gap="base" inlineSize="100%" maxInlineSize="420px" alignItems="center">
+        {canGoBack && (
+          <Button variant="tertiary" onClick={onBack} icon="arrow-left">
+            Back
+          </Button>
+        )}
+        <Button
+          variant="primary"
+
+          inlineSize="fill"
+          disabled={!isValid}
+          onClick={onContinue}
+        >
+          Continue
+        </Button>
+      </InlineStack>
+
+      <Text color="subdued">
+        * All configuration are fully customizable anytime from the Hub.
+      </Text>
     </BlockStack>
   );
 }
@@ -102,27 +117,45 @@ export function OnboardingNew({
 }: OnboardingNewPropsType) {
   const [stageIndex, setStageIndex] = useState(0);
   const [answers, setAnswers] = useState<OnboardingNewAnswersType>(initialAnswers);
-  const [questionStagesDone, setQuestionStagesDone] = useState(0);
   const [leaving, setLeaving] = useState(false);
 
   const fallbackStage = FLOW[0] as FlowStageType;
   const currentStage: FlowStageType = FLOW[stageIndex] ?? fallbackStage;
   const totalQuestionStages = FLOW.filter((s) => s.type === "questions").length;
 
+  const questionStagesDone = FLOW.slice(0, stageIndex).filter(
+    (s) => s.type === "questions",
+  ).length;
+
   const advance = useCallback(() => setStageIndex((i) => i + 1), []);
 
   const handleContinue = () => {
     setLeaving(true);
     setTimeout(() => {
-      setQuestionStagesDone((d) => d + 1);
       setStageIndex((i) => i + 1);
       setLeaving(false);
     }, 300);
   };
 
+  const handleBack = () => {
+    let prevQuestionIndex = -1;
+    for (let i = stageIndex - 1; i >= 0; i--) {
+      if (FLOW[i]?.type === "questions") {
+        prevQuestionIndex = i;
+        break;
+      }
+    }
+    if (prevQuestionIndex >= 0) {
+      setLeaving(true);
+      setTimeout(() => {
+        setStageIndex(prevQuestionIndex);
+        setLeaving(false);
+      }, 300);
+    }
+  };
+
   const handleReset = () => {
     setAnswers(initialAnswers);
-    setQuestionStagesDone(0);
     setStageIndex(0);
     if (onRestart) onRestart();
   };
@@ -130,6 +163,7 @@ export function OnboardingNew({
   const progressPct = (questionStagesDone / totalQuestionStages) * 100;
   const shownStep = Math.min(questionStagesDone + 1, totalQuestionStages);
   const showProgress = currentStage.type !== "complete";
+  const canGoBack = questionStagesDone > 0;
 
   return (
     <BlockStack inlineSize="100%" minBlockSize="760px" alignItems="center" padding="base">
@@ -178,6 +212,8 @@ export function OnboardingNew({
                 answers={answers}
                 setAnswers={setAnswers}
                 onContinue={handleContinue}
+                onBack={handleBack}
+                canGoBack={canGoBack}
               />
             )}
             {currentStage.type === "complete" && (

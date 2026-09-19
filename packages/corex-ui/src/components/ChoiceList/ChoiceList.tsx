@@ -18,7 +18,7 @@ const SChoice = createWebComponent<HTMLElement>("s-choice");
  */
 export const ChoiceList = forwardRef<HTMLElement, ChoiceListPropsType>(
   function ChoiceList(
-    { title, choices, selected, onChange, allowMultiple, name, ...rest },
+    { label, choices, values, selected, onChange, multiple, name, children, ...rest },
     ref,
   ) {
     const handleChange = (event: Event) => {
@@ -29,26 +29,26 @@ export const ChoiceList = forwardRef<HTMLElement, ChoiceListPropsType>(
     return (
       <SChoiceList
         ref={ref}
-        label={title ?? name}
-        values={selected}
-        multiple={allowMultiple}
+        label={label ?? name}
+        values={selected ?? values}
+        multiple={multiple}
         name={name}
         onChange={handleChange}
-        labelAccessibilityVisibility={title ? undefined : "exclusive"}
+        labelAccessibilityVisibility={label ? undefined : "exclusive"}
         {...rest}
       >
-        {/* <s-choice-list labelAccessibilityVisibility="exclusive"></s-choice-list> */}
-        {choices.map((choice) => (
+        {choices?.map((choice) => (
           <SChoice
             key={choice.value}
             value={choice.value}
-            selected={selected.includes(choice.value)}
+            selected={selected?.includes(choice.value)}
+            accessibilityLabel={choice.label}
             disabled={choice.disabled}
           >
             {choice.label}
             {choice.helpText ? <span slot="details">{choice.helpText}</span> : null}
           </SChoice>
-        ))}
+        )) ?? children}
       </SChoiceList>
     );
   },
