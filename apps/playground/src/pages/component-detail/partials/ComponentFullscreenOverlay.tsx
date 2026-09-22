@@ -75,7 +75,6 @@ export function ComponentFullscreenOverlay({
   const exitButton = (
     <Button
       type="button"
-      variant="outline"
       size="sm"
       onClick={onClose}
       className="h-8 gap-1.5 px-3 text-xs font-medium border-border/80 bg-background hover:bg-muted/50 cursor-pointer shadow-2xs"

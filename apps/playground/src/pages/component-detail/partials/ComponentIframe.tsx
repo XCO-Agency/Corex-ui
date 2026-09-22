@@ -1,3 +1,4 @@
+import { cn } from "@/lib/utils";
 import * as React from "react";
 import { createPortal } from "react-dom";
 
@@ -213,7 +214,7 @@ export function ComponentIframe({ children, className }: ComponentIframePropsTyp
     <iframe
       ref={iframeRef}
       title="Component Preview"
-      className={className ?? "w-full border-0 bg-transparent transition-all"}
+      className={cn(className, "w-full border-0 bg-transparent transition-all")}
       style={{ minHeight: "460px", display: "block" }}
     >
       {mountNode ? createPortal(children, mountNode) : null}

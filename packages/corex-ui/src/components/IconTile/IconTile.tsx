@@ -2,15 +2,10 @@ import { forwardRef } from "react";
 import type { CSSProperties, ReactNode } from "react";
 
 type IconTileToneType =
-  | "success"
-  | "neutral"
-  | "subdued"
-  | "caution"
-  | "info"
-  | "critical";
+  "success" | "neutral" | "subdued" | "caution" | "info" | "critical" | "transparent";
 export type IconTileColorType = "base" | "strong";
 type IconTileBorderRadiusType = "none" | "small" | "base" | "large" | "full";
-type IconTileSizeType = "sm" | "md" | "lg";
+type IconTileSizeType = "sm" | "md" | "lg" | "auto";
 
 export type IconTilePropsType = {
   children?: ReactNode;
@@ -44,6 +39,7 @@ const TONE_STYLES: Record<
     caution: { backgroundColor: "#fef3c7", color: "#d97706" },
     info: { backgroundColor: "#d4ebff", color: "#0284c7" },
     critical: { backgroundColor: "#fecaca", color: "#dc2626" },
+    transparent: { backgroundColor: "transparent", color: "#dc2626" },
   },
   strong: {
     success: { backgroundColor: "#059669", color: "#ffffff" },
@@ -52,6 +48,7 @@ const TONE_STYLES: Record<
     caution: { backgroundColor: "#d97706", color: "#ffffff" },
     info: { backgroundColor: "#0284c7", color: "#ffffff" },
     critical: { backgroundColor: "#dc2626", color: "#ffffff" },
+    transparent: { backgroundColor: "transparent", color: "#dc2626" },
   },
 };
 
@@ -59,13 +56,14 @@ const SIZE_STYLES: Record<IconTileSizeType, { width: string; height: string }> =
   sm: { width: "auto", height: "1.35rem" },
   md: { width: "auto", height: "2.125rem" },
   lg: { width: "auto", height: "2.75rem" },
+  auto: { width: "auto", height: "auto" },
 };
 
 const BORDER_RADIUS_STYLES: Record<IconTileBorderRadiusType, { borderRadius: string }> = {
   none: { borderRadius: "0px" },
   small: { borderRadius: "0.25rem" },
   base: { borderRadius: "0.5rem" },
-  large: { borderRadius: "0.75rem" },
+  large: { borderRadius: "0.8125rem" },
   full: { borderRadius: "9999px" },
 };
 

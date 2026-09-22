@@ -4,7 +4,7 @@ import { Installation } from "./pages/Installation";
 import { Icons } from "./pages/Icons";
 import { AppsIcons } from "./pages/AppsIcons";
 import { Utils } from "./pages/Utils";
-import { ComponentDetail } from "./pages/ComponentDetail";
+import { ComponentDetail } from "./pages/component-detail/ComponentDetail";
 import Layout from "./layout";
 import { TooltipProvider } from "./components/ui/tooltip";
 

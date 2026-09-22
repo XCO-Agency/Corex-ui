@@ -63,7 +63,7 @@ export function ComponentCanvas({
           minSize="300px"
           className={cn(
             "relative flex justify-center bg-gray-50  overflow-clip  bg-[radial-gradient(oklch(0.7_0_0/0.2)_1px,transparent_1px)] dark:bg-[radial-gradient(oklch(1_0_0/0.15)_1px,transparent_1px)] bg-size-[16px_16px]",
-            isFullscreen ? "items-start py-4" : "items-center rounded-xl border",
+            isFullscreen ? "items-start" : "items-center rounded-xl border",
           )}
         >
           {/* Prevent iframe from capturing pointer events during drag resizing */}
@@ -72,7 +72,9 @@ export function ComponentCanvas({
           )}
 
           {/* Isolated iframe for Tailwind CSS isolation & authentic viewport simulation */}
-          <ComponentIframe>{children}</ComponentIframe>
+          <ComponentIframe className={isFullscreen ? "h-full!" : ""}>
+            {children}
+          </ComponentIframe>
         </ResizablePanel>
 
         {/* Resizable drag handle */}

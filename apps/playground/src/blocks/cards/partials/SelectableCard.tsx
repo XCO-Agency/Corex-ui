@@ -15,6 +15,8 @@ import {
   Avatar,
   Icon,
   Switch,
+  Card,
+  IconTile,
 } from "@xco-agency/corex-ui";
 import type { SelectableCardPropsType } from "../types";
 
@@ -60,54 +62,66 @@ export function SelectableCard({
   return (
     <Box position="relative" inlineSize="100%">
       {selected && (
-        <Floating position="top-left" strategy="absolute" offset={12} zIndex={10}>
-          <Badge tone="success">Selected</Badge>
+        <Floating position="top-right" strategy="absolute" offset={12} zIndex={10}>
+          <Badge tone="success" icon="check">
+            Selected
+          </Badge>
         </Floating>
       )}
 
       <Clickable onClick={handleToggle} inlineSize="fill" borderRadius="large-100">
-        <Box
-          borderRadius="large-100"
-          overflow="hidden"
-          borderWidth={selected ? "050" : "0165"}
-          borderColor={selected ? "strong" : "border"}
-          background={selected ? "bg-surface-secondary" : "bg-surface"}
+        <IconTile
+          size="auto"
+          tone={selected ? "success" : "neutral"}
+          borderRadius="large"
         >
-          <BlockStack>
-            <Image
-              src={imageUrl}
-              alt={imageAlt || currentTitle}
-              aspectRatio="9/6"
-              objectFit="cover"
-            />
+          <Box padding="small-500">
+            <Card padding="none">
+              <BlockStack>
+                <Image
+                  src={imageUrl}
+                  alt={imageAlt || currentTitle}
+                  aspectRatio="9/6"
+                  objectFit="cover"
+                />
 
-            <Box padding="base">
-              <BlockStack gap="small">
-                <InlineStack justifyContent="space-between" alignItems="center">
-                  <Text as="h3">{currentTitle}</Text>
-                  <Clickable onClick={(e) => e.stopPropagation()}>
-                    <Switch
-                      checked={selected}
-                      onChange={(checked) => onSelectChange?.(checked)}
-                      accessibilityLabel={`Select ${currentTitle}`}
-                    />
-                  </Clickable>
-                </InlineStack>
-                {description && (
-                  <Text color="subdued" as="p" variant="base" lineClamp={2}>
-                    {description}
-                  </Text>
-                )}
+                <Box padding="base">
+                  <BlockStack gap="small">
+                    <InlineStack
+                      justifyContent="space-between"
+                      gap="small"
+                      alignItems="center"
+                    >
+                      <Text as="h3" heading lineClamp={1}>
+                        {currentTitle}
+                      </Text>
+                      <Clickable onClick={(e) => e.stopPropagation()}>
+                        <Switch
+                          checked={selected}
+                          onChange={(checked) => onSelectChange?.(checked)}
+                          accessibilityLabel={`Select ${currentTitle}`}
+                        />
+                      </Clickable>
+                    </InlineStack>
+                    {description && (
+                      <Text color="subdued" as="p" lineClamp={2}>
+                        {description}
+                      </Text>
+                    )}
 
-                {selected && (
-                  <Button variant="primary" inlineSize="fill" onClick={handleOpenModal}>
-                    setup
-                  </Button>
-                )}
+                    <Button
+                      disabled={!selected}
+                      inlineSize="fill"
+                      onClick={handleOpenModal}
+                    >
+                      configure
+                    </Button>
+                  </BlockStack>
+                </Box>
               </BlockStack>
-            </Box>
-          </BlockStack>
-        </Box>
+            </Card>
+          </Box>
+        </IconTile>
       </Clickable>
 
       <Modal
