@@ -13,10 +13,7 @@ export type CompleteStagePropsType = {
   onGoToDashboard?: () => void;
 };
 
-export function CompleteStage({
-  onRestart,
-  onGoToDashboard,
-}: CompleteStagePropsType) {
+export function CompleteStage({ onRestart, onGoToDashboard }: CompleteStagePropsType) {
   const handleAction = () => {
     if (onGoToDashboard) {
       onGoToDashboard();
@@ -29,11 +26,11 @@ export function CompleteStage({
     <BlockStack gap="base" inlineSize="100%">
       <Card>
         <Box paddingBlock="large-100">
-          <BlockStack gap="base" alignItems="center" inlineAlign="center">
-            <IconTile tone="success" size="lg" borderRadius="full">
+          <BlockStack gap="base" alignItems="center" justifyContent="center">
+            <IconTile tone="success" size="large" borderRadius="full">
               <Icon type="check" tone="success" />
             </IconTile>
-            <BlockStack gap="small-400" alignItems="center" inlineAlign="center">
+            <BlockStack gap="small-400" alignItems="center" justifyContent="center">
               <Text variant="headingLg" heading>
                 You&apos;re all set
               </Text>
@@ -45,12 +42,7 @@ export function CompleteStage({
         </Box>
       </Card>
 
-      <Button
-        variant="primary"
-        size="large"
-        inlineSize="fill"
-        onClick={handleAction}
-      >
+      <Button variant="primary" inlineSize="fill" onClick={handleAction}>
         Enter dashboard
       </Button>
     </BlockStack>

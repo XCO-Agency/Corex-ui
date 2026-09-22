@@ -74,7 +74,7 @@ export function Step1Initializing({ state, dispatch }: Step1InitializingPropsTyp
         >
           <BlockStack gap="base" alignItems="center">
             {state.syncComplete ? (
-              <IconTile tone="success" size="lg">
+              <IconTile tone="success" size="large">
                 <Icon type="check" tone="success" />
               </IconTile>
             ) : (

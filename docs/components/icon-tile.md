@@ -7,20 +7,20 @@ import { IconTile, Icon } from "@xco-agency/corex-ui";
 
 <IconTile tone="success">
   <Icon type="check" tone="auto" />
-</IconTile>
+</IconTile>;
 ```
 
 ## Props
 
-| Prop           | Type                                                                       | Default     | Description                                                                                     |
-| -------------- | -------------------------------------------------------------------------- | ----------- | ----------------------------------------------------------------------------------------------- |
-| `tone`         | `"success" \| "neutral" \| "subdued" \| "caution" \| "info" \| "critical"` | `"success"` | Visual color tone for the tile background and foreground icon.                                  |
-| `color`        | `"base" \| "strong"`                                                       | `"base"`    | Color intensity: `"base"` for subtle pastel tint, `"strong"` for solid saturated background.    |
-| `size`         | `"sm" \| "md" \| "lg"`                                                     | `"md"`      | Tile dimensions: `"sm"` (21px), `"md"` (40px), `"lg"` (44px).                                   |
-| `borderRadius` | `"none" \| "small" \| "base" \| "large" \| "full"`                         | `"base"`    | Border radius of the tile container.                                                           |
-| `style`        | `CSSProperties`                                                            | `undefined` | Custom inline CSS styles forwarded to the tile wrapper.                                         |
-| `className`    | `string`                                                                   | `undefined` | Custom CSS class name.                                                                          |
-| `children`     | `ReactNode`                                                                | `undefined` | The icon or child elements to render inside the tile.                                           |
+| Prop           | Type                                                                       | Default     | Description                                                                                  |
+| -------------- | -------------------------------------------------------------------------- | ----------- | -------------------------------------------------------------------------------------------- |
+| `tone`         | `"success" \| "neutral" \| "subdued" \| "caution" \| "info" \| "critical"` | `"success"` | Visual color tone for the tile background and foreground icon.                               |
+| `color`        | `"base" \| "strong"`                                                       | `"base"`    | Color intensity: `"base"` for subtle pastel tint, `"strong"` for solid saturated background. |
+| `size`         | `"sm" \| "md" \| "lg"`                                                     | `"md"`      | Tile dimensions: `"sm"` (21px), `"md"` (40px), `"lg"` (44px).                                |
+| `borderRadius` | `"none" \| "small" \| "base" \| "large" \| "full"`                         | `"base"`    | Border radius of the tile container.                                                         |
+| `style`        | `CSSProperties`                                                            | `undefined` | Custom inline CSS styles forwarded to the tile wrapper.                                      |
+| `className`    | `string`                                                                   | `undefined` | Custom CSS class name.                                                                       |
+| `children`     | `ReactNode`                                                                | `undefined` | The icon or child elements to render inside the tile.                                        |
 
 ## Color Intensity (`base` vs `strong`)
 
@@ -45,15 +45,15 @@ Use `color="base"` (default) for subtle tinted backgrounds, and `color="strong"`
 ## Sizes
 
 ```tsx
-<IconTile size="sm" tone="success">
+<IconTile size="small" tone="success">
   <Icon type="check" tone="auto" />
 </IconTile>
 
-<IconTile size="md" tone="success">
+<IconTile size="base" tone="success">
   <Icon type="check" tone="auto" />
 </IconTile>
 
-<IconTile size="lg" tone="success">
+<IconTile size="large" tone="success">
   <Icon type="check" tone="auto" />
 </IconTile>
 ```

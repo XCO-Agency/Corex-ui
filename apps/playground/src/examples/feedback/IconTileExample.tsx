@@ -67,7 +67,8 @@ export function IconTileExample() {
             Color Intensity (Base vs Strong)
           </Text>
           <Text as="p" color="subdued">
-            Use `color="strong"` for saturated solid backgrounds. Perfect for high-contrast emphasis and white icons.
+            Use `color="strong"` for saturated solid backgrounds. Perfect for
+            high-contrast emphasis and white icons.
           </Text>
           <BlockStack gap="base">
             <BlockStack gap="small-200">
@@ -178,21 +179,21 @@ export function IconTileExample() {
           </Text>
           <InlineStack gap="base" alignItems="center">
             <BlockStack gap="small-100" alignItems="center">
-              <IconTile size="sm" tone="success">
+              <IconTile size="small" tone="success">
                 <Icon type="check" tone="auto" />
               </IconTile>
               <Text color="subdued">Small (32px)</Text>
             </BlockStack>
 
             <BlockStack gap="small-100" alignItems="center">
-              <IconTile size="md" tone="success">
+              <IconTile size="base" tone="success">
                 <Icon type="check" tone="auto" />
               </IconTile>
-              <Text color="subdued">Medium (40px)</Text>
+              <Text color="subdued">Medium (default) (40px)</Text>
             </BlockStack>
 
             <BlockStack gap="small-100" alignItems="center">
-              <IconTile size="lg" tone="success">
+              <IconTile size="large" tone="success">
                 <Icon type="check" tone="auto" />
               </IconTile>
               <Text color="subdued">Large (44px)</Text>

@@ -5,7 +5,7 @@ type IconTileToneType =
   "success" | "neutral" | "subdued" | "caution" | "info" | "critical" | "transparent";
 export type IconTileColorType = "base" | "strong";
 type IconTileBorderRadiusType = "none" | "small" | "base" | "large" | "full";
-type IconTileSizeType = "sm" | "md" | "lg" | "auto";
+type IconTileSizeType = "small" | "base" | "large" | "auto";
 
 export type IconTilePropsType = {
   children?: ReactNode;
@@ -53,9 +53,9 @@ const TONE_STYLES: Record<
 };
 
 const SIZE_STYLES: Record<IconTileSizeType, { width: string; height: string }> = {
-  sm: { width: "auto", height: "1.35rem" },
-  md: { width: "auto", height: "2.125rem" },
-  lg: { width: "auto", height: "2.75rem" },
+  small: { width: "auto", height: "1.35rem" },
+  base: { width: "auto", height: "2.125rem" },
+  large: { width: "auto", height: "2.75rem" },
   auto: { width: "auto", height: "auto" },
 };
 
@@ -77,7 +77,7 @@ export const IconTile = forwardRef<HTMLDivElement, IconTilePropsType>(function I
     tone = "success",
     color = "base",
     borderRadius = "base",
-    size = "md",
+    size = "base",
     style,
     className,
     ...rest
@@ -87,7 +87,7 @@ export const IconTile = forwardRef<HTMLDivElement, IconTilePropsType>(function I
   const isStrong = color === "strong";
   const colorGroup = TONE_STYLES[color] ?? TONE_STYLES.base;
   const toneStyle = colorGroup[tone] ?? colorGroup.success;
-  const sizeStyle = SIZE_STYLES[size] ?? SIZE_STYLES.md;
+  const sizeStyle = SIZE_STYLES[size] ?? SIZE_STYLES.base;
   const radiusStyle = BORDER_RADIUS_STYLES[borderRadius] ?? BORDER_RADIUS_STYLES.base;
 
   return (

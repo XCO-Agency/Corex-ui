@@ -12,6 +12,7 @@ import {
   Select,
   Text,
   TextField,
+  NumberField,
 } from "@xco-agency/corex-ui";
 
 function formatCurrency(amount: number, currency: string): string {
@@ -88,9 +89,8 @@ export function Step3Configuration({ state, dispatch }: Step3ConfigurationPropsT
                   />
                 </Box>
                 <Box inlineSize="100%">
-                  <TextField
+                  <NumberField
                     label="Free shipping threshold"
-                    type="number"
                     value={String(threshold)}
                     onChange={handleAmountChange}
                     autoComplete="off"
@@ -126,7 +126,11 @@ export function Step3Configuration({ state, dispatch }: Step3ConfigurationPropsT
           </BlockStack>
         </Box>
         <BlockStack gap="small-200" style={{ width: "100%" }} alignItems="center">
-          <InlineStack gap="small-200" style={{ width: "100%" }} justifyContent="space-between">
+          <InlineStack
+            gap="small-200"
+            style={{ width: "100%" }}
+            justifyContent="space-between"
+          >
             <Button onClick={() => dispatch({ type: "GO_BACK" })}>Back</Button>
             <Button
               variant="primary"

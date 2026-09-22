@@ -18,7 +18,7 @@ describe("IconTile", () => {
 
   it("applies tone, size, and border radius correctly", () => {
     const { rerender } = render(
-      <IconTile data-testid="tile" tone="caution" size="lg" borderRadius="full">
+      <IconTile data-testid="tile" tone="caution" size="large" borderRadius="full">
         Icon
       </IconTile>,
     );
@@ -30,7 +30,7 @@ describe("IconTile", () => {
     expect(tile.style.borderRadius).toBe("9999px");
 
     rerender(
-      <IconTile data-testid="tile" size="sm" borderRadius="none">
+      <IconTile data-testid="tile" size="small" borderRadius="none">
         Icon
       </IconTile>,
     );
@@ -58,4 +58,3 @@ describe("IconTile", () => {
     expect(tile.style.color).toBe("rgb(255, 255, 255)");
   });
 });
-

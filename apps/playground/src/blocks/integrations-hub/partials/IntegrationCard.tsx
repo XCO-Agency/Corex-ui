@@ -29,12 +29,7 @@ export function IntegrationCard({
           gap="small-200"
         >
           <InlineStack gap="small-300" alignItems="center">
-            <IconTile
-              tone={integration.iconTone}
-              color="base"
-              size="md"
-              borderRadius="base"
-            >
+            <IconTile tone={integration.iconTone} color="base" borderRadius="base">
               <span style={{ fontWeight: 700, fontSize: "14px" }}>
                 {integration.name.slice(0, 2).toUpperCase()}
               </span>

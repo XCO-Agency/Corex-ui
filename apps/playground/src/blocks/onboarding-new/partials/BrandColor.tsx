@@ -86,7 +86,7 @@ export function BrandColor({ answers, setAnswers }: BrandColorPropsType) {
         >
           <InlineStack justifyContent="space-between" alignItems="center" gap="base" wrap>
             <InlineStack gap="base" alignItems="center">
-              <IconTile tone="success" size="lg" borderRadius="full">
+              <IconTile tone="success" size="large" borderRadius="full">
                 <Icon type="store" tone="success" />
               </IconTile>
               <BlockStack gap="small-400">

@@ -84,7 +84,7 @@ export function Step4AddTools({ state, dispatch }: Step4AddToolsPropsType) {
                       <BlockStack gap="small-100">
                         <InlineStack justifyContent="space-between" alignItems="center">
                           <IconTile
-                            size="sm"
+                            size="small"
                             tone={tool.selected ? "success" : "subdued"}
                           >
                             <Icon

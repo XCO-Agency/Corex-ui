@@ -113,7 +113,7 @@ export function ToggleGrid({ answers, setAnswers }: ToggleGridPropsType) {
                     <BlockStack gap="small">
                       <IconTile
                         tone={isOn ? "success" : "subdued"}
-                        size="md"
+
                         borderRadius="base"
                       >
                         <Text variant="headingSm">{opt.icon}</Text>
@@ -147,4 +147,3 @@ export function ToggleGrid({ answers, setAnswers }: ToggleGridPropsType) {
     </Card>
   );
 }
-

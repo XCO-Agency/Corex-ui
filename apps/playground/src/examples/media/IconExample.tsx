@@ -1,4 +1,12 @@
-import { Box, BlockStack, Icon, InlineStack, Text, IconTile, Banner } from "@xco-agency/corex-ui";
+import {
+  Box,
+  BlockStack,
+  Icon,
+  InlineStack,
+  Text,
+  IconTile,
+  Banner,
+} from "@xco-agency/corex-ui";
 
 export function IconExample() {
   return (
@@ -12,7 +20,8 @@ export function IconExample() {
         }}
       >
         <Text as="p" variant="small">
-          Looking for a specific symbol? Browse our full interactive Icon Library with advanced search, keywords, and ready-to-copy JSX code.
+          Looking for a specific symbol? Browse our full interactive Icon Library with
+          advanced search, keywords, and ready-to-copy JSX code.
         </Text>
       </Banner>
 
@@ -37,16 +46,16 @@ export function IconExample() {
         </Text>
         <InlineStack gap="base" alignItems="center">
           <InlineStack gap="small-200" alignItems="center">
-            <IconTile tone="critical" color="strong" size="sm">
+            <IconTile tone="critical" color="strong" size="small">
               <Icon type="star" accessibilityLabel="Star" />
             </IconTile>
-            <IconTile tone="success" color="strong" size="md">
+            <IconTile tone="success" color="strong">
               <Icon type="heart" tone="white" accessibilityLabel="Heart" />
             </IconTile>
-            <IconTile tone="info" color="strong" size="lg">
+            <IconTile tone="info" color="strong" size="large">
               <Icon type="lock" tone="white" accessibilityLabel="Lock" />
             </IconTile>
-            <IconTile tone="info" color="strong" size="lg">
+            <IconTile tone="info" color="strong" size="large">
               <Box paddingInline="base">
                 <Text as="span" variant="small" tone="white">
                   In `Text` with `tone="white"`
