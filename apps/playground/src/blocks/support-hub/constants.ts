@@ -3,25 +3,27 @@ import type {
   SupportHoursType,
   SupportQuickLinkType,
 } from "./types";
-import avatarIhar from "./avatar-ihar.png";
-import avatarMarina from "./avatar-marina.png";
-import avatarAndrii from "./avatar-andrii.png";
+import {
+  AVATAR_IHAR,
+  AVATAR_MARINA,
+  AVATAR_ANDRII,
+} from "./avatars-data";
 
 export const DEFAULT_TEAM_MEMBERS: SupportTeamMemberType[] = [
   {
     name: "Ihar",
     role: "Customer Care",
-    avatarUrl: avatarIhar || "/avatar-ihar.png",
+    avatarUrl: AVATAR_IHAR,
   },
   {
     name: "Marina",
     role: "Customer Care",
-    avatarUrl: avatarMarina || "/avatar-marina.png",
+    avatarUrl: AVATAR_MARINA,
   },
   {
     name: "Andrii",
     role: "Customer Care",
-    avatarUrl: avatarAndrii || "/avatar-andrii.png",
+    avatarUrl: AVATAR_ANDRII,
   },
 ];
 

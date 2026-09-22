@@ -37,7 +37,7 @@ function CompactTabsMenu<TId extends string | number = string>({
               background="transparent"
               paddingInline="small-200"
               blockSize="28px"
-              borderRadius="base"
+              borderRadius="large-100"
               inlineSize="fill"
               commandFor={popoverId}
               command="--hide"
@@ -77,19 +77,13 @@ function CompactTabsMenu<TId extends string | number = string>({
                       flexShrink: 0,
                     }}
                   >
-                    {isSelected && <Icon type="check" tone="neutral" />}
+                    {isSelected && <Icon type="check" />}
                   </div>
 
                   {tab.icon && <Icon type={tab.icon} />}
 
                   {tab.label && (
-                    <Text
-                      variant="small"
-                      lineClamp={1}
-                      color="base"
-                      tone="neutral"
-                      heading={isSelected}
-                    >
+                    <Text variant="small" lineClamp={1} heading={isSelected}>
                       {tab.label}
                     </Text>
                   )}
@@ -187,6 +181,7 @@ function TabsInner<TId extends string | number = string>(
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
+          gap: 8,
         }}
       >
         {compact ? (
@@ -197,7 +192,7 @@ function TabsInner<TId extends string | number = string>(
                 disabled={tabs.length === 0}
                 paddingInline="small-200"
                 blockSize="28px"
-                borderRadius="base"
+                borderRadius="large-100"
                 accessibilityLabel={
                   currentTab?.accessibilityLabel ?? currentTab?.label ?? "Select tab"
                 }
@@ -263,7 +258,7 @@ function TabsInner<TId extends string | number = string>(
                   paddingInline="small-300"
                   blockSize="28px"
                   maxInlineSize="none"
-                  borderRadius="base"
+                  borderRadius="large-100"
                   accessibilityLabel={tab.accessibilityLabel}
                   onClick={() => handleSelect(tab, index)}
                 >
@@ -277,13 +272,7 @@ function TabsInner<TId extends string | number = string>(
                   >
                     {tab.icon && <Icon type={tab.icon} />}
                     {tab.label && (
-                      <Text
-                        variant="small"
-                        lineClamp={1}
-                        color="base"
-                        tone="neutral"
-                        heading
-                      >
+                      <Text variant="small" lineClamp={1} color="base" heading>
                         {tab.label}
                       </Text>
                     )}
@@ -311,9 +300,7 @@ function TabsInner<TId extends string | number = string>(
                       "--p-color-bg-surface-hover": "#ddddddad",
                       "--p-color-bg-surface-secondary-hover": "#ddddddad",
                       "--p-color-bg-surface-tertiary-hover": "#ddddddad",
-                      "--t-surface-tertiary": isSelected
-                        ? "#ddddddad"
-                        : "transparent",
+                      "--t-surface-tertiary": isSelected ? "#ddddddad" : "transparent",
                       "--t-surface-secondary-hover": "#ddddddad",
                       "--t-surface-tertiary-hover": "#ddddddad",
                     } as CSSProperties
@@ -329,11 +316,10 @@ function TabsInner<TId extends string | number = string>(
             })}
           </div>
         )}
+        {children}
 
         {rightSide && <InlineStack gap="small-200">{rightSide}</InlineStack>}
       </div>
-
-      {children && children}
     </div>
   );
 }

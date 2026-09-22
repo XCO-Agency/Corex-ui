@@ -6,6 +6,12 @@
     "filesCount": 8
   },
   {
+    "name": "ai-recommendations",
+    "title": "Ai Recommendations",
+    "description": "Ai Recommendations block for Shopify applications.",
+    "filesCount": 5
+  },
+  {
     "name": "app-cross-sell",
     "title": "App Cross-Sell",
     "description": "Ecosystem app promotion card with one-click installation trigger.",
@@ -15,7 +21,7 @@
     "name": "cards",
     "title": "Cards",
     "description": "Three versatile card layouts: minimalist, media showcase, and media with actions.",
-    "filesCount": 12
+    "filesCount": 10
   },
   {
     "name": "discount-rules",
@@ -33,7 +39,7 @@
     "name": "metrics-dashboard",
     "title": "Metrics Dashboard",
     "description": "Executive revenue, conversion, and order KPI overview with comparison trends.",
-    "filesCount": 2
+    "filesCount": 3
   },
   {
     "name": "notification-templates",

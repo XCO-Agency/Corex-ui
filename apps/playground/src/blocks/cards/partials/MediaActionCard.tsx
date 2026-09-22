@@ -9,7 +9,33 @@ import {
   Image,
   Checkbox,
 } from "@xco-agency/corex-ui";
-import type { MediaActionCardPropsType } from "../types";
+import type { ReactNode } from "react";
+import type { CardBadgeType } from "./MinimalistCard";
+
+export type CardActionType = {
+  content: string;
+  onAction?: () => void;
+  url?: string;
+  disabled?: boolean;
+  loading?: boolean;
+  destructive?: boolean;
+};
+
+export type MediaActionCardPropsType = {
+  title: string;
+  description: string;
+  imageUrl: string;
+  imageAlt?: string;
+  badge?: CardBadgeType;
+  metaText?: string;
+  primaryAction?: CardActionType;
+  secondaryAction?: CardActionType;
+  selectable?: boolean;
+  selected?: boolean;
+  onSelectChange?: (selected: boolean) => void;
+  onOptionsClick?: () => void;
+  children?: ReactNode;
+};
 
 export function MediaActionCard({
   title,

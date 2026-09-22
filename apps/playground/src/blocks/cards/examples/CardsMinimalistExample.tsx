@@ -6,8 +6,50 @@ import {
   Text,
   Banner,
 } from "@xco-agency/corex-ui";
-import { MinimalistCard } from "../partials/MinimalistCard";
-import { MINIMALIST_CARD_ITEMS } from "../constants";
+import { MinimalistCard, type CardBadgeType } from "../partials/MinimalistCard";
+export type MinimalistCardItemType = {
+  id: string;
+  title: string;
+  description: string;
+  badge?: CardBadgeType;
+  metaText?: string;
+};
+
+export const MINIMALIST_CARD_ITEMS: MinimalistCardItemType[] = [
+  {
+    id: "mini-1",
+    title: "Store Speed Optimization",
+    description:
+      "Compress storefront assets and defer third-party scripts to achieve a sub-second Time to Interactive across all mobile devices.",
+    badge: {
+      text: "Recommended",
+      tone: "success",
+    },
+    metaText: "Est. +14% mobile conversion",
+  },
+  {
+    id: "mini-2",
+    title: "Automated Checkout Upsell",
+    description:
+      "Recommend complementary high-margin accessories directly inside the Shopify checkout drawer based on customer cart contents.",
+    badge: {
+      text: "High Impact",
+      tone: "info",
+    },
+    metaText: "Est. +$8.40 Average Order Value",
+  },
+  {
+    id: "mini-3",
+    title: "Dynamic Free Shipping Bar",
+    description:
+      "Display real-time tier thresholds to incentivize customers to add more items to their cart before proceeding to final payment.",
+    badge: {
+      text: "Quick Setup",
+      tone: "neutral",
+    },
+    metaText: "2 min configuration",
+  },
+];
 
 export function CardsMinimalistExample() {
   const [selectedTip, setSelectedTip] = React.useState<string | null>(null);

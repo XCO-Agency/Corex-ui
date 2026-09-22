@@ -1,7 +1,26 @@
-import { MinimalistCard } from "./partials/MinimalistCard";
+import { MinimalistCard, type CardBadgeType } from "./partials/MinimalistCard";
 import { MediaCard } from "./partials/MediaCard";
-import { MediaActionCard } from "./partials/MediaActionCard";
-import type { BlockCardPropsType } from "./types";
+import { MediaActionCard, type CardActionType } from "./partials/MediaActionCard";
+import type { ReactNode } from "react";
+
+export type CardVariantType = "minimalist" | "media" | "media-actions";
+
+export type BlockCardPropsType = {
+  variant?: CardVariantType;
+  title: string;
+  description: string;
+  badge?: CardBadgeType;
+  metaText?: string;
+  imageUrl?: string;
+  imageAlt?: string;
+  primaryAction?: CardActionType;
+  secondaryAction?: CardActionType;
+  selectable?: boolean;
+  selected?: boolean;
+  onSelectChange?: (selected: boolean) => void;
+  onOptionsClick?: () => void;
+  children?: ReactNode;
+};
 
 export function BlockCard({
   variant = "minimalist",

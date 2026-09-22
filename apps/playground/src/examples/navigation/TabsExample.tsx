@@ -1,14 +1,7 @@
 import { useState } from "react";
-import {
-  BlockStack,
-  Box,
-  Button,
-  Divider,
-  Icon,
-  Tabs,
-  Text,
-} from "@xco-agency/corex-ui";
+import { BlockStack, Box, Button, Divider, Icon, Tabs, Text } from "@xco-agency/corex-ui";
 import type { TabItemType } from "@xco-agency/corex-ui";
+import { SearchField } from "@xco-agency/corex-ui";
 
 export function TabsExample() {
   const [selectedId, setSelectedId] = useState("all");
@@ -70,7 +63,9 @@ export function TabsExample() {
                 Search and filter
               </Button>
             }
-          />
+          >
+            <SearchField />
+          </Tabs>
         </Box>
         <Divider />
         <Box padding="base">
@@ -107,11 +102,7 @@ export function TabsExample() {
       {/* Standard Index-based Tabs */}
       <Box background="base" border="base" borderRadius="large" inlineSize="840px">
         <Box padding="small-200">
-          <Tabs
-            tabs={tabs}
-            selected={selected}
-            onSelect={setSelected}
-          />
+          <Tabs tabs={tabs} selected={selected} onSelect={setSelected} />
         </Box>
         <Divider />
         <Box padding="base">
@@ -124,5 +115,3 @@ export function TabsExample() {
     </BlockStack>
   );
 }
-
-

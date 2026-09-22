@@ -18,22 +18,13 @@ const SSearchField = createWebComponent<HTMLElement, FieldEvents>("s-search-fiel
 export const SearchField = forwardRef<HTMLElement, SearchFieldPropsType>(
   function SearchField(
     {
-      label = "Search",
-      value,
-      defaultValue = "",
-      placeholder = "Search",
       onChange,
       onDebouncedChange,
       debounceDelay = 300,
-      onClear,
-      onBlur,
-      onFocus,
       helpText,
       details,
-      prefix,
-      suffix,
-      requiredIndicator,
-      labelAccessibilityVisibility = "exclusive",
+      value,
+      defaultValue,
       id,
       ...rest
     },
@@ -51,7 +42,7 @@ export const SearchField = forwardRef<HTMLElement, SearchFieldPropsType>(
     const debouncedValue = useDebounce(localValue, debounceDelay);
 
     useEffect(() => {
-      onDebouncedChange?.(debouncedValue);
+      onDebouncedChange?.(debouncedValue ?? "");
     }, [debouncedValue, onDebouncedChange]);
 
     const handleInput = (event: Event) => {
@@ -59,35 +50,17 @@ export const SearchField = forwardRef<HTMLElement, SearchFieldPropsType>(
       const nextVal = target?.value ?? "";
       setLocalValue(nextVal);
       onChange?.(nextVal, id);
-      if (nextVal === "") {
-        onClear?.();
-      }
     };
-
-    const slots = (
-      <>
-        {prefix ? <span slot="prefix">{prefix}</span> : null}
-        {suffix ? <span slot="suffix">{suffix}</span> : null}
-      </>
-    );
 
     return (
       <SSearchField
         ref={ref}
         id={id}
-        label={label as any}
-        labelAccessibilityVisibility={labelAccessibilityVisibility}
         value={isControlled ? (value ?? "") : localValue}
-        placeholder={placeholder}
         details={details ?? helpText}
-        required={requiredIndicator}
         onInput={handleInput}
-        onBlur={onBlur}
-        onFocus={onFocus}
         {...rest}
-      >
-        {slots}
-      </SSearchField>
+      ></SSearchField>
     );
   },
 );

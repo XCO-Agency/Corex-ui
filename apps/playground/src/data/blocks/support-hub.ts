@@ -14,6 +14,7 @@ import SupportContactCardRaw from "@/blocks/support-hub/partials/SupportContactC
 import SupportQuickLinksRaw from "@/blocks/support-hub/partials/SupportQuickLinks.tsx?raw";
 import SupportTeamAvatarsRaw from "@/blocks/support-hub/partials/SupportTeamAvatars.tsx?raw";
 import constantsRaw from "@/blocks/support-hub/constants.ts?raw";
+import avatarsDataRaw from "@/blocks/support-hub/avatars-data.ts?raw";
 import typesRaw from "@/blocks/support-hub/types.ts?raw";
 import indexRaw from "@/blocks/support-hub/index.ts?raw";
 
@@ -57,6 +58,11 @@ const blockFiles: FileItemType[] = [
     name: "constants.ts",
     path: "constants.ts",
     code: constantsRaw,
+  },
+  {
+    name: "avatars-data.ts",
+    path: "avatars-data.ts",
+    code: avatarsDataRaw,
   },
   {
     name: "types.ts",

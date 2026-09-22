@@ -14,7 +14,6 @@ export const NavigationSearch = React.forwardRef<HTMLElement, NavigationSearchPr
       placeholder = "Search (Ctrl + K)",
       label = "Search",
       labelAccessibilityVisibility = "exclusive",
-      autoComplete = "additional-name",
       ...rest
     },
     ref,
@@ -49,7 +48,6 @@ export const NavigationSearch = React.forwardRef<HTMLElement, NavigationSearchPr
           label={label}
           labelAccessibilityVisibility={labelAccessibilityVisibility}
           placeholder={placeholder}
-          autoComplete={autoComplete}
           debounceDelay={debounceDelay}
           onChange={handleChange}
           onDebouncedChange={handleDebouncedChange}

@@ -9,7 +9,22 @@ import {
   Image,
   Checkbox,
 } from "@xco-agency/corex-ui";
-import type { MediaCardPropsType } from "../types";
+import type { ReactNode } from "react";
+import type { CardBadgeType } from "./MinimalistCard";
+
+export type MediaCardPropsType = {
+  title: string;
+  description: string;
+  imageUrl: string;
+  imageAlt?: string;
+  badge?: CardBadgeType;
+  metaText?: string;
+  selectable?: boolean;
+  selected?: boolean;
+  onSelectChange?: (selected: boolean) => void;
+  onOptionsClick?: () => void;
+  children?: ReactNode;
+};
 
 export function MediaCard({
   title,

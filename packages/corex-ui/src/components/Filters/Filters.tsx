@@ -45,7 +45,6 @@ export function FiltersSearch({
   value = "",
   placeholder = "search by keywords",
   onChange,
-  onClear,
   onBlur,
   onFocus,
   disabled = false,
@@ -61,7 +60,6 @@ export function FiltersSearch({
         placeholder={placeholder}
         value={value}
         onChange={onChange}
-        onClear={onClear}
         onBlur={onBlur}
         onFocus={onFocus}
         disabled={disabled}
@@ -924,20 +922,21 @@ function FiltersInner(
               onClearAll={onClearAll}
               disabled={disabled}
             />
-            {actions || (hasColsPopover ? (
-              <FiltersActions>
-                <FiltersColumnsPopover
-                  sortOptions={sortOptions}
-                  sortValue={sortValue}
-                  onSortChange={onSortChange}
-                  columns={columns}
-                  onColumnToggle={onColumnToggle}
-                  hideArchived={hideArchived}
-                  onHideArchivedChange={onHideArchivedChange}
-                  disabled={disabled}
-                />
-              </FiltersActions>
-            ) : null)}
+            {actions ||
+              (hasColsPopover ? (
+                <FiltersActions>
+                  <FiltersColumnsPopover
+                    sortOptions={sortOptions}
+                    sortValue={sortValue}
+                    onSortChange={onSortChange}
+                    columns={columns}
+                    onColumnToggle={onColumnToggle}
+                    hideArchived={hideArchived}
+                    onHideArchivedChange={onHideArchivedChange}
+                    disabled={disabled}
+                  />
+                </FiltersActions>
+              ) : null)}
           </>
         )}
       </InlineStack>

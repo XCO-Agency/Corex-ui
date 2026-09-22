@@ -18,7 +18,15 @@ import {
   Card,
   IconTile,
 } from "@xco-agency/corex-ui";
-import type { SelectableCardPropsType } from "../types";
+export type SelectableCardPropsType = {
+  title: string;
+  description?: string;
+  imageUrl: string;
+  imageAlt?: string;
+  selected?: boolean;
+  onSelectChange?: (selected: boolean) => void;
+  onTitleChange?: (newTitle: string) => void;
+};
 
 export function SelectableCard({
   title,

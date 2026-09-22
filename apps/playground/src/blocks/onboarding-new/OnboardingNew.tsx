@@ -1,6 +1,5 @@
 import { useState, useCallback } from "react";
 import "./onboarding.css";
-import onboardingCss from "./onboarding.css?inline";
 import type {
   OnboardingNewAnswersType,
   OnboardingNewPropsType,
@@ -153,8 +152,6 @@ export function OnboardingNew({
 
   return (
     <BlockStack inlineSize="100%" minBlockSize="760px" alignItems="center" padding="base">
-      <style dangerouslySetInnerHTML={{ __html: onboardingCss }} />
-
       {showProgress && (
         <InlineStack alignItems="center" gap="base">
           <Box inlineSize="90px">

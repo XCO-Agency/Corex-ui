@@ -32,18 +32,12 @@ export function ResourceFilters({
 
   return (
     <Box paddingInline="base" paddingBlock="small-300">
-      <InlineStack
-        gap="base"
-        alignItems="center"
-        justifyContent="space-between"
-        wrap
-      >
+      <InlineStack gap="base" alignItems="center" justifyContent="space-between" wrap>
         <BlockStack grow minInlineSize="240px">
           <SearchField
             placeholder="Search by title, SKU, or vendor..."
             value={filters.query}
             onChange={(val) => onQueryChange(val)}
-            onClear={() => onQueryChange("")}
           />
         </BlockStack>
 

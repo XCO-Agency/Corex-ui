@@ -188,7 +188,6 @@ export type FiltersSearchPropsType = {
   value?: string;
   placeholder?: string;
   onChange?: (value: string) => void;
-  onClear?: () => void;
   onBlur?: () => void;
   onFocus?: () => void;
   disabled?: boolean;

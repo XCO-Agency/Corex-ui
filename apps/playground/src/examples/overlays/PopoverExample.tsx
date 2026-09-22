@@ -32,7 +32,7 @@ function PopoverFilterForm({
   };
 
   return (
-    <Box padding="base" minInlineSize="280px">
+    <Box padding="base">
       <BlockStack gap="small-300">
         <InlineStack justifyContent="space-between" alignItems="center">
           <Text variant="base" heading as="h4">
@@ -45,7 +45,7 @@ function PopoverFilterForm({
         </Text>
         <TextField
           label="Search keyword"
-          labelHidden
+          labelAccessibilityVisibility="exclusive"
           placeholder="e.g. VIP, Wholesale"
           value={value}
           onChange={(val) => setValue(val)}
@@ -67,31 +67,22 @@ export function PopoverExample() {
 
   return (
     <BlockStack gap="base">
-      <InlineStack gap="small-200" alignItems="center">
+      <InlineStack
+        gap="small-200"
+        alignItems="center"
+        inlineSize="400px"
+        position="relative"
+      >
         <Popover>
           <Popover.Trigger>
-            <Button icon="filter">Filter</Button>
+            <Button icon="filter" inlineSize="fill">
+              Filter
+            </Button>
           </Popover.Trigger>
-          <Popover.Content>
-            <PopoverFilterForm
-              currentFilter={filter}
-              onApply={(val) => setFilter(val)}
-            />
+          <Popover.Content fitTrigger>
+            <PopoverFilterForm currentFilter={filter} onApply={(val) => setFilter(val)} />
           </Popover.Content>
         </Popover>
-
-        {filter ? (
-          <InlineStack gap="small-100" alignItems="center">
-            <Badge tone="success">{`Filter: ${filter}`}</Badge>
-            <Button variant="plain" onClick={() => setFilter("")}>
-              Clear
-            </Button>
-          </InlineStack>
-        ) : (
-          <Text as="span" color="subdued" variant="small">
-            No active filter
-          </Text>
-        )}
       </InlineStack>
     </BlockStack>
   );

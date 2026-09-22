@@ -87,4 +87,93 @@ describe("Popover", () => {
 
     expect(hideOverlaySpy).toHaveBeenCalledTimes(1);
   });
+
+  it("applies fitTrigger to set inlineSize matching trigger width", () => {
+    // Mock getBoundingClientRect in JSDOM
+    const originalGetBoundingClientRect = HTMLElement.prototype.getBoundingClientRect;
+    HTMLElement.prototype.getBoundingClientRect = vi.fn(function (this: HTMLElement) {
+      if (this.tagName.toLowerCase() === "s-button") {
+        return {
+          width: 320,
+          height: 36,
+          top: 0,
+          left: 0,
+          bottom: 36,
+          right: 320,
+          x: 0,
+          y: 0,
+          toJSON: () => {},
+        };
+      }
+      return originalGetBoundingClientRect.call(this);
+    });
+
+    try {
+      render(
+        <Popover>
+          <Popover.Trigger>
+            <Button>Dynamic Trigger</Button>
+          </Popover.Trigger>
+          <Popover.Content fitTrigger>
+            <div>Content</div>
+          </Popover.Content>
+        </Popover>,
+      );
+
+      const popoverEl = document.querySelector("s-popover");
+      expect(popoverEl).toBeInTheDocument();
+      expect(popoverEl).toHaveAttribute("inline-size", "320px");
+    } finally {
+      HTMLElement.prototype.getBoundingClientRect = originalGetBoundingClientRect;
+    }
+  });
+
+  it("exposes triggerWidth and triggerRef via usePopover", () => {
+    let capturedWidth: number | undefined;
+    let capturedRef: any = null;
+
+    const originalGetBoundingClientRect = HTMLElement.prototype.getBoundingClientRect;
+    HTMLElement.prototype.getBoundingClientRect = vi.fn(function (this: HTMLElement) {
+      if (this.tagName.toLowerCase() === "s-button") {
+        return {
+          width: 240,
+          height: 36,
+          top: 0,
+          left: 0,
+          bottom: 36,
+          right: 240,
+          x: 0,
+          y: 0,
+          toJSON: () => {},
+        };
+      }
+      return originalGetBoundingClientRect.call(this);
+    });
+
+    const Child = () => {
+      const { triggerWidth, triggerRef } = usePopover();
+      capturedWidth = triggerWidth;
+      capturedRef = triggerRef;
+      return <div>Popover with Trigger Context</div>;
+    };
+
+    try {
+      render(
+        <Popover>
+          <Popover.Trigger>
+            <Button>Trigger</Button>
+          </Popover.Trigger>
+          <Popover.Content>
+            <Child />
+          </Popover.Content>
+        </Popover>,
+      );
+
+      expect(capturedWidth).toBe(240);
+      expect(capturedRef?.current).toBeInstanceOf(HTMLElement);
+    } finally {
+      HTMLElement.prototype.getBoundingClientRect = originalGetBoundingClientRect;
+    }
+  });
 });
+

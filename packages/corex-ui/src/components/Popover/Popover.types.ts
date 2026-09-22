@@ -3,6 +3,10 @@ import type { ForwardRefExoticComponent, ReactNode, RefAttributes } from "react"
 export type PopoverContextType = {
   popoverId: string;
   close: () => void;
+  /** Current measured pixel width of the trigger element, if available. */
+  triggerWidth?: number;
+  /** Ref to the trigger DOM element. */
+  triggerRef?: React.RefObject<HTMLElement | null>;
 };
 
 export type PopoverPropsType = {
@@ -24,6 +28,8 @@ export type PopoverContentPropsType = {
   maxInlineSize?: string | number;
   minBlockSize?: string | number;
   minInlineSize?: string | number;
+  /** Automatically match the inlineSize of the popover content to the measured width of the trigger activator. */
+  fitTrigger?: boolean;
   onHide?: (event?: any) => void;
   onShow?: (event?: any) => void;
   onAfterHide?: (event?: any) => void;

@@ -16,8 +16,6 @@ import MinimalistCardRaw from "@/blocks/cards/partials/MinimalistCard.tsx?raw";
 import MediaCardRaw from "@/blocks/cards/partials/MediaCard.tsx?raw";
 import MediaActionCardRaw from "@/blocks/cards/partials/MediaActionCard.tsx?raw";
 import SelectableCardRaw from "@/blocks/cards/partials/SelectableCard.tsx?raw";
-import constantsRaw from "@/blocks/cards/constants.ts?raw";
-import typesRaw from "@/blocks/cards/types.ts?raw";
 
 const overviewFiles: FileItemType[] = [
   {
@@ -29,16 +27,6 @@ const overviewFiles: FileItemType[] = [
     name: "SelectableCard.tsx",
     path: "partials/SelectableCard.tsx",
     code: SelectableCardRaw,
-  },
-  {
-    name: "constants.ts",
-    path: "constants.ts",
-    code: constantsRaw,
-  },
-  {
-    name: "types.ts",
-    path: "types.ts",
-    code: typesRaw,
   },
 ];
 
@@ -53,16 +41,6 @@ const minimalistFiles: FileItemType[] = [
     path: "partials/MinimalistCard.tsx",
     code: MinimalistCardRaw,
   },
-  {
-    name: "constants.ts",
-    path: "constants.ts",
-    code: constantsRaw,
-  },
-  {
-    name: "types.ts",
-    path: "types.ts",
-    code: typesRaw,
-  },
 ];
 
 const mediaFiles: FileItemType[] = [
@@ -76,16 +54,6 @@ const mediaFiles: FileItemType[] = [
     path: "partials/MediaCard.tsx",
     code: MediaCardRaw,
   },
-  {
-    name: "constants.ts",
-    path: "constants.ts",
-    code: constantsRaw,
-  },
-  {
-    name: "types.ts",
-    path: "types.ts",
-    code: typesRaw,
-  },
 ];
 
 const mediaActionFiles: FileItemType[] = [
@@ -98,16 +66,6 @@ const mediaActionFiles: FileItemType[] = [
     name: "MediaActionCard.tsx",
     path: "partials/MediaActionCard.tsx",
     code: MediaActionCardRaw,
-  },
-  {
-    name: "constants.ts",
-    path: "constants.ts",
-    code: constantsRaw,
-  },
-  {
-    name: "types.ts",
-    path: "types.ts",
-    code: typesRaw,
   },
 ];
 
