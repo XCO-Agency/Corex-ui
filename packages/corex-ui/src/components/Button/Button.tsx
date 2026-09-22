@@ -29,10 +29,14 @@ export const Button = forwardRef<HTMLElement, ButtonPropsType>(function Button(
     type,
     accessibilityLabel,
     fullWidth,
+    style,
     ...rest
   },
   ref,
 ) {
+  if (style !== undefined) {
+    devWarning("Button", "Inline styles are not supported on Button and are ignored.");
+  }
   const resolvedVariant =
     variant ??
     (primary ? "primary" : plain ? "tertiary" : outline ? "secondary" : undefined);

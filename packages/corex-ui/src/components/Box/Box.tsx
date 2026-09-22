@@ -159,6 +159,7 @@ export const Box: ForwardRefExoticComponent<BoxPropsType & RefAttributes<HTMLEle
     const sboxElement = (
       <SBox
         ref={hasStyles ? undefined : ref}
+        className={hasStyles ? undefined : className}
         blockSize={resolvedBlockSize}
         minBlockSize={resolvedMinBlockSize}
         maxBlockSize={resolvedMaxBlockSize}

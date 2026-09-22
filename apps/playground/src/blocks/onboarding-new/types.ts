@@ -2,17 +2,6 @@ import type { ReactNode } from "react";
 
 export type CartPresetIdType = "minimal" | "bold" | "rounded" | "editorial";
 
-export type CartPresetStyleType = {
-  container?: Record<string, unknown>;
-  header?: Record<string, unknown>;
-  title?: Record<string, unknown>;
-  item?: Record<string, unknown>;
-  thumb?: Record<string, unknown>;
-  price?: Record<string, unknown>;
-  qty?: Record<string, unknown>;
-  cta?: Record<string, unknown>;
-};
-
 export type CartPresetOptionType = {
   id: CartPresetIdType;
   label: string;
@@ -34,66 +23,13 @@ export type ChoiceOptionItemType = {
   disabled?: boolean;
 };
 
-export type QuestionSingleChoiceType = {
-  id: string;
-  type?: "single" | "multi";
-  question: string;
-  subtitle?: string;
-  options: ChoiceOptionItemType[];
-};
+export type StageIdType = "volume" | "brand" | "cartStyle" | "addons";
 
-export type StageKindType = "choice" | "toggle-grid" | "style-preset" | "brand-color";
-
-export type StageProcessingType = {
-  type: "processing";
-  texts: string[];
-};
-
-export type StageChoiceQuestionsType = {
+export type FlowStageConfigType = {
+  id: StageIdType;
   type: "questions";
-  kind: "choice";
-  title: string;
-  questions: QuestionSingleChoiceType[];
+  required?: boolean;
 };
-
-export type StageToggleGridType = {
-  type: "questions";
-  kind: "toggle-grid";
-  id: string;
-  title: string;
-  subtitle: string;
-  options: RevenueToolOptionType[];
-};
-
-export type StageStylePresetType = {
-  type: "questions";
-  kind: "style-preset";
-  id: string;
-  title: string;
-  subtitle: string;
-  default: CartPresetIdType;
-  options: CartPresetOptionType[];
-};
-
-export type StageBrandColorType = {
-  type: "questions";
-  kind: "brand-color";
-  id: string;
-  title: string;
-  subtitle: string;
-};
-
-export type StageCompleteType = {
-  type: "complete";
-};
-
-export type FlowStageType =
-  | StageProcessingType
-  | StageChoiceQuestionsType
-  | StageToggleGridType
-  | StageStylePresetType
-  | StageBrandColorType
-  | StageCompleteType;
 
 export type BrandColorsType = {
   primary: string;
@@ -105,9 +41,9 @@ export type BrandColorsType = {
 
 export type OnboardingNewAnswersType = {
   volume?: string;
-  addons?: Set<string>;
-  cartStyle?: CartPresetIdType;
   brand?: BrandColorsType;
+  cartStyle?: CartPresetIdType;
+  addons?: Set<string>;
   [key: string]: unknown;
 };
 
@@ -115,9 +51,12 @@ export type OnboardingNewPropsType = {
   onGoToDashboard?: () => void;
   onRestart?: () => void;
   initialAnswers?: Partial<OnboardingNewAnswersType>;
+  initialCompletedStages?: StageIdType[];
+  onSaveStage?: (stageId: StageIdType, answer: unknown) => Promise<void> | void;
 };
 
 export type StageTransitionPropsType = {
   children: ReactNode;
   leaving?: boolean;
 };
+

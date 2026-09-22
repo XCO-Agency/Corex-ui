@@ -58,8 +58,11 @@ function CompactTabsMenu<TId extends string | number = string>({
                     width: "100%",
                     height: "100%",
                     opacity: tab.disabled ? 0.5 : 1,
-                    "--t-surface-secondary-hover-26021": "#f1f1f2",
-                    "--t-surface-tertiary-hover-26021": "#f1f1f2",
+                    "--p-color-bg-surface-hover": "#f1f1f2",
+                    "--p-color-bg-surface-secondary-hover": "#f1f1f2",
+                    "--p-color-bg-surface-tertiary-hover": "#f1f1f2",
+                    "--t-surface-secondary-hover": "#f1f1f2",
+                    "--t-surface-tertiary-hover": "#f1f1f2",
                   } as CSSProperties
                 }
               >
@@ -302,11 +305,17 @@ function TabsInner<TId extends string | number = string>(
                   style={
                     {
                       display: "contents",
-                      "--t-surface-tertiary-26021": isSelected
+                      "--p-color-bg-surface-tertiary": isSelected
                         ? "#ddddddad"
                         : "transparent",
-                      "--t-surface-secondary-hover-26021": "#ddddddad",
-                      "--t-surface-tertiary-hover-26021": "#ddddddad",
+                      "--p-color-bg-surface-hover": "#ddddddad",
+                      "--p-color-bg-surface-secondary-hover": "#ddddddad",
+                      "--p-color-bg-surface-tertiary-hover": "#ddddddad",
+                      "--t-surface-tertiary": isSelected
+                        ? "#ddddddad"
+                        : "transparent",
+                      "--t-surface-secondary-hover": "#ddddddad",
+                      "--t-surface-tertiary-hover": "#ddddddad",
                     } as CSSProperties
                   }
                 >

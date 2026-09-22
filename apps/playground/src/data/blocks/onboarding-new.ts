@@ -15,6 +15,10 @@ import toggleGridRaw from "@/blocks/onboarding-new/partials/ToggleGrid.tsx?raw";
 import stylePresetRaw from "@/blocks/onboarding-new/partials/StylePreset.tsx?raw";
 import brandColorRaw from "@/blocks/onboarding-new/partials/BrandColor.tsx?raw";
 import completeStageRaw from "@/blocks/onboarding-new/partials/CompleteStage.tsx?raw";
+import cartVariantsCssRaw from "@/blocks/onboarding-new/cart-variants.module.css?raw";
+import cartDrawerContentRaw from "@/blocks/onboarding-new/partials/CartDrawerContent.tsx?raw";
+import cartIframeRaw from "@/blocks/onboarding-new/partials/CartIframe.tsx?raw";
+import cartPreviewModalRaw from "@/blocks/onboarding-new/partials/CartPreviewModal.tsx?raw";
 
 const blockFiles: FileItemType[] = [
   {
@@ -61,6 +65,26 @@ const blockFiles: FileItemType[] = [
     name: "StylePreset.tsx",
     path: "partials/StylePreset.tsx",
     code: stylePresetRaw,
+  },
+  {
+    name: "CartDrawerContent.tsx",
+    path: "partials/CartDrawerContent.tsx",
+    code: cartDrawerContentRaw,
+  },
+  {
+    name: "CartIframe.tsx",
+    path: "partials/CartIframe.tsx",
+    code: cartIframeRaw,
+  },
+  {
+    name: "CartPreviewModal.tsx",
+    path: "partials/CartPreviewModal.tsx",
+    code: cartPreviewModalRaw,
+  },
+  {
+    name: "cart-variants.module.css",
+    path: "cart-variants.module.css",
+    code: cartVariantsCssRaw,
   },
   {
     name: "BrandColor.tsx",

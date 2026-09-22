@@ -11,7 +11,7 @@ describe("ChoiceList", () => {
   it("renders choices as Polaris s-choice elements and sets values", () => {
     render(
       <ChoiceList
-        title="Notify me by"
+        label="Notify me by"
         choices={choices}
         selected={["email"]}
         name="notify"

@@ -8,7 +8,7 @@ export function ChoiceListExample() {
     <Grid columns={2} gap="base">
       <Grid.Item>
         <ChoiceList
-          title="Normal choice list"
+          label="Normal choice list"
           choices={[
             { label: "Email", value: "email" },
             { label: "SMS", value: "sms" },
@@ -25,7 +25,7 @@ export function ChoiceListExample() {
       </Grid.Item>
       <Grid.Item>
         <ChoiceList
-          title="Allow multiple choice selection"
+          label="Allow multiple choice selection"
           choices={[
             { label: "Email", value: "email" },
             { label: "SMS", value: "sms" },
@@ -38,7 +38,7 @@ export function ChoiceListExample() {
 
           selected={selectedMultiple}
           onChange={(value) => setSelectedMultiple(value)}
-          allowMultiple
+          multiple
         />
       </Grid.Item>
     </Grid>

@@ -17,13 +17,13 @@ export function ProcessingStage({ texts, onDone }: ProcessingStagePropsType) {
         setTextIndex((i) => (i + 1) % texts.length);
         setChanging(false);
       }, 200);
-    }, 1000);
+    }, 100);
 
     const apiTimer = setTimeout(
       () => {
         onDone();
       },
-      2600 + Math.random() * 400,
+      600 + Math.random() * 400,
     );
 
     return () => {

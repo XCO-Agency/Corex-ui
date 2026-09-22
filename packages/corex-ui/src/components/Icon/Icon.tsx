@@ -13,6 +13,9 @@ export const Icon = forwardRef<HTMLElement, IconPropsType>(function Icon(
   { source, tone, type, accessibilityLabel, style, ...rest },
   ref,
 ) {
+  const isWhite =
+    tone === "white" || style?.color === "#fff" || style?.color === "white";
+
   if (typeof source === "function") {
     const SourceComponent = source;
     return (
@@ -20,7 +23,7 @@ export const Icon = forwardRef<HTMLElement, IconPropsType>(function Icon(
         ref={ref as unknown as Ref<HTMLSpanElement>}
         aria-label={accessibilityLabel}
         role={accessibilityLabel ? "img" : undefined}
-        style={tone === "white" ? { color: "#fff", ...style } : style}
+        style={isWhite ? { color: "#fff", ...style } : style}
         {...rest}
       >
         <SourceComponent />
@@ -32,7 +35,15 @@ export const Icon = forwardRef<HTMLElement, IconPropsType>(function Icon(
     <div
       style={{
         display: "contents",
-        ...(tone === "white" ? { "--s-icon-color-26021": "#fff" } : {}),
+        ...(isWhite
+          ? {
+              color: "#fff",
+              "--s-icon-color": "#fff",
+              "--p-color-icon": "#fff",
+              "--s-icon-color-26021": "#fff",
+            }
+          : {}),
+        ...style,
       }}
     >
       <SIcon
