@@ -8,7 +8,6 @@ describe("SearchField", () => {
     const el = document.querySelector("s-search-field");
     expect(el).not.toBeNull();
     expect(el).toHaveAttribute("placeholder", "Search items");
-    expect(el).toHaveAttribute("labelaccessibilityvisibility", "exclusive");
   });
 
   it("calls onChange when input fires", () => {

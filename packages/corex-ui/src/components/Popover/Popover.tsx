@@ -274,29 +274,28 @@ export const Popover = forwardRef<HTMLElement, PopoverPropsType>(function Popove
       }
 
       try {
-        el.dispatchEvent(
-          new CustomEvent("command", {
+        let cmdEvent: Event;
+        const CommandEventCtor =
+          typeof window !== "undefined" ? (window as any).CommandEvent : undefined;
+        if (typeof CommandEventCtor === "function") {
+          cmdEvent = new CommandEventCtor("command", {
+            command: "--hide",
             bubbles: true,
             composed: true,
-            detail: { command: "--hide" },
-          }),
-        );
+          });
+        } else {
+          cmdEvent = new Event("command", { bubbles: true, composed: true });
+        }
+        (cmdEvent as any).command = "--hide";
+        el.dispatchEvent(cmdEvent);
       } catch {
-        // Ignore
-      }
-    }
-
-    if (typeof document !== "undefined") {
-      try {
-        const btn = document.createElement("button");
-        btn.setAttribute("command", "--hide");
-        btn.setAttribute("commandfor", popoverId);
-        btn.style.display = "none";
-        document.body.appendChild(btn);
-        btn.click();
-        btn.remove();
-      } catch {
-        // Ignore
+        try {
+          const fallback = new Event("command", { bubbles: true, composed: true });
+          (fallback as any).command = "--hide";
+          el.dispatchEvent(fallback);
+        } catch {
+          // Ignore
+        }
       }
     }
   }, [popoverId]);
