@@ -1,3 +1,4 @@
+import type * as React from "react";
 import type { ReactNode } from "react";
 
 /**
@@ -309,7 +310,11 @@ export type PopoverHandle = PopoverHandleType;
  * Props for FilterPortalPopover.
  */
 export type FilterPortalPopoverPropsType = {
-  anchorRef?: React.RefObject<HTMLElement | null> | string;
+  anchorRef?:
+    | React.RefObject<HTMLElement | null>
+    | HTMLElement
+    | string
+    | null;
   anchorId?: string;
   trigger?: React.ReactElement;
   isOpen?: boolean;

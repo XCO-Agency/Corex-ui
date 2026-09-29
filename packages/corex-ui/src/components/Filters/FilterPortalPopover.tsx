@@ -16,34 +16,19 @@ import {
 import { createPortal } from "react-dom";
 
 import { Box } from "../Box";
+import type {
+  PopoverHandleType,
+  PopoverHandle,
+  FilterPortalPopoverPropsType,
+  FilterPopoverPropsType,
+} from "./Filters.types";
 
-export type PopoverHandleType = {
-  open: () => void;
-  close: () => void;
-  toggle: () => void;
-  isOpen: () => boolean;
+export type {
+  PopoverHandleType,
+  PopoverHandle,
+  FilterPortalPopoverPropsType,
+  FilterPopoverPropsType,
 };
-
-export type PopoverHandle = PopoverHandleType;
-
-export type FilterPortalPopoverPropsType = {
-  anchorRef?: RefObject<HTMLElement | null> | HTMLElement | string | null;
-  anchorId?: string;
-  trigger?: ReactElement;
-  isOpen?: boolean;
-  onClose?: () => void;
-  onOpen?: () => void;
-  width?: string;
-  minWidth?: string;
-  maxHeight?: string;
-  offset?: number;
-  className?: string;
-  style?: CSSProperties;
-  children: ReactNode;
-  id?: string;
-};
-
-export type FilterPopoverPropsType = FilterPortalPopoverPropsType;
 
 export const FilterPortalPopover = forwardRef<
   PopoverHandleType,
