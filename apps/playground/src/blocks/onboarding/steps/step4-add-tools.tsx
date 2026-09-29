@@ -17,6 +17,7 @@ import {
   Modal,
   Switch,
   Text,
+  Card,
 } from "@xco-agency/corex-ui";
 import styles from "../onboarding.module.css";
 
@@ -74,13 +75,7 @@ export function Step4AddTools({ state, dispatch }: Step4AddToolsPropsType) {
                     className={styles.staggerItem}
                     style={{ animationDelay: `${i * 60}ms` }}
                   >
-                    <Box
-                      padding="base"
-                      border="base"
-                      borderRadius="large"
-                      background="base"
-                      inlineSize="100%"
-                    >
+                    <Card>
                       <BlockStack gap="small-100">
                         <InlineStack justifyContent="space-between" alignItems="center">
                           <IconTile
@@ -119,7 +114,7 @@ export function Step4AddTools({ state, dispatch }: Step4AddToolsPropsType) {
                           </Button>
                         </InlineStack>
                       </BlockStack>
-                    </Box>
+                    </Card>
                   </div>
                 );
               })}

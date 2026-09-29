@@ -1,5 +1,5 @@
 import { forwardRef } from "react";
-import type { CSSProperties, ReactNode } from "react";
+import type { CSSProperties, MouseEvent, ReactNode } from "react";
 
 type IconTileToneType =
   "success" | "neutral" | "subdued" | "caution" | "info" | "critical" | "transparent";
@@ -26,6 +26,8 @@ export type IconTilePropsType = {
   slot?: string;
   role?: string;
   "aria-label"?: string;
+  /** Click handler */
+  onClick?: (e: MouseEvent<HTMLDivElement>) => void;
 };
 
 const TONE_STYLES: Record<
@@ -34,7 +36,7 @@ const TONE_STYLES: Record<
 > = {
   base: {
     success: { backgroundColor: "#aefebe", color: "#059669" },
-    neutral: { backgroundColor: "#ededed", color: "#059669" },
+    neutral: { backgroundColor: "#ededed", color: "#1c1c1c" },
     subdued: { backgroundColor: "#f3f4f6", color: "#6b7280" },
     caution: { backgroundColor: "#fef3c7", color: "#d97706" },
     info: { backgroundColor: "#d4ebff", color: "#0284c7" },
@@ -90,16 +92,19 @@ export const IconTile = forwardRef<HTMLDivElement, IconTilePropsType>(function I
   const sizeStyle = SIZE_STYLES[size] ?? SIZE_STYLES.base;
   const radiusStyle = BORDER_RADIUS_STYLES[borderRadius] ?? BORDER_RADIUS_STYLES.base;
 
+  const { commandFor, ...domRest } = rest as any;
+
   return (
     <div
       ref={ref}
       className={className}
+      commandfor={commandFor}
       style={{
         display: "inline-flex",
         alignItems: "center",
         justifyContent: "center",
         flexShrink: 0,
-        aspectRatio: "1/1",
+        aspectRatio: size === "auto" ? "auto" : "1/1",
         ...sizeStyle,
         ...radiusStyle,
         ...toneStyle,
@@ -113,7 +118,7 @@ export const IconTile = forwardRef<HTMLDivElement, IconTilePropsType>(function I
           : {}),
         ...style,
       }}
-      {...rest}
+      {...domRest}
     >
       {children}
     </div>

@@ -48,9 +48,63 @@ class PopoverStub extends HTMLElement {
     this.dispatchEvent(new Event("hide", { bubbles: true }));
   }
 
+  toggleOverlay() {
+    if (this.hasAttribute("data-stub-open")) {
+      this.hideOverlay();
+    } else {
+      this.showOverlay();
+    }
+  }
+
+  showPopover() {
+    this.showOverlay();
+  }
+
+  hidePopover() {
+    this.hideOverlay();
+  }
+
+  togglePopover(_options?: any): boolean {
+    this.toggleOverlay();
+    return this.hasAttribute("data-stub-open");
+  }
+
   hide() {
     this.removeAttribute("data-stub-open");
     this.dispatchEvent(new Event("hide", { bubbles: true }));
+  }
+}
+
+class ChoiceListStub extends HTMLElement {
+  values: string[] = [];
+}
+
+class ChoiceStub extends HTMLElement {
+  connectedCallback() {
+    this.addEventListener("click", () => {
+      const list = this.closest("s-choice-list") as
+        | (ChoiceListStub & { multiple?: boolean })
+        | null;
+      if (!list) return;
+      const val = this.getAttribute("value") || "";
+      const multipleAttr = list.getAttribute("multiple");
+      const isMultiple =
+        typeof (list as any).multiple === "boolean"
+          ? (list as any).multiple
+          : multipleAttr !== null && multipleAttr !== "false";
+      let currentValues = Array.isArray(list.values) ? [...list.values] : [];
+      if (isMultiple) {
+        if (currentValues.includes(val)) {
+          currentValues = currentValues.filter((v) => v !== val);
+        } else {
+          currentValues.push(val);
+        }
+      } else {
+        currentValues = [val];
+      }
+      list.values = currentValues;
+      list.dispatchEvent(new Event("change", { bubbles: true }));
+    });
   }
 }
 
@@ -80,8 +134,6 @@ const STUB_TAGS = [
   "s-image",
   "s-search-field",
   "s-tooltip",
-  "s-choice-list",
-  "s-choice",
   "s-date-field",
   "s-date-picker",
   "s-money-field",
@@ -122,5 +174,7 @@ export function registerPolarisStubs() {
   defineStub("s-modal", ModalStub);
   defineStub("s-app-window", AppWindowStub);
   defineStub("s-popover", PopoverStub);
+  defineStub("s-choice-list", ChoiceListStub);
+  defineStub("s-choice", ChoiceStub);
   defineStub("ui-modal", UiModalStub);
 }

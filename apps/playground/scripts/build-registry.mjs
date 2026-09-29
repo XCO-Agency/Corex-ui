@@ -104,7 +104,7 @@ function toTitleCase(slug) {
     .join(" ");
 }
 
-export function buildRegistry() {
+export function buildRegistry({ silent = false } = {}) {
   if (!fs.existsSync(outputDir)) {
     fs.mkdirSync(outputDir, { recursive: true });
   }
@@ -154,10 +154,22 @@ export function buildRegistry() {
 
   fs.writeFileSync(outputIndexFile, JSON.stringify(indexList, null, 2), "utf-8");
 
-  console.log(`\x1b[32m✔ Registry built successfully!\x1b[0m`);
-  console.log(`  Blocks generated: \x1b[36m${indexList.length}\x1b[0m`);
-  console.log(`  Registry folder:  \x1b[36m${path.relative(playgroundDir, outputDir)}\x1b[0m`);
-  console.log(`  Index file:       \x1b[36m${path.relative(playgroundDir, outputIndexFile)}\x1b[0m`);
+  if (!silent) {
+    console.log(`\x1b[32m✔ Registry built successfully!\x1b[0m`);
+    console.log(`  Blocks generated: \x1b[36m${indexList.length}\x1b[0m`);
+    console.log(`  Registry folder:  \x1b[36m${path.relative(playgroundDir, outputDir)}\x1b[0m`);
+    console.log(`  Index file:       \x1b[36m${path.relative(playgroundDir, outputIndexFile)}\x1b[0m`);
+  } else {
+    console.log(`\x1b[32m✔ [registry-watcher] Synced ${indexList.length} blocks to public/r/blocks\x1b[0m`);
+  }
 }
 
-buildRegistry();
+// Only run automatically if executed directly via CLI (e.g. node build-registry.mjs)
+const isDirectRun =
+  process.argv[1] &&
+  fileURLToPath(import.meta.url) === path.resolve(process.argv[1]);
+
+if (isDirectRun) {
+  buildRegistry();
+}
+

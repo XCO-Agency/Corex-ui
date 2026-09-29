@@ -20,7 +20,7 @@ const PACKAGE_MANAGERS = [
   { id: "yarn", label: "yarn", command: "yarn add @xco-agency/corex-ui" },
 ] as const;
 
-const CDN_SCRIPT_CODE = `<script src="https://cdn.shopify.com/shopifycloud/polaris-1.js"></script>`;
+const CDN_SCRIPT_CODE = `<script src="https://cdn.shopify.com/shopifycloud/polaris-2.0-rc.js"></script>`;
 
 const USAGE_CODE = `import { Page, Card, TextField, Button } from "@xco-agency/corex-ui";
 
@@ -175,6 +175,11 @@ export function Installation() {
               </code>{" "}
               custom elements the library wraps. Add it to your app's HTML shell:
             </p>
+            <s-banner tone="critical">
+              for the new version of polaris UI , you don't need to install the cdn the s-
+              components are globally available custom elements served buy shopify admin
+              it self.
+            </s-banner>
             <ComponentCodeViewer
               code={CDN_SCRIPT_CODE}
               filename="index.html"

@@ -269,6 +269,8 @@ export const Popover = forwardRef<HTMLElement, PopoverPropsType>(function Popove
     if (el) {
       if (typeof (el as any).hideOverlay === "function") {
         (el as any).hideOverlay();
+      } else if (typeof (el as any).hidePopover === "function") {
+        (el as any).hidePopover();
       } else if (typeof (el as any).hide === "function") {
         (el as any).hide();
       }

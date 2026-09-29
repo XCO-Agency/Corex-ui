@@ -7,7 +7,7 @@ explains how the wrapper layer is built and how to extend it.
 ## Layers
 
 ```
-apps/playground        Manual QA app (loads the real polaris-1.js CDN script)
+apps/playground        Manual QA app (loads the real polaris-2.0-rc.js CDN script)
 packages/corex-ui/
   src/
     core/               React <-> web-component integration layer (the seam)
@@ -161,7 +161,7 @@ particular `Modal`'s action slots, `Page`'s `backAction`, and `Button`'s `presse
 are **best-effort**, based on the publicly available category listing, changelog, and usage
 snippets rather than a confirmed full API reference. These are called out with either a
 `devWarning` or a code comment. Before shipping to production, verify assumptions against the
-exact `polaris-1.x` version your app loads, and tighten the corresponding wrapper if an
+exact `polaris-2.0-rc.js` version your app loads, and tighten the corresponding wrapper if an
 attribute name doesn't match.
 
 The App Bridge components (`AppWindow`, `AppNav`, `Menu`, `SaveBar`, the `command`/`commandFor`

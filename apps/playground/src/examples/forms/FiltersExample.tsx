@@ -183,6 +183,7 @@ const filterDefinitions: FilterItemType[] = [
   {
     key: "status",
     label: "Status",
+    allowMultiple: false,
     options: [
       { label: "Active", value: "active" },
       { label: "Draft", value: "draft" },
@@ -231,14 +232,43 @@ export function FiltersExample() {
     setAppliedFilters((prev) => prev.filter((f) => f.key !== filterKey));
   };
 
-  const handleFilterSelect = (filterKey: string, value: string, operator = "is") => {
+  const handleAddFilter = (filterKey: string) => {
+    const filterDef = filterDefinitions.find((f) => f.key === filterKey);
+    const fieldLabel = filterDef?.label ?? filterKey;
+    const defaultOp = filterDef?.defaultOperator ?? "is";
+
+    setAppliedFilters((prev) => {
+      if (prev.some((f) => f.key === filterKey)) return prev;
+      return [
+        ...prev,
+        {
+          key: filterKey,
+          field: fieldLabel,
+          operator: defaultOp === "is_not" ? "is not" : defaultOp,
+          value: filterDef?.allowMultiple !== false ? [] : "",
+          onRemove: () => handleRemoveFilter(filterKey),
+        },
+      ];
+    });
+  };
+
+  const handleFilterSelect = (
+    filterKey: string,
+    value: string | string[],
+    operator = "is",
+  ) => {
     const filterDef = filterDefinitions.find((f) => f.key === filterKey);
     const fieldLabel = filterDef?.label ?? filterKey;
 
     setAppliedFilters((prev) => {
       const existing = prev.find((f) => f.key === filterKey);
-      if (existing && existing.value === value) {
-        // Toggle off if clicking the same value
+      if (
+        existing &&
+        typeof value === "string" &&
+        existing.value === value &&
+        value !== ""
+      ) {
+        // Toggle off if clicking the same value (single select)
         return prev.filter((f) => f.key !== filterKey);
       }
       const updated = prev.filter((f) => f.key !== filterKey);
@@ -247,7 +277,7 @@ export function FiltersExample() {
         {
           key: filterKey,
           field: fieldLabel,
-          operator: operator === "is_not" ? "is not" : "is",
+          operator: operator === "is_not" ? "is not" : operator,
           value,
           onRemove: () => handleRemoveFilter(filterKey),
         },
@@ -295,21 +325,26 @@ export function FiltersExample() {
 
     // Filter by applied filter pills
     for (const af of appliedFilters) {
+      if (!af.value || (Array.isArray(af.value) && af.value.length === 0)) continue;
+      const values = Array.isArray(af.value) ? af.value : [String(af.value)];
+
       if (af.key === "tag") {
-        const hasTag = product.tags.includes(String(af.value));
-        if (af.operator === "is not" && hasTag) return false;
-        if (af.operator === "is" && !hasTag) return false;
+        const hasAnyTag = values.some((val) => product.tags.includes(val));
+        if (af.operator === "is not" && hasAnyTag) return false;
+        if (af.operator === "is" && !hasAnyTag) return false;
       }
       if (af.key === "vendor") {
-        const match = product.vendor.toLowerCase() === String(af.value).toLowerCase();
-        if (af.operator === "is not" && match) return false;
-        if (af.operator === "is" && !match) return false;
+        const matchesVendor = values.some(
+          (val) => product.vendor.toLowerCase() === val.toLowerCase(),
+        );
+        if (af.operator === "is not" && matchesVendor) return false;
+        if (af.operator === "is" && !matchesVendor) return false;
       }
       if (af.key === "status") {
-        if (product.status !== af.value) return false;
+        if (!values.includes(product.status)) return false;
       }
       if (af.key === "category") {
-        if (product.category !== af.value) return false;
+        if (!values.includes(product.category)) return false;
       }
     }
 
@@ -348,7 +383,7 @@ export function FiltersExample() {
             <Tabs
               tabs={viewTabs}
               selected={selectedView}
-              onSelect={(tabId) => setSelectedView(String(tabId))}
+              onSelect={(tabId: string | number) => setSelectedView(String(tabId))}
               compact
             />
           }
@@ -358,6 +393,7 @@ export function FiltersExample() {
           onQueryClear={() => setQuery("")}
           filters={filterDefinitions}
           appliedFilters={appliedFilters}
+          onAddFilter={handleAddFilter}
           onFilterSelect={handleFilterSelect}
           onOperatorChange={handleOperatorChange}
           onClearAll={handleClearAll}
@@ -472,7 +508,7 @@ export function FiltersExample() {
       </Box>
 
       {/* Compound Subcomponents Manual Demo */}
-      <Box background="base" border="base" borderRadius="large" padding="base">
+      {/* <Box background="base" border="base" borderRadius="large" padding="base">
         <BlockStack gap="small-300">
           <Text heading>Manual Composition (Compound Subcomponents)</Text>
           <Text variant="small" tone="neutral">
@@ -486,9 +522,9 @@ export function FiltersExample() {
               queryPlaceholder="search products or keywords..."
               onQueryChange={setQuery}
               onQueryClear={() => setQuery("")}
-              onSelectView={setSelectedView}
               filters={filterDefinitions}
               appliedFilters={appliedFilters}
+              onAddFilter={handleAddFilter}
               onFilterSelect={handleFilterSelect}
               onOperatorChange={handleOperatorChange}
               onClearAll={handleClearAll}
@@ -509,7 +545,7 @@ export function FiltersExample() {
             </Filters.Actions>
           </InlineStack>
         </BlockStack>
-      </Box>
+      </Box> */}
     </BlockStack>
   );
 }

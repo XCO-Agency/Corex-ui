@@ -13,6 +13,7 @@ import {
   Text,
   TextField,
   NumberField,
+  Card,
 } from "@xco-agency/corex-ui";
 
 function formatCurrency(amount: number, currency: string): string {
@@ -48,8 +49,8 @@ export function Step3Configuration({ state, dispatch }: Step3ConfigurationPropsT
   };
 
   return (
-    <Box paddingBlock="large">
-      <BlockStack gap="large" alignItems="center" style={{ width: "100%" }}>
+    <Box paddingBlock="large" inlineSize="100%">
+      <BlockStack gap="large" alignItems="center" inlineSize="100%">
         <BlockStack gap="small-300" alignItems="center">
           <IconTile tone="caution">
             <Icon type="delivery" tone="caution" />
@@ -65,14 +66,8 @@ export function Step3Configuration({ state, dispatch }: Step3ConfigurationPropsT
             Set your free shipping threshold — we&rsquo;ll handle the rest.
           </Text>
         </BlockStack>
-        <Box
-          padding="large-200"
-          border="base"
-          borderRadius="large"
-          inlineSize="100%"
-          background="base"
-        >
-          <BlockStack gap="large-100" alignItems="center" style={{ width: "100%" }}>
+        <Card>
+          <BlockStack gap="large-100" alignItems="center" inlineSize="100%">
             <Box inlineSize="100%">
               <InlineStack gap="small-200" alignItems="start">
                 <Box inlineSize="120px">
@@ -101,8 +96,7 @@ export function Step3Configuration({ state, dispatch }: Step3ConfigurationPropsT
 
             <Box
               padding="base"
-              border="base"
-              borderRadius="base"
+              borderRadius="large-200"
               background="subdued"
               inlineSize="100%"
             >
@@ -124,13 +118,9 @@ export function Step3Configuration({ state, dispatch }: Step3ConfigurationPropsT
               </BlockStack>
             </Box>
           </BlockStack>
-        </Box>
-        <BlockStack gap="small-200" style={{ width: "100%" }} alignItems="center">
-          <InlineStack
-            gap="small-200"
-            style={{ width: "100%" }}
-            justifyContent="space-between"
-          >
+        </Card>
+        <BlockStack gap="small-200" inlineSize="100%" alignItems="center">
+          <InlineStack gap="small-200" inlineSize="100%" justifyContent="space-between">
             <Button onClick={() => dispatch({ type: "GO_BACK" })}>Back</Button>
             <Button
               variant="primary"

@@ -4,6 +4,7 @@ import {
   Badge,
   BlockStack,
   Box,
+  Card,
   Clickable,
   Grid,
   InlineStack,
@@ -76,7 +77,7 @@ export function StylePreset({ answers, setAnswers }: StylePresetPropsType) {
         </Text>
         <Text color="subdued">
           A live preview of how your cart drawer will look with your brand colors. Click
-          any card to expand it into a full mobile preview.
+          any card to expand it into a full drawer preview.
         </Text>
       </BlockStack>
 
@@ -86,71 +87,48 @@ export function StylePreset({ answers, setAnswers }: StylePresetPropsType) {
           const isSelected = selected === opt.id;
           return (
             <Grid.Item key={opt.id}>
-              <Clickable
-                onClick={() => handleCardClick(opt.id)}
-                inlineSize="fill"
-                borderRadius="large"
-              >
-                <Box
-                  borderRadius="large"
-                  borderWidth={isSelected ? "050" : "0165"}
-                  borderColor={isSelected ? "strong" : "border-subdued"}
-                  background="bg-surface"
-                  padding="small-200"
-                  overflow="hidden"
+              <Card padding="none" gap="none">
+                {/* Miniature Scaled Iframe Viewport */}
+                <Clickable
+                  onClick={() => handleCardClick(opt.id)}
+                  inlineSize="fill"
+                  position="relative"
                 >
-                  <BlockStack gap="small-200">
-                    {/* Miniature Scaled Iframe Viewport */}
-                    <Box position="relative" className={styles.cardPreviewWrapper}>
-                      <CartIframe
-                        preset={opt.id}
-                        brand={brandColors}
-                        currency="MAD"
-                        mode="preview"
-                      />
+                  <CartIframe
+                    preset={opt.id}
+                    brand={brandColors}
+                    currency="MAD"
+                    mode="preview"
+                  />
+                </Clickable>
 
-                      {/* Expand Overlay Badge on Hover */}
-                      <Box className={styles.expandOverlayBadge}>
-                        <Text variant="bodySm" fontWeight="semibold">
-                          🔍 Expand
+                {/* Card Footer: Label, Subtitle & Switch */}
+                <Box paddingBlock="small" paddingInline="small">
+                  <InlineStack
+                    alignItems="center"
+                    justifyContent="space-between"
+                    gap="small-200"
+                  >
+                    <BlockStack gap="none">
+                      <InlineStack alignItems="center" gap="small-300">
+                        <Text variant="bodyMd" fontWeight="semibold">
+                          {opt.label}
                         </Text>
-                      </Box>
-                    </Box>
-
-                    {/* Card Footer: Label, Subtitle & Switch */}
-                    <Box paddingBlockStart="small-400" paddingInline="small-500">
-                      <InlineStack
-                        alignItems="center"
-                        justifyContent="space-between"
-                        gap="small-200"
-                      >
-                        <BlockStack gap="none">
-                          <InlineStack alignItems="center" gap="small-300">
-                            <Text variant="bodyMd" fontWeight="semibold">
-                              {opt.label}
-                            </Text>
-                            {isSelected && (
-                              <Badge tone="success">Selected</Badge>
-                            )}
-                          </InlineStack>
-                          <Text variant="bodySm" color="subdued">
-                            {PRESET_SUBTITLES[opt.id]}
-                          </Text>
-                        </BlockStack>
-
-                        <Clickable
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            setAnswers((prev) => ({ ...prev, cartStyle: opt.id }));
-                          }}
-                        >
-                          <Switch checked={isSelected} />
-                        </Clickable>
+                        {isSelected && <Badge tone="success">Selected</Badge>}
                       </InlineStack>
-                    </Box>
-                  </BlockStack>
+                    </BlockStack>
+
+                    <Clickable
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setAnswers((prev) => ({ ...prev, cartStyle: opt.id }));
+                      }}
+                    >
+                      <Switch checked={isSelected} />
+                    </Clickable>
+                  </InlineStack>
                 </Box>
-              </Clickable>
+              </Card>
             </Grid.Item>
           );
         })}

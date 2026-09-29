@@ -10,6 +10,7 @@ import {
   ProgressBar,
   Spinner,
   Text,
+  Card,
 } from "@xco-agency/corex-ui";
 import styles from "../onboarding.module.css";
 
@@ -64,15 +65,8 @@ export function Step1Initializing({ state, dispatch }: Step1InitializingPropsTyp
   return (
     <Box paddingBlock="small">
       <BlockStack gap="large" alignItems="center">
-        <Box
-          padding="large-400"
-          border="base"
-          borderRadius="large"
-          background="base"
-          inlineSize="100%"
-          maxInlineSize="440px"
-        >
-          <BlockStack gap="base" alignItems="center">
+        <Card>
+          <BlockStack padding="large" gap="base" alignItems="center">
             {state.syncComplete ? (
               <IconTile tone="success" size="large">
                 <Icon type="check" tone="success" />
@@ -132,7 +126,7 @@ export function Step1Initializing({ state, dispatch }: Step1InitializingPropsTyp
               style={{ marginTop: "1rem" }}
             />
           </BlockStack>
-        </Box>
+        </Card>
 
         {state.syncComplete ? (
           <Button variant="primary" onClick={() => dispatch({ type: "GO_NEXT" })}>

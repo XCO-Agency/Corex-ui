@@ -8,4 +8,8 @@ export {
   FiltersColumnsPopover,
   FiltersActions,
 } from "./Filters";
+export {
+  FilterPortalPopover,
+  FilterPopover,
+} from "./FilterPortalPopover";
 export type * from "./Filters.types";

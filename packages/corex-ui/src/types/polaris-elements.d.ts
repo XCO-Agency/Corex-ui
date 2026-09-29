@@ -1,7 +1,7 @@
 // Ambient types for the Polaris `s-*` custom elements consumed by `core/`.
 //
 // The official source of truth is `@shopify/polaris-types` (kept as a
-// devDependency, versioned to match the `polaris-1.js` CDN script your app
+// devDependency, versioned to match the `polaris-2.0-rc.js` CDN script your app
 // loads). We reference it here so contributors working inside this package
 // get IntelliSense against the real element APIs.
 //

@@ -29,6 +29,7 @@ export type TabsPropsType<TId extends string | number = string> = {
   onChange?: (id: TId) => void;
   showBadge?: boolean;
   rightSide?: ReactNode;
+  inlineSize?: "auto" | "fill" | "fit";
   /**
    * Minimalist compact dropdown mode, rendering a dropdown selector button
    * inspired by Shopify Polaris IndexFilters view switcher.

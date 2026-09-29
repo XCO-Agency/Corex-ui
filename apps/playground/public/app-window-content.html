@@ -4,12 +4,14 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Embedded App Window Content</title>
-    <script src="https://cdn.shopify.com/shopifycloud/polaris-1.js"></script>
+    <script src="/polaris-2.0-rc.js"></script>
     <style>
       body {
         margin: 0;
         padding: 24px;
-        font-family: -apple-system, BlinkMacSystemFont, "San Francisco", "Segoe UI", Roboto, Helvetica, sans-serif;
+        font-family:
+          -apple-system, BlinkMacSystemFont, "San Francisco", "Segoe UI", Roboto,
+          Helvetica, sans-serif;
         background: #f1f2f4;
         color: #202223;
         box-sizing: border-box;
@@ -18,7 +20,9 @@
         background: #ffffff;
         border-radius: 12px;
         padding: 20px;
-        box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.05), 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+        box-shadow:
+          0 0 0 1px rgba(0, 0, 0, 0.05),
+          0 1px 3px 0 rgba(0, 0, 0, 0.1);
         max-width: 540px;
         margin: 0 auto;
       }
@@ -88,13 +92,21 @@
   </head>
   <body>
     <div class="card">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+      <div
+        style="
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 12px;
+        "
+      >
         <h2>AppWindow Embedded Frame</h2>
         <div id="statusPill" class="status-pill">Pristine (No changes)</div>
       </div>
       <p>
-        This content is loaded inside <code>&lt;AppWindow src="/app-window-content.html" saveBar /&gt;</code>.
-        Type into the field below to mark the form dirty and see the host SaveBar appear.
+        This content is loaded inside
+        <code>&lt;AppWindow src="/app-window-content.html" saveBar /&gt;</code>. Type into
+        the field below to mark the form dirty and see the host SaveBar appear.
       </p>
 
       <div class="form-group">
@@ -103,7 +115,8 @@
       </div>
 
       <div class="info-box">
-        <strong>Bridge Status:</strong> <span id="log">Connected via BroadcastChannel &amp; postMessage</span>
+        <strong>Bridge Status:</strong>
+        <span id="log">Connected via BroadcastChannel &amp; postMessage</span>
       </div>
     </div>
 

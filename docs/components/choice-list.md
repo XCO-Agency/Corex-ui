@@ -30,4 +30,4 @@ import { ChoiceList } from "@xco-agency/corex-ui";
 | `name`, `error` | Passed straight through.                                                                                 |
 
 The exact `choices`/`selected` property shape is best-effort (no full API reference was
-available for this element) — verify against your installed polaris-1.js.
+available for this element) — verify against your installed polaris-2.0-rc.js.

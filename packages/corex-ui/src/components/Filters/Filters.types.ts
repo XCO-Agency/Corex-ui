@@ -43,6 +43,11 @@ export type FilterItemType = {
   hideClearButton?: boolean;
   /** Whether the filter is pinned to the shortcut bar. */
   pinned?: boolean;
+  /**
+   * Whether to allow multiple selections. Defaults to true.
+   * If set to false, only one choice can be selected at a time.
+   */
+  allowMultiple?: boolean;
 };
 
 /**
@@ -118,8 +123,10 @@ export type FiltersPropsType<TViewId extends string | number = string> = {
   appliedFilters?: AppliedFilterType[];
   /** Callback when user clicks "Clear all" or "Clear search and filters". */
   onClearAll?: () => void;
+  /** Callback when a filter category is clicked to add a tag. */
+  onAddFilter?: (filterKey: string) => void;
   /** Callback when a filter option is selected from the focus dropdown. */
-  onFilterSelect?: (filterKey: string, value: string, operator?: string) => void;
+  onFilterSelect?: (filterKey: string, value: string | string[], operator?: string) => void;
   /** Callback when a filter operator changes in the focus dropdown. */
   onOperatorChange?: (filterKey: string, operator: string) => void;
 
@@ -223,8 +230,10 @@ export type FiltersSearchFieldPropsType<T = unknown> = {
   filters?: FilterItemType[];
   /** Currently applied filter pills. */
   appliedFilters?: AppliedFilterType[];
+  /** Callback when a filter category is clicked to add a tag. */
+  onAddFilter?: (filterKey: string) => void;
   /** Callback when a filter option is selected from the focus dropdown. */
-  onFilterSelect?: (filterKey: string, value: string, operator?: string) => void;
+  onFilterSelect?: (filterKey: string, value: string | string[], operator?: string) => void;
   /** Callback when a filter operator changes in the focus dropdown. */
   onOperatorChange?: (filterKey: string, operator: string) => void;
   /** Callback when user clicks "Clear all" or "Clear search and filters". */
@@ -285,6 +294,40 @@ export type FiltersActionsPropsType = {
 };
 
 /**
+ * Handle object exposed via ref on FilterPortalPopover.
+ */
+export type PopoverHandleType = {
+  open: () => void;
+  close: () => void;
+  toggle: () => void;
+  isOpen: () => boolean;
+};
+
+export type PopoverHandle = PopoverHandleType;
+
+/**
+ * Props for FilterPortalPopover.
+ */
+export type FilterPortalPopoverPropsType = {
+  anchorRef?: React.RefObject<HTMLElement | null> | string;
+  anchorId?: string;
+  trigger?: React.ReactElement;
+  isOpen?: boolean;
+  onClose?: () => void;
+  onOpen?: () => void;
+  width?: string;
+  minWidth?: string;
+  maxHeight?: string;
+  offset?: number;
+  className?: string;
+  style?: React.CSSProperties;
+  children: ReactNode;
+  id?: string;
+};
+
+export type FilterPopoverPropsType = FilterPortalPopoverPropsType;
+
+/**
  * Compound component type definition for Filters.
  */
 export type FiltersComponentType = {
@@ -302,4 +345,8 @@ export type FiltersComponentType = {
   Columns: React.FC<FiltersColumnsPopoverPropsType>;
   ColumnsPopover: React.FC<FiltersColumnsPopoverPropsType>;
   Actions: React.FC<FiltersActionsPropsType>;
+  Popover: React.ForwardRefExoticComponent<
+    FilterPortalPopoverPropsType & React.RefAttributes<PopoverHandleType>
+  >;
 };
+

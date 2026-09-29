@@ -9,6 +9,8 @@ import {
   Icon,
   Spinner,
   Text,
+  Card,
+  Banner,
 } from "@xco-agency/corex-ui";
 
 const CHECK_DURATION_MS = 2600;
@@ -54,7 +56,7 @@ export function Step5ShopifyValidation({
   };
 
   return (
-    <Box paddingBlock="large">
+    <Box paddingBlock="large" inlineSize="100%">
       <BlockStack gap="large" alignItems="center">
         <BlockStack gap="small-100" alignItems="center">
           <Text
@@ -69,42 +71,42 @@ export function Step5ShopifyValidation({
           </Text>
         </BlockStack>
 
-        <Box
-          padding="large"
-          border="base"
-          borderRadius="large"
-          background="base"
-          inlineSize="100%"
-          maxInlineSize="460px"
-        >
+        <Card>
           <BlockStack gap="large-100" justifyContent="center">
-            <BlockStack gap="base" style={{ width: "100%" }}>
-              <Clickable onClick={openThemeEditor} borderRadius="large">
-                <Box
-                  padding="base"
-                  border="base"
-                  borderRadius="large"
-                  background="base"
+            <BlockStack gap="base" inlineSize="100%">
+              <Banner
+                heading="Opens Shopify in a new tab"
+                action={{
+                  content: "Open Theme Editor",
+                  onAction: openThemeEditor,
+                }}
+              ></Banner>
+
+              <Clickable
+                onClick={openThemeEditor}
+                borderRadius="large-200"
+                background="subdued"
+                inlineSize="fill"
+                padding="small"
+                minInlineSize="460px"
+              >
+                <InlineStack
+                  justifyContent="space-between"
+                  alignItems="center"
                   inlineSize="100%"
                 >
-                  <InlineStack
-                    justifyContent="space-between"
-                    alignItems="center"
-                    style={{ width: "100%" }}
-                  >
-                    <BlockStack gap="none">
-                      <Text>Open Theme Editor</Text>
-                      <Text color="subdued">Opens Shopify in a new tab</Text>
-                    </BlockStack>
-                    <Icon type="external" tone="neutral" />
-                  </InlineStack>
-                </Box>
+                  <BlockStack gap="none">
+                    <Text>Open Theme Editor</Text>
+                    <Text color="subdued">Opens Shopify in a new tab</Text>
+                  </BlockStack>
+                  <Icon type="external" tone="neutral" />
+                </InlineStack>
               </Clickable>
 
               <InlineStack
                 justifyContent="space-between"
                 alignItems="center"
-                style={{ width: "100%" }}
+                inlineSize="100%"
               >
                 <InlineStack gap="small-200" alignItems="center">
                   {state.embedStatus === "active" ? (
@@ -132,7 +134,7 @@ export function Step5ShopifyValidation({
               </InlineStack>
             </BlockStack>
           </BlockStack>
-        </Box>
+        </Card>
 
         <InlineStack
           gap="small-200"

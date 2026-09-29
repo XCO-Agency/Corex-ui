@@ -22,10 +22,11 @@ import { Switch } from "../Switch";
 import { Select } from "../Select";
 import { SearchField } from "../SearchField";
 import { Tooltip } from "../Tooltip";
-import { Popover, usePopover } from "../Popover";
+import { Popover } from "../Popover";
+import { IconTile } from "../IconTile";
+import { ChoiceList } from "../ChoiceList";
+import { FilterPortalPopover } from "./FilterPortalPopover";
 import type {
-  AppliedFilterType,
-  FilterColumnItemType,
   FilterItemType,
   FiltersActionsPropsType,
   FiltersAppliedPillPropsType,
@@ -86,74 +87,53 @@ export function FiltersSearchField<T = unknown>({
   leftSlot,
   filters = [],
   appliedFilters = [],
+  onAddFilter,
   onFilterSelect,
   onOperatorChange,
   onClearAll,
   disabled = false,
   id,
 }: FiltersSearchFieldPropsType<T>) {
-  const [isFocused, setIsFocused] = useState(false);
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [activeFilterKey, setActiveFilterKey] = useState<string | null>(null);
-  const [hoveredOption, setHoveredOption] = useState<string | null>(null);
+  type ActivePopoverType =
+    | { type: "categories" }
+    | { type: "value"; key: string }
+    | { type: "operator"; key: string }
+    | null;
 
-  const containerRef = useRef<HTMLDivElement>(null);
+  const [activePopover, setActivePopover] = useState<ActivePopoverType>(null);
+  const [isFocused, setIsFocused] = useState(false);
+  const [customValueInput, setCustomValueInput] = useState("");
+
+  const availableFilters = filters.filter(
+    (filter) => !appliedFilters.some((af) => af.key === filter.key),
+  );
+
+  const baseId = useId().replace(/:/g, "");
+  const categoriesAnchorId = `corex-filters-cat-anchor-${baseId}`;
+
+  const containerRef = useRef<HTMLElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
-  const dropdownRef = useRef<HTMLDivElement>(null);
+  const inputWrapperRef = useRef<HTMLElement>(null);
+  const pendingAutoOpenRef = useRef<string | null>(null);
+  const lastDismissedRef = useRef<{
+    type: string;
+    key?: string;
+    timestamp: number;
+  } | null>(null);
 
   const hasApplied = appliedFilters.length > 0;
   const hasQuery = queryValue.trim().length > 0;
+  const isAnyPopoverOpen = activePopover !== null;
 
-  const activeFilter = filters.find((f) => f.key === activeFilterKey);
-  const activeApplied = appliedFilters.find((f) => f.key === activeFilterKey);
-
-  const closeDropdown = useCallback(() => {
-    setIsDropdownOpen(false);
+  const closeAllPopovers = useCallback(() => {
+    setActivePopover(null);
     setIsFocused(false);
-    setActiveFilterKey(null);
+    setCustomValueInput("");
     inputRef.current?.blur();
   }, []);
 
-  // Close dropdown on outside clicks and Escape key
-  useEffect(() => {
-    function handleClickOutside(e: Event) {
-      const path = e.composedPath ? e.composedPath() : [];
-      const target = e.target as Node | null;
-      const isInsideContainer = Boolean(
-        containerRef.current &&
-        (path.includes(containerRef.current) ||
-          (target && containerRef.current.contains(target))),
-      );
-      const isInsideDropdown = Boolean(
-        dropdownRef.current &&
-        (path.includes(dropdownRef.current) ||
-          (target && dropdownRef.current.contains(target))),
-      );
-
-      if (!isInsideContainer && !isInsideDropdown) {
-        closeDropdown();
-      }
-    }
-
-    function handleKeyDown(e: KeyboardEvent) {
-      if (e.key === "Escape") {
-        closeDropdown();
-      }
-    }
-
-    if (isDropdownOpen) {
-      document.addEventListener("mousedown", handleClickOutside, true);
-      document.addEventListener("touchstart", handleClickOutside, true);
-      window.addEventListener("keydown", handleKeyDown);
-      return () => {
-        document.removeEventListener("mousedown", handleClickOutside, true);
-        document.removeEventListener("touchstart", handleClickOutside, true);
-        window.removeEventListener("keydown", handleKeyDown);
-      };
-    }
-  }, [isDropdownOpen, closeDropdown]);
-
   const handleClear = () => {
+    setActivePopover(null);
     if (hasQuery) {
       onQueryChange?.("");
       onQueryClear?.();
@@ -162,17 +142,79 @@ export function FiltersSearchField<T = unknown>({
     }
   };
 
-  const handleOptionClick = (filter: FilterItemType, optionValue: string) => {
-    const currentOp = activeApplied?.operator ?? filter.defaultOperator ?? "is";
+  const handleCategoryClick = (filter: FilterItemType) => {
+    inputRef.current?.blur();
+    setCustomValueInput("");
+
+    // Close categories popover immediately
+    setActivePopover(null);
+
+    const existing = appliedFilters.find((f) => f.key === filter.key);
+    if (!existing) {
+      if (onAddFilter) {
+        onAddFilter(filter.key);
+      } else {
+        const defaultOp =
+          filter.defaultOperator ?? (filter.operators?.[0]?.value || "is");
+        onFilterSelect?.(filter.key, filter.allowMultiple !== false ? [] : "", defaultOp);
+      }
+    }
+
+    const isPopoverSupported =
+      typeof HTMLElement !== "undefined" &&
+      typeof HTMLDivElement.prototype.showPopover === "function";
+
+    if (!isPopoverSupported) {
+      setActivePopover({ type: "value", key: filter.key });
+    } else {
+      pendingAutoOpenRef.current = filter.key;
+      setTimeout(() => {
+        if (pendingAutoOpenRef.current === filter.key) {
+          pendingAutoOpenRef.current = null;
+          setActivePopover({ type: "value", key: filter.key });
+        }
+      }, 50);
+    }
+  };
+
+  useEffect(() => {
+    if (!pendingAutoOpenRef.current) return;
+    const filterKey = pendingAutoOpenRef.current;
+    const isApplied = appliedFilters.some((f) => f.key === filterKey);
+    if (isApplied) {
+      pendingAutoOpenRef.current = null;
+      const timer = setTimeout(() => {
+        setActivePopover({ type: "value", key: filterKey });
+      }, 50);
+      return () => clearTimeout(timer);
+    }
+  }, [appliedFilters]);
+
+  const handleOptionClick = (
+    filter: FilterItemType,
+    optionValue: string | string[],
+    operator?: string,
+  ) => {
+    const activeApplied = appliedFilters.find((f) => f.key === filter.key);
+    const currentOp =
+      operator ?? activeApplied?.operator ?? filter.defaultOperator ?? "is";
     onFilterSelect?.(filter.key, optionValue, currentOp);
   };
 
   const handleOperatorClick = (filter: FilterItemType, opValue: string) => {
     onOperatorChange?.(filter.key, opValue);
+    const activeApplied = appliedFilters.find((f) => f.key === filter.key);
+    if (activeApplied) {
+      onFilterSelect?.(
+        filter.key,
+        activeApplied.value ?? (filter.allowMultiple !== false ? [] : ""),
+        opValue,
+      );
+    }
   };
 
   return (
-    <div
+    <Box
       ref={containerRef}
       id={id}
       style={
@@ -184,401 +226,668 @@ export function FiltersSearchField<T = unknown>({
           minHeight: 34,
           background: "#ffffff",
           outline:
-            isFocused || isDropdownOpen ? "2px solid #005bd3" : "1px solid #dcdcdc",
+            isFocused || isAnyPopoverOpen ? "2px solid #005bd3" : "1px solid #dcdcdc",
           borderRadius: 8,
           paddingLeft: 4,
           paddingRight: 8,
-          boxShadow: isFocused || isDropdownOpen ? "0 0 0 1px #005bd3" : "none",
+          boxShadow: isFocused || isAnyPopoverOpen ? "0 0 0 1px #005bd3" : "none",
           transition: "border-color 150ms ease, box-shadow 150ms ease",
           boxSizing: "border-box",
         } as CSSProperties
       }
-      onClick={(e) => {
+      onClick={(e: React.MouseEvent) => {
         if (!disabled && e.target === containerRef.current) {
           inputRef.current?.focus();
         }
       }}
     >
-      {/* Left slot (e.g. <Tabs compact ... />, views, or custom slot) */}
-      {tabs ?? views ?? leftSlot ?? null}
+      <InlineStack alignItems="center" gap="small-200" wrap={false} inlineSize="100%">
+        {/* Left slot (e.g. <Tabs compact ... />, views, or custom slot) */}
+        {tabs ?? views ?? leftSlot ?? null}
 
-      {/* Applied filter pills rendered inline */}
-      {hasApplied ? (
-        <InlineStack alignItems="center" gap="small-300">
-          {appliedFilters.map((f) => {
-            const filterDef = filters.find((item) => item.key === f.key);
-            const fieldLabel = f.field ?? filterDef?.label ?? f.key;
-            const operatorLabel = f.operator ?? "is";
-            const valDisplay =
-              typeof f.label === "string"
-                ? f.label
-                : f.value
-                  ? Array.isArray(f.value)
-                    ? f.value.join(", ")
-                    : f.value
-                  : "";
-
-            return (
-              <InlineStack key={f.key} alignItems="center" gap="small-400">
-                {/* Prefix: "Tag is not" / "Vendor is" */}
-                <Text variant="small" tone="neutral">
-                  {fieldLabel} {operatorLabel}
-                </Text>
-
-                {/* Light blue pill badge: "exclude_search ✕" */}
-                <div
-                  style={
-                    {
-                      display: "inline-flex",
-                      alignItems: "center",
-                      gap: 4,
-                      backgroundColor: "#e0f0ff",
-                      color: "#004bb3",
-                      borderRadius: 4,
-                      padding: "2px 6px",
-                      fontSize: 13,
-                      fontWeight: 500,
-                      cursor: "pointer",
-                      lineHeight: "18px",
-                    } as CSSProperties
+        {/* Applied filter pills rendered inline */}
+        {hasApplied ? (
+          <InlineStack alignItems="center" gap="small-200">
+            {appliedFilters.map((f) => {
+              const filterDef = filters.find((item) => item.key === f.key);
+              const fieldLabel = f.field ?? filterDef?.label ?? f.key;
+              const currentOp = f.operator ?? filterDef?.defaultOperator ?? "is";
+              const operatorDisplay = currentOp === "is_not" ? "is not" : currentOp;
+              let valDisplay = "";
+              if (typeof f.label === "string") {
+                valDisplay = f.label;
+              } else if (f.value !== undefined && f.value !== null) {
+                if (Array.isArray(f.value)) {
+                  if (f.value.length === 0) {
+                    valDisplay = "Select...";
+                  } else {
+                    valDisplay = f.value
+                      .map(
+                        (v) =>
+                          filterDef?.options?.find((opt) => opt.value === v)?.label ?? v,
+                      )
+                      .join(", ");
                   }
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setActiveFilterKey(f.key);
-                    setIsDropdownOpen(true);
-                  }}
-                >
-                  <span>{valDisplay}</span>
-                  <Clickable
-                    disabled={disabled}
-                    background="transparent"
-                    padding="none"
-                    accessibilityLabel={`Remove ${fieldLabel} filter`}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      f.onRemove(f.key);
-                    }}
-                  >
-                    <Icon type="x" tone="neutral" />
-                  </Clickable>
-                </div>
-              </InlineStack>
-            );
-          })}
-        </InlineStack>
-      ) : null}
+                } else if (f.value === "") {
+                  valDisplay = "Select...";
+                } else {
+                  valDisplay =
+                    filterDef?.options?.find((opt) => opt.value === f.value)?.label ??
+                    String(f.value);
+                }
+              } else {
+                valDisplay = "Select...";
+              }
 
-      {/* Unstyled native text input for keywords */}
-      <input
-        ref={inputRef}
-        type="text"
-        disabled={disabled}
-        value={queryValue}
-        placeholder={hasApplied ? "" : queryPlaceholder}
-        onChange={(e: ChangeEvent<HTMLInputElement>) => onQueryChange?.(e.target.value)}
-        onFocus={() => {
-          setIsFocused(true);
-          setIsDropdownOpen(true);
-          onQueryFocus?.();
-        }}
-        onBlur={(e) => {
-          const related = e.relatedTarget as Node | null;
-          if (
-            (dropdownRef.current && dropdownRef.current.contains(related)) ||
-            (containerRef.current && containerRef.current.contains(related))
-          ) {
-            return;
-          }
-          setIsFocused(false);
-          onQueryBlur?.();
-        }}
-        onKeyDown={(e) => {
-          if (e.key === "Escape") {
-            closeDropdown();
-          } else if (e.key === "Enter" && hoveredOption && activeFilter) {
-            e.preventDefault();
-            handleOptionClick(activeFilter, hoveredOption);
-          }
-        }}
-        style={
-          {
+              const opTriggerId = `corex-filter-op-trig-${f.key}-${baseId}`;
+              const valTriggerId = `corex-filter-val-trig-${f.key}-${baseId}`;
+              const isOpOpen =
+                activePopover?.type === "operator" && activePopover.key === f.key;
+              const isValOpen =
+                activePopover?.type === "value" && activePopover.key === f.key;
+
+              return (
+                <Box key={f.key}>
+                  {/* Merged two-tone tag pill using IconTile */}
+                  <InlineStack alignItems="center" gap="none" wrap={false}>
+                    {/* Segment 1: Gray / Neutral [ Label + Operator ▾ ] */}
+                    <Clickable
+                      id={opTriggerId}
+                      disabled={disabled}
+                      background="transparent"
+                      padding="none"
+                      borderRadius="base"
+                      accessibilityLabel={`${fieldLabel} operator`}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        const now = Date.now();
+                        const recentlyDismissed =
+                          lastDismissedRef.current?.type === "operator" &&
+                          lastDismissedRef.current.key === f.key &&
+                          now - lastDismissedRef.current.timestamp < 200;
+
+                        if (
+                          (activePopover?.type === "operator" &&
+                            activePopover.key === f.key) ||
+                          recentlyDismissed
+                        ) {
+                          setActivePopover(null);
+                        } else {
+                          setActivePopover({ type: "operator", key: f.key });
+                        }
+                      }}
+                    >
+                      <IconTile
+                        tone="neutral"
+                        borderRadius="base"
+                        size="auto"
+                        style={{
+                          display: "inline-flex",
+                          alignItems: "center",
+                          gap: "4px",
+                          padding: "0 4px",
+                          borderTopLeftRadius: "4px",
+                          borderBottomLeftRadius: "4px",
+                          borderTopRightRadius: "0px",
+                          borderBottomRightRadius: "0px",
+                          borderRight: "1px solid #fff",
+                          cursor: disabled ? "default" : "pointer",
+                          height: "22px",
+                          userSelect: "none",
+                          opacity: disabled ? 0.6 : 1,
+                        }}
+                      >
+                        <Text variant="small">{fieldLabel}</Text>
+                        <Text variant="small">{operatorDisplay}</Text>
+                      </IconTile>
+                    </Clickable>
+
+                    <FilterPortalPopover
+                      anchorRef={opTriggerId}
+                      anchorId={opTriggerId}
+                      isOpen={isOpOpen}
+                      onClose={() => {
+                        lastDismissedRef.current = {
+                          type: "operator",
+                          key: f.key,
+                          timestamp: Date.now(),
+                        };
+                        setActivePopover((prev) =>
+                          prev?.type === "operator" && prev.key === f.key
+                            ? null
+                            : prev,
+                        );
+                      }}
+                      width="140px"
+                    >
+                      <Box padding="small-200">
+                        <BlockStack gap="small-500">
+                          {(
+                            filterDef?.operators || [
+                              { label: "Is", value: "is" },
+                              { label: "Is not", value: "is_not" },
+                            ]
+                          ).map((op) => {
+                            const isChecked =
+                              currentOp === op.value ||
+                              (op.value === "is_not" && currentOp === "is not") ||
+                              (op.value === "is" && currentOp === "is");
+                            return (
+                              <Clickable
+                                key={op.value}
+                                background="transparent"
+                                paddingInline="small-200"
+                                blockSize="28px"
+                                borderRadius="base"
+                                inlineSize="fill"
+                                accessibilityLabel={op.label}
+                                onClick={() => {
+                                  handleOperatorClick(
+                                    filterDef ?? { key: f.key, label: fieldLabel },
+                                    op.value,
+                                  );
+                                  setActivePopover(null);
+                                }}
+                              >
+                                <InlineStack
+                                  alignItems="center"
+                                  gap="small-200"
+                                  blockSize="fill"
+                                >
+                                  <Box minInlineSize="16px">
+                                    {isChecked ? (
+                                      <Icon type="check" tone="neutral" />
+                                    ) : null}
+                                  </Box>
+                                  <Text
+                                    variant="small"
+                                    tone="neutral"
+                                    heading={isChecked}
+                                  >
+                                    {op.label}
+                                  </Text>
+                                </InlineStack>
+                              </Clickable>
+                            );
+                          })}
+                        </BlockStack>
+                      </Box>
+                    </FilterPortalPopover>
+
+                    {/* Segment 2: Info / Blue [ Value ▾ + ✕ ] */}
+                    <InlineStack alignItems="center" gap="none" wrap={false}>
+                      <Clickable
+                        id={valTriggerId}
+                        disabled={disabled}
+                        background="transparent"
+                        padding="none"
+                        borderRadius="base"
+                        accessibilityLabel={`${fieldLabel} value`}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          const now = Date.now();
+                          const recentlyDismissed =
+                            lastDismissedRef.current?.type === "value" &&
+                            lastDismissedRef.current.key === f.key &&
+                            now - lastDismissedRef.current.timestamp < 200;
+
+                          if (
+                            (activePopover?.type === "value" &&
+                              activePopover.key === f.key) ||
+                            recentlyDismissed
+                          ) {
+                            setActivePopover(null);
+                          } else {
+                            setActivePopover({ type: "value", key: f.key });
+                          }
+                        }}
+                      >
+                        <IconTile
+                          tone="info"
+                          color="base"
+                          borderRadius="base"
+                          size="auto"
+                          style={{
+                            display: "inline-flex",
+                            alignItems: "center",
+                            gap: "4px",
+                            padding: "0 4px",
+                            borderTopLeftRadius: "0px",
+                            borderBottomLeftRadius: "0px",
+                            borderTopRightRadius: "0px",
+                            borderBottomRightRadius: "0px",
+                            cursor: disabled ? "default" : "pointer",
+                            height: "22px",
+                            userSelect: "none",
+                            opacity: disabled ? 0.6 : 1,
+                          }}
+                        >
+                          <Text variant="small" tone="info">
+                            {valDisplay || "Select..."}
+                          </Text>
+                        </IconTile>
+                      </Clickable>
+
+                      <Clickable
+                        disabled={disabled}
+                        background="transparent"
+                        padding="none"
+                        borderRadius="base"
+                        accessibilityLabel={`Remove ${fieldLabel} filter`}
+                        aria-label={`Remove ${fieldLabel} filter`}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          f.onRemove(f.key);
+                          setActivePopover((prev) =>
+                            prev && "key" in prev && prev.key === f.key ? null : prev,
+                          );
+                        }}
+                      >
+                        <IconTile
+                          tone="info"
+                          color="base"
+                          borderRadius="base"
+                          size="auto"
+                          style={{
+                            display: "inline-flex",
+                            alignItems: "center",
+                            padding: "0 4px",
+                            borderTopLeftRadius: "0px",
+                            borderBottomLeftRadius: "0px",
+                            borderTopRightRadius: "4px",
+                            borderBottomRightRadius: "4px",
+                            cursor: disabled ? "default" : "pointer",
+                            height: "22px",
+                          }}
+                        >
+                          <Icon size="small" type="x" tone="info" />
+                        </IconTile>
+                      </Clickable>
+                    </InlineStack>
+
+                    <FilterPortalPopover
+                      anchorRef={valTriggerId}
+                      anchorId={valTriggerId}
+                      isOpen={isValOpen}
+                      onClose={() => {
+                        lastDismissedRef.current = {
+                          type: "value",
+                          key: f.key,
+                          timestamp: Date.now(),
+                        };
+                        setActivePopover((prev) =>
+                          prev?.type === "value" && prev.key === f.key
+                            ? null
+                            : prev,
+                        );
+                      }}
+                      width="260px"
+                      maxHeight="340px"
+                    >
+                      <Box padding="small-200">
+                        <BlockStack gap="small-300">
+                          {/* Header with Title and Close Button */}
+                          <InlineStack
+                            alignItems="center"
+                            justifyContent="space-between"
+                            paddingInline="small-200"
+                            paddingBlock="small-400"
+                          >
+                            <Text variant="small" heading tone="neutral">
+                              {fieldLabel}
+                            </Text>
+                            <Clickable
+                              background="transparent"
+                              padding="small-500"
+                              borderRadius="base"
+                              accessibilityLabel="Close"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setActivePopover(null);
+                              }}
+                            >
+                              <Icon type="x" tone="neutral" />
+                            </Clickable>
+                          </InlineStack>
+                          <Divider />
+
+                          {/* Predefined Options List using ChoiceList */}
+                          {filterDef?.options && filterDef.options.length > 0 ? (
+                            <Box paddingInline="small-200" paddingBlock="small-100">
+                              <ChoiceList
+                                name={`filter-choice-${f.key}`}
+                                multiple={filterDef.allowMultiple !== false}
+                                choices={filterDef.options.map((opt) => ({
+                                  label: opt.label,
+                                  value: opt.value,
+                                }))}
+                                selected={
+                                  Array.isArray(f.value)
+                                    ? f.value
+                                    : f.value
+                                      ? [String(f.value)]
+                                      : []
+                                }
+                                onChange={(newValues) => {
+                                  const updatedVal =
+                                    filterDef.allowMultiple === false
+                                      ? (newValues[0] ?? "")
+                                      : newValues;
+                                  handleOptionClick(
+                                    filterDef ?? { key: f.key, label: fieldLabel },
+                                    updatedVal,
+                                    currentOp,
+                                  );
+                                }}
+                              />
+                            </Box>
+                          ) : filterDef?.filter ? (
+                            /* Custom ReactNode Filter */
+                            <Box padding="small-200">{filterDef.filter}</Box>
+                          ) : (
+                            /* Free Text Input Filter */
+                            <Box padding="small-200">
+                              <InlineStack gap="small-200">
+                                <input
+                                  type="text"
+                                  placeholder={`Enter ${fieldLabel.toLowerCase()}...`}
+                                  value={customValueInput}
+                                  onChange={(e) => setCustomValueInput(e.target.value)}
+                                  style={{
+                                    flex: 1,
+                                    padding: "5px 8px",
+                                    fontSize: 12,
+                                    border: "1px solid #dcdcdc",
+                                    borderRadius: 6,
+                                    outline: "none",
+                                    fontFamily: "inherit",
+                                  }}
+                                  onKeyDown={(e) => {
+                                    if (e.key === "Enter" && customValueInput.trim()) {
+                                      handleOptionClick(
+                                        filterDef ?? {
+                                          key: f.key,
+                                          label: fieldLabel,
+                                        },
+                                        customValueInput.trim(),
+                                        currentOp,
+                                      );
+                                      setCustomValueInput("");
+                                      setActivePopover(null);
+                                    }
+                                  }}
+                                  autoFocus
+                                />
+                                <Button
+                                  variant="secondary"
+                                  onClick={() => {
+                                    if (customValueInput.trim()) {
+                                      handleOptionClick(
+                                        filterDef ?? {
+                                          key: f.key,
+                                          label: fieldLabel,
+                                        },
+                                        customValueInput.trim(),
+                                        currentOp,
+                                      );
+                                      setCustomValueInput("");
+                                      setActivePopover(null);
+                                    }
+                                  }}
+                                >
+                                  Apply
+                                </Button>
+                              </InlineStack>
+                            </Box>
+                          )}
+
+                          {/* Second layer: Operator Selection (Is / Is not) */}
+                          <Divider />
+                          <Box paddingInline="small-200" paddingBlock="small-100">
+                            <BlockStack gap="small-500">
+                              {(
+                                filterDef?.operators || [
+                                  { label: "Is", value: "is" },
+                                  { label: "Is not", value: "is_not" },
+                                ]
+                              ).map((op) => {
+                                const isChecked =
+                                  currentOp === op.value ||
+                                  (op.value === "is_not" && currentOp === "is not") ||
+                                  (op.value === "is" && currentOp === "is");
+                                return (
+                                  <Clickable
+                                    key={op.value}
+                                    background="transparent"
+                                    paddingInline="small-200"
+                                    blockSize="28px"
+                                    borderRadius="base"
+                                    inlineSize="fill"
+                                    accessibilityLabel={op.label}
+                                    onClick={() => {
+                                      handleOperatorClick(
+                                        filterDef ?? {
+                                          key: f.key,
+                                          label: fieldLabel,
+                                        },
+                                        op.value,
+                                      );
+                                    }}
+                                  >
+                                    <InlineStack
+                                      alignItems="center"
+                                      gap="small-200"
+                                      blockSize="fill"
+                                    >
+                                      <Box minInlineSize="16px">
+                                        {isChecked ? (
+                                          <Icon type="check" tone="neutral" />
+                                        ) : null}
+                                      </Box>
+                                      <Text
+                                        variant="small"
+                                        tone="neutral"
+                                        heading={isChecked}
+                                      >
+                                        {op.label}
+                                      </Text>
+                                    </InlineStack>
+                                  </Clickable>
+                                );
+                              })}
+                            </BlockStack>
+                          </Box>
+                        </BlockStack>
+                      </Box>
+                    </FilterPortalPopover>
+                  </InlineStack>
+                </Box>
+              );
+            })}
+          </InlineStack>
+        ) : null}
+
+        {/* Input container anchoring the main categories popover directly beneath the input */}
+        <Box
+          ref={inputWrapperRef}
+          style={{
             flex: 1,
             minWidth: 80,
-            border: "none",
-            outline: "none",
-            background: "transparent",
-            fontSize: 13,
-            color: "#202223",
-            padding: "6px 8px",
-            fontFamily: "inherit",
-          } as CSSProperties
-        }
-      />
-
-      {/* Add new filter button with tooltip (Screenshot 3: ⊕) */}
-      <Tooltip content="Add new filter">
-        <Clickable
-          disabled={disabled}
-          background="transparent"
-          padding="small-500"
-          borderRadius="base"
-          accessibilityLabel="Add new filter"
-          onClick={(e) => {
-            e.stopPropagation();
-            if (isDropdownOpen) {
-              closeDropdown();
-            } else {
-              setIsDropdownOpen(true);
-              setIsFocused(true);
-              inputRef.current?.focus();
+            display: "flex",
+            alignItems: "center",
+            position: "relative",
+          }}
+        >
+          <input
+            ref={inputRef}
+            id={categoriesAnchorId}
+            type="text"
+            disabled={disabled}
+            value={queryValue}
+            placeholder={hasApplied ? "" : queryPlaceholder}
+            onChange={(e: ChangeEvent<HTMLInputElement>) =>
+              onQueryChange?.(e.target.value)
             }
-          }}
-        >
-          <Icon type="plus-circle" tone="neutral" />
-        </Clickable>
-      </Tooltip>
+            onFocus={() => {
+              setIsFocused(true);
+              setActivePopover({ type: "categories" });
+              onQueryFocus?.();
+            }}
+            onClick={() => {
+              setActivePopover({ type: "categories" });
+            }}
+            onBlur={() => {
+              setIsFocused(false);
+              onQueryBlur?.();
+            }}
+            onKeyDown={(e) => {
+              if (e.key === "Escape") {
+                closeAllPopovers();
+              }
+            }}
+            style={
+              {
+                flex: 1,
+                minWidth: 80,
+                width: "100%",
+                border: "none",
+                outline: "none",
+                background: "transparent",
+                fontSize: 13,
+                color: "#202223",
+                padding: "6px 8px",
+                fontFamily: "inherit",
+              } as CSSProperties
+            }
+          />
 
-      {/* Clear button (Screenshot 1: (X)) */}
-      {hasQuery || hasApplied ? (
-        <Clickable
-          disabled={disabled}
-          background="transparent"
-          padding="small-500"
-          borderRadius="base"
-          accessibilityLabel="Clear search and filters"
-          onClick={(e) => {
-            e.stopPropagation();
-            handleClear();
-            closeDropdown();
-          }}
-        >
-          <Icon type="x-circle" tone="neutral" />
-        </Clickable>
-      ) : null}
-
-      {/* Floating dropdown menu anchored beneath the input */}
-      {isDropdownOpen && filters.length > 0 ? (
-        <div
-          ref={dropdownRef}
-          style={
-            {
-              position: "absolute",
-              top: "calc(100% + 6px)",
-              left: 0,
-              minWidth: 260,
-              maxHeight: 360,
-              overflowY: "auto",
-              backgroundColor: "#ffffff",
-              borderRadius: 8,
-              boxShadow: "0 4px 16px rgba(0, 0, 0, 0.12), 0 0 0 1px rgba(0, 0, 0, 0.08)",
-              zIndex: 1000,
-              padding: 6,
-              boxSizing: "border-box",
-            } as CSSProperties
-          }
-        >
-          {!activeFilterKey ? (
-            /* Stage 1: Filter Categories List (Screenshots 1 & 4) */
-            <BlockStack gap="small-300">
-              <InlineStack
-                alignItems="center"
-                justifyContent="space-between"
-                paddingInline="small-200"
-                paddingBlock="small-300"
-              >
-                <Text variant="small" heading tone="neutral">
-                  Filters
-                </Text>
-                <Clickable
-                  background="transparent"
-                  padding="small-500"
-                  borderRadius="base"
-                  accessibilityLabel="Close filters popup"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    closeDropdown();
-                  }}
-                >
-                  <Icon type="x" tone="neutral" />
-                </Clickable>
-              </InlineStack>
-              <Divider />
-              <BlockStack gap="small-500">
-                {filters.map((filter) => (
-                  <Clickable
-                    key={filter.key}
-                    disabled={filter.disabled}
-                    background="transparent"
+          {filters.length > 0 ? (
+            <FilterPortalPopover
+              anchorRef={inputRef}
+              anchorId={categoriesAnchorId}
+              isOpen={activePopover?.type === "categories"}
+              onClose={() => {
+                lastDismissedRef.current = {
+                  type: "categories",
+                  timestamp: Date.now(),
+                };
+                setActivePopover((prev) =>
+                  prev?.type === "categories" ? null : prev,
+                );
+              }}
+              width="260px"
+              maxHeight="360px"
+            >
+              <Box padding="small-300">
+                <BlockStack gap="small-300">
+                  <InlineStack
+                    alignItems="center"
+                    justifyContent="space-between"
                     paddingInline="small-200"
-                    blockSize="32px"
-                    borderRadius="base"
-                    inlineSize="fill"
-                    accessibilityLabel={filter.label}
-                    onClick={() => setActiveFilterKey(filter.key)}
+                    paddingBlock="small-300"
                   >
-                    <InlineStack alignItems="center" blockSize="fill">
-                      <Text variant="small" tone="neutral">
-                        {filter.label}
-                      </Text>
-                    </InlineStack>
-                  </Clickable>
-                ))}
-              </BlockStack>
-            </BlockStack>
-          ) : /* Stage 2: Filter Options & Operators Drill-Down (Screenshot 2) */
-          activeFilter ? (
-            <BlockStack gap="small-300">
-              {/* Back Header with Close Button */}
-              <InlineStack
-                alignItems="center"
-                justifyContent="space-between"
-                paddingInline="small-200"
-                paddingBlock="small-300"
-              >
-                <Clickable
-                  background="transparent"
-                  paddingInline="small-200"
-                  blockSize="28px"
-                  borderRadius="base"
-                  onClick={() => setActiveFilterKey(null)}
-                  accessibilityLabel="Back to filters list"
-                >
-                  <InlineStack alignItems="center" gap="small-300" blockSize="fill">
-                    <Icon type="arrow-left" tone="neutral" />
                     <Text variant="small" heading tone="neutral">
-                      {activeFilter.label}
+                      Filters
                     </Text>
-                  </InlineStack>
-                </Clickable>
-
-                <Clickable
-                  background="transparent"
-                  padding="small-500"
-                  borderRadius="base"
-                  accessibilityLabel="Close filters popup"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    closeDropdown();
-                  }}
-                >
-                  <Icon type="x" tone="neutral" />
-                </Clickable>
-              </InlineStack>
-              <Divider />
-
-              {/* If custom ReactNode filter is provided and no structured options */}
-              {activeFilter.filter &&
-              (!activeFilter.options || activeFilter.options.length === 0) ? (
-                <Box padding="small-200">{activeFilter.filter}</Box>
-              ) : null}
-
-              {/* Predefined options with checkmarks */}
-              {activeFilter.options?.map((opt) => {
-                const isChecked = Array.isArray(activeApplied?.value)
-                  ? activeApplied.value.includes(opt.value)
-                  : activeApplied?.value === opt.value;
-                const isHovered = hoveredOption === opt.value;
-
-                return (
-                  <div
-                    key={opt.value}
-                    onMouseEnter={() => setHoveredOption(opt.value)}
-                    onMouseLeave={() => setHoveredOption(null)}
-                  >
                     <Clickable
                       background="transparent"
-                      paddingInline="small-200"
-                      blockSize="32px"
+                      padding="small-500"
                       borderRadius="base"
-                      inlineSize="fill"
-                      accessibilityLabel={opt.label}
-                      onClick={() => handleOptionClick(activeFilter, opt.value)}
+                      accessibilityLabel="Close filters popup"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setActivePopover(null);
+                      }}
                     >
-                      <InlineStack
-                        alignItems="center"
-                        justifyContent="space-between"
-                        gap="small-200"
-                        grow
-                        blockSize="fill"
-                      >
-                        <InlineStack alignItems="center" gap="small-200">
-                          <Box minInlineSize="16px">
-                            {isChecked ? <Icon type="check" tone="neutral" /> : null}
-                          </Box>
-                          <Text variant="small" tone="neutral" heading={isChecked}>
-                            {opt.label}
-                          </Text>
-                        </InlineStack>
-
-                        {isHovered ? (
-                          <Badge color="strong" tone="neutral">
-                            ↵ Enter
-                          </Badge>
-                        ) : null}
-                      </InlineStack>
+                      <Icon type="x" tone="neutral" />
                     </Clickable>
-                  </div>
-                );
-              })}
-
-              {/* Operators section (e.g. Divider -> Is / Is not) */}
-              {activeFilter.operators && activeFilter.operators.length > 0 ? (
-                <>
+                  </InlineStack>
                   <Divider />
-                  {activeFilter.operators.map((op) => {
-                    const currentOp =
-                      activeApplied?.operator ?? activeFilter.defaultOperator ?? "is";
-                    const isOpChecked =
-                      currentOp === op.value || currentOp === op.label.toLowerCase();
-
-                    return (
-                      <Clickable
-                        key={op.value}
-                        background="transparent"
-                        paddingInline="small-200"
-                        blockSize="28px"
-                        borderRadius="base"
-                        inlineSize="fill"
-                        accessibilityLabel={op.label}
-                        onClick={() => handleOperatorClick(activeFilter, op.value)}
-                      >
-                        <InlineStack alignItems="center" gap="small-200" blockSize="fill">
-                          <Box minInlineSize="16px">
-                            {isOpChecked ? <Icon type="check" tone="neutral" /> : null}
-                          </Box>
-                          <Text variant="small" tone="neutral" heading={isOpChecked}>
-                            {op.label}
-                          </Text>
-                        </InlineStack>
-                      </Clickable>
-                    );
-                  })}
-                </>
-              ) : null}
-
-              {/* Done Button */}
-              <Divider />
-              <InlineStack
-                alignItems="center"
-                justifyContent="flex-end"
-                paddingInline="small-200"
-                paddingBlock="small-200"
-              >
-                <Button
-                  variant="secondary"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    closeDropdown();
-                  }}
-                >
-                  Done
-                </Button>
-              </InlineStack>
-            </BlockStack>
+                  <BlockStack gap="small-500">
+                    {availableFilters.length > 0 ? (
+                      availableFilters.map((filter) => (
+                        <Clickable
+                          key={filter.key}
+                          disabled={filter.disabled}
+                          background="transparent"
+                          paddingInline="small-200"
+                          blockSize="32px"
+                          borderRadius="base"
+                          inlineSize="fill"
+                          accessibilityLabel={filter.label}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleCategoryClick(filter);
+                          }}
+                        >
+                          <InlineStack alignItems="center" blockSize="fill">
+                            <Text variant="small" tone="neutral">
+                              {filter.label}
+                            </Text>
+                          </InlineStack>
+                        </Clickable>
+                      ))
+                    ) : (
+                      <Box padding="small-300">
+                        <Text variant="small" color="subdued">
+                          All filters applied
+                        </Text>
+                      </Box>
+                    )}
+                  </BlockStack>
+                </BlockStack>
+              </Box>
+            </FilterPortalPopover>
           ) : null}
-        </div>
-      ) : null}
-    </div>
+        </Box>
+
+        {/* Add new filter button with tooltip (⊕) */}
+        <Tooltip content="Add new filter">
+          <Clickable
+            disabled={disabled}
+            background="transparent"
+            padding="small-500"
+            borderRadius="base"
+            accessibilityLabel="Add new filter"
+            onClick={(e) => {
+              e.stopPropagation();
+              const now = Date.now();
+              const recentlyDismissed =
+                lastDismissedRef.current?.type === "categories" &&
+                now - lastDismissedRef.current.timestamp < 200;
+
+              if (activePopover?.type === "categories" || recentlyDismissed) {
+                setActivePopover(null);
+              } else {
+                setActivePopover({ type: "categories" });
+                setIsFocused(true);
+                inputRef.current?.focus();
+              }
+            }}
+          >
+            <Icon type="plus-circle" tone="neutral" />
+          </Clickable>
+        </Tooltip>
+
+        {/* Clear button ((X)) */}
+        {hasQuery || hasApplied ? (
+          <Clickable
+            disabled={disabled}
+            background="transparent"
+            padding="small-500"
+            borderRadius="base"
+            accessibilityLabel="Clear search and filters"
+            onClick={(e) => {
+              e.stopPropagation();
+              handleClear();
+              closeAllPopovers();
+            }}
+          >
+            <Icon type="x-circle" tone="neutral" />
+          </Clickable>
+        ) : null}
+      </InlineStack>
+    </Box>
   );
 }
 FiltersSearchField.displayName = "FiltersSearchField";
@@ -606,10 +915,9 @@ export function FiltersShortcut({
           accessibilityLabel={filter.label}
         >
           <InlineStack alignItems="center" gap="small-300">
-            <Text variant="small" tone="neutral" heading={isActive}>
+            <Text variant="small" heading={isActive}>
               {filter.label}
             </Text>
-            <Icon type="select" tone="neutral" />
           </InlineStack>
         </Clickable>
       </Popover.Trigger>
@@ -658,7 +966,7 @@ export function FiltersAppliedPill({
           background="transparent"
           padding="small-500"
           borderRadius="base"
-          accessibilityLabel={`Remove ${typeof filter.label === "string" ? filter.label : filter.key} filter`}
+          accessibilityLabel={`Remove ${filter.field ?? (typeof filter.label === "string" ? filter.label : filter.key)} filter`}
           onClick={(e) => {
             e.stopPropagation();
             filter.onRemove(filter.key);
@@ -862,6 +1170,7 @@ function FiltersInner(
     filters = [],
     appliedFilters = [],
     onClearAll,
+    onAddFilter,
     onFilterSelect,
     onOperatorChange,
     sortOptions,
@@ -917,6 +1226,7 @@ function FiltersInner(
               onQueryFocus={onQueryFocus}
               filters={filters}
               appliedFilters={appliedFilters}
+              onAddFilter={onAddFilter}
               onFilterSelect={onFilterSelect}
               onOperatorChange={onOperatorChange}
               onClearAll={onClearAll}
@@ -955,3 +1265,4 @@ Filters.AppliedPill = FiltersAppliedPill;
 Filters.Columns = FiltersColumnsPopover;
 Filters.ColumnsPopover = FiltersColumnsPopover;
 Filters.Actions = FiltersActions;
+Filters.Popover = FilterPortalPopover;

@@ -21,10 +21,10 @@ versioned to match the CDN script your app loads.
 Add this to your app's HTML `<head>` (Shopify CLI-scaffolded apps already have this):
 
 ```html
-<script src="https://cdn.shopify.com/shopifycloud/polaris-1.js"></script>
+<script src="https://cdn.shopify.com/shopifycloud/polaris-2.0-rc.js"></script>
 ```
 
-Pin a specific release with `polaris-1.1.js` etc. if you need to control update timing; the
+Pin a specific release with `polaris-2.0-rc.js` etc. if you need to control update timing; the
 unpinned `polaris-1.js` always tracks the latest stable v1 release.
 
 Unlike Polaris React, there is no `<AppProvider>` to render — the CDN script registers the

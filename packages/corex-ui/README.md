@@ -18,7 +18,7 @@ Your app must load Shopify's Polaris web components CDN script (Shopify CLI-scaf
 already do this):
 
 ```html
-<script src="https://cdn.shopify.com/shopifycloud/polaris-1.js"></script>
+<script src="https://cdn.shopify.com/shopifycloud/polaris-2.0-rc.js"></script>
 ```
 
 `@xco-agency/corex-ui` has no runtime dependency on Polaris — that CDN script is what actually

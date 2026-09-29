@@ -123,6 +123,7 @@ function TabsInner<TId extends string | number = string>(
     showBadge = true,
     rightSide,
     compact = false,
+    inlineSize = "auto",
     children,
     className,
     id,
@@ -134,6 +135,8 @@ function TabsInner<TId extends string | number = string>(
   const popoverId = id
     ? `${id}-popover`
     : `corex-tabs-popover-${generatedId.replace(/:/g, "")}`;
+
+  const isFullWidth = !compact && inlineSize === "fill";
 
   const isTabSelected = (tab: TabItemType<TId>, index: number) => {
     if (value !== undefined) {
@@ -182,6 +185,7 @@ function TabsInner<TId extends string | number = string>(
           justifyContent: "space-between",
           alignItems: "center",
           gap: 8,
+          width: isFullWidth ? "100%" : undefined,
         }}
       >
         {compact ? (
@@ -246,6 +250,7 @@ function TabsInner<TId extends string | number = string>(
               flex: 1,
               display: "flex",
               gap: 3,
+              width: isFullWidth ? "100%" : undefined,
             }}
           >
             {tabs.map((tab, index) => {
@@ -257,7 +262,8 @@ function TabsInner<TId extends string | number = string>(
                   disabled={tab.disabled}
                   paddingInline="small-300"
                   blockSize="28px"
-                  maxInlineSize="none"
+                  inlineSize={isFullWidth ? "fill" : "auto"}
+                  maxInlineSize={isFullWidth ? "100%" : "none"}
                   borderRadius="large-100"
                   accessibilityLabel={tab.accessibilityLabel}
                   onClick={() => handleSelect(tab, index)}
@@ -266,13 +272,22 @@ function TabsInner<TId extends string | number = string>(
                     style={{
                       display: "flex",
                       alignItems: "center",
+                      justifyContent: isFullWidth ? "center" : undefined,
+                      width: isFullWidth ? "100%" : undefined,
+                      height: "100%",
                       gap: 8,
                       opacity: tab.disabled ? 0.5 : 1,
                     }}
                   >
                     {tab.icon && <Icon type={tab.icon} />}
                     {tab.label && (
-                      <Text variant="small" lineClamp={1} color="base" heading>
+                      <Text
+                        variant="small"
+                        style={{ alignItems: "center" }}
+                        lineClamp={1}
+                        color="base"
+                        heading
+                      >
                         {tab.label}
                       </Text>
                     )}
@@ -293,7 +308,9 @@ function TabsInner<TId extends string | number = string>(
                   key={tab.id ?? index}
                   style={
                     {
-                      display: "contents",
+                      display: isFullWidth ? "flex" : "contents",
+                      flex: isFullWidth ? 1 : undefined,
+                      minWidth: isFullWidth ? 0 : undefined,
                       "--p-color-bg-surface-tertiary": isSelected
                         ? "#ddddddad"
                         : "transparent",

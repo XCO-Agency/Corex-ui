@@ -1,5 +1,6 @@
+import React from "react";
 import { describe, expect, it, vi } from "vitest";
-import { render, fireEvent, screen } from "@testing-library/react";
+import { render, fireEvent, screen, act } from "@testing-library/react";
 import { Filters } from "./Filters";
 import { Tabs } from "../Tabs";
 
@@ -50,8 +51,8 @@ describe("Filters", () => {
     expect(document.body.textContent).toContain("Status");
   });
 
-  it("drills down into filter options when a filter category is clicked", () => {
-    const onFilterSelect = vi.fn();
+  it("adds tag and triggers callback when category is clicked", () => {
+    const onAddFilter = vi.fn();
 
     render(
       <Filters
@@ -69,7 +70,7 @@ describe("Filters", () => {
             ],
           },
         ]}
-        onFilterSelect={onFilterSelect}
+        onAddFilter={onAddFilter}
       />,
     );
 
@@ -80,14 +81,148 @@ describe("Filters", () => {
     const tagCategory = document.querySelector('s-clickable[accessibilitylabel="Tag"]')!;
     fireEvent.click(tagCategory);
 
-    expect(document.body.textContent).toContain("exclude_search");
+    expect(onAddFilter).toHaveBeenCalledWith("tag");
+  });
+
+  it("automatically opens Popover 2 (value choice list) when category is selected from Popover 1", () => {
+    const filters = [
+      {
+        key: "vendor",
+        label: "Vendor",
+        options: [
+          { label: "Apple", value: "apple" },
+          { label: "Sony", value: "sony" },
+        ],
+        operators: [
+          { label: "Is", value: "is" },
+          { label: "Is not", value: "is_not" },
+        ],
+      },
+    ];
+
+    function TestWrapper() {
+      const [applied, setApplied] = React.useState<any[]>([]);
+      return (
+        <Filters
+          filters={filters}
+          appliedFilters={applied}
+          onAddFilter={(key) => {
+            setApplied([
+              {
+                key,
+                field: "Vendor",
+                operator: "is",
+                value: [],
+                onRemove: () => setApplied([]),
+              },
+            ]);
+          }}
+        />
+      );
+    }
+
+    render(<TestWrapper />);
+
+    const inputEl = document.querySelector('input[type="text"]')!;
+    fireEvent.focus(inputEl);
+
+    // Popover 1 is open showing "Vendor"
+    expect(document.body.textContent).toContain("Filters");
+    const vendorCategory = document.querySelector('s-clickable[accessibilitylabel="Vendor"]')!;
+    fireEvent.click(vendorCategory);
+
+    // Popover 1 closes, and Popover 2 for Vendor automatically opens with choices and operators
+    expect(document.body.textContent).toContain("Apple");
+    expect(document.body.textContent).toContain("Sony");
     expect(document.body.textContent).toContain("Is not");
+  });
 
-    // Click on "exclude_search"
-    const option = document.querySelector('s-clickable[accessibilitylabel="exclude_search"]')!;
-    fireEvent.click(option);
+  it("opens operator and value popovers when clicking tag segments", () => {
+    const onOperatorChange = vi.fn();
+    const onFilterSelect = vi.fn();
 
-    expect(onFilterSelect).toHaveBeenCalledWith("tag", "exclude_search", "is");
+    render(
+      <Filters
+        filters={[
+          {
+            key: "vendor",
+            label: "Vendor",
+            allowMultiple: false,
+            options: [{ label: "Apple", value: "apple" }],
+            operators: [
+              { label: "Is", value: "is" },
+              { label: "Is not", value: "is_not" },
+            ],
+          },
+        ]}
+        appliedFilters={[
+          {
+            key: "vendor",
+            label: "apple",
+            field: "Vendor",
+            operator: "is",
+            value: "apple",
+            onRemove: () => {},
+          },
+        ]}
+        onOperatorChange={onOperatorChange}
+        onFilterSelect={onFilterSelect}
+      />,
+    );
+
+    // Click operator segment (Vendor is)
+    const operatorSegment = screen.getByText("is").closest("div");
+    fireEvent.click(operatorSegment!);
+
+    expect(document.body.textContent).toContain("Is not");
+    const isNotOption = document.querySelector('s-clickable[accessibilitylabel="Is not"]')!;
+    fireEvent.click(isNotOption);
+    expect(onOperatorChange).toHaveBeenCalledWith("vendor", "is_not");
+
+    // Click value segment (apple)
+    const valueSegment = screen.getByText("apple").closest("div");
+    fireEvent.click(valueSegment!);
+
+    expect(document.body.textContent).toContain("Apple");
+    const appleOption = document.querySelector('s-choice[value="apple"]')!;
+    fireEvent.click(appleOption);
+    expect(onFilterSelect).toHaveBeenCalledWith("vendor", "apple", "is");
+  });
+
+  it("supports multiple select by default on choice filters", () => {
+    const onFilterSelect = vi.fn();
+    render(
+      <Filters
+        filters={[
+          {
+            key: "vendor",
+            label: "Vendor",
+            options: [
+              { label: "Apple", value: "apple" },
+              { label: "Google", value: "google" },
+            ],
+          },
+        ]}
+        appliedFilters={[
+          {
+            key: "vendor",
+            label: "apple",
+            field: "Vendor",
+            operator: "is",
+            value: "apple",
+            onRemove: () => {},
+          },
+        ]}
+        onFilterSelect={onFilterSelect}
+      />,
+    );
+
+    const valueSegment = screen.getByText("apple").closest("div");
+    fireEvent.click(valueSegment!);
+
+    const googleOption = document.querySelector('s-choice[value="google"]')!;
+    fireEvent.click(googleOption);
+    expect(onFilterSelect).toHaveBeenCalledWith("vendor", ["apple", "google"], "is");
   });
 
   it("renders applied filter pills and handles removal", () => {
@@ -107,7 +242,7 @@ describe("Filters", () => {
       />,
     );
 
-    const removeButton = document.querySelector('s-clickable[accessibilitylabel="Remove Vendor filter"]');
+    const removeButton = document.querySelector('[aria-label="Remove Vendor filter"]');
     expect(removeButton).toBeInTheDocument();
 
     fireEvent.click(removeButton!);
@@ -250,4 +385,71 @@ describe("Filters", () => {
     expect(inputEl).toHaveValue("composed query");
     expect(document.body.textContent).toContain("Custom Action");
   });
+
+  it("supports ref handle open, close, toggle and isOpen on FilterPortalPopover", () => {
+    const popoverRef = React.createRef<any>();
+
+    render(
+      <Filters.Popover
+        ref={popoverRef}
+        trigger={<button type="button">Filter Trigger</button>}
+      >
+        <div>Ref Filter Body</div>
+      </Filters.Popover>,
+    );
+
+    expect(popoverRef.current).toBeDefined();
+    expect(popoverRef.current.isOpen()).toBe(false);
+    expect(document.body.textContent).not.toContain("Ref Filter Body");
+
+    // Open via ref
+    act(() => {
+      popoverRef.current.open();
+    });
+    expect(popoverRef.current.isOpen()).toBe(true);
+    expect(document.body.textContent).toContain("Ref Filter Body");
+
+    // Close via ref
+    act(() => {
+      popoverRef.current.close();
+    });
+    expect(popoverRef.current.isOpen()).toBe(false);
+    expect(document.body.textContent).not.toContain("Ref Filter Body");
+
+    // Toggle via ref
+    act(() => {
+      popoverRef.current.toggle();
+    });
+    expect(popoverRef.current.isOpen()).toBe(true);
+    expect(document.body.textContent).toContain("Ref Filter Body");
+
+    act(() => {
+      popoverRef.current.toggle();
+    });
+    expect(popoverRef.current.isOpen()).toBe(false);
+    expect(document.body.textContent).not.toContain("Ref Filter Body");
+  });
+
+
+  it("supports opening and closing FilterPortalPopover via trigger click", () => {
+    render(
+      <Filters.Popover
+        trigger={<button type="button">Click Me</button>}
+      >
+        <div>Trigger Content</div>
+      </Filters.Popover>,
+    );
+
+    const triggerBtn = screen.getByText("Click Me");
+    expect(document.body.textContent).not.toContain("Trigger Content");
+
+    // Click to open
+    fireEvent.click(triggerBtn);
+    expect(document.body.textContent).toContain("Trigger Content");
+
+    // Click to close
+    fireEvent.click(triggerBtn);
+    expect(document.body.textContent).not.toContain("Trigger Content");
+  });
 });
+

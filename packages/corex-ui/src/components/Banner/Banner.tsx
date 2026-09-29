@@ -11,7 +11,7 @@ const SBanner = createWebComponent<HTMLElement, { onDismiss: "dismiss" }>("s-ban
  * Supports modern `heading`, `dismissible`, `icon` as well as legacy `title`, `status`, `onDismiss`.
  */
 export const Banner = forwardRef<HTMLElement, BannerPropsType>(function Banner(
-  { children, title, heading, status, tone, onDismiss, dismissible, icon, ...rest },
+  { children, title, heading, status, tone, onDismiss, dismissible, ...rest },
   ref,
 ) {
   const resolvedHeading = heading ?? title;
@@ -24,7 +24,6 @@ export const Banner = forwardRef<HTMLElement, BannerPropsType>(function Banner(
       heading={resolvedHeading}
       tone={resolvedTone}
       dismissible={resolvedDismissible}
-      icon={icon}
       onDismiss={onDismiss}
       {...rest}
     >

@@ -1,4 +1,4 @@
-import type { CSSProperties, ElementType, ReactNode } from "react";
+import type { CSSProperties, ElementType, MouseEvent, ReactNode } from "react";
 import type {
   BoxPaddingDirectionType,
   BoxPaddingType,
@@ -244,6 +244,7 @@ export type BoxPropsType = Omit<NativeBoxProps, keyof NativeBoxOverridesType | "
     slot?: string;
     style?: CSSProperties;
     className?: string;
+    onClick?: (event: MouseEvent<HTMLElement>) => void;
     [key: `aria-${string}`]: unknown;
     [key: `data-${string}`]: unknown;
   };

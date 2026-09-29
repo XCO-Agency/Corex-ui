@@ -15,6 +15,7 @@ import {
   IconTile,
   Text,
   Paragraph,
+  Card,
 } from "@xco-agency/corex-ui";
 
 const CORE_ICONS: Record<CoreToolIdType, "cart" | "collection" | "chart-vertical"> = {
@@ -66,14 +67,9 @@ export function Step2Foundation({ state, dispatch }: Step2FoundationPropsType) {
                   className={styles.staggerItem}
                   style={{ animationDelay: `${i * 80}ms` }}
                 >
-                  <Box
-                    padding="small"
-                    border="base"
-                    borderRadius="large"
-                    background="base"
-                    inlineSize="100%"
-                  >
+                  <Card padding="none">
                     <InlineStack
+                      padding="small"
                       justifyContent="space-between"
                       alignItems="center"
                       gap="base"
@@ -89,11 +85,15 @@ export function Step2Foundation({ state, dispatch }: Step2FoundationPropsType) {
                       </InlineStack>
                       <Badge tone="success">Active</Badge>
                     </InlineStack>
-                  </Box>
+                  </Card>
                 </div>
               ))}
             </BlockStack>
-            <InlineStack gap="small-200" justifyContent="space-between" style={{ width: "100%" }}>
+            <InlineStack
+              gap="small-200"
+              justifyContent="space-between"
+              style={{ width: "100%" }}
+            >
               <Button onClick={() => dispatch({ type: "GO_BACK" })}>Back</Button>
               <Button variant="primary" onClick={() => dispatch({ type: "GO_NEXT" })}>
                 Continue
