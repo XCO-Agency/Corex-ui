@@ -7,8 +7,8 @@ import {
   Card,
   Avatar,
   Button,
+  Box,
 } from "@xco-agency/corex-ui";
-import { BlockStack } from "@xco-agency/corex-ui";
 
 type CartVariantType = {
   id: string;
@@ -126,7 +126,7 @@ export function TableExample() {
   };
 
   return (
-    <BlockStack style={{ width: "100%", maxWidth: "760px" }}>
+    <Box inlineSize="100%" maxInlineSize="760px">
       <Card padding="none">
         <Table variant="auto">
           <Table.HeaderRow>
@@ -159,9 +159,7 @@ export function TableExample() {
                           }
                         />
                       ) : (
-                        <span
-                          style={{ width: 28, display: "inline-block", flexShrink: 0 }}
-                        />
+                        <Box inlineSize="28px" />
                       )}
                       <Button
                         variant="tertiary"
@@ -180,7 +178,7 @@ export function TableExample() {
                   <Table.Cell>{cart.conversionRate}</Table.Cell>
                   <Table.Cell>{cart.aov}</Table.Cell>
                   <Table.Cell>
-                    <strong>{cart.totalRevenue}</strong>
+                    <Text fontWeight="bold">{cart.totalRevenue}</Text>
                   </Table.Cell>
 
                   {/* Status Column */}
@@ -233,6 +231,6 @@ export function TableExample() {
           </Table.Body>
         </Table>
       </Card>
-    </BlockStack>
+    </Box>
   );
 }

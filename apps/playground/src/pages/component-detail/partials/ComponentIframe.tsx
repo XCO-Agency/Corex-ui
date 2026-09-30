@@ -30,8 +30,8 @@ export function ComponentIframe({ children, className }: ComponentIframePropsTyp
               <meta charset="utf-8" />
               <meta name="viewport" content="width=device-width, initial-scale=1" />
               <base href="${window.location.origin}/" />
-              <!-- Shopify Polaris Web Components -->
-              <script src="https://cdn.shopify.com/shopifycloud/polaris-2.0-rc.js"></script>
+              <!-- Shopify Polaris Web Components (local bundle contains full s-table components) -->
+              <script src="${window.location.origin}/polaris-2.0-rc.js" onerror="this.onerror=null;this.src='https://cdn.shopify.com/shopifycloud/polaris-2.0-rc.js'"></script>
               <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" />
               <style>
                 *, *::before, *::after {
@@ -148,16 +148,27 @@ export function ComponentIframe({ children, className }: ComponentIframePropsTyp
       const win = iframe.contentWindow;
       if (root && win) {
         if (win.customElements?.whenDefined) {
-          Promise.all([
-            win.customElements.whenDefined("s-button"),
-            win.customElements.whenDefined("s-page"),
-          ])
-            .then(() => {
-              setMountNode(root);
-            })
-            .catch(() => {
-              setMountNode(root);
-            });
+          const isReady =
+            win.customElements.get("s-button") ||
+            win.customElements.get("s-table") ||
+            win.customElements.get("s-page");
+          if (isReady) {
+            setMountNode(root);
+          } else {
+            let mounted = false;
+            const mount = () => {
+              if (!mounted) {
+                mounted = true;
+                setMountNode(root);
+              }
+            };
+            Promise.race([
+              win.customElements.whenDefined("s-button"),
+              new Promise((resolve) => setTimeout(resolve, 250)),
+            ])
+              .then(mount)
+              .catch(mount);
+          }
         } else {
           setMountNode(root);
         }

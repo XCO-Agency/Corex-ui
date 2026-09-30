@@ -26,7 +26,9 @@ export const STable = createWebComponent<
 
 export const STableHeaderRow = createWebComponent<HTMLElement>("s-table-header-row");
 
-export const STableHeader = createWebComponent<HTMLElement>("s-table-header");
+export const STableHeader = createWebComponent<HTMLElement>("s-table-header", {
+  domProps: ["listSlot", "format"],
+});
 
 export const STableBody = createWebComponent<HTMLElement>("s-table-body");
 
