@@ -4,6 +4,7 @@ import {
   BlockStack,
   Box,
   Button,
+  Card,
   Clickable,
   EmptyState,
   Filters,
@@ -423,7 +424,7 @@ export function FiltersExample() {
         </Filters>
 
         {/* Table is rendered outside Filters in its own Card/Box */}
-        <Box background="base" border="base" borderRadius="large" inlineSize="100%">
+        <Card>
           {filteredProducts.length === 0 ? (
             <Box paddingBlock="large-300" paddingInline="large-100">
               <EmptyState
@@ -501,7 +502,7 @@ export function FiltersExample() {
               </Table.Body>
             </Table>
           )}
-        </Box>
+        </Card>
       </BlockStack>
     </Page>
   );

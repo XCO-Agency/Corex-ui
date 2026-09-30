@@ -269,18 +269,18 @@ export function MetricCard({
 
   return (
     <Box
-      borderRadius="large"
+      borderRadius="large-200"
       padding="none"
       inlineSize="100%"
       border={expanded ? "none" : "base"}
       background={expanded ? "none" : "base"}
     >
-      <Box padding="small-400">
+      <Box padding="small-500">
         {onClick && !fetching ? (
           <Clickable
             onClick={onClick}
             background={pressed ? "strong" : "transparent"}
-            borderRadius="base"
+            borderRadius="large-100"
             inlineSize="fill"
           >
             {innerContent}

@@ -86,7 +86,8 @@ export const Collapsible: ForwardRefExoticComponent<
       ref={ref}
       background={framed && isExpanded ? "base" : "transparent"}
       border={framed && isExpanded ? "base" : "none"}
-      borderRadius={framed && isExpanded ? "large" : "none"}
+      borderRadius={framed && isExpanded ? "large-200" : "none"}
+      overflow="hidden"
       accessibilityLabel={accessibilityLabel}
     >
       {resolvedTarget}

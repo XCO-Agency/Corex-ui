@@ -113,7 +113,7 @@ export function MetricsDashboardAdvancedExample() {
             <ActiveTabContent expandedId={expandedId} selectedDate={selectedDate} />
           }
         >
-          <Grid columns={{ xs: 1, sm: 2, md: 4 }} gap="base">
+          <Grid columns={{ xs: 1, sm: 2, md: 4 }} gap="small">
             {METRICS.map((item) => (
               <MetricCard
                 key={item.id}
