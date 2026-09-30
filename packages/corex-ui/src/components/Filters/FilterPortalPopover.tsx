@@ -1,463 +1,289 @@
-
 import {
-  cloneElement,
-  forwardRef,
   useCallback,
   useEffect,
-  useId,
-  useImperativeHandle,
+  useLayoutEffect,
   useRef,
   useState,
-  type CSSProperties,
-  type ReactElement,
   type ReactNode,
   type RefObject,
 } from "react";
 import { createPortal } from "react-dom";
 
 import { Box } from "../Box";
-import type {
-  PopoverHandleType,
-  PopoverHandle,
-  FilterPortalPopoverPropsType,
-  FilterPopoverPropsType,
-} from "./Filters.types";
 
-export type {
-  PopoverHandleType,
-  PopoverHandle,
-  FilterPortalPopoverPropsType,
-  FilterPopoverPropsType,
+/** Gap (px) between the anchor and the popover. */
+const OFFSET = 8;
+/** Minimum distance (px) kept between the popover and the viewport edges. */
+const VIEWPORT_MARGIN = 12;
+const STYLE_ELEMENT_ID = "corex-filter-popover-styles";
+const POPOVER_CSS = `
+.corex-native-popover {
+  padding: 0;
+  border: 1px solid #e1e3e5;
+  border-radius: 8px;
+  background: #fff;
+  box-shadow:
+    0 4px 8px rgba(0, 0, 0, 0.06),
+    0 12px 30px rgba(0, 0, 0, 0.10);
+  opacity: 0;
+  transform: translateY(-4px) scale(0.97);
+  transform-origin: top left;
+  transition:
+    opacity 140ms ease,
+    transform 140ms ease;
+}
+
+.corex-native-popover:popover-open,
+.corex-native-popover.corex-native-popover-open {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+@starting-style {
+  .corex-native-popover:popover-open {
+    opacity: 0;
+    transform: translateY(-4px) scale(0.97);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .corex-native-popover {
+    transition: none;
+  }
+}
+`;
+
+/** Frames to keep retrying placement while the anchor has no layout yet (~1s). */
+const MAX_POSITION_FRAMES = 60;
+
+export type FilterPortalPopoverPropsType = {
+  /** ID of the element the popover is positioned against (resolved in the owner document). */
+  anchorId: string;
+  isOpen: boolean;
+  /** Fired on Escape or on pointer-down outside the popover, the anchor and `boundaryRef`. */
+  onClose: () => void;
+  width?: string;
+  maxHeight?: string;
+  /** Element whose clicks never dismiss the popover. */
+  boundaryRef?: RefObject<HTMLElement | null>;
+  children: ReactNode;
 };
 
-export const FilterPortalPopover = forwardRef<
-  PopoverHandleType,
-  FilterPortalPopoverPropsType
->(function FilterPortalPopover(
-  {
-    anchorRef,
-    anchorId,
-    trigger,
-    isOpen,
-    onClose,
-    onOpen,
-    width,
-    minWidth,
-    maxHeight,
-    offset = 8,
-    className = "",
-    style: customStyle,
-    children,
-    id,
-  },
-  forwardedRef,
-) {
-  const isControlled = isOpen !== undefined;
-  const [open, setOpen] = useState(Boolean(isOpen));
-  const isVisible = isControlled ? Boolean(isOpen) : open;
-
-  const containerMarkerRef = useRef<HTMLSpanElement | null>(null);
+/**
+ * Controlled popover used by the Filters search field.
+ *
+ * Portalled into the owner document's body and shown with `popover="manual"`
+ * (top layer, no native light-dismiss), so focusing or clicking an interactive
+ * anchor never races with the browser closing and re-opening it. Dismissal is
+ * handled here instead: Escape, or pointer-down outside the popover, its anchor
+ * and `boundaryRef`.
+ */
+export function FilterPortalPopover({
+  anchorId,
+  isOpen,
+  onClose,
+  width,
+  maxHeight,
+  boundaryRef,
+  children,
+}: FilterPortalPopoverPropsType) {
+  const markerRef = useRef<HTMLSpanElement | null>(null);
   const popoverRef = useRef<HTMLDivElement | null>(null);
-  const triggerRef = useRef<HTMLElement | null>(null);
-  const [position, setPosition] = useState<{ top: number; left: number }>({
-    top: 0,
-    left: 0,
-  });
-
-  const generatedId = useId().replace(/:/g, "");
-  const popoverId = id ?? `corex-filter-popover-${generatedId}`;
+  /** Body of the document that owns the field; null until the marker has mounted. */
+  const [mountTarget, setMountTarget] = useState<HTMLElement | null>(null);
 
   const isPopoverSupported =
     typeof HTMLElement !== "undefined" &&
-    typeof HTMLDivElement.prototype.showPopover === "function";
+    typeof HTMLElement.prototype.showPopover === "function";
 
-  const getOwnerDocument = useCallback((): Document => {
-    if (containerMarkerRef.current?.ownerDocument) {
-      return containerMarkerRef.current.ownerDocument;
-    }
-    if (triggerRef.current?.ownerDocument) {
-      return triggerRef.current.ownerDocument;
-    }
-    if (typeof anchorRef === "object" && anchorRef && "current" in anchorRef && anchorRef.current?.ownerDocument) {
-      return anchorRef.current.ownerDocument;
-    }
-    if (anchorRef instanceof HTMLElement && anchorRef.ownerDocument) {
-      return anchorRef.ownerDocument;
-    }
-    if (typeof document !== "undefined") {
-      return document;
-    }
-    return null as unknown as Document;
-  }, [anchorRef]);
+  // Resolve the owner document (e.g. an iframe) before the popover first renders,
+  // so it is never mounted into the wrong document and then moved.
+  useLayoutEffect(() => {
+    const doc = markerRef.current?.ownerDocument;
+    const body = doc?.body ?? null;
+    if (body !== mountTarget) setMountTarget(body);
 
-  const getOwnerWindow = useCallback((): Window => {
-    const doc = getOwnerDocument();
-    return doc?.defaultView ?? (typeof window !== "undefined" ? window : (null as unknown as Window));
-  }, [getOwnerDocument]);
-
-  const [mountTarget, setMountTarget] = useState<HTMLElement | null>(() => {
-    if (typeof document !== "undefined") {
-      return document.body;
+    // Shared popover styles, injected once per document.
+    if (doc && !doc.getElementById(STYLE_ELEMENT_ID)) {
+      const style = doc.createElement("style");
+      style.id = STYLE_ELEMENT_ID;
+      style.textContent = POPOVER_CSS;
+      doc.head.appendChild(style);
     }
-    return null;
-  });
-
-  useEffect(() => {
-    const doc = getOwnerDocument();
-    if (doc?.body && doc.body !== mountTarget) {
-      setMountTarget(doc.body);
-    }
-  }, [getOwnerDocument, mountTarget]);
+  }, [mountTarget]);
 
   const getAnchor = useCallback((): HTMLElement | null => {
-    let el: HTMLElement | null = null;
-    if (triggerRef.current) {
-      el = triggerRef.current;
-    } else if (anchorRef) {
-      if (typeof anchorRef === "string") {
-        const doc = getOwnerDocument();
-        if (doc) {
-          el = doc.getElementById(anchorRef);
-        }
-      } else if ("current" in anchorRef) {
-        el = anchorRef.current;
-      } else if (anchorRef instanceof HTMLElement) {
-        el = anchorRef;
-      }
-    }
-    if (!el && anchorId) {
-      const doc = getOwnerDocument();
-      if (doc) {
-        el = doc.getElementById(anchorId);
-      }
-    }
-
+    const el = markerRef.current?.ownerDocument.getElementById(anchorId);
     if (!el) return null;
 
-    // Check for measurable dimensions; resolve wrapper if needed
+    // Web-component hosts (e.g. `s-clickable`, `display: contents`) report an empty
+    // box; measure a sized relative instead. No `instanceof HTMLElement` checks:
+    // nodes inside an iframe come from another realm and would never match.
     const rect = el.getBoundingClientRect();
     if (rect.width === 0 || rect.height === 0) {
-      if (el.firstElementChild instanceof HTMLElement) {
-        const childRect = el.firstElementChild.getBoundingClientRect();
-        if (childRect.width > 0 && childRect.height > 0) {
-          return el.firstElementChild;
-        }
-      }
-      if (el.parentElement) {
-        const parentRect = el.parentElement.getBoundingClientRect();
-        if (parentRect.width > 0 && parentRect.height > 0) {
-          return el.parentElement;
+      for (const candidate of [el.firstElementChild, el.parentElement]) {
+        const candidateRect = candidate?.getBoundingClientRect();
+        if (
+          candidate &&
+          candidateRect &&
+          candidateRect.width > 0 &&
+          candidateRect.height > 0
+        ) {
+          return candidate as HTMLElement;
         }
       }
     }
     return el;
-  }, [anchorId, anchorRef, getOwnerDocument]);
+  }, [anchorId]);
 
-  const updatePosition = useCallback(() => {
+  /** Places the popover under its anchor. Returns false while the anchor has no layout. */
+  const updatePosition = useCallback((): boolean => {
     const anchor = getAnchor();
-    if (!anchor) {
-      return false;
-    }
+    const popover = popoverRef.current;
+    if (!anchor || !popover) return false;
 
     const rect = anchor.getBoundingClientRect();
-    if (rect.width === 0 && rect.height === 0) {
-      return false;
-    }
+    if (rect.width === 0 && rect.height === 0) return false;
 
-    const win = getOwnerWindow();
-    const popover = popoverRef.current;
+    const win = popover.ownerDocument.defaultView ?? window;
+    const popoverWidth = popover.offsetWidth || parseInt(width ?? "", 10) || 260;
+    const popoverHeight = popover.offsetHeight || parseInt(maxHeight ?? "", 10) || 200;
+
+    // Keep within the viewport horizontally.
     let left = rect.left;
-    const viewportWidth = win?.innerWidth || 1024;
-    const viewportHeight = win?.innerHeight || 768;
-    const pWidth = popover?.offsetWidth || (width ? parseInt(width, 10) : 0) || 260;
-    const pHeight = popover?.offsetHeight || (maxHeight ? parseInt(maxHeight, 10) : 0) || 200;
-
-    // Keep within horizontal bounds
-    if (left + pWidth > viewportWidth - 12) {
-      left = Math.max(12, viewportWidth - pWidth - 12);
+    if (left + popoverWidth > win.innerWidth - VIEWPORT_MARGIN) {
+      left = win.innerWidth - popoverWidth - VIEWPORT_MARGIN;
     }
-    left = Math.max(12, left);
+    left = Math.max(VIEWPORT_MARGIN, left);
 
-    // Vertical placement: default below anchor, flip above if overflowing bottom
-    let top = rect.bottom + offset;
-    if (top + pHeight > viewportHeight - 12 && rect.top - offset - pHeight > 12) {
-      top = rect.top - offset - pHeight;
+    // Below the anchor; flip above when it would overflow the bottom.
+    let top = rect.bottom + OFFSET;
+    if (
+      top + popoverHeight > win.innerHeight - VIEWPORT_MARGIN &&
+      rect.top - OFFSET - popoverHeight > VIEWPORT_MARGIN
+    ) {
+      top = rect.top - OFFSET - popoverHeight;
     }
 
-    if (popover) {
-      popover.style.top = `${top}px`;
-      popover.style.left = `${left}px`;
-      popover.style.visibility = "visible";
-    }
-
-    setPosition({
-      top,
-      left,
-    });
+    popover.style.top = `${top}px`;
+    popover.style.left = `${left}px`;
+    popover.style.visibility = "visible";
     return true;
-  }, [getAnchor, getOwnerWindow, offset, width, maxHeight]);
+  }, [getAnchor, width, maxHeight]);
 
-  const openPopover = useCallback(() => {
-    const popover = popoverRef.current;
-    if (!popover) return;
-
-    updatePosition();
-
-    if (isPopoverSupported) {
-      try {
-        if (!popover.matches(":popover-open")) {
-          popover.showPopover();
-        }
-      } catch {
-        // Fallback
-      }
-    }
-
-    setOpen(true);
-    onOpen?.();
-  }, [isPopoverSupported, onOpen, updatePosition]);
-
-  const closePopover = useCallback(() => {
-    const popover = popoverRef.current;
-    if (popover && isPopoverSupported) {
-      try {
-        if (popover.matches(":popover-open")) {
-          popover.hidePopover();
-        }
-      } catch {
-        // Fallback
-      }
-    }
-    setOpen(false);
-    onClose?.();
-  }, [isPopoverSupported, onClose]);
-
-  const togglePopover = useCallback(() => {
-    if (popoverRef.current?.matches(":popover-open") || isVisible) {
-      closePopover();
-    } else {
-      openPopover();
-    }
-  }, [closePopover, isVisible, openPopover]);
-
-  useImperativeHandle(
-    forwardedRef,
-    () => ({
-      open: openPopover,
-      close: closePopover,
-      toggle: togglePopover,
-      isOpen: () => {
-        if (isPopoverSupported && popoverRef.current) {
-          return popoverRef.current.matches(":popover-open");
-        }
-        return isVisible;
-      },
-    }),
-    [openPopover, closePopover, togglePopover, isPopoverSupported, isVisible],
-  );
-
-  /*
-   * Keep popover position and native open state in sync when isVisible changes.
-   */
+  // Show/hide in the top layer and position it. A freshly added anchor (e.g. a
+  // pill picked from P1) may not have layout for a few frames while its web
+  // components upgrade, so keep retrying until it can be measured.
   useEffect(() => {
-    if (isVisible) {
-      const doc = getOwnerDocument();
-      if (doc?.body && doc.body !== mountTarget) {
-        setMountTarget(doc.body);
-      }
+    const popover = popoverRef.current;
+    const win = mountTarget?.ownerDocument.defaultView;
+    if (!popover || !win) return;
 
-      updatePosition();
-      const raf1 = requestAnimationFrame(() => {
-        updatePosition();
-        const raf2 = requestAnimationFrame(() => {
-          updatePosition();
-        });
-        return () => cancelAnimationFrame(raf2);
-      });
-
-      const popover = popoverRef.current;
-      if (popover && isPopoverSupported) {
-        if (!popover.matches(":popover-open")) {
-          try {
-            popover.showPopover();
-          } catch {
-            // Fallback
-          }
-        }
-      }
-      return () => cancelAnimationFrame(raf1);
-    } else {
-      const popover = popoverRef.current;
-      if (popover && isPopoverSupported) {
-        if (popover.matches(":popover-open")) {
-          try {
-            popover.hidePopover();
-          } catch {
-            // Fallback
-          }
-        }
-      }
+    if (!isOpen) {
+      popover.style.visibility = "hidden";
+      if (isPopoverSupported && popover.matches(":popover-open")) popover.hidePopover();
+      return;
     }
-  }, [isVisible, updatePosition, isPopoverSupported, getOwnerDocument, mountTarget]);
 
-  /*
-   * Keep popover attached to trigger while scrolling/resizing.
-   */
+    if (isPopoverSupported && !popover.matches(":popover-open")) popover.showPopover();
+
+    let frames = 0;
+    let raf = 0;
+    const place = () => {
+      const placed = updatePosition();
+      // After a successful placement, re-measure once more for late layout shifts.
+      if (frames++ < MAX_POSITION_FRAMES && (!placed || frames === 1)) {
+        raf = win.requestAnimationFrame(place);
+      }
+    };
+    place();
+    return () => win.cancelAnimationFrame(raf);
+  }, [isOpen, isPopoverSupported, updatePosition, mountTarget]);
+
+  // Follow the anchor while scrolling (including inner scroll containers) and resizing.
   useEffect(() => {
-    if (!isVisible) return;
-
-    const win = getOwnerWindow();
+    const win = mountTarget?.ownerDocument.defaultView;
+    if (!isOpen || !win) return;
     const handleUpdate = () => {
       updatePosition();
     };
-
     win.addEventListener("resize", handleUpdate);
     win.addEventListener("scroll", handleUpdate, true);
+
+    const observer =
+      typeof ResizeObserver !== "undefined" ? new ResizeObserver(handleUpdate) : null;
+    const anchor = getAnchor();
+    for (const el of [anchor, anchor?.parentElement, popoverRef.current]) {
+      if (el) observer?.observe(el);
+    }
 
     return () => {
       win.removeEventListener("resize", handleUpdate);
       win.removeEventListener("scroll", handleUpdate, true);
+      observer?.disconnect();
     };
-  }, [isVisible, updatePosition, getOwnerWindow]);
+  }, [isOpen, getAnchor, updatePosition, mountTarget]);
 
-  /*
-   * Observe anchor resizing/layout changes for dynamic elements.
-   */
+  // Escape and click-outside dismissal.
+  const onCloseRef = useRef(onClose);
+  onCloseRef.current = onClose;
+  const getAnchorRef = useRef(getAnchor);
+  getAnchorRef.current = getAnchor;
+
   useEffect(() => {
-    if (!isVisible) return;
-    const anchor = getAnchor();
-    if (!anchor) return;
-
-    if (typeof ResizeObserver !== "undefined") {
-      const ro = new ResizeObserver(() => {
-        updatePosition();
-      });
-      ro.observe(anchor);
-      if (anchor.parentElement) {
-        ro.observe(anchor.parentElement);
-      }
-      return () => ro.disconnect();
-    }
-  }, [isVisible, getAnchor, updatePosition]);
-
-  /*
-   * Browser dismissal / escape / click-outside toggle event for popover="auto".
-   */
-  useEffect(() => {
-    const popover = popoverRef.current;
-    if (!popover) return;
-
-    const handleToggle = (event: Event) => {
-      const toggleEvt = event as ToggleEvent;
-      const isNowOpen = toggleEvt.newState === "open";
-      setOpen(isNowOpen);
-      if (!isNowOpen) {
-        // If controlled, only invoke onClose when closed externally by browser/click-outside
-        // (i.e. isOpen was still true in props when dismissed)
-        if (isControlled) {
-          if (isOpen) {
-            onClose?.();
-          }
-        } else {
-          onClose?.();
-        }
-      } else {
-        updatePosition();
-      }
-    };
-
-    popover.addEventListener("toggle", handleToggle);
-    return () => {
-      popover.removeEventListener("toggle", handleToggle);
-    };
-  }, [isControlled, isOpen, onClose, updatePosition]);
-
-  /*
-   * Fallback Escape and Click-Outside for non-popover environments (e.g. jsdom in Vitest).
-   */
-  useEffect(() => {
-    if (!isVisible || isPopoverSupported) return;
-
-    const win = getOwnerWindow();
+    const win = mountTarget?.ownerDocument.defaultView;
+    if (!isOpen || !win) return;
 
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         event.preventDefault();
-        closePopover();
+        onCloseRef.current();
       }
     };
 
-    const handlePointerDown = (event: PointerEvent | MouseEvent) => {
-      const popover = popoverRef.current;
-      const anchor = getAnchor();
+    const handlePointerDown = (event: PointerEvent) => {
       const target = event.target as Node | null;
-      if (!target || !popover) return;
-
-      if (!popover.contains(target) && !anchor?.contains(target)) {
-        closePopover();
+      if (
+        !target ||
+        popoverRef.current?.contains(target) ||
+        getAnchorRef.current()?.contains(target) ||
+        boundaryRef?.current?.contains(target)
+      ) {
+        return;
       }
+      onCloseRef.current();
     };
 
     win.addEventListener("keydown", handleKeyDown);
+    // Deferred so the interaction that opened the popover doesn't close it.
     const timer = setTimeout(() => {
-      win.addEventListener("pointerdown", handlePointerDown);
+      win.addEventListener("pointerdown", handlePointerDown, true);
     }, 10);
 
     return () => {
       win.removeEventListener("keydown", handleKeyDown);
       clearTimeout(timer);
-      win.removeEventListener("pointerdown", handlePointerDown);
+      win.removeEventListener("pointerdown", handlePointerDown, true);
     };
-  }, [isVisible, isPopoverSupported, getOwnerWindow, getAnchor, closePopover]);
-
-  const triggerElement = trigger
-    ? cloneElement(trigger, {
-        ref: (node: HTMLElement | null) => {
-          triggerRef.current = node;
-          const originalRef = (trigger as any).ref || (trigger as any).props?.ref;
-          if (typeof originalRef === "function") {
-            originalRef(node);
-          } else if (originalRef && typeof originalRef === "object") {
-            originalRef.current = node;
-          }
-        },
-        onClick: (event: React.MouseEvent) => {
-          trigger.props.onClick?.(event);
-          if (!isControlled) {
-            togglePopover();
-          }
-        },
-      })
-    : null;
-
-  const hasPosition = position.top > 0 || position.left > 0;
-
-  const popoverStyle: CSSProperties = {
-    position: "fixed",
-    inset: "unset",
-    top: `${position.top}px`,
-    left: `${position.left}px`,
-    right: "auto",
-    bottom: "auto",
-    width: width ?? "auto",
-    minWidth: minWidth ?? undefined,
-    maxHeight: maxHeight ?? "auto",
-    boxSizing: "border-box",
-    zIndex: 999999,
-    margin: 0,
-    visibility: hasPosition ? "visible" : "hidden",
-    ...(!isPopoverSupported ? { display: isVisible ? "block" : "none" } : {}),
-    ...customStyle,
-  };
+  }, [isOpen, boundaryRef, mountTarget]);
 
   const popoverElement = (
     <div
       ref={popoverRef}
-      id={popoverId}
-      {...({ popover: "auto" } as any)}
+      {...({ popover: "manual" } as Record<string, string>)}
       role="dialog"
-      className={`corex-native-popover ${isVisible ? "corex-native-popover-open" : ""} ${className}`}
-      style={popoverStyle}
+      className={`corex-native-popover ${isOpen ? "corex-native-popover-open" : ""}`}
+      style={{
+        position: "fixed",
+        inset: "unset",
+        margin: 0,
+        width: width ?? "auto",
+        maxHeight: maxHeight ?? "auto",
+        boxSizing: "border-box",
+        zIndex: 999999,
+        visibility: "hidden",
+        ...(!isPopoverSupported ? { display: isOpen ? "block" : "none" } : {}),
+      }}
     >
       <Box
         padding="none"
@@ -468,70 +294,15 @@ export const FilterPortalPopover = forwardRef<
           boxSizing: "border-box",
         }}
       >
-        {isVisible ? children : null}
+        {isOpen ? children : null}
       </Box>
     </div>
   );
 
-  const renderedPopover = mountTarget
-    ? createPortal(popoverElement, mountTarget)
-    : popoverElement;
-
   return (
     <>
-      <span ref={containerMarkerRef} style={{ display: "none" }} aria-hidden="true" />
-      {triggerElement}
-      {renderedPopover}
-
-      <style>{`
-        .corex-native-popover {
-          position: fixed;
-          inset: unset;
-          margin: 0;
-          padding: 0;
-          border: 1px solid #e1e3e5;
-          border-radius: 8px;
-          background: #fff;
-          box-shadow:
-            0 4px 8px rgba(0, 0, 0, 0.06),
-            0 12px 30px rgba(0, 0, 0, 0.10);
-          z-index: 999999;
-          opacity: 0;
-          transform: translateY(-4px) scale(0.97);
-          transform-origin: top left;
-          transition:
-            opacity 140ms ease,
-            transform 140ms ease;
-        }
-
-        .corex-native-popover:popover-open,
-        .corex-native-popover.corex-native-popover-open {
-          opacity: 1;
-          transform: translateY(0) scale(1);
-        }
-
-        .corex-native-popover::backdrop {
-          background: transparent;
-        }
-
-        @starting-style {
-          .corex-native-popover:popover-open {
-            opacity: 0;
-            transform: translateY(-4px) scale(0.97);
-          }
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-          .corex-native-popover {
-            transition: none;
-          }
-        }
-      `}</style>
+      <span ref={markerRef} hidden aria-hidden="true" />
+      {mountTarget ? createPortal(popoverElement, mountTarget) : null}
     </>
   );
-});
-
-FilterPortalPopover.displayName = "FilterPortalPopover";
-
-export { FilterPortalPopover as FilterPopover };
-
+}

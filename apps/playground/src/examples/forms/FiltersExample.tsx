@@ -10,6 +10,7 @@ import {
   Icon,
   InlineStack,
   Link,
+  Page,
   Table,
   Tabs,
   Text,
@@ -232,23 +233,23 @@ export function FiltersExample() {
     setAppliedFilters((prev) => prev.filter((f) => f.key !== filterKey));
   };
 
-  const handleAddFilter = (filterKey: string) => {
+  const handleAddFilter = (filterKey: string, index: number) => {
     const filterDef = filterDefinitions.find((f) => f.key === filterKey);
     const fieldLabel = filterDef?.label ?? filterKey;
     const defaultOp = filterDef?.defaultOperator ?? "is";
 
     setAppliedFilters((prev) => {
       if (prev.some((f) => f.key === filterKey)) return prev;
-      return [
-        ...prev,
-        {
-          key: filterKey,
-          field: fieldLabel,
-          operator: defaultOp === "is_not" ? "is not" : defaultOp,
-          value: filterDef?.allowMultiple !== false ? [] : "",
-          onRemove: () => handleRemoveFilter(filterKey),
-        },
-      ];
+      const next = [...prev];
+      // Insert the pill where the caret was when the filter was picked.
+      next.splice(index, 0, {
+        key: filterKey,
+        field: fieldLabel,
+        operator: defaultOp === "is_not" ? "is not" : defaultOp,
+        value: filterDef?.allowMultiple !== false ? [] : "",
+        onRemove: () => handleRemoveFilter(filterKey),
+      });
+      return next;
     });
   };
 
@@ -259,30 +260,20 @@ export function FiltersExample() {
   ) => {
     const filterDef = filterDefinitions.find((f) => f.key === filterKey);
     const fieldLabel = filterDef?.label ?? filterKey;
+    const nextFilter: AppliedFilterType = {
+      key: filterKey,
+      field: fieldLabel,
+      operator: operator === "is_not" ? "is not" : operator,
+      value,
+      onRemove: () => handleRemoveFilter(filterKey),
+    };
 
-    setAppliedFilters((prev) => {
-      const existing = prev.find((f) => f.key === filterKey);
-      if (
-        existing &&
-        typeof value === "string" &&
-        existing.value === value &&
-        value !== ""
-      ) {
-        // Toggle off if clicking the same value (single select)
-        return prev.filter((f) => f.key !== filterKey);
-      }
-      const updated = prev.filter((f) => f.key !== filterKey);
-      return [
-        ...updated,
-        {
-          key: filterKey,
-          field: fieldLabel,
-          operator: operator === "is_not" ? "is not" : operator,
-          value,
-          onRemove: () => handleRemoveFilter(filterKey),
-        },
-      ];
-    });
+    // Update in place so the pill keeps its position in the search field.
+    setAppliedFilters((prev) =>
+      prev.some((f) => f.key === filterKey)
+        ? prev.map((f) => (f.key === filterKey ? nextFilter : f))
+        : [...prev, nextFilter],
+    );
   };
 
   const handleOperatorChange = (filterKey: string, operator: string) => {
@@ -367,185 +358,151 @@ export function FiltersExample() {
     columns.find((c) => c.key === key)?.visible !== false;
 
   return (
-    <BlockStack gap="large-100">
-      {savedNotice ? (
-        <Box background="strong" borderRadius="base" padding="small-200">
-          <Text variant="small" tone="neutral">
-            {savedNotice}
-          </Text>
-        </Box>
-      ) : null}
+    <Page>
+      <BlockStack gap="large-100" inlineSize="100%">
+        {savedNotice ? (
+          <Box background="strong" borderRadius="base" padding="small-200">
+            <Text variant="small" tone="neutral">
+              {savedNotice}
+            </Text>
+          </Box>
+        ) : null}
 
-      {/* Primary Composable Filters Toolbar (Transparent & No Border) */}
-      <Filters>
-        <Filters.SearchField
-          tabs={
-            <Tabs
-              tabs={viewTabs}
-              selected={selectedView}
-              onSelect={(tabId: string | number) => setSelectedView(String(tabId))}
-              compact
-            />
-          }
-          queryValue={query}
-          queryPlaceholder="search by keywords"
-          onQueryChange={setQuery}
-          onQueryClear={() => setQuery("")}
-          filters={filterDefinitions}
-          appliedFilters={appliedFilters}
-          onAddFilter={handleAddFilter}
-          onFilterSelect={handleFilterSelect}
-          onOperatorChange={handleOperatorChange}
-          onClearAll={handleClearAll}
-        />
-
-        <Filters.Actions>
-          <Filters.Columns
-            sortOptions={sortOptionsList}
-            sortValue={sortValue}
-            onSortChange={setSortValue}
-            hideArchived={hideArchived}
-            onHideArchivedChange={setHideArchived}
-            columns={columns}
-            onColumnToggle={handleColumnToggle}
+        {/* Primary Composable Filters Toolbar (Transparent & No Border) */}
+        <Filters>
+          <Filters.SearchField
+            tabs={
+              <Tabs
+                tabs={viewTabs}
+                selected={selectedView}
+                onSelect={(tabId: string | number) => setSelectedView(String(tabId))}
+                compact
+              />
+            }
+            queryValue={query}
+            queryPlaceholder="search by keywords"
+            onQueryChange={setQuery}
+            onQueryClear={() => setQuery("")}
+            filters={filterDefinitions}
+            appliedFilters={appliedFilters}
+            onAddFilter={handleAddFilter}
+            onFilterSelect={handleFilterSelect}
+            onOperatorChange={handleOperatorChange}
+            onClearAll={handleClearAll}
           />
 
-          <Clickable
-            background="transparent"
-            padding="small-200"
-            blockSize="32px"
-            borderRadius="base"
-            accessibilityLabel="Refresh"
-            onClick={handleRefresh}
-            disabled={refreshing}
-          >
-            <InlineStack alignItems="center" justifyContent="center">
-              <Icon type="refresh" tone="neutral" />
-            </InlineStack>
-          </Clickable>
-
-          <Button variant="secondary" onClick={handleSave}>
-            Save
-          </Button>
-        </Filters.Actions>
-      </Filters>
-
-      {/* Table is rendered outside Filters in its own Card/Box */}
-      <Box background="base" border="base" borderRadius="large" inlineSize="100%">
-        {filteredProducts.length === 0 ? (
-          <Box paddingBlock="large-300" paddingInline="large-100">
-            <EmptyState
-              heading="No products found"
-              title="No products found"
-              icon="search"
-              action={{
-                content: "Clear search and filters",
-                onAction: handleClearAll,
-              }}
-            >
-              <BlockStack gap="small-200" inlineAlign="center">
-                <Text tone="neutral">Try changing the filters or search term</Text>
-                <Link url="#">Learn more about products</Link>
-              </BlockStack>
-            </EmptyState>
-          </Box>
-        ) : (
-          <Table variant="auto">
-            <Table.HeaderRow>
-              <Table.Header>Product</Table.Header>
-              {isColVisible("status") ? <Table.Header>Status</Table.Header> : null}
-              {isColVisible("inventory") ? <Table.Header>Inventory</Table.Header> : null}
-              {isColVisible("category") ? <Table.Header>Category</Table.Header> : null}
-              {isColVisible("channels") ? <Table.Header>Channels</Table.Header> : null}
-              {isColVisible("productType") ? (
-                <Table.Header>Product Type</Table.Header>
-              ) : null}
-              {isColVisible("vendor") ? <Table.Header>Vendor</Table.Header> : null}
-            </Table.HeaderRow>
-            <Table.Body>
-              {filteredProducts.map((prod) => (
-                <Table.Row key={prod.id}>
-                  <Table.Cell>
-                    <Text heading>{prod.title}</Text>
-                  </Table.Cell>
-                  {isColVisible("status") ? (
-                    <Table.Cell>
-                      <Badge
-                        tone={
-                          prod.status === "active"
-                            ? "success"
-                            : prod.status === "draft"
-                              ? "info"
-                              : "neutral"
-                        }
-                      >
-                        {prod.status}
-                      </Badge>
-                    </Table.Cell>
-                  ) : null}
-                  {isColVisible("inventory") ? (
-                    <Table.Cell>
-                      {prod.inventory > 0
-                        ? `${prod.inventory} in stock`
-                        : "Inventory not tracked"}
-                    </Table.Cell>
-                  ) : null}
-                  {isColVisible("category") ? (
-                    <Table.Cell>{prod.category}</Table.Cell>
-                  ) : null}
-                  {isColVisible("channels") ? (
-                    <Table.Cell>{prod.channels}</Table.Cell>
-                  ) : null}
-                  {isColVisible("productType") ? (
-                    <Table.Cell>{prod.productType}</Table.Cell>
-                  ) : null}
-                  {isColVisible("vendor") ? <Table.Cell>{prod.vendor}</Table.Cell> : null}
-                </Table.Row>
-              ))}
-            </Table.Body>
-          </Table>
-        )}
-      </Box>
-
-      {/* Compound Subcomponents Manual Demo */}
-      {/* <Box background="base" border="base" borderRadius="large" padding="base">
-        <BlockStack gap="small-300">
-          <Text heading>Manual Composition (Compound Subcomponents)</Text>
-          <Text variant="small" tone="neutral">
-            Use <code>Filters.SearchField</code> directly to place the interactive input
-            anywhere with custom controls:
-          </Text>
-
-          <InlineStack alignItems="center" justifyContent="space-between" gap="small-200">
-            <Filters.SearchField
-              queryValue={query}
-              queryPlaceholder="search products or keywords..."
-              onQueryChange={setQuery}
-              onQueryClear={() => setQuery("")}
-              filters={filterDefinitions}
-              appliedFilters={appliedFilters}
-              onAddFilter={handleAddFilter}
-              onFilterSelect={handleFilterSelect}
-              onOperatorChange={handleOperatorChange}
-              onClearAll={handleClearAll}
+          <Filters.Actions>
+            <Filters.Columns
+              sortOptions={sortOptionsList}
+              sortValue={sortValue}
+              onSortChange={setSortValue}
+              hideArchived={hideArchived}
+              onHideArchivedChange={setHideArchived}
+              columns={columns}
+              onColumnToggle={handleColumnToggle}
             />
-            <Filters.Actions>
-              <Filters.Columns
-                sortOptions={sortOptionsList}
-                sortValue={sortValue}
-                onSortChange={setSortValue}
-                hideArchived={hideArchived}
-                onHideArchivedChange={setHideArchived}
-                columns={columns}
-                onColumnToggle={handleColumnToggle}
-              />
-              <Button variant="secondary" onClick={handleSave}>
-                Save
-              </Button>
-            </Filters.Actions>
-          </InlineStack>
-        </BlockStack>
-      </Box> */}
-    </BlockStack>
+
+            <Clickable
+              background="transparent"
+              padding="small-200"
+              blockSize="32px"
+              borderRadius="base"
+              accessibilityLabel="Refresh"
+              onClick={handleRefresh}
+              disabled={refreshing}
+            >
+              <InlineStack alignItems="center" justifyContent="center">
+                <Icon type="refresh" tone="neutral" />
+              </InlineStack>
+            </Clickable>
+
+            <Button variant="secondary" onClick={handleSave}>
+              Save
+            </Button>
+          </Filters.Actions>
+        </Filters>
+
+        {/* Table is rendered outside Filters in its own Card/Box */}
+        <Box background="base" border="base" borderRadius="large" inlineSize="100%">
+          {filteredProducts.length === 0 ? (
+            <Box paddingBlock="large-300" paddingInline="large-100">
+              <EmptyState
+                heading="No products found"
+                title="No products found"
+                icon="search"
+                action={{
+                  content: "Clear search and filters",
+                  onAction: handleClearAll,
+                }}
+              >
+                <BlockStack gap="small-200" inlineAlign="center">
+                  <Text tone="neutral">Try changing the filters or search term</Text>
+                  <Link url="#">Learn more about products</Link>
+                </BlockStack>
+              </EmptyState>
+            </Box>
+          ) : (
+            <Table variant="auto">
+              <Table.HeaderRow>
+                <Table.Header>Product</Table.Header>
+                {isColVisible("status") ? <Table.Header>Status</Table.Header> : null}
+                {isColVisible("inventory") ? (
+                  <Table.Header>Inventory</Table.Header>
+                ) : null}
+                {isColVisible("category") ? <Table.Header>Category</Table.Header> : null}
+                {isColVisible("channels") ? <Table.Header>Channels</Table.Header> : null}
+                {isColVisible("productType") ? (
+                  <Table.Header>Product Type</Table.Header>
+                ) : null}
+                {isColVisible("vendor") ? <Table.Header>Vendor</Table.Header> : null}
+              </Table.HeaderRow>
+              <Table.Body>
+                {filteredProducts.map((prod) => (
+                  <Table.Row key={prod.id}>
+                    <Table.Cell>
+                      <Text heading>{prod.title}</Text>
+                    </Table.Cell>
+                    {isColVisible("status") ? (
+                      <Table.Cell>
+                        <Badge
+                          tone={
+                            prod.status === "active"
+                              ? "success"
+                              : prod.status === "draft"
+                                ? "info"
+                                : "neutral"
+                          }
+                        >
+                          {prod.status}
+                        </Badge>
+                      </Table.Cell>
+                    ) : null}
+                    {isColVisible("inventory") ? (
+                      <Table.Cell>
+                        {prod.inventory > 0
+                          ? `${prod.inventory} in stock`
+                          : "Inventory not tracked"}
+                      </Table.Cell>
+                    ) : null}
+                    {isColVisible("category") ? (
+                      <Table.Cell>{prod.category}</Table.Cell>
+                    ) : null}
+                    {isColVisible("channels") ? (
+                      <Table.Cell>{prod.channels}</Table.Cell>
+                    ) : null}
+                    {isColVisible("productType") ? (
+                      <Table.Cell>{prod.productType}</Table.Cell>
+                    ) : null}
+                    {isColVisible("vendor") ? (
+                      <Table.Cell>{prod.vendor}</Table.Cell>
+                    ) : null}
+                  </Table.Row>
+                ))}
+              </Table.Body>
+            </Table>
+          )}
+        </Box>
+      </BlockStack>
+    </Page>
   );
 }

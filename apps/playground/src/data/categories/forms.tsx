@@ -50,7 +50,8 @@ export const formsComponents: ComponentEntry[] = [
     name: "SearchField",
     slug: "search-field",
     category: "Forms",
-    description: "A search input backed by Polaris s-search-field with integrated debounce support.",
+    description:
+      "A search input backed by Polaris s-search-field with integrated debounce support.",
     examples: [
       {
         title: "Debounced search",
@@ -64,10 +65,10 @@ export const formsComponents: ComponentEntry[] = [
     slug: "filters",
     category: "Forms",
     description:
-      "A minimalist search and filter bar providing classic Polaris Filters functionality with view switcher, column visibility/sorting popover, filter shortcuts, and applied filter pills.",
+      "A unified search and filter bar: view tabs, keyword search with inline filter pills (field, condition and values), and a column visibility/sorting popover.",
     examples: [
       {
-        title: "Filters with Views, Shortcuts & Column Settings",
+        title: "Filters with Views, Filter Pills & Column Settings",
         Example: FiltersExample,
         code: FiltersExampleRaw,
       },

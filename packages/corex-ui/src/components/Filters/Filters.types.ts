@@ -25,25 +25,16 @@ export type FilterItemType = {
   key: string;
   /** Label for the filter (e.g. "Vendor", "Tag", "Status"). */
   label: string;
-  /** Custom filter controls rendered inside the filter's popover (e.g. ChoiceList, Select, RangeSlider). */
+  /** Custom filter controls rendered inside the filter's value popover (e.g. RangeSlider). */
   filter?: ReactNode;
-  /** Predefined options for dropdown selection (e.g. ["Apple", "Noise", "Sony"]). */
+  /** Predefined options for the value popover (e.g. ["Apple", "Noise", "Sony"]). */
   options?: FilterOptionType[];
-  /** Available operators for this filter (e.g. [{ label: "Is", value: "is" }, { label: "Is not", value: "is_not" }]). */
+  /** Available operators for this filter. Defaults to "Is" / "Is not". */
   operators?: FilterOperatorType[];
-  /** Default operator value. Defaults to "is". */
+  /** Default operator value. Defaults to the first operator. */
   defaultOperator?: string;
-  /**
-   * When true, renders a shortcut button directly in the filter bar (e.g. "Vendor ▾").
-   * Clicking it opens this filter's popover.
-   */
-  shortcut?: boolean;
-  /** Disables the filter shortcut trigger. */
+  /** Disables the filter in the filters popover. */
   disabled?: boolean;
-  /** When true, hides the individual clear button in the popover. */
-  hideClearButton?: boolean;
-  /** Whether the filter is pinned to the shortcut bar. */
-  pinned?: boolean;
   /**
    * Whether to allow multiple selections. Defaults to true.
    * If set to false, only one choice can be selected at a time.
@@ -57,20 +48,16 @@ export type FilterItemType = {
 export type AppliedFilterType = {
   /** Key matching the filter (e.g. "tag", "vendor"). */
   key: string;
-  /** Filter property name if structured (e.g. "Tag", "Vendor"). */
+  /** Filter property name (e.g. "Tag", "Vendor"). Defaults to the filter label. */
   field?: string;
-  /** Operator label if structured (e.g. "is", "is not"). */
+  /** Operator value or label (e.g. "is_not", "is not"). */
   operator?: string;
   /** Active value or values (e.g. "exclude_search"). */
   value?: string | string[];
-  /** Display label for the applied filter pill (or custom ReactNode). */
-  label?: string | ReactNode;
-  /** Callback fired when the user clicks the remove button on this filter pill. */
+  /** Overrides the value text shown in the pill. */
+  label?: string;
+  /** Callback fired when the pill is removed (× button or Backspace). */
   onRemove: (key: string) => void;
-  /** Optional callback fired when clicking the pill body itself (e.g. to re-open its filter popover). */
-  onClick?: (key: string) => void;
-  /** Whether this applied filter came from a shortcut. */
-  shortcut?: boolean;
 };
 
 /**
@@ -81,12 +68,10 @@ export type FilterSortOptionType = {
   label: string;
   /** Sort key or value (e.g. "created_at", "title"). */
   value: string;
-  /** Direction (optional, e.g. "asc" | "desc"). */
-  direction?: "asc" | "desc";
 };
 
 /**
- * Column item for column visibility and reordering in the columns popover.
+ * Column item for column visibility in the columns popover.
  */
 export type FilterColumnItemType = {
   /** Unique column key. */
@@ -100,113 +85,9 @@ export type FilterColumnItemType = {
 };
 
 /**
- * Props for the comprehensive declarative Filters component.
+ * Props for the unified search and filter input (Filters.SearchField).
  */
-export type FiltersPropsType<TViewId extends string | number = string> = {
-  /** Current search query string. */
-  queryValue?: string;
-  /** Placeholder text for the search input. Defaults to "search by keywords". */
-  queryPlaceholder?: string;
-  /** Callback when search query changes. */
-  onQueryChange?: (query: string) => void;
-  /** Callback when search query is cleared. */
-  onQueryClear?: () => void;
-  /** Callback on search input blur. */
-  onQueryBlur?: () => void;
-  /** Callback on search input focus. */
-  onQueryFocus?: () => void;
-  /** Debounce delay in ms for `onQueryChange`. Default is 0 (immediate). */
-  debounceDelay?: number;
-
-  /** Available filter items. */
-  filters?: FilterItemType[];
-  /** Currently applied filter pills. */
-  appliedFilters?: AppliedFilterType[];
-  /** Callback when user clicks "Clear all" or "Clear search and filters". */
-  onClearAll?: () => void;
-  /** Callback when a filter category is clicked to add a tag. */
-  onAddFilter?: (filterKey: string) => void;
-  /** Callback when a filter option is selected from the focus dropdown. */
-  onFilterSelect?: (filterKey: string, value: string | string[], operator?: string) => void;
-  /** Callback when a filter operator changes in the focus dropdown. */
-  onOperatorChange?: (filterKey: string, operator: string) => void;
-
-  /** Slot for compact tabs (e.g. `<Tabs compact ... />`). */
-  tabs?: ReactNode;
-  /** Alias slot for views / tabs content rendered on the left of the search bar. */
-  views?: ReactNode;
-  /** Generic left slot for custom content rendered on the left of the search bar. */
-  leftSlot?: ReactNode;
-
-  /** Available sorting options for the Columns/Sort popover. */
-  sortOptions?: FilterSortOptionType[];
-  /** Currently active sort value. */
-  sortValue?: string;
-  /** Callback when sort option changes. */
-  onSortChange?: (sortValue: string) => void;
-
-  /** Columns list for the Column visibility popover. */
-  columns?: FilterColumnItemType[];
-  /** Callback when a column's visibility eye is toggled. */
-  onColumnToggle?: (columnKey: string, visible: boolean) => void;
-
-  /** Hide archived switch state in the Columns popover. */
-  hideArchived?: boolean;
-  /** Callback when hide archived toggle switch changes. */
-  onHideArchivedChange?: (checked: boolean) => void;
-
-  /** Callback when clicking the refresh button. */
-  onRefresh?: () => void;
-  /** Loading state for the refresh button. */
-  refreshing?: boolean;
-
-  /** Callback when clicking the Save button. */
-  onSave?: () => void;
-  /** Whether the Save button is disabled. */
-  saveDisabled?: boolean;
-  /** Custom label for the save button. Defaults to "Save". */
-  saveLabel?: string;
-
-  /** Additional custom actions on the right side. */
-  actions?: ReactNode;
-  /** Right side slot (overrides default columns, refresh, save if provided). */
-  rightSide?: ReactNode;
-
-  /** Disables the entire filter toolbar. */
-  disabled?: boolean;
-  /** Hides the search field. */
-  hideQueryField?: boolean;
-  /** Hides the filter shortcuts and filters button. */
-  hideFilters?: boolean;
-  /** Whether to render border and background around the toolbar. Defaults to false (transparent). */
-  border?: boolean;
-
-  /** Composable toolbar elements (e.g. <Filters.SearchField />, <Filters.Actions>). */
-  children?: ReactNode;
-  /** Optional DOM element ID. */
-  id?: string;
-  /** Optional class name. */
-  className?: string;
-};
-
-/**
- * Props for the modular Search subcomponent.
- */
-export type FiltersSearchPropsType = {
-  value?: string;
-  placeholder?: string;
-  onChange?: (value: string) => void;
-  onBlur?: () => void;
-  onFocus?: () => void;
-  disabled?: boolean;
-  debounceDelay?: number;
-  id?: string;
-};
-
-/**
- * Props for the unified interactive search and filter input container (Filters.SearchField).
- */
-export type FiltersSearchFieldPropsType<T = unknown> = {
+export type FiltersSearchFieldPropsType = {
   /** Current search query string. */
   queryValue?: string;
   /** Placeholder text for the search input. Defaults to "search by keywords". */
@@ -219,57 +100,36 @@ export type FiltersSearchFieldPropsType<T = unknown> = {
   onQueryBlur?: () => void;
   /** Callback on search input focus. */
   onQueryFocus?: () => void;
+  /** Debounce delay in ms for `onQueryChange`. Defaults to 300. Use 0 for immediate updates. */
+  debounceDelay?: number;
 
-  /** Slot for compact tabs (e.g. `<Tabs compact ... />`). */
+  /** Content rendered on the left of the search input, typically `<Tabs compact ... />`. */
   tabs?: ReactNode;
-  /** Alias slot for views / tabs content rendered on the left of the search bar. */
-  views?: ReactNode;
-  /** Generic left slot for custom content rendered on the left of the search bar. */
-  leftSlot?: ReactNode;
 
   /** Available filter items. */
   filters?: FilterItemType[];
   /** Currently applied filter pills. */
   appliedFilters?: AppliedFilterType[];
-  /** Callback when a filter category is clicked to add a tag. */
-  onAddFilter?: (filterKey: string) => void;
-  /** Callback when a filter option is selected from the focus dropdown. */
-  onFilterSelect?: (filterKey: string, value: string | string[], operator?: string) => void;
-  /** Callback when a filter operator changes in the focus dropdown. */
+  /**
+   * Callback when a filter is picked from the filters popover.
+   * `index` is the position in `appliedFilters` where the new pill should be
+   * inserted (the caret position between pills when the popover was opened).
+   */
+  onAddFilter?: (filterKey: string, index: number) => void;
+  /** Callback when a filter value is selected in the value popover. */
+  onFilterSelect?: (
+    filterKey: string,
+    value: string | string[],
+    operator?: string,
+  ) => void;
+  /** Callback when a filter operator changes. */
   onOperatorChange?: (filterKey: string, operator: string) => void;
-  /** Callback when user clicks "Clear all" or "Clear search and filters". */
+  /** Callback when the user clicks "Clear search and filters". */
   onClearAll?: () => void;
   /** Whether the search field is disabled. */
   disabled?: boolean;
   /** Optional DOM element ID. */
   id?: string;
-};
-
-/**
- * Props for the modular Shortcut button subcomponent.
- */
-export type FiltersShortcutPropsType = {
-  filter: FilterItemType;
-  isActive?: boolean;
-  disabled?: boolean;
-};
-
-/**
- * Props for the modular Applied filters strip subcomponent.
- */
-export type FiltersAppliedPropsType = {
-  appliedFilters: AppliedFilterType[];
-  onClearAll?: () => void;
-  clearLabel?: string;
-  disabled?: boolean;
-};
-
-/**
- * Props for a single Applied filter pill subcomponent.
- */
-export type FiltersAppliedPillPropsType = {
-  filter: AppliedFilterType;
-  disabled?: boolean;
 };
 
 /**
@@ -295,63 +155,24 @@ export type FiltersActionsPropsType = {
 };
 
 /**
- * Handle object exposed via ref on FilterPortalPopover.
+ * Props for the Filters toolbar. Either compose it with `children`
+ * (`<Filters.SearchField />`, `<Filters.Actions>`) or configure it via props.
  */
-export type PopoverHandleType = {
-  open: () => void;
-  close: () => void;
-  toggle: () => void;
-  isOpen: () => boolean;
-};
-
-export type PopoverHandle = PopoverHandleType;
-
-/**
- * Props for FilterPortalPopover.
- */
-export type FilterPortalPopoverPropsType = {
-  anchorRef?:
-    | React.RefObject<HTMLElement | null>
-    | HTMLElement
-    | string
-    | null;
-  anchorId?: string;
-  trigger?: React.ReactElement;
-  isOpen?: boolean;
-  onClose?: () => void;
-  onOpen?: () => void;
-  width?: string;
-  minWidth?: string;
-  maxHeight?: string;
-  offset?: number;
-  className?: string;
-  style?: React.CSSProperties;
-  children: ReactNode;
-  id?: string;
-};
-
-export type FilterPopoverPropsType = FilterPortalPopoverPropsType;
+export type FiltersPropsType = FiltersSearchFieldPropsType &
+  Omit<FiltersColumnsPopoverPropsType, "id"> & {
+    /** Custom actions on the right side (replaces the default columns popover). */
+    actions?: ReactNode;
+    /** Composable toolbar elements (e.g. <Filters.SearchField />, <Filters.Actions>). */
+    children?: ReactNode;
+  };
 
 /**
  * Compound component type definition for Filters.
  */
-export type FiltersComponentType = {
-  <TViewId extends string | number = string>(
-    props: FiltersPropsType<TViewId> & { ref?: React.Ref<HTMLDivElement> },
-  ): React.ReactElement | null;
-  displayName?: string;
-  SearchField: <T = unknown>(
-    props: FiltersSearchFieldPropsType<T>,
-  ) => React.ReactElement | null;
-  Search: React.FC<FiltersSearchPropsType>;
-  Shortcut: React.FC<FiltersShortcutPropsType>;
-  Applied: React.FC<FiltersAppliedPropsType>;
-  AppliedPill: React.FC<FiltersAppliedPillPropsType>;
+export type FiltersComponentType = React.ForwardRefExoticComponent<
+  FiltersPropsType & React.RefAttributes<HTMLDivElement>
+> & {
+  SearchField: React.FC<FiltersSearchFieldPropsType>;
   Columns: React.FC<FiltersColumnsPopoverPropsType>;
-  ColumnsPopover: React.FC<FiltersColumnsPopoverPropsType>;
   Actions: React.FC<FiltersActionsPropsType>;
-  Popover: React.ForwardRefExoticComponent<
-    FilterPortalPopoverPropsType & React.RefAttributes<PopoverHandleType>
-  >;
 };
-

@@ -30,7 +30,7 @@ export function ComponentIframe({ children, className }: ComponentIframePropsTyp
               <meta name="viewport" content="width=device-width, initial-scale=1" />
               <base href="${window.location.origin}/" />
               <!-- Shopify Polaris Web Components -->
-              <script src="/polaris-2.0-rc.js"></script>
+              <script src="${window.location.origin}/polaris-2.0-rc.js"></script>
               <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" />
               <style>
                 *, *::before, *::after {

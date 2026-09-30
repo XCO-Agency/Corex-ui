@@ -73,14 +73,8 @@ export function ComponentFullscreenOverlay({
   if (!open) return null;
 
   const exitButton = (
-    <Button
-      type="button"
-      size="sm"
-      onClick={onClose}
-      className="h-8 gap-1.5 px-3 text-xs font-medium border-border/80 bg-background hover:bg-muted/50 cursor-pointer shadow-2xs"
-    >
-      <Minimize2 className="size-3.5" />
-      <span className="hidden sm:inline">Exit</span>
+    <Button type="button" variant={"outline"} size="sm" onClick={onClose}>
+      <span className="hidden sm:inline text-xs">Exit</span>
       <kbd className="hidden sm:inline-flex rounded bg-muted px-1.5 py-0.5 text-[10px] font-mono text-muted-foreground">
         Esc
       </kbd>
