@@ -15,180 +15,209 @@ export function ComponentIframe({ children, className }: ComponentIframePropsTyp
     const iframe = iframeRef.current;
     if (!iframe) return;
 
-    const setupIframe = () => {
-      const doc = iframe.contentDocument || iframe.contentWindow?.document;
-      if (!doc) return;
-      // <script src="${window.location.origin}/polaris-2.0-rc.js"></script>
+    let cancelled = false;
 
-      // Only initialize document structure once
+    const setup = async () => {
+      const doc = iframe.contentDocument;
+      const win = iframe.contentWindow;
+
+      if (!doc || !win) return;
+
+      /*
+       * Create the iframe document once.
+       */
       if (!doc.getElementById("preview-root")) {
         doc.open();
+
         doc.write(`
           <!DOCTYPE html>
           <html lang="en">
             <head>
               <meta charset="utf-8" />
-              <meta name="viewport" content="width=device-width, initial-scale=1" />
+              <meta
+                name="viewport"
+                content="width=device-width, initial-scale=1"
+              />
+
               <base href="${window.location.origin}/" />
-              <!-- Shopify Polaris Web Components (local bundle contains full s-table components) -->
-              <script src="https://cdn.shopify.com/shopifycloud/polaris-2.0-rc.js"></script>
-              <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" />
+
+              <link
+                rel="stylesheet"
+                href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+              />
+
               <style>
-                *, *::before, *::after {
+                *,
+                *::before,
+                *::after {
                   box-sizing: border-box;
                 }
-                html, body {
+
+                html,
+                body {
                   margin: 0;
                   padding: 0;
                   width: 100%;
                   min-height: 100%;
                   background: transparent;
-                  font-family: Inter, -apple-system, BlinkMacSystemFont, "San Francisco", "Segoe UI", Roboto, Helvetica, sans-serif;
-                  -webkit-font-smoothing: antialiased;
                 }
+
                 body {
                   min-height: 240px;
                   padding: 20px;
                   color: #202223;
-                  box-sizing: border-box;
+                  font-family:
+                    Inter,
+                    -apple-system,
+                    BlinkMacSystemFont,
+                    "San Francisco",
+                    "Segoe UI",
+                    Roboto,
+                    Helvetica,
+                    Arial,
+                    sans-serif;
+                  -webkit-font-smoothing: antialiased;
                 }
+
                 html.dark body {
                   color: #f6f6f7;
                 }
+
                 #preview-root {
                   width: 100%;
                   min-height: 200px;
+                }
+
+                #preview-root:empty {
                   display: flex;
                   align-items: center;
                   justify-content: center;
                 }
-                /* Do not flex-center full-width page layouts */
-                #preview-root:has(s-page) {
-                  display: block;
-                  padding: 0;
-                }
+
                 s-page {
                   display: block;
                   width: 100%;
                 }
+
                 @keyframes spin {
                   to {
                     transform: rotate(360deg);
                   }
                 }
+
                 @keyframes shimmer {
                   0% {
                     background-position: 260% 0;
                   }
+
                   100% {
                     background-position: -260% 0;
                   }
                 }
+
                 @keyframes scanPulse {
                   0% {
                     transform: scale(0.65);
                     opacity: 0.55;
                   }
+
                   100% {
                     transform: scale(1.35);
                     opacity: 0;
                   }
                 }
+
                 @keyframes swatchPop {
                   0% {
                     transform: scale(1);
                   }
+
                   40% {
                     transform: scale(1.08);
                   }
+
                   100% {
                     transform: scale(1);
                   }
                 }
               </style>
+
+              <script
+                src="https://cdn.shopify.com/shopifycloud/polaris-2.0-rc.js"
+              ></script>
             </head>
+
             <body>
               <div id="preview-root"></div>
             </body>
           </html>
         `);
+
         doc.close();
       }
 
-      // Sync styles from parent document into iframe head
-      const parentStyles = document.querySelectorAll("style, link[rel='stylesheet']");
-      parentStyles.forEach((el) => {
-        if (el.tagName === "LINK") {
-          const href = (el as HTMLLinkElement).href;
-          if (href.includes("fonts.googleapis.com")) return;
-          if (doc.querySelector(`link[href="${href}"]`)) return;
-          const link = doc.createElement("link");
-          link.rel = "stylesheet";
-          link.href = href;
-          doc.head.appendChild(link);
-        } else if (el.tagName === "STYLE") {
-          const viteId = el.getAttribute("data-vite-dev-id");
-          if (viteId && doc.querySelector(`style[data-vite-dev-id="${viteId}"]`)) return;
-          const style = doc.createElement("style");
-          if (viteId) style.setAttribute("data-vite-dev-id", viteId);
-          style.textContent = el.textContent;
-          doc.head.appendChild(style);
-        }
-      });
+      /*
+       * Wait until the iframe document has finished loading.
+       */
+      if (doc.readyState !== "complete") {
+        await new Promise<void>((resolve) => {
+          const onLoad = () => {
+            iframe.removeEventListener("load", onLoad);
+            resolve();
+          };
 
-      // Sync dark mode class
-      const isDark = document.documentElement.classList.contains("dark");
-      if (isDark) {
-        doc.documentElement.classList.add("dark");
-      } else {
-        doc.documentElement.classList.remove("dark");
+          iframe.addEventListener("load", onLoad, { once: true });
+        });
       }
 
+      if (cancelled) return;
+
+      /*
+       * Sync styles from parent → iframe.
+       */
+      syncStyles(doc);
+
+      /*
+       * Sync theme.
+       */
+      syncTheme(doc);
+
+      /*
+       * Wait for Polaris itself.
+       *
+       * s-button is used as a Polaris bootstrap signal,
+       * but we don't mount until it is actually defined.
+       */
+      await win.customElements.whenDefined("s-button");
+
+      if (cancelled) return;
+
+      /*
+       * Now the iframe has Polaris available.
+       */
       const root = doc.getElementById("preview-root");
-      const win = iframe.contentWindow;
-      if (root && win) {
-        if (win.customElements?.whenDefined) {
-          const isReady =
-            win.customElements.get("s-button") ||
-            win.customElements.get("s-table") ||
-            win.customElements.get("s-page");
-          if (isReady) {
-            setMountNode(root);
-          } else {
-            let mounted = false;
-            const mount = () => {
-              if (!mounted) {
-                mounted = true;
-                setMountNode(root);
-              }
-            };
-            Promise.race([
-              win.customElements.whenDefined("s-button"),
-              new Promise((resolve) => setTimeout(resolve, 250)),
-            ])
-              .then(mount)
-              .catch(mount);
-          }
-        } else {
-          setMountNode(root);
-        }
+
+      if (root) {
+        setMountNode(root);
       }
     };
 
-    if (iframe.contentDocument?.readyState === "complete") {
-      setupIframe();
-    } else {
-      iframe.addEventListener("load", setupIframe, { once: true });
-    }
+    setup();
+
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
-  // Synchronize dark mode changes dynamically
+  /*
+   * Sync theme changes.
+   */
   React.useEffect(() => {
     const observer = new MutationObserver(() => {
       const doc = iframeRef.current?.contentDocument;
       if (!doc) return;
-      const isDark = document.documentElement.classList.contains("dark");
-      doc.documentElement.classList.toggle("dark", isDark);
+
+      syncTheme(doc);
     });
 
     observer.observe(document.documentElement, {
@@ -199,37 +228,116 @@ export function ComponentIframe({ children, className }: ComponentIframePropsTyp
     return () => observer.disconnect();
   }, []);
 
-  // Automatically adjust iframe height to fit children without scrollbars
+  /*
+   * Resize iframe after React/Polaris renders.
+   */
   React.useEffect(() => {
-    if (!mountNode || !iframeRef.current) return;
+    const iframe = iframeRef.current;
+    if (!iframe || !mountNode) return;
 
     const updateHeight = () => {
-      const iframe = iframeRef.current;
-      if (!iframe || !iframe.contentDocument) return;
       const doc = iframe.contentDocument;
-      const body = doc.body;
-      const root = doc.getElementById("preview-root");
-      if (!body || !root) return;
+      if (!doc) return;
 
-      const contentHeight = Math.max(240, root.scrollHeight + 48);
-      iframe.style.height = `${contentHeight}px`;
+      const root = doc.getElementById("preview-root");
+      if (!root) return;
+
+      const height = Math.max(240, root.scrollHeight + 40, doc.body?.scrollHeight ?? 0);
+
+      iframe.style.height = `${height}px`;
     };
 
     const resizeObserver = new ResizeObserver(updateHeight);
+
     resizeObserver.observe(mountNode);
+
+    const mutationObserver = new MutationObserver(updateHeight);
+
+    mutationObserver.observe(mountNode, {
+      childList: true,
+      subtree: true,
+      attributes: true,
+    });
+
     updateHeight();
 
-    return () => resizeObserver.disconnect();
+    const timer = window.setTimeout(updateHeight, 100);
+
+    return () => {
+      resizeObserver.disconnect();
+      mutationObserver.disconnect();
+      window.clearTimeout(timer);
+    };
   }, [mountNode]);
 
   return (
     <iframe
       ref={iframeRef}
       title="Component Preview"
-      className={cn(className, "w-full border-0 bg-transparent transition-all")}
-      style={{ minHeight: "460px", display: "block" }}
+      className={cn("w-full border-0 bg-transparent", className)}
+      style={{
+        minHeight: "460px",
+        display: "block",
+      }}
     >
       {mountNode ? createPortal(children, mountNode) : null}
     </iframe>
   );
+}
+
+/* -------------------------------------------------------------------------- */
+/* Helpers                                                                    */
+/* -------------------------------------------------------------------------- */
+
+function syncTheme(doc: Document) {
+  const isDark = document.documentElement.classList.contains("dark");
+
+  doc.documentElement.classList.toggle("dark", isDark);
+}
+
+function syncStyles(doc: Document) {
+  const parentStyles = document.querySelectorAll("style, link[rel='stylesheet']");
+
+  parentStyles.forEach((el) => {
+    if (el.tagName === "LINK") {
+      const link = el as HTMLLinkElement;
+      const href = link.href;
+
+      if (!href || href.includes("fonts.googleapis.com")) {
+        return;
+      }
+
+      if (doc.querySelector(`link[data-parent-style="${CSS.escape(href)}"]`)) {
+        return;
+      }
+
+      const cloned = doc.createElement("link");
+
+      cloned.rel = "stylesheet";
+      cloned.href = href;
+      cloned.dataset.parentStyle = href;
+
+      doc.head.appendChild(cloned);
+
+      return;
+    }
+
+    const style = el as HTMLStyleElement;
+
+    const viteId = style.getAttribute("data-vite-dev-id");
+
+    if (viteId && doc.querySelector(`style[data-vite-dev-id="${CSS.escape(viteId)}"]`)) {
+      return;
+    }
+
+    const cloned = doc.createElement("style");
+
+    if (viteId) {
+      cloned.setAttribute("data-vite-dev-id", viteId);
+    }
+
+    cloned.textContent = style.textContent;
+
+    doc.head.appendChild(cloned);
+  });
 }
