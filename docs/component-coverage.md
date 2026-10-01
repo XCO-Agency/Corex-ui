@@ -6,16 +6,21 @@ plus the separate App Bridge subsystem. Existing gaps are listed with a reason, 
 omitted — if you need one of the "Not yet" rows, it's a good candidate to add next following
 [architecture.md](./architecture.md#adding-a-new-component).
 
+Components that exist in legacy Polaris React with no single web component behind them
+— `IndexTable`, `IndexFilters`, `ActionList`, `ResourceList` and the rest — are recorded
+in [component-gaps.md](./component-gaps.md), along with the two the library declines to
+ship.
+
 ## Actions
 
-| Web component      | Status                                                     |
-| ------------------ | ---------------------------------------------------------- |
-| `s-button`         | ✅ `Button`                                                |
-| `s-button-group`   | ✅ `ButtonGroup`                                           |
-| `s-link`           | ✅ `Link`                                                  |
-| `s-menu`           | ✅ `Menu`                                                  |
-| `s-clickable`      | ✅ `Clickable` / `ClickableAction`                         |
-| `s-clickable-chip` | Not yet — overlaps with `Badge`/`Link` for most use cases. |
+| Web component      | Status                                                                                                    |
+| ------------------ | --------------------------------------------------------------------------------------------------------- |
+| `s-button`         | ✅ `Button`                                                                                               |
+| `s-button-group`   | ✅ `ButtonGroup`                                                                                          |
+| `s-link`           | ✅ `Link`                                                                                                 |
+| `s-menu`           | ✅ `Menu`                                                                                                 |
+| `s-clickable`      | ✅ `Clickable` / `ClickableAction`                                                                        |
+| `s-clickable-chip` | Not yet — [`Tag`](./components/tag.md) covers the removable pill; a clickable chip has no v12 equivalent. |
 
 ## Feedback and status indicators
 
@@ -38,40 +43,43 @@ omitted — if you need one of the "Not yet" rows, it's a good candidate to add 
 | `s-date-field`                                                                         | ✅ `DateField`                                                                                                                                                                               |
 | `s-date-picker`                                                                        | ✅ `DatePicker` — **single-date only**, no range mode yet.                                                                                                                                   |
 | `s-email-field`, `s-url-field`, `s-number-field`, `s-password-field`, `s-search-field` | Covered by `TextField`'s `type` prop (`type="email"` etc.) rather than separate components, matching how legacy Polaris React only ever had one `TextField`.                                 |
-| `s-color-field`, `s-color-picker`                                                      | Not yet — color selection UI is more involved than a straight attribute mapping; deferred pending real-world demand.                                                                         |
-| `s-money-field`                                                                        | Not yet — needs currency-formatting decisions best made against a real use case rather than guessed.                                                                                         |
-| `s-switch`                                                                             | Not yet — legacy Polaris React has no direct `Switch`; `Checkbox` already covers on/off toggles for parity purposes.                                                                         |
-| `s-drop-zone`                                                                          | Not yet — file upload/drag-drop has meaningfully more surface area (progress, previews, validation) than the rest of this pass.                                                              |
+| `s-color-field`                                                                        | ✅ `ColorField`                                                                                                                                                                              |
+| `s-color-picker`                                                                       | Not yet — the field covers the common case; the standalone picker is deferred pending real-world demand.                                                                                     |
+| `s-money-field`                                                                        | ✅ `MoneyField`                                                                                                                                                                              |
+| `s-switch`                                                                             | ✅ `Switch`                                                                                                                                                                                  |
+| `s-drop-zone`                                                                          | ✅ [`DropZone`](./components/drop-zone.md) — v12's `onDrop` is accepted; `DropZone.FileUpload` has no equivalent, since the element draws its own placeholder.                               |
 | — (no catalog equivalent)                                                              | ✅ `RangeSlider` — no `s-range-slider` exists; ported directly from legacy Polaris React's implementation instead. See [architecture.md](./architecture.md#4-self-contained-custom-control). |
 
 ## Layout and structure
 
-| Web component                        | Status                                                                                                                                                                                                              |
-| ------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `s-box`                              | ✅ `Box`                                                                                                                                                                                                            |
-| `s-stack`                            | ✅ `BlockStack` / `InlineStack`                                                                                                                                                                                     |
-| `s-section`                          | ✅ `Card`                                                                                                                                                                                                           |
-| `s-page`                             | ✅ `Page`                                                                                                                                                                                                           |
-| `s-divider`                          | ✅ `Divider`                                                                                                                                                                                                        |
-| `s-grid`, `s-query-container`        | Not yet — no direct legacy Polaris React equivalent; candidates for a future layout-focused pass.                                                                                                                   |
-| `s-ordered-list`, `s-unordered-list` | Not yet — straightforward thin wrappers, just not included in this pass.                                                                                                                                            |
-| `s-table`                            | ✅ `Table` (+ `HeaderRow`, `HeaderCell`, `Body`, `Row`, `Cell`) — see [table.md](./components/table.md). Legacy `DataTable`/`IndexTable`, with their own sorting/selection/pagination state, are still outstanding. |
+| Web component                                       | Status                                                                                                                                                                                                              |
+| --------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `s-box`                                             | ✅ `Box`                                                                                                                                                                                                            |
+| `s-stack`                                           | ✅ `BlockStack` / `InlineStack`                                                                                                                                                                                     |
+| `s-section`                                         | ✅ `Card`                                                                                                                                                                                                           |
+| `s-page`                                            | ✅ `Page`                                                                                                                                                                                                           |
+| `s-divider`                                         | ✅ `Divider`                                                                                                                                                                                                        |
+| `s-grid`, `s-grid-item`                             | ✅ `Grid` / `Grid.Item`, plus the v12 layouts built on them: [`Layout`](./components/layout.md) and [`InlineGrid`](./components/inline-grid.md).                                                                    |
+| `s-query-container`                                 | ✅ `QueryContainer`                                                                                                                                                                                                 |
+| `s-scroll-box`                                      | ✅ [`Scrollable`](./components/scrollable.md)                                                                                                                                                                       |
+| `s-ordered-list`, `s-unordered-list`, `s-list-item` | ✅ [`List`](./components/list.md) / `List.Item`                                                                                                                                                                     |
+| `s-table`                                           | ✅ `Table` (+ `HeaderRow`, `HeaderCell`, `Body`, `Row`, `Cell`) — see [table.md](./components/table.md). Legacy `DataTable`/`IndexTable`, with their own sorting/selection/pagination state, are still outstanding. |
 
 ## Media and visuals
 
-| Web component | Status                                                                       |
-| ------------- | ---------------------------------------------------------------------------- |
-| `s-avatar`    | ✅ `Avatar`                                                                  |
-| `s-thumbnail` | ✅ `Thumbnail`                                                               |
-| `s-icon`      | ✅ `Icon`                                                                    |
-| `s-image`     | Not yet — a plain `<img>` covers most cases; low value-add over native HTML. |
+| Web component | Status         |
+| ------------- | -------------- |
+| `s-avatar`    | ✅ `Avatar`    |
+| `s-thumbnail` | ✅ `Thumbnail` |
+| `s-icon`      | ✅ `Icon`      |
+| `s-image`     | ✅ `Image`     |
 
 ## Overlays
 
-| Web component | Status                                                                                                      |
-| ------------- | ----------------------------------------------------------------------------------------------------------- |
-| `s-modal`     | ✅ `Modal`                                                                                                  |
-| `s-popover`   | Not yet — needs the same imperative-bridge treatment as `Modal`, deferred to keep this pass's scope finite. |
+| Web component | Status                                                                                                    |
+| ------------- | --------------------------------------------------------------------------------------------------------- |
+| `s-modal`     | ✅ `Modal`                                                                                                |
+| `s-popover`   | ✅ [`Popover`](./components/popover.md) — invoker-driven, with an optional controlled `active`/`onClose`. |
 
 ## Typography and content
 
@@ -80,7 +88,7 @@ omitted — if you need one of the "Not yet" rows, it's a good candidate to add 
 | `s-text`                   | ✅ `Text`                                                                                              |
 | `s-tooltip`                | ✅ `Tooltip`                                                                                           |
 | `s-heading`, `s-paragraph` | Not yet — `Text`'s `variant` prop already covers heading/paragraph styling for legacy-parity purposes. |
-| `s-chip`                   | Not yet — overlaps with `Badge`.                                                                       |
+| `s-chip`                   | ✅ [`Tag`](./components/tag.md) — a removable pill, which `Badge` is not.                              |
 
 ## App Bridge (separate subsystem — see [app-bridge.md](./app-bridge.md))
 
