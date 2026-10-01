@@ -3,6 +3,8 @@ import { TabsExample } from "@/examples/navigation/TabsExample";
 import TabsExampleRaw from "@/examples/navigation/TabsExample.tsx?raw";
 import { NavigationExample } from "@/examples/navigation/NavigationExample";
 import NavigationExampleRaw from "@/examples/navigation/NavigationExample.tsx?raw";
+import { PaginationExample } from "@/examples/navigation/PaginationExample";
+import PaginationExampleRaw from "@/examples/navigation/PaginationExample.tsx?raw";
 
 export const navigationComponents: ComponentEntry[] = [
   {
@@ -29,6 +31,19 @@ export const navigationComponents: ComponentEntry[] = [
         title: "Vertical navigation with search",
         Example: NavigationExample,
         code: NavigationExampleRaw,
+      },
+    ],
+  },
+  {
+    name: "Pagination",
+    slug: "pagination",
+    category: "Navigation",
+    description: "Previous and next paging, with an optional count between the buttons.",
+    examples: [
+      {
+        title: "Paging a list",
+        Example: PaginationExample,
+        code: PaginationExampleRaw,
       },
     ],
   },

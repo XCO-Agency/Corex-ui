@@ -21,6 +21,28 @@ import { CollapsibleFaqExample } from "@/examples/layout/CollapsibleFaqExample";
 import CollapsibleFaqExampleRaw from "@/examples/layout/CollapsibleFaqExample.tsx?raw";
 import { TransitionExample } from "@/examples/layout/TransitionExample";
 import TransitionExampleRaw from "@/examples/layout/TransitionExample.tsx?raw";
+import { LayoutExample } from "@/examples/layout/LayoutExample";
+import LayoutExampleRaw from "@/examples/layout/LayoutExample.tsx?raw";
+import { InlineGridExample } from "@/examples/layout/InlineGridExample";
+import InlineGridExampleRaw from "@/examples/layout/InlineGridExample.tsx?raw";
+import { FormLayoutExample } from "@/examples/layout/FormLayoutExample";
+import FormLayoutExampleRaw from "@/examples/layout/FormLayoutExample.tsx?raw";
+import { TextContainerExample } from "@/examples/layout/TextContainerExample";
+import TextContainerExampleRaw from "@/examples/layout/TextContainerExample.tsx?raw";
+import { ScrollableExample } from "@/examples/layout/ScrollableExample";
+import ScrollableExampleRaw from "@/examples/layout/ScrollableExample.tsx?raw";
+import { ListExample } from "@/examples/layout/ListExample";
+import ListExampleRaw from "@/examples/layout/ListExample.tsx?raw";
+import { DescriptionListExample } from "@/examples/layout/DescriptionListExample";
+import DescriptionListExampleRaw from "@/examples/layout/DescriptionListExample.tsx?raw";
+import { IndexTableExample } from "@/examples/layout/IndexTableExample";
+import IndexTableExampleRaw from "@/examples/layout/IndexTableExample.tsx?raw";
+import { DataTableExample } from "@/examples/layout/DataTableExample";
+import DataTableExampleRaw from "@/examples/layout/DataTableExample.tsx?raw";
+import { ResourceListExample } from "@/examples/layout/ResourceListExample";
+import ResourceListExampleRaw from "@/examples/layout/ResourceListExample.tsx?raw";
+import { SkeletonPageExample } from "@/examples/layout/SkeletonPageExample";
+import SkeletonPageExampleRaw from "@/examples/layout/SkeletonPageExample.tsx?raw";
 
 export const layoutComponents: ComponentEntry[] = [
   {
@@ -161,6 +183,153 @@ export const layoutComponents: ComponentEntry[] = [
         title: "Variant Presets & In/Out Controls",
         Example: TransitionExample,
         code: TransitionExampleRaw,
+      },
+    ],
+  },
+  {
+    name: "Layout",
+    slug: "layout",
+    category: "Layout",
+    description:
+      "v12's page grid: sections that take a fraction of the row on desktop and stack on a phone.",
+    examples: [
+      {
+        title: "Sections in a twelve-column grid",
+        Example: LayoutExample,
+        code: LayoutExampleRaw,
+      },
+    ],
+  },
+  {
+    name: "InlineGrid",
+    slug: "inline-grid",
+    category: "Layout",
+    description:
+      "Equal or explicitly tracked columns on one row, including v12's fraction names.",
+    examples: [
+      {
+        title: "Counts, tracks and breakpoints",
+        Example: InlineGridExample,
+        code: InlineGridExampleRaw,
+      },
+    ],
+  },
+  {
+    name: "FormLayout",
+    slug: "form-layout",
+    category: "Layout",
+    description: "Fields in a column, with groups that put several on one wrapping row.",
+    examples: [
+      {
+        title: "Fields and a group",
+        Example: FormLayoutExample,
+        code: FormLayoutExampleRaw,
+      },
+    ],
+  },
+  {
+    name: "TextContainer",
+    slug: "text-container",
+    category: "Layout",
+    description: "A column of prose at v12's tight or loose rhythm.",
+    examples: [
+      {
+        title: "Tight and loose",
+        Example: TextContainerExample,
+        code: TextContainerExampleRaw,
+      },
+    ],
+  },
+  {
+    name: "Scrollable",
+    slug: "scrollable",
+    category: "Layout",
+    description: "A pane that scrolls inside a fixed size, on the native scroll box.",
+    examples: [
+      {
+        title: "Scrolling activity pane",
+        Example: ScrollableExample,
+        code: ScrollableExampleRaw,
+      },
+    ],
+  },
+  {
+    name: "List",
+    slug: "list",
+    category: "Layout",
+    description: "Bulleted or numbered lists, on the native list elements.",
+    examples: [
+      {
+        title: "Bulleted and numbered",
+        Example: ListExample,
+        code: ListExampleRaw,
+      },
+    ],
+  },
+  {
+    name: "DescriptionList",
+    slug: "description-list",
+    category: "Layout",
+    description: "Term and description pairs in two columns, as a real definition list.",
+    examples: [
+      {
+        title: "Order details",
+        Example: DescriptionListExample,
+        code: DescriptionListExampleRaw,
+      },
+    ],
+  },
+  {
+    name: "IndexTable",
+    slug: "index-table",
+    category: "Layout",
+    description:
+      "v12's resource table: selection, bulk actions and paging over the Table wrapper.",
+    examples: [
+      {
+        title: "Selectable orders with bulk actions",
+        Example: IndexTableExample,
+        code: IndexTableExampleRaw,
+      },
+    ],
+  },
+  {
+    name: "DataTable",
+    slug: "data-table",
+    category: "Layout",
+    description:
+      "A static data grid with numeric columns aligned by the table header's format.",
+    examples: [
+      {
+        title: "Sales by product",
+        Example: DataTableExample,
+        code: DataTableExampleRaw,
+      },
+    ],
+  },
+  {
+    name: "ResourceList",
+    slug: "resource-list",
+    category: "Layout",
+    description: "A list that renders each item through a callback, with clickable rows.",
+    examples: [
+      {
+        title: "Products with media",
+        Example: ResourceListExample,
+        code: ResourceListExampleRaw,
+      },
+    ],
+  },
+  {
+    name: "SkeletonPage",
+    slug: "skeleton-page",
+    category: "Layout",
+    description: "A page-shaped loading state: a title row above placeholder content.",
+    examples: [
+      {
+        title: "Loading a page",
+        Example: SkeletonPageExample,
+        code: SkeletonPageExampleRaw,
       },
     ],
   },

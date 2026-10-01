@@ -15,6 +15,8 @@ import { ProgressBarExample } from "@/examples/feedback/ProgressBarExample";
 import ProgressBarExampleRaw from "@/examples/feedback/ProgressBarExample.tsx?raw";
 import { IconTileExample } from "@/examples/feedback/IconTileExample";
 import IconTileExampleRaw from "@/examples/feedback/IconTileExample.tsx?raw";
+import { TagExample } from "@/examples/feedback/TagExample";
+import TagExampleRaw from "@/examples/feedback/TagExample.tsx?raw";
 
 export const feedbackComponents: ComponentEntry[] = [
   {
@@ -123,6 +125,20 @@ export const feedbackComponents: ComponentEntry[] = [
         title: "On a destructive action",
         Example: TooltipExample,
         code: TooltipExampleRaw,
+      },
+    ],
+  },
+  {
+    name: "Tag",
+    slug: "tag",
+    category: "Feedback",
+    description:
+      "A pill, on the native chip, removable as soon as it is given an onRemove handler.",
+    examples: [
+      {
+        title: "Removable filter pills",
+        Example: TagExample,
+        code: TagExampleRaw,
       },
     ],
   },
