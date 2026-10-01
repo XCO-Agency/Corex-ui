@@ -819,7 +819,6 @@ export function FiltersSearchField({
               ...segmentStyle,
               borderRadius: isRemoveRevealed ? 0 : "0 6px 6px 0",
               boxShadow: isValueOpen ? "inset 0 0 0 1px #0284c7" : undefined,
-              transition: "border-radius 160ms ease",
             }}
           >
             <Text variant="small" tone="info">

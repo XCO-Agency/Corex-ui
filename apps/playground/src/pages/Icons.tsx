@@ -74,6 +74,22 @@ export function Icons() {
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, []);
+  React.useEffect(() => {
+    const existing = document.querySelector('script[src="/polaris-2.0-rc.js"]');
+
+    if (existing) return;
+
+    const script = document.createElement("script");
+    script.src = "/polaris-2.0-rc.js";
+    script.id = "polaris-script";
+    script.async = true;
+
+    document.head.appendChild(script);
+
+    return () => {
+      script.remove();
+    };
+  }, []);
 
   // Enhanced search algorithm with multi-tier scoring, fuzzy matching, and ranking
   const filteredIcons = React.useMemo(() => {
