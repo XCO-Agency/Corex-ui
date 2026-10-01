@@ -175,5 +175,65 @@ describe("Popover", () => {
       HTMLElement.prototype.getBoundingClientRect = originalGetBoundingClientRect;
     }
   });
-});
 
+  describe("controlled mode", () => {
+    function ControlledPopover({
+      active,
+      onClose,
+    }: {
+      active?: boolean;
+      onClose?: () => void;
+    }) {
+      return (
+        <Popover active={active} onClose={onClose}>
+          <Popover.Trigger>
+            <Button>Options</Button>
+          </Popover.Trigger>
+          <Popover.Content>
+            <div>Body</div>
+          </Popover.Content>
+        </Popover>
+      );
+    }
+
+    it("opens and closes the overlay from `active`", () => {
+      const { rerender } = render(<ControlledPopover active={false} />);
+      const popoverEl = document.querySelector("s-popover")!;
+
+      expect(popoverEl).not.toHaveAttribute("data-stub-open");
+
+      rerender(<ControlledPopover active />);
+      expect(popoverEl).toHaveAttribute("data-stub-open", "true");
+
+      rerender(<ControlledPopover active={false} />);
+      expect(popoverEl).not.toHaveAttribute("data-stub-open");
+    });
+
+    it("leaves the native invoker in charge when `active` is not passed", () => {
+      render(
+        <Popover>
+          <Popover.Trigger>
+            <Button>Options</Button>
+          </Popover.Trigger>
+          <Popover.Content>
+            <div>Body</div>
+          </Popover.Content>
+        </Popover>,
+      );
+
+      expect(document.querySelector("s-popover")).not.toHaveAttribute("data-stub-open");
+    });
+
+    it("calls onClose when the overlay hides, however it was closed", () => {
+      const onClose = vi.fn();
+      render(<ControlledPopover active onClose={onClose} />);
+
+      const popoverEl = document.querySelector("s-popover") as unknown as HTMLElement & {
+        hideOverlay: () => void;
+      };
+      popoverEl.hideOverlay();
+
+      expect(onClose).toHaveBeenCalledTimes(1);
+    });
+  });
+});

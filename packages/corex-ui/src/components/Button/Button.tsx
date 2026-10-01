@@ -22,6 +22,7 @@ export const Button = forwardRef<HTMLElement, ButtonPropsType>(function Button(
     outline,
     variant,
     tone,
+    size,
     url,
     href,
     target,
@@ -41,7 +42,25 @@ export const Button = forwardRef<HTMLElement, ButtonPropsType>(function Button(
   const resolvedVariant =
     variant ??
     (primary ? "primary" : plain ? "tertiary" : outline ? "secondary" : undefined);
-  const resolvedTone = tone ?? (destructive ? "critical" : undefined);
+  if (size !== undefined) {
+    devWarning(
+      "Button",
+      '`size` is ignored: `s-button` has one height. Use `variant="tertiary"` for a quieter control in dense rows.',
+    );
+  }
+
+  // v12's `success` and `magic` have no `s-button` tone. Falling back to `auto`
+  // keeps the button looking like a button rather than guessing at a colour the
+  // admin does not use here.
+  const legacyTone = tone === "success" || tone === "magic" ? undefined : tone;
+  if (tone !== legacyTone) {
+    devWarning(
+      "Button",
+      `tone="${tone}" has no s-button equivalent and falls back to the default tone.`,
+    );
+  }
+
+  const resolvedTone = legacyTone ?? (destructive ? "critical" : undefined);
   const resolvedType = type ?? (submit ? "submit" : undefined);
   const resolvedHref = href ?? url;
   const resolvedTarget = target ?? (external ? "_blank" : undefined);

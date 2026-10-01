@@ -1,10 +1,23 @@
 import type { CSSProperties, ReactNode } from "react";
-import type { ButtonVariantType, PolarisPropsType, SizeType } from "../../types/common";
+import type { ButtonVariantType, PolarisPropsType } from "../../types/common";
 
 type NativeButtonProps = PolarisPropsType<"s-button">;
 
-export type ButtonPropsType = Omit<NativeButtonProps, "variant"> & {
+export type ButtonSizeType = "micro" | "slim" | "medium" | "large";
+
+export type ButtonPropsType = Omit<NativeButtonProps, "variant" | "tone"> & {
   variant?: ButtonVariantType;
+  /**
+   * v12's sizes. `s-button` has one height and the library ships no stylesheet to
+   * override it, so these are accepted and ignored, with a development warning.
+   * For dense rows, `variant="tertiary"` is the quiet control.
+   */
+  size?: ButtonSizeType;
+  /**
+   * `s-button`'s tones, plus v12's `success` and `magic`, which fall back to
+   * `auto`: the admin does not draw a filled green or violet button.
+   */
+  tone?: NativeButtonProps["tone"] | "success" | "magic";
   /** Renders the button as a link to this URL (legacy alias for `href`). */
   /** @deprecated Use `href`. Kept for legacy-API compatibility. */
   url?: string;

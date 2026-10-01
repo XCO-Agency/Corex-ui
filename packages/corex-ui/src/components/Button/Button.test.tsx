@@ -76,4 +76,24 @@ describe("Button", () => {
       expect(el).toHaveAttribute("accessibility-label", "Resume playback");
     });
   });
+
+  describe("v12 props with no s-button equivalent", () => {
+    it("ignores `size` rather than passing it to the element", () => {
+      const { container } = render(<Button size="slim">Save</Button>);
+
+      expect(container.querySelector("s-button")).not.toHaveAttribute("size");
+    });
+
+    it("falls back to the default tone for success and magic", () => {
+      const { container } = render(<Button tone="success">Publish</Button>);
+
+      expect(container.querySelector("s-button")).not.toHaveAttribute("tone");
+    });
+
+    it("still maps the tones s-button does have", () => {
+      const { container } = render(<Button tone="critical">Delete</Button>);
+
+      expect(container.querySelector("s-button")).toHaveAttribute("tone", "critical");
+    });
+  });
 });

@@ -52,6 +52,8 @@ export type InlineStackPropsType = Omit<
    * Accepts boolean (`true` -> "wrap", `false` -> "nowrap") or standard CSS `flexWrap` keywords.
    */
   wrap?: boolean;
+  /** Fills the container's inline axis, as v12's `fill` did. */
+  fill?: boolean;
   /**
    * Flex grow factor. When `true`, expands to fill available space (`flex-grow: 1`).
    */

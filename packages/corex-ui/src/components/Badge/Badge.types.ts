@@ -6,8 +6,15 @@ type NativeBadgeProps = PolarisPropsType<"s-badge">;
 export type BadgeStatusType =
   "success" | "info" | "caution" | "warning" | "critical" | "new";
 
-export type BadgePropsType = Omit<NativeBadgeProps, "children"> & {
+export type BadgeLegacyToneType = "attention" | "magic";
+
+export type BadgePropsType = Omit<NativeBadgeProps, "children" | "tone"> & {
   children?: ReactNode;
+  /**
+   * `s-badge`'s tones, plus v12's `attention` and `magic`. `attention` is a caution
+   * by another name; `magic` marked AI features and reads closest to `info`.
+   */
+  tone?: NativeBadgeProps["tone"] | BadgeLegacyToneType;
   /** Modern Polaris badge tone. */
   /** @deprecated Use `tone`. Kept for legacy-API compatibility. */
   status?: BadgeStatusType;
