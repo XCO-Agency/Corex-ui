@@ -39,6 +39,7 @@ export * from "./components/Modal";
 export * from "./components/TextField";
 export * from "./components/SearchField";
 export * from "./components/Filters";
+export * from "./components/IndexFilters";
 export * from "./components/Select";
 export * from "./components/Checkbox";
 export * from "./components/Switch";
