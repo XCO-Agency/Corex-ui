@@ -31,6 +31,10 @@ export * from "./components/IconTile";
 
 export * from "./components/Card";
 export * from "./components/Table";
+export * from "./components/IndexTable";
+export * from "./components/DataTable";
+export * from "./components/ResourceList";
+export * from "./components/Pagination";
 export * from "./components/Modal";
 export * from "./components/TextField";
 export * from "./components/SearchField";
