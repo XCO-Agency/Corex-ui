@@ -31,7 +31,7 @@ describe("Page", () => {
     const el = screen.getByText("Content").closest("s-page");
     expect(el).toHaveAttribute("heading", "Orders");
     expect(el).toHaveAttribute("subheading", "View orders");
-    expect(el).toHaveAttribute("inlinesize", "large");
+    expect(el).toHaveAttribute("inline-size", "large");
   });
 
   it("prioritizes new props over deprecated props", () => {
@@ -51,7 +51,7 @@ describe("Page", () => {
     const el = screen.getByText("Content").closest("s-page");
     expect(el).toHaveAttribute("heading", "New Heading");
     expect(el).toHaveAttribute("subheading", "New Sub");
-    expect(el).toHaveAttribute("inlinesize", "small");
+    expect(el).toHaveAttribute("inline-size", "small");
   });
 
   it("maps legacy fullWidth and narrowWidth to inlineSize", () => {
@@ -61,7 +61,7 @@ describe("Page", () => {
       </Page>,
     );
     let el = screen.getByText("Content").closest("s-page");
-    expect(el).toHaveAttribute("inlinesize", "large");
+    expect(el).toHaveAttribute("inline-size", "large");
 
     rerender(
       <Page title="Narrow Page" narrowWidth>
@@ -69,7 +69,7 @@ describe("Page", () => {
       </Page>,
     );
     el = screen.getByText("Content").closest("s-page");
-    expect(el).toHaveAttribute("inlinesize", "small");
+    expect(el).toHaveAttribute("inline-size", "small");
   });
 
   it("renders primaryAction with destructive/critical tone, disabled, and click handler", () => {

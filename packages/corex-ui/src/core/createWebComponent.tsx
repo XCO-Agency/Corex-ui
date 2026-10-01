@@ -110,7 +110,9 @@ export function createWebComponent<
           continue;
         }
 
-        // Convert camelCase prop names to kebab-case HTML attributes for custom elements
+        // Convert camelCase prop names to kebab-case HTML attributes for custom
+        // elements. The camelCase spelling means nothing to a custom element, so
+        // it is replaced rather than emitted alongside the kebab-case one.
         if (
           !key.includes("-") &&
           key !== "style" &&
@@ -118,6 +120,7 @@ export function createWebComponent<
           /[A-Z]/.test(key)
         ) {
           passthroughProps[toKebabCase(key)] = value;
+          continue;
         }
         passthroughProps[key] = value;
       }

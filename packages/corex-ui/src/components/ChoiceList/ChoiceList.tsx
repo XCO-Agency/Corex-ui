@@ -37,18 +37,24 @@ export const ChoiceList = forwardRef<HTMLElement, ChoiceListPropsType>(
         labelAccessibilityVisibility={label ? undefined : "exclusive"}
         {...rest}
       >
-        {choices?.map((choice) => (
-          <SChoice
-            key={choice.value}
-            value={choice.value}
-            selected={selected?.includes(choice.value)}
-            accessibilityLabel={choice.label}
-            disabled={choice.disabled}
-          >
-            {choice.label}
-            {choice.helpText ? <span slot="details">{choice.helpText}</span> : null}
-          </SChoice>
-        )) ?? children}
+        {choices?.map((choice, index) => {
+          // Choices are often mapped straight off optional backend fields, so a
+          // missing label or value is coerced here instead of at every call site.
+          const value = choice.value ?? "";
+          const choiceLabel = choice.label ?? "";
+          return (
+            <SChoice
+              key={`${value}-${index}`}
+              value={value}
+              selected={selected?.includes(value)}
+              accessibilityLabel={choiceLabel}
+              disabled={choice.disabled}
+            >
+              {choiceLabel}
+              {choice.helpText ? <span slot="details">{choice.helpText}</span> : null}
+            </SChoice>
+          );
+        }) ?? children}
       </SChoiceList>
     );
   },

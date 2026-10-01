@@ -1,4 +1,5 @@
 import { forwardRef } from "react";
+import { childrenText } from "../../core/childrenText";
 import { createWebComponent } from "../../core/createWebComponent";
 import { devWarning } from "../../utils/devWarning";
 import type { ButtonPropsType } from "./Button.types";
@@ -46,6 +47,21 @@ export const Button = forwardRef<HTMLElement, ButtonPropsType>(function Button(
   const resolvedTarget = target ?? (external ? "_blank" : undefined);
   const resolvedRel = external || target == "_blank" ? "noopener noreferrer" : undefined;
 
+  // `children` is an array whenever the button holds a glyph alongside its
+  // label, so the accessible name has to come from the text found anywhere in
+  // the subtree rather than from `children` being a bare string.
+  const labelFromChildren = childrenText(children);
+  if (!accessibilityLabel && !labelFromChildren) {
+    devWarning(
+      "Button",
+      "A button with no text children needs an `accessibilityLabel`; screen readers have nothing to announce otherwise.",
+    );
+  }
+  const resolvedAccessibilityLabel =
+    accessibilityLabel ||
+    labelFromChildren ||
+    `Action${resolvedVariant ? ` ${resolvedVariant}` : ""}`;
+
   return (
     <SButton
       ref={ref}
@@ -55,10 +71,7 @@ export const Button = forwardRef<HTMLElement, ButtonPropsType>(function Button(
       href={resolvedHref}
       target={resolvedTarget}
       rel={resolvedRel}
-      accessibilityLabel={
-        accessibilityLabel ??
-        (typeof children === "string" ? children : `Action  ${resolvedVariant}`)
-      }
+      accessibilityLabel={resolvedAccessibilityLabel}
       inlineSize={rest.inlineSize ?? (fullWidth ? "fill" : undefined)}
       {...rest}
     >

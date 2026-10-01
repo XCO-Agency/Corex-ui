@@ -46,16 +46,16 @@ omitted — if you need one of the "Not yet" rows, it's a good candidate to add 
 
 ## Layout and structure
 
-| Web component                        | Status                                                                                                                                                              |
-| ------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `s-box`                              | ✅ `Box`                                                                                                                                                            |
-| `s-stack`                            | ✅ `BlockStack` / `InlineStack`                                                                                                                                     |
-| `s-section`                          | ✅ `Card`                                                                                                                                                           |
-| `s-page`                             | ✅ `Page`                                                                                                                                                           |
-| `s-divider`                          | ✅ `Divider`                                                                                                                                                        |
-| `s-grid`, `s-query-container`        | Not yet — no direct legacy Polaris React equivalent; candidates for a future layout-focused pass.                                                                   |
-| `s-ordered-list`, `s-unordered-list` | Not yet — straightforward thin wrappers, just not included in this pass.                                                                                            |
-| `s-table`                            | Not yet — legacy `DataTable`/`IndexTable` are large, stateful components (sorting, selection, pagination); a real wrapper needs its own pass, not a quick addition. |
+| Web component                        | Status                                                                                                                                                                                                              |
+| ------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `s-box`                              | ✅ `Box`                                                                                                                                                                                                            |
+| `s-stack`                            | ✅ `BlockStack` / `InlineStack`                                                                                                                                                                                     |
+| `s-section`                          | ✅ `Card`                                                                                                                                                                                                           |
+| `s-page`                             | ✅ `Page`                                                                                                                                                                                                           |
+| `s-divider`                          | ✅ `Divider`                                                                                                                                                                                                        |
+| `s-grid`, `s-query-container`        | Not yet — no direct legacy Polaris React equivalent; candidates for a future layout-focused pass.                                                                                                                   |
+| `s-ordered-list`, `s-unordered-list` | Not yet — straightforward thin wrappers, just not included in this pass.                                                                                                                                            |
+| `s-table`                            | ✅ `Table` (+ `HeaderRow`, `HeaderCell`, `Body`, `Row`, `Cell`) — see [table.md](./components/table.md). Legacy `DataTable`/`IndexTable`, with their own sorting/selection/pagination state, are still outstanding. |
 
 ## Media and visuals
 

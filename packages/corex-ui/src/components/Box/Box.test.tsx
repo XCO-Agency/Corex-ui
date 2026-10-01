@@ -21,9 +21,9 @@ describe("Box", () => {
     expect(el.tagName.toLowerCase()).toBe("s-box");
     expect(el).toHaveAttribute("padding", "base");
     expect(el).toHaveAttribute("background", "subdued");
-    expect(el).toHaveAttribute("borderwidth", "small-100");
-    expect(el).toHaveAttribute("bordercolor", "base");
-    expect(el).toHaveAttribute("borderradius", "base");
+    expect(el).toHaveAttribute("border-width", "small-100");
+    expect(el).toHaveAttribute("border-color", "base");
+    expect(el).toHaveAttribute("border-radius", "base");
     expect(el).toHaveAttribute("display", "auto");
     expect(el).toHaveAttribute("overflow", "hidden");
   });
@@ -31,7 +31,7 @@ describe("Box", () => {
   it("should have accessibilityVisibility='exclusive' when visuallyHidden is true", () => {
     render(<Box accessibilityVisibility="exclusive">Screen reader content</Box>);
     const el = screen.getByText("Screen reader content");
-    expect(el).toHaveAttribute("accessibilityvisibility", "exclusive");
+    expect(el).toHaveAttribute("accessibility-visibility", "exclusive");
   });
 
   it("translates legacy width and height to inlineSize and blockSize", () => {
@@ -41,10 +41,10 @@ describe("Box", () => {
       </Box>,
     );
     const el = screen.getByText("Sized box");
-    expect(el).toHaveAttribute("inlinesize", "200px");
-    expect(el).toHaveAttribute("blocksize", "100px");
-    expect(el).toHaveAttribute("mininlinesize", "50px");
-    expect(el).toHaveAttribute("maxblocksize", "300px");
+    expect(el).toHaveAttribute("inline-size", "200px");
+    expect(el).toHaveAttribute("block-size", "100px");
+    expect(el).toHaveAttribute("min-inline-size", "50px");
+    expect(el).toHaveAttribute("max-block-size", "300px");
   });
 
   it("supports legacy as prop gracefully", () => {
@@ -138,11 +138,7 @@ describe("Box", () => {
   });
 
   it("wraps in a div when user-provided style prop is passed", () => {
-    render(
-      <Box style={{ cursor: "pointer" }}>
-        Custom Styled Content
-      </Box>,
-    );
+    render(<Box style={{ cursor: "pointer" }}>Custom Styled Content</Box>);
     const content = screen.getByText("Custom Styled Content");
     expect(content.tagName.toLowerCase()).toBe("s-box");
     expect(content).not.toHaveAttribute("style");
@@ -154,4 +150,3 @@ describe("Box", () => {
     });
   });
 });
-

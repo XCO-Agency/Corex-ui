@@ -45,7 +45,9 @@ describe("Tabs", () => {
     ];
     render(<Tabs tabs={disabledTabs} selected={0} onSelect={onSelect} />);
 
-    screen.getByText("Archived").dispatchEvent(new MouseEvent("click", { bubbles: true }));
+    screen
+      .getByText("Archived")
+      .dispatchEvent(new MouseEvent("click", { bubbles: true }));
 
     expect(onSelect).not.toHaveBeenCalled();
   });
@@ -131,7 +133,9 @@ describe("Tabs", () => {
     ];
     render(<Tabs tabs={disabledTabs} value="all" onChange={onChange} />);
 
-    screen.getByText("Archived").dispatchEvent(new MouseEvent("click", { bubbles: true }));
+    screen
+      .getByText("Archived")
+      .dispatchEvent(new MouseEvent("click", { bubbles: true }));
 
     expect(onChange).not.toHaveBeenCalled();
   });
@@ -156,12 +160,7 @@ describe("Tabs", () => {
     const onChange = vi.fn();
 
     render(
-      <Tabs
-        tabs={drawerTabs}
-        selected="cart"
-        onSelect={onSelect}
-        onChange={onChange}
-      />,
+      <Tabs tabs={drawerTabs} selected="cart" onSelect={onSelect} onChange={onChange} />,
     );
 
     screen.getByText("Saved").dispatchEvent(new MouseEvent("click", { bubbles: true }));
@@ -176,9 +175,11 @@ describe("Tabs", () => {
       const popoverEl = document.querySelector("s-popover");
       expect(popoverEl).toBeInTheDocument();
 
-      const trigger = document.querySelector('s-clickable[commandfor^="corex-tabs-popover"]');
+      const trigger = document.querySelector(
+        's-clickable[commandfor^="corex-tabs-popover"]',
+      );
       expect(trigger).toBeInTheDocument();
-      expect(trigger).toHaveAttribute("accessibilitylabel", "All");
+      expect(trigger).toHaveAttribute("accessibility-label", "All");
 
       const selectIcon = document.querySelector('s-icon[type="select"]');
       expect(selectIcon).toBeInTheDocument();
@@ -215,7 +216,9 @@ describe("Tabs", () => {
       );
 
       const popoverEl = document.querySelector("s-popover");
-      const draftsItem = popoverEl?.querySelector('s-clickable[accessibilitylabel="Drafts"]');
+      const draftsItem = popoverEl?.querySelector(
+        's-clickable[accessibility-label="Drafts"]',
+      );
       expect(draftsItem).toBeInTheDocument();
 
       draftsItem?.dispatchEvent(new MouseEvent("click", { bubbles: true }));
@@ -243,7 +246,9 @@ describe("Tabs", () => {
       );
 
       const popoverEl = document.querySelector("s-popover");
-      const archivedItem = popoverEl?.querySelector('s-clickable[accessibilitylabel="Archived"]');
+      const archivedItem = popoverEl?.querySelector(
+        's-clickable[accessibility-label="Archived"]',
+      );
       expect(archivedItem).toBeInTheDocument();
 
       archivedItem?.dispatchEvent(new MouseEvent("click", { bubbles: true }));
@@ -281,4 +286,3 @@ describe("Tabs", () => {
     });
   });
 });
-

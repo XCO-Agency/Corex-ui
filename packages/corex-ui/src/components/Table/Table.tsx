@@ -6,6 +6,7 @@ import {
   TableCell,
   TableExpandButton,
   TableHeader,
+  TableHeaderCell,
   TableHeaderRow,
   TableRow,
   TableSubRowConnector,
@@ -46,6 +47,8 @@ type TableComponentType = ((
   props: TablePropsType & { ref?: ForwardedRef<HTMLElement> },
 ) => ReactElement) & {
   HeaderRow: typeof TableHeaderRow;
+  HeaderCell: typeof TableHeaderCell;
+  /** @deprecated Use `Table.HeaderCell`; this is the header cell, not a header section. */
   Header: typeof TableHeader;
   Body: typeof TableBody;
   Row: typeof TableRow;
@@ -57,6 +60,7 @@ type TableComponentType = ((
 export const Table = forwardRef(TableInner) as unknown as TableComponentType;
 
 Table.HeaderRow = TableHeaderRow;
+Table.HeaderCell = TableHeaderCell;
 Table.Header = TableHeader;
 Table.Body = TableBody;
 Table.Row = TableRow;
