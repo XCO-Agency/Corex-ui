@@ -64,4 +64,14 @@ describe("createWebComponent", () => {
     expect(el).toHaveAttribute("interestfor", "hint");
     expect(el).not.toHaveAttribute("classname");
   });
+
+  it("writes global HTML attributes in their lowercase form, not kebab-case", () => {
+    const { container } = render(<SProbe tabIndex={0} spellCheck={false} />);
+    const el = container.querySelector("s-probe")!;
+
+    expect(el).toHaveAttribute("tabindex", "0");
+    expect(el).toHaveAttribute("spellcheck", "false");
+    expect(el).not.toHaveAttribute("tab-index");
+    expect(el).not.toHaveAttribute("spell-check");
+  });
 });

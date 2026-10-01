@@ -24,6 +24,29 @@ import type { CreateWebComponentOptions, DomEventHandler, EventMap } from "./typ
 // eslint-disable-next-line @typescript-eslint/ban-types
 type NoEvents = {};
 
+/**
+ * React spellings of global HTML attributes whose real attribute name is the
+ * all-lowercase form, not a kebab-case one. Polaris's own multi-word props are
+ * kebab-case (`accessibility-label`), but `tabIndex` is not a Polaris prop at
+ * all — it is the HTML attribute every element carries, and `tab-index` does
+ * nothing.
+ */
+const LOWERCASE_ATTRIBUTES: Record<string, string> = {
+  tabIndex: "tabindex",
+  accessKey: "accesskey",
+  autoCapitalize: "autocapitalize",
+  autoFocus: "autofocus",
+  contentEditable: "contenteditable",
+  enterKeyHint: "enterkeyhint",
+  inputMode: "inputmode",
+  itemID: "itemid",
+  itemProp: "itemprop",
+  itemRef: "itemref",
+  itemScope: "itemscope",
+  itemType: "itemtype",
+  spellCheck: "spellcheck",
+};
+
 function toKebabCase(str: string): string {
   return str.replace(/([a-z0-9]|(?=[A-Z]))([A-Z])/g, "$1-$2").toLowerCase();
 }
@@ -102,6 +125,12 @@ export function createWebComponent<
 
         if (key === "className") {
           passthroughProps["class"] = value;
+          continue;
+        }
+
+        const lowercaseAttribute = LOWERCASE_ATTRIBUTES[key];
+        if (lowercaseAttribute) {
+          passthroughProps[lowercaseAttribute] = value;
           continue;
         }
 
