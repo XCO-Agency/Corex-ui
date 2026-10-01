@@ -120,11 +120,6 @@ export type PagePropsType = {
   heading?: string;
 
   /**
-   * The text to be used as subtitle (native `s-page` prop).
-   */
-  subheading?: string;
-
-  /**
    * The inline size of the page (native `s-page` prop).
    * - `base`: default inline size
    * - `large`: full width with whitespace
@@ -184,7 +179,7 @@ export type PagePropsType = {
   title?: string;
 
   /**
-   * @deprecated Use `subheading` instead. Page subtitle, in regular type.
+   * @deprecated not exist on new UI.
    */
   subtitle?: string;
 

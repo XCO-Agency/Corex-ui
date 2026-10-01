@@ -2,7 +2,14 @@ import { forwardRef } from "react";
 import type { CSSProperties, MouseEvent, ReactNode } from "react";
 
 type IconTileToneType =
-  "success" | "neutral" | "subdued" | "caution" | "info" | "critical" | "transparent";
+  | "success"
+  | "neutral"
+  | "warning"
+  | "subdued"
+  | "caution"
+  | "info"
+  | "critical"
+  | "transparent";
 export type IconTileColorType = "base" | "strong";
 type IconTileBorderRadiusType = "none" | "small" | "base" | "large" | "full";
 type IconTileSizeType = "small" | "base" | "large" | "auto";
@@ -29,28 +36,97 @@ export type IconTilePropsType = {
   /** Click handler */
   onClick?: (e: MouseEvent<HTMLDivElement>) => void;
 };
-
 const TONE_STYLES: Record<
   IconTileColorType,
   Record<IconTileToneType, { backgroundColor: string; color: string }>
 > = {
   base: {
-    success: { backgroundColor: "#aefebe", color: "#059669" },
-    neutral: { backgroundColor: "#ededed", color: "#1c1c1c" },
-    subdued: { backgroundColor: "#f3f4f6", color: "#6b7280" },
-    caution: { backgroundColor: "#fef3c7", color: "#d97706" },
-    info: { backgroundColor: "#d4ebff", color: "#0284c7" },
-    critical: { backgroundColor: "#fecaca", color: "#dc2626" },
-    transparent: { backgroundColor: "transparent", color: "#dc2626" },
+    // Active
+    success: {
+      backgroundColor: "#BCF97E",
+      color: "#2C4A12",
+    },
+
+    // Fulfilled
+    neutral: {
+      backgroundColor: "#F2F2F2",
+      color: "#4A4A4A",
+    },
+
+    // Soft/subdued gray
+    subdued: {
+      backgroundColor: "#F3F3F3",
+      color: "#666666",
+    },
+
+    // Open
+    caution: {
+      backgroundColor: "#FADD82",
+      color: "#533C0F",
+    },
+
+    // Draft
+    info: {
+      backgroundColor: "#96E1FB",
+      color: "#25586D",
+    },
+
+    // Action required
+    critical: {
+      backgroundColor: "#F8D2CE",
+      color: "#741C14",
+    },
+
+    transparent: {
+      backgroundColor: "transparent",
+      color: "#741C14",
+    },
+    warning: {
+      backgroundColor: "#F5C28A",
+      color: "#6D3814",
+    },
   },
+
   strong: {
-    success: { backgroundColor: "#059669", color: "#ffffff" },
-    neutral: { backgroundColor: "#303030", color: "#ffffff" },
-    subdued: { backgroundColor: "#4b5563", color: "#ffffff" },
-    caution: { backgroundColor: "#d97706", color: "#ffffff" },
-    info: { backgroundColor: "#0284c7", color: "#ffffff" },
-    critical: { backgroundColor: "#dc2626", color: "#ffffff" },
-    transparent: { backgroundColor: "transparent", color: "#dc2626" },
+    success: {
+      backgroundColor: "#A3F45E",
+      color: "#24420B",
+    },
+
+    neutral: {
+      backgroundColor: "#E2E2E2",
+      color: "#383838",
+    },
+
+    subdued: {
+      backgroundColor: "#DFE0E1",
+      color: "#505050",
+    },
+
+    caution: {
+      backgroundColor: "#F6CE62",
+      color: "#493208",
+    },
+
+    warning: {
+      backgroundColor: "#F0AD68",
+      color: "#5F2E0B",
+    },
+
+    info: {
+      backgroundColor: "#72D7F5",
+      color: "#17495C",
+    },
+
+    critical: {
+      backgroundColor: "#F3B9B4",
+      color: "#64150F",
+    },
+
+    transparent: {
+      backgroundColor: "transparent",
+      color: "#64150F",
+    },
   },
 };
 
@@ -86,7 +162,6 @@ export const IconTile = forwardRef<HTMLDivElement, IconTilePropsType>(function I
   },
   ref,
 ) {
-  const isStrong = color === "strong";
   const colorGroup = TONE_STYLES[color] ?? TONE_STYLES.base;
   const toneStyle = colorGroup[tone] ?? colorGroup.success;
   const sizeStyle = SIZE_STYLES[size] ?? SIZE_STYLES.base;
@@ -108,14 +183,6 @@ export const IconTile = forwardRef<HTMLDivElement, IconTilePropsType>(function I
         ...sizeStyle,
         ...radiusStyle,
         ...toneStyle,
-        ...(isStrong
-          ? {
-              color: "#ffffff",
-              "--s-icon-color": "#ffffff",
-              "--p-color-icon": "#ffffff",
-              "--s-icon-color-26021": "#ffffff",
-            }
-          : {}),
         ...style,
       }}
       {...domRest}

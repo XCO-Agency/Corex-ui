@@ -403,21 +403,14 @@ export function FiltersExample() {
               onColumnToggle={handleColumnToggle}
             />
 
-            <Clickable
-              background="transparent"
-              padding="small-200"
-              blockSize="32px"
-              borderRadius="base"
-              accessibilityLabel="Refresh"
+            <Button
+              variant="tertiary"
               onClick={handleRefresh}
               disabled={refreshing}
-            >
-              <InlineStack alignItems="center" justifyContent="center">
-                <Icon type="refresh" tone="neutral" />
-              </InlineStack>
-            </Clickable>
+              icon="refresh"
+            />
 
-            <Button variant="secondary" onClick={handleSave}>
+            <Button variant="tertiary" onClick={handleSave}>
               Save
             </Button>
           </Filters.Actions>

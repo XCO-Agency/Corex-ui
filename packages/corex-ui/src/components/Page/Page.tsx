@@ -161,7 +161,6 @@ export const Page = forwardRef<HTMLElement, PagePropsType>(function Page(
   {
     children,
     heading,
-    subheading,
     inlineSize,
     aside,
     accessory,
@@ -207,19 +206,12 @@ export const Page = forwardRef<HTMLElement, PagePropsType>(function Page(
   }
 
   const resolvedHeading = heading ?? (typeof title === "string" ? title : undefined);
-  const resolvedSubheading =
-    subheading ?? (typeof subtitle === "string" ? subtitle : undefined);
+
   const resolvedInlineSize =
     inlineSize ?? (fullWidth ? "large" : narrowWidth ? "small" : undefined);
 
   return (
-    <SPage
-      ref={ref}
-      heading={resolvedHeading}
-      subheading={resolvedSubheading}
-      inlineSize={resolvedInlineSize}
-      {...rest}
-    >
+    <SPage ref={ref} heading={resolvedHeading} inlineSize={resolvedInlineSize} {...rest}>
       {renderBreadcrumbActions(breadcrumbActions, backAction)}
       {renderPrimaryAction(primaryAction)}
       {renderSecondaryActions(secondaryActions)}

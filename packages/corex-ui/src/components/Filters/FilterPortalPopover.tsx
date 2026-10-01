@@ -9,7 +9,12 @@ import {
 } from "react";
 import { createPortal } from "react-dom";
 
-import { Box } from "../Box";
+import { Card } from "../Card";
+import { InlineStack } from "../InlineStack";
+import { Text } from "../Text";
+import { Button } from "../Button";
+import { Divider } from "../Divider";
+import { BlockStack } from "../BlockStack";
 
 /** Gap (px) between the anchor and the popover. */
 const OFFSET = 8;
@@ -19,9 +24,7 @@ const STYLE_ELEMENT_ID = "corex-filter-popover-styles";
 const POPOVER_CSS = `
 .corex-native-popover {
   padding: 0;
-  border: 1px solid #e1e3e5;
-  border-radius: 8px;
-  background: #fff;
+  border-radius: 16px;
   box-shadow:
     0 4px 8px rgba(0, 0, 0, 0.06),
     0 12px 30px rgba(0, 0, 0, 0.10);
@@ -67,6 +70,7 @@ export type FilterPortalPopoverPropsType = {
   /** Element whose clicks never dismiss the popover. */
   boundaryRef?: RefObject<HTMLElement | null>;
   children: ReactNode;
+  noHeader?: boolean;
 };
 
 /**
@@ -82,6 +86,7 @@ export function FilterPortalPopover({
   anchorId,
   isOpen,
   onClose,
+  noHeader,
   width,
   maxHeight,
   boundaryRef,
@@ -281,21 +286,49 @@ export function FilterPortalPopover({
         maxHeight: maxHeight ?? "auto",
         boxSizing: "border-box",
         zIndex: 999999,
+        overflow: "clip",
         visibility: "hidden",
         ...(!isPopoverSupported ? { display: isOpen ? "block" : "none" } : {}),
       }}
     >
-      <Box
-        padding="none"
-        style={{
-          width: "100%",
-          maxHeight,
-          overflowY: maxHeight ? "auto" : undefined,
-          boxSizing: "border-box",
-        }}
-      >
-        {isOpen ? children : null}
-      </Box>
+      <Card padding="none" gap="none">
+        {isOpen ? (
+          <>
+            {!noHeader && (
+              <>
+                <InlineStack
+                  alignItems="center"
+                  justifyContent="space-between"
+                  paddingInline="base small-300"
+                  paddingBlock="small-300"
+                >
+                  <Text variant="small" heading>
+                    Filters
+                  </Text>
+                  <Button
+                    icon="x"
+                    variant="tertiary"
+                    accessibilityLabel="Close filters popup"
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      onCloseRef.current();
+                    }}
+                  />
+                </InlineStack>
+                <Divider />
+              </>
+            )}
+            <BlockStack
+              maxBlockSize="320px"
+              paddingInline="small-200"
+              paddingBlock="small-300"
+              overflow="auto"
+            >
+              {children}
+            </BlockStack>
+          </>
+        ) : null}
+      </Card>
     </div>
   );
 

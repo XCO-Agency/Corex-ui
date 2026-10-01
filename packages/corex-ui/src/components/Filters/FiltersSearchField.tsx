@@ -27,6 +27,9 @@ import type {
   FilterOperatorType,
   FiltersSearchFieldPropsType,
 } from "./Filters.types";
+import { Badge } from "../Badge";
+import { Transition } from "../Transition";
+import { Tooltip } from "../Tooltip";
 
 /** Number of values shown inside a pill before collapsing into "+ n more". */
 const MAX_VISIBLE_VALUES = 3;
@@ -581,7 +584,7 @@ export function FiltersSearchField({
     currentOperator: FilterOperatorType,
     onPicked?: () => void,
   ) => (
-    <BlockStack gap="small-500">
+    <Box background="base">
       {(filterDef?.operators ?? DEFAULT_OPERATORS).map((op) => {
         const isChecked =
           normalizeOperator(op.value) === normalizeOperator(currentOperator.value);
@@ -600,17 +603,15 @@ export function FiltersSearchField({
             }}
           >
             <InlineStack alignItems="center" gap="small-200" blockSize="fill">
-              <Box minInlineSize="16px">
-                {isChecked ? <Icon type="check" tone="neutral" /> : null}
-              </Box>
-              <Text variant="small" tone="neutral" heading={isChecked}>
+              <Box minInlineSize="16px">{isChecked ? <Icon type="check" /> : null}</Box>
+              <Text variant="small" heading={isChecked}>
                 {op.label}
               </Text>
             </InlineStack>
           </Clickable>
         );
       })}
-    </BlockStack>
+    </Box>
   );
 
   const renderValueControls = (
@@ -624,7 +625,7 @@ export function FiltersSearchField({
 
     if (filterDef?.options && filterDef.options.length > 0) {
       return (
-        <Box paddingInline="small-200" paddingBlock="small-100">
+        <Box paddingInline="small-200">
           <ChoiceList
             name={`filter-choice-${applied.key}`}
             multiple={isMultiple}
@@ -740,193 +741,156 @@ export function FiltersSearchField({
     const segmentStyle = {
       display: "inline-flex",
       alignItems: "center",
+      whiteSpace: "nowrap",
       gap: "4px",
-      padding: "0 6px",
-      height: "24px",
+      padding: "3px 5px",
       cursor: disabled ? "default" : "pointer",
       userSelect: "none",
     } as const;
 
     return (
-      <InlineStack
-        key={applied.key}
-        {...{ [CHIP_ATTR]: String(index) }}
-        alignItems="center"
-        gap="none"
-        wrap={false}
-        shrink={false}
-        // Guards ignore events bubbling from this pill's portalled popovers.
-        onMouseEnter={(event) => {
-          if (event.currentTarget.contains(event.target as Node)) {
-            setHoveredChipKey(applied.key);
-          }
-        }}
-        onMouseLeave={() => setHoveredChipKey(clearChipKey)}
-        onFocus={(event) => {
-          if (event.currentTarget.contains(event.target)) setFocusedChipKey(applied.key);
-        }}
-        onBlur={(event) => {
-          if (!event.currentTarget.contains(event.relatedTarget as Node | null)) {
-            setFocusedChipKey(clearChipKey);
-          }
-        }}
-      >
-        {/* Grey segment: [ Field operator ] -> P3 */}
-        <Clickable
-          id={opTriggerId}
-          disabled={disabled}
-          background="transparent"
-          padding="none"
-          borderRadius="base"
-          accessibilityLabel={`${fieldLabel} operator`}
-          onClick={(event) => {
-            event.stopPropagation();
-            togglePopover("operator");
-          }}
-        >
-          <IconTile
-            tone="neutral"
-            size="auto"
-            style={{
-              ...segmentStyle,
-              borderRadius: "6px 0 0 6px",
-              boxShadow: isOperatorOpen ? "inset 0 0 0 1px #8a8a8a" : undefined,
-            }}
-          >
-            <Text variant="small">{fieldLabel}</Text>
-            <Text variant="small">{currentOperator.label.toLowerCase()}</Text>
-          </IconTile>
-        </Clickable>
-
-        {/* Blue segment: [ values + n more ] -> P2 */}
-        <Clickable
-          id={valTriggerId}
-          disabled={disabled}
-          background="transparent"
-          padding="none"
-          borderRadius="base"
-          accessibilityLabel={`${fieldLabel} value`}
-          onClick={(event) => {
-            event.stopPropagation();
-            togglePopover("value");
-          }}
-        >
-          <IconTile
-            tone="info"
-            color="base"
-            size="auto"
-            style={{
-              ...segmentStyle,
-              borderRadius: isRemoveRevealed ? 0 : "0 6px 6px 0",
-              boxShadow: isValueOpen ? "inset 0 0 0 1px #0284c7" : undefined,
-            }}
-          >
-            <Text variant="small" tone="info">
-              {valueDisplay}
-            </Text>
-          </IconTile>
-        </Clickable>
-
-        {/* Remove (×): collapsed until the pill is hovered or focused. */}
+      <Transition variant="scale-up">
         <InlineStack
+          key={applied.key}
+          {...{ [CHIP_ATTR]: String(index) }}
           alignItems="center"
+          gap="small-500"
           wrap={false}
-          overflow="hidden"
-          style={{
-            maxWidth: isRemoveRevealed ? 32 : 0,
-            opacity: isRemoveRevealed ? 1 : 0,
-            transition: "max-width 160ms ease, opacity 160ms ease",
+          shrink={false}
+          onFocus={(event) => {
+            if (event.currentTarget.contains(event.target))
+              setFocusedChipKey(applied.key);
+          }}
+          onBlur={(event) => {
+            if (!event.currentTarget.contains(event.relatedTarget as Node | null)) {
+              setFocusedChipKey(clearChipKey);
+            }
           }}
         >
+          {/* Grey segment: [ Field operator ] -> P3 */}
           <Clickable
+            id={opTriggerId}
             disabled={disabled}
             background="transparent"
             padding="none"
             borderRadius="base"
-            accessibilityLabel={`Remove ${fieldLabel} filter`}
-            aria-label={`Remove ${fieldLabel} filter`}
+            accessibilityLabel={`${fieldLabel} operator`}
             onClick={(event) => {
               event.stopPropagation();
-              removeChipAt(index);
+              togglePopover("operator");
             }}
           >
             <IconTile
-              tone="info"
-              color="base"
+              tone="neutral"
               size="auto"
               style={{
                 ...segmentStyle,
-                padding: "0 4px",
-                borderRadius: "0 6px 6px 0",
+                borderRadius: "6px 0 0 6px",
               }}
             >
-              <Icon size="small" type="x" tone="info" />
+              <span style={{ fontWeight: "500", fontSize: "12px", lineHeight: "16px" }}>
+                {fieldLabel}
+                <b> {currentOperator.label.toLowerCase()}</b>
+              </span>
             </IconTile>
           </Clickable>
-        </InlineStack>
 
-        {/* P3: operator */}
-        <FilterPortalPopover
-          boundaryRef={regionRef}
-          anchorId={opTriggerId}
-          isOpen={isOperatorOpen}
-          onClose={() => closeOwnPopover("operator")}
-          width="160px"
-        >
-          <Box padding="small-200">
-            {renderOperatorList(filterDef, applied, currentOperator, () =>
-              closeOwnPopover("operator"),
-            )}
-          </Box>
-        </FilterPortalPopover>
-
-        {/* P2: values (+ operator) */}
-        <FilterPortalPopover
-          boundaryRef={regionRef}
-          anchorId={valTriggerId}
-          isOpen={isValueOpen}
-          onClose={() => {
-            setCustomValueInput("");
-            closeOwnPopover("value");
-          }}
-          width="260px"
-          maxHeight="360px"
-        >
-          <Box padding="small-200">
-            <BlockStack gap="small-300">
-              <InlineStack
-                alignItems="center"
-                justifyContent="space-between"
-                paddingInline="small-200"
-                paddingBlock="small-400"
+          <InlineStack
+            onMouseEnter={(event) => {
+              if (event.currentTarget.contains(event.target as Node)) {
+                setHoveredChipKey(applied.key);
+              }
+            }}
+            onMouseLeave={() => setHoveredChipKey(clearChipKey)}
+          >
+            <Clickable
+              id={valTriggerId}
+              disabled={disabled}
+              background="transparent"
+              padding="none"
+              borderRadius="base"
+              accessibilityLabel={`${fieldLabel} value`}
+              onClick={(event) => {
+                togglePopover("value");
+              }}
+            >
+              <IconTile
+                tone="info"
+                color={isRemoveRevealed ? "strong" : "base"}
+                size="auto"
+                style={{
+                  ...segmentStyle,
+                  borderRadius: "0 6px 6px 0",
+                }}
               >
-                <Text variant="small" heading tone="neutral">
-                  {fieldLabel}
-                </Text>
-                <Clickable
-                  background="transparent"
-                  padding="small-500"
-                  borderRadius="base"
-                  accessibilityLabel="Close"
+                <span style={{ fontWeight: "500", fontSize: "12px", lineHeight: "16px" }}>
+                  {valueDisplay}
+                </span>
+                <svg
                   onClick={(event) => {
                     event.stopPropagation();
-                    setCustomValueInput("");
-                    closeOwnPopover("value");
+                    removeChipAt(index);
                   }}
+                  style={{
+                    maxWidth: isRemoveRevealed ? 32 : 0,
+                    opacity: isRemoveRevealed ? 1 : 0,
+                    transition: "max-width 160ms ease, opacity 160ms ease",
+                  }}
+                  xmlns="http://w3.org"
+                  width="13"
+                  height="13"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
                 >
-                  <Icon type="x" tone="neutral" />
-                </Clickable>
-              </InlineStack>
-              <Divider />
+                  <line x1="18" y1="6" x2="6" y2="18"></line>
+                  <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+              </IconTile>
+            </Clickable>
+          </InlineStack>
+
+          {/* P3: operator */}
+          <FilterPortalPopover
+            boundaryRef={regionRef}
+            anchorId={opTriggerId}
+            isOpen={isOperatorOpen}
+            onClose={() => closeOwnPopover("operator")}
+            width="160px"
+            noHeader
+          >
+            <Box paddingBlock="small-400">
+              {renderOperatorList(filterDef, applied, currentOperator, () =>
+                closeOwnPopover("operator"),
+              )}
+            </Box>
+          </FilterPortalPopover>
+
+          {/* P2: values (+ operator) */}
+          <FilterPortalPopover
+            boundaryRef={regionRef}
+            anchorId={valTriggerId}
+            isOpen={isValueOpen}
+            onClose={() => {
+              setCustomValueInput("");
+              closeOwnPopover("value");
+            }}
+            width="260px"
+            maxHeight="360px"
+          >
+            <BlockStack gap="small-300">
               {renderValueControls(filterDef, applied, fieldLabel, currentOperator)}
-              <Divider />
-              <Box paddingInline="small-200" paddingBlock="small-100">
+              <BlockStack position="sticky" style={{ bottom: 0 }}>
+                <Divider />
                 {renderOperatorList(filterDef, applied, currentOperator)}
-              </Box>
+              </BlockStack>
             </BlockStack>
-          </Box>
-        </FilterPortalPopover>
-      </InlineStack>
+          </FilterPortalPopover>
+        </InlineStack>
+      </Transition>
     );
   };
 
@@ -1000,15 +964,12 @@ export function FiltersSearchField({
           focusTail("end");
         }
       }}
+      position="relative"
+      minBlockSize="34px"
       style={{
-        position: "relative",
-        minHeight: 34,
-        boxSizing: "border-box",
         paddingInline: "4px 6px",
-        background: "#ffffff",
-        borderRadius: 8,
-        outline: showFocusRing ? "2px solid #005bd3" : "1px solid #dcdcdc",
-        outlineOffset: showFocusRing ? -1 : 0,
+        borderRadius: 12,
+        outlineOffset: 0,
         transition: "outline-color 150ms ease",
         cursor: disabled ? "default" : "text",
         opacity: disabled ? 0.6 : 1,
@@ -1066,7 +1027,9 @@ export function FiltersSearchField({
                 focusTail("end");
               }}
             >
-              <Icon type="plus" tone="neutral" />
+              <Tooltip content="Add filter">
+                <Icon type="plus" tone="neutral" />
+              </Tooltip>
             </Clickable>
           </InlineStack>
         ) : null}
@@ -1144,67 +1107,34 @@ export function FiltersSearchField({
           width="260px"
           maxHeight="360px"
         >
-          <Box padding="small-300">
-            <BlockStack gap="small-300">
-              <InlineStack
-                alignItems="center"
-                justifyContent="space-between"
+          {availableFilters.length > 0 ? (
+            availableFilters.map((filter) => (
+              <Clickable
+                key={filter.key}
+                disabled={filter.disabled}
+                background={filter.key === highlightedKey ? "subdued" : "transparent"}
                 paddingInline="small-200"
-                paddingBlock="small-300"
+                paddingBlock="small-200"
+                borderRadius="base"
+                inlineSize="fill"
+                accessibilityLabel={filter.label}
+                onClick={(event) => {
+                  event.stopPropagation();
+                  selectCategory(filter);
+                }}
               >
-                <Text variant="small" heading tone="neutral">
-                  Filters
-                </Text>
-                <Clickable
-                  background="transparent"
-                  padding="small-500"
-                  borderRadius="base"
-                  accessibilityLabel="Close filters popup"
-                  onClick={(event) => {
-                    event.stopPropagation();
-                    closePopovers();
-                  }}
-                >
-                  <Icon type="x" tone="neutral" />
-                </Clickable>
-              </InlineStack>
-              <Divider />
-              <BlockStack gap="small-500">
-                {availableFilters.length > 0 ? (
-                  availableFilters.map((filter) => (
-                    <Clickable
-                      key={filter.key}
-                      disabled={filter.disabled}
-                      background={
-                        filter.key === highlightedKey ? "subdued" : "transparent"
-                      }
-                      paddingInline="small-200"
-                      blockSize="32px"
-                      borderRadius="base"
-                      inlineSize="fill"
-                      accessibilityLabel={filter.label}
-                      onClick={(event) => {
-                        event.stopPropagation();
-                        selectCategory(filter);
-                      }}
-                    >
-                      <InlineStack alignItems="center" blockSize="fill">
-                        <Text variant="small" tone="neutral">
-                          {filter.label}
-                        </Text>
-                      </InlineStack>
-                    </Clickable>
-                  ))
-                ) : (
-                  <Box padding="small-300">
-                    <Text variant="small" color="subdued">
-                      {categorySearch ? "No matching filters" : "All filters applied"}
-                    </Text>
-                  </Box>
-                )}
-              </BlockStack>
-            </BlockStack>
-          </Box>
+                <InlineStack alignItems="center" blockSize="fill">
+                  <Text variant="small">{filter.label}</Text>
+                </InlineStack>
+              </Clickable>
+            ))
+          ) : (
+            <Box padding="small-300">
+              <Text variant="small" color="subdued">
+                {categorySearch ? "No matching filters" : "All filters applied"}
+              </Text>
+            </Box>
+          )}
         </FilterPortalPopover>
       ) : null}
 

@@ -16,6 +16,8 @@ import type {
   FiltersComponentType,
   FiltersPropsType,
 } from "./Filters.types";
+import { Card } from "../Card";
+import { Button } from "../Button";
 
 export { FiltersSearchField };
 
@@ -43,18 +45,12 @@ export function FiltersColumnsPopover({
   return (
     <Popover id={popoverId}>
       <Popover.Trigger>
-        <Clickable
+        <Button
           disabled={disabled}
-          background="transparent"
-          padding="small-200"
-          blockSize="32px"
-          borderRadius="base"
+          icon="layout-columns-3"
+          variant="tertiary"
           accessibilityLabel="Columns and sort settings"
-        >
-          <InlineStack alignItems="center" justifyContent="center">
-            <Icon type="layout-columns-3" tone="neutral" />
-          </InlineStack>
-        </Clickable>
+        />
       </Popover.Trigger>
       <Popover.Content>
         <Box padding="small-300" minInlineSize="240px">
@@ -149,7 +145,7 @@ FiltersColumnsPopover.displayName = "FiltersColumnsPopover";
  */
 export function FiltersActions({ children }: FiltersActionsPropsType) {
   return (
-    <InlineStack alignItems="center" gap="small-200" shrink={false}>
+    <InlineStack alignItems="center" paddingBlockEnd="small-400">
       {children}
     </InlineStack>
   );
@@ -183,36 +179,38 @@ const FiltersRoot = forwardRef<HTMLDivElement, FiltersPropsType>(function Filter
     hideArchived !== undefined;
 
   return (
-    <InlineStack
-      ref={ref}
-      id={id}
-      alignItems="center"
-      justifyContent="space-between"
-      gap="small-200"
-      wrap={false}
-      inlineSize="100%"
-    >
-      {children ?? (
-        <>
-          <FiltersSearchField {...searchFieldProps} />
-          {actions ??
-            (hasColumnsPopover ? (
-              <FiltersActions>
-                <FiltersColumnsPopover
-                  sortOptions={sortOptions}
-                  sortValue={sortValue}
-                  onSortChange={onSortChange}
-                  columns={columns}
-                  onColumnToggle={onColumnToggle}
-                  hideArchived={hideArchived}
-                  onHideArchivedChange={onHideArchivedChange}
-                  disabled={searchFieldProps.disabled}
-                />
-              </FiltersActions>
-            ) : null)}
-        </>
-      )}
-    </InlineStack>
+    <Card padding="none">
+      <InlineStack
+        ref={ref}
+        id={id}
+        alignItems="center"
+        justifyContent="space-between"
+        gap="small-200"
+        wrap={false}
+        inlineSize="100%"
+      >
+        {children ?? (
+          <>
+            <FiltersSearchField {...searchFieldProps} />
+            {actions ??
+              (hasColumnsPopover ? (
+                <FiltersActions>
+                  <FiltersColumnsPopover
+                    sortOptions={sortOptions}
+                    sortValue={sortValue}
+                    onSortChange={onSortChange}
+                    columns={columns}
+                    onColumnToggle={onColumnToggle}
+                    hideArchived={hideArchived}
+                    onHideArchivedChange={onHideArchivedChange}
+                    disabled={searchFieldProps.disabled}
+                  />
+                </FiltersActions>
+              ) : null)}
+          </>
+        )}
+      </InlineStack>
+    </Card>
   );
 });
 
