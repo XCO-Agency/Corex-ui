@@ -13,6 +13,9 @@ export type {
 export { useDimension } from "./useDimension";
 export type { BreakpointType, UseDimensionResultType } from "./useDimension";
 
+export { useBreakpoints } from "./useBreakpoints";
+export type { UseBreakpointsResultType } from "./useBreakpoints";
+
 export { useParams } from "./useParams";
 export type { UseParamsResultType } from "./useParams";
 
@@ -33,4 +36,3 @@ export type {
   UseModalSaveBarOptionsType,
   UseModalSaveBarResultType,
 } from "./useModalSaveBar";
-

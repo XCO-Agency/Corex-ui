@@ -13,8 +13,10 @@ export const Badge = forwardRef<HTMLElement, BadgePropsType>(function Badge(
   { children, tone, status, color, icon, progress, ...rest },
   ref,
 ) {
+  const legacyTone = tone === "attention" ? "caution" : tone === "magic" ? "info" : tone;
+
   const resolvedTone =
-    tone ??
+    legacyTone ??
     (status === "caution"
       ? "warning"
       : status === "new"

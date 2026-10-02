@@ -97,4 +97,31 @@ describe("Table compound component", () => {
     expect(screen.getByText("Variant A")).toBeInTheDocument();
     expect(button).toHaveAttribute("icon", "chevron-down");
   });
+
+  it("renders a header cell per column inside the header row, with no section wrapper", () => {
+    const { container } = render(
+      <Table>
+        <Table.HeaderRow>
+          <Table.HeaderCell>Order</Table.HeaderCell>
+          <Table.HeaderCell>Customer</Table.HeaderCell>
+        </Table.HeaderRow>
+        <Table.Body>
+          <Table.Row>
+            <Table.Cell>#1001</Table.Cell>
+            <Table.Cell>Ada</Table.Cell>
+          </Table.Row>
+        </Table.Body>
+      </Table>,
+    );
+
+    const headerRow = container.querySelector("s-table-header-row")!;
+    expect(headerRow.parentElement?.tagName.toLowerCase()).toBe("s-table");
+    expect(headerRow.querySelectorAll("s-table-header")).toHaveLength(2);
+    // One `Text` per header cell, never nested.
+    expect(headerRow.querySelectorAll("s-text s-text")).toHaveLength(0);
+  });
+
+  it("keeps Table.Header as an alias of Table.HeaderCell", () => {
+    expect(Table.Header).toBe(Table.HeaderCell);
+  });
 });

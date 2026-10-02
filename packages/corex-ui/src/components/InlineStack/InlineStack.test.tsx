@@ -48,4 +48,14 @@ describe("InlineStack", () => {
     expect(el.style.justifyContent).toBe("center");
     expect(el.style.alignItems).toBe("flex-end");
   });
+
+  it("fills the container's inline axis with `fill`", () => {
+    render(
+      <InlineStack fill>
+        <span>Filled</span>
+      </InlineStack>,
+    );
+
+    expect(screen.getByText("Filled").parentElement).toHaveStyle({ width: "100%" });
+  });
 });

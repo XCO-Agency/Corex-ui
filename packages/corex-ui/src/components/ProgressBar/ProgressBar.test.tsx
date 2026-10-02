@@ -1,35 +1,54 @@
 import { describe, it, expect } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { render } from "@testing-library/react";
+import { createRef } from "react";
 import { ProgressBar } from "./ProgressBar";
 
 describe("ProgressBar", () => {
-  it("renders with default progress and accessibility attributes", () => {
-    render(<ProgressBar progress={45} aria-label="Loading progress" />);
-    const bar = screen.getByRole("progressbar");
-    expect(bar).toBeInTheDocument();
-    expect(bar).toHaveAttribute("aria-valuenow", "45");
-    expect(bar).toHaveAttribute("aria-valuemin", "0");
-    expect(bar).toHaveAttribute("aria-valuemax", "100");
-    expect(bar).toHaveAttribute("aria-label", "Loading progress");
+  it("renders s-progress with determinate value and max", () => {
+    const { container } = render(
+      <ProgressBar
+        accessibilityLabel="Order fulfillment"
+        value={3}
+        max={5}
+        tone="success"
+      />,
+    );
+    const el = container.querySelector("s-progress");
+    expect(el).toBeInTheDocument();
+    expect(el).toHaveAttribute("accessibility-label", "Order fulfillment");
+    expect(el).toHaveAttribute("value", "3");
+    expect(el).toHaveAttribute("max", "5");
+    expect(el).toHaveAttribute("tone", "success");
   });
 
-  it("clamps progress between 0 and 100", () => {
-    const { rerender } = render(<ProgressBar progress={150} />);
-    expect(screen.getByRole("progressbar")).toHaveAttribute("aria-valuenow", "100");
-
-    rerender(<ProgressBar progress={-20} />);
-    expect(screen.getByRole("progressbar")).toHaveAttribute("aria-valuenow", "0");
-
-    rerender(<ProgressBar progress={NaN} />);
-    expect(screen.getByRole("progressbar")).toHaveAttribute("aria-valuenow", "0");
+  it("renders indeterminate progress bar when value is omitted", () => {
+    const { container } = render(
+      <ProgressBar accessibilityLabel="Importing products" />,
+    );
+    const el = container.querySelector("s-progress");
+    expect(el).toBeInTheDocument();
+    expect(el).toHaveAttribute("accessibility-label", "Importing products");
+    expect(el).not.toHaveAttribute("value");
   });
 
-  it("applies tone styles and custom colors", () => {
-    const { rerender } = render(<ProgressBar progress={50} tone="critical" />);
-    const bar = screen.getByRole("progressbar");
-    expect(bar.style.backgroundColor).toBe("rgb(254, 226, 226)"); // #fee2e2
+  it("applies tone correctly", () => {
+    const { container, rerender } = render(
+      <ProgressBar accessibilityLabel="Storage used" value={72} max={100} tone="caution" />,
+    );
+    let el = container.querySelector("s-progress");
+    expect(el).toHaveAttribute("tone", "caution");
 
-    rerender(<ProgressBar progress={50} trackColor="#123456" barColor="#654321" />);
-    expect(bar.style.backgroundColor).toBe("rgb(18, 52, 86)");
+    rerender(
+      <ProgressBar accessibilityLabel="API rate limit" value={96} max={100} tone="critical" />,
+    );
+    el = container.querySelector("s-progress");
+    expect(el).toHaveAttribute("tone", "critical");
+  });
+
+  it("forwards ref to s-progress element", () => {
+    const ref = createRef<HTMLElement>();
+    render(<ProgressBar ref={ref} accessibilityLabel="Upload" value={50} max={100} />);
+    expect(ref.current).toBeInstanceOf(HTMLElement);
+    expect(ref.current?.tagName.toLowerCase()).toBe("s-progress");
   });
 });

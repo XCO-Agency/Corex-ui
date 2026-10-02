@@ -20,7 +20,6 @@ import { Divider } from "../Divider";
 import { IconTile } from "../IconTile";
 import { ChoiceList } from "../ChoiceList";
 import { TextField } from "../TextField";
-import { FilterPortalPopover } from "./FilterPortalPopover";
 import type {
   AppliedFilterType,
   FilterItemType,
@@ -30,6 +29,7 @@ import type {
 import { Badge } from "../Badge";
 import { Transition } from "../Transition";
 import { Tooltip } from "../Tooltip";
+import { FlexPopover } from "../FlexPopover";
 
 /** Number of values shown inside a pill before collapsing into "+ n more". */
 const MAX_VISIBLE_VALUES = 3;
@@ -749,7 +749,7 @@ export function FiltersSearchField({
     } as const;
 
     return (
-      <Transition variant="scale-up">
+      <Transition key={applied.key} variant="scale-up">
         <InlineStack
           key={applied.key}
           {...{ [CHIP_ATTR]: String(index) }}
@@ -757,6 +757,12 @@ export function FiltersSearchField({
           gap="small-500"
           wrap={false}
           shrink={false}
+          onMouseEnter={(event) => {
+            if (event.currentTarget.contains(event.target as Node)) {
+              setHoveredChipKey(applied.key);
+            }
+          }}
+          onMouseLeave={() => setHoveredChipKey(clearChipKey)}
           onFocus={(event) => {
             if (event.currentTarget.contains(event.target))
               setFocusedChipKey(applied.key);
@@ -827,6 +833,8 @@ export function FiltersSearchField({
                   {valueDisplay}
                 </span>
                 <svg
+                  role="button"
+                  aria-label={`Remove ${fieldLabel} filter`}
                   onClick={(event) => {
                     event.stopPropagation();
                     removeChipAt(index);
@@ -836,15 +844,15 @@ export function FiltersSearchField({
                     opacity: isRemoveRevealed ? 1 : 0,
                     transition: "max-width 160ms ease, opacity 160ms ease",
                   }}
-                  xmlns="http://w3.org"
+                  xmlns="http://www.w3.org/2000/svg"
                   width="13"
                   height="13"
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"
-                  stroke-width="2.5"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeWidth="2.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                 >
                   <line x1="18" y1="6" x2="6" y2="18"></line>
                   <line x1="6" y1="6" x2="18" y2="18"></line>
@@ -854,7 +862,7 @@ export function FiltersSearchField({
           </InlineStack>
 
           {/* P3: operator */}
-          <FilterPortalPopover
+          <FlexPopover
             boundaryRef={regionRef}
             anchorId={opTriggerId}
             isOpen={isOperatorOpen}
@@ -867,10 +875,10 @@ export function FiltersSearchField({
                 closeOwnPopover("operator"),
               )}
             </Box>
-          </FilterPortalPopover>
+          </FlexPopover>
 
           {/* P2: values (+ operator) */}
-          <FilterPortalPopover
+          <FlexPopover
             boundaryRef={regionRef}
             anchorId={valTriggerId}
             isOpen={isValueOpen}
@@ -888,7 +896,7 @@ export function FiltersSearchField({
                 {renderOperatorList(filterDef, applied, currentOperator)}
               </BlockStack>
             </BlockStack>
-          </FilterPortalPopover>
+          </FlexPopover>
         </InlineStack>
       </Transition>
     );
@@ -1095,7 +1103,7 @@ export function FiltersSearchField({
 
       {/* P1: filter categories, anchored at the caret (gap between pills or text input). */}
       {filters.length > 0 ? (
-        <FilterPortalPopover
+        <FlexPopover
           boundaryRef={regionRef}
           anchorId={caretIndex !== null ? gapInputId : inputId}
           isOpen={isCategoriesOpen}
@@ -1135,7 +1143,7 @@ export function FiltersSearchField({
               </Text>
             </Box>
           )}
-        </FilterPortalPopover>
+        </FlexPopover>
       ) : null}
 
       <style>{`.${SCROLL_CLASS}::-webkit-scrollbar { display: none; }`}</style>

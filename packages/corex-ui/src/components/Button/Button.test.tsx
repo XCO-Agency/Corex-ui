@@ -1,6 +1,7 @@
 import { describe, expect, it, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import { Button } from "./Button";
+import { Icon } from "../Icon";
 
 describe("Button", () => {
   it("renders an s-button with translated legacy props", () => {
@@ -30,13 +31,69 @@ describe("Button", () => {
   });
 
   it("does not pass style prop down to s-button", () => {
-    render(
-      <Button style={{ color: "red" } as any}>
-        Styled
-      </Button>,
-    );
+    render(<Button style={{ color: "red" } as any}>Styled</Button>);
 
     const el = screen.getByText("Styled");
     expect(el).not.toHaveAttribute("style");
+  });
+
+  describe("accessible name", () => {
+    it("takes the name from a string child", () => {
+      render(<Button>Save</Button>);
+      expect(screen.getByText("Save")).toHaveAttribute("accessibility-label", "Save");
+    });
+
+    it("takes the name from the text alongside an icon", () => {
+      const { container } = render(
+        <Button variant="plain">
+          <Icon type="play" /> Resume
+        </Button>,
+      );
+
+      const el = container.querySelector("s-button")!;
+      expect(el).toHaveAttribute("accessibility-label", "Resume");
+    });
+
+    it("falls back to a generated name for an icon-only button", () => {
+      const { container } = render(
+        <Button variant="plain">
+          <Icon type="play" />
+        </Button>,
+      );
+
+      const el = container.querySelector("s-button")!;
+      expect(el.getAttribute("accessibility-label")).toBe("Action plain");
+    });
+
+    it("prefers an explicit accessibilityLabel over the children text", () => {
+      const { container } = render(
+        <Button accessibilityLabel="Resume playback">
+          <Icon type="play" /> Resume
+        </Button>,
+      );
+
+      const el = container.querySelector("s-button")!;
+      expect(el).toHaveAttribute("accessibility-label", "Resume playback");
+    });
+  });
+
+  describe("v12 props with no s-button equivalent", () => {
+    it("ignores `size` rather than passing it to the element", () => {
+      const { container } = render(<Button size="slim">Save</Button>);
+
+      expect(container.querySelector("s-button")).not.toHaveAttribute("size");
+    });
+
+    it("falls back to the default tone for success and magic", () => {
+      const { container } = render(<Button tone="success">Publish</Button>);
+
+      expect(container.querySelector("s-button")).not.toHaveAttribute("tone");
+    });
+
+    it("still maps the tones s-button does have", () => {
+      const { container } = render(<Button tone="critical">Delete</Button>);
+
+      expect(container.querySelector("s-button")).toHaveAttribute("tone", "critical");
+    });
   });
 });

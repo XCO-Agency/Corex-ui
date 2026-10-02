@@ -25,6 +25,13 @@ export type DropZonePropsType = Omit<
   value?: string;
   files?: File[];
   onChange?: (event: Event) => void;
+  /**
+   * v12's callback, called with the files the element accepted. v12 also passed
+   * the rejected ones as a third argument; `s-drop-zone` reports only what it
+   * accepted, so that argument is not offered rather than filled with a guess —
+   * `onDropRejected` is the element's own signal for a rejection.
+   */
+  onDrop?: (files: File[]) => void;
   onInput?: (event: Event) => void;
   onDropRejected?: (event: Event) => void;
   onBlur?: (event: Event) => void;

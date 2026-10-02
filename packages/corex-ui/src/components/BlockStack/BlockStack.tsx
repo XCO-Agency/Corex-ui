@@ -26,6 +26,7 @@ export const BlockStack: ForwardRefExoticComponent<
     alignItems,
     alignContent,
     wrap,
+    fill,
     grow,
     shrink,
     flex,
@@ -118,6 +119,7 @@ export const BlockStack: ForwardRefExoticComponent<
     computedStyles.paddingInlineEnd = resolvedPaddingInlineEnd;
   }
 
+  if (fill) computedStyles.width = "100%";
   if (inlineSize !== undefined) computedStyles.width = inlineSize;
   if (minInlineSize !== undefined) computedStyles.minWidth = minInlineSize;
   if (maxInlineSize !== undefined) computedStyles.maxWidth = maxInlineSize;

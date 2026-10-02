@@ -155,7 +155,12 @@ export function OnboardingNew({
       {showProgress && (
         <InlineStack alignItems="center" gap="base">
           <Box inlineSize="90px">
-            <ProgressBar progress={progressPct} size="xs" tone="success" />
+            <ProgressBar
+              value={progressPct}
+              max={100}
+              tone="success"
+              accessibilityLabel={`Step ${shownStep} of ${totalSteps}`}
+            />
           </Box>
           <Text color="subdued" variant="small">
             Step {shownStep} of {totalSteps}

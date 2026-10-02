@@ -12,8 +12,8 @@ describe("IconTile", () => {
     const tile = screen.getByTestId("tile");
     expect(tile).toBeInTheDocument();
     expect(screen.getByTestId("icon")).toBeInTheDocument();
-    expect(tile.style.backgroundColor).toBe("rgb(174, 254, 190)"); // #aefebe
-    expect(tile.style.color).toBe("rgb(5, 150, 105)"); // #059669
+    expect(tile.style.backgroundColor).toBe("rgb(188, 249, 126)"); // #BCF97E
+    expect(tile.style.color).toBe("rgb(44, 74, 18)"); // #2C4A12
   });
 
   it("applies tone, size, and border radius correctly", () => {
@@ -23,8 +23,8 @@ describe("IconTile", () => {
       </IconTile>,
     );
     const tile = screen.getByTestId("tile");
-    expect(tile.style.backgroundColor).toBe("rgb(254, 243, 199)"); // #fef3c7
-    expect(tile.style.color).toBe("rgb(217, 119, 6)"); // #d97706
+    expect(tile.style.backgroundColor).toBe("rgb(250, 221, 130)"); // #FADD82
+    expect(tile.style.color).toBe("rgb(83, 60, 15)"); // #533C0F
     expect(tile.style.width).toBe("auto");
     expect(tile.style.height).toBe("2.75rem");
     expect(tile.style.borderRadius).toBe("9999px");
@@ -39,22 +39,22 @@ describe("IconTile", () => {
     expect(tile.style.borderRadius).toBe("0px");
   });
 
-  it("applies strong color intensity with bold background and white text", () => {
+  it("applies strong color intensity with bold background and text", () => {
     const { rerender } = render(
       <IconTile data-testid="tile" tone="critical" color="strong">
         Icon
       </IconTile>,
     );
     const tile = screen.getByTestId("tile");
-    expect(tile.style.backgroundColor).toBe("rgb(220, 38, 38)"); // #dc2626
-    expect(tile.style.color).toBe("rgb(255, 255, 255)"); // #ffffff
+    expect(tile.style.backgroundColor).toBe("rgb(243, 185, 180)"); // #F3B9B4
+    expect(tile.style.color).toBe("rgb(100, 21, 15)"); // #64150F
 
     rerender(
       <IconTile data-testid="tile" tone="success" color="strong">
         Icon
       </IconTile>,
     );
-    expect(tile.style.backgroundColor).toBe("rgb(5, 150, 105)"); // #059669
-    expect(tile.style.color).toBe("rgb(255, 255, 255)");
+    expect(tile.style.backgroundColor).toBe("rgb(163, 244, 94)"); // #A3F45E
+    expect(tile.style.color).toBe("rgb(36, 66, 11)"); // #24420B
   });
 });

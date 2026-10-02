@@ -1,4 +1,5 @@
 import { forwardRef } from "react";
+import type { ForwardedRef, ReactElement } from "react";
 import { createWebComponent } from "../../core/createWebComponent";
 import type { SelectOptionType, SelectPropsType } from "./Select.types";
 
@@ -17,7 +18,7 @@ function normalizeOption(option: SelectOptionType | string): SelectOptionType {
  * `{label, value}[]`) is rendered as native `<s-option>` children, since
  * `s-select` reads its options from `<s-option>` elements.
  */
-export const Select = forwardRef<HTMLElement, SelectPropsType>(function Select(
+const SelectInner = forwardRef<HTMLElement, SelectPropsType>(function Select(
   { label, options, onChange, helpText, details, id, ...rest },
   ref,
 ) {
@@ -43,3 +44,12 @@ export const Select = forwardRef<HTMLElement, SelectPropsType>(function Select(
     </SSelect>
   );
 });
+
+/**
+ * Re-typed as a generic function component: `forwardRef` cannot carry a type
+ * parameter of its own, so the narrowed-value signature is applied here while
+ * the implementation above stays a plain `string` one.
+ */
+export const Select = SelectInner as unknown as <V extends string = string>(
+  props: SelectPropsType<V> & { ref?: ForwardedRef<HTMLElement> },
+) => ReactElement;

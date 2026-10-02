@@ -45,9 +45,9 @@ export function PricingUsageMeter({ limits }: PricingUsageMeterPropsType) {
                 </InlineStack>
 
                 <ProgressBar
-                  progress={percent}
-                  size="sm"
-                  borderRadius="full"
+                  value={item.used}
+                  max={item.limit}
+                  accessibilityLabel={item.label}
                   tone={isHighUsage ? "caution" : "success"}
                 />
               </BlockStack>

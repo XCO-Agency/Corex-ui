@@ -101,7 +101,7 @@ describe("Filters", () => {
     fireEvent.focus(inputEl);
 
     // Click on "Tag"
-    const tagCategory = document.querySelector('s-clickable[accessibilitylabel="Tag"]')!;
+    const tagCategory = document.querySelector('s-clickable[accessibility-label="Tag"]')!;
     fireEvent.click(tagCategory);
 
     expect(onAddFilter).toHaveBeenCalledWith("tag", 0);
@@ -152,7 +152,7 @@ describe("Filters", () => {
     // Popover 1 is open showing "Vendor"
     expect(document.body.textContent).toContain("Filters");
     const vendorCategory = document.querySelector(
-      's-clickable[accessibilitylabel="Vendor"]',
+      's-clickable[accessibility-label="Vendor"]',
     )!;
     fireEvent.click(vendorCategory);
 
@@ -201,7 +201,7 @@ describe("Filters", () => {
 
     expect(document.body.textContent).toContain("Is not");
     const isNotOption = document.querySelector(
-      's-clickable[accessibilitylabel="Is not"]',
+      's-clickable[accessibility-label="Is not"]',
     )!;
     fireEvent.click(isNotOption);
     expect(onOperatorChange).toHaveBeenCalledWith("vendor", "is_not");
@@ -294,7 +294,7 @@ describe("Filters", () => {
       </Filters>,
     );
 
-    const viewTrigger = document.querySelector('s-clickable[accessibilitylabel="All"]');
+    const viewTrigger = document.querySelector('s-clickable[accessibility-label="All"]');
     expect(viewTrigger).toBeInTheDocument();
     expect(viewTrigger?.textContent).toContain("All");
   });
@@ -322,7 +322,7 @@ describe("Filters", () => {
     );
 
     const colsTrigger = document.querySelector(
-      's-clickable[accessibilitylabel="Columns and sort settings"]',
+      '[accessibility-label="Columns and sort settings"]',
     );
     expect(colsTrigger).toBeInTheDocument();
 
@@ -344,7 +344,7 @@ describe("Filters", () => {
     );
 
     const clearButton = document.querySelector(
-      's-clickable[accessibilitylabel="Clear search and filters"]',
+      's-clickable[accessibility-label="Clear search and filters"]',
     );
     expect(clearButton).toBeInTheDocument();
 
@@ -367,7 +367,7 @@ describe("Filters", () => {
     expect(document.body.textContent).toContain("Vendor");
 
     const closeBtn = document.querySelector(
-      's-clickable[accessibilitylabel="Close filters popup"]',
+      '[accessibility-label="Close filters popup"]',
     )!;
     expect(closeBtn).toBeInTheDocument();
     fireEvent.click(closeBtn);
@@ -470,7 +470,7 @@ describe("Filters", () => {
       expect(document.body.textContent).toContain("Status");
 
       fireEvent.click(
-        document.querySelector('s-clickable[accessibilitylabel="Status"]')!,
+        document.querySelector('s-clickable[accessibility-label="Status"]')!,
       );
       expect(onAddFilter).toHaveBeenCalledWith("status", 1);
       expect(removed).toEqual([]);
@@ -532,7 +532,7 @@ describe("Filters", () => {
     it("renders the + button after the pills", () => {
       renderWithApplied();
       const addButton = document.querySelector(
-        's-clickable[accessibilitylabel="Add filter"]',
+        's-clickable[accessibility-label="Add filter"]',
       )!;
       const lastChip = document.querySelector('[data-corex-filters-chip="1"]')!;
       expect(
@@ -558,7 +558,7 @@ describe("Filters", () => {
     it("shows the + button only while the field is not focused", () => {
       const { input } = renderWithApplied({ appliedFilters: [] });
       const addButton = document.querySelector(
-        's-clickable[accessibilitylabel="Add filter"]',
+        's-clickable[accessibility-label="Add filter"]',
       )!;
       expect(addButton).toBeInTheDocument();
 
@@ -566,14 +566,14 @@ describe("Filters", () => {
       expect(document.activeElement).toBe(input);
       expect(document.body.textContent).toContain("Vendor");
       expect(
-        document.querySelector('s-clickable[accessibilitylabel="Add filter"]'),
+        document.querySelector('s-clickable[accessibility-label="Add filter"]'),
       ).not.toBeInTheDocument();
     });
 
     it("ignores mouse down inside a pill popover (portal bubbling)", () => {
       renderWithApplied();
       fireEvent.click(
-        document.querySelector('s-clickable[accessibilitylabel="Vendor value"]')!,
+        document.querySelector('s-clickable[accessibility-label="Vendor value"]')!,
       );
       const choice = document.querySelector('s-choice[value="apple"]')!;
       expect(choice).toBeInTheDocument();
@@ -615,11 +615,11 @@ describe("Filters", () => {
     it("keeps the + button mounted when it receives focus on mouse down", () => {
       renderWithApplied();
       const addButton = document.querySelector(
-        's-clickable[accessibilitylabel="Add filter"]',
+        's-clickable[accessibility-label="Add filter"]',
       )!;
       fireEvent.focus(addButton);
       expect(
-        document.querySelector('s-clickable[accessibilitylabel="Add filter"]'),
+        document.querySelector('s-clickable[accessibility-label="Add filter"]'),
       ).toBeInTheDocument();
     });
 

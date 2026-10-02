@@ -158,7 +158,7 @@ function measureElementWidth(node: HTMLElement | null): number {
  * Root Popover component providing compound state/ID binding and trigger measurements.
  */
 export const Popover = forwardRef<HTMLElement, PopoverPropsType>(function Popover(
-  { children, id },
+  { children, id, active, onClose },
   _ref,
 ) {
   const generatedId = useId();
@@ -168,8 +168,11 @@ export const Popover = forwardRef<HTMLElement, PopoverPropsType>(function Popove
   const [triggerEl, setTriggerEl] = useState<HTMLElement | null>(null);
   const [triggerWidth, setTriggerWidth] = useState<number | undefined>(undefined);
 
+  const [contentEl, setContentEl] = useState<HTMLElement | null>(null);
+
   const setContentRef = useCallback((node: HTMLElement | null) => {
     contentRef.current = node;
+    setContentEl(node);
   }, []);
 
   const updateTriggerWidth = useCallback(() => {
@@ -301,6 +304,48 @@ export const Popover = forwardRef<HTMLElement, PopoverPropsType>(function Popove
       }
     }
   }, [popoverId]);
+
+  const open = useCallback(() => {
+    const el =
+      contentRef.current ??
+      (typeof document !== "undefined" ? document.getElementById(popoverId) : null);
+    if (!el) return;
+
+    const overlay = el as unknown as {
+      showOverlay?: () => void;
+      showPopover?: () => void;
+    };
+    if (typeof overlay.showOverlay === "function") {
+      overlay.showOverlay();
+    } else if (typeof overlay.showPopover === "function") {
+      overlay.showPopover();
+    }
+  }, [popoverId]);
+
+  // Controlled mode. `s-popover` is driven by the native invoker API, so there is
+  // no `open` attribute to set — the element is shown and hidden imperatively, the
+  // same way its own trigger does it.
+  useEffect(() => {
+    if (active === undefined) return;
+    if (active) {
+      open();
+    } else {
+      close();
+    }
+  }, [active, contentEl, open, close]);
+
+  useEffect(() => {
+    if (!onClose) return;
+
+    const el =
+      contentEl ??
+      (typeof document !== "undefined" ? document.getElementById(popoverId) : null);
+    if (!el) return;
+
+    const handleHide = () => onClose();
+    el.addEventListener("hide", handleHide);
+    return () => el.removeEventListener("hide", handleHide);
+  }, [contentEl, onClose, popoverId]);
 
   const contextValue = useMemo(
     () => ({

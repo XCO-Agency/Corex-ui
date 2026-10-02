@@ -31,6 +31,16 @@ import { DatePickerExample } from "@/examples/forms/DatePickerExample";
 import DatePickerExampleRaw from "@/examples/forms/DatePickerExample.tsx?raw";
 import { RangeSliderExample } from "@/examples/forms/RangeSliderExample";
 import RangeSliderExampleRaw from "@/examples/forms/RangeSliderExample.tsx?raw";
+import { RadioButtonExample } from "@/examples/forms/RadioButtonExample";
+import RadioButtonExampleRaw from "@/examples/forms/RadioButtonExample.tsx?raw";
+import { ListboxExample } from "@/examples/forms/ListboxExample";
+import ListboxExampleRaw from "@/examples/forms/ListboxExample.tsx?raw";
+import { ComboboxExample } from "@/examples/forms/ComboboxExample";
+import ComboboxExampleRaw from "@/examples/forms/ComboboxExample.tsx?raw";
+import { AutocompleteExample } from "@/examples/forms/AutocompleteExample";
+import AutocompleteExampleRaw from "@/examples/forms/AutocompleteExample.tsx?raw";
+import { IndexFiltersExample } from "@/examples/forms/IndexFiltersExample";
+import IndexFiltersExampleRaw from "@/examples/forms/IndexFiltersExample.tsx?raw";
 
 export const formsComponents: ComponentEntry[] = [
   {
@@ -250,6 +260,75 @@ export const formsComponents: ComponentEntry[] = [
         title: "Single and dual-thumb range sliders",
         Example: RangeSliderExample,
         code: RangeSliderExampleRaw,
+      },
+    ],
+  },
+  {
+    name: "RadioButton",
+    slug: "radio-button",
+    category: "Forms",
+    description:
+      "A single radio, as a single-choice choice list, so a set behaves as one group.",
+    examples: [
+      {
+        title: "Billing choice",
+        Example: RadioButtonExample,
+        code: RadioButtonExampleRaw,
+      },
+    ],
+  },
+  {
+    name: "Listbox",
+    slug: "listbox",
+    category: "Forms",
+    description:
+      "Options with selection, for use under a field. Picks on pointer-down so the field keeps focus.",
+    examples: [
+      {
+        title: "Sectioned options with an action",
+        Example: ListboxExample,
+        code: ListboxExampleRaw,
+      },
+    ],
+  },
+  {
+    name: "Combobox",
+    slug: "combobox",
+    category: "Forms",
+    description:
+      "A field with its suggestions beneath it, plus the pills for what has been picked.",
+    examples: [
+      {
+        title: "Tag picker",
+        Example: ComboboxExample,
+        code: ComboboxExampleRaw,
+      },
+    ],
+  },
+  {
+    name: "Autocomplete",
+    slug: "autocomplete",
+    category: "Forms",
+    description:
+      "Options in, selection out: the whole suggestion control in one component.",
+    examples: [
+      {
+        title: "Multi-select vendors",
+        Example: AutocompleteExample,
+        code: AutocompleteExampleRaw,
+      },
+    ],
+  },
+  {
+    name: "IndexFilters",
+    slug: "index-filters",
+    category: "Forms",
+    description: "v12's search-and-filter bar, mapped onto the Filters toolbar.",
+    examples: [
+      {
+        title: "Tabs, filters and sort",
+        Example: IndexFiltersExample,
+        code: IndexFiltersExampleRaw,
       },
     ],
   },

@@ -14,4 +14,9 @@ export type AvatarPropsType = Omit<NativeAvatarProps, "size"> & {
   /** Image URL alias mapping to `src`. */
   image?: string;
   size?: NativeAvatarProps["size"] | SizeType;
+  /**
+   * v12's `customer` placeholder glyph. `s-avatar` renders initials or a generic
+   * person, so this is accepted and ignored, with a development warning.
+   */
+  customer?: boolean;
 };

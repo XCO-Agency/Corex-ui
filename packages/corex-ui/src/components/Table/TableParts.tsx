@@ -51,8 +51,13 @@ export const TableHeaderRow = forwardRef<HTMLElement, TableHeaderRowPropsType>(
   },
 );
 
-export const TableHeader = forwardRef<HTMLElement, TableHeaderPropsType>(
-  function TableHeader({ children, tooltip, ...rest }, ref) {
+/**
+ * A single header **cell** (`s-table-header`), not a header section: it belongs
+ * inside a `Table.HeaderRow`, and there is no `thead` equivalent. Its children
+ * are wrapped in a `Text`, so passing a row or another `Text` nests elements.
+ */
+export const TableHeaderCell = forwardRef<HTMLElement, TableHeaderPropsType>(
+  function TableHeaderCell({ children, tooltip, ...rest }, ref) {
     return (
       <STableHeader ref={ref} {...rest}>
         <Text tooltip={tooltip} variant="small" underline={false}>
@@ -62,6 +67,12 @@ export const TableHeader = forwardRef<HTMLElement, TableHeaderPropsType>(
     );
   },
 );
+
+/**
+ * @deprecated Use `Table.HeaderCell` / `TableHeaderCell`. The name reads like a
+ * header section, but this is the header cell; `Table.HeaderRow` is the row.
+ */
+export const TableHeader = TableHeaderCell;
 
 export const TableBody = forwardRef<HTMLElement, TableBodyPropsType>(function TableBody(
   { children, ...rest },

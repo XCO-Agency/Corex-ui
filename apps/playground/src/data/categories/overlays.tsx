@@ -11,6 +11,8 @@ import { FloatingAbsoluteExample } from "@/examples/overlays/FloatingAbsoluteExa
 import FloatingAbsoluteExampleRaw from "@/examples/overlays/FloatingAbsoluteExample.tsx?raw";
 import { PopoverExample } from "@/examples/overlays/PopoverExample";
 import PopoverExampleRaw from "@/examples/overlays/PopoverExample.tsx?raw";
+import { ActionListExample } from "@/examples/overlays/ActionListExample";
+import ActionListExampleRaw from "@/examples/overlays/ActionListExample.tsx?raw";
 
 const PATTERN_B_IFRAME_CODE = `// Iframe Route (app.preferences.settings.tsx)
 import { useEffect, useState } from "react";
@@ -132,6 +134,20 @@ export const overlaysComponents: ComponentEntry[] = [
         title: "Filter Popover with programmatic close",
         Example: PopoverExample,
         code: PopoverExampleRaw,
+      },
+    ],
+  },
+  {
+    name: "ActionList",
+    slug: "action-list",
+    category: "Overlays",
+    description:
+      "v12's list of actions, for use inside a Popover: icons, help text and destructive tone.",
+    examples: [
+      {
+        title: "Actions in a popover",
+        Example: ActionListExample,
+        code: ActionListExampleRaw,
       },
     ],
   },

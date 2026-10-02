@@ -24,6 +24,29 @@ import type { CreateWebComponentOptions, DomEventHandler, EventMap } from "./typ
 // eslint-disable-next-line @typescript-eslint/ban-types
 type NoEvents = {};
 
+/**
+ * React spellings of global HTML attributes whose real attribute name is the
+ * all-lowercase form, not a kebab-case one. Polaris's own multi-word props are
+ * kebab-case (`accessibility-label`), but `tabIndex` is not a Polaris prop at
+ * all — it is the HTML attribute every element carries, and `tab-index` does
+ * nothing.
+ */
+const LOWERCASE_ATTRIBUTES: Record<string, string> = {
+  tabIndex: "tabindex",
+  accessKey: "accesskey",
+  autoCapitalize: "autocapitalize",
+  autoFocus: "autofocus",
+  contentEditable: "contenteditable",
+  enterKeyHint: "enterkeyhint",
+  inputMode: "inputmode",
+  itemID: "itemid",
+  itemProp: "itemprop",
+  itemRef: "itemref",
+  itemScope: "itemscope",
+  itemType: "itemtype",
+  spellCheck: "spellcheck",
+};
+
 function toKebabCase(str: string): string {
   return str.replace(/([a-z0-9]|(?=[A-Z]))([A-Z])/g, "$1-$2").toLowerCase();
 }
@@ -105,12 +128,20 @@ export function createWebComponent<
           continue;
         }
 
+        const lowercaseAttribute = LOWERCASE_ATTRIBUTES[key];
+        if (lowercaseAttribute) {
+          passthroughProps[lowercaseAttribute] = value;
+          continue;
+        }
+
         // Non-primitive objects/arrays in domProps shouldn't be stringified as attributes
         if (domProps.includes(key) && typeof value === "object" && value !== null) {
           continue;
         }
 
-        // Convert camelCase prop names to kebab-case HTML attributes for custom elements
+        // Convert camelCase prop names to kebab-case HTML attributes for custom
+        // elements. The camelCase spelling means nothing to a custom element, so
+        // it is replaced rather than emitted alongside the kebab-case one.
         if (
           !key.includes("-") &&
           key !== "style" &&
@@ -118,6 +149,7 @@ export function createWebComponent<
           /[A-Z]/.test(key)
         ) {
           passthroughProps[toKebabCase(key)] = value;
+          continue;
         }
         passthroughProps[key] = value;
       }

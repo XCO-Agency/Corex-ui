@@ -42,4 +42,24 @@ describe("BlockStack", () => {
     expect(el.style.alignItems).toBe("center");
     expect(el.style.justifyContent).toBe("space-between");
   });
+
+  it("fills the container's inline axis with `fill`", () => {
+    render(
+      <BlockStack fill>
+        <span>Filled</span>
+      </BlockStack>,
+    );
+
+    expect(screen.getByText("Filled").parentElement).toHaveStyle({ width: "100%" });
+  });
+
+  it("lets an explicit inlineSize win over `fill`", () => {
+    render(
+      <BlockStack fill inlineSize="20rem">
+        <span>Sized</span>
+      </BlockStack>,
+    );
+
+    expect(screen.getByText("Sized").parentElement).toHaveStyle({ width: "20rem" });
+  });
 });

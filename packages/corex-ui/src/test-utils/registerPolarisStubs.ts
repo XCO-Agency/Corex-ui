@@ -83,8 +83,7 @@ class ChoiceStub extends HTMLElement {
   connectedCallback() {
     this.addEventListener("click", () => {
       const list = this.closest("s-choice-list") as
-        | (ChoiceListStub & { multiple?: boolean })
-        | null;
+        (ChoiceListStub & { multiple?: boolean }) | null;
       if (!list) return;
       const val = this.getAttribute("value") || "";
       const multipleAttr = list.getAttribute("multiple");
@@ -146,6 +145,13 @@ const STUB_TAGS = [
   "s-menu",
   "s-app-nav",
   "s-clickable",
+  "s-chip",
+  "s-scroll-box",
+  "s-unordered-list",
+  "s-ordered-list",
+  "s-list-item",
+  "s-grid",
+  "s-grid-item",
   "ui-save-bar",
   "ui-title-bar",
 ];

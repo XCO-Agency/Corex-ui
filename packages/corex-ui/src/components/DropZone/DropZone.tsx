@@ -43,6 +43,7 @@ export const DropZone = forwardRef<HTMLElement, DropZonePropsType>(function Drop
     value,
     files,
     onChange,
+    onDrop,
     onInput,
     onDropRejected,
     onBlur,
@@ -54,6 +55,17 @@ export const DropZone = forwardRef<HTMLElement, DropZonePropsType>(function Drop
 ) {
   const isMultiple = multiple ?? allowMultiple;
   const isRequired = required ?? requiredIndicator;
+
+  // `s-drop-zone` reports through `change` with a DOM event, where the files sit on
+  // the element the way a native file input reports them. v12 handed them straight
+  // to the caller, so both shapes are supported.
+  const handleChange = (event: Event) => {
+    onChange?.(event);
+    if (!onDrop) return;
+
+    const target = event.target as HTMLInputElement | null;
+    onDrop(Array.from(target?.files ?? []));
+  };
 
   return (
     <SDropZone
@@ -70,7 +82,7 @@ export const DropZone = forwardRef<HTMLElement, DropZonePropsType>(function Drop
       details={details ?? helpText}
       required={isRequired}
       value={value}
-      onChange={onChange}
+      onChange={onChange || onDrop ? handleChange : undefined}
       onInput={onInput}
       onDropRejected={onDropRejected}
       onBlur={onBlur}

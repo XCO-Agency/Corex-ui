@@ -1,4 +1,5 @@
 import { forwardRef } from "react";
+import { childrenText } from "../../core/childrenText";
 import { createWebComponent } from "../../core/createWebComponent";
 import { devWarning } from "../../utils/devWarning";
 import type { ButtonPropsType } from "./Button.types";
@@ -21,6 +22,7 @@ export const Button = forwardRef<HTMLElement, ButtonPropsType>(function Button(
     outline,
     variant,
     tone,
+    size,
     url,
     href,
     target,
@@ -40,11 +42,44 @@ export const Button = forwardRef<HTMLElement, ButtonPropsType>(function Button(
   const resolvedVariant =
     variant ??
     (primary ? "primary" : plain ? "tertiary" : outline ? "secondary" : undefined);
-  const resolvedTone = tone ?? (destructive ? "critical" : undefined);
+  if (size !== undefined) {
+    devWarning(
+      "Button",
+      '`size` is ignored: `s-button` has one height. Use `variant="tertiary"` for a quieter control in dense rows.',
+    );
+  }
+
+  // v12's `success` and `magic` have no `s-button` tone. Falling back to `auto`
+  // keeps the button looking like a button rather than guessing at a colour the
+  // admin does not use here.
+  const legacyTone = tone === "success" || tone === "magic" ? undefined : tone;
+  if (tone !== legacyTone) {
+    devWarning(
+      "Button",
+      `tone="${tone}" has no s-button equivalent and falls back to the default tone.`,
+    );
+  }
+
+  const resolvedTone = legacyTone ?? (destructive ? "critical" : undefined);
   const resolvedType = type ?? (submit ? "submit" : undefined);
   const resolvedHref = href ?? url;
   const resolvedTarget = target ?? (external ? "_blank" : undefined);
   const resolvedRel = external || target == "_blank" ? "noopener noreferrer" : undefined;
+
+  // `children` is an array whenever the button holds a glyph alongside its
+  // label, so the accessible name has to come from the text found anywhere in
+  // the subtree rather than from `children` being a bare string.
+  const labelFromChildren = childrenText(children);
+  if (!accessibilityLabel && !labelFromChildren) {
+    devWarning(
+      "Button",
+      "A button with no text children needs an `accessibilityLabel`; screen readers have nothing to announce otherwise.",
+    );
+  }
+  const resolvedAccessibilityLabel =
+    accessibilityLabel ||
+    labelFromChildren ||
+    `Action${resolvedVariant ? ` ${resolvedVariant}` : ""}`;
 
   return (
     <SButton
@@ -55,10 +90,7 @@ export const Button = forwardRef<HTMLElement, ButtonPropsType>(function Button(
       href={resolvedHref}
       target={resolvedTarget}
       rel={resolvedRel}
-      accessibilityLabel={
-        accessibilityLabel ??
-        (typeof children === "string" ? children : `Action  ${resolvedVariant}`)
-      }
+      accessibilityLabel={resolvedAccessibilityLabel}
       inlineSize={rest.inlineSize ?? (fullWidth ? "fill" : undefined)}
       {...rest}
     >

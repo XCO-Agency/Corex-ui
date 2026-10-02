@@ -4,11 +4,10 @@ import { Page } from "./Page";
 import { Button } from "../Button";
 
 describe("Page", () => {
-  it("maps legacy title/subtitle to heading/subheading and composes primaryAction as a Button", () => {
+  it("maps legacy title to heading and composes primaryAction as a Button", () => {
     render(
       <Page
         title="Products"
-        subtitle="Manage your catalog"
         primaryAction={{ content: "Add product" }}
       >
         Body
@@ -17,21 +16,19 @@ describe("Page", () => {
 
     const el = screen.getByText("Body").closest("s-page");
     expect(el).toHaveAttribute("heading", "Products");
-    expect(el).toHaveAttribute("subheading", "Manage your catalog");
     expect(screen.getByText("Add product")).toHaveAttribute("slot", "primary-action");
   });
 
-  it("supports native s-page props: heading, subheading, inlineSize", () => {
+  it("supports native s-page props: heading, inlineSize", () => {
     render(
-      <Page heading="Orders" subheading="View orders" inlineSize="large">
+      <Page heading="Orders" inlineSize="large">
         Content
       </Page>,
     );
 
     const el = screen.getByText("Content").closest("s-page");
     expect(el).toHaveAttribute("heading", "Orders");
-    expect(el).toHaveAttribute("subheading", "View orders");
-    expect(el).toHaveAttribute("inlinesize", "large");
+    expect(el).toHaveAttribute("inline-size", "large");
   });
 
   it("prioritizes new props over deprecated props", () => {
@@ -39,8 +36,6 @@ describe("Page", () => {
       <Page
         heading="New Heading"
         title="Old Title"
-        subheading="New Sub"
-        subtitle="Old Sub"
         inlineSize="small"
         fullWidth
       >
@@ -50,8 +45,7 @@ describe("Page", () => {
 
     const el = screen.getByText("Content").closest("s-page");
     expect(el).toHaveAttribute("heading", "New Heading");
-    expect(el).toHaveAttribute("subheading", "New Sub");
-    expect(el).toHaveAttribute("inlinesize", "small");
+    expect(el).toHaveAttribute("inline-size", "small");
   });
 
   it("maps legacy fullWidth and narrowWidth to inlineSize", () => {
@@ -61,7 +55,7 @@ describe("Page", () => {
       </Page>,
     );
     let el = screen.getByText("Content").closest("s-page");
-    expect(el).toHaveAttribute("inlinesize", "large");
+    expect(el).toHaveAttribute("inline-size", "large");
 
     rerender(
       <Page title="Narrow Page" narrowWidth>
@@ -69,7 +63,7 @@ describe("Page", () => {
       </Page>,
     );
     el = screen.getByText("Content").closest("s-page");
-    expect(el).toHaveAttribute("inlinesize", "small");
+    expect(el).toHaveAttribute("inline-size", "small");
   });
 
   it("renders primaryAction with destructive/critical tone, disabled, and click handler", () => {

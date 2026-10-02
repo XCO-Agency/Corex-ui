@@ -9,6 +9,8 @@ import { AppNavExample } from "@/examples/app-bridge/AppNavExample";
 import AppNavExampleRaw from "@/examples/app-bridge/AppNavExample.tsx?raw";
 import { MenuInTitleBarExample } from "@/examples/app-bridge/MenuInTitleBarExample";
 import MenuInTitleBarExampleRaw from "@/examples/app-bridge/MenuInTitleBarExample.tsx?raw";
+import { ToastComponentExample } from "@/examples/app-bridge/ToastComponentExample";
+import ToastComponentExampleRaw from "@/examples/app-bridge/ToastComponentExample.tsx?raw";
 import { ToastExample } from "@/examples/app-bridge/ToastExample";
 import ToastExampleRaw from "@/examples/app-bridge/ToastExample.tsx?raw";
 import { SaveBarExample } from "@/examples/app-bridge/SaveBarExample";
@@ -154,6 +156,11 @@ export const appBridgeComponents: ComponentEntry[] = [
         title: "Show a toast",
         Example: ToastExample,
         code: ToastExampleRaw,
+      },
+      {
+        title: "Legacy <Toast> component",
+        Example: ToastComponentExample,
+        code: ToastComponentExampleRaw,
       },
     ],
   },
