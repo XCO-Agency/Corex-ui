@@ -8,6 +8,10 @@ export type FlexPopoverPropsType = {
   isOpen: boolean;
   /** Fired on Escape or on pointer-down outside the popover, the anchor and `boundaryRef`. */
   onClose: () => void;
+  /** Optional heading displayed in the popover header. Defaults to "Filters". */
+  heading?: ReactNode;
+  /** Optional accessibility label for the header close button. */
+  closeAccessibilityLabel?: string;
   width?: string;
   minWidth?: string;
   maxHeight?: string;

@@ -1,6 +1,2 @@
 export { Autocomplete } from "./Autocomplete";
-export type {
-  AutocompleteComponentType,
-  AutocompleteOptionType,
-  AutocompletePropsType,
-} from "./Autocomplete.types";
+export type { AutocompleteOptionType } from "./Autocomplete";

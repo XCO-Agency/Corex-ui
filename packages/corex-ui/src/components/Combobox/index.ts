@@ -1,6 +1,13 @@
-export { Combobox, ComboboxPopover } from "./Combobox";
+export { Combobox, useCombobox } from "./Combobox";
+
 export type {
   ComboboxComponentType,
-  ComboboxPopoverPropsType,
   ComboboxPropsType,
+  ComboboxInputPropsType,
+  ComboboxContentPropsType,
+  ComboboxListPropsType,
+  ComboboxItemPropsType,
+  ComboboxEmptyPropsType,
+  ComboboxPopoverPropsType,
+  ComboboxContextType,
 } from "./Combobox.types";

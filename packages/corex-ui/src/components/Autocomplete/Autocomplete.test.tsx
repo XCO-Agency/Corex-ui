@@ -10,62 +10,29 @@ const options = [
 describe("Autocomplete", () => {
   it("renders the field and its options when open", () => {
     const { container } = render(
-      <Autocomplete
-        open
-        textField={<Autocomplete.TextField label="Tags" value="" autoComplete="off" />}
-        options={options}
-      />,
+      <Autocomplete open label="Tags" value="" options={options} />,
     );
 
-    expect(container.querySelector("s-text-field")).not.toBeNull();
+    expect(container.querySelector("input")).not.toBeNull();
+    expect(screen.getByText("Tags")).toBeInTheDocument();
     expect(screen.getAllByRole("option")).toHaveLength(2);
   });
 
   it("renders options inside FlexPopover", () => {
-    render(
-      <Autocomplete
-        open
-        textField={<Autocomplete.TextField label="Tags" value="" autoComplete="off" />}
-        options={options}
-      />,
-    );
+    render(<Autocomplete open label="Tags" value="" options={options} />);
 
     const popover = document.querySelector(".corex-native-popover");
     expect(popover).not.toBeNull();
     expect(popover?.querySelectorAll('[role="option"]')).toHaveLength(2);
   });
 
-  it("replaces the selection when multiple is not allowed", () => {
+  it("calls onSelect with the selected value when an option is chosen", () => {
     const onSelect = vi.fn();
-    render(
-      <Autocomplete open options={options} selected={["a"]} onSelect={onSelect} />,
-    );
+    render(<Autocomplete open options={options} selected="a" onSelect={onSelect} />);
 
     fireEvent.mouseDown(screen.getAllByRole("option")[1]!);
 
-    expect(onSelect).toHaveBeenCalledWith(["b"]);
-  });
-
-  it("toggles a value in and out when multiple is allowed", () => {
-    const onSelect = vi.fn();
-    const { rerender } = render(
-      <Autocomplete open options={options} selected={["a"]} onSelect={onSelect} allowMultiple />,
-    );
-
-    fireEvent.mouseDown(screen.getAllByRole("option")[1]!);
-    expect(onSelect).toHaveBeenCalledWith(["a", "b"]);
-
-    rerender(
-      <Autocomplete
-        open
-        options={options}
-        selected={["a", "b"]}
-        onSelect={onSelect}
-        allowMultiple
-      />,
-    );
-    fireEvent.mouseDown(screen.getAllByRole("option")[0]!);
-    expect(onSelect).toHaveBeenCalledWith(["b"]);
+    expect(onSelect).toHaveBeenCalledWith("b");
   });
 
   it("shows the empty state instead of an empty list", () => {

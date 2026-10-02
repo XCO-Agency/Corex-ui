@@ -1,96 +1,128 @@
 import { forwardRef } from "react";
+import type { CSSProperties, ReactNode } from "react";
 import { Box } from "../Box";
 import { Combobox } from "../Combobox";
-import { Listbox } from "../Listbox";
-import { TextField } from "../TextField";
-import type {
-  AutocompleteComponentType,
-  AutocompletePropsType,
-} from "./Autocomplete.types";
+import { Spinner } from "../Spinner";
+
+export type AutocompleteOptionType = {
+  value: string;
+  label?: ReactNode;
+  disabled?: boolean;
+};
+
+type AutocompletePropsType = {
+  /** The collection of suggestion options. */
+  options?: AutocompleteOptionType[];
+  /** Search query or input value. */
+  value?: string;
+  /** Callback when search query changes. */
+  onChange?: (value: string) => void;
+  /** The currently selected option value. */
+  selected?: string;
+  /** Callback fired when an option is selected. */
+  onSelect?: (value: string) => void;
+
+  /** Input label. */
+  label?: string;
+  /** Input placeholder text. */
+  placeholder?: string;
+  /** Browser autocomplete attribute. Defaults to "off". */
+  disabled?: boolean;
+
+  /** Loading state showing a spinner. */
+  loading?: boolean;
+  /** Content shown when no options match. */
+  emptyState?: ReactNode;
+
+  /** Controlled open state of the suggestion list. */
+  open?: boolean;
+  /** Callback when the suggestion list closes. */
+  onClose?: () => void;
+
+  id?: string;
+  className?: string;
+  style?: CSSProperties;
+};
 
 /**
- * Options in, selection out: the whole control in one component, displaying
- * its suggestions within a floating Popover anchored to the input field.
- *
- * `allowMultiple` toggles a value in and out of `selected`; without it a pick
- * replaces the selection and automatically closes the popover.
+ * Autocomplete component: provides real-time suggestions as the user types.
+ * Single-selection only, built directly on Corex Combobox.
  */
-const AutocompleteRoot = forwardRef<HTMLDivElement, AutocompletePropsType>(
+export const Autocomplete = forwardRef<HTMLDivElement, AutocompletePropsType>(
   function Autocomplete(
     {
       options = [],
-      selected = [],
+      value = "",
+      onChange,
+      selected,
       onSelect,
-      textField,
-      allowMultiple,
-      loading,
+      label,
+      placeholder = "Search...",
+      disabled = false,
+      loading = false,
       emptyState,
       open,
-      active,
       onClose,
-      preferredPosition,
-      willLoadMoreResults,
-      onLoadMoreResults,
-      ...rest
+      id,
+      className,
+      style,
     },
     ref,
   ) {
-    const pick = (value: string) => {
-      if (!allowMultiple) {
-        onSelect?.([value]);
-        return;
-      }
-
-      onSelect?.(
-        selected.includes(value)
-          ? selected.filter((entry) => entry !== value)
-          : [...selected, value],
-      );
-    };
-
+    const selectedItem = options.find((opt) => opt.value === selected);
     const hasOptions = options.length > 0;
-    const shouldShowEmptyState = !loading && !hasOptions && Boolean(emptyState);
 
     return (
       <Combobox
         ref={ref}
-        activator={textField}
-        allowMultiple={allowMultiple}
+        items={options}
+        itemToStringValue={(opt) =>
+          typeof opt?.label === "string" ? opt.label : String(opt?.value ?? opt ?? "")
+        }
+        value={selectedItem}
         open={open}
-        active={active}
         onClose={onClose}
-        preferredPosition={preferredPosition}
-        willLoadMoreOptions={willLoadMoreResults}
-        onScrolledToBottom={onLoadMoreResults}
-        {...rest}
+        inputValue={value}
+        onInputValueChange={onChange}
+        filter={false}
+        id={id}
+        className={className}
+        style={style}
       >
-        <Combobox.Popover>
-          {loading ? <Listbox.Loading key="autocomplete-loading" /> : null}
-          {!loading && hasOptions ? (
-            <Listbox key="autocomplete-listbox" onSelect={pick}>
-              {options.map((option) => (
-                <Listbox.Option
-                  key={option.value}
-                  value={option.value}
-                  selected={selected.includes(option.value)}
-                  disabled={option.disabled}
-                >
-                  {option.label ?? option.value}
-                </Listbox.Option>
-              ))}
-            </Listbox>
-          ) : null}
-          {shouldShowEmptyState ? (
-            <Box key="autocomplete-empty-state" padding="small-200">
-              {emptyState}
+        <Combobox.Input
+          label={label}
+          placeholder={placeholder}
+          value={value}
+          onChange={onChange}
+          autoComplete="off"
+          disabled={disabled}
+          showClear
+        />
+        <Combobox.Content>
+          {loading ? (
+            <Box padding="base" inlineSize="100%" style={{ textAlign: "center" }}>
+              <Spinner size="small" />
             </Box>
           ) : null}
-        </Combobox.Popover>
+          {!loading && !hasOptions && emptyState ? (
+            <Combobox.Empty>{emptyState}</Combobox.Empty>
+          ) : null}
+          {!loading && hasOptions ? (
+            <Combobox.List>
+              {options.map((option) => (
+                <Combobox.Item
+                  key={option.value}
+                  value={option}
+                  disabled={option.disabled}
+                  onSelect={() => onSelect?.(option.value)}
+                >
+                  {option.label ?? option.value}
+                </Combobox.Item>
+              ))}
+            </Combobox.List>
+          ) : null}
+        </Combobox.Content>
       </Combobox>
     );
   },
 );
-
-export const Autocomplete = Object.assign(AutocompleteRoot, {
-  TextField,
-}) as unknown as AutocompleteComponentType;

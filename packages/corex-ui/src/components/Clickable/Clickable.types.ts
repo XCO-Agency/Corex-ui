@@ -32,6 +32,7 @@ export type ClickablePropsType = Omit<
     onBlur?: ((event: FocusEvent) => void) | null;
     /** Callback fired on focus. */
     onFocus?: ((event: FocusEvent) => void) | null;
+    /** Callback fired on mouse enter. */
     /** ARIA role, for a clickable standing in as a listbox option or similar. */
     role?: string;
     [key: `aria-${string}`]: unknown;

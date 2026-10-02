@@ -64,6 +64,8 @@ export function FlexPopover({
   anchorRef,
   isOpen,
   onClose,
+  heading = "Filters",
+  closeAccessibilityLabel,
   noHeader,
   width,
   minWidth,
@@ -318,13 +320,20 @@ export function FlexPopover({
                   paddingInline="base small-300"
                   paddingBlock="small-300"
                 >
-                  <Text variant="small" heading>
-                    Filters
-                  </Text>
+                  {typeof heading === "string" ? (
+                    <Text variant="small" heading>
+                      {heading}
+                    </Text>
+                  ) : (
+                    heading
+                  )}
                   <Button
                     icon="x"
                     variant="tertiary"
-                    accessibilityLabel="Close filters popup"
+                    accessibilityLabel={
+                      closeAccessibilityLabel ??
+                      (heading === "Filters" ? "Close filters popup" : "Close popup")
+                    }
                     onClick={(event) => {
                       event.stopPropagation();
                       onCloseRef.current();

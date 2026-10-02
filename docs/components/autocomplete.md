@@ -1,35 +1,35 @@
 # Autocomplete
 
-Options in, selection out: the whole control in one component, as v12's was.
+Options in, selection out: the whole control in one component, built directly on top of Combobox.
 
 ```tsx
 import { Autocomplete } from "@xco-agency/corex-ui";
 
 <Autocomplete
-  textField={
-    <Autocomplete.TextField
-      label="Vendor"
-      value={query}
-      autoComplete="off"
-      onChange={setQuery}
-    />
-  }
+  label="Vendor"
+  placeholder="Search vendors"
+  value={query}
+  onChange={setQuery}
   options={matches.map((vendor) => ({ value: vendor.id, label: vendor.name }))}
   selected={selected}
   onSelect={setSelected}
   loading={isFetching}
   emptyState={<Text color="subdued">No vendors match</Text>}
-  allowMultiple
 />;
 ```
 
-| Prop            | Behavior                                                                             |
-| --------------- | ------------------------------------------------------------------------------------ |
-| `allowMultiple` | Toggles a value in and out of `selected`. Without it, a pick replaces the selection. |
-| `loading`       | Shows `Listbox.Loading` in place of the options.                                     |
-| `emptyState`    | Shown when there are no options.                                                     |
-| `textField`     | The field. `Autocomplete.TextField` is [`TextField`](./text-field.md).               |
-
-The list is a [`Listbox`](./listbox.md) displayed in a floating Popover overlay
-anchored to the text field, so selection happens on pointer-down and the field keeps
-focus without shifting the page layout.
+| Prop           | Behavior                                                              |
+| -------------- | --------------------------------------------------------------------- |
+| `options`      | Array of suggestion options (`{ value, label, disabled }`).           |
+| `value`        | Current search query text.                                            |
+| `onChange`     | Callback fired when search query changes.                             |
+| `selected`     | Currently selected value (`string`).                                  |
+| `onSelect`     | Callback fired when an option is selected (`(value: string) => void`).|
+| `label`        | Label displayed above the field.                                      |
+| `placeholder`  | Placeholder text inside the input.                                    |
+| `autoComplete` | Browser autocomplete attribute (`default: "off"`).                    |
+| `disabled`     | Disables the input field.                                             |
+| `loading`      | Shows a spinner in place of options while fetching.                   |
+| `emptyState`   | Content shown when no options match the query.                        |
+| `open`         | Controlled open state of the suggestions popover.                     |
+| `onClose`      | Callback when the suggestions popover closes.                         |
