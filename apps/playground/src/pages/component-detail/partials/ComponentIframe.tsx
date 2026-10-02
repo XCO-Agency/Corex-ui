@@ -143,7 +143,7 @@ export function ComponentIframe({ children, className }: ComponentIframePropsTyp
               </style>
 
               <script
-                src="https://cdn.shopify.com/shopifycloud/polaris-2.0-rc.js"
+                src="/polaris-2.0-rc.js"
               ></script>
             </head>
 

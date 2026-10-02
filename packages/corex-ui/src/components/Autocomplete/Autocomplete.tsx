@@ -1,4 +1,4 @@
-import { forwardRef } from "react";
+import { forwardRef, useEffect, useState } from "react";
 import type { CSSProperties, ReactNode } from "react";
 import { Box } from "../Box";
 import { Combobox } from "../Combobox";
@@ -10,7 +10,7 @@ export type AutocompleteOptionType = {
   disabled?: boolean;
 };
 
-type AutocompletePropsType = {
+export type AutocompletePropsType = {
   /** The collection of suggestion options. */
   options?: AutocompleteOptionType[];
   /** Search query or input value. */
@@ -26,7 +26,7 @@ type AutocompletePropsType = {
   label?: string;
   /** Input placeholder text. */
   placeholder?: string;
-  /** Browser autocomplete attribute. Defaults to "off". */
+  /** Whether the input is disabled. */
   disabled?: boolean;
 
   /** Loading state showing a spinner. */
@@ -52,7 +52,7 @@ export const Autocomplete = forwardRef<HTMLDivElement, AutocompletePropsType>(
   function Autocomplete(
     {
       options = [],
-      value = "",
+      value,
       onChange,
       selected,
       onSelect,
@@ -69,7 +69,50 @@ export const Autocomplete = forwardRef<HTMLDivElement, AutocompletePropsType>(
     },
     ref,
   ) {
+    const isControlledValue = value !== undefined;
     const selectedItem = options.find((opt) => opt.value === selected);
+    const selectedLabel =
+      typeof selectedItem?.label === "string"
+        ? selectedItem.label
+        : selectedItem?.value ?? "";
+
+    const [internalValue, setInternalValue] = useState(selectedLabel);
+
+    useEffect(() => {
+      if (!isControlledValue) {
+        setInternalValue(selectedLabel);
+      }
+    }, [isControlledValue, selectedLabel]);
+
+    const displayValue = isControlledValue ? value : internalValue;
+
+    const handleInputChange = (nextVal: string) => {
+      if (!isControlledValue) {
+        setInternalValue(nextVal);
+      }
+      onChange?.(nextVal);
+      if (nextVal === "" && selected) {
+        onSelect?.("");
+      }
+    };
+
+    const handleSelectOption = (opt: AutocompleteOptionType) => {
+      const labelStr = typeof opt.label === "string" ? opt.label : opt.value;
+      if (!isControlledValue) {
+        setInternalValue(labelStr);
+      }
+      onChange?.(labelStr);
+      onSelect?.(opt.value);
+    };
+
+    const handleClear = () => {
+      if (!isControlledValue) {
+        setInternalValue("");
+      }
+      onChange?.("");
+      onSelect?.("");
+    };
+
     const hasOptions = options.length > 0;
 
     return (
@@ -82,8 +125,13 @@ export const Autocomplete = forwardRef<HTMLDivElement, AutocompletePropsType>(
         value={selectedItem}
         open={open}
         onClose={onClose}
-        inputValue={value}
-        onInputValueChange={onChange}
+        inputValue={displayValue}
+        onInputValueChange={handleInputChange}
+        onValueChange={(val) => {
+          if (!val) {
+            handleClear();
+          }
+        }}
         filter={false}
         id={id}
         className={className}
@@ -92,8 +140,9 @@ export const Autocomplete = forwardRef<HTMLDivElement, AutocompletePropsType>(
         <Combobox.Input
           label={label}
           placeholder={placeholder}
-          value={value}
-          onChange={onChange}
+          value={displayValue}
+          onChange={handleInputChange}
+          onClear={handleClear}
           autoComplete="off"
           disabled={disabled}
           showClear
@@ -114,7 +163,7 @@ export const Autocomplete = forwardRef<HTMLDivElement, AutocompletePropsType>(
                   key={option.value}
                   value={option}
                   disabled={option.disabled}
-                  onSelect={() => onSelect?.(option.value)}
+                  onSelect={() => handleSelectOption(option)}
                 >
                   {option.label ?? option.value}
                 </Combobox.Item>

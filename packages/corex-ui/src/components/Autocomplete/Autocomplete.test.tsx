@@ -30,7 +30,7 @@ describe("Autocomplete", () => {
     const onSelect = vi.fn();
     render(<Autocomplete open options={options} selected="a" onSelect={onSelect} />);
 
-    fireEvent.mouseDown(screen.getAllByRole("option")[1]!);
+    fireEvent.click(screen.getAllByRole("option")[1]!);
 
     expect(onSelect).toHaveBeenCalledWith("b");
   });

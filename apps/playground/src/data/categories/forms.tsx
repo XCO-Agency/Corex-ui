@@ -39,8 +39,6 @@ import { ComboboxExample } from "@/examples/forms/ComboboxExample";
 import ComboboxExampleRaw from "@/examples/forms/ComboboxExample.tsx?raw";
 import { AutocompleteExample } from "@/examples/forms/AutocompleteExample";
 import AutocompleteExampleRaw from "@/examples/forms/AutocompleteExample.tsx?raw";
-import { IndexFiltersExample } from "@/examples/forms/IndexFiltersExample";
-import IndexFiltersExampleRaw from "@/examples/forms/IndexFiltersExample.tsx?raw";
 
 export const formsComponents: ComponentEntry[] = [
   {
@@ -316,19 +314,6 @@ export const formsComponents: ComponentEntry[] = [
         title: "Multi-select vendors",
         Example: AutocompleteExample,
         code: AutocompleteExampleRaw,
-      },
-    ],
-  },
-  {
-    name: "IndexFilters",
-    slug: "index-filters",
-    category: "Forms",
-    description: "v12's search-and-filter bar, mapped onto the Filters toolbar.",
-    examples: [
-      {
-        title: "Tabs, filters and sort",
-        Example: IndexFiltersExample,
-        code: IndexFiltersExampleRaw,
       },
     ],
   },

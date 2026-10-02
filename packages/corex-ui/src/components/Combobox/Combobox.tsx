@@ -113,19 +113,23 @@ const ComboboxInput = forwardRef<HTMLElement, ComboboxInputPropsType>(
     const isEffectiveDisabled = Boolean(disabled ?? rootDisabled);
     const isEffectiveReadOnly = Boolean(readOnly ?? rootReadOnly);
 
-    const isDisplayingSelection =
-      !multiple && !open && rootValue !== undefined && rootValue !== null;
-    const selectionString = isDisplayingSelection ? itemToString(rootValue) : "";
+    const selectionString =
+      !multiple && rootValue !== undefined && rootValue !== null
+        ? itemToString(rootValue)
+        : "";
 
     const displayValue =
       propValue !== undefined
         ? propValue
-        : isDisplayingSelection && !inputValue
-          ? selectionString
-          : inputValue;
+        : inputValue !== ""
+          ? inputValue
+          : selectionString;
 
     const handleInput = (nextVal: string, fieldId?: string) => {
       setInputValue(nextVal);
+      if (!multiple && nextVal === "") {
+        clearValue();
+      }
       onChange?.(nextVal, fieldId);
       if (!open && !isEffectiveDisabled && !isEffectiveReadOnly) {
         setOpen(true);

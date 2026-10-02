@@ -363,7 +363,7 @@ describe("Combobox", () => {
     expect((options[1] as any).background).toBeUndefined();
 
     // Hover over the second item
-    fireEvent.mouseEnter(options[1]!);
+    fireEvent.mouseEnter(options[1]!.closest("s-box")!);
     expect((options[1] as any).background).toBe("subdued");
   });
 
@@ -404,7 +404,7 @@ describe("Combobox", () => {
     expect(options[1]?.id).toBe("test-combobox-item-1");
 
     // Hover second option -> aria-activedescendant matches
-    fireEvent.mouseEnter(options[1]!);
+    fireEvent.mouseEnter(options[1]!.closest("s-box")!);
     expect(input.getAttribute("aria-activedescendant")).toBe("test-combobox-item-1");
   });
 });

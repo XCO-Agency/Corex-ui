@@ -9,7 +9,7 @@ const vendors = [
 
 export function AutocompleteExample() {
   const [query, setQuery] = useState("");
-  const [selected, setSelected] = useState<string>("acme");
+  const [selected, setSelected] = useState<string>("");
 
   const matches = vendors.filter((vendor) =>
     vendor.label.toLowerCase().includes(query.toLowerCase()),
@@ -22,13 +22,14 @@ export function AutocompleteExample() {
         placeholder="Search vendors"
         value={query}
         onChange={setQuery}
-        autoComplete="off"
         options={matches}
         selected={selected}
         onSelect={(value) => {
           setSelected(value);
           const found = vendors.find((v) => v.value === value);
-          if (found) setQuery(found.label);
+          if (found && typeof found.label === "string") {
+            setQuery(found.label);
+          }
         }}
         emptyState={<Text color="subdued">No vendors match “{query}”</Text>}
       />
