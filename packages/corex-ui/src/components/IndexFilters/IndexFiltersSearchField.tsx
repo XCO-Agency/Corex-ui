@@ -21,12 +21,11 @@ import { IconTile } from "../IconTile";
 import { ChoiceList } from "../ChoiceList";
 import { TextField } from "../TextField";
 import type {
-  AppliedFilterType,
-  FilterItemType,
-  FilterOperatorType,
-  FiltersSearchFieldPropsType,
-} from "./Filters.types";
-import { Badge } from "../Badge";
+  IndexAppliedFilterType,
+  IndexFilterItemType,
+  IndexFilterOperatorType,
+  IndexFiltersSearchFieldPropsType,
+} from "./IndexFilters.types";
 import { Transition } from "../Transition";
 import { Tooltip } from "../Tooltip";
 import { FlexPopover } from "../FlexPopover";
@@ -34,18 +33,20 @@ import { FlexPopover } from "../FlexPopover";
 /** Number of values shown inside a pill before collapsing into "+ n more". */
 const MAX_VISIBLE_VALUES = 3;
 
-const DEFAULT_OPERATORS: FilterOperatorType[] = [
+const DEFAULT_OPERATORS: IndexFilterOperatorType[] = [
   { label: "Is", value: "is" },
   { label: "Is not", value: "is_not" },
 ];
 
 /** Marks a filter pill; its value is the pill index in `appliedFilters`. */
-const CHIP_ATTR = "data-corex-filters-chip";
+const CHIP_ATTR = "data-corex-index-filters-chip";
+const LEGACY_CHIP_ATTR = "data-corex-filters-chip";
 /** Marks controls inside the field that must not move the caret on mouse down. */
-const CONTROL_ATTR = "data-corex-filters-control";
+const CONTROL_ATTR = "data-corex-index-filters-control";
+const LEGACY_CONTROL_ATTR = "data-corex-filters-control";
 /** Width (px) of the faded edges of the horizontally scrolling pills/text area. */
 const SCROLL_FADE = 24;
-const SCROLL_CLASS = "corex-filters-scroll";
+const SCROLL_CLASS = "corex-index-filters-scroll corex-filters-scroll";
 
 type ActivePopoverType =
   | { type: "categories" }
@@ -62,9 +63,9 @@ const normalizeOperator = (value: string) =>
 const toDomId = (value: string) => value.replace(/[^a-zA-Z0-9_-]/g, "_");
 
 function resolveOperator(
-  filterDef: FilterItemType | undefined,
-  applied: AppliedFilterType,
-): FilterOperatorType {
+  filterDef: IndexFilterItemType | undefined,
+  applied: IndexAppliedFilterType,
+): IndexFilterOperatorType {
   const operators = filterDef?.operators ?? DEFAULT_OPERATORS;
   const raw =
     applied.operator ?? filterDef?.defaultOperator ?? operators[0]?.value ?? "is";
@@ -78,14 +79,14 @@ function resolveOperator(
   );
 }
 
-function getAppliedValues(applied: AppliedFilterType): string[] {
+function getAppliedValues(applied: IndexAppliedFilterType): string[] {
   if (Array.isArray(applied.value)) return applied.value;
   return applied.value ? [String(applied.value)] : [];
 }
 
 function formatAppliedValues(
-  filterDef: FilterItemType | undefined,
-  applied: AppliedFilterType,
+  filterDef: IndexFilterItemType | undefined,
+  applied: IndexAppliedFilterType,
 ): string {
   if (applied.label) return applied.label;
 
@@ -100,7 +101,7 @@ function formatAppliedValues(
 }
 
 /**
- * Unified search + filter input (Filters.SearchField).
+ * Unified search + filter input (IndexFilters.SearchField).
  *
  * Behaves like a token field: applied filters render as pills
  * (`[Tag is not] [value, value + n more ×]`) followed by free-text keyword search.
@@ -114,7 +115,7 @@ function formatAppliedValues(
  *   Arrow keys move the caret across pills.
  * - Keyword text is emitted through `onQueryChange`, debounced by `debounceDelay`.
  */
-export function FiltersSearchField({
+export function IndexFiltersSearchField({
   queryValue = "",
   queryPlaceholder = "search by keywords",
   onQueryChange,
@@ -131,7 +132,7 @@ export function FiltersSearchField({
   onClearAll,
   disabled = false,
   id,
-}: FiltersSearchFieldPropsType) {
+}: IndexFiltersSearchFieldPropsType) {
   const [activePopover, setActivePopover] = useState<ActivePopoverType>(null);
   const [isFocused, setIsFocused] = useState(false);
   /** Gap between pills holding the caret (before pill `caretIndex`); null = text input. */
@@ -147,8 +148,8 @@ export function FiltersSearchField({
   const [focusedChipKey, setFocusedChipKey] = useState<string | null>(null);
 
   const baseId = useId().replace(/:/g, "");
-  const inputId = `corex-filters-input-${baseId}`;
-  const gapInputId = `corex-filters-gap-${baseId}`;
+  const inputId = `corex-index-filters-input-${baseId}`;
+  const gapInputId = `corex-index-filters-gap-${baseId}`;
 
   const containerRef = useRef<HTMLDivElement>(null);
   const regionRef = useRef<HTMLDivElement>(null);
@@ -290,7 +291,9 @@ export function FiltersSearchField({
     const trigger = regionRef.current?.ownerDocument.getElementById(
       getValueTriggerId(activePillKey),
     );
-    revealInRegion(trigger?.closest(`[${CHIP_ATTR}]`) ?? null);
+    revealInRegion(
+      trigger?.closest(`[${CHIP_ATTR}], [${LEGACY_CHIP_ATTR}]`) ?? null,
+    );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activePillKey, chipCount]);
 
@@ -362,7 +365,7 @@ export function FiltersSearchField({
 
   /* ------------------------------------------------------------- actions */
 
-  const selectCategory = (filter: FilterItemType) => {
+  const selectCategory = (filter: IndexFilterItemType) => {
     const insertIndex = Math.min(caretIndex ?? chipCount, chipCount);
     setCaretIndex(null);
     setGapQuery("");
@@ -383,7 +386,7 @@ export function FiltersSearchField({
   };
 
   const selectValue = (
-    applied: AppliedFilterType,
+    applied: IndexAppliedFilterType,
     value: string | string[],
     operator: string,
   ) => {
@@ -391,8 +394,8 @@ export function FiltersSearchField({
   };
 
   const selectOperator = (
-    filterDef: FilterItemType | undefined,
-    applied: AppliedFilterType,
+    filterDef: IndexFilterItemType | undefined,
+    applied: IndexAppliedFilterType,
     operator: string,
   ) => {
     if (onOperatorChange) {
@@ -547,11 +550,15 @@ export function FiltersSearchField({
     const region = regionRef.current;
     if (!region) return chipCount;
     let gap = chipCount;
-    const chips = region.querySelectorAll<HTMLElement>(`[${CHIP_ATTR}]`);
+    const chips = region.querySelectorAll<HTMLElement>(
+      `[${CHIP_ATTR}], [${LEGACY_CHIP_ATTR}]`,
+    );
     for (const chip of Array.from(chips)) {
       const rect = chip.getBoundingClientRect();
       if (y < rect.top - 4 || y > rect.bottom + 4) continue;
-      const index = Number(chip.getAttribute(CHIP_ATTR));
+      const index = Number(
+        chip.getAttribute(CHIP_ATTR) ?? chip.getAttribute(LEGACY_CHIP_ATTR),
+      );
       if (x < rect.left + rect.width / 2) return index;
       gap = index + 1;
     }
@@ -564,7 +571,12 @@ export function FiltersSearchField({
     // React bubbles events through portals: ignore clicks inside pill popovers.
     if (!event.currentTarget.contains(target)) return;
     if (target === inputRef.current || target === gapInputRef.current) return;
-    if (target.closest(`[${CHIP_ATTR}], [${CONTROL_ATTR}]`)) return;
+    if (
+      target.closest(
+        `[${CHIP_ATTR}], [${LEGACY_CHIP_ATTR}], [${CONTROL_ATTR}], [${LEGACY_CONTROL_ATTR}]`,
+      )
+    )
+      return;
 
     event.preventDefault();
     const gap = resolveGapFromPoint(event.clientX, event.clientY);
@@ -579,9 +591,9 @@ export function FiltersSearchField({
   /* -------------------------------------------------------------- render */
 
   const renderOperatorList = (
-    filterDef: FilterItemType | undefined,
-    applied: AppliedFilterType,
-    currentOperator: FilterOperatorType,
+    filterDef: IndexFilterItemType | undefined,
+    applied: IndexAppliedFilterType,
+    currentOperator: IndexFilterOperatorType,
     onPicked?: () => void,
   ) => (
     <Box background="base">
@@ -615,10 +627,10 @@ export function FiltersSearchField({
   );
 
   const renderValueControls = (
-    filterDef: FilterItemType | undefined,
-    applied: AppliedFilterType,
+    filterDef: IndexFilterItemType | undefined,
+    applied: IndexAppliedFilterType,
     fieldLabel: string,
-    currentOperator: FilterOperatorType,
+    currentOperator: IndexFilterOperatorType,
   ) => {
     const values = getAppliedValues(applied);
     const isMultiple = filterDef?.allowMultiple !== false;
@@ -706,7 +718,7 @@ export function FiltersSearchField({
     );
   };
 
-  const renderChip = (applied: AppliedFilterType, index: number) => {
+  const renderChip = (applied: IndexAppliedFilterType, index: number) => {
     const filterDef = filters.find((item) => item.key === applied.key);
     const fieldLabel = applied.field ?? filterDef?.label ?? applied.key;
     const currentOperator = resolveOperator(filterDef, applied);
@@ -752,7 +764,7 @@ export function FiltersSearchField({
       <Transition key={applied.key} variant="scale-up">
         <InlineStack
           key={applied.key}
-          {...{ [CHIP_ATTR]: String(index) }}
+          {...{ [CHIP_ATTR]: String(index), [LEGACY_CHIP_ATTR]: String(index) }}
           alignItems="center"
           gap="small-500"
           wrap={false}
@@ -905,7 +917,7 @@ export function FiltersSearchField({
   const gapInput =
     caretIndex !== null ? (
       <input
-        key="corex-filters-gap"
+        key="corex-index-filters-gap"
         ref={gapInputRef}
         id={gapInputId}
         type="text"
@@ -1022,7 +1034,11 @@ export function FiltersSearchField({
         {chipNodes}
 
         {filters.length > 0 && !hideAddButton ? (
-          <InlineStack {...{ [CONTROL_ATTR]: "" }} alignItems="center" shrink={false}>
+          <InlineStack
+            {...{ [CONTROL_ATTR]: "", [LEGACY_CONTROL_ATTR]: "" }}
+            alignItems="center"
+            shrink={false}
+          >
             <Clickable
               disabled={disabled}
               background="transparent"
@@ -1146,8 +1162,10 @@ export function FiltersSearchField({
         </FlexPopover>
       ) : null}
 
-      <style>{`.${SCROLL_CLASS}::-webkit-scrollbar { display: none; }`}</style>
+      <style>{`.corex-index-filters-scroll::-webkit-scrollbar, .corex-filters-scroll::-webkit-scrollbar { display: none; }`}</style>
     </InlineStack>
   );
 }
-FiltersSearchField.displayName = "FiltersSearchField";
+IndexFiltersSearchField.displayName = "IndexFiltersSearchField";
+
+export const FiltersSearchField = IndexFiltersSearchField;

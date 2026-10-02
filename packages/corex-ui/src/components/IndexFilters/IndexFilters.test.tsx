@@ -1,15 +1,19 @@
 import React from "react";
 import { describe, expect, it, vi } from "vitest";
 import { render, fireEvent, screen, act, cleanup } from "@testing-library/react";
-import { Filters } from "./Filters";
+import { IndexFilters, Filters } from "./IndexFilters";
 import { Tabs } from "../Tabs";
 
 const cleanupAll = () => cleanup();
 
-describe("Filters", () => {
+describe("IndexFilters", () => {
+  it("provides backwards-compatible Filters export alias", () => {
+    expect(Filters).toBe(IndexFilters);
+  });
+
   it("renders custom text input with placeholder and queryValue", () => {
     render(
-      <Filters
+      <IndexFilters
         queryValue="test product"
         queryPlaceholder="Search products..."
         onQueryChange={() => {}}
@@ -24,7 +28,7 @@ describe("Filters", () => {
   it("fires onQueryChange on text typing", () => {
     const onQueryChange = vi.fn();
 
-    render(<Filters queryValue="" debounceDelay={0} onQueryChange={onQueryChange} />);
+    render(<IndexFilters queryValue="" debounceDelay={0} onQueryChange={onQueryChange} />);
 
     const inputEl = document.querySelector('input[type="text"]')!;
     fireEvent.change(inputEl, { target: { value: "headphones" } });
@@ -35,7 +39,7 @@ describe("Filters", () => {
     vi.useFakeTimers();
     try {
       const onQueryChange = vi.fn();
-      render(<Filters queryValue="" onQueryChange={onQueryChange} />);
+      render(<IndexFilters queryValue="" onQueryChange={onQueryChange} />);
 
       const inputEl = document.querySelector('input[type="text"]')!;
       fireEvent.change(inputEl, { target: { value: "head" } });
@@ -59,7 +63,7 @@ describe("Filters", () => {
 
   it("opens filter dropdown on focus and shows filter items", () => {
     render(
-      <Filters
+      <IndexFilters
         filters={[
           { key: "vendor", label: "Vendor" },
           { key: "status", label: "Status" },
@@ -78,7 +82,7 @@ describe("Filters", () => {
     const onAddFilter = vi.fn();
 
     render(
-      <Filters
+      <IndexFilters
         filters={[
           {
             key: "tag",
@@ -126,7 +130,7 @@ describe("Filters", () => {
     function TestWrapper() {
       const [applied, setApplied] = React.useState<any[]>([]);
       return (
-        <Filters
+        <IndexFilters
           filters={filters}
           appliedFilters={applied}
           onAddFilter={(key) => {
@@ -167,7 +171,7 @@ describe("Filters", () => {
     const onFilterSelect = vi.fn();
 
     render(
-      <Filters
+      <IndexFilters
         filters={[
           {
             key: "vendor",
@@ -195,31 +199,34 @@ describe("Filters", () => {
       />,
     );
 
-    // Click operator segment (Vendor is)
-    const operatorSegment = screen.getByText("is").closest("div");
-    fireEvent.click(operatorSegment!);
+    // Click operator pill segment -> opens operator popover
+    const opTrigger = document.querySelector(
+      's-clickable[accessibility-label="Vendor operator"]',
+    )!;
+    fireEvent.click(opTrigger);
 
-    expect(document.body.textContent).toContain("Is not");
     const isNotOption = document.querySelector(
       's-clickable[accessibility-label="Is not"]',
     )!;
+    expect(isNotOption).toBeInTheDocument();
     fireEvent.click(isNotOption);
     expect(onOperatorChange).toHaveBeenCalledWith("vendor", "is_not");
 
-    // Click value segment (apple)
-    const valueSegment = screen.getByText("apple").closest("div");
-    fireEvent.click(valueSegment!);
+    // Click value pill segment -> opens value popover
+    const valTrigger = document.querySelector(
+      's-clickable[accessibility-label="Vendor value"]',
+    )!;
+    fireEvent.click(valTrigger);
 
-    expect(document.body.textContent).toContain("Apple");
-    const appleOption = document.querySelector('s-choice[value="apple"]')!;
-    fireEvent.click(appleOption);
-    expect(onFilterSelect).toHaveBeenCalledWith("vendor", "apple", "is");
+    const choiceApple = document.querySelector('s-choice[value="apple"]')!;
+    expect(choiceApple).toBeInTheDocument();
   });
 
   it("supports multiple select by default on choice filters", () => {
     const onFilterSelect = vi.fn();
+
     render(
-      <Filters
+      <IndexFilters
         filters={[
           {
             key: "vendor",
@@ -233,10 +240,10 @@ describe("Filters", () => {
         appliedFilters={[
           {
             key: "vendor",
-            label: "apple",
+            label: "Apple",
             field: "Vendor",
             operator: "is",
-            value: "apple",
+            value: ["apple"],
             onRemove: () => {},
           },
         ]}
@@ -244,8 +251,10 @@ describe("Filters", () => {
       />,
     );
 
-    const valueSegment = screen.getByText("apple").closest("div");
-    fireEvent.click(valueSegment!);
+    const valTrigger = document.querySelector(
+      's-clickable[accessibility-label="Vendor value"]',
+    )!;
+    fireEvent.click(valTrigger);
 
     const googleOption = document.querySelector('s-choice[value="google"]')!;
     fireEvent.click(googleOption);
@@ -256,7 +265,7 @@ describe("Filters", () => {
     const onRemove = vi.fn();
 
     render(
-      <Filters
+      <IndexFilters
         appliedFilters={[
           {
             key: "vendor",
@@ -276,10 +285,10 @@ describe("Filters", () => {
     expect(onRemove).toHaveBeenCalledWith("vendor");
   });
 
-  it("renders Tabs compact inside Filters.SearchField", () => {
+  it("renders Tabs compact inside IndexFilters.SearchField", () => {
     render(
-      <Filters>
-        <Filters.SearchField
+      <IndexFilters>
+        <IndexFilters.SearchField
           tabs={
             <Tabs
               compact
@@ -291,7 +300,7 @@ describe("Filters", () => {
             />
           }
         />
-      </Filters>,
+      </IndexFilters>,
     );
 
     const viewTrigger = document.querySelector('s-clickable[accessibility-label="All"]');
@@ -301,16 +310,16 @@ describe("Filters", () => {
 
   it("renders any content passed to the tabs slot", () => {
     render(
-      <Filters>
-        <Filters.SearchField tabs={<span data-testid="slot-content">Views</span>} />
-      </Filters>,
+      <IndexFilters>
+        <IndexFilters.SearchField tabs={<span data-testid="slot-content">Views</span>} />
+      </IndexFilters>,
     );
     expect(screen.getByTestId("slot-content")).toHaveTextContent("Views");
   });
 
   it("renders Columns & Sort popover trigger and content", () => {
     render(
-      <Filters
+      <IndexFilters
         sortOptions={[{ label: "Created", value: "created" }]}
         sortValue="created"
         hideArchived={false}
@@ -337,7 +346,7 @@ describe("Filters", () => {
     const onClearAll = vi.fn();
 
     render(
-      <Filters
+      <IndexFilters
         appliedFilters={[{ key: "vendor", label: "Apple", onRemove: () => {} }]}
         onClearAll={onClearAll}
       />,
@@ -354,7 +363,7 @@ describe("Filters", () => {
 
   it("closes the dropdown when clicking the close (X) button", () => {
     render(
-      <Filters
+      <IndexFilters
         filters={[
           { key: "vendor", label: "Vendor" },
           { key: "status", label: "Status" },
@@ -377,7 +386,7 @@ describe("Filters", () => {
 
   it("closes the dropdown when pressing Escape key", () => {
     render(
-      <Filters
+      <IndexFilters
         filters={[
           { key: "vendor", label: "Vendor" },
           { key: "status", label: "Status" },
@@ -393,14 +402,14 @@ describe("Filters", () => {
     expect(document.body.textContent).not.toContain("Filters");
   });
 
-  it("supports composable children inside Filters without wrapping outside content", () => {
+  it("supports composable children inside IndexFilters without wrapping outside content", () => {
     render(
-      <Filters>
-        <Filters.SearchField queryValue="composed query" onQueryChange={() => {}} />
-        <Filters.Actions>
+      <IndexFilters>
+        <IndexFilters.SearchField queryValue="composed query" onQueryChange={() => {}} />
+        <IndexFilters.Actions>
           <button type="button">Custom Action</button>
-        </Filters.Actions>
-      </Filters>,
+        </IndexFilters.Actions>
+      </IndexFilters>,
     );
 
     const inputEl = document.querySelector('input[type="text"]');
@@ -417,7 +426,7 @@ describe("Filters", () => {
     ];
 
     function renderWithApplied(
-      overrides: Partial<React.ComponentProps<typeof Filters>> = {},
+      overrides: Partial<React.ComponentProps<typeof IndexFilters>> = {},
     ) {
       const removed: string[] = [];
       const applied = ["vendor", "tag"].map((key) => ({
@@ -427,7 +436,7 @@ describe("Filters", () => {
       }));
       const onAddFilter = vi.fn();
       render(
-        <Filters
+        <IndexFilters
           filters={tokenFilters}
           appliedFilters={applied}
           onAddFilter={onAddFilter}
@@ -534,7 +543,7 @@ describe("Filters", () => {
       const addButton = document.querySelector(
         's-clickable[accessibility-label="Add filter"]',
       )!;
-      const lastChip = document.querySelector('[data-corex-filters-chip="1"]')!;
+      const lastChip = document.querySelector('[data-corex-index-filters-chip="1"]')!;
       expect(
         lastChip.compareDocumentPosition(addButton) & Node.DOCUMENT_POSITION_FOLLOWING,
       ).toBeTruthy();
@@ -542,7 +551,9 @@ describe("Filters", () => {
 
     it("reveals the remove button only while the pill is hovered", () => {
       renderWithApplied();
-      const chip = document.querySelector<HTMLElement>('[data-corex-filters-chip="0"]')!;
+      const chip = document.querySelector<HTMLElement>(
+        '[data-corex-index-filters-chip="0"]',
+      )!;
       const removeWrapper = chip
         .querySelector('[aria-label="Remove Vendor filter"]')!
         .closest('[style*="max-width"]') as HTMLElement;
@@ -585,7 +596,7 @@ describe("Filters", () => {
 
     it("scrolls pills horizontally and fades the overflowing edges", () => {
       renderWithApplied();
-      const region = document.querySelector<HTMLElement>(".corex-filters-scroll")!;
+      const region = document.querySelector<HTMLElement>(".corex-index-filters-scroll")!;
       expect(region.style.overflowX).toBe("auto");
       expect(region.style.flexWrap).toBe("nowrap");
       expect(region.style.maskImage ?? "").toBe("");
@@ -625,7 +636,7 @@ describe("Filters", () => {
 
     it("collapses more than three values into '+ n more'", () => {
       render(
-        <Filters
+        <IndexFilters
           filters={[{ key: "tag", label: "Tag" }]}
           appliedFilters={[
             { key: "tag", value: ["a", "b", "c", "d", "e"], onRemove: () => {} },

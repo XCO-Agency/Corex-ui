@@ -4,7 +4,7 @@ import type { ReactNode } from "react";
 /**
  * Filter option choice item.
  */
-export type FilterOptionType = {
+export type IndexFilterOptionType = {
   label: string;
   value: string;
 };
@@ -12,15 +12,15 @@ export type FilterOptionType = {
 /**
  * Filter operator item (e.g. "Is", "Is not").
  */
-export type FilterOperatorType = {
+export type IndexFilterOperatorType = {
   label: string;
   value: string;
 };
 
 /**
- * An individual filter definition for the Filters component.
+ * An individual filter definition for the IndexFilters component.
  */
-export type FilterItemType = {
+export type IndexFilterItemType = {
   /** Unique key identifying the filter (e.g. "vendor", "tag", "status"). */
   key: string;
   /** Label for the filter (e.g. "Vendor", "Tag", "Status"). */
@@ -28,9 +28,9 @@ export type FilterItemType = {
   /** Custom filter controls rendered inside the filter's value popover (e.g. RangeSlider). */
   filter?: ReactNode;
   /** Predefined options for the value popover (e.g. ["Apple", "Noise", "Sony"]). */
-  options?: FilterOptionType[];
+  options?: IndexFilterOptionType[];
   /** Available operators for this filter. Defaults to "Is" / "Is not". */
-  operators?: FilterOperatorType[];
+  operators?: IndexFilterOperatorType[];
   /** Default operator value. Defaults to the first operator. */
   defaultOperator?: string;
   /** Disables the filter in the filters popover. */
@@ -45,7 +45,7 @@ export type FilterItemType = {
 /**
  * An active/applied filter pill (e.g. "Tag is not exclude_search").
  */
-export type AppliedFilterType = {
+export type IndexAppliedFilterType = {
   /** Key matching the filter (e.g. "tag", "vendor"). */
   key: string;
   /** Filter property name (e.g. "Tag", "Vendor"). Defaults to the filter label. */
@@ -63,7 +63,7 @@ export type AppliedFilterType = {
 /**
  * Option item for table sorting in the columns/sort popover.
  */
-export type FilterSortOptionType = {
+export type IndexFilterSortOptionType = {
   /** Human-readable label (e.g. "Created", "Title"). */
   label: string;
   /** Sort key or value (e.g. "created_at", "title"). */
@@ -73,7 +73,7 @@ export type FilterSortOptionType = {
 /**
  * Column item for column visibility in the columns popover.
  */
-export type FilterColumnItemType = {
+export type IndexFilterColumnItemType = {
   /** Unique column key. */
   key: string;
   /** Column header label (e.g. "Status", "Inventory"). */
@@ -85,9 +85,9 @@ export type FilterColumnItemType = {
 };
 
 /**
- * Props for the unified search and filter input (Filters.SearchField).
+ * Props for the unified search and filter input (IndexFilters.SearchField).
  */
-export type FiltersSearchFieldPropsType = {
+export type IndexFiltersSearchFieldPropsType = {
   /** Current search query string. */
   queryValue?: string;
   /** Placeholder text for the search input. Defaults to "search by keywords". */
@@ -107,9 +107,9 @@ export type FiltersSearchFieldPropsType = {
   tabs?: ReactNode;
 
   /** Available filter items. */
-  filters?: FilterItemType[];
+  filters?: IndexFilterItemType[];
   /** Currently applied filter pills. */
-  appliedFilters?: AppliedFilterType[];
+  appliedFilters?: IndexAppliedFilterType[];
   /**
    * Callback when a filter is picked from the filters popover.
    * `index` is the position in `appliedFilters` where the new pill should be
@@ -132,47 +132,11 @@ export type FiltersSearchFieldPropsType = {
   id?: string;
 };
 
-/**
- * Props for the Columns & Sort popover subcomponent.
- */
-export type FiltersColumnsPopoverPropsType = {
-  sortOptions?: FilterSortOptionType[];
-  sortValue?: string;
-  onSortChange?: (value: string) => void;
-  hideArchived?: boolean;
-  onHideArchivedChange?: (checked: boolean) => void;
-  columns?: FilterColumnItemType[];
-  onColumnToggle?: (columnKey: string, visible: boolean) => void;
-  disabled?: boolean;
-  id?: string;
-};
-
-/**
- * Props for the Actions container subcomponent.
- */
-export type FiltersActionsPropsType = {
-  children?: ReactNode;
-};
-
-/**
- * Props for the Filters toolbar. Either compose it with `children`
- * (`<Filters.SearchField />`, `<Filters.Actions>`) or configure it via props.
- */
-export type FiltersPropsType = FiltersSearchFieldPropsType &
-  Omit<FiltersColumnsPopoverPropsType, "id"> & {
-    /** Custom actions on the right side (replaces the default columns popover). */
-    actions?: ReactNode;
-    /** Composable toolbar elements (e.g. <Filters.SearchField />, <Filters.Actions>). */
-    children?: ReactNode;
-  };
-
-/**
- * Compound component type definition for Filters.
- */
-export type FiltersComponentType = React.ForwardRefExoticComponent<
-  FiltersPropsType & React.RefAttributes<HTMLDivElement>
-> & {
-  SearchField: React.FC<FiltersSearchFieldPropsType>;
-  Columns: React.FC<FiltersColumnsPopoverPropsType>;
-  Actions: React.FC<FiltersActionsPropsType>;
-};
+// Aliases for backwards compatibility
+export type FilterOptionType = IndexFilterOptionType;
+export type FilterOperatorType = IndexFilterOperatorType;
+export type FilterItemType = IndexFilterItemType;
+export type AppliedFilterType = IndexAppliedFilterType;
+export type FilterSortOptionType = IndexFilterSortOptionType;
+export type FilterColumnItemType = IndexFilterColumnItemType;
+export type FiltersSearchFieldPropsType = IndexFiltersSearchFieldPropsType;

@@ -1,8 +1,8 @@
-# Filters
+# IndexFilters
 
-A minimalist, highly composable search and filter toolbar component inspired by Shopify Admin's IndexFilters unified input bar with classic Polaris `Filters` flexibility.
+A minimalist, highly composable search and filter toolbar component inspired by Shopify Admin's IndexFilters unified input bar with classic Polaris flexibility.
 
-`Filters` features a custom interactive input bar with:
+`IndexFilters` features a custom interactive input bar with:
 - **Filter dropdown on focus**: Clicking or focusing the input immediately displays the available filter categories (Vendor, Tag, Status, Category, etc.) or drills down into their values with checkmarks and operators (`Is`, `Is not`).
 - **Independent keyword search**: You can type ANY search keywords freely inside the input without being forced to choose an item from the menu.
 - **Inline filter pills**: Applied filters are rendered directly inside the input container (e.g. `Tag is not exclude_search ✕`) with light-blue highlight and one-click removal.
@@ -12,7 +12,7 @@ A minimalist, highly composable search and filter toolbar component inspired by 
 
 ```tsx
 import { useState } from "react";
-import { Filters, ChoiceList } from "@xco-agency/corex-ui";
+import { IndexFilters, ChoiceList } from "@xco-agency/corex-ui";
 
 const [query, setQuery] = useState("");
 const [selectedView, setSelectedView] = useState("all");
@@ -26,7 +26,7 @@ const [appliedFilters, setAppliedFilters] = useState([
   },
 ]);
 
-<Filters
+<IndexFilters
   queryValue={query}
   queryPlaceholder="search by keywords"
   onQueryChange={setQuery}
@@ -88,14 +88,14 @@ const [appliedFilters, setAppliedFilters] = useState([
 
 ## Composable Toolbar Pattern (Recommended)
 
-`Filters` can be composed cleanly with subcomponents, leaving content like tables outside:
+`IndexFilters` can be composed cleanly with subcomponents, leaving content like tables outside:
 
 ```tsx
 import { useState } from "react";
-import { Filters, Button, Tabs, InlineStack, Table, Card } from "@xco-agency/corex-ui";
+import { IndexFilters, Button, Tabs, InlineStack, Table, Card } from "@xco-agency/corex-ui";
 
-<Filters>
-  <Filters.SearchField
+<IndexFilters>
+  <IndexFilters.SearchField
     tabs={
       <Tabs
         tabs={[
@@ -118,8 +118,8 @@ import { Filters, Button, Tabs, InlineStack, Table, Card } from "@xco-agency/cor
     onOperatorChange={handleOperatorChange}
     onClearAll={handleClearAll}
   />
-  <Filters.Actions>
-    <Filters.Columns
+  <IndexFilters.Actions>
+    <IndexFilters.Columns
       sortOptions={sortOptions}
       sortValue={sortValue}
       onSortChange={setSortValue}
@@ -129,10 +129,10 @@ import { Filters, Button, Tabs, InlineStack, Table, Card } from "@xco-agency/cor
     <Button variant="secondary" onClick={handleSave}>
       Save
     </Button>
-  </Filters.Actions>
-</Filters>
+  </IndexFilters.Actions>
+</IndexFilters>
 
-{/* Render table or content outside Filters */}
+{/* Render table or content outside IndexFilters */}
 <Card>
   <Table>
     ...
@@ -142,8 +142,6 @@ import { Filters, Button, Tabs, InlineStack, Table, Card } from "@xco-agency/cor
 
 ## Subcomponents
 
-- **`Filters.SearchField`**: Unified search and filter input container. Supports `tabs`, `views`, or `leftSlot` (e.g. `<Tabs compact ... />`), inline applied filter pills, keyword typing, `⊕` add filter button, `(X)` clear button, and focus dropdown popup with filter categories and operators.
-- **`Filters.Columns`** / **`Filters.ColumnsPopover`**: Dedicated popover for table sort options, `Hide archived` switch, and column visibility toggles.
-- **`Filters.Actions`**: Horizontal container for action buttons and popovers on the right side of the toolbar.
-- **`Filters.Shortcut`**: Individual filter trigger button opening a popover.
-- **`Filters.Applied`** & **`Filters.AppliedPill`**: Individual or grouped applied filter badges.
+- **`IndexFilters.SearchField`**: Unified search and filter input container. Supports `tabs`, `views`, or `leftSlot` (e.g. `<Tabs compact ... />`), inline applied filter pills, keyword typing, `⊕` add filter button, `(X)` clear button, and focus dropdown popup with filter categories and operators.
+- **`IndexFilters.Columns`** / **`IndexFilters.ColumnsPopover`**: Dedicated popover for table sort options, `Hide archived` switch, and column visibility toggles.
+- **`IndexFilters.Actions`**: Horizontal container for action buttons and popovers on the right side of the toolbar.

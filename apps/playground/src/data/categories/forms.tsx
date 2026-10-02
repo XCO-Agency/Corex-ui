@@ -3,8 +3,8 @@ import { TextFieldExample } from "@/examples/forms/TextFieldExample";
 import TextFieldExampleRaw from "@/examples/forms/TextFieldExample.tsx?raw";
 import { SearchFieldExample } from "@/examples/forms/SearchFieldExample";
 import SearchFieldExampleRaw from "@/examples/forms/SearchFieldExample.tsx?raw";
-import { FiltersExample } from "@/examples/forms/FiltersExample";
-import FiltersExampleRaw from "@/examples/forms/FiltersExample.tsx?raw";
+import { IndexFiltersExample } from "@/examples/forms/IndexFiltersExample";
+import IndexFiltersExampleRaw from "@/examples/forms/IndexFiltersExample.tsx?raw";
 import { MoneyFieldExample } from "@/examples/forms/MoneyFieldExample";
 import MoneyFieldExampleRaw from "@/examples/forms/MoneyFieldExample.tsx?raw";
 import { ColorFieldExample } from "@/examples/forms/ColorFieldExample";
@@ -69,16 +69,16 @@ export const formsComponents: ComponentEntry[] = [
     ],
   },
   {
-    name: "Filters",
-    slug: "filters",
+    name: "IndexFilters",
+    slug: "index-filters",
     category: "Forms",
     description:
       "A unified search and filter bar: view tabs, keyword search with inline filter pills (field, condition and values), and a column visibility/sorting popover.",
     examples: [
       {
-        title: "Filters with Views, Filter Pills & Column Settings",
-        Example: FiltersExample,
-        code: FiltersExampleRaw,
+        title: "IndexFilters with Views, Filter Pills & Column Settings",
+        Example: IndexFiltersExample,
+        code: IndexFiltersExampleRaw,
       },
     ],
   },

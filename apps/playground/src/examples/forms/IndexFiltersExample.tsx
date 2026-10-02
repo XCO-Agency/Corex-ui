@@ -7,8 +7,8 @@ import {
   Card,
   Clickable,
   EmptyState,
-  Filters,
   Icon,
+  IndexFilters,
   InlineStack,
   Link,
   Page,
@@ -17,10 +17,10 @@ import {
   Text,
 } from "@xco-agency/corex-ui";
 import type {
-  AppliedFilterType,
-  FilterColumnItemType,
-  FilterItemType,
-  FilterSortOptionType,
+  IndexAppliedFilterType,
+  IndexFilterColumnItemType,
+  IndexFilterItemType,
+  IndexFilterSortOptionType,
   TabItemType,
 } from "@xco-agency/corex-ui";
 
@@ -70,31 +70,31 @@ const initialProducts: ProductItemType[] = [
     title: "VIP",
     vendor: "wevente",
     status: "active",
-    inventory: 50,
+    inventory: 45,
     category: "Subscription Services",
-    channels: "2",
+    channels: "1",
     productType: "Membership",
-    tags: ["vip"],
-    created: "2026-05-18",
+    tags: ["vip", "subscription", "badge-25% OFF"],
+    created: "2026-01-12",
     updated: "2026-08-20",
   },
   {
     id: "prod-4",
-    title: "Travel Backpack",
-    vendor: "wevente",
-    status: "active",
-    inventory: 24,
+    title: "The Minimalist Backpack",
+    vendor: "Apple",
+    status: "draft",
+    inventory: 15,
     category: "Backpacks",
-    channels: "1",
-    productType: "Bags",
-    tags: ["backpack", "travel", "badge-25% OFF"],
-    created: "2026-01-12",
-    updated: "2026-06-01",
+    channels: "2",
+    productType: "Luggage",
+    tags: ["bag", "travel", "Promo"],
+    created: "2026-05-18",
+    updated: "2026-09-01",
   },
   {
     id: "prod-5",
-    title: "Sports Wristband",
-    vendor: "wevente",
+    title: "Aura Loop Smart Wristband",
+    vendor: "Sony",
     status: "active",
     inventory: 80,
     category: "Wristbands",
@@ -126,14 +126,14 @@ const viewTabs: TabItemType[] = [
   { id: "archived", label: "Archived" },
 ];
 
-const sortOptionsList: FilterSortOptionType[] = [
+const sortOptionsList: IndexFilterSortOptionType[] = [
   { label: "Created", value: "created" },
   { label: "Updated", value: "updated" },
   { label: "Title", value: "title" },
   { label: "Inventory", value: "inventory" },
 ];
 
-const initialColumns: FilterColumnItemType[] = [
+const initialColumns: IndexFilterColumnItemType[] = [
   { key: "product", label: "Product", visible: true },
   { key: "status", label: "Status", visible: true },
   { key: "inventory", label: "Inventory", visible: true },
@@ -145,7 +145,7 @@ const initialColumns: FilterColumnItemType[] = [
   { key: "updated", label: "Updated", visible: false },
 ];
 
-const filterDefinitions: FilterItemType[] = [
+const filterDefinitions: IndexFilterItemType[] = [
   {
     key: "vendor",
     label: "Vendor",
@@ -212,10 +212,10 @@ const filterDefinitions: FilterItemType[] = [
   { key: "unassigned", label: "Unassigned catalog" },
 ];
 
-export function FiltersExample() {
+export function IndexFiltersExample() {
   const [selectedView, setSelectedView] = useState("all");
   const [query, setQuery] = useState("");
-  const [appliedFilters, setAppliedFilters] = useState<AppliedFilterType[]>([
+  const [appliedFilters, setAppliedFilters] = useState<IndexAppliedFilterType[]>([
     {
       key: "tag",
       field: "Tag",
@@ -226,7 +226,7 @@ export function FiltersExample() {
   ]);
   const [sortValue, setSortValue] = useState("created");
   const [hideArchived, setHideArchived] = useState(false);
-  const [columns, setColumns] = useState<FilterColumnItemType[]>(initialColumns);
+  const [columns, setColumns] = useState<IndexFilterColumnItemType[]>(initialColumns);
   const [refreshing, setRefreshing] = useState(false);
   const [savedNotice, setSavedNotice] = useState("");
 
@@ -259,50 +259,49 @@ export function FiltersExample() {
     value: string | string[],
     operator = "is",
   ) => {
-    const filterDef = filterDefinitions.find((f) => f.key === filterKey);
-    const fieldLabel = filterDef?.label ?? filterKey;
-    const nextFilter: AppliedFilterType = {
-      key: filterKey,
-      field: fieldLabel,
-      operator: operator === "is_not" ? "is not" : operator,
-      value,
-      onRemove: () => handleRemoveFilter(filterKey),
-    };
+    setAppliedFilters((prev) => {
+      const filterDef = filterDefinitions.find((f) => f.key === filterKey);
+      const fieldLabel = filterDef?.label ?? filterKey;
+      const existing = prev.find((f) => f.key === filterKey);
+      const isMultiple = filterDef?.allowMultiple !== false;
 
-    // Update in place so the pill keeps its position in the search field.
-    setAppliedFilters((prev) =>
-      prev.some((f) => f.key === filterKey)
-        ? prev.map((f) => (f.key === filterKey ? nextFilter : f))
-        : [...prev, nextFilter],
-    );
+      // If array is empty, remove the pill
+      if (Array.isArray(value) && value.length === 0) {
+        return prev.filter((f) => f.key !== filterKey);
+      }
+      if (!isMultiple && !value) {
+        return prev.filter((f) => f.key !== filterKey);
+      }
+
+      const updatedFilter: IndexAppliedFilterType = {
+        key: filterKey,
+        field: fieldLabel,
+        operator: operator === "is_not" ? "is not" : operator,
+        value,
+        onRemove: () => handleRemoveFilter(filterKey),
+      };
+
+      if (existing) {
+        return prev.map((f) => (f.key === filterKey ? updatedFilter : f));
+      }
+      return [...prev, updatedFilter];
+    });
   };
 
   const handleOperatorChange = (filterKey: string, operator: string) => {
     setAppliedFilters((prev) =>
-      prev.map((f) => {
-        if (f.key === filterKey) {
-          return {
-            ...f,
-            operator: operator === "is_not" ? "is not" : "is",
-          };
-        }
-        return f;
-      }),
+      prev.map((f) =>
+        f.key === filterKey
+          ? { ...f, operator: operator === "is_not" ? "is not" : operator }
+          : f,
+      ),
     );
   };
 
   const handleColumnToggle = (columnKey: string, visible: boolean) => {
-    setColumns((prev) => prev.map((c) => (c.key === columnKey ? { ...c, visible } : c)));
-  };
-
-  const handleRefresh = () => {
-    setRefreshing(true);
-    setTimeout(() => setRefreshing(false), 600);
-  };
-
-  const handleSave = () => {
-    setSavedNotice("View settings saved successfully");
-    setTimeout(() => setSavedNotice(""), 3000);
+    setColumns((prev) =>
+      prev.map((col) => (col.key === columnKey ? { ...col, visible } : col)),
+    );
   };
 
   const handleClearAll = () => {
@@ -310,53 +309,77 @@ export function FiltersExample() {
     setAppliedFilters([]);
   };
 
-  // Filter products based on query and active filters
+  const handleRefresh = () => {
+    setRefreshing(true);
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 600);
+  };
+
+  const handleSave = () => {
+    setSavedNotice(
+      `Saved view "${selectedView}" with ${appliedFilters.length} active filter(s)`,
+    );
+    setTimeout(() => setSavedNotice(""), 3000);
+  };
+
+  // Filter products based on search, view tabs, applied filters, and column visibility
   const filteredProducts = initialProducts.filter((product) => {
-    if (hideArchived && product.status === "archived") return false;
-    if (selectedView !== "all" && product.status !== selectedView) return false;
-
-    // Filter by applied filter pills
-    for (const af of appliedFilters) {
-      if (!af.value || (Array.isArray(af.value) && af.value.length === 0)) continue;
-      const values = Array.isArray(af.value) ? af.value : [String(af.value)];
-
-      if (af.key === "tag") {
-        const hasAnyTag = values.some((val) => product.tags.includes(val));
-        if (af.operator === "is not" && hasAnyTag) return false;
-        if (af.operator === "is" && !hasAnyTag) return false;
-      }
-      if (af.key === "vendor") {
-        const matchesVendor = values.some(
-          (val) => product.vendor.toLowerCase() === val.toLowerCase(),
-        );
-        if (af.operator === "is not" && matchesVendor) return false;
-        if (af.operator === "is" && !matchesVendor) return false;
-      }
-      if (af.key === "status") {
-        if (!values.includes(product.status)) return false;
-      }
-      if (af.key === "category") {
-        if (!values.includes(product.category)) return false;
-      }
+    // 1. Hide archived switch
+    if (hideArchived && product.status === "archived") {
+      return false;
     }
 
-    // Keyword search (independent of filters menu)
+    // 2. View Tab filter
+    if (selectedView !== "all" && product.status !== selectedView) {
+      return false;
+    }
+
+    // 3. Keyword Search across title, vendor, tags
     if (query.trim()) {
       const q = query.toLowerCase();
-      const match =
-        product.title.toLowerCase().includes(q) ||
-        product.vendor.toLowerCase().includes(q) ||
-        product.category.toLowerCase().includes(q) ||
-        product.productType.toLowerCase().includes(q) ||
-        product.tags.some((t) => t.toLowerCase().includes(q));
-      if (!match) return false;
+      const matchTitle = product.title.toLowerCase().includes(q);
+      const matchVendor = product.vendor.toLowerCase().includes(q);
+      const matchTags = product.tags.some((t) => t.toLowerCase().includes(q));
+      if (!matchTitle && !matchVendor && !matchTags) return false;
+    }
+
+    // 4. Applied Filters logic
+    for (const applied of appliedFilters) {
+      const isNot = applied.operator === "is_not" || applied.operator === "is not";
+      const filterValues = Array.isArray(applied.value)
+        ? applied.value
+        : applied.value
+          ? [applied.value]
+          : [];
+
+      if (filterValues.length === 0) continue;
+
+      if (applied.key === "vendor") {
+        const matches = filterValues.some(
+          (v) => product.vendor.toLowerCase() === v.toLowerCase(),
+        );
+        if (isNot ? matches : !matches) return false;
+      } else if (applied.key === "status") {
+        const matches = filterValues.some(
+          (v) => product.status.toLowerCase() === v.toLowerCase(),
+        );
+        if (isNot ? matches : !matches) return false;
+      } else if (applied.key === "tag") {
+        const matches = filterValues.some((v) =>
+          product.tags.some((t) => t.toLowerCase() === v.toLowerCase()),
+        );
+        if (isNot ? matches : !matches) return false;
+      } else if (applied.key === "category") {
+        const matches = filterValues.some(
+          (v) => product.category.toLowerCase() === v.toLowerCase(),
+        );
+        if (isNot ? matches : !matches) return false;
+      }
     }
 
     return true;
   });
-
-  const isColVisible = (key: string) =>
-    columns.find((c) => c.key === key)?.visible !== false;
 
   return (
     <Page>
@@ -369,9 +392,9 @@ export function FiltersExample() {
           </Box>
         ) : null}
 
-        {/* Primary Composable Filters Toolbar (Transparent & No Border) */}
-        <Filters>
-          <Filters.SearchField
+        {/* Primary Composable IndexFilters Toolbar (Transparent & No Border) */}
+        <IndexFilters>
+          <IndexFilters.SearchField
             tabs={
               <Tabs
                 tabs={viewTabs}
@@ -392,8 +415,8 @@ export function FiltersExample() {
             onClearAll={handleClearAll}
           />
 
-          <Filters.Actions>
-            <Filters.Columns
+          <IndexFilters.Actions>
+            <IndexFilters.Columns
               sortOptions={sortOptionsList}
               sortValue={sortValue}
               onSortChange={setSortValue}
@@ -413,10 +436,10 @@ export function FiltersExample() {
             <Button variant="tertiary" onClick={handleSave}>
               Save
             </Button>
-          </Filters.Actions>
-        </Filters>
+          </IndexFilters.Actions>
+        </IndexFilters>
 
-        {/* Table is rendered outside Filters in its own Card/Box */}
+        {/* Table is rendered outside IndexFilters in its own Card/Box */}
         <Card>
           {filteredProducts.length === 0 ? (
             <Box paddingBlock="large-300" paddingInline="large-100">
@@ -438,25 +461,56 @@ export function FiltersExample() {
           ) : (
             <Table variant="auto">
               <Table.HeaderRow>
-                <Table.Header>Product</Table.Header>
-                {isColVisible("status") ? <Table.Header>Status</Table.Header> : null}
-                {isColVisible("inventory") ? (
-                  <Table.Header>Inventory</Table.Header>
-                ) : null}
-                {isColVisible("category") ? <Table.Header>Category</Table.Header> : null}
-                {isColVisible("channels") ? <Table.Header>Channels</Table.Header> : null}
-                {isColVisible("productType") ? (
-                  <Table.Header>Product Type</Table.Header>
-                ) : null}
-                {isColVisible("vendor") ? <Table.Header>Vendor</Table.Header> : null}
+                {columns.find((c) => c.key === "product")?.visible !== false && (
+                  <Table.HeaderCell>Product</Table.HeaderCell>
+                )}
+                {columns.find((c) => c.key === "status")?.visible !== false && (
+                  <Table.HeaderCell>Status</Table.HeaderCell>
+                )}
+                {columns.find((c) => c.key === "inventory")?.visible !== false && (
+                  <Table.HeaderCell>Inventory</Table.HeaderCell>
+                )}
+                {columns.find((c) => c.key === "category")?.visible !== false && (
+                  <Table.HeaderCell>Category</Table.HeaderCell>
+                )}
+                {columns.find((c) => c.key === "channels")?.visible !== false && (
+                  <Table.HeaderCell>Channels</Table.HeaderCell>
+                )}
+                {columns.find((c) => c.key === "productType")?.visible !== false && (
+                  <Table.HeaderCell>Type</Table.HeaderCell>
+                )}
+                {columns.find((c) => c.key === "vendor")?.visible !== false && (
+                  <Table.HeaderCell>Vendor</Table.HeaderCell>
+                )}
+                {columns.find((c) => c.key === "created")?.visible !== false && (
+                  <Table.HeaderCell>Created</Table.HeaderCell>
+                )}
+                {columns.find((c) => c.key === "updated")?.visible !== false && (
+                  <Table.HeaderCell>Updated</Table.HeaderCell>
+                )}
               </Table.HeaderRow>
               <Table.Body>
                 {filteredProducts.map((prod) => (
                   <Table.Row key={prod.id}>
-                    <Table.Cell>
-                      <Text heading>{prod.title}</Text>
-                    </Table.Cell>
-                    {isColVisible("status") ? (
+                    {columns.find((c) => c.key === "product")?.visible !== false && (
+                      <Table.Cell>
+                        <BlockStack gap="small-500">
+                          <Link url="#">
+                            <Text heading>{prod.title}</Text>
+                          </Link>
+                          {prod.tags.length > 0 && (
+                            <InlineStack gap="small-400">
+                              {prod.tags.slice(0, 3).map((tag) => (
+                                <Badge key={tag} tone="neutral">
+                                  {tag}
+                                </Badge>
+                              ))}
+                            </InlineStack>
+                          )}
+                        </BlockStack>
+                      </Table.Cell>
+                    )}
+                    {columns.find((c) => c.key === "status")?.visible !== false && (
                       <Table.Cell>
                         <Badge
                           tone={
@@ -470,26 +524,34 @@ export function FiltersExample() {
                           {prod.status}
                         </Badge>
                       </Table.Cell>
-                    ) : null}
-                    {isColVisible("inventory") ? (
+                    )}
+                    {columns.find((c) => c.key === "inventory")?.visible !== false && (
                       <Table.Cell>
-                        {prod.inventory > 0
-                          ? `${prod.inventory} in stock`
-                          : "Inventory not tracked"}
+                        <Text tone={prod.inventory === 0 ? "critical" : "neutral"}>
+                          {prod.inventory === 0
+                            ? "0 in stock"
+                            : `${prod.inventory} in stock`}
+                        </Text>
                       </Table.Cell>
-                    ) : null}
-                    {isColVisible("category") ? (
+                    )}
+                    {columns.find((c) => c.key === "category")?.visible !== false && (
                       <Table.Cell>{prod.category}</Table.Cell>
-                    ) : null}
-                    {isColVisible("channels") ? (
+                    )}
+                    {columns.find((c) => c.key === "channels")?.visible !== false && (
                       <Table.Cell>{prod.channels}</Table.Cell>
-                    ) : null}
-                    {isColVisible("productType") ? (
+                    )}
+                    {columns.find((c) => c.key === "productType")?.visible !== false && (
                       <Table.Cell>{prod.productType}</Table.Cell>
-                    ) : null}
-                    {isColVisible("vendor") ? (
+                    )}
+                    {columns.find((c) => c.key === "vendor")?.visible !== false && (
                       <Table.Cell>{prod.vendor}</Table.Cell>
-                    ) : null}
+                    )}
+                    {columns.find((c) => c.key === "created")?.visible !== false && (
+                      <Table.Cell>{prod.created}</Table.Cell>
+                    )}
+                    {columns.find((c) => c.key === "updated")?.visible !== false && (
+                      <Table.Cell>{prod.updated}</Table.Cell>
+                    )}
                   </Table.Row>
                 ))}
               </Table.Body>
@@ -500,3 +562,6 @@ export function FiltersExample() {
     </Page>
   );
 }
+
+// Backwards-compatible alias for example
+export const FiltersExample = IndexFiltersExample;
