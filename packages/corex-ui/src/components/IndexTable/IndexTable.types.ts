@@ -4,18 +4,24 @@ import type { CSSProperties, ReactNode } from "react";
 export type IndexTableSelectionTypeType = "page" | "single" | "all";
 
 export type IndexTableHeadingType = {
+  id?: string;
   title?: ReactNode;
   /** Renders an empty header cell, for a column of controls. */
   hidden?: boolean;
-  /** Right-aligns the column, through `s-table-header`'s own `format`. */
-  format?: "base" | "currency" | "numeric";
+  /** Right-aligns the column. */
+  format?: "base" | "currency" | "numeric" | string;
+  alignment?: "start" | "center" | "end";
+  /** Optional custom width for this column (e.g. "120px", "2fr", "minmax(140px, 1fr)"). */
+  width?: string;
 };
 
 export type IndexTableBulkActionType = {
+  id?: string;
   content?: ReactNode;
   onAction?: () => void;
   destructive?: boolean;
   disabled?: boolean;
+  icon?: string;
 };
 
 export type IndexTablePaginationType = {
@@ -23,11 +29,17 @@ export type IndexTablePaginationType = {
   hasNext?: boolean;
   onPrevious?: () => void;
   onNext?: () => void;
+  label?: ReactNode;
 };
 
 export type IndexTablePropsType = {
   children?: ReactNode;
-  headings?: IndexTableHeadingType[];
+  /** Headings can be strings or IndexTableHeadingType objects. */
+  headings?: (string | ReactNode | IndexTableHeadingType)[];
+  /** Direct rows matrix (DataTable format: 2D array of cells). */
+  rows?: (ReactNode | string | number)[][];
+  /** Column content types (DataTable format: ["text", "numeric", ...]). */
+  columnContentTypes?: ("text" | "numeric")[];
   itemCount?: number;
   /** A count, or `"All"` when every row across every page is selected. */
   selectedItemsCount?: number | "All";
@@ -38,30 +50,34 @@ export type IndexTablePropsType = {
   ) => void;
   selectable?: boolean;
   bulkActions?: IndexTableBulkActionType[];
-  /** v12 drew these ahead of the rest; here they share one row. */
+  /** Promoted bulk actions shown directly next to the selection count dropdown. */
   promotedBulkActions?: IndexTableBulkActionType[];
   resourceName?: { singular: string; plural: string };
   loading?: boolean;
-  /** Replaces the whole table when there are no items. */
+  /** Replaces the whole table or body when there are no items. */
   emptyState?: ReactNode;
-  /** @deprecated `s-table` draws its own rows; striping is not reproduced. */
-  hasZebraStriping?: boolean;
-  /**
-   * v12 took the pager as one object, where `Table` takes flat props. Left in a
-   * rest spread it would land on `s-table` as an attribute and the list would
-   * simply have no pager.
-   */
+  /** Pagination controls. */
   pagination?: IndexTablePaginationType;
+  /** Optional custom CSS grid template columns (e.g. "44px 2fr 1fr 1fr"). */
+  gridTemplateColumns?: string;
+  /** Custom footer content (e.g. "Learn more about products" link). */
+  footerContent?: ReactNode;
+  /** Whether to allow toggling "Show all selected". */
+  showAllSelectedToggle?: boolean;
   id?: string;
   className?: string;
   style?: CSSProperties;
+  // DataTable compatibility props
+  increasedTableDensity?: boolean;
+  truncate?: boolean;
+  verticalAlign?: "top" | "bottom" | "middle" | "baseline";
+  hasZebraStriping?: boolean;
 };
 
 export type IndexTableRowPropsType = {
   children?: ReactNode;
   id?: string;
   selected?: boolean;
-  /** v12's row index. Not used; `s-table-row` needs no position. */
   position?: number;
   onClick?: () => void;
   disabled?: boolean;
@@ -71,8 +87,9 @@ export type IndexTableRowPropsType = {
 
 export type IndexTableCellPropsType = {
   children?: ReactNode;
-  /** @deprecated v12 removed the cell's padding; `s-table-cell` has one inset. */
   flush?: boolean;
+  format?: "base" | "currency" | "numeric" | string;
+  alignment?: "start" | "center" | "end";
   className?: string;
   style?: CSSProperties;
 };

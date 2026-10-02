@@ -16,7 +16,6 @@ export * from "./components/Layout";
 export * from "./components/InlineGrid";
 export * from "./components/FormLayout";
 export * from "./components/TextContainer";
-export * from "./components/Scrollable";
 export * from "./components/List";
 export * from "./components/DescriptionList";
 export * from "./components/InlineCode";
@@ -32,7 +31,6 @@ export * from "./components/IconTile";
 export * from "./components/Card";
 export * from "./components/Table";
 export * from "./components/IndexTable";
-export * from "./components/DataTable";
 export * from "./components/ResourceList";
 export * from "./components/Pagination";
 export * from "./components/Modal";
@@ -66,6 +64,7 @@ export * from "./components/NumberField";
 export * from "./components/PasswordField";
 export * from "./components/UrlField";
 export * from "./components/Popover";
+export * from "./components/FlexPopover";
 export * from "./components/Floating";
 export * from "./components/Collapsible";
 export * from "./components/Transition";
@@ -120,4 +119,6 @@ export type {
   UseEventsResult,
 } from "./hooks";
 export type { ShopifyGlobal, ShopifyToastOptions } from "./types/app-bridge";
+export type * from "./types/polaris-elements";
 export * from "./version";
+

@@ -1,27 +1,18 @@
-import {
-  useCallback,
-  useEffect,
-  useLayoutEffect,
-  useRef,
-  useState,
-  type ReactNode,
-  type RefObject,
-} from "react";
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-
 import { Box } from "../Box";
+import type { FlexPopoverPropsType } from "./FlexPopover.types";
+import { Card } from "../Card";
 
-/** Gap (px) between the anchor and the popover. */
-const OFFSET = 8;
+/** Default gap (px) between the anchor and the popover. */
+const DEFAULT_OFFSET = 8;
 /** Minimum distance (px) kept between the popover and the viewport edges. */
 const VIEWPORT_MARGIN = 12;
-const STYLE_ELEMENT_ID = "corex-filter-popover-styles";
+const STYLE_ELEMENT_ID = "corex-flex-popover-styles";
 const POPOVER_CSS = `
 .corex-native-popover {
   padding: 0;
-  border: 1px solid #e1e3e5;
-  border-radius: 8px;
-  background: #fff;
+  border-radius: 16px;
   box-shadow:
     0 4px 8px rgba(0, 0, 0, 0.06),
     0 12px 30px rgba(0, 0, 0, 0.10);
@@ -56,37 +47,29 @@ const POPOVER_CSS = `
 /** Frames to keep retrying placement while the anchor has no layout yet (~1s). */
 const MAX_POSITION_FRAMES = 60;
 
-export type FilterPortalPopoverPropsType = {
-  /** ID of the element the popover is positioned against (resolved in the owner document). */
-  anchorId: string;
-  isOpen: boolean;
-  /** Fired on Escape or on pointer-down outside the popover, the anchor and `boundaryRef`. */
-  onClose: () => void;
-  width?: string;
-  maxHeight?: string;
-  /** Element whose clicks never dismiss the popover. */
-  boundaryRef?: RefObject<HTMLElement | null>;
-  children: ReactNode;
-};
-
 /**
- * Controlled popover used by the Filters search field.
+ * Controlled popover portalled into the owner document's body and shown with
+ * `popover="manual"` (top layer, no native light-dismiss).
  *
- * Portalled into the owner document's body and shown with `popover="manual"`
- * (top layer, no native light-dismiss), so focusing or clicking an interactive
- * anchor never races with the browser closing and re-opening it. Dismissal is
- * handled here instead: Escape, or pointer-down outside the popover, its anchor
- * and `boundaryRef`.
+ * Avoids shadow DOM and iframe boundary clipping while ensuring smooth dismissal
+ * on Escape or clicking outside the popover and its anchor.
  */
-export function FilterPortalPopover({
+export function FlexPopover({
   anchorId,
+  anchorRef,
   isOpen,
   onClose,
   width,
+  minWidth,
   maxHeight,
+  offset = DEFAULT_OFFSET,
+  matchAnchorWidth = false,
   boundaryRef,
+  className = "",
+  style: customStyle,
+  zIndex = 999999,
   children,
-}: FilterPortalPopoverPropsType) {
+}: FlexPopoverPropsType) {
   const markerRef = useRef<HTMLSpanElement | null>(null);
   const popoverRef = useRef<HTMLDivElement | null>(null);
   /** Body of the document that owns the field; null until the marker has mounted. */
@@ -96,8 +79,7 @@ export function FilterPortalPopover({
     typeof HTMLElement !== "undefined" &&
     typeof HTMLElement.prototype.showPopover === "function";
 
-  // Resolve the owner document (e.g. an iframe) before the popover first renders,
-  // so it is never mounted into the wrong document and then moved.
+  // Resolve the owner document (e.g. an iframe) before the popover first renders
   useLayoutEffect(() => {
     const doc = markerRef.current?.ownerDocument;
     const body = doc?.body ?? null;
@@ -113,12 +95,13 @@ export function FilterPortalPopover({
   }, [mountTarget]);
 
   const getAnchor = useCallback((): HTMLElement | null => {
-    const el = markerRef.current?.ownerDocument.getElementById(anchorId);
+    const el =
+      anchorRef?.current ??
+      (anchorId ? markerRef.current?.ownerDocument.getElementById(anchorId) : null);
     if (!el) return null;
 
     // Web-component hosts (e.g. `s-clickable`, `display: contents`) report an empty
-    // box; measure a sized relative instead. No `instanceof HTMLElement` checks:
-    // nodes inside an iframe come from another realm and would never match.
+    // box; measure a sized relative instead.
     const rect = el.getBoundingClientRect();
     if (rect.width === 0 || rect.height === 0) {
       for (const candidate of [el.firstElementChild, el.parentElement]) {
@@ -134,7 +117,7 @@ export function FilterPortalPopover({
       }
     }
     return el;
-  }, [anchorId]);
+  }, [anchorId, anchorRef]);
 
   /** Places the popover under its anchor. Returns false while the anchor has no layout. */
   const updatePosition = useCallback((): boolean => {
@@ -146,34 +129,38 @@ export function FilterPortalPopover({
     if (rect.width === 0 && rect.height === 0) return false;
 
     const win = popover.ownerDocument.defaultView ?? window;
-    const popoverWidth = popover.offsetWidth || parseInt(width ?? "", 10) || 260;
+    const resolvedWidth = matchAnchorWidth
+      ? rect.width
+      : popover.offsetWidth || parseInt(width ?? "", 10) || 260;
     const popoverHeight = popover.offsetHeight || parseInt(maxHeight ?? "", 10) || 200;
 
     // Keep within the viewport horizontally.
     let left = rect.left;
-    if (left + popoverWidth > win.innerWidth - VIEWPORT_MARGIN) {
-      left = win.innerWidth - popoverWidth - VIEWPORT_MARGIN;
+    if (left + resolvedWidth > win.innerWidth - VIEWPORT_MARGIN) {
+      left = win.innerWidth - resolvedWidth - VIEWPORT_MARGIN;
     }
     left = Math.max(VIEWPORT_MARGIN, left);
 
     // Below the anchor; flip above when it would overflow the bottom.
-    let top = rect.bottom + OFFSET;
+    let top = rect.bottom + offset;
     if (
       top + popoverHeight > win.innerHeight - VIEWPORT_MARGIN &&
-      rect.top - OFFSET - popoverHeight > VIEWPORT_MARGIN
+      rect.top - offset - popoverHeight > VIEWPORT_MARGIN
     ) {
-      top = rect.top - OFFSET - popoverHeight;
+      top = rect.top - offset - popoverHeight;
     }
 
+    if (matchAnchorWidth) {
+      popover.style.width = `${rect.width}px`;
+    }
     popover.style.top = `${top}px`;
     popover.style.left = `${left}px`;
     popover.style.visibility = "visible";
     return true;
-  }, [getAnchor, width, maxHeight]);
+  }, [getAnchor, width, maxHeight, offset, matchAnchorWidth]);
 
-  // Show/hide in the top layer and position it. A freshly added anchor (e.g. a
-  // pill picked from P1) may not have layout for a few frames while its web
-  // components upgrade, so keep retrying until it can be measured.
+  // Show/hide in the top layer and position it. A freshly added anchor may not
+  // have layout for a few frames while web components upgrade, so keep retrying.
   useEffect(() => {
     const popover = popoverRef.current;
     const win = mountTarget?.ownerDocument.defaultView;
@@ -200,7 +187,7 @@ export function FilterPortalPopover({
     return () => win.cancelAnimationFrame(raf);
   }, [isOpen, isPopoverSupported, updatePosition, mountTarget]);
 
-  // Follow the anchor while scrolling (including inner scroll containers) and resizing.
+  // Follow the anchor while scrolling and resizing.
   useEffect(() => {
     const win = mountTarget?.ownerDocument.defaultView;
     if (!isOpen || !win) return;
@@ -255,7 +242,7 @@ export function FilterPortalPopover({
     };
 
     win.addEventListener("keydown", handleKeyDown);
-    // Deferred so the interaction that opened the popover doesn't close it.
+    // Deferred so the interaction that opened the popover doesn't immediately close it.
     const timer = setTimeout(() => {
       win.addEventListener("pointerdown", handlePointerDown, true);
     }, 10);
@@ -272,30 +259,22 @@ export function FilterPortalPopover({
       ref={popoverRef}
       {...({ popover: "manual" } as Record<string, string>)}
       role="dialog"
-      className={`corex-native-popover ${isOpen ? "corex-native-popover-open" : ""}`}
+      className={`corex-native-popover ${isOpen ? "corex-native-popover-open" : ""} ${className}`}
       style={{
         position: "fixed",
         inset: "unset",
         margin: 0,
         width: width ?? "auto",
+        minWidth: minWidth ?? undefined,
         maxHeight: maxHeight ?? "auto",
         boxSizing: "border-box",
-        zIndex: 999999,
-        visibility: "hidden",
+        zIndex,
+        visibility: isOpen ? "visible" : "hidden",
         ...(!isPopoverSupported ? { display: isOpen ? "block" : "none" } : {}),
+        ...customStyle,
       }}
     >
-      <Box
-        padding="none"
-        style={{
-          width: "100%",
-          maxHeight,
-          overflowY: maxHeight ? "auto" : undefined,
-          boxSizing: "border-box",
-        }}
-      >
-        {isOpen ? children : null}
-      </Box>
+      <Card padding="none">{isOpen ? children : null}</Card>
     </div>
   );
 

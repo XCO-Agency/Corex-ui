@@ -29,16 +29,12 @@ import { FormLayoutExample } from "@/examples/layout/FormLayoutExample";
 import FormLayoutExampleRaw from "@/examples/layout/FormLayoutExample.tsx?raw";
 import { TextContainerExample } from "@/examples/layout/TextContainerExample";
 import TextContainerExampleRaw from "@/examples/layout/TextContainerExample.tsx?raw";
-import { ScrollableExample } from "@/examples/layout/ScrollableExample";
-import ScrollableExampleRaw from "@/examples/layout/ScrollableExample.tsx?raw";
 import { ListExample } from "@/examples/layout/ListExample";
 import ListExampleRaw from "@/examples/layout/ListExample.tsx?raw";
 import { DescriptionListExample } from "@/examples/layout/DescriptionListExample";
 import DescriptionListExampleRaw from "@/examples/layout/DescriptionListExample.tsx?raw";
 import { IndexTableExample } from "@/examples/layout/IndexTableExample";
 import IndexTableExampleRaw from "@/examples/layout/IndexTableExample.tsx?raw";
-import { DataTableExample } from "@/examples/layout/DataTableExample";
-import DataTableExampleRaw from "@/examples/layout/DataTableExample.tsx?raw";
 import { ResourceListExample } from "@/examples/layout/ResourceListExample";
 import ResourceListExampleRaw from "@/examples/layout/ResourceListExample.tsx?raw";
 import { SkeletonPageExample } from "@/examples/layout/SkeletonPageExample";
@@ -241,19 +237,6 @@ export const layoutComponents: ComponentEntry[] = [
     ],
   },
   {
-    name: "Scrollable",
-    slug: "scrollable",
-    category: "Layout",
-    description: "A pane that scrolls inside a fixed size, on the native scroll box.",
-    examples: [
-      {
-        title: "Scrolling activity pane",
-        Example: ScrollableExample,
-        code: ScrollableExampleRaw,
-      },
-    ],
-  },
-  {
     name: "List",
     slug: "list",
     category: "Layout",
@@ -290,20 +273,6 @@ export const layoutComponents: ComponentEntry[] = [
         title: "Selectable orders with bulk actions",
         Example: IndexTableExample,
         code: IndexTableExampleRaw,
-      },
-    ],
-  },
-  {
-    name: "DataTable",
-    slug: "data-table",
-    category: "Layout",
-    description:
-      "A static data grid with numeric columns aligned by the table header's format.",
-    examples: [
-      {
-        title: "Sales by product",
-        Example: DataTableExample,
-        code: DataTableExampleRaw,
       },
     ],
   },

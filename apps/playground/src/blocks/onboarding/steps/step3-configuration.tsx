@@ -108,7 +108,12 @@ export function Step3Configuration({ state, dispatch }: Step3ConfigurationPropsT
                   </Text>
                 </InlineStack>
 
-                <ProgressBar progress={percent} size="base" tone="neutral" />
+                <ProgressBar
+                  value={percent}
+                  max={100}
+                  tone="neutral"
+                  accessibilityLabel="Free shipping threshold progress"
+                />
 
                 <Text tone="success" heading>
                   {qualifies

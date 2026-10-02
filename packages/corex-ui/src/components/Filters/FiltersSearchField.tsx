@@ -20,13 +20,13 @@ import { Divider } from "../Divider";
 import { IconTile } from "../IconTile";
 import { ChoiceList } from "../ChoiceList";
 import { TextField } from "../TextField";
-import { FilterPortalPopover } from "./FilterPortalPopover";
 import type {
   AppliedFilterType,
   FilterItemType,
   FilterOperatorType,
   FiltersSearchFieldPropsType,
 } from "./Filters.types";
+import { FlexPopover } from "../FlexPopover";
 
 /** Number of values shown inside a pill before collapsing into "+ n more". */
 const MAX_VISIBLE_VALUES = 3;
@@ -866,7 +866,7 @@ export function FiltersSearchField({
         </InlineStack>
 
         {/* P3: operator */}
-        <FilterPortalPopover
+        <FlexPopover
           boundaryRef={regionRef}
           anchorId={opTriggerId}
           isOpen={isOperatorOpen}
@@ -878,10 +878,10 @@ export function FiltersSearchField({
               closeOwnPopover("operator"),
             )}
           </Box>
-        </FilterPortalPopover>
+        </FlexPopover>
 
         {/* P2: values (+ operator) */}
-        <FilterPortalPopover
+        <FlexPopover
           boundaryRef={regionRef}
           anchorId={valTriggerId}
           isOpen={isValueOpen}
@@ -925,7 +925,7 @@ export function FiltersSearchField({
               </Box>
             </BlockStack>
           </Box>
-        </FilterPortalPopover>
+        </FlexPopover>
       </InlineStack>
     );
   };
@@ -1132,7 +1132,7 @@ export function FiltersSearchField({
 
       {/* P1: filter categories, anchored at the caret (gap between pills or text input). */}
       {filters.length > 0 ? (
-        <FilterPortalPopover
+        <FlexPopover
           boundaryRef={regionRef}
           anchorId={caretIndex !== null ? gapInputId : inputId}
           isOpen={isCategoriesOpen}
@@ -1205,7 +1205,7 @@ export function FiltersSearchField({
               </BlockStack>
             </BlockStack>
           </Box>
-        </FilterPortalPopover>
+        </FlexPopover>
       ) : null}
 
       <style>{`.${SCROLL_CLASS}::-webkit-scrollbar { display: none; }`}</style>

@@ -1,43 +1,85 @@
-import { forwardRef } from "react";
+import { Children, forwardRef } from "react";
 import { BlockStack } from "../BlockStack";
-import { InlineStack } from "../InlineStack";
-import { devWarning } from "../../utils/devWarning";
+import { Box } from "../Box";
+import { InlineGrid } from "../InlineGrid";
+import { Text } from "../Text";
 import type {
   FormLayoutGroupPropsType,
   FormLayoutPropsType,
 } from "./FormLayout.types";
 
 /**
- * Fields in a column; a `Group` puts them on one row that wraps rather than
- * overflowing, which is what v12 did at narrow widths.
+ * Fields in a row with equal sizing across the available space.
+ * Automatically stacks on mobile and supports optional group title and help text.
  */
 export const FormLayoutGroup = forwardRef<HTMLDivElement, FormLayoutGroupPropsType>(
-  function FormLayoutGroup({ children, condensed, title, helpText, ...rest }, ref) {
-    if (title !== undefined || helpText !== undefined) {
-      devWarning(
-        "FormLayout.Group",
-        "`title` and `helpText` are not rendered; wrap the group in a `BlockStack` with a `Text` instead.",
+  function FormLayoutGroup(
+    { children, condensed, title, helpText, columns, id, className, style, ...rest },
+    ref,
+  ) {
+    const validChildren = Children.toArray(children).filter(Boolean);
+    const count = Math.max(1, validChildren.length);
+    const resolvedColumns =
+      columns ?? (count === 1 ? 1 : { xs: 1, sm: count });
+    const gap = condensed ? "small-200" : "base";
+
+    const grid = (
+      <InlineGrid columns={resolvedColumns} gap={gap}>
+        {children}
+      </InlineGrid>
+    );
+
+    if (!title && !helpText) {
+      return (
+        <Box
+          ref={ref as any}
+          id={id}
+          className={className}
+          style={style}
+          inlineSize="100%"
+          {...rest}
+        >
+          {grid}
+        </Box>
       );
     }
 
     return (
-      <InlineStack
+      <BlockStack
         ref={ref}
-        gap={condensed ? "small-200" : "base"}
-        wrap
-        blockAlign="end"
+        id={id}
+        className={className}
+        style={style}
+        gap="small-200"
+        inlineSize="100%"
         {...rest}
       >
-        {children}
-      </InlineStack>
+        {title &&
+          (typeof title === "string" ? (
+            <Text as="h3" variant="bodyMd" fontWeight="semibold">
+              {title}
+            </Text>
+          ) : (
+            title
+          ))}
+        {grid}
+        {helpText &&
+          (typeof helpText === "string" ? (
+            <Text as="p" variant="bodySm" tone="neutral">
+              {helpText}
+            </Text>
+          ) : (
+            helpText
+          ))}
+      </BlockStack>
     );
   },
 );
 
 const FormLayoutRoot = forwardRef<HTMLDivElement, FormLayoutPropsType>(
-  function FormLayout({ children, gap = "base", ...rest }, ref) {
+  function FormLayout({ children, gap = "base", inlineSize = "100%", ...rest }, ref) {
     return (
-      <BlockStack ref={ref} gap={gap} {...rest}>
+      <BlockStack ref={ref} gap={gap} inlineSize={inlineSize} {...rest}>
         {children}
       </BlockStack>
     );

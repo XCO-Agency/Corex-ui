@@ -1,16 +1,19 @@
 import { forwardRef } from "react";
-import { BlockStack } from "../BlockStack";
+import { Box } from "../Box";
+import { Combobox } from "../Combobox";
 import { Listbox } from "../Listbox";
 import { TextField } from "../TextField";
-import type { AutocompletePropsType } from "./Autocomplete.types";
+import type {
+  AutocompleteComponentType,
+  AutocompletePropsType,
+} from "./Autocomplete.types";
 
 /**
- * Options in, selection out: the whole control in one component, as v12's
- * `Autocomplete` was.
+ * Options in, selection out: the whole control in one component, displaying
+ * its suggestions within a floating Popover anchored to the input field.
  *
  * `allowMultiple` toggles a value in and out of `selected`; without it a pick
- * replaces the selection. The list is a `Listbox`, so selection happens on
- * pointer-down and the field keeps focus.
+ * replaces the selection and automatically closes the popover.
  */
 const AutocompleteRoot = forwardRef<HTMLDivElement, AutocompletePropsType>(
   function Autocomplete(
@@ -22,6 +25,12 @@ const AutocompleteRoot = forwardRef<HTMLDivElement, AutocompletePropsType>(
       allowMultiple,
       loading,
       emptyState,
+      open,
+      active,
+      onClose,
+      preferredPosition,
+      willLoadMoreResults,
+      onLoadMoreResults,
       ...rest
     },
     ref,
@@ -39,28 +48,49 @@ const AutocompleteRoot = forwardRef<HTMLDivElement, AutocompletePropsType>(
       );
     };
 
+    const hasOptions = options.length > 0;
+    const shouldShowEmptyState = !loading && !hasOptions && Boolean(emptyState);
+
     return (
-      <BlockStack ref={ref} gap="small-200" {...rest}>
-        {textField}
-        {loading ? <Listbox.Loading /> : null}
-        {!loading && options.length > 0 ? (
-          <Listbox onSelect={pick}>
-            {options.map((option) => (
-              <Listbox.Option
-                key={option.value}
-                value={option.value}
-                selected={selected.includes(option.value)}
-                disabled={option.disabled}
-              >
-                {option.label ?? option.value}
-              </Listbox.Option>
-            ))}
-          </Listbox>
-        ) : null}
-        {!loading && options.length === 0 ? emptyState : null}
-      </BlockStack>
+      <Combobox
+        ref={ref}
+        activator={textField}
+        allowMultiple={allowMultiple}
+        open={open}
+        active={active}
+        onClose={onClose}
+        preferredPosition={preferredPosition}
+        willLoadMoreOptions={willLoadMoreResults}
+        onScrolledToBottom={onLoadMoreResults}
+        {...rest}
+      >
+        <Combobox.Popover>
+          {loading ? <Listbox.Loading key="autocomplete-loading" /> : null}
+          {!loading && hasOptions ? (
+            <Listbox key="autocomplete-listbox" onSelect={pick}>
+              {options.map((option) => (
+                <Listbox.Option
+                  key={option.value}
+                  value={option.value}
+                  selected={selected.includes(option.value)}
+                  disabled={option.disabled}
+                >
+                  {option.label ?? option.value}
+                </Listbox.Option>
+              ))}
+            </Listbox>
+          ) : null}
+          {shouldShowEmptyState ? (
+            <Box key="autocomplete-empty-state" padding="small-200">
+              {emptyState}
+            </Box>
+          ) : null}
+        </Combobox.Popover>
+      </Combobox>
     );
   },
 );
 
-export const Autocomplete = Object.assign(AutocompleteRoot, { TextField });
+export const Autocomplete = Object.assign(AutocompleteRoot, {
+  TextField,
+}) as unknown as AutocompleteComponentType;

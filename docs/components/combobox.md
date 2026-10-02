@@ -27,10 +27,11 @@ import { Combobox, Listbox } from "@xco-agency/corex-ui";
 </Combobox>;
 ```
 
-The list renders in flow rather than in a popover. v12 floated it, but a popover here
-would have to own open state, and the one thing this control must not do is swallow a
-keystroke or lose focus mid-type. Call sites already render the list only when there
-are matches, which is the same behaviour without the risk.
+The list of suggestions renders in a floating popover overlay anchored to the
+activator text field, automatically sizing to match the trigger's width. Focus
+remains on the input so typing continues uninterrupted, and selections dismiss
+or maintain the popover according to `allowMultiple`. In-flow elements (such as
+selected tags) stay in document flow beneath the activator.
 
 `Combobox.TextField` is [`TextField`](./text-field.md), re-exported so a migrated call
 site keeps compiling.

@@ -61,9 +61,8 @@ ship.
 | `s-divider`                                         | ✅ `Divider`                                                                                                                                                                                                        |
 | `s-grid`, `s-grid-item`                             | ✅ `Grid` / `Grid.Item`, plus the v12 layouts built on them: [`Layout`](./components/layout.md) and [`InlineGrid`](./components/inline-grid.md).                                                                    |
 | `s-query-container`                                 | ✅ `QueryContainer`                                                                                                                                                                                                 |
-| `s-scroll-box`                                      | ✅ [`Scrollable`](./components/scrollable.md)                                                                                                                                                                       |
 | `s-ordered-list`, `s-unordered-list`, `s-list-item` | ✅ [`List`](./components/list.md) / `List.Item`                                                                                                                                                                     |
-| `s-table`                                           | ✅ `Table` (+ `HeaderRow`, `HeaderCell`, `Body`, `Row`, `Cell`) — see [table.md](./components/table.md). Legacy `DataTable`/`IndexTable`, with their own sorting/selection/pagination state, are still outstanding. |
+| `Table`, `IndexTable`, `DataTable`                 | ✅ Custom Grid-based tables: selection, bulk actions bar, and data matrices with maximum compatibility.                                                                            |
 
 ## Media and visuals
 

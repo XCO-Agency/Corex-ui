@@ -13,6 +13,8 @@
 
 /// <reference types="@shopify/polaris-types" />
 
+import type { DetailedHTMLProps, HTMLAttributes } from "react";
+
 export interface SModalElement extends HTMLElement {
   showOverlay(): void;
   hideOverlay(): void;
@@ -125,6 +127,33 @@ export interface SUrlFieldElement extends HTMLElement {
   autocomplete?: string;
 }
 
+export type SProgressToneType =
+  | "info"
+  | "success"
+  | "warning"
+  | "critical"
+  | "auto"
+  | "neutral"
+  | "caution";
+
+export interface SProgressElement extends HTMLElement {
+  accessibilityLabel?: string;
+  max?: number;
+  tone?: SProgressToneType;
+  value?: number;
+}
+
+export type SProgressProps = DetailedHTMLProps<
+  HTMLAttributes<HTMLElement>,
+  HTMLElement
+> & {
+  accessibilityLabel?: string;
+  max?: number | string;
+  tone?: SProgressToneType;
+  value?: number | string;
+};
+
+
 declare global {
   interface HTMLElementTagNameMap {
     "s-modal": SModalElement;
@@ -135,6 +164,7 @@ declare global {
     "s-number-field": SNumberFieldElement;
     "s-password-field": SPasswordFieldElement;
     "s-url-field": SUrlFieldElement;
+    "s-progress": SProgressElement;
   }
 
   namespace JSX {
@@ -146,8 +176,18 @@ declare global {
       "s-number-field": any;
       "s-password-field": any;
       "s-url-field": any;
+      "s-progress": SProgressProps;
+    }
+  }
+}
+
+declare module "react" {
+  namespace JSX {
+    interface IntrinsicElements {
+      "s-progress": SProgressProps;
     }
   }
 }
 
 export {};
+

@@ -9,6 +9,9 @@ export type CheckboxPropsType = Omit<
 > & {
   label: ReactNode;
   checked?: boolean;
+  indeterminate?: boolean;
+  labelHidden?: boolean;
+  labelAccessibilityVisibility?: "visible" | "exclusive" | "hidden";
   onChange?: (checked: boolean, id: string) => void;
   helpText?: ReactNode;
   details?: ReactNode;

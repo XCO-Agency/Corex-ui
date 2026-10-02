@@ -66,9 +66,10 @@ export function UsageMetersCard({
                 </InlineStack>
 
                 <ProgressBar
-                  progress={percentage}
+                  value={quota.used}
+                  max={quota.total}
                   tone={tone}
-                  size="base"
+                  accessibilityLabel={quota.resource}
                 />
               </BlockStack>
             );

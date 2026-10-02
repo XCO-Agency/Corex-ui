@@ -30,5 +30,6 @@ import { Autocomplete } from "@xco-agency/corex-ui";
 | `emptyState`    | Shown when there are no options.                                                     |
 | `textField`     | The field. `Autocomplete.TextField` is [`TextField`](./text-field.md).               |
 
-The list is a [`Listbox`](./listbox.md), so selection happens on pointer-down and the
-field keeps focus.
+The list is a [`Listbox`](./listbox.md) displayed in a floating Popover overlay
+anchored to the text field, so selection happens on pointer-down and the field keeps
+focus without shifting the page layout.

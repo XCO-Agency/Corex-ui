@@ -37,8 +37,24 @@ export const BOX_DOM_PROPS = [
   "overflow",
 ] as const;
 
-const SBox = createWebComponent<HTMLElement>("s-box", {
+const SBox = createWebComponent<
+  HTMLElement,
+  {
+    onClick: "click";
+    onMouseEnter: "mouseenter";
+    onMouseLeave: "mouseleave";
+    onFocus: "focus";
+    onBlur: "blur";
+  }
+>("s-box", {
   domProps: [...BOX_DOM_PROPS],
+  events: {
+    onClick: "click",
+    onMouseEnter: "mouseenter",
+    onMouseLeave: "mouseleave",
+    onFocus: "focus",
+    onBlur: "blur",
+  },
 });
 
 /**

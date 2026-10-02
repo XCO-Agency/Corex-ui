@@ -18,9 +18,9 @@ Status values:
 | ----------------- | -------- | ----------------------------------------------------------------- |
 | `Layout`          | Shipped  | `Grid` / `Grid.Item`, stacking below `md`.                        |
 | `InlineGrid`      | Shipped  | `Grid`, with v12's count / track-list / responsive column shapes. |
-| `FormLayout`      | Shipped  | `BlockStack`, with `FormLayout.Group` as a wrapping row.          |
+| `FormLayout`      | Shipped  | `BlockStack`, with `FormLayout.Group` using `InlineGrid` for equal columns, responsive stacking, title, and helpText. |
+
 | `TextContainer`   | Shipped  | `BlockStack` at v12's tight / loose rhythm.                       |
-| `Scrollable`      | Shipped  | `s-scroll-box`, which is the native equivalent.                   |
 | `List`            | Shipped  | `s-unordered-list` / `s-ordered-list` / `s-list-item`.            |
 | `DescriptionList` | Shipped  | `Grid` of term/description pairs.                                 |
 | `InlineCode`      | Shipped  | `Text` on a monospace surface.                                    |

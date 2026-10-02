@@ -121,9 +121,10 @@ export function Step1Initializing({ state, dispatch }: Step1InitializingPropsTyp
             </Box>
 
             <ProgressBar
-              progress={(doneCount / state.syncTasks.length) * 100}
+              value={doneCount}
+              max={state.syncTasks.length}
               tone="success"
-              style={{ marginTop: "1rem" }}
+              accessibilityLabel="Syncing store tasks"
             />
           </BlockStack>
         </Card>
