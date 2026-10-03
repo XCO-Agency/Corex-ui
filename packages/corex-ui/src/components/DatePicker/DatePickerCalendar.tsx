@@ -173,6 +173,7 @@ export const DatePickerCalendar: ForwardRefExoticComponent<
       allowDays={allowDays}
       disallowDays={disallowDays}
       onInput={handleInput}
+      
       onChange={handleChange}
       onViewChange={handleViewChange}
       className={className}

@@ -65,4 +65,28 @@ describe("FlexPopover", () => {
     expect(screen.queryByText("Ignored Header")).toBeNull();
     expect(screen.getByText("Content Only")).toBeInTheDocument();
   });
+
+  it("calls showPopover on initial mount when isOpen is true and showPopover is supported", () => {
+    const showPopoverMock = vi.fn();
+    const hidePopoverMock = vi.fn();
+    // Simulate browser Popover API support
+    (HTMLElement.prototype as any).showPopover = showPopoverMock;
+    (HTMLElement.prototype as any).hidePopover = hidePopoverMock;
+
+    try {
+      render(
+        <div>
+          <button id="test-anchor">Anchor</button>
+          <FlexPopover isOpen anchorId="test-anchor" onClose={vi.fn()}>
+            <Text>Dynamic Popover Content</Text>
+          </FlexPopover>
+        </div>,
+      );
+
+      expect(showPopoverMock).toHaveBeenCalled();
+    } finally {
+      delete (HTMLElement.prototype as any).showPopover;
+      delete (HTMLElement.prototype as any).hidePopover;
+    }
+  });
 });

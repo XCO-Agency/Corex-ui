@@ -128,48 +128,7 @@ export function DatePickerPanel({
     }
   };
 
-  const handleDateClick = (clickedDate: string) => {
-    if (
-      (minDate && clickedDate < minDate) ||
-      (effectiveMaxDate && clickedDate > effectiveMaxDate)
-    ) {
-      return;
-    }
-    // If range is already complete or no start, set new start date
-    if (
-      !currentRange.start ||
-      (currentRange.start && currentRange.end && currentRange.start !== currentRange.end)
-    ) {
-      const newRange = { start: clickedDate, end: "" };
-      setCurrentRange(newRange);
-      setActivePresetId("custom");
-    } else if (currentRange.start && !currentRange.end) {
-      // Complete the range
-      if (clickedDate >= currentRange.start) {
-        const newRange = { start: currentRange.start, end: clickedDate };
-        setCurrentRange(newRange);
-        setActivePresetId("custom");
-        onChangeRange?.(newRange);
-      } else {
-        const newRange = { start: clickedDate, end: currentRange.start };
-        setCurrentRange(newRange);
-        setActivePresetId("custom");
-        onChangeRange?.(newRange);
-      }
-    } else if (currentRange.start === currentRange.end) {
-      if (clickedDate >= currentRange.start) {
-        const newRange = { start: currentRange.start, end: clickedDate };
-        setCurrentRange(newRange);
-        setActivePresetId("custom");
-        onChangeRange?.(newRange);
-      } else {
-        const newRange = { start: clickedDate, end: currentRange.start };
-        setCurrentRange(newRange);
-        setActivePresetId("custom");
-        onChangeRange?.(newRange);
-      }
-    }
-  };
+
 
   const handleCalendarRangeChange = (newRange: DateRangeType) => {
     setCurrentRange(newRange);
@@ -221,7 +180,7 @@ export function DatePickerPanel({
       )}
 
       {/* Right Content */}
-      <BlockStack minInlineSize="480px">
+      <BlockStack maxInlineSize="520px">
         {/* Top Manual Inputs */}
         <DatePickerManualInputs
           startDate={currentRange.start}

@@ -47,21 +47,7 @@ export function DatePickerExample() {
           />
         </BlockStack>
       </Box>
-
-      <Box padding="base" background="base" borderRadius="base" borderWidth="small-100" borderColor="subdued">
-        <BlockStack gap="small-100">
-          <Text heading>
-            Standalone Shopify Web Component (&lt;s-date-picker&gt;)
-          </Text>
-          <SDatePicker
-            type="range"
-            name="reporting-period"
-            visibleMonths="2"
-            view="2025-05"
-            defaultValue="2025-05-20--2025-06-10"
-          />
-        </BlockStack>
-      </Box>
+      
     </BlockStack>
   );
 }

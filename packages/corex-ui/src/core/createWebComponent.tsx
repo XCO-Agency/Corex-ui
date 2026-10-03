@@ -32,6 +32,7 @@ type NoEvents = {};
  * nothing.
  */
 const LOWERCASE_ATTRIBUTES: Record<string, string> = {
+ // Standard HTML attributes
   tabIndex: "tabindex",
   accessKey: "accesskey",
   autoCapitalize: "autocapitalize",
@@ -45,11 +46,42 @@ const LOWERCASE_ATTRIBUTES: Record<string, string> = {
   itemScope: "itemscope",
   itemType: "itemtype",
   spellCheck: "spellcheck",
+  autoComplete: "autocomplete",
+  readOnly: "readonly",
+  minLength: "minlength",
+  maxLength: "maxlength",
+  srcSet: "srcset",
+  // Polaris Accessibility
+  labelAccessibilityVisibility: "labelaccessibilityvisibility",
+  accessibilityLabel: "accessibilitylabel",
+  accessibilityRole: "accessibilityrole",
+  accessibilityVisibility: "accessibilityvisibility",
+  // Polaris Form defaults & controls
+  defaultValue: "defaultvalue",
+  defaultChecked: "defaultchecked",
+  defaultSelected: "defaultselected",
+  defaultPressed: "defaultpressed",
+  defaultIndeterminate: "defaultindeterminate",
+  currencyCode: "currencycode",
+  // Polaris DatePicker
   visibleMonths: "visiblemonths",
   defaultView: "defaultview",
-  defaultValue: "defaultvalue",
   allowDays: "allowdays",
   disallowDays: "disallowdays",
+  // Polaris Typography & Media
+  lineClamp: "lineclamp",
+  fontSize: "fontsize",
+  fontWeight: "fontweight",
+  fontVariantNumeric: "fontvariantnumeric",
+  aspectRatio: "aspectratio",
+  objectFit: "objectfit",
+  // Polaris Navigation / Pagination / Invokers
+  commandFor: "commandfor",
+  interestFor: "interestfor",
+  clickDelegate: "clickdelegate",
+  containerName: "containername",
+  hasNextPage: "hasnextpage",
+  hasPreviousPage: "haspreviouspage",
 };
 
 function toKebabCase(str: string): string {

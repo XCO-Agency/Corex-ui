@@ -80,8 +80,10 @@ export function FlexPopover({
 }: FlexPopoverPropsType) {
   const markerRef = useRef<HTMLSpanElement | null>(null);
   const popoverRef = useRef<HTMLDivElement | null>(null);
-  /** Body of the document that owns the field; null until the marker has mounted. */
-  const [mountTarget, setMountTarget] = useState<HTMLElement | null>(null);
+  /** Body of the document that owns the field; defaults to document.body on client. */
+  const [mountTarget, setMountTarget] = useState<HTMLElement | null>(() =>
+    typeof document !== "undefined" ? document.body : null,
+  );
 
   const isPopoverSupported =
     typeof HTMLElement !== "undefined" &&
@@ -141,10 +143,8 @@ export function FlexPopover({
     const updatePosition = () => {
       const popover = popoverRef.current;
       const anchor = getAnchorRef.current();
-      if (!popover) return;
-
-      if (!anchor) {
-        // Retry for a few frames while the anchor is rendering/mounting
+      if (!popover || !anchor) {
+        // Retry for a few frames while the popover and anchor are rendering/mounting
         if (retryFrame < MAX_POSITION_FRAMES) {
           retryFrame++;
           frameId = requestAnimationFrame(updatePosition);
@@ -223,7 +223,7 @@ export function FlexPopover({
       win.removeEventListener("scroll", updatePosition, true);
       resizeObserver?.disconnect();
     };
-  }, [isOpen, offset, matchAnchorWidth, anchorId, anchorRef]);
+  }, [isOpen, offset, matchAnchorWidth, anchorId, anchorRef, mountTarget]);
 
   // Sync with browser's native Popover API (manual mode = top layer, no light dismiss)
   useLayoutEffect(() => {
@@ -243,7 +243,7 @@ export function FlexPopover({
         // Ignored if already hidden
       }
     }
-  }, [isOpen, isPopoverSupported]);
+  }, [isOpen, isPopoverSupported, mountTarget]);
 
   // Dismissal: Escape, or pointer-down outside popover, anchor and boundary
   const onCloseRef = useRef(onClose);

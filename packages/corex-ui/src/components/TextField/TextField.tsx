@@ -26,8 +26,7 @@ export const TextField = forwardRef<HTMLElement, TextFieldPropsType>(function Te
     details,
     multiline,
     requiredIndicator,
-    labelHidden,
-    accessibilityLabel,
+    required,
     ...rest
   },
   ref,
@@ -37,18 +36,14 @@ export const TextField = forwardRef<HTMLElement, TextFieldPropsType>(function Te
     onChange?.(target?.value ?? "", rest.id ?? "");
   };
 
-  const computedLabel = rest.label ?? accessibilityLabel;
-  const computedVisibility =
-    rest.labelAccessibilityVisibility ??
-    (accessibilityLabel || labelHidden ? "exclusive" : undefined);
+  const computedLabel = rest.label;
 
   const sharedProps = {
     ref,
     details: details ?? helpText,
-    required: rest.required ?? requiredIndicator,
+    required: required ?? requiredIndicator,
     label: computedLabel,
-    labelAccessibilityVisibility: computedVisibility,
-    onInput: handleInput,
+    onChange: handleInput,
     ...rest,
   };
 
@@ -57,5 +52,7 @@ export const TextField = forwardRef<HTMLElement, TextFieldPropsType>(function Te
     return <STextArea rows={rows} {...sharedProps} />;
   }
 
-  return <STextField {...sharedProps} />;
+  return <STextField {...sharedProps}>
+    {rest.children}
+  </STextField>;
 });

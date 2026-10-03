@@ -65,25 +65,25 @@ export function DatePickerManualInputs({
     }
   };
 
-  const handleKeyDown = (e: KeyboardEvent<any>) => {
+  const handleKeyDown = (e: any) => {
     if (e.key === "Enter") {
       tryParseAndCommit();
     }
   };
 
   return (
-    <BlockStack gap="small-300" padding="small-200" className={className}>
+    <BlockStack gap="small-200" padding="small-200" className={className}>
       {/* Date Row */}
       <InlineStack alignItems="center" gap="small-200">
         <InlineStack grow>
           <TextField
-            inputMode="numeric"
             value={startText}
+            icon="calendar"
             onChange={(val) => setStartText(val)}
             onBlur={tryParseAndCommit}
-            onKeyDown={handleKeyDown}
+            onInput={handleKeyDown}
             placeholder="Start date"
-            accessibilityLabel="Start date"
+            labelAccessibilityVisibility="exclusive"
           />
         </InlineStack>
 
@@ -92,50 +92,48 @@ export function DatePickerManualInputs({
         <InlineStack grow>
           <TextField
             value={endText}
+            icon="calendar"
             onChange={(val) => setEndText(val)}
             onBlur={tryParseAndCommit}
-            onKeyDown={handleKeyDown}
+            onInput={handleKeyDown}
             placeholder="End date"
-            accessibilityLabel="End date"
+            labelAccessibilityVisibility="exclusive"
           />
         </InlineStack>
 
         {/* Clock icon toggles the time row */}
         <Button
-          accessibilityLabel={timeEnabled ? "Hide time" : "Show time"}
           icon="clock"
-          variant={timeEnabled ? "primary" : "secondary"}
+          variant={timeEnabled ? "primary" : "tertiary"}
           onClick={() => setTimeEnabled((prev) => !prev)}
         />
       </InlineStack>
 
       {/* Time Row - hidden until time is enabled */}
       {timeEnabled && (
-        <InlineStack alignItems="center" gap="small-200">
-          <InlineStack grow>
+        <InlineStack alignItems="center" gap="small-200" >
+          <InlineStack flex={1}>
             <TextField
-              inputMode="numeric"
               value={startTime}
               onChange={(val) => setStartTime(val)}
               placeholder="00:00"
-              accessibilityLabel="Start time"
               icon="clock"
+            labelAccessibilityVisibility="exclusive"
             />
           </InlineStack>
 
           <Icon type="arrow-right" />
 
-          <InlineStack grow>
+          <InlineStack flex={1}>
             <TextField
-              inputMode="numeric"
               value={endTime}
               onChange={(val) => setEndTime(val)}
               placeholder="23:59"
-              accessibilityLabel="End time"
               icon="clock"
+            labelAccessibilityVisibility="exclusive"
             />
           </InlineStack>
-          <Box inlineSize="28px" />
+          <div style={{ inlineSize: "28px" }} />
         </InlineStack>
       )}
     </BlockStack>

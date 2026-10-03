@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { BlockStack, Card, Combobox, Text } from "@xco-agency/corex-ui";
+import { TextField } from "@xco-agency/corex-ui";
 
 const frameworks = [
   "Next.js",
@@ -34,6 +35,11 @@ export function ComboboxExample() {
     <BlockStack gap="large-100">
       {/* 1. Single Selection */}
       <Card>
+        <s-text-field label={'dasdasd'} labelAccessibilityVisibility="exclusive">
+        </s-text-field>
+        <TextField label={'dasdasd'} labelAccessibilityVisibility="exclusive">
+          <s-button slot="accessory" variant="tertiary"> hello</s-button>
+        </TextField>
         <BlockStack gap="base">
           <BlockStack gap="small-200">
             <Text variant="headingSm" fontWeight="bold">

@@ -10,12 +10,6 @@ export type TextFieldPropsType = Omit<NativeTextFieldProps, "onChange"> & {
 
   /** `true`/a row count renders `s-text-area` instead of `s-text-field`. */
   multiline?: boolean | number;
-  autoComplete?: string;
-  maxLength?: number;
-  minLength?: number;
+  /** @deprecated Use `required` prop on `TextField` instead. */
   requiredIndicator?: boolean;
-  onKeyDown?: (event: KeyboardEvent<any>) => void;
-  inputMode?: string;
-  labelHidden?: boolean;
-  accessibilityLabel?: string;
 };
