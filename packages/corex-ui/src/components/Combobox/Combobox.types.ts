@@ -6,11 +6,6 @@ import type {
   RefAttributes,
   RefObject,
 } from "react";
-import type { TextField } from "../TextField";
-
-export type ComboboxPopoverPropsType = {
-  children?: ReactNode;
-};
 
 export type ComboboxContextType<T = any> = {
   items?: readonly T[];
@@ -49,18 +44,14 @@ export type ComboboxPropsType<T = any> = {
 
   /** Enable multi-selection (displays tags). */
   multiple?: boolean;
-  /** Alias for multiple (legacy Polaris compatibility). */
-  allowMultiple?: boolean;
 
   /** Controlled open state. */
   open?: boolean;
-  /** Alias for open (legacy Polaris compatibility). */
-  active?: boolean;
   /** Initial uncontrolled open state. */
   defaultOpen?: boolean;
   /** Callback when open state changes. */
   onOpenChange?: (open: boolean) => void;
-  /** Alias callback when popover closes (legacy Polaris compatibility). */
+  /** Callback when popover closes. */
   onClose?: () => void;
 
   /** Controlled search input query. */
@@ -78,12 +69,6 @@ export type ComboboxPropsType<T = any> = {
   disabled?: boolean;
   /** Whether the combobox is read-only. */
   readOnly?: boolean;
-
-  /** Legacy activator field (e.g. `<Combobox.TextField ... />`). */
-  activator?: ReactNode;
-  preferredPosition?: "above" | "below" | "mostSpace";
-  willLoadMoreOptions?: boolean;
-  onScrolledToBottom?: () => void;
 
   id?: string;
   className?: string;
@@ -164,9 +149,5 @@ export type ComboboxComponentType = ForwardRefExoticComponent<
   Item: ForwardRefExoticComponent<ComboboxItemPropsType & RefAttributes<HTMLElement>>;
   Empty: ForwardRefExoticComponent<
     ComboboxEmptyPropsType & RefAttributes<HTMLDivElement>
-  >;
-  TextField: typeof TextField;
-  Popover: ForwardRefExoticComponent<
-    ComboboxPopoverPropsType & RefAttributes<HTMLDivElement>
   >;
 };

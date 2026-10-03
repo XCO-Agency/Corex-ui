@@ -1,9 +1,6 @@
 import {
-  Children,
-  cloneElement,
   createContext,
   forwardRef,
-  isValidElement,
   useCallback,
   useContext,
   useEffect,
@@ -12,7 +9,6 @@ import {
   useRef,
   useState,
   type KeyboardEvent,
-  type ReactElement,
   type ReactNode,
 } from "react";
 import { mergeRefs } from "../../core/mergeRefs";
@@ -22,10 +18,8 @@ import { Clickable } from "../Clickable";
 import { FlexPopover } from "../FlexPopover";
 import { Icon } from "../Icon";
 import { InlineStack } from "../InlineStack";
-import { Listbox } from "../Listbox";
 import { Tag } from "../Tag";
 import { Text } from "../Text";
-import { TextField } from "../TextField";
 import type {
   ComboboxComponentType,
   ComboboxContentPropsType,
@@ -34,9 +28,9 @@ import type {
   ComboboxInputPropsType,
   ComboboxItemPropsType,
   ComboboxListPropsType,
-  ComboboxPopoverPropsType,
   ComboboxPropsType,
 } from "./Combobox.types";
+
 const ComboboxContext = createContext<ComboboxContextType | null>(null);
 
 export function useCombobox<T = any>(): ComboboxContextType<T> {
@@ -46,13 +40,6 @@ export function useCombobox<T = any>(): ComboboxContextType<T> {
   }
   return context as ComboboxContextType<T>;
 }
-
-const ComboboxPopover = forwardRef<HTMLDivElement, ComboboxPopoverPropsType>(
-  function ComboboxPopover({ children }, _ref) {
-    return <>{children}</>;
-  },
-);
-ComboboxPopover.displayName = "ComboboxPopover";
 
 /**
  * Input field for search filtering in Combobox. Automatically renders selected tags when multiple is true.
@@ -554,9 +541,7 @@ const ComboboxRoot = forwardRef<HTMLDivElement, ComboboxPropsType>(function Comb
     defaultValue,
     onValueChange,
     multiple,
-    allowMultiple,
     open: controlledOpen,
-    active: controlledActive,
     defaultOpen = false,
     onOpenChange,
     onClose,
@@ -566,10 +551,6 @@ const ComboboxRoot = forwardRef<HTMLDivElement, ComboboxPropsType>(function Comb
     autoHighlight = true,
     disabled = false,
     readOnly = false,
-    activator,
-    preferredPosition = "below",
-    willLoadMoreOptions,
-    onScrolledToBottom,
     id,
     className,
     style,
@@ -582,14 +563,12 @@ const ComboboxRoot = forwardRef<HTMLDivElement, ComboboxPropsType>(function Comb
   const comboboxId = id ?? `corex-combobox-${generatedId.replace(/:/g, "")}`;
   const anchorContainerRef = useRef<HTMLElement | null>(null);
 
-  const isMultiple = Boolean(multiple ?? allowMultiple);
+  const isMultiple = Boolean(multiple);
 
   // Open state
-  const isControlledOpen = controlledOpen !== undefined || controlledActive !== undefined;
+  const isControlledOpen = controlledOpen !== undefined;
   const [uncontrolledOpen, setUncontrolledOpen] = useState(defaultOpen);
-  const isOpen = isControlledOpen
-    ? Boolean(controlledOpen ?? controlledActive)
-    : uncontrolledOpen;
+  const isOpen = isControlledOpen ? Boolean(controlledOpen) : uncontrolledOpen;
 
   const setOpen = useCallback(
     (nextOpen: boolean) => {
@@ -775,73 +754,6 @@ const ComboboxRoot = forwardRef<HTMLDivElement, ComboboxPropsType>(function Comb
     setInputValue("");
   }, [disabled, readOnly, isMultiple, isControlledValue, onValueChange, setInputValue]);
 
-  // Legacy Polaris mode (used by Autocomplete and legacy activator usage)
-  const childArray = Children.toArray(children).filter(Boolean);
-  const isListboxOrPopover = (c: any): boolean => {
-    if (!isValidElement(c)) return false;
-    return (
-      c.type === ComboboxPopover ||
-      c.type === Listbox ||
-      (c.type as any)?.displayName === "Listbox" ||
-      (childArray.length === 1 && Boolean((c.props as any)?.role === "listbox"))
-    );
-  };
-
-  const hasLegacyContent = Boolean(
-    activator && !childArray.some((c: any) => c?.type === ComboboxContent),
-  );
-
-  const legacyPopoverChildren: ReactNode[] = [];
-  const legacyInFlowChildren: ReactNode[] = [];
-
-  if (hasLegacyContent) {
-    for (const child of childArray) {
-      if (
-        isValidElement(child) &&
-        (child.type === ComboboxPopover ||
-          (child.type as any)?.displayName === "ComboboxPopover")
-      ) {
-        legacyPopoverChildren.push(...Children.toArray((child.props as any)?.children));
-      } else if (isListboxOrPopover(child)) {
-        legacyPopoverChildren.push(child);
-      } else {
-        legacyInFlowChildren.push(child);
-      }
-    }
-  }
-
-  const wrapLegacyListbox = (child: ReactNode, keyPrefix: string | number): ReactNode => {
-    if (!isValidElement(child)) return child;
-    const resolvedKey = child.key ?? keyPrefix;
-
-    if (
-      child.type === Listbox ||
-      (child.type as any)?.displayName === "Listbox" ||
-      (child.props as any)?.role === "listbox"
-    ) {
-      const originalOnSelect = (child.props as any)?.onSelect;
-      return cloneElement(child as ReactElement<any>, {
-        key: resolvedKey,
-        onSelect: (val: string) => {
-          originalOnSelect?.(val);
-          selectItem(val);
-          if (!isMultiple) setOpen(false);
-        },
-      });
-    }
-
-    if ((child.props as any)?.children) {
-      return cloneElement(child as ReactElement<any>, {
-        key: resolvedKey,
-        children: Children.map((child.props as any).children, (nested, i) =>
-          wrapLegacyListbox(nested, `${keyPrefix}-${i}`),
-        ),
-      });
-    }
-
-    return cloneElement(child as ReactElement<any>, { key: resolvedKey });
-  };
-
   const contextValue: ComboboxContextType = useMemo(
     () => ({
       items,
@@ -895,37 +807,7 @@ const ComboboxRoot = forwardRef<HTMLDivElement, ComboboxPropsType>(function Comb
         style={style}
         {...rest}
       >
-        {activator ? (
-          <Box
-            ref={anchorContainerRef}
-            inlineSize="100%"
-            onClick={() => setOpen(true)}
-            onFocus={() => setOpen(true)}
-          >
-            {activator}
-          </Box>
-        ) : null}
-
-        {hasLegacyContent ? (
-          <>
-            {legacyInFlowChildren}
-            {legacyPopoverChildren.length > 0 ? (
-              <FlexPopover
-                anchorId={comboboxId}
-                anchorRef={anchorContainerRef}
-                isOpen={isOpen}
-                onClose={() => setOpen(false)}
-                matchAnchorWidth
-                maxHeight="320px"
-                noHeader
-              >
-                {legacyPopoverChildren.map((child, idx) => wrapLegacyListbox(child, idx))}
-              </FlexPopover>
-            ) : null}
-          </>
-        ) : (
-          children
-        )}
+        {children}
       </BlockStack>
     </ComboboxContext.Provider>
   );
@@ -937,6 +819,4 @@ export const Combobox = Object.assign(ComboboxRoot, {
   List: ComboboxList,
   Item: ComboboxItem,
   Empty: ComboboxEmpty,
-  TextField,
-  Popover: ComboboxPopover,
 }) as unknown as ComboboxComponentType;

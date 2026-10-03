@@ -1,92 +1,14 @@
 import { describe, expect, it, vi } from "vitest";
 import { fireEvent, render, screen } from "@testing-library/react";
 import { Combobox } from "./Combobox";
-import { Listbox } from "../Listbox";
-import { InlineStack } from "../InlineStack";
-import { Tag } from "../Tag";
 
 describe("Combobox", () => {
-  // Legacy Polaris compatibility tests
-  it("renders the field and its suggestions (legacy activator mode)", () => {
-    const { container } = render(
-      <Combobox
-        open
-        activator={<Combobox.TextField label="Tags" value="" autoComplete="off" />}
-      >
-        <Listbox>
-          <Listbox.Option value="a">Alpha</Listbox.Option>
-        </Listbox>
-      </Combobox>,
-    );
-
-    const field = container.querySelector("s-text-field")!;
-    expect(field).not.toBeNull();
-    expect(screen.getByText("Alpha")).toBeInTheDocument();
-  });
-
-  it("renders suggestions inside FlexPopover in legacy mode", () => {
-    render(
-      <Combobox
-        open
-        activator={<Combobox.TextField label="Tags" value="" autoComplete="off" />}
-      >
-        <Listbox>
-          <Listbox.Option value="a">Alpha</Listbox.Option>
-        </Listbox>
-      </Combobox>,
-    );
-
-    const popover = document.querySelector(".corex-native-popover");
-    expect(popover).not.toBeNull();
-    expect(popover?.querySelector('[role="listbox"]')).not.toBeNull();
-  });
-
-  it("separates in-flow elements like tags from popover suggestions in legacy mode", () => {
-    render(
-      <Combobox
-        open
-        activator={<Combobox.TextField label="Tags" value="" autoComplete="off" />}
-      >
-        <InlineStack gap="small-300">
-          <Tag>SelectedTag</Tag>
-        </InlineStack>
-        <Listbox>
-          <Listbox.Option value="a">Alpha</Listbox.Option>
-        </Listbox>
-      </Combobox>,
-    );
-
-    const popover = document.querySelector(".corex-native-popover")!;
-    expect(popover.querySelector('[role="listbox"]')).not.toBeNull();
-    expect(popover.querySelector("s-chip")).toBeNull();
-    expect(screen.getByText("SelectedTag")).toBeInTheDocument();
-  });
-
-  it("closes popover on selection when allowMultiple is false in legacy mode", () => {
-    const onSelect = vi.fn();
-    render(
-      <Combobox
-        open
-        activator={<Combobox.TextField label="Tags" value="" autoComplete="off" />}
-      >
-        <Listbox onSelect={onSelect}>
-          <Listbox.Option value="a">Alpha</Listbox.Option>
-        </Listbox>
-      </Combobox>,
-    );
-
-    fireEvent.mouseDown(screen.getByRole("option"));
-    expect(onSelect).toHaveBeenCalledWith("a");
-  });
-
   it("exposes compound subcomponents on the Combobox object", () => {
     expect(Combobox.Input).toBeTypeOf("object");
     expect(Combobox.Content).toBeTypeOf("object");
     expect(Combobox.List).toBeTypeOf("object");
     expect(Combobox.Item).toBeTypeOf("object");
     expect(Combobox.Empty).toBeTypeOf("object");
-    expect(Combobox.TextField).toBeTypeOf("object");
-    expect(Combobox.Popover).toBeTypeOf("object");
   });
 
   // Modern compound / Base UI / shadcn style tests
@@ -276,9 +198,15 @@ describe("Combobox", () => {
     );
 
     // Clear button replaces chevron when value exists and showClear is true
-    const clearBtn = document.querySelector('[accessibility-label="Clear selection"]');
+    const clearBtn = document.querySelector(
+      '[accessibilitylabel="Clear selection"], [accessibility-label="Clear selection"]',
+    );
     expect(clearBtn).toBeInTheDocument();
-    expect(document.querySelector('[accessibility-label="Open suggestions"]')).toBeNull();
+    expect(
+      document.querySelector(
+        '[accessibilitylabel="Open suggestions"], [accessibility-label="Open suggestions"]',
+      ),
+    ).toBeNull();
 
     // Clicking clear resets value
     fireEvent.click(clearBtn!);
@@ -290,10 +218,14 @@ describe("Combobox", () => {
         <Combobox.Input showClear placeholder="Select item" />
       </Combobox>,
     );
-    expect(document.querySelector('[accessibility-label="Clear selection"]')).toBeNull();
     expect(
       document.querySelector(
-        '[accessibility-label="Open suggestions"], [accessibility-label="Close suggestions"]',
+        '[accessibilitylabel="Clear selection"], [accessibility-label="Clear selection"]',
+      ),
+    ).toBeNull();
+    expect(
+      document.querySelector(
+        '[accessibilitylabel="Open suggestions"], [accessibility-label="Open suggestions"], [accessibilitylabel="Close suggestions"], [accessibility-label="Close suggestions"]',
       ),
     ).toBeInTheDocument();
   });

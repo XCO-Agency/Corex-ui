@@ -136,12 +136,10 @@ When specifying `gap`, `padding`, `rowGap`, or `columnGap`, use **exclusively** 
 | [**Checkbox**](#checkbox) | Binary or indeterminate checkbox wrapping `<s-checkbox>`. | — |
 | [**Switch**](#switch) | Toggle switch control wrapping `<s-switch>`. | — |
 | [**ChoiceList**](#choicelist) | Radio button or checkbox list group allowing single or multiple selections. | — |
-| [**RadioButton**](#radiobutton) | Single radio button input. | — |
 | [**RangeSlider**](#rangeslider) | Slider input for selecting values within a range. | — |
 | [**DropZone**](#dropzone) | File drag-and-drop zone wrapping `<s-drop-zone>`. | — |
-| [**Combobox**](#combobox) | Accessible autocomplete and combobox popover control. | `Combobox.TextField`, `Combobox.Content`, `Combobox.List`, `Combobox.Item`, `Combobox.Empty` |
+| [**Combobox**](#combobox) | Accessible autocomplete and combobox popover control. | `Combobox.Input`, `Combobox.Content`, `Combobox.List`, `Combobox.Item`, `Combobox.Empty` |
 | [**Autocomplete**](#autocomplete) | High-level single-selection autocomplete input with debounced querying. | — |
-| [**Listbox**](#listbox) | Accessible menu and option listbox primitive. | `Listbox.Option`, `Listbox.Section`, `Listbox.Header`, `Listbox.Action`, `Listbox.Loading` |
 
 ### Filtering & Search
 
@@ -1058,7 +1056,7 @@ import { Combobox } from "@xco-agency/corex-ui";
 
 | Subcomponent | Description | Key Props |
 | :--- | :--- | :--- |
-| `Combobox.TextField` | Input text field triggering combobox options. | `label?: string, value?: string, onChange?: (val) => void, placeholder?` |
+| `Combobox.Input` | Input field for search filtering and selected tags. | `placeholder?, showClear?, label?, helpText?, disabled?` |
 | `Combobox.Content` | Popover container wrapping the option list. | `children` |
 | `Combobox.List` | List container for combobox items. | `children` |
 | `Combobox.Item` | Selectable item in combobox list. | `value: string, children` |
@@ -1086,7 +1084,7 @@ import { Combobox } from "@xco-agency/corex-ui";
 | `autoHighlight` | `boolean &#124; undefined` | Highlight first matching suggestion automatically. |
 | `disabled` | `boolean &#124; undefined` | Whether the combobox is disabled. |
 | `readOnly` | `boolean &#124; undefined` | Whether the combobox is read-only. |
-| `activator` | `ReactNode` | Legacy activator field (e.g. `<Combobox.TextField ... />`). |
+| `activator` | `ReactNode` | Custom trigger element. |
 | `preferredPosition` | `"above" &#124; "below" &#124; "mostSpace" &#124; undefined` | — |
 | `willLoadMoreOptions` | `boolean &#124; undefined` | — |
 | `onScrolledToBottom` | `(() =&gt; void) &#124; undefined` | — |
@@ -1099,7 +1097,7 @@ import { Combobox } from "@xco-agency/corex-ui";
 
 ```tsx
 <Combobox items={options} onValueChange={(val) => setSelected(val)}>
-  <Combobox.TextField label="Search tags" />
+  <Combobox.Input placeholder="Search tags" showClear />
   <Combobox.Content>
     <Combobox.List>
       {options.map(opt => <Combobox.Item key={opt.value} value={opt.value}>{opt.label}</Combobox.Item>)}
@@ -2146,47 +2144,6 @@ import { List } from "@xco-agency/corex-ui";
 
 ---
 
-### Listbox
-
-Accessible menu and option listbox primitive.
-
-```tsx
-import { Listbox } from "@xco-agency/corex-ui";
-```
-
-#### Subcomponents
-
-| Subcomponent | Description | Key Props |
-| :--- | :--- | :--- |
-| `Listbox.Option` | Selectable option in a Listbox. | `value: string, selected?: boolean, disabled?: boolean, children` |
-| `Listbox.Section` | Group of options with a section heading. | `title: string, children` |
-| `Listbox.Header` | Non-interactive section header. | `children` |
-| `Listbox.Action` | Action button item inside a Listbox. | `onAction: () => void, children` |
-| `Listbox.Loading` | Loading indicator for async list items. | `accessibilityLabel?: string` |
-
-#### Modern Props
-
-| Prop | Type | Description |
-| :--- | :--- | :--- |
-| `children` | `ReactNode` | — |
-| `onSelect` | `((value: string) =&gt; void) &#124; undefined` | — |
-| `autoSelection` | `string &#124; undefined` | — |
-| `accessibilityLabel` | `string &#124; undefined` | — |
-| `id` | `string &#124; undefined` | — |
-| `className` | `string &#124; undefined` | — |
-| `style` | `CSSProperties &#124; undefined` | — |
-
-#### Example
-
-```tsx
-<Listbox onSelect={(val) => handleSelect(val)}>
-  <Listbox.Option value="1">Option 1</Listbox.Option>
-  <Listbox.Option value="2">Option 2</Listbox.Option>
-</Listbox>
-```
-
----
-
 ### Menu
 
 Menu overlay wrapping `<s-menu>` containing action list items.
@@ -2724,37 +2681,6 @@ import { QueryContainer } from "@xco-agency/corex-ui";
 <QueryContainer containerName="cardContainer">
   <Text>Responsive based on container width</Text>
 </QueryContainer>
-```
-
----
-
-### RadioButton
-
-Single radio button input.
-
-```tsx
-import { RadioButton } from "@xco-agency/corex-ui";
-```
-
-#### Modern Props
-
-| Prop | Type | Description |
-| :--- | :--- | :--- |
-| `label` | `ReactNode` | — |
-| `checked` | `boolean &#124; undefined` | — |
-| `value` | `string &#124; undefined` | The value this radio contributes to its group. Defaults to the `id`. |
-| `name` | `string &#124; undefined` | Radios sharing a `name` form one group. |
-| `disabled` | `boolean &#124; undefined` | — |
-| `helpText` | `ReactNode` | — |
-| `onChange` | `((checked: boolean, id: string) =&gt; void) &#124; undefined` | — |
-| `id` | `string &#124; undefined` | — |
-| `className` | `string &#124; undefined` | — |
-| `style` | `CSSProperties &#124; undefined` | — |
-
-#### Example
-
-```tsx
-<RadioButton label="Allow customer accounts" checked={val === "allow"} id="allow" name="accounts" onChange={() => setVal("allow")} />
 ```
 
 ---
