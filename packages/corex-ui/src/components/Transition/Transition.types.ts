@@ -147,4 +147,7 @@ export type TransitionPropsType = {
 
   /** HTML element ID. */
   id?: string;
+
+  /** ARIA role of the wrapper, e.g. `"rowgroup"`. */
+  role?: string;
 };

@@ -1,5 +1,6 @@
-export { IndexTable, IndexTableCell, IndexTableRow } from "./IndexTable";
+export { IndexTable } from "./IndexTable";
 export { useIndexResourceState } from "./useIndexResourceState";
+export { reorderItems } from "./indexTableColumns";
 export type {
   IndexTableBulkActionType,
   IndexTableCellPropsType,
@@ -8,6 +9,8 @@ export type {
   IndexTablePropsType,
   IndexTableRowPropsType,
   IndexTableSelectionTypeType,
+  IndexTableSortDirectionType,
+  IndexTableStickyType,
   UseIndexResourceStateOptionsType,
   UseIndexResourceStateResultType,
 } from "./IndexTable.types";

@@ -1,12 +1,14 @@
 import { cloneElement, forwardRef, isValidElement } from "react";
-import type { ReactNode } from "react";
+import type { CSSProperties, ReactNode } from "react";
 import { createWebComponent } from "../../core/createWebComponent";
 import { devWarning } from "../../utils/devWarning";
 import { Button } from "../Button";
 import { Link } from "../Link";
+import { Pagination } from "../Pagination";
 import type {
   PageBackActionType,
   PageMenuActionDescriptorType,
+  PagePaginationPropsType,
   PagePrimaryActionType,
   PagePropsType,
 } from "./Page.types";
@@ -152,6 +154,38 @@ function renderAccessory(
   return <span slot="accessory">{resolved}</span>;
 }
 
+/** Sticks the pager to the bottom of the viewport until the content ends. */
+const FLOATING_PAGINATION_STYLE: CSSProperties = {
+  position: "sticky",
+  insetBlockEnd: "16px",
+  zIndex: 10,
+  inlineSize: "fit-content",
+  marginBlockStart: "16px",
+};
+
+function navigate(url?: string) {
+  return url ? () => window.location.assign(url) : undefined;
+}
+
+function renderPagination(pagination?: PagePaginationPropsType) {
+  if (!pagination) return null;
+  return (
+    <div style={FLOATING_PAGINATION_STYLE}>
+      <Pagination
+        floating
+        hasPrevious={pagination.hasPrevious}
+        hasNext={pagination.hasNext}
+        onPrevious={pagination.onPrevious ?? navigate(pagination.previousURL)}
+        onNext={pagination.onNext ?? navigate(pagination.nextURL)}
+        label={pagination.label}
+        previousTooltip={pagination.previousTooltip}
+        nextTooltip={pagination.nextTooltip}
+        accessibilityLabel={pagination.accessibilityLabel}
+      />
+    </div>
+  );
+}
+
 /**
  * Top-level layout wrapper over `s-page`.
  * Supports native `s-page` attributes and slots while providing complete
@@ -194,13 +228,6 @@ export const Page = forwardRef<HTMLElement, PagePropsType>(function Page(
     );
   }
 
-  if (pagination) {
-    devWarning(
-      "Page",
-      "`pagination` is not directly supported on `s-page`. Render pagination directly in the page body.",
-    );
-  }
-
   if (titleHidden) {
     devWarning("Page", "`titleHidden` is not supported on `s-page`.");
   }
@@ -218,6 +245,7 @@ export const Page = forwardRef<HTMLElement, PagePropsType>(function Page(
       {renderAccessory(accessory, titleMetadata, additionalMetadata)}
       {renderAside(aside)}
       {children}
+      {renderPagination(pagination)}
     </SPage>
   );
 });

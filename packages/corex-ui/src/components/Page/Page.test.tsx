@@ -192,4 +192,17 @@ describe("Page", () => {
     );
     expect(screen.getByText("Archived")).toHaveAttribute("slot", "accessory");
   });
+
+  it("floats the pager at the bottom of the page", () => {
+    const onNext = vi.fn();
+    render(
+      <Page title="Products" pagination={{ hasNext: true, onNext, label: "1-50" }}>
+        <span>List</span>
+      </Page>,
+    );
+
+    const pager = screen.getByRole("navigation");
+    expect(pager.parentElement).toHaveStyle({ position: "sticky" });
+    expect(screen.getByText("1-50")).toBeInTheDocument();
+  });
 });

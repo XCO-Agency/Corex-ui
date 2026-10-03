@@ -36,4 +36,18 @@ describe("Pagination", () => {
     expect(next).toHaveAttribute("accessibility-label", "Newer");
     expect(container.querySelector("s-text")).toHaveTextContent("1 – 20 of 240");
   });
+
+  it("renders a floating pill with the label between the buttons", () => {
+    const onNext = vi.fn();
+    const { container, getByRole, getByText } = render(
+      <Pagination floating hasNext onNext={onNext} label="1-50" />,
+    );
+
+    expect(getByRole("navigation")).toHaveStyle({ display: "inline-flex" });
+    expect(getByText("1-50")).toBeInTheDocument();
+
+    const [, next] = Array.from(container.querySelectorAll("s-button"));
+    fireEvent.click(next!);
+    expect(onNext).toHaveBeenCalledTimes(1);
+  });
 });

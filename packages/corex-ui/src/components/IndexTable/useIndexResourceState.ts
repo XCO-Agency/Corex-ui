@@ -18,12 +18,17 @@ export function useIndexResourceState<T extends { id?: string | number }>(
   {
     resourceIDResolver = (resource: T) => String(resource.id ?? ""),
     selectedResources: initial = [],
+    subResourceIDs,
   }: UseIndexResourceStateOptionsType<T> = {},
 ): UseIndexResourceStateResultType {
   const [selectedResources, setSelectedResources] = useState<string[]>(initial);
 
   const allIds = useMemo(
-    () => resources.map(resourceIDResolver),
+    () =>
+      resources.flatMap((resource) => [
+        resourceIDResolver(resource),
+        ...(subResourceIDs?.(resource) ?? []),
+      ]),
     // The resolver is usually an inline arrow, so depending on it would rebuild
     // this on every render.
     // eslint-disable-next-line react-hooks/exhaustive-deps

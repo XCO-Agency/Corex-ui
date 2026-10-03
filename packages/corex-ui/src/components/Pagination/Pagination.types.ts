@@ -10,6 +10,11 @@ export type PaginationPropsType = {
   /** Accessible names for the two buttons. */
   previousTooltip?: string;
   nextTooltip?: string;
+  /**
+   * Renders the control as a raised pill (white surface, shadow) with quiet
+   * buttons — the style used when it floats over page content.
+   */
+  floating?: boolean;
   /** @deprecated v12 bound `J`/`K`; not reproduced. */
   accessibilityLabel?: string;
   id?: string;

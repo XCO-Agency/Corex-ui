@@ -80,9 +80,12 @@ export type PageBackActionType = {
 };
 
 /**
- * Page pagination properties (legacy Polaris).
+ * Page-level pagination. Floats at the bottom-left of the page while the
+ * content scrolls, the way the Shopify admin pages long resource lists.
  */
 export type PagePaginationPropsType = {
+  /** Text between the buttons, e.g. "1-50". */
+  label?: ReactNode;
   /** Tooltip for next page button */
   nextTooltip?: string;
   /** Tooltip for previous page button */
@@ -214,7 +217,8 @@ export type PagePropsType = {
   filterActions?: boolean;
 
   /**
-   * @deprecated Page-level pagination is not directly supported on `s-page`. Render pagination inside the page body.
+   * Previous/next pager floating at the bottom-left of the page — it stays in
+   * view while a long list scrolls and settles under the content at the end.
    */
   pagination?: PagePaginationPropsType;
 
