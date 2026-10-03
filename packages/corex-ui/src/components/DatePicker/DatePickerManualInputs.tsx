@@ -1,10 +1,12 @@
 import { useState, useEffect } from "react";
-import type { CSSProperties, ChangeEvent, FocusEvent, KeyboardEvent } from "react";
-import { formatDateDisplay, parseISODate, toISODateString } from "./datePickerUtils";
+import type { KeyboardEvent } from "react";
+import { formatDateDisplay, toISODateString } from "./datePickerUtils";
 import { Button } from "../Button";
 import { BlockStack } from "../BlockStack";
 import { InlineStack } from "../InlineStack";
 import { Icon } from "../Icon";
+import { Box } from "../Box";
+import { TextField } from "../TextField";
 
 export type DatePickerManualInputsPropsType = {
   startDate: string;
@@ -63,86 +65,44 @@ export function DatePickerManualInputs({
     }
   };
 
-  const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+  const handleKeyDown = (e: KeyboardEvent<any>) => {
     if (e.key === "Enter") {
       tryParseAndCommit();
     }
   };
 
-  const inputStyle: CSSProperties = {
-    flex: 1,
-    height: "28px",
-    padding: "6px 12px",
-    fontSize: "13px",
-    lineHeight: "20px",
-    backgroundColor: "var(--p-color-bg-surface, #fff)",
-    border: "0.5px solid var(--p-color-border-subdue, #c9cccf)",
-    borderRadius: "8px",
-    outline: "none",
-    boxSizing: "border-box",
-    transition: "border-color 0.15s ease, box-shadow 0.15s ease",
-  };
-
-  const timeInputStyle: CSSProperties = {
-    ...inputStyle,
-    flex: "1",
-    width: "132px",
-    paddingLeft: "32px",
-  };
-
-  const timeIconStyle: CSSProperties = {
-    position: "absolute",
-    left: "6px",
-    top: "50%",
-    transform: "translateY(-50%)",
-    pointerEvents: "none",
-  };
-
-  const handleFocus = (e: FocusEvent<HTMLInputElement>) => {
-    e.currentTarget.style.boxShadow = "0 0 0 2px var(--p-color-border-focus, #005bd3)";
-  };
-
-  const handleBlurCapture = (e: FocusEvent<HTMLInputElement>) => {
-    e.currentTarget.style.boxShadow = "none";
-  };
-
   return (
-    <BlockStack gap="small-300" padding="small" className={className}>
+    <BlockStack gap="small-300" padding="small-200" className={className}>
       {/* Date Row */}
-      <InlineStack alignItems="center" gap="small">
-        <input
-          type="text"
-          inputMode="numeric"
-          value={startText}
-          onChange={(e: ChangeEvent<HTMLInputElement>) => setStartText(e.target.value)}
-          onBlur={tryParseAndCommit}
-          onKeyDown={handleKeyDown}
-          placeholder="Start date"
-          aria-label="Start date"
-          style={inputStyle}
-          onFocus={handleFocus}
-          onBlurCapture={handleBlurCapture}
-        />
+      <InlineStack alignItems="center" gap="small-200">
+        <InlineStack grow>
+          <TextField
+            inputMode="numeric"
+            value={startText}
+            onChange={(val) => setStartText(val)}
+            onBlur={tryParseAndCommit}
+            onKeyDown={handleKeyDown}
+            placeholder="Start date"
+            accessibilityLabel="Start date"
+          />
+        </InlineStack>
 
         <Icon type="arrow-right" />
 
-        <input
-          type="text"
-          value={endText}
-          onChange={(e: ChangeEvent<HTMLInputElement>) => setEndText(e.target.value)}
-          onBlur={tryParseAndCommit}
-          onKeyDown={handleKeyDown}
-          placeholder="End date"
-          aria-label="End date"
-          style={inputStyle}
-          onFocus={handleFocus}
-          onBlurCapture={handleBlurCapture}
-        />
+        <InlineStack grow>
+          <TextField
+            value={endText}
+            onChange={(val) => setEndText(val)}
+            onBlur={tryParseAndCommit}
+            onKeyDown={handleKeyDown}
+            placeholder="End date"
+            accessibilityLabel="End date"
+          />
+        </InlineStack>
 
-        {/* Clock icon toggles the time row (disabled by default, shown once enabled) */}
+        {/* Clock icon toggles the time row */}
         <Button
-          aria-label={timeEnabled ? "Hide time" : "Show time"}
-          aria-pressed={timeEnabled}
+          accessibilityLabel={timeEnabled ? "Hide time" : "Show time"}
           icon="clock"
           variant={timeEnabled ? "primary" : "secondary"}
           onClick={() => setTimeEnabled((prev) => !prev)}
@@ -151,45 +111,31 @@ export function DatePickerManualInputs({
 
       {/* Time Row - hidden until time is enabled */}
       {timeEnabled && (
-        <InlineStack alignItems="center" gap="small">
-          <span style={{ position: "relative", display: "flex", flex: 1 }}>
-            <span style={timeIconStyle}>
-              <Icon type="clock" />
-            </span>
-            <input
-              type="text"
+        <InlineStack alignItems="center" gap="small-200">
+          <InlineStack grow>
+            <TextField
               inputMode="numeric"
               value={startTime}
-              onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                setStartTime(e.target.value)
-              }
+              onChange={(val) => setStartTime(val)}
               placeholder="00:00"
-              aria-label="Start time"
-              style={timeInputStyle}
-              onFocus={handleFocus}
-              onBlurCapture={handleBlurCapture}
+              accessibilityLabel="Start time"
+              icon="clock"
             />
-          </span>
+          </InlineStack>
 
           <Icon type="arrow-right" />
 
-          <span style={{ position: "relative", display: "flex", flex: 1 }}>
-            <span style={timeIconStyle}>
-              <Icon type="clock" />
-            </span>
-            <input
-              type="text"
+          <InlineStack grow>
+            <TextField
               inputMode="numeric"
               value={endTime}
-              onChange={(e: ChangeEvent<HTMLInputElement>) => setEndTime(e.target.value)}
+              onChange={(val) => setEndTime(val)}
               placeholder="23:59"
-              aria-label="End time"
-              style={timeInputStyle}
-              onFocus={handleFocus}
-              onBlurCapture={handleBlurCapture}
+              accessibilityLabel="End time"
+              icon="clock"
             />
-          </span>
-          <span style={{ width: 28 }}></span>
+          </InlineStack>
+          <Box inlineSize="28px" />
         </InlineStack>
       )}
     </BlockStack>

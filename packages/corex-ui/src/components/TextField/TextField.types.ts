@@ -1,3 +1,4 @@
+import type { KeyboardEvent } from "react";
 import type { PolarisPropsType } from "../../types/common";
 
 type NativeTextFieldProps = PolarisPropsType<"s-text-field">;
@@ -13,4 +14,8 @@ export type TextFieldPropsType = Omit<NativeTextFieldProps, "onChange"> & {
   maxLength?: number;
   minLength?: number;
   requiredIndicator?: boolean;
+  onKeyDown?: (event: KeyboardEvent<any>) => void;
+  inputMode?: string;
+  labelHidden?: boolean;
+  accessibilityLabel?: string;
 };

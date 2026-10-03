@@ -1,252 +1,183 @@
-import { useState, useEffect } from "react";
-import type { CSSProperties, MouseEvent } from "react";
-import {
-  getMonthMatrix,
-  getMonthTitle,
-  isDateInRange,
-  isDateEqual,
-  parseISODate,
-  toISODateString,
-} from "./datePickerUtils";
-import { Button } from "../Button";
-import { InlineStack } from "../InlineStack";
-import { Text } from "../Text";
-import { Grid } from "../Grid";
-import { Clickable } from "../Clickable";
+import { forwardRef } from "react";
+import type { ForwardRefExoticComponent, RefAttributes } from "react";
+import { createWebComponent } from "../../core/createWebComponent";
+import type {
+  DatePickerVisibleMonthsType,
+  DateRangeType,
+} from "./DatePicker.types";
+
+export const SDatePicker = createWebComponent<
+  HTMLElement,
+  {
+    onInput: "input";
+    onChange: "change";
+    onViewChange: "viewchange";
+  }
+>("s-date-picker", {
+  events: {
+    onInput: "input",
+    onChange: "change",
+    onViewChange: "viewchange",
+  },
+  domProps: ["value", "view", "visibleMonths"],
+});
 
 export type DatePickerCalendarPropsType = {
-  startDate: string;
-  endDate: string;
-  onSelectDate: (dateStr: string) => void;
+  startDate?: string;
+  endDate?: string;
+  onSelectDate?: (dateStr: string) => void;
   viewDate?: string;
   /** Earliest selectable date (inclusive), as an ISO date string. */
   minDate?: string;
   /** Latest selectable date (inclusive), as an ISO date string. */
   maxDate?: string;
+  type?: "single" | "multiple" | "range";
+  visibleMonths?: DatePickerVisibleMonthsType;
+  name?: string;
+  value?: string;
+  view?: string;
+  defaultView?: string;
+  defaultValue?: string;
+  allow?: string;
+  disallow?: string;
+  allowDays?: string;
+  disallowDays?: string;
+  onChange?: (value: string | DateRangeType) => void;
+  onChangeRange?: (range: DateRangeType) => void;
+  onViewChange?: (view: string) => void;
+  onInput?: (event: Event) => void;
   className?: string;
+  style?: React.CSSProperties;
+  id?: string;
 };
 
-const DAY_NAMES = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
-
-export function DatePickerCalendar({
-  startDate,
-  endDate,
-  onSelectDate,
-  viewDate,
-  minDate,
-  maxDate,
-  className = "",
-}: DatePickerCalendarPropsType) {
-  // Determine initial view year/month from viewDate, startDate or current date
-  const getTargetDate = (val?: string) => {
-    return (val ? parseISODate(val) : null) || new Date();
-  };
-
-  const initialDate = getTargetDate(viewDate || startDate);
-
-  const [viewYear, setViewYear] = useState<number>(initialDate.getFullYear());
-  const [viewMonth, setViewMonth] = useState<number>(initialDate.getMonth());
-  const [hoverDate, setHoverDate] = useState<string | null>(null);
-
-  // Sync calendar view when viewDate changes (e.g. preset clicked or date selected)
-  useEffect(() => {
-    if (viewDate) {
-      const parsed = parseISODate(viewDate);
-      if (parsed) {
-        setViewYear(parsed.getFullYear());
-        setViewMonth(parsed.getMonth());
+export const DatePickerCalendar: ForwardRefExoticComponent<
+  DatePickerCalendarPropsType & RefAttributes<HTMLElement>
+> = forwardRef<HTMLElement, DatePickerCalendarPropsType>(function DatePickerCalendar(
+  {
+    startDate,
+    endDate,
+    onSelectDate,
+    viewDate,
+    minDate,
+    maxDate,
+    type = "range",
+    visibleMonths = "2",
+    name,
+    value: explicitValue,
+    view: explicitView,
+    defaultView,
+    defaultValue,
+    allow: explicitAllow,
+    disallow,
+    allowDays,
+    disallowDays,
+    onChange,
+    onChangeRange,
+    onViewChange,
+    onInput,
+    className,
+    style,
+    id,
+    ...rest
+  },
+  ref,
+) {
+  // Compute value from explicitValue or startDate/endDate
+  let computedValue = explicitValue;
+  if (computedValue === undefined) {
+    if (type === "single") {
+      computedValue = startDate || "";
+    } else {
+      if (startDate && endDate) {
+        computedValue = `${startDate}--${endDate}`;
+      } else if (startDate) {
+        computedValue = `${startDate}--`;
+      } else {
+        computedValue = "";
       }
     }
-  }, [viewDate]);
-
-  // If viewDate is not explicitly passed, sync when startDate changes if outside current view
-  useEffect(() => {
-    if (!viewDate && startDate) {
-      const parsed = parseISODate(startDate);
-      if (parsed) {
-        const nextMonthDate = new Date(viewYear, viewMonth + 1, 1);
-        const inMonth1 =
-          parsed.getFullYear() === viewYear && parsed.getMonth() === viewMonth;
-        const inMonth2 =
-          parsed.getFullYear() === nextMonthDate.getFullYear() &&
-          parsed.getMonth() === nextMonthDate.getMonth();
-
-        if (!inMonth1 && !inMonth2) {
-          setViewYear(parsed.getFullYear());
-          setViewMonth(parsed.getMonth());
-        }
-      }
-    }
-  }, [startDate, viewDate, viewYear, viewMonth]);
-
-  // Month 1: viewYear, viewMonth
-  // Month 2: month 1 + 1 month
-  const nextMonthDate = new Date(viewYear, viewMonth + 1, 1);
-  const nextYear = nextMonthDate.getFullYear();
-  const nextMonth = nextMonthDate.getMonth();
-
-  const handlePrev = (e?: any) => {
-    e?.stopPropagation?.();
-    const prev = new Date(viewYear, viewMonth - 1, 1);
-    setViewYear(prev.getFullYear());
-    setViewMonth(prev.getMonth());
-  };
-
-  const handleNext = (e?: any) => {
-    e?.stopPropagation?.();
-    const next = new Date(viewYear, viewMonth + 1, 1);
-    setViewYear(next.getFullYear());
-    setViewMonth(next.getMonth());
-  };
-
-  const month1Days = getMonthMatrix(viewYear, viewMonth);
-  const month2Days = getMonthMatrix(nextYear, nextMonth);
-
-  // Effective range for highlighting (including hover if in middle of picking)
-  const effectiveStart = startDate;
-  let effectiveEnd = endDate;
-  if (startDate && !endDate && hoverDate && hoverDate >= startDate) {
-    effectiveEnd = hoverDate;
   }
 
-  const renderMonth = (
-    year: number,
-    month: number,
-    days: ReturnType<typeof getMonthMatrix>,
-    isLeft: boolean,
-  ) => {
-    return (
-      <div style={{ flex: 1, minWidth: "220px" }}>
-        {/* Month Header */}
-        <InlineStack
-          justifyContent="space-between"
-          alignItems="center"
-          paddingBlockEnd="small-300"
-        >
-          {isLeft ? (
-            <Button
-              variant="tertiary"
-              onClick={handlePrev}
-              aria-label="Previous month"
-              icon="arrow-left"
-            />
-          ) : (
-            <div style={{ width: "28px" }} />
-          )}
+  // Compute view from explicitView or viewDate or startDate
+  let computedView = explicitView;
+  if (!computedView) {
+    if (viewDate) {
+      computedView = viewDate.includes("-") ? viewDate.slice(0, 7) : viewDate;
+    } else if (startDate) {
+      computedView = startDate.includes("-") ? startDate.slice(0, 7) : startDate;
+    }
+  }
 
-          <Text heading>{getMonthTitle(year, month)}</Text>
+  // Compute allow from explicitAllow or minDate / maxDate
+  let computedAllow = explicitAllow;
+  if (!computedAllow && (minDate || maxDate)) {
+    computedAllow = `${minDate || ""}--${maxDate || ""}`;
+  }
 
-          {!isLeft ? (
-            <Button
-              onClick={handleNext}
-              aria-label="Next month"
-              variant="tertiary"
-              icon="arrow-right"
-            />
-          ) : (
-            <div style={{ width: "28px" }} />
-          )}
-        </InlineStack>
+  const handleInput = (event: Event) => {
+    onInput?.(event);
+    const target = event.currentTarget as (EventTarget & { value?: string }) | null;
+    const val = target?.value || "";
 
-        {/* Days of Week Row */}
-        <Grid columns={7} columnGap="small-500" justifyItems="center">
-          {DAY_NAMES.map((d) => (
-            <Text key={d} variant="xs">
-              {d}
-            </Text>
-          ))}
-        </Grid>
+    if (val.includes("--")) {
+      const [start = "", end = ""] = val.split("--");
+      if (end) {
+        onSelectDate?.(end);
+        onChangeRange?.({ start, end });
+      } else if (start) {
+        onSelectDate?.(start);
+        onChangeRange?.({ start, end: "" });
+      }
+    } else if (val) {
+      onSelectDate?.(val);
+      onChangeRange?.({ start: val, end: val });
+    }
+  };
 
-        {/* Days Grid */}
-        <Grid columns={7} columnGap="none" rowGap="small-500">
-          {days.map((item, idx) => {
-            const isStart = isDateEqual(item.dateStr, effectiveStart);
-            const isEnd = isDateEqual(item.dateStr, effectiveEnd);
-            const inRange =
-              effectiveStart &&
-              effectiveEnd &&
-              isDateInRange(item.dateStr, effectiveStart, effectiveEnd);
+  const handleChange = (event: Event) => {
+    const target = event.currentTarget as (EventTarget & { value?: string }) | null;
+    const val = target?.value || "";
 
-            const isCurrent = item.isCurrentMonth;
-            const isDisabled = Boolean(
-              (minDate && item.dateStr < minDate) || (maxDate && item.dateStr > maxDate),
-            );
+    if (val.includes("--")) {
+      const [start = "", end = ""] = val.split("--");
+      if (start && end) {
+        onChangeRange?.({ start, end });
+        onChange?.({ start, end });
+      }
+    } else if (val) {
+      onChangeRange?.({ start: val, end: val });
+      onChange?.(val);
+    }
+  };
 
-            // Background bridge for range selection
-            const hasRangeBridge = inRange && isCurrent;
-
-            return (
-              <div
-                key={idx}
-                style={{
-                  position: "relative",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  height: "32px",
-                  width: "32px",
-                  backgroundColor: hasRangeBridge
-                    ? "var(--p-color-bg-surface-selected, #f1f2f3)"
-                    : "transparent",
-                  borderTopLeftRadius: isStart ? "8px" : "0",
-                  borderBottomLeftRadius: isStart ? "8px" : "0",
-                  borderTopRightRadius: isEnd ? "8px" : "0",
-                  borderBottomRightRadius: isEnd ? "8px" : "0",
-                }}
-              >
-                {isCurrent ? (
-                  <Button
-                    type="button"
-                    onClick={() => onSelectDate(item.dateStr)}
-                    variant={isEnd || isStart ? "primary" : "tertiary"}
-                    disabled={isDisabled}
-                  >
-                    <span
-                      style={{
-                        marginInline: -4,
-                        width: 14,
-                        justifyContent: "center",
-                        alignItems: "center",
-                        display: "flex",
-                        height: 18,
-                      }}
-                    >
-                      {item.dayNumber}
-                    </span>
-                  </Button>
-                ) : (
-                  <span
-                    style={{
-                      justifyContent: "center",
-                      alignItems: "center",
-                      display: "flex",
-                      opacity: 0.3,
-                      height: 28,
-                      width: 28,
-                      borderRadius: 8,
-                    }}
-                  >
-                    -
-                  </span>
-                )}
-              </div>
-            );
-          })}
-        </Grid>
-      </div>
-    );
+  const handleViewChange = (event: Event) => {
+    const target = event.currentTarget as (EventTarget & { view?: string }) | null;
+    const v = target?.view || "";
+    onViewChange?.(v);
   };
 
   return (
-    <InlineStack
+    <SDatePicker
+      ref={ref}
+      id={id}
+      type={type}
+      name={name}
+      visibleMonths={String(visibleMonths) as any}
+      view={computedView}
+      defaultView={defaultView}
+      value={computedValue}
+      defaultValue={defaultValue}
+      allow={computedAllow}
+      disallow={disallow}
+      allowDays={allowDays}
+      disallowDays={disallowDays}
+      onInput={handleInput}
+      onChange={handleChange}
+      onViewChange={handleViewChange}
       className={className}
-      gap="base"
-      paddingBlockStart="small-200"
-      paddingBlockEnd="small"
-      paddingInline="small"
-    >
-      {renderMonth(viewYear, viewMonth, month1Days, true)}
-      {renderMonth(nextYear, nextMonth, month2Days, false)}
-    </InlineStack>
+      style={style}
+      {...rest}
+    />
   );
-}
+});

@@ -63,9 +63,19 @@ export function normalizeDateRange(
     return { start: str, end: str };
   }
   if (typeof value === "string") {
+    if (value.includes("--")) {
+      const [start = "", end = ""] = value.split("--");
+      return { start, end: end || start };
+    }
     return { start: value, end: value };
   }
   return value;
+}
+
+export function toRangeValueString(range?: DateRangeType | null): string {
+  if (!range || !range.start) return "";
+  if (!range.end || range.start === range.end) return range.start;
+  return `${range.start}--${range.end}`;
 }
 
 export function formatDateDisplay(dateStr: string): string {

@@ -1,7 +1,7 @@
 export { DatePicker } from "./DatePicker";
 export { DatePickerPanel } from "./DatePickerPanel";
 export { DatePickerPresets } from "./DatePickerPresets";
-export { DatePickerCalendar } from "./DatePickerCalendar";
+export { DatePickerCalendar, SDatePicker } from "./DatePickerCalendar";
 export { DatePickerManualInputs } from "./DatePickerManualInputs";
 export * from "./datePickerUtils";
 export {
@@ -21,6 +21,9 @@ export type {
   DatePickerPropsType,
   DateRangeType,
   DatePresetItemType,
+  DatePickerVisibleMonthsType,
+  NativeDatePickerPropsType,
+  NativeDatePickerProps,
 } from "./DatePicker.types";
 export type {
   DateExpressionType,

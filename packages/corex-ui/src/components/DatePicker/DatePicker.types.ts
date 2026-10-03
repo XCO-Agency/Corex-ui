@@ -15,11 +15,32 @@ export type DatePresetItemType = {
   divider?: boolean;
 };
 
-export type NativeDatePickerProps = PolarisPropsType<"s-date-picker">;
+export type DatePickerVisibleMonthsType = "auto" | "1" | "2" | 1 | 2;
+
+export type NativeDatePickerPropsType = Omit<
+  PolarisPropsType<"s-date-picker">,
+  "onChange" | "onInput" | "defaultValue" | "value"
+> & {
+  type?: "single" | "multiple" | "range";
+  name?: string;
+  visibleMonths?: DatePickerVisibleMonthsType;
+  view?: string;
+  defaultView?: string;
+  value?: string;
+  defaultValue?: string | DatePickerValueType;
+  allow?: string;
+  disallow?: string;
+  allowDays?: string;
+  disallowDays?: string;
+  onViewChange?: (view: string) => void;
+  onInput?: (event: Event) => void;
+};
+
+export type NativeDatePickerProps = NativeDatePickerPropsType;
 
 export type DatePickerValueType = string | DateRangeType | Date;
 
-export type DatePickerPropsType = NativeDatePickerProps & {
+export type DatePickerPropsType = NativeDatePickerPropsType & {
   /**
    * Selected single date (`"2026-09-05"`), date range object (`{ start: "2026-01-01", end: "2026-09-05" }`), or Date.
    */

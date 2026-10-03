@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import type { CSSProperties } from "react";
 import type {
   DatePresetItemType,
   DatePickerPropsType,
@@ -16,7 +15,24 @@ import { BlockStack } from "../BlockStack";
 
 export type DatePickerPanelPropsType = Pick<
   DatePickerPropsType,
-  "selected" | "defaultValue" | "presets" | "onApply" | "onCancel" | "minDate" | "maxDate"
+  | "selected"
+  | "defaultValue"
+  | "presets"
+  | "onApply"
+  | "onCancel"
+  | "minDate"
+  | "maxDate"
+  | "type"
+  | "name"
+  | "visibleMonths"
+  | "view"
+  | "defaultView"
+  | "allow"
+  | "disallow"
+  | "allowDays"
+  | "disallowDays"
+  | "onViewChange"
+  | "onInput"
 > & {
   onChangeRange?: (range: DateRangeType) => void;
   id: string;
@@ -34,6 +50,17 @@ export function DatePickerPanel({
   onApply,
   onCancel,
   onChangeRange,
+  type = "range",
+  name,
+  visibleMonths = "2",
+  view,
+  defaultView,
+  allow,
+  disallow,
+  allowDays,
+  disallowDays,
+  onViewChange,
+  onInput,
 }: DatePickerPanelPropsType) {
   // Requirement: future dates are disabled by default (maxDate defaults to today).
   const effectiveMaxDate = maxDate ?? toISODateString(new Date());
@@ -43,14 +70,18 @@ export function DatePickerPanel({
   };
 
   const [currentRange, setCurrentRange] = useState<DateRangeType>(getInitialRange);
-  const [viewDate, setViewDate] = useState<string>(() => getInitialRange().start);
+  const [viewDate, setViewDate] = useState<string>(
+    () => view ?? defaultView ?? getInitialRange().start,
+  );
   const [activePresetId, setActivePresetId] = useState<string>("custom");
 
   useEffect(() => {
     const range = normalizeDateRange(selected ?? defaultValue);
     setCurrentRange(range);
-    setViewDate(range.start);
-  }, [selected, defaultValue]);
+    if (!view) {
+      setViewDate(range.start);
+    }
+  }, [selected, defaultValue, view]);
 
   // Sync / reset to default or selected date whenever the popover opens
   useEffect(() => {
@@ -140,6 +171,17 @@ export function DatePickerPanel({
     }
   };
 
+  const handleCalendarRangeChange = (newRange: DateRangeType) => {
+    setCurrentRange(newRange);
+    setActivePresetId("custom");
+    if (newRange.start) {
+      setViewDate(newRange.start);
+    }
+    if (newRange.start && newRange.end) {
+      onChangeRange?.(newRange);
+    }
+  };
+
   const handleManualRangeChange = (newRange: DateRangeType) => {
     setCurrentRange(newRange);
     if (newRange.start) {
@@ -165,7 +207,7 @@ export function DatePickerPanel({
   };
 
   return (
-    <InlineStack>
+    <InlineStack wrap={false}>
       {/* Left Presets Sidebar */}
       {hasPresets && (
         <>
@@ -179,11 +221,11 @@ export function DatePickerPanel({
       )}
 
       {/* Right Content */}
-      <BlockStack style={{ minWidth: "480px" }}>
+      <BlockStack minInlineSize="480px">
         {/* Top Manual Inputs */}
         <DatePickerManualInputs
           startDate={currentRange.start}
-          endDate={currentRange.end || currentRange.start}
+          endDate={currentRange.end}
           onChangeRange={handleManualRangeChange}
           minDate={minDate}
           maxDate={effectiveMaxDate}
@@ -194,11 +236,24 @@ export function DatePickerPanel({
         {/* Dual Month Calendar */}
         <DatePickerCalendar
           startDate={currentRange.start}
-          endDate={currentRange.end || currentRange.start}
+          endDate={currentRange.end}
           viewDate={viewDate}
-          onSelectDate={handleDateClick}
+          onChangeRange={handleCalendarRangeChange}
+          onViewChange={(v) => {
+            setViewDate(v);
+            onViewChange?.(v);
+          }}
+          onInput={onInput}
           minDate={minDate}
           maxDate={effectiveMaxDate}
+          type={type}
+          name={name}
+          visibleMonths={visibleMonths}
+          defaultView={defaultView}
+          allow={allow}
+          disallow={disallow}
+          allowDays={allowDays}
+          disallowDays={disallowDays}
         />
 
         {!inline && (
@@ -206,7 +261,7 @@ export function DatePickerPanel({
             <Divider />
 
             {/* Bottom Actions */}
-            <InlineStack justifyContent="end" padding="small-100" gap="small">
+            <InlineStack justifyContent="end" padding="small-100" gap="small-200">
               <Button onClick={onCancel} commandFor={id} command="--hide">
                 Cancel
               </Button>

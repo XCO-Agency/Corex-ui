@@ -20,7 +20,16 @@ const STextArea = createWebComponent<HTMLElement, FieldEvents>("s-text-area", {
  * switches the rendered element to `s-text-area`.
  */
 export const TextField = forwardRef<HTMLElement, TextFieldPropsType>(function TextField(
-  { onChange, helpText, details, multiline, requiredIndicator, ...rest },
+  {
+    onChange,
+    helpText,
+    details,
+    multiline,
+    requiredIndicator,
+    labelHidden,
+    accessibilityLabel,
+    ...rest
+  },
   ref,
 ) {
   const handleInput = (event: Event) => {
@@ -28,10 +37,17 @@ export const TextField = forwardRef<HTMLElement, TextFieldPropsType>(function Te
     onChange?.(target?.value ?? "", rest.id ?? "");
   };
 
+  const computedLabel = rest.label ?? accessibilityLabel;
+  const computedVisibility =
+    rest.labelAccessibilityVisibility ??
+    (accessibilityLabel || labelHidden ? "exclusive" : undefined);
+
   const sharedProps = {
     ref,
     details: details ?? helpText,
     required: rest.required ?? requiredIndicator,
+    label: computedLabel,
+    labelAccessibilityVisibility: computedVisibility,
     onInput: handleInput,
     ...rest,
   };

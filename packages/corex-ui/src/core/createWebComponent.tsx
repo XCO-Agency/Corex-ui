@@ -45,6 +45,11 @@ const LOWERCASE_ATTRIBUTES: Record<string, string> = {
   itemScope: "itemscope",
   itemType: "itemtype",
   spellCheck: "spellcheck",
+  visibleMonths: "visiblemonths",
+  defaultView: "defaultview",
+  defaultValue: "defaultvalue",
+  allowDays: "allowdays",
+  disallowDays: "disallowdays",
 };
 
 function toKebabCase(str: string): string {

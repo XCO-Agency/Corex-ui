@@ -69,4 +69,36 @@ describe("DatePicker", () => {
       end: "2026-06-10",
     });
   });
+
+  it("integrates native s-date-picker with type='range', visibleMonths='2', view='2025-05', value='2025-05-20--2025-06-10'", () => {
+    render(
+      <DatePicker
+        type="range"
+        name="reporting-period"
+        visibleMonths="2"
+        view="2025-05"
+        value="2025-05-20--2025-06-10"
+      />,
+    );
+
+    const picker = document.querySelector("s-date-picker");
+    expect(picker).toBeInTheDocument();
+    expect(picker).toHaveAttribute("type", "range");
+    expect(picker).toHaveAttribute("name", "reporting-period");
+    expect(picker).toHaveAttribute("visiblemonths", "2");
+    expect(picker).toHaveAttribute("view", "2025-05");
+    expect(picker).toHaveAttribute("value", "2025-05-20--2025-06-10");
+    expect(screen.getByText("May 2025")).toBeInTheDocument();
+    expect(screen.getByText("June 2025")).toBeInTheDocument();
+  });
+
+  it("handles range string with normalizeDateRange in popover mode", () => {
+    render(
+      <DatePicker
+        selected="2025-05-20--2025-06-10"
+      />,
+    );
+
+    expect(screen.getByText("20 May–10 Jun 2025")).toBeInTheDocument();
+  });
 });

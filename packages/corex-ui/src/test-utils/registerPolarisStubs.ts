@@ -134,7 +134,6 @@ const STUB_TAGS = [
   "s-search-field",
   "s-tooltip",
   "s-date-field",
-  "s-date-picker",
   "s-money-field",
   "s-color-field",
   "s-drop-zone",
@@ -155,6 +154,99 @@ const STUB_TAGS = [
   "ui-save-bar",
   "ui-title-bar",
 ];
+
+const MONTH_NAMES = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+];
+
+class DatePickerStub extends HTMLElement {
+  static get observedAttributes() {
+    return [
+      "type",
+      "visiblemonths",
+      "view",
+      "value",
+      "defaultview",
+      "defaultvalue",
+      "name",
+    ];
+  }
+
+  get value() {
+    return this.getAttribute("value") || "";
+  }
+  set value(val: string) {
+    this.setAttribute("value", val);
+  }
+
+  get view() {
+    return this.getAttribute("view") || "";
+  }
+  set view(val: string) {
+    this.setAttribute("view", val);
+  }
+
+  get visibleMonths() {
+    return this.getAttribute("visiblemonths") || "1";
+  }
+  set visibleMonths(val: string) {
+    this.setAttribute("visiblemonths", String(val));
+  }
+
+  connectedCallback() {
+    this.renderMonthLabels();
+  }
+
+  attributeChangedCallback() {
+    this.renderMonthLabels();
+  }
+
+  private renderMonthLabels() {
+    const view =
+      this.getAttribute("view") ||
+      this.getAttribute("defaultview") ||
+      this.getAttribute("value")?.slice(0, 7) ||
+      "";
+    const visibleMonths = this.getAttribute("visiblemonths") || "1";
+
+    let year: number;
+    let month: number;
+    if (view && view.includes("-")) {
+      const parts = view.split("-");
+      year = parseInt(parts[0] ?? "", 10);
+      month = parseInt(parts[1] ?? "", 10) - 1;
+    } else {
+      const now = new Date();
+      year = now.getFullYear();
+      month = now.getMonth();
+    }
+
+    this.innerHTML = "";
+    const m1Text = `${MONTH_NAMES[month]} ${year}`;
+    const span1 = document.createElement("span");
+    span1.textContent = m1Text;
+    this.appendChild(span1);
+
+    if (visibleMonths === "2") {
+      const nextDate = new Date(year, month + 1, 1);
+      const m2Text = `${MONTH_NAMES[nextDate.getMonth()]} ${nextDate.getFullYear()}`;
+      const span2 = document.createElement("span");
+      span2.textContent = m2Text;
+      this.appendChild(span2);
+    }
+  }
+}
 
 /** `ui-modal` supports imperative `show()` / `hide()` and dispatches `hide` events. */
 class UiModalStub extends HTMLElement {
@@ -182,5 +274,6 @@ export function registerPolarisStubs() {
   defineStub("s-popover", PopoverStub);
   defineStub("s-choice-list", ChoiceListStub);
   defineStub("s-choice", ChoiceStub);
+  defineStub("s-date-picker", DatePickerStub);
   defineStub("ui-modal", UiModalStub);
 }

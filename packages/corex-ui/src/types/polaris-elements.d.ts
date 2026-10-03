@@ -154,6 +154,38 @@ export type SProgressProps = DetailedHTMLProps<
 };
 
 
+export interface SDatePickerElement extends HTMLElement {
+  type?: "single" | "multiple" | "range";
+  name?: string;
+  visibleMonths?: "auto" | "1" | "2" | string | number;
+  view?: string;
+  defaultView?: string;
+  value?: string;
+  defaultValue?: string;
+  allow?: string;
+  disallow?: string;
+  allowDays?: string;
+  disallowDays?: string;
+}
+
+export type SDatePickerProps = DetailedHTMLProps<
+  HTMLAttributes<HTMLElement>,
+  HTMLElement
+> & {
+  type?: "single" | "multiple" | "range";
+  name?: string;
+  visibleMonths?: "auto" | "1" | "2" | string | number;
+  view?: string;
+  defaultView?: string;
+  value?: string;
+  defaultValue?: string;
+  allow?: string;
+  disallow?: string;
+  allowDays?: string;
+  disallowDays?: string;
+  onViewChange?: (view: string) => void;
+};
+
 declare global {
   interface HTMLElementTagNameMap {
     "s-modal": SModalElement;
@@ -165,6 +197,7 @@ declare global {
     "s-password-field": SPasswordFieldElement;
     "s-url-field": SUrlFieldElement;
     "s-progress": SProgressElement;
+    "s-date-picker": SDatePickerElement;
   }
 
   namespace JSX {
@@ -177,6 +210,7 @@ declare global {
       "s-password-field": any;
       "s-url-field": any;
       "s-progress": SProgressProps;
+      "s-date-picker": any;
     }
   }
 }
@@ -185,6 +219,7 @@ declare module "react" {
   namespace JSX {
     interface IntrinsicElements {
       "s-progress": SProgressProps;
+      "s-date-picker": any;
     }
   }
 }

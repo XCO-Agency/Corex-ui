@@ -3,6 +3,7 @@ import type { ForwardRefExoticComponent, RefAttributes } from "react";
 import { Popover } from "../Popover";
 import type { DatePickerPropsType, DateRangeType } from "./DatePicker.types";
 import { DatePickerPanel } from "./DatePickerPanel";
+import { SDatePicker } from "./DatePickerCalendar";
 import { formatRangeDisplay, normalizeDateRange } from "./datePickerUtils";
 import { Button } from "../Button";
 
@@ -15,7 +16,7 @@ export const DatePicker: ForwardRefExoticComponent<
     onChange,
     onApply,
     onCancel,
-    presets = false,
+    presets = true,
     inline = false,
     children,
     activator,
@@ -25,6 +26,18 @@ export const DatePicker: ForwardRefExoticComponent<
     id,
     className,
     style,
+    type,
+    name,
+    visibleMonths,
+    view,
+    defaultView,
+    value,
+    allow,
+    disallow,
+    allowDays,
+    disallowDays,
+    onViewChange,
+    onInput,
     ...rest
   },
   ref,
@@ -32,8 +45,10 @@ export const DatePicker: ForwardRefExoticComponent<
   const generatedId = useId();
   const popoverId = id ?? `date-picker-popover-${generatedId.replace(/:/g, "")}`;
 
-  // Normalize selected / default value into range
-  const currentRange: DateRangeType = normalizeDateRange(selected ?? defaultValue);
+  // Normalize selected / default value / value into range
+  const currentRange: DateRangeType = normalizeDateRange(
+    selected ?? defaultValue ?? value,
+  );
 
   const handleRangeChange = (range: DateRangeType) => {
     if (typeof selected === "string") {
@@ -71,29 +86,52 @@ export const DatePicker: ForwardRefExoticComponent<
     return (
       <DatePickerPanel
         id={popoverId}
-        selected={selected}
+        selected={selected ?? value}
         defaultValue={defaultValue}
         presets={presets}
         minDate={minDate}
         maxDate={maxDate}
         inline
+        type={type}
+        name={name}
+        visibleMonths={visibleMonths}
+        view={view}
+        defaultView={defaultView}
+        allow={allow}
+        disallow={disallow}
+        allowDays={allowDays}
+        disallowDays={disallowDays}
+        onViewChange={onViewChange}
+        onInput={onInput}
         onApply={handleApply}
         onCancel={handleCancel}
         onChangeRange={handleRangeChange}
       />
     );
   }
+
   return (
     <Popover id={popoverId}>
       {effectiveTrigger}
       <Popover.Content ref={ref} maxBlockSize="none" {...rest}>
         <DatePickerPanel
           id={popoverId}
-          selected={selected}
+          selected={selected ?? value}
           defaultValue={defaultValue}
           presets={presets}
           minDate={minDate}
           maxDate={maxDate}
+          type={type}
+          name={name}
+          visibleMonths={visibleMonths}
+          view={view}
+          defaultView={defaultView}
+          allow={allow}
+          disallow={disallow}
+          allowDays={allowDays}
+          disallowDays={disallowDays}
+          onViewChange={onViewChange}
+          onInput={onInput}
           onApply={handleApply}
           onCancel={handleCancel}
           onChangeRange={handleRangeChange}
