@@ -1,13 +1,11 @@
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 import {
   Badge,
   BlockStack,
   Box,
   Button,
   Card,
-  Clickable,
   EmptyState,
-  Icon,
   IndexFilters,
   InlineStack,
   Link,
@@ -134,16 +132,61 @@ const sortOptionsList: IndexFilterSortOptionType[] = [
 ];
 
 const initialColumns: IndexFilterColumnItemType[] = [
-  { key: "product", label: "Product", visible: true },
-  { key: "status", label: "Status", visible: true },
-  { key: "inventory", label: "Inventory", visible: true },
-  { key: "category", label: "Category", visible: true },
-  { key: "channels", label: "Channels", visible: true },
-  { key: "productType", label: "Product type", visible: true },
-  { key: "vendor", label: "Vendor", visible: true },
+  // The first column stays put and can't be hidden.
+  { key: "product", label: "Product", reorderable: false, hideable: false },
+  { key: "status", label: "Status" },
+  { key: "inventory", label: "Inventory" },
+  { key: "category", label: "Category" },
+  { key: "channels", label: "Channels" },
+  { key: "productType", label: "Type" },
+  { key: "vendor", label: "Vendor" },
   { key: "created", label: "Created", visible: false },
   { key: "updated", label: "Updated", visible: false },
 ];
+
+/** Cell content per column key; the columns list only describes order and visibility. */
+const renderCell: Record<string, (product: ProductItemType) => ReactNode> = {
+  product: (product) => (
+    <BlockStack gap="small-500">
+      <Link url="#">
+        <Text heading>{product.title}</Text>
+      </Link>
+      {product.tags.length > 0 && (
+        <InlineStack gap="small-400">
+          {product.tags.slice(0, 3).map((tag) => (
+            <Badge key={tag} tone="neutral">
+              {tag}
+            </Badge>
+          ))}
+        </InlineStack>
+      )}
+    </BlockStack>
+  ),
+  status: (product) => (
+    <Badge
+      tone={
+        product.status === "active"
+          ? "success"
+          : product.status === "draft"
+            ? "info"
+            : "neutral"
+      }
+    >
+      {product.status}
+    </Badge>
+  ),
+  inventory: (product) => (
+    <Text tone={product.inventory === 0 ? "critical" : "neutral"}>
+      {`${product.inventory} in stock`}
+    </Text>
+  ),
+  category: (product) => product.category,
+  channels: (product) => product.channels,
+  productType: (product) => product.productType,
+  vendor: (product) => product.vendor,
+  created: (product) => product.created,
+  updated: (product) => product.updated,
+};
 
 const filterDefinitions: IndexFilterItemType[] = [
   {
@@ -298,11 +341,7 @@ export function IndexFiltersExample() {
     );
   };
 
-  const handleColumnToggle = (columnKey: string, visible: boolean) => {
-    setColumns((prev) =>
-      prev.map((col) => (col.key === columnKey ? { ...col, visible } : col)),
-    );
-  };
+  const visibleColumns = columns.filter((column) => column.visible !== false);
 
   const handleClearAll = () => {
     setQuery("");
@@ -416,15 +455,26 @@ export function IndexFiltersExample() {
           />
 
           <IndexFilters.Actions>
-            <IndexFilters.Columns
-              sortOptions={sortOptionsList}
-              sortValue={sortValue}
-              onSortChange={setSortValue}
-              hideArchived={hideArchived}
-              onHideArchivedChange={setHideArchived}
-              columns={columns}
-              onColumnToggle={handleColumnToggle}
-            />
+            <IndexFilters.ViewOptions>
+              <IndexFilters.ViewOptionsSort
+                label="Sort by"
+                options={sortOptionsList}
+                value={sortValue}
+                onChange={setSortValue}
+              />
+              <IndexFilters.ViewOptionsToggles
+                items={[
+                  {
+                    key: "hideArchived",
+                    label: "Hide archived",
+                    icon: "archive",
+                    checked: hideArchived,
+                    onChange: setHideArchived,
+                  },
+                ]}
+              />
+              <IndexFilters.ViewOptionsColumns columns={columns} onChange={setColumns} />
+            </IndexFilters.ViewOptions>
 
             <Button
               variant="tertiary"
@@ -461,97 +511,16 @@ export function IndexFiltersExample() {
           ) : (
             <Table variant="auto">
               <Table.HeaderRow>
-                {columns.find((c) => c.key === "product")?.visible !== false && (
-                  <Table.HeaderCell>Product</Table.HeaderCell>
-                )}
-                {columns.find((c) => c.key === "status")?.visible !== false && (
-                  <Table.HeaderCell>Status</Table.HeaderCell>
-                )}
-                {columns.find((c) => c.key === "inventory")?.visible !== false && (
-                  <Table.HeaderCell>Inventory</Table.HeaderCell>
-                )}
-                {columns.find((c) => c.key === "category")?.visible !== false && (
-                  <Table.HeaderCell>Category</Table.HeaderCell>
-                )}
-                {columns.find((c) => c.key === "channels")?.visible !== false && (
-                  <Table.HeaderCell>Channels</Table.HeaderCell>
-                )}
-                {columns.find((c) => c.key === "productType")?.visible !== false && (
-                  <Table.HeaderCell>Type</Table.HeaderCell>
-                )}
-                {columns.find((c) => c.key === "vendor")?.visible !== false && (
-                  <Table.HeaderCell>Vendor</Table.HeaderCell>
-                )}
-                {columns.find((c) => c.key === "created")?.visible !== false && (
-                  <Table.HeaderCell>Created</Table.HeaderCell>
-                )}
-                {columns.find((c) => c.key === "updated")?.visible !== false && (
-                  <Table.HeaderCell>Updated</Table.HeaderCell>
-                )}
+                {visibleColumns.map((column) => (
+                  <Table.HeaderCell key={column.key}>{column.label}</Table.HeaderCell>
+                ))}
               </Table.HeaderRow>
               <Table.Body>
-                {filteredProducts.map((prod) => (
-                  <Table.Row key={prod.id}>
-                    {columns.find((c) => c.key === "product")?.visible !== false && (
-                      <Table.Cell>
-                        <BlockStack gap="small-500">
-                          <Link url="#">
-                            <Text heading>{prod.title}</Text>
-                          </Link>
-                          {prod.tags.length > 0 && (
-                            <InlineStack gap="small-400">
-                              {prod.tags.slice(0, 3).map((tag) => (
-                                <Badge key={tag} tone="neutral">
-                                  {tag}
-                                </Badge>
-                              ))}
-                            </InlineStack>
-                          )}
-                        </BlockStack>
-                      </Table.Cell>
-                    )}
-                    {columns.find((c) => c.key === "status")?.visible !== false && (
-                      <Table.Cell>
-                        <Badge
-                          tone={
-                            prod.status === "active"
-                              ? "success"
-                              : prod.status === "draft"
-                                ? "info"
-                                : "neutral"
-                          }
-                        >
-                          {prod.status}
-                        </Badge>
-                      </Table.Cell>
-                    )}
-                    {columns.find((c) => c.key === "inventory")?.visible !== false && (
-                      <Table.Cell>
-                        <Text tone={prod.inventory === 0 ? "critical" : "neutral"}>
-                          {prod.inventory === 0
-                            ? "0 in stock"
-                            : `${prod.inventory} in stock`}
-                        </Text>
-                      </Table.Cell>
-                    )}
-                    {columns.find((c) => c.key === "category")?.visible !== false && (
-                      <Table.Cell>{prod.category}</Table.Cell>
-                    )}
-                    {columns.find((c) => c.key === "channels")?.visible !== false && (
-                      <Table.Cell>{prod.channels}</Table.Cell>
-                    )}
-                    {columns.find((c) => c.key === "productType")?.visible !== false && (
-                      <Table.Cell>{prod.productType}</Table.Cell>
-                    )}
-                    {columns.find((c) => c.key === "vendor")?.visible !== false && (
-                      <Table.Cell>{prod.vendor}</Table.Cell>
-                    )}
-                    {columns.find((c) => c.key === "created")?.visible !== false && (
-                      <Table.Cell>{prod.created}</Table.Cell>
-                    )}
-                    {columns.find((c) => c.key === "updated")?.visible !== false && (
-                      <Table.Cell>{prod.updated}</Table.Cell>
-                    )}
+                {filteredProducts.map((product) => (
+                  <Table.Row key={product.id}>
+                    {visibleColumns.map((column) => (
+                      <Table.Cell key={column.key}>{renderCell[column.key]?.(product)}</Table.Cell>
+                    ))}
                   </Table.Row>
                 ))}
               </Table.Body>

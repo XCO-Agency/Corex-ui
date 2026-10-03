@@ -147,7 +147,7 @@ When specifying `gap`, `padding`, `rowGap`, or `columnGap`, use **exclusively** 
 
 | Component | Description | Subcomponents |
 | :--- | :--- | :--- |
-| [**IndexFilters**](#indexfilters) | Unified search, filtering pills, saved views, and column selector matching Polaris table headers. | `IndexFilters.SearchField`, `IndexFilters.Columns`, `IndexFilters.Actions` |
+| [**IndexFilters**](#indexfilters) | Unified search, filtering pills, saved views, and column selector matching Polaris table headers. | `IndexFilters.SearchField`, `IndexFilters.Actions`, `IndexFilters.ViewOptions`, `IndexFilters.ViewOptionsSort`, `IndexFilters.ViewOptionsToggles`, `IndexFilters.ViewOptionsColumns` |
 
 ### Feedback & Indicators
 
@@ -1740,8 +1740,11 @@ import { IndexFilters } from "@xco-agency/corex-ui";
 | Subcomponent | Description | Key Props |
 | :--- | :--- | :--- |
 | `IndexFilters.SearchField` | Search input with debouncing and active filter pills. | `queryValue?: string, onQueryChange?: (val) => void, filters?: IndexFilterItemType[], appliedFilters?: IndexAppliedFilterType[], onClearAll?: () => void` |
-| `IndexFilters.Columns` | Column visibility and sorting controls popover. | `columns?: IndexFilterColumnItemType[], onColumnToggle?: (key, visible) => void, sortOptions?: IndexFilterSortOptionType[], sortValue?: string, onSortChange?: (val) => void` |
 | `IndexFilters.Actions` | Right-side container for custom action buttons in the filters bar. | `children` |
+| `IndexFilters.ViewOptions` | View options popover; composes the sections below with dividers between them. | `children, activator?: ReactElement, icon?: IconType, accessibilityLabel?: string, disabled?: boolean, minInlineSize?, maxInlineSize?` |
+| `IndexFilters.ViewOptionsSort` | Sort row with a select. | `options: IndexFilterSortOptionType[], value?: string, onChange?: (value) => void, label?: string, icon?: IconType &#124; null` |
+| `IndexFilters.ViewOptionsToggles` | Switch rows (e.g. "Hide archived"). | `items: IndexFilterViewToggleItemType[] ({ key, label, icon?, checked, disabled?, onChange? }), onChange?: (key, checked) => void` |
+| `IndexFilters.ViewOptionsColumns` | Column list: show/hide via eye button, reorder via drag handle or arrow keys. `onChange` returns the full reordered list. | `columns: IndexFilterColumnItemType[] ({ key, label, visible?, hideable?, reorderable? }), onChange?: (columns) => void, title?: ReactNode, direction?: "vertical" &#124; "horizontal"` |
 
 #### Modern Props
 
@@ -1767,12 +1770,24 @@ import { IndexFilters } from "@xco-agency/corex-ui";
 #### Example
 
 ```tsx
-<IndexFilters
-  queryValue={search}
-  onQueryChange={(q) => setSearch(q)}
-  filters={availableFilters}
-  appliedFilters={appliedFilters}
-/>
+<IndexFilters>
+  <IndexFilters.SearchField
+    queryValue={search}
+    onQueryChange={(q) => setSearch(q)}
+    filters={availableFilters}
+    appliedFilters={appliedFilters}
+  />
+  <IndexFilters.Actions>
+    <IndexFilters.ViewOptions>
+      <IndexFilters.ViewOptionsSort options={sortOptions} value={sort} onChange={setSort} />
+      <IndexFilters.ViewOptionsToggles
+        items={[{ key: "archived", label: "Hide archived", icon: "archive", checked: hideArchived, onChange: setHideArchived }]}
+      />
+      {/* Same array drives the table: columns.filter((c) => c.visible !== false) */}
+      <IndexFilters.ViewOptionsColumns columns={columns} onChange={setColumns} />
+    </IndexFilters.ViewOptions>
+  </IndexFilters.Actions>
+</IndexFilters>
 ```
 
 ---

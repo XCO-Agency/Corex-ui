@@ -4,6 +4,18 @@ import { render, fireEvent, screen, act, cleanup } from "@testing-library/react"
 import { IndexFilters, Filters } from "./IndexFilters";
 import { Tabs } from "../Tabs";
 
+// jsdom has no PointerEvent; without it pointer events carry no coordinates.
+if (typeof window.PointerEvent === "undefined") {
+  class PointerEventPolyfill extends MouseEvent {
+    pointerId: number;
+    constructor(type: string, init: PointerEventInit = {}) {
+      super(type, init);
+      this.pointerId = init.pointerId ?? 0;
+    }
+  }
+  (window as unknown as { PointerEvent: unknown }).PointerEvent = PointerEventPolyfill;
+}
+
 const cleanupAll = () => cleanup();
 
 describe("IndexFilters", () => {
@@ -105,7 +117,7 @@ describe("IndexFilters", () => {
     fireEvent.focus(inputEl);
 
     // Click on "Tag"
-    const tagCategory = document.querySelector('s-clickable[accessibility-label="Tag"]')!;
+    const tagCategory = document.querySelector('s-clickable[accessibilitylabel="Tag"]')!;
     fireEvent.click(tagCategory);
 
     expect(onAddFilter).toHaveBeenCalledWith("tag", 0);
@@ -156,7 +168,7 @@ describe("IndexFilters", () => {
     // Popover 1 is open showing "Vendor"
     expect(document.body.textContent).toContain("Filters");
     const vendorCategory = document.querySelector(
-      's-clickable[accessibility-label="Vendor"]',
+      's-clickable[accessibilitylabel="Vendor"]',
     )!;
     fireEvent.click(vendorCategory);
 
@@ -201,12 +213,12 @@ describe("IndexFilters", () => {
 
     // Click operator pill segment -> opens operator popover
     const opTrigger = document.querySelector(
-      's-clickable[accessibility-label="Vendor operator"]',
+      's-clickable[accessibilitylabel="Vendor operator"]',
     )!;
     fireEvent.click(opTrigger);
 
     const isNotOption = document.querySelector(
-      's-clickable[accessibility-label="Is not"]',
+      's-clickable[accessibilitylabel="Is not"]',
     )!;
     expect(isNotOption).toBeInTheDocument();
     fireEvent.click(isNotOption);
@@ -214,7 +226,7 @@ describe("IndexFilters", () => {
 
     // Click value pill segment -> opens value popover
     const valTrigger = document.querySelector(
-      's-clickable[accessibility-label="Vendor value"]',
+      's-clickable[accessibilitylabel="Vendor value"]',
     )!;
     fireEvent.click(valTrigger);
 
@@ -252,7 +264,7 @@ describe("IndexFilters", () => {
     );
 
     const valTrigger = document.querySelector(
-      's-clickable[accessibility-label="Vendor value"]',
+      's-clickable[accessibilitylabel="Vendor value"]',
     )!;
     fireEvent.click(valTrigger);
 
@@ -303,7 +315,7 @@ describe("IndexFilters", () => {
       </IndexFilters>,
     );
 
-    const viewTrigger = document.querySelector('s-clickable[accessibility-label="All"]');
+    const viewTrigger = document.querySelector('s-clickable[accessibilitylabel="All"]');
     expect(viewTrigger).toBeInTheDocument();
     expect(viewTrigger?.textContent).toContain("All");
   });
@@ -317,29 +329,178 @@ describe("IndexFilters", () => {
     expect(screen.getByTestId("slot-content")).toHaveTextContent("Views");
   });
 
-  it("renders Columns & Sort popover trigger and content", () => {
-    render(
-      <IndexFilters
-        sortOptions={[{ label: "Created", value: "created" }]}
-        sortValue="created"
-        hideArchived={false}
-        columns={[
-          { key: "status", label: "Status", visible: true },
-          { key: "inventory", label: "Inventory", visible: false },
-        ]}
-      />,
-    );
+  describe("ViewOptions", () => {
+    const baseColumns = [
+      { key: "product", label: "Product", reorderable: false, hideable: false },
+      { key: "status", label: "Status" },
+      { key: "inventory", label: "Inventory", visible: false },
+      { key: "vendor", label: "Vendor" },
+    ];
 
-    const colsTrigger = document.querySelector(
-      '[accessibility-label="Columns and sort settings"]',
-    );
-    expect(colsTrigger).toBeInTheDocument();
+    const getItems = () =>
+      Array.from(document.querySelectorAll<HTMLElement>("[data-corex-index-filters-column]"));
+    const getHandle = (label: string) =>
+      document.querySelector<HTMLElement>(`[accessibilitylabel^="Reorder ${label} column"]`)!;
 
-    const popoverEl = document.querySelector("s-popover");
-    expect(popoverEl).toBeInTheDocument();
-    expect(popoverEl?.textContent).toContain("Columns");
-    expect(popoverEl?.textContent).toContain("Status");
-    expect(popoverEl?.textContent).toContain("Inventory");
+    it("renders the trigger and every composed section", () => {
+      render(
+        <IndexFilters>
+          <IndexFilters.Actions>
+            <IndexFilters.ViewOptions accessibilityLabel="Columns and sort settings">
+              <IndexFilters.ViewOptionsSort
+                options={[{ label: "Created", value: "created" }]}
+                value="created"
+              />
+              <IndexFilters.ViewOptionsToggles
+                items={[{ key: "archived", label: "Hide archived", checked: false }]}
+              />
+              <IndexFilters.ViewOptionsColumns columns={baseColumns} />
+            </IndexFilters.ViewOptions>
+          </IndexFilters.Actions>
+        </IndexFilters>,
+      );
+
+      expect(
+        document.querySelector('[accessibilitylabel="Columns and sort settings"]'),
+      ).toBeInTheDocument();
+      const popoverEl = document.querySelector("s-popover")!;
+      expect(popoverEl.textContent).toContain("Sort by");
+      expect(popoverEl.textContent).toContain("Hide archived");
+      expect(popoverEl.textContent).toContain("Columns");
+      expect(getItems().map((el) => el.getAttribute("data-corex-index-filters-column"))).toEqual(
+        ["product", "status", "inventory", "vendor"],
+      );
+      // A divider between each of the three sections.
+      expect(popoverEl.querySelectorAll("s-divider")).toHaveLength(2);
+    });
+
+    it("reports sort changes", () => {
+      const onChange = vi.fn();
+      render(
+        <IndexFilters.ViewOptionsSort
+          options={[
+            { label: "Created", value: "created" },
+            { label: "Title", value: "title" },
+          ]}
+          value="created"
+          onChange={onChange}
+        />,
+      );
+      const select = document.querySelector("s-select") as HTMLElement & { value: string };
+      select.value = "title";
+      select.dispatchEvent(new Event("change", { bubbles: true }));
+      expect(onChange).toHaveBeenCalledWith("title");
+    });
+
+    it("reports toggle changes on the item and the section", () => {
+      const onItemChange = vi.fn();
+      const onChange = vi.fn();
+      render(
+        <IndexFilters.ViewOptionsToggles
+          items={[
+            { key: "archived", label: "Hide archived", checked: false, onChange: onItemChange },
+          ]}
+          onChange={onChange}
+        />,
+      );
+      const switchEl = document.querySelector("s-switch") as HTMLElement & { checked: boolean };
+      switchEl.checked = true;
+      fireEvent(switchEl, new Event("change", { bubbles: true }));
+      expect(onItemChange).toHaveBeenCalledWith(true);
+      expect(onChange).toHaveBeenCalledWith("archived", true);
+    });
+
+    it("toggles column visibility and returns the full list", () => {
+      const onChange = vi.fn();
+      render(<IndexFilters.ViewOptionsColumns columns={baseColumns} onChange={onChange} />);
+
+      fireEvent.click(document.querySelector('[accessibilitylabel="Show Inventory column"]')!);
+      expect(onChange).toHaveBeenCalledWith([
+        baseColumns[0],
+        baseColumns[1],
+        { ...baseColumns[2], visible: true },
+        baseColumns[3],
+      ]);
+
+      // Non-hideable columns keep their eye button disabled.
+      const productToggle = document.querySelector(
+        '[accessibilitylabel="Hide Product column"]',
+      ) as HTMLElement & { disabled?: boolean };
+      expect(productToggle.disabled).toBe(true);
+    });
+
+    it("renders no drag handle for fixed columns", () => {
+      render(<IndexFilters.ViewOptionsColumns columns={baseColumns} onChange={() => {}} />);
+      expect(
+        document.querySelector('[accessibilitylabel^="Reorder Product column"]'),
+      ).toBeNull();
+      expect(getHandle("Status")).toBeInTheDocument();
+    });
+
+    it("reorders with the arrow keys and keeps fixed columns in place", () => {
+      const onChange = vi.fn();
+      render(<IndexFilters.ViewOptionsColumns columns={baseColumns} onChange={onChange} />);
+
+      fireEvent.keyDown(getHandle("Vendor"), { key: "ArrowUp" });
+      expect(onChange.mock.calls[0]![0].map((c: { key: string }) => c.key)).toEqual([
+        "product",
+        "status",
+        "vendor",
+        "inventory",
+      ]);
+
+      // Status is the first movable column: it can't jump above the fixed Product column.
+      onChange.mockClear();
+      fireEvent.keyDown(getHandle("Status"), { key: "ArrowUp" });
+      expect(onChange).not.toHaveBeenCalled();
+    });
+
+    it("uses left/right arrows in the horizontal direction", () => {
+      const onChange = vi.fn();
+      render(
+        <IndexFilters.ViewOptionsColumns
+          columns={baseColumns}
+          onChange={onChange}
+          direction="horizontal"
+        />,
+      );
+      fireEvent.keyDown(getHandle("Status"), { key: "ArrowDown" });
+      expect(onChange).not.toHaveBeenCalled();
+      fireEvent.keyDown(getHandle("Status"), { key: "ArrowRight" });
+      expect(onChange.mock.calls[0]![0].map((c: { key: string }) => c.key)).toEqual([
+        "product",
+        "inventory",
+        "status",
+        "vendor",
+      ]);
+    });
+
+    it("reorders by dragging the handle", () => {
+      const onChange = vi.fn();
+      render(<IndexFilters.ViewOptionsColumns columns={baseColumns} onChange={onChange} />);
+
+      // Stack the items 30px apart: 0, 30, 60, 90.
+      getItems().forEach((item, index) => {
+        item.getBoundingClientRect = () =>
+          ({ top: index * 30, bottom: index * 30 + 30, height: 30, left: 0, right: 200, width: 200 }) as DOMRect;
+      });
+
+      const handle = getHandle("Status").parentElement!;
+      fireEvent.pointerDown(handle, { button: 0, pointerId: 1, clientY: 45 });
+      // A floating copy follows the pointer while the original fades.
+      expect(getItems()).toHaveLength(5);
+
+      fireEvent.pointerMove(document, { pointerId: 1, clientY: 120 });
+      fireEvent.pointerUp(document, { pointerId: 1, clientY: 120 });
+
+      expect(getItems()).toHaveLength(4);
+      expect(onChange.mock.calls[0]![0].map((c: { key: string }) => c.key)).toEqual([
+        "product",
+        "inventory",
+        "vendor",
+        "status",
+      ]);
+    });
   });
 
   it("renders Clear (X) button when query or applied filters exist", () => {
@@ -353,7 +514,7 @@ describe("IndexFilters", () => {
     );
 
     const clearButton = document.querySelector(
-      's-clickable[accessibility-label="Clear search and filters"]',
+      's-clickable[accessibilitylabel="Clear search and filters"]',
     );
     expect(clearButton).toBeInTheDocument();
 
@@ -376,7 +537,7 @@ describe("IndexFilters", () => {
     expect(document.body.textContent).toContain("Vendor");
 
     const closeBtn = document.querySelector(
-      '[accessibility-label="Close filters popup"]',
+      '[accessibilitylabel="Close filters popup"]',
     )!;
     expect(closeBtn).toBeInTheDocument();
     fireEvent.click(closeBtn);
@@ -479,7 +640,7 @@ describe("IndexFilters", () => {
       expect(document.body.textContent).toContain("Status");
 
       fireEvent.click(
-        document.querySelector('s-clickable[accessibility-label="Status"]')!,
+        document.querySelector('s-clickable[accessibilitylabel="Status"]')!,
       );
       expect(onAddFilter).toHaveBeenCalledWith("status", 1);
       expect(removed).toEqual([]);
@@ -541,7 +702,7 @@ describe("IndexFilters", () => {
     it("renders the + button after the pills", () => {
       renderWithApplied();
       const addButton = document.querySelector(
-        's-clickable[accessibility-label="Add filter"]',
+        's-clickable[accessibilitylabel="Add filter"]',
       )!;
       const lastChip = document.querySelector('[data-corex-index-filters-chip="1"]')!;
       expect(
@@ -569,7 +730,7 @@ describe("IndexFilters", () => {
     it("shows the + button only while the field is not focused", () => {
       const { input } = renderWithApplied({ appliedFilters: [] });
       const addButton = document.querySelector(
-        's-clickable[accessibility-label="Add filter"]',
+        's-clickable[accessibilitylabel="Add filter"]',
       )!;
       expect(addButton).toBeInTheDocument();
 
@@ -577,14 +738,14 @@ describe("IndexFilters", () => {
       expect(document.activeElement).toBe(input);
       expect(document.body.textContent).toContain("Vendor");
       expect(
-        document.querySelector('s-clickable[accessibility-label="Add filter"]'),
+        document.querySelector('s-clickable[accessibilitylabel="Add filter"]'),
       ).not.toBeInTheDocument();
     });
 
     it("ignores mouse down inside a pill popover (portal bubbling)", () => {
       renderWithApplied();
       fireEvent.click(
-        document.querySelector('s-clickable[accessibility-label="Vendor value"]')!,
+        document.querySelector('s-clickable[accessibilitylabel="Vendor value"]')!,
       );
       const choice = document.querySelector('s-choice[value="apple"]')!;
       expect(choice).toBeInTheDocument();
@@ -626,11 +787,11 @@ describe("IndexFilters", () => {
     it("keeps the + button mounted when it receives focus on mouse down", () => {
       renderWithApplied();
       const addButton = document.querySelector(
-        's-clickable[accessibility-label="Add filter"]',
+        's-clickable[accessibilitylabel="Add filter"]',
       )!;
       fireEvent.focus(addButton);
       expect(
-        document.querySelector('s-clickable[accessibility-label="Add filter"]'),
+        document.querySelector('s-clickable[accessibilitylabel="Add filter"]'),
       ).toBeInTheDocument();
     });
 

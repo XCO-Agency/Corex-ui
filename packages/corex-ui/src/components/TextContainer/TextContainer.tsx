@@ -3,7 +3,7 @@ import { BlockStack } from "../BlockStack";
 import type { TextContainerPropsType } from "./TextContainer.types";
 
 /** v12's spacing for a run of prose. */
-const SPACING_GAP = { tight: "small-200", loose: "base" } as const;
+const SPACING_GAP = { tight: "small-400", loose: "small" } as const;
 
 /**
  * A column of prose at v12's rhythm. Thin by design: the spacing is the whole

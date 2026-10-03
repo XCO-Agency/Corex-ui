@@ -1,5 +1,7 @@
 import type * as React from "react";
 import type { ReactNode } from "react";
+import type { IconType } from "../../types/common";
+import type { BoxPropsType } from "../Box/Box.types";
 
 /**
  * Filter option choice item.
@@ -61,27 +63,114 @@ export type IndexAppliedFilterType = {
 };
 
 /**
- * Option item for table sorting in the columns/sort popover.
+ * Sort option for `IndexFilters.ViewOptionsSort`.
  */
 export type IndexFilterSortOptionType = {
   /** Human-readable label (e.g. "Created", "Title"). */
   label: string;
   /** Sort key or value (e.g. "created_at", "title"). */
   value: string;
+  /** Disables the option in the select. */
+  disabled?: boolean;
 };
 
 /**
- * Column item for column visibility in the columns popover.
+ * Switch row for `IndexFilters.ViewOptionsToggles` (e.g. "Hide archived").
+ */
+export type IndexFilterViewToggleItemType = {
+  /** Unique toggle key, reported by the section's `onChange`. */
+  key: string;
+  /** Row label (e.g. "Hide archived"). */
+  label: string;
+  /** Icon shown before the label. */
+  icon?: IconType;
+  /** Whether the switch is on. */
+  checked: boolean;
+  /** Disables the switch. */
+  disabled?: boolean;
+  /** Per-item change handler; fires alongside the section's `onChange`. */
+  onChange?: (checked: boolean) => void;
+};
+
+/**
+ * Column for `IndexFilters.ViewOptionsColumns`.
+ *
+ * Keep one array as the single source of truth for the table: `onChange` hands
+ * back the full list, reordered and with `visible` updated.
  */
 export type IndexFilterColumnItemType = {
   /** Unique column key. */
   key: string;
-  /** Column header label (e.g. "Status", "Inventory"). */
+  /** Column label shown in the list (e.g. "Status", "Inventory"). */
   label: string;
-  /** Whether the column is currently visible in the table. Defaults to true. */
+  /** Whether the column is visible in the table. Defaults to true. */
   visible?: boolean;
-  /** Whether the column is locked/disabled and cannot be toggled. */
+  /** Whether the column can be hidden. Defaults to true. */
+  hideable?: boolean;
+  /** Whether the column can be dragged. Defaults to true; fixed columns keep their position. */
+  reorderable?: boolean;
+};
+
+/**
+ * Props for `IndexFilters.ViewOptions`: the popover holding the view sections.
+ */
+export type IndexFiltersViewOptionsPropsType = {
+  /** Sections: `ViewOptionsSort`, `ViewOptionsToggles`, `ViewOptionsColumns` or any content. Dividers are added between them. */
+  children?: ReactNode;
+  /** Custom trigger element; replaces the default icon button. */
+  activator?: React.ReactElement;
+  /** Icon of the default trigger button. Defaults to "layout-columns-3". */
+  icon?: IconType;
+  /** Accessibility label of the default trigger button. Defaults to "View options". */
+  accessibilityLabel?: string;
+  /** Disables the default trigger button. */
   disabled?: boolean;
+  /** Minimum width of the popover content. Defaults to "260px". */
+  minInlineSize?: BoxPropsType["minInlineSize"];
+  /** Maximum width of the popover content. */
+  maxInlineSize?: BoxPropsType["maxInlineSize"];
+  /** Popover ID. Auto-generated if omitted. */
+  id?: string;
+};
+
+/**
+ * Props for `IndexFilters.ViewOptionsSort`.
+ */
+export type IndexFiltersViewOptionsSortPropsType = {
+  /** Row label. Defaults to "Sort by". */
+  label?: string;
+  /** Icon shown before the label. Defaults to "sort". Pass `null` to hide it. */
+  icon?: IconType | null;
+  options: IndexFilterSortOptionType[];
+  /** Selected sort value. */
+  value?: string;
+  onChange?: (value: string) => void;
+  disabled?: boolean;
+};
+
+/**
+ * Props for `IndexFilters.ViewOptionsToggles`.
+ */
+export type IndexFiltersViewOptionsTogglesPropsType = {
+  items: IndexFilterViewToggleItemType[];
+  /** Fires with the toggled item's key and its new state. */
+  onChange?: (key: string, checked: boolean) => void;
+};
+
+/**
+ * Props for `IndexFilters.ViewOptionsColumns`.
+ */
+export type IndexFiltersViewOptionsColumnsPropsType<
+  C extends IndexFilterColumnItemType = IndexFilterColumnItemType,
+> = {
+  /** Columns in display order. */
+  columns: C[];
+  /** Fires with the full column list after a show/hide or a reorder. */
+  onChange?: (columns: C[]) => void;
+  /** Section title. Defaults to "Columns". Pass `null` to hide it. */
+  title?: ReactNode;
+  /** Layout of the list and the drag axis. Defaults to "vertical". */
+  direction?: "vertical" | "horizontal";
 };
 
 /**
