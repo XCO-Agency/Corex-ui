@@ -50,9 +50,17 @@ export function resolveAlignment(
   return heading.format === "numeric" || heading.format === "currency" ? "end" : "start";
 }
 
-function defaultMinWidth(heading: IndexTableHeadingType, index: number): number {
-  if (index === 0) return DEFAULT_FIRST_MIN_WIDTH;
-  if (heading.format === "numeric" || heading.format === "currency") {
+function defaultMinWidth(
+  heading: IndexTableHeadingType,
+  _index: number,
+  isPrimary: boolean,
+): number {
+  if (isPrimary) return DEFAULT_FIRST_MIN_WIDTH;
+  if (
+    heading.format === "numeric" ||
+    heading.format === "currency" ||
+    heading.alignment === "center"
+  ) {
     return DEFAULT_NUMERIC_MIN_WIDTH;
   }
   return DEFAULT_MIN_WIDTH;
@@ -82,12 +90,15 @@ export function resolveLayout({
   stickyOverrides: Record<number, IndexTableStickyType>;
 }): ResolvedLayoutType {
   const count = Math.max(headings.length, columnCount);
+  const firstNonHiddenIndex = headings.findIndex((h) => !h.hidden);
+  const primaryIndex = firstNonHiddenIndex >= 0 ? firstNonHiddenIndex : 0;
 
   const columns: ResolvedColumnType[] = Array.from({ length: count }, (_, index) => {
     const heading = headings[index] ?? {};
     const sticky = stickyOverrides[index] ?? heading.sticky;
     const pxWidth = parsePx(heading.width);
-    const minWidth = pxWidth ?? heading.minWidth ?? defaultMinWidth(heading, index);
+    const isPrimary = index === primaryIndex;
+    const minWidth = pxWidth ?? heading.minWidth ?? defaultMinWidth(heading, index, isPrimary);
 
     let track: string;
     if (sticky) {
@@ -95,7 +106,7 @@ export function resolveLayout({
     } else if (heading.width) {
       track = heading.width;
     } else {
-      track = `minmax(${minWidth}px, ${index === 0 ? 2 : 1}fr)`;
+      track = `minmax(${minWidth}px, ${isPrimary ? 2 : 1}fr)`;
     }
 
     return { track, minWidth, alignment: resolveAlignment(heading), sticky };

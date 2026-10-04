@@ -53,6 +53,7 @@ import type {
 } from "./IndexTable.types";
 import { Floating } from "../Floating";
 import { Card } from "../Card";
+import { Box } from "../Box";
 
 const useIsomorphicLayoutEffect =
   typeof window !== "undefined" ? useLayoutEffect : useEffect;
@@ -454,6 +455,23 @@ function IndexTableInner(
     ...style,
   } as CSSProperties;
 
+  const [isScrolling, setIsScrolling] = useState(false);
+  const scrollTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const handleScroll = useCallback(() => {
+    setIsScrolling(true);
+    if (scrollTimerRef.current) clearTimeout(scrollTimerRef.current);
+    scrollTimerRef.current = setTimeout(() => {
+      setIsScrolling(false);
+    }, 1000);
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      if (scrollTimerRef.current) clearTimeout(scrollTimerRef.current);
+    };
+  }, []);
+
   return (
     <IndexTableContext.Provider value={contextValue}>
       <div ref={rootRef} id={id} className={rootClassName} style={rootStyle}>
@@ -477,7 +495,10 @@ function IndexTableInner(
           />
         )}
 
-        <div className="cx-it__scroll">
+        <div
+          className={cx("cx-it__scroll", isScrolling && "cx-it__scroll--scrolling")}
+          onScroll={handleScroll}
+        >
           <div
             role="table"
             aria-label={resourceName?.plural}
@@ -571,35 +592,39 @@ function IndexTableInner(
           </div>
         </div>
 
-        {pagination ? (pagination.floating ? <Floating
-        position="bottom-left"
-
-        >
-          <Card padding="none">
-           <Pagination
-              style={{padding: 8}}
-              hasPrevious={pagination.hasPrevious}
-              hasNext={pagination.hasNext}
-              onPrevious={pagination.onPrevious}
-              onNext={pagination.onNext}
-              label={pagination.label}
-              previousTooltip={pagination.previousTooltip ?? "Previous page"}
-              nextTooltip={pagination.nextTooltip ?? "Next page"}
-            />
-            </Card>
-        </Floating> : (
-          <div className="cx-it__pagination">
-            <Pagination
-              hasPrevious={pagination.hasPrevious}
-              hasNext={pagination.hasNext}
-              onPrevious={pagination.onPrevious}
-              onNext={pagination.onNext}
-              label={pagination.label}
-              previousTooltip={pagination.previousTooltip ?? "Previous page"}
-              nextTooltip={pagination.nextTooltip ?? "Next page"}
-            />
-          </div>
-        )): null}
+        {pagination ? (
+          pagination.floating ? (
+            <Floating position="bottom-left" offset={{ x: 16, y: 16 }}>
+              <Card padding="none">
+                <Box padding="small-100">
+                  <Pagination
+                    hasPrevious={pagination.hasPrevious}
+                    hasNext={pagination.hasNext}
+                    onPrevious={pagination.onPrevious}
+                    onNext={pagination.onNext}
+                    label={pagination.label}
+                    previousTooltip={pagination.previousTooltip ?? "Previous page"}
+                    nextTooltip={pagination.nextTooltip ?? "Next page"}
+                    accessibilityLabel={pagination.accessibilityLabel}
+                  />
+                </Box>
+              </Card>
+            </Floating>
+          ) : (
+            <div className="cx-it__pagination">
+              <Pagination
+                hasPrevious={pagination.hasPrevious}
+                hasNext={pagination.hasNext}
+                onPrevious={pagination.onPrevious}
+                onNext={pagination.onNext}
+                label={pagination.label}
+                previousTooltip={pagination.previousTooltip ?? "Previous page"}
+                nextTooltip={pagination.nextTooltip ?? "Next page"}
+                accessibilityLabel={pagination.accessibilityLabel}
+              />
+            </div>
+          )
+        ) : null}
 
         {footerContent && <div className="cx-it__footer">{footerContent}</div>}
       </div>
@@ -841,6 +866,10 @@ function IndexTableCell({
   const resolvedAlignment =
     alignment ?? (format ? resolveAlignment({ format }) : (column?.alignment ?? "start"));
   const isFirst = columnIndex === 0;
+  const colMaxWidth =
+    column?.minWidth && column.minWidth > 260
+      ? ({ "--cx-it-col-max": `${column.minWidth}px` } as CSSProperties)
+      : undefined;
 
   return (
     <div
@@ -852,7 +881,7 @@ function IndexTableCell({
         pin && "cx-it__cell--sticky",
         className,
       )}
-      style={{ ...pinStyle(pin, column?.offset), ...style }}
+      style={{ ...pinStyle(pin, column?.offset), ...colMaxWidth, ...style }}
     >
       {isFirst && row.depth > 0 && (
         <div

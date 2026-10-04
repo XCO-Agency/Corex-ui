@@ -159,8 +159,27 @@ columns scroll.
 
 For a list page, put the pager on the `Page`: `<Page pagination={…}>` floats a
 `Pagination` pill at the bottom-left that stays in view while the list scrolls.
+
 The table's own `pagination` prop renders the same control, right-aligned under
-the table.
+the table. Pass `floating: true` inside `pagination` to display the pagination control
+as a floating pill anchored at the bottom-left of the viewport, keeping page navigation
+accessible at all times during scrolling:
+
+```tsx
+<IndexTable
+  itemCount={totalProducts}
+  pagination={{
+    floating: true,
+    hasPrevious: page > 1,
+    hasNext: page < totalPages,
+    label: `${start} – ${end} of ${totalProducts}`,
+    onPrevious: () => setPage((p) => p - 1),
+    onNext: () => setPage((p) => p + 1),
+  }}
+>
+  {/* rows */}
+</IndexTable>
+```
 
 ## Theming
 
@@ -194,7 +213,7 @@ retheme, set any of these on an ancestor:
 | `showAllSelectedToggle`                      | Shows the "Show all selected" switch in the bulk bar (default `true`).                                                                        |
 | `sortColumnIndex` / `sortDirection` / `onSort` | Controlled column sorting.                                                                                                                  |
 | `onReorder`                                  | Enables drag-to-reorder of top-level rows.                                                                                                    |
-| `pagination`                                 | `{ hasPrevious, hasNext, onPrevious, onNext, label }`, rendered with `Pagination` under the table.                                            |
+| `pagination`                                 | `{ floating, hasPrevious, hasNext, onPrevious, onNext, label }`. When `floating: true`, floats the pagination pill at the bottom-left.       |
 | `footerContent`                              | Rendered under the table, e.g. a "Learn more" link.                                                                                           |
 | `emptyState`                                 | Replaces the whole table when `itemCount` is 0.                                                                                               |
 | `loading`                                    | Dims the rows and blocks interaction.                                                                                                         |

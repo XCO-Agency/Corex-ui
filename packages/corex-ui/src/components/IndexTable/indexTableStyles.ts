@@ -22,8 +22,9 @@ export const INDEX_TABLE_CSS = `
   --cx-it-focus: var(--cx-it-focus-color, #005bd3);
   /* What sits behind the table; shows in the corners of pinned cells. */
   --cx-it-backdrop: var(--cx-it-backdrop-color, var(--cx-it-surface));
-  --cx-it-scrollbar-thumb: var(--cx-it-scrollbar-thumb-color, rgba(0, 0, 0, 0.18));
-  --cx-it-scrollbar-thumb-hover: var(--cx-it-scrollbar-thumb-hover-color, rgba(0, 0, 0, 0.32));
+  --cx-it-scrollbar-thumb: var(--cx-it-scrollbar-thumb-color, rgba(0, 0, 0, 0.28));
+  --cx-it-scrollbar-thumb-hover: var(--cx-it-scrollbar-thumb-hover-color, rgba(0, 0, 0, 0.55));
+  --cx-it-scrollbar-track: var(--cx-it-scrollbar-track-color, rgba(0, 0, 0, 0.05));
   position: relative;
   color: var(--cx-it-text);
   font-size: 0.8125rem;
@@ -32,8 +33,9 @@ export const INDEX_TABLE_CSS = `
 
 @media (prefers-color-scheme: dark) {
   .cx-it {
-    --cx-it-scrollbar-thumb: var(--cx-it-scrollbar-thumb-color, rgba(255, 255, 255, 0.22));
-    --cx-it-scrollbar-thumb-hover: var(--cx-it-scrollbar-thumb-hover-color, rgba(255, 255, 255, 0.4));
+    --cx-it-scrollbar-thumb: var(--cx-it-scrollbar-thumb-color, rgba(255, 255, 255, 0.35));
+    --cx-it-scrollbar-thumb-hover: var(--cx-it-scrollbar-thumb-hover-color, rgba(255, 255, 255, 0.65));
+    --cx-it-scrollbar-track: var(--cx-it-scrollbar-track-color, rgba(255, 255, 255, 0.08));
   }
 }
 
@@ -41,28 +43,35 @@ export const INDEX_TABLE_CSS = `
   overflow-x: auto;
   overscroll-behavior-x: contain;
   scrollbar-width: thin;
-  scrollbar-color: var(--cx-it-scrollbar-thumb) transparent;
+  scrollbar-color: var(--cx-it-scrollbar-thumb) var(--cx-it-scrollbar-track);
 }
 .cx-it__scroll:hover {
-  scrollbar-color: var(--cx-it-scrollbar-thumb-hover) transparent;
+  scrollbar-color: var(--cx-it-scrollbar-thumb-hover) var(--cx-it-scrollbar-track);
 }
 .cx-it__scroll::-webkit-scrollbar {
-  height: 6px;
-  width: 6px;
+  height: 8px;
+  width: 8px;
 }
 .cx-it__scroll::-webkit-scrollbar-track {
-  background: transparent;
+  background: var(--cx-it-scrollbar-track);
+  border-radius: 9999px;
+  margin-inline: 4px;
 }
 .cx-it__scroll::-webkit-scrollbar-thumb {
   background-color: var(--cx-it-scrollbar-thumb);
   border-radius: 9999px;
-  border: 1px solid transparent;
+  border: 1.5px solid transparent;
   background-clip: padding-box;
+  min-width: 44px;
   transition: background-color 150ms ease;
 }
 .cx-it__scroll:hover::-webkit-scrollbar-thumb,
-.cx-it__scroll::-webkit-scrollbar-thumb:hover {
+.cx-it__scroll:active::-webkit-scrollbar-thumb,
+.cx-it__scroll--scrolling::-webkit-scrollbar-thumb {
   background-color: var(--cx-it-scrollbar-thumb-hover);
+}
+.cx-it__scroll--scrolling {
+  scrollbar-color: var(--cx-it-scrollbar-thumb-hover) var(--cx-it-scrollbar-track);
 }
 .cx-it__scroll::-webkit-scrollbar-corner {
   background: transparent;
@@ -189,19 +198,23 @@ export const INDEX_TABLE_CSS = `
   align-items: center;
   gap: 8px;
   min-width: 0;
+  max-width: var(--cx-it-col-max, var(--cx-it-cell-max-width, 260px));
   padding: 8px;
   min-height: 30px;
+  word-break: normal;
+  overflow-wrap: break-word;
 }
 .cx-it--dense .cx-it__cell { padding-block: 4px; }
 .cx-it--align-top .cx-it__cell { align-items: flex-start; }
 .cx-it--align-bottom .cx-it__cell { align-items: flex-end; }
 .cx-it--align-baseline .cx-it__cell { align-items: baseline; }
-.cx-it--truncate .cx-it__cell { white-space: nowrap; overflow: hidden; }
+.cx-it--truncate .cx-it__cell { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.cx-it--truncate .cx-it__cell > * { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .cx-it__cell--center { justify-content: center; text-align: center; }
 .cx-it__cell--end { justify-content: flex-end; text-align: end; }
-.cx-it__cell--flush { padding: 0; }
-.cx-it__cell--control { padding-inline: 0; justify-content: center; }
-.cx-it__cell--select { cursor: default; }
+.cx-it__cell--flush { padding: 0; max-width: none; }
+.cx-it__cell--control { padding-inline: 0; justify-content: center; max-width: none; }
+.cx-it__cell--select { cursor: default; max-width: none; }
 .cx-it__cell--sticky {
   position: sticky;
   z-index: 1;
@@ -219,6 +232,18 @@ export const INDEX_TABLE_CSS = `
   font-size: 0.75rem;
   font-weight: 550;
   white-space: nowrap;
+  max-width: none;
+}
+.cx-it__cell > * {
+  min-width: 0;
+}
+.cx-it__cell > s-text,
+.cx-it__cell > span,
+.cx-it__cell > p,
+.cx-it__cell > a {
+  overflow-wrap: break-word;
+  word-break: normal;
+  white-space: normal;
 }
 
 /* Small inline controls: sort toggle, drag handle, expand toggle. */

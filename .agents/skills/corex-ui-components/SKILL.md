@@ -1822,7 +1822,7 @@ import { IndexTable } from "@xco-agency/corex-ui";
 | `resourceName` | `{ singular: string; plural: string; } &#124; undefined` | — |
 | `loading` | `boolean &#124; undefined` | — |
 | `emptyState` | `ReactNode` | Replaces the whole table or body when there are no items. |
-| `pagination` | `IndexTablePaginationType &#124; undefined` | Pagination controls. |
+| `pagination` | `IndexTablePaginationType &#124; undefined` | Pagination controls (`{ floating, hasPrevious, hasNext, onPrevious, onNext, label }`). Set `floating: true` to float the pagination pill over the table. |
 | `gridTemplateColumns` | `string &#124; undefined` | Optional custom CSS grid template columns (e.g. "44px 2fr 1fr 1fr"). |
 | `footerContent` | `ReactNode` | Custom footer content (e.g. "Learn more about products" link). |
 | `showAllSelectedToggle` | `boolean &#124; undefined` | Whether to allow toggling "Show all selected". |
@@ -1842,6 +1842,14 @@ import { IndexTable } from "@xco-agency/corex-ui";
   selectedItemsCount={selectedResources.length}
   headings={[{ title: "Title" }, { title: "Status" }]}
   selectable
+  pagination={{
+    floating: true,
+    hasPrevious: page > 1,
+    hasNext: page < totalPages,
+    label: `${start} – ${end} of ${items.length}`,
+    onPrevious: () => setPage((p) => p - 1),
+    onNext: () => setPage((p) => p + 1),
+  }}
 >
   {items.map(item => (
     <IndexTable.Row id={item.id} key={item.id}>

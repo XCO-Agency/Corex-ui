@@ -93,6 +93,97 @@ const productsData: ProductItemType[] = [
     productType: "body scrubs",
     vendor: "Monochro...",
   },
+  {
+    id: "prod-6",
+    name: "Classic Silk Blend Button-Down Shirt",
+    thumbnail:
+      "https://images.unsplash.com/photo-1598033129183-c4f50c736f10?w=100&auto=format&fit=crop&q=60",
+    status: "Active",
+    inventory: "42 in stock for 4 variants",
+    category: "Clothing Tops",
+    channels: 2,
+    catalogs: 1,
+    productType: "men's shirts",
+    vendor: "Everlane",
+  },
+  {
+    id: "prod-7",
+    name: "Organic Botanical Hydrating Body Lotion",
+    thumbnail:
+      "https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=100&auto=format&fit=crop&q=60",
+    status: "Active",
+    inventory: "88 in stock for 2 variants",
+    category: "Skin Care",
+    channels: 3,
+    catalogs: 0,
+    productType: "body lotions",
+    vendor: "Kiehl's",
+  },
+  {
+    id: "prod-8",
+    name: "Heritage Wool Relaxed Knit Overcoat",
+    thumbnail:
+      "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=100&auto=format&fit=crop&q=60",
+    status: "Draft",
+    inventory: "15 in stock for 3 variants",
+    category: "Outerwear",
+    channels: 1,
+    catalogs: 0,
+    productType: "coats & jackets",
+    vendor: "Norse Projects",
+  },
+  {
+    id: "prod-9",
+    name: "Structured Minimalist Leather Tote Bag",
+    thumbnail:
+      "https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=100&auto=format&fit=crop&q=60",
+    status: "Active",
+    inventory: "30 in stock for 2 variants",
+    category: "Bags & Accessories",
+    channels: 3,
+    catalogs: 2,
+    productType: "tote bags",
+    vendor: "Cuyana",
+  },
+  {
+    id: "prod-10",
+    name: "Relaxed Fit Chino Trousers in Sand",
+    thumbnail:
+      "https://images.unsplash.com/photo-1473966968600-fa801b869a1a?w=100&auto=format&fit=crop&q=60",
+    status: "Active",
+    inventory: "55 in stock for 5 variants",
+    category: "Pants",
+    channels: 2,
+    catalogs: 0,
+    productType: "men's chinos",
+    vendor: "A.P.C.",
+  },
+  {
+    id: "prod-11",
+    name: "Ceramic Minimalist Pour-Over Coffee Dripper",
+    thumbnail:
+      "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=100&auto=format&fit=crop&q=60",
+    status: "Archived",
+    inventory: "0 in stock",
+    category: "Kitchen & Dining",
+    channels: 1,
+    catalogs: 0,
+    productType: "coffee ware",
+    vendor: "Hario",
+  },
+  {
+    id: "prod-12",
+    name: "Handmade Scented Amber & Moss Soy Candle",
+    thumbnail:
+      "https://images.unsplash.com/photo-1603006905003-be475563bc59?w=100&auto=format&fit=crop&q=60",
+    status: "Active",
+    inventory: "74 in stock for 3 variants",
+    category: "Home Fragrance",
+    channels: 3,
+    catalogs: 1,
+    productType: "candles",
+    vendor: "P.F. Candle Co.",
+  },
 ];
 
 /** Sample variants shown as nested rows under the first product. */
@@ -120,10 +211,12 @@ export function IndexTableExample() {
           .filter((variant) => variant.selectable !== false)
           .map((variant) => variant.id),
     });
-const pageSize = 5;
-const start = (page - 1) * pageSize + 1;
-const end = Math.min(page * pageSize, products.length);
 
+  const pageSize = 5;
+  const totalPages = Math.ceil(products.length / pageSize);
+  const start = products.length === 0 ? 0 : (page - 1) * pageSize + 1;
+  const end = Math.min(page * pageSize, products.length);
+  const paginatedProducts = products.slice((page - 1) * pageSize, page * pageSize);
 
   const handleSort = (_columnIndex: number, direction: IndexTableSortDirectionType) => {
     setSortDirection(direction);
@@ -143,9 +236,8 @@ const end = Math.min(page * pageSize, products.length);
         inlineSize="large"
         primaryAction={{ content: "Add product", onAction: () => alert("Add product") }}
       >
-        texasadsa
         <IndexTable
-        increasedTableDensity
+          increasedTableDensity
           resourceName={{ singular: "product", plural: "products" }}
           itemCount={products.length}
           selectedItemsCount={allResourcesSelected ? "All" : selectedResources.length}
@@ -158,27 +250,27 @@ const end = Math.min(page * pageSize, products.length);
           pagination={{
             floating: true,
             hasPrevious: page > 1,
-            hasNext: page < 3,
+            hasNext: page < totalPages,
             label: `${start} – ${end} of ${products.length}`,
-            onPrevious: () => setPage((current) => current - 1),
-            onNext: () => setPage((current) => current + 1),
+            onPrevious: () => setPage((current) => Math.max(current - 1, 1)),
+            onNext: () => setPage((current) => Math.min(current + 1, totalPages)),
           }}
           headings={[
             // Thumbnail column: pinned columns get a fixed width, set by minWidth.
-            { title: "", hidden: true, minWidth: 96 },
+            { title: "", hidden: true, width: "72px" },
             {
               title: "Product",
               sortable: true,
               defaultSortDirection: "ascending",
               minWidth: 220,
             },
-            { title: "Status" },
-            { title: "Inventory" },
-            { title: "Category" },
-            { title: "Channels", alignment: "center" },
-            { title: "Catalogs", alignment: "center" },
-            { title: "Product type" },
-            { title: "Vendor" },
+            { title: "Status", minWidth: 100 },
+            { title: "Inventory", minWidth: 140 },
+            { title: "Category", minWidth: 150 },
+            { title: "Channels", alignment: "center", minWidth: 90 },
+            { title: "Catalogs", alignment: "center", minWidth: 90 },
+            { title: "Product type", minWidth: 150 },
+            { title: "Vendor", minWidth: 130 },
             { title: "", hidden: true, width: "48px", sticky: "right" },
           ]}
           promotedBulkActions={[
@@ -219,7 +311,7 @@ const end = Math.min(page * pageSize, products.length);
             </InlineStack>
           }
         >
-          {products.map((product) => (
+          {paginatedProducts.map((product) => (
             <IndexTable.Row
               key={product.id}
               id={product.id}
