@@ -1,11 +1,5 @@
 import * as React from "react";
-import {
-  Box,
-  BlockStack,
-  Grid,
-  Text,
-  Banner,
-} from "@xco-agency/corex-ui";
+import { Box, BlockStack, Grid, Text, Banner } from "@xco-agency/corex-ui";
 import { MinimalistCard, type CardBadgeType } from "../partials/MinimalistCard";
 export type MinimalistCardItemType = {
   id: string;
@@ -64,7 +58,9 @@ export function CardsMinimalistExample() {
 
       <Box>
         <Text variant="bodyMd" color="subdued">
-          Minimalist cards prioritize typography, scannability, and subtle indicators. Ideal for store recommendations, system health tips, and concise setup summaries.
+          Minimalist cards prioritize typography, scannability, and subtle indicators.
+          Ideal for store recommendations, system health tips, and concise setup
+          summaries.
         </Text>
       </Box>
 

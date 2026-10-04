@@ -6,7 +6,8 @@ export function QueryContainerExample() {
       <BlockStack gap="base">
         <Text heading>Container Query Context</Text>
         <Text color="subdued">
-          Wraps children in a CSS container context so elements can adapt based on the component inline size rather than the whole screen.
+          Wraps children in a CSS container context so elements can adapt based on the
+          component inline size rather than the whole screen.
         </Text>
         <QueryContainer containerName="sidebar-card">
           <Card>

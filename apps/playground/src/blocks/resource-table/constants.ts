@@ -19,7 +19,8 @@ export const MOCK_RESOURCES: ResourceItemType[] = [
     status: "active",
     inventory: 142,
     price: "$149.00",
-    imageUrl: "https://images.unsplash.com/photo-1576566588028-4147f3842f27?w=100&h=100&fit=crop",
+    imageUrl:
+      "https://images.unsplash.com/photo-1576566588028-4147f3842f27?w=100&h=100&fit=crop",
     updatedAt: "2 hours ago",
   },
   {
@@ -31,7 +32,8 @@ export const MOCK_RESOURCES: ResourceItemType[] = [
     status: "active",
     inventory: 38,
     price: "$68.00",
-    imageUrl: "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=100&h=100&fit=crop",
+    imageUrl:
+      "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=100&h=100&fit=crop",
     updatedAt: "5 hours ago",
   },
   {
@@ -43,7 +45,8 @@ export const MOCK_RESOURCES: ResourceItemType[] = [
     status: "active",
     inventory: 19,
     price: "$210.00",
-    imageUrl: "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=100&h=100&fit=crop",
+    imageUrl:
+      "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=100&h=100&fit=crop",
     updatedAt: "Yesterday",
   },
   {
@@ -55,7 +58,8 @@ export const MOCK_RESOURCES: ResourceItemType[] = [
     status: "draft",
     inventory: 0,
     price: "$185.00",
-    imageUrl: "https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=100&h=100&fit=crop",
+    imageUrl:
+      "https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=100&h=100&fit=crop",
     updatedAt: "2 days ago",
   },
   {
@@ -67,7 +71,8 @@ export const MOCK_RESOURCES: ResourceItemType[] = [
     status: "active",
     inventory: 64,
     price: "$120.00",
-    imageUrl: "https://images.unsplash.com/photo-1584990347449-3990f11d95be?w=100&h=100&fit=crop",
+    imageUrl:
+      "https://images.unsplash.com/photo-1584990347449-3990f11d95be?w=100&h=100&fit=crop",
     updatedAt: "3 days ago",
   },
   {
@@ -79,7 +84,8 @@ export const MOCK_RESOURCES: ResourceItemType[] = [
     status: "archived",
     inventory: 0,
     price: "$45.00",
-    imageUrl: "https://images.unsplash.com/photo-1517256064527-09c73fc73e38?w=100&h=100&fit=crop",
+    imageUrl:
+      "https://images.unsplash.com/photo-1517256064527-09c73fc73e38?w=100&h=100&fit=crop",
     updatedAt: "1 week ago",
   },
   {
@@ -91,7 +97,8 @@ export const MOCK_RESOURCES: ResourceItemType[] = [
     status: "active",
     inventory: 310,
     price: "$48.00",
-    imageUrl: "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=100&h=100&fit=crop",
+    imageUrl:
+      "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=100&h=100&fit=crop",
     updatedAt: "1 week ago",
   },
   {
@@ -103,7 +110,8 @@ export const MOCK_RESOURCES: ResourceItemType[] = [
     status: "draft",
     inventory: 15,
     price: "$85.00",
-    imageUrl: "https://images.unsplash.com/photo-1583485088034-697b5bc54ccd?w=100&h=100&fit=crop",
+    imageUrl:
+      "https://images.unsplash.com/photo-1583485088034-697b5bc54ccd?w=100&h=100&fit=crop",
     updatedAt: "2 weeks ago",
   },
   {
@@ -115,7 +123,8 @@ export const MOCK_RESOURCES: ResourceItemType[] = [
     status: "active",
     inventory: 88,
     price: "$32.00",
-    imageUrl: "https://images.unsplash.com/photo-1603006905003-be475563bc59?w=100&h=100&fit=crop",
+    imageUrl:
+      "https://images.unsplash.com/photo-1603006905003-be475563bc59?w=100&h=100&fit=crop",
     updatedAt: "2 weeks ago",
   },
   {
@@ -127,7 +136,8 @@ export const MOCK_RESOURCES: ResourceItemType[] = [
     status: "archived",
     inventory: 4,
     price: "$65.00",
-    imageUrl: "https://images.unsplash.com/photo-1520903920243-00d872a2d1c9?w=100&h=100&fit=crop",
+    imageUrl:
+      "https://images.unsplash.com/photo-1520903920243-00d872a2d1c9?w=100&h=100&fit=crop",
     updatedAt: "3 weeks ago",
   },
 ];

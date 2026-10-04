@@ -25,7 +25,12 @@ export function VideoTutorialCompactExample() {
             />
           </Box>
           <BlockStack gap="small-200">
-            <InlineStack justifyContent="space-between" alignItems="center" wrap={false} gap="base">
+            <InlineStack
+              justifyContent="space-between"
+              alignItems="center"
+              wrap={false}
+              gap="base"
+            >
               <Text variant="headingSm" as="h3" fontWeight="semibold">
                 {DEFAULT_VIDEO_TUTORIAL_DATA.title}
               </Text>

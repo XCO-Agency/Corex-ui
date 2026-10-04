@@ -1,16 +1,8 @@
 export type WorkflowTriggerEventType =
-  | "order_created"
-  | "order_paid"
-  | "customer_created"
-  | "inventory_low"
-  | "refund_issued";
+  "order_created" | "order_paid" | "customer_created" | "inventory_low" | "refund_issued";
 
 export type WorkflowConditionOperatorType =
-  | "greater_than"
-  | "less_than"
-  | "equals"
-  | "contains"
-  | "is_not";
+  "greater_than" | "less_than" | "equals" | "contains" | "is_not";
 
 export type WorkflowConditionItemType = {
   id: string;

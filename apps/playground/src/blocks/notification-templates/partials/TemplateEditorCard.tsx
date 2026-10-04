@@ -1,11 +1,5 @@
 import * as React from "react";
-import {
-  Card,
-  BlockStack,
-  InlineStack,
-  Text,
-  Badge,
-} from "@xco-agency/corex-ui";
+import { Card, BlockStack, InlineStack, Text, Badge } from "@xco-agency/corex-ui";
 
 type TemplateEditorCardPropsType = {
   bodyText: string;

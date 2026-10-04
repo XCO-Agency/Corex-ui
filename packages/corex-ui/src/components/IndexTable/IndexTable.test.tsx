@@ -190,7 +190,8 @@ describe("IndexTable", () => {
       </IndexTable>,
     );
 
-    const cellOf = (text: string) => screen.getByText(text).closest(".cx-it__cell") as HTMLElement;
+    const cellOf = (text: string) =>
+      screen.getByText(text).closest(".cx-it__cell") as HTMLElement;
 
     expect(cellOf("#1001")).toHaveClass("cx-it__cell--sticky");
     expect(cellOf("Order")).toHaveClass("cx-it__cell--sticky");
@@ -229,7 +230,11 @@ describe("IndexTable", () => {
   it("toggles sorting from a sortable heading", () => {
     const onSort = vi.fn();
     const { rerender } = render(
-      <IndexTable headings={[{ title: "Created", sortable: true }]} itemCount={1} onSort={onSort} />,
+      <IndexTable
+        headings={[{ title: "Created", sortable: true }]}
+        itemCount={1}
+        onSort={onSort}
+      />,
     );
 
     fireEvent.click(screen.getByRole("button", { name: /Created/ }));
@@ -269,7 +274,13 @@ describe("IndexTable", () => {
     const rows = Array.from(container.querySelectorAll<HTMLElement>(".cx-it__row--body"));
     rows.forEach((row, index) => {
       row.getBoundingClientRect = () =>
-        ({ top: index * 40, bottom: index * 40 + 40, height: 40, left: 0, width: 600 }) as DOMRect;
+        ({
+          top: index * 40,
+          bottom: index * 40 + 40,
+          height: 40,
+          left: 0,
+          width: 600,
+        }) as DOMRect;
     });
 
     const handle = screen.getAllByRole("button", { name: /Reorder row/ })[0]!;
@@ -350,23 +361,30 @@ describe("IndexTable", () => {
 
   it("cascades selection between a parent row and its sub-rows", () => {
     const onSelectionChange = vi.fn();
-    const renderTree = (selected: string[]) =>
-      (
-        <IndexTable headings={[{ title: "Product" }]} itemCount={1} onSelectionChange={onSelectionChange}>
-          <IndexTable.Row
-            id="p1"
-            selected={selected.includes("p1")}
-            defaultExpanded
-            subRows={["v1", "v2"].map((variantId) => (
-              <IndexTable.Row key={variantId} id={variantId} selected={selected.includes(variantId)}>
-                <IndexTable.Cell>{variantId}</IndexTable.Cell>
-              </IndexTable.Row>
-            ))}
-          >
-            <IndexTable.Cell>Shirt</IndexTable.Cell>
-          </IndexTable.Row>
-        </IndexTable>
-      );
+    const renderTree = (selected: string[]) => (
+      <IndexTable
+        headings={[{ title: "Product" }]}
+        itemCount={1}
+        onSelectionChange={onSelectionChange}
+      >
+        <IndexTable.Row
+          id="p1"
+          selected={selected.includes("p1")}
+          defaultExpanded
+          subRows={["v1", "v2"].map((variantId) => (
+            <IndexTable.Row
+              key={variantId}
+              id={variantId}
+              selected={selected.includes(variantId)}
+            >
+              <IndexTable.Cell>{variantId}</IndexTable.Cell>
+            </IndexTable.Row>
+          ))}
+        >
+          <IndexTable.Cell>Shirt</IndexTable.Cell>
+        </IndexTable.Row>
+      </IndexTable>
+    );
 
     const { container, rerender } = render(renderTree([]));
     const selectCell = (rowId: string) =>
@@ -383,7 +401,9 @@ describe("IndexTable", () => {
     // One child selected: parent is indeterminate.
     onSelectionChange.mockClear();
     rerender(renderTree(["v1"]));
-    const parentCheckbox = container.querySelector("[id='p1'] s-checkbox") as HTMLElement & {
+    const parentCheckbox = container.querySelector(
+      "[id='p1'] s-checkbox",
+    ) as HTMLElement & {
       indeterminate?: boolean;
       checked?: boolean;
     };
@@ -486,7 +506,10 @@ describe("IndexTable", () => {
     expect(screen.queryByText("Small")).not.toBeInTheDocument();
     fireEvent.click(screen.getByRole("button", { name: "Expand row" }));
     expect(screen.getByText("Small")).toBeInTheDocument();
-    expect(screen.getByText("Small").closest("[role='row']")).toHaveAttribute("aria-level", "2");
+    expect(screen.getByText("Small").closest("[role='row']")).toHaveAttribute(
+      "aria-level",
+      "2",
+    );
   });
 
   it("replaces the header row with the bulk bar while rows are selected", () => {
@@ -520,7 +543,9 @@ describe("IndexTable", () => {
       </IndexTable>,
     );
 
-    const toggle = container.querySelector("s-switch") as HTMLElement & { checked?: boolean };
+    const toggle = container.querySelector("s-switch") as HTMLElement & {
+      checked?: boolean;
+    };
     act(() => {
       toggle.checked = true;
       toggle.dispatchEvent(new Event("change", { bubbles: true }));
@@ -533,7 +558,11 @@ describe("IndexTable", () => {
     const onClick = vi.fn();
     const onSelectionChange = vi.fn();
     const { container } = render(
-      <IndexTable headings={[{ title: "Order" }]} itemCount={1} onSelectionChange={onSelectionChange}>
+      <IndexTable
+        headings={[{ title: "Order" }]}
+        itemCount={1}
+        onSelectionChange={onSelectionChange}
+      >
         <IndexTable.Row id="1" onClick={onClick}>
           <IndexTable.Cell>#1001</IndexTable.Cell>
         </IndexTable.Row>
@@ -597,7 +626,8 @@ describe("IndexTable", () => {
     expect(childRow.querySelector("s-checkbox")).toBeNull();
     expect(childRow).not.toHaveAttribute("aria-selected");
     // The empty cell keeps the columns aligned.
-    expect(childRow.children).toHaveLength(container.querySelector(".cx-it__row--head")!.children.length);
+    expect(childRow.children).toHaveLength(
+      container.querySelector(".cx-it__row--head")!.children.length,
+    );
   });
-
 });

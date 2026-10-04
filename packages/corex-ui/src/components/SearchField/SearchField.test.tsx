@@ -22,7 +22,13 @@ describe("SearchField", () => {
   it("calls onDebouncedChange after debounce delay", () => {
     vi.useFakeTimers();
     const onDebouncedChange = vi.fn();
-    render(<SearchField defaultValue="test" onDebouncedChange={onDebouncedChange} debounceDelay={200} />);
+    render(
+      <SearchField
+        defaultValue="test"
+        onDebouncedChange={onDebouncedChange}
+        debounceDelay={200}
+      />,
+    );
 
     act(() => {
       vi.advanceTimersByTime(200);

@@ -1,8 +1,4 @@
-import type {
-  FaqItemType,
-  PlanUsageLimitType,
-  PricingPlanType,
-} from "./types";
+import type { FaqItemType, PlanUsageLimitType, PricingPlanType } from "./types";
 
 export const FREE_PLAN: PricingPlanType = {
   id: "free",
@@ -70,10 +66,7 @@ export const PRICING_PLANS: PricingPlanType[] = [
   },
 ];
 
-export const ALL_PRICING_PLANS: PricingPlanType[] = [
-  FREE_PLAN,
-  ...PRICING_PLANS,
-];
+export const ALL_PRICING_PLANS: PricingPlanType[] = [FREE_PLAN, ...PRICING_PLANS];
 
 export const CURRENT_USAGE_LIMITS: PlanUsageLimitType[] = [
   {

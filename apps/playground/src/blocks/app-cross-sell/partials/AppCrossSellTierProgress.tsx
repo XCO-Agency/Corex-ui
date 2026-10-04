@@ -34,9 +34,7 @@ export function AppCrossSellTierProgress({
               </Text>
             </Box>
 
-            {index < tiers.length - 1 && (
-              <Icon type="arrow-right" tone="subdued" />
-            )}
+            {index < tiers.length - 1 && <Icon type="arrow-right" tone="subdued" />}
           </React.Fragment>
         );
       })}

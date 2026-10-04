@@ -47,7 +47,8 @@ export function AppIconBadge({
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        boxShadow: "0 2px 6px rgba(0, 0, 0, 0.12), inset 0 1px 1px rgba(255, 255, 255, 0.35)",
+        boxShadow:
+          "0 2px 6px rgba(0, 0, 0, 0.12), inset 0 1px 1px rgba(255, 255, 255, 0.35)",
         flexShrink: 0,
         position: "relative",
       }}
@@ -87,9 +88,26 @@ export function AppIconBadge({
             strokeWidth="2"
           />
           <path d="M3 9h18" stroke="#ffffff" strokeWidth="1.8" />
-          <path d="M8 2v4M16 2v4" stroke="#ffffff" strokeWidth="2" strokeLinecap="round" />
-          <circle cx="15.5" cy="15.5" r="3.5" fill="#4338ca" stroke="#ffffff" strokeWidth="1.5" />
-          <path d="M15.5 14v1.5l1 .6" stroke="#ffffff" strokeWidth="1.2" strokeLinecap="round" />
+          <path
+            d="M8 2v4M16 2v4"
+            stroke="#ffffff"
+            strokeWidth="2"
+            strokeLinecap="round"
+          />
+          <circle
+            cx="15.5"
+            cy="15.5"
+            r="3.5"
+            fill="#4338ca"
+            stroke="#ffffff"
+            strokeWidth="1.5"
+          />
+          <path
+            d="M15.5 14v1.5l1 .6"
+            stroke="#ffffff"
+            strokeWidth="1.2"
+            strokeLinecap="round"
+          />
         </svg>
       )}
 
@@ -103,8 +121,20 @@ export function AppIconBadge({
             strokeWidth="2"
           />
           <path d="m3.3 7 8.7 5 8.7-5M12 22V12" stroke="#ffffff" strokeWidth="1.8" />
-          <circle cx="16.5" cy="16.5" r="3.5" fill="#6d28d9" stroke="#ffffff" strokeWidth="1.5" />
-          <path d="M16.5 15v1.5l1 .6" stroke="#ffffff" strokeWidth="1.2" strokeLinecap="round" />
+          <circle
+            cx="16.5"
+            cy="16.5"
+            r="3.5"
+            fill="#6d28d9"
+            stroke="#ffffff"
+            strokeWidth="1.5"
+          />
+          <path
+            d="M16.5 15v1.5l1 .6"
+            stroke="#ffffff"
+            strokeWidth="1.2"
+            strokeLinecap="round"
+          />
         </svg>
       )}
 
@@ -155,9 +185,29 @@ export function AppIconBadge({
             stroke="#ffffff"
             strokeWidth="2"
           />
-          <circle cx="12" cy="12" r="3.2" fill="#ffffff" fillOpacity="0.4" stroke="#ffffff" strokeWidth="1.8" />
-          <circle cx="17.5" cy="6.5" r="3" fill="#be185d" stroke="#ffffff" strokeWidth="1.5" />
-          <path d="M17.5 5.2V6.5l.8.6" stroke="#ffffff" strokeWidth="1.2" strokeLinecap="round" />
+          <circle
+            cx="12"
+            cy="12"
+            r="3.2"
+            fill="#ffffff"
+            fillOpacity="0.4"
+            stroke="#ffffff"
+            strokeWidth="1.8"
+          />
+          <circle
+            cx="17.5"
+            cy="6.5"
+            r="3"
+            fill="#be185d"
+            stroke="#ffffff"
+            strokeWidth="1.5"
+          />
+          <path
+            d="M17.5 5.2V6.5l.8.6"
+            stroke="#ffffff"
+            strokeWidth="1.2"
+            strokeLinecap="round"
+          />
         </svg>
       )}
 
@@ -174,16 +224,36 @@ export function AppIconBadge({
             stroke="#ffffff"
             strokeWidth="2"
           />
-          <path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2" stroke="#ffffff" strokeWidth="2" />
-          <path d="M12 11v3M9 12.5h6" stroke="#ffffff" strokeWidth="2" strokeLinecap="round" />
+          <path
+            d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"
+            stroke="#ffffff"
+            strokeWidth="2"
+          />
+          <path
+            d="M12 11v3M9 12.5h6"
+            stroke="#ffffff"
+            strokeWidth="2"
+            strokeLinecap="round"
+          />
         </svg>
       )}
 
       {/* 8. Rankify / Smart Collections */}
       {(type === "rankify" || type === "rank-smart-collections") && (
         <svg width={iconSize} height={iconSize} viewBox="0 0 24 24" fill="none">
-          <path d="M18 20V10M12 20V4M6 20v-6" stroke="#ffffff" strokeWidth="2.5" strokeLinecap="round" />
-          <path d="m14 7 3.5-3.5L21 7" stroke="#ffffff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+          <path
+            d="M18 20V10M12 20V4M6 20v-6"
+            stroke="#ffffff"
+            strokeWidth="2.5"
+            strokeLinecap="round"
+          />
+          <path
+            d="m14 7 3.5-3.5L21 7"
+            stroke="#ffffff"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
         </svg>
       )}
 
@@ -196,16 +266,38 @@ export function AppIconBadge({
             stroke="#ffffff"
             strokeWidth="2"
           />
-          <path d="M8 2h8M6 4h12" stroke="#ffffff" strokeWidth="1.8" strokeLinecap="round" />
-          <circle cx="15.5" cy="14.5" r="3.5" fill="#7e22ce" stroke="#ffffff" strokeWidth="1.5" />
-          <path d="M15.5 13v1.5l1 .6" stroke="#ffffff" strokeWidth="1.2" strokeLinecap="round" />
+          <path
+            d="M8 2h8M6 4h12"
+            stroke="#ffffff"
+            strokeWidth="1.8"
+            strokeLinecap="round"
+          />
+          <circle
+            cx="15.5"
+            cy="14.5"
+            r="3.5"
+            fill="#7e22ce"
+            stroke="#ffffff"
+            strokeWidth="1.5"
+          />
+          <path
+            d="M15.5 13v1.5l1 .6"
+            stroke="#ffffff"
+            strokeWidth="1.2"
+            strokeLinecap="round"
+          />
         </svg>
       )}
 
       {/* 10. ORDA Order Tracker */}
       {type === "orda" && (
         <svg width={iconSize} height={iconSize} viewBox="0 0 24 24" fill="none">
-          <path d="M12 2 3 7l9 5 9-5-9-5Z" fill="rgba(255, 255, 255, 0.3)" stroke="#ffffff" strokeWidth="1.8" />
+          <path
+            d="M12 2 3 7l9 5 9-5-9-5Z"
+            fill="rgba(255, 255, 255, 0.3)"
+            stroke="#ffffff"
+            strokeWidth="1.8"
+          />
           <path d="M3 7v10l9 5 9-5V7" stroke="#ffffff" strokeWidth="1.8" />
           <path d="M12 12v10" stroke="#ffffff" strokeWidth="1.8" />
           <circle cx="12" cy="7" r="1.5" fill="#ffffff" />
@@ -225,7 +317,12 @@ export function AppIconBadge({
             strokeLinecap="round"
             strokeLinejoin="round"
           />
-          <path d="M12 7v4M10 9h4" stroke="#ffffff" strokeWidth="1.8" strokeLinecap="round" />
+          <path
+            d="M12 7v4M10 9h4"
+            stroke="#ffffff"
+            strokeWidth="1.8"
+            strokeLinecap="round"
+          />
         </svg>
       )}
 
@@ -239,8 +336,17 @@ export function AppIconBadge({
             strokeWidth="2"
             strokeLinejoin="round"
           />
-          <path d="M8 15.5V19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-4.5" stroke="#ffffff" strokeWidth="2" />
-          <path d="M21 9a4 4 0 0 1 0 6" stroke="#ffffff" strokeWidth="2" strokeLinecap="round" />
+          <path
+            d="M8 15.5V19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-4.5"
+            stroke="#ffffff"
+            strokeWidth="2"
+          />
+          <path
+            d="M21 9a4 4 0 0 1 0 6"
+            stroke="#ffffff"
+            strokeWidth="2"
+            strokeLinecap="round"
+          />
         </svg>
       )}
 
@@ -271,14 +377,23 @@ export function AppIconBadge({
       {/* 14. Prizify */}
       {type === "prizify" && (
         <svg width={iconSize} height={iconSize} viewBox="0 0 24 24" fill="none">
-          <path d="M6 9H3a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3M18 9h3a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-3" stroke="#ffffff" strokeWidth="2" />
+          <path
+            d="M6 9H3a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3M18 9h3a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-3"
+            stroke="#ffffff"
+            strokeWidth="2"
+          />
           <path
             d="M4 2h16v6a7 7 0 0 1-14 0V2z"
             fill="rgba(255, 255, 255, 0.22)"
             stroke="#ffffff"
             strokeWidth="2"
           />
-          <path d="M12 15v4M8 22h8" stroke="#ffffff" strokeWidth="2" strokeLinecap="round" />
+          <path
+            d="M12 15v4M8 22h8"
+            stroke="#ffffff"
+            strokeWidth="2"
+            strokeLinecap="round"
+          />
         </svg>
       )}
 

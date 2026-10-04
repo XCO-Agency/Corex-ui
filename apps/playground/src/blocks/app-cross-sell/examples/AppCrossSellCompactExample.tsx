@@ -14,12 +14,12 @@ import type { AppCrossSellItemType } from "../types";
 
 export function AppCrossSellCompactExample() {
   const [apps, setApps] = React.useState<AppCrossSellItemType[]>(
-    DEFAULT_APPS_LIST.slice(0, 3)
+    DEFAULT_APPS_LIST.slice(0, 3),
   );
 
   const handleInstall = (id: string) => {
     setApps((current) =>
-      current.map((a) => (a.id === id ? { ...a, installed: true } : a))
+      current.map((a) => (a.id === id ? { ...a, installed: true } : a)),
     );
   };
 
@@ -53,7 +53,9 @@ export function AppCrossSellCompactExample() {
                 {installedCount} of 3 active on store
               </Text>
               <Text variant="bodySm" fontWeight="semibold" tone="success">
-                {installedCount >= 2 ? "15% Discount Active" : "Install 1 more for 10% off"}
+                {installedCount >= 2
+                  ? "15% Discount Active"
+                  : "Install 1 more for 10% off"}
               </Text>
             </InlineStack>
           </Box>
@@ -73,7 +75,11 @@ export function AppCrossSellCompactExample() {
                 borderColor="border-subdued"
                 background="bg-surface"
               >
-                <InlineStack justifyContent="space-between" alignItems="center" gap="base">
+                <InlineStack
+                  justifyContent="space-between"
+                  alignItems="center"
+                  gap="base"
+                >
                   <InlineStack gap="small-300" alignItems="center">
                     <AppIconBadge
                       type={app.iconType}
@@ -114,9 +120,7 @@ export function AppCrossSellCompactExample() {
 
           {/* Footer Link */}
           <InlineStack justifyContent="center">
-            <Button variant="tertiary">
-              View all 15 partner apps &rarr;
-            </Button>
+            <Button variant="tertiary">View all 15 partner apps &rarr;</Button>
           </InlineStack>
         </BlockStack>
       </Card>

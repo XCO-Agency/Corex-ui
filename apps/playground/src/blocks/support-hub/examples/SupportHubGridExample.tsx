@@ -44,7 +44,8 @@ export function SupportHubGridExample() {
               <SupportTeamAvatars members={DEFAULT_TEAM_MEMBERS} />
 
               <Text variant="bodySm" tone="subdued" as="p">
-                Chat with Ihar, Marina, or Andrii for instant troubleshooting and setup assistance.
+                Chat with Ihar, Marina, or Andrii for instant troubleshooting and setup
+                assistance.
               </Text>
 
               <Text variant="xs" tone="subdued">
@@ -79,7 +80,8 @@ export function SupportHubGridExample() {
               <Icon type="calendar" tone="info" />
 
               <Text variant="bodySm" tone="subdued" as="p">
-                Schedule a 15-minute video screenshare to customize your cart drawer and configure upsell rules.
+                Schedule a 15-minute video screenshare to customize your cart drawer and
+                configure upsell rules.
               </Text>
 
               <Text variant="xs" tone="subdued">
@@ -113,7 +115,8 @@ export function SupportHubGridExample() {
               <Icon type="email" tone="info" />
 
               <Text variant="bodySm" tone="subdued" as="p">
-                Send technical inquiries or custom CSS styling requests directly to our developer team.
+                Send technical inquiries or custom CSS styling requests directly to our
+                developer team.
               </Text>
 
               <Text variant="xs" tone="subdued">

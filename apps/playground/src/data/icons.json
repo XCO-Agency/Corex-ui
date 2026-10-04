@@ -35,21 +35,13 @@
     "name": "affiliate",
     "title": "Affiliate",
     "category": "Communication & Social",
-    "keywords": [
-      "affiliate",
-      "communication",
-      "social"
-    ]
+    "keywords": ["affiliate", "communication", "social"]
   },
   {
     "name": "airplane",
     "title": "Airplane",
     "category": "General & Objects",
-    "keywords": [
-      "airplane",
-      "general",
-      "objects"
-    ]
+    "keywords": ["airplane", "general", "objects"]
   },
   {
     "name": "alert-bubble",
@@ -283,11 +275,7 @@
     "name": "apps",
     "title": "Apps",
     "category": "Devices & Layout",
-    "keywords": [
-      "apps",
-      "devices",
-      "layout"
-    ]
+    "keywords": ["apps", "devices", "layout"]
   },
   {
     "name": "archive",
@@ -590,11 +578,7 @@
     "name": "asterisk",
     "title": "Asterisk",
     "category": "Feedback & Security",
-    "keywords": [
-      "asterisk",
-      "feedback",
-      "security"
-    ]
+    "keywords": ["asterisk", "feedback", "security"]
   },
   {
     "name": "attachment",
@@ -699,11 +683,7 @@
     "name": "barcode",
     "title": "Barcode",
     "category": "Products & Inventory",
-    "keywords": [
-      "barcode",
-      "products",
-      "inventory"
-    ]
+    "keywords": ["barcode", "products", "inventory"]
   },
   {
     "name": "bill",
@@ -733,21 +713,13 @@
     "name": "blank",
     "title": "Blank",
     "category": "General & Objects",
-    "keywords": [
-      "blank",
-      "general",
-      "objects"
-    ]
+    "keywords": ["blank", "general", "objects"]
   },
   {
     "name": "blog",
     "title": "Blog",
     "category": "Content & Media",
-    "keywords": [
-      "blog",
-      "content",
-      "media"
-    ]
+    "keywords": ["blog", "content", "media"]
   },
   {
     "name": "bolt",
@@ -796,11 +768,7 @@
     "name": "book",
     "title": "Book",
     "category": "Content & Media",
-    "keywords": [
-      "book",
-      "content",
-      "media"
-    ]
+    "keywords": ["book", "content", "media"]
   },
   {
     "name": "book-open",
@@ -865,11 +833,7 @@
     "name": "bullet",
     "title": "Bullet",
     "category": "Formatting & Text",
-    "keywords": [
-      "bullet",
-      "formatting",
-      "text"
-    ]
+    "keywords": ["bullet", "formatting", "text"]
   },
   {
     "name": "business-entity",
@@ -890,11 +854,7 @@
     "name": "button",
     "title": "Button",
     "category": "Actions & Controls",
-    "keywords": [
-      "button",
-      "actions",
-      "controls"
-    ]
+    "keywords": ["button", "actions", "controls"]
   },
   {
     "name": "button-press",
@@ -915,11 +875,7 @@
     "name": "calculator",
     "title": "Calculator",
     "category": "Analytics & Data",
-    "keywords": [
-      "calculator",
-      "analytics",
-      "data"
-    ]
+    "keywords": ["calculator", "analytics", "data"]
   },
   {
     "name": "calendar",
@@ -1561,21 +1517,13 @@
     "name": "categories",
     "title": "Categories",
     "category": "General & Objects",
-    "keywords": [
-      "categories",
-      "general",
-      "objects"
-    ]
+    "keywords": ["categories", "general", "objects"]
   },
   {
     "name": "channels",
     "title": "Channels",
     "category": "Organization & People",
-    "keywords": [
-      "channels",
-      "organization",
-      "people"
-    ]
+    "keywords": ["channels", "organization", "people"]
   },
   {
     "name": "channels-filled",
@@ -2250,11 +2198,7 @@
     "name": "circle",
     "title": "Circle",
     "category": "General & Objects",
-    "keywords": [
-      "circle",
-      "general",
-      "objects"
-    ]
+    "keywords": ["circle", "general", "objects"]
   },
   {
     "name": "circle-dashed",
@@ -2491,11 +2435,7 @@
     "name": "collection",
     "title": "Collection",
     "category": "Products & Inventory",
-    "keywords": [
-      "collection",
-      "products",
-      "inventory"
-    ]
+    "keywords": ["collection", "products", "inventory"]
   },
   {
     "name": "collection-featured",
@@ -2589,11 +2529,7 @@
     "name": "compass",
     "title": "Compass",
     "category": "Navigation & Arrows",
-    "keywords": [
-      "compass",
-      "navigation",
-      "arrows"
-    ]
+    "keywords": ["compass", "navigation", "arrows"]
   },
   {
     "name": "compose",
@@ -2617,11 +2553,7 @@
     "name": "confetti",
     "title": "Confetti",
     "category": "General & Objects",
-    "keywords": [
-      "confetti",
-      "general",
-      "objects"
-    ]
+    "keywords": ["confetti", "general", "objects"]
   },
   {
     "name": "connect",
@@ -2643,20 +2575,13 @@
     "name": "content",
     "title": "Content",
     "category": "Content & Media",
-    "keywords": [
-      "content",
-      "media"
-    ]
+    "keywords": ["content", "media"]
   },
   {
     "name": "contract",
     "title": "Contract",
     "category": "Actions & Controls",
-    "keywords": [
-      "contract",
-      "actions",
-      "controls"
-    ]
+    "keywords": ["contract", "actions", "controls"]
   },
   {
     "name": "corner-pill",
@@ -2843,11 +2768,7 @@
     "name": "crop",
     "title": "Crop",
     "category": "Actions & Controls",
-    "keywords": [
-      "crop",
-      "actions",
-      "controls"
-    ]
+    "keywords": ["crop", "actions", "controls"]
   },
   {
     "name": "currency-convert",
@@ -2868,11 +2789,7 @@
     "name": "cursor",
     "title": "Cursor",
     "category": "General & Objects",
-    "keywords": [
-      "cursor",
-      "general",
-      "objects"
-    ]
+    "keywords": ["cursor", "general", "objects"]
   },
   {
     "name": "cursor-banner",
@@ -2936,11 +2853,7 @@
     "name": "database",
     "title": "Database",
     "category": "Analytics & Data",
-    "keywords": [
-      "database",
-      "analytics",
-      "data"
-    ]
+    "keywords": ["database", "analytics", "data"]
   },
   {
     "name": "database-add",
@@ -3012,11 +2925,7 @@
     "name": "delivery",
     "title": "Delivery",
     "category": "Products & Inventory",
-    "keywords": [
-      "delivery",
-      "products",
-      "inventory"
-    ]
+    "keywords": ["delivery", "products", "inventory"]
   },
   {
     "name": "desktop",
@@ -3040,11 +2949,7 @@
     "name": "disabled",
     "title": "Disabled",
     "category": "Feedback & Security",
-    "keywords": [
-      "disabled",
-      "feedback",
-      "security"
-    ]
+    "keywords": ["disabled", "feedback", "security"]
   },
   {
     "name": "discount",
@@ -3200,11 +3105,7 @@
     "name": "domain",
     "title": "Domain",
     "category": "Devices & Layout",
-    "keywords": [
-      "domain",
-      "devices",
-      "layout"
-    ]
+    "keywords": ["domain", "devices", "layout"]
   },
   {
     "name": "domain-landing-page",
@@ -3256,11 +3157,7 @@
     "name": "download",
     "title": "Download",
     "category": "Actions & Controls",
-    "keywords": [
-      "download",
-      "actions",
-      "controls"
-    ]
+    "keywords": ["download", "actions", "controls"]
   },
   {
     "name": "drag-drop",
@@ -3296,11 +3193,7 @@
     "name": "duplicate",
     "title": "Duplicate",
     "category": "Actions & Controls",
-    "keywords": [
-      "duplicate",
-      "actions",
-      "controls"
-    ]
+    "keywords": ["duplicate", "actions", "controls"]
   },
   {
     "name": "edit",
@@ -3396,21 +3289,13 @@
     "name": "enabled",
     "title": "Enabled",
     "category": "Feedback & Security",
-    "keywords": [
-      "enabled",
-      "feedback",
-      "security"
-    ]
+    "keywords": ["enabled", "feedback", "security"]
   },
   {
     "name": "enter",
     "title": "Enter",
     "category": "Navigation & Arrows",
-    "keywords": [
-      "enter",
-      "navigation",
-      "arrows"
-    ]
+    "keywords": ["enter", "navigation", "arrows"]
   },
   {
     "name": "envelope",
@@ -3484,31 +3369,19 @@
     "name": "exchange",
     "title": "Exchange",
     "category": "Actions & Controls",
-    "keywords": [
-      "exchange",
-      "actions",
-      "controls"
-    ]
+    "keywords": ["exchange", "actions", "controls"]
   },
   {
     "name": "exit",
     "title": "Exit",
     "category": "Navigation & Arrows",
-    "keywords": [
-      "exit",
-      "navigation",
-      "arrows"
-    ]
+    "keywords": ["exit", "navigation", "arrows"]
   },
   {
     "name": "export",
     "title": "Export",
     "category": "Actions & Controls",
-    "keywords": [
-      "export",
-      "actions",
-      "controls"
-    ]
+    "keywords": ["export", "actions", "controls"]
   },
   {
     "name": "external",
@@ -3695,11 +3568,7 @@
     "name": "file",
     "title": "File",
     "category": "Content & Media",
-    "keywords": [
-      "file",
-      "content",
-      "media"
-    ]
+    "keywords": ["file", "content", "media"]
   },
   {
     "name": "file-list",
@@ -3755,11 +3624,7 @@
     "name": "flag",
     "title": "Flag",
     "category": "General & Objects",
-    "keywords": [
-      "flag",
-      "general",
-      "objects"
-    ]
+    "keywords": ["flag", "general", "objects"]
   },
   {
     "name": "flip-horizontal",
@@ -3795,21 +3660,13 @@
     "name": "flower",
     "title": "Flower",
     "category": "General & Objects",
-    "keywords": [
-      "flower",
-      "general",
-      "objects"
-    ]
+    "keywords": ["flower", "general", "objects"]
   },
   {
     "name": "folder",
     "title": "Folder",
     "category": "Actions & Controls",
-    "keywords": [
-      "folder",
-      "actions",
-      "controls"
-    ]
+    "keywords": ["folder", "actions", "controls"]
   },
   {
     "name": "folder-add",
@@ -3901,61 +3758,37 @@
     "name": "food",
     "title": "Food",
     "category": "General & Objects",
-    "keywords": [
-      "food",
-      "general",
-      "objects"
-    ]
+    "keywords": ["food", "general", "objects"]
   },
   {
     "name": "foreground",
     "title": "Foreground",
     "category": "Formatting & Text",
-    "keywords": [
-      "foreground",
-      "formatting",
-      "text"
-    ]
+    "keywords": ["foreground", "formatting", "text"]
   },
   {
     "name": "forklift",
     "title": "Forklift",
     "category": "Products & Inventory",
-    "keywords": [
-      "forklift",
-      "products",
-      "inventory"
-    ]
+    "keywords": ["forklift", "products", "inventory"]
   },
   {
     "name": "forms",
     "title": "Forms",
     "category": "Content & Media",
-    "keywords": [
-      "forms",
-      "content",
-      "media"
-    ]
+    "keywords": ["forms", "content", "media"]
   },
   {
     "name": "games",
     "title": "Games",
     "category": "General & Objects",
-    "keywords": [
-      "games",
-      "general",
-      "objects"
-    ]
+    "keywords": ["games", "general", "objects"]
   },
   {
     "name": "gauge",
     "title": "Gauge",
     "category": "Analytics & Data",
-    "keywords": [
-      "gauge",
-      "analytics",
-      "data"
-    ]
+    "keywords": ["gauge", "analytics", "data"]
   },
   {
     "name": "gift-card",
@@ -4141,21 +3974,13 @@
     "name": "grid",
     "title": "Grid",
     "category": "Devices & Layout",
-    "keywords": [
-      "grid",
-      "devices",
-      "layout"
-    ]
+    "keywords": ["grid", "devices", "layout"]
   },
   {
     "name": "hashtag",
     "title": "Hashtag",
     "category": "Formatting & Text",
-    "keywords": [
-      "hashtag",
-      "formatting",
-      "text"
-    ]
+    "keywords": ["hashtag", "formatting", "text"]
   },
   {
     "name": "hashtag-decimal",
@@ -4262,21 +4087,13 @@
     "name": "home",
     "title": "Home",
     "category": "General & Objects",
-    "keywords": [
-      "home",
-      "general",
-      "objects"
-    ]
+    "keywords": ["home", "general", "objects"]
   },
   {
     "name": "icons",
     "title": "Icons",
     "category": "Content & Media",
-    "keywords": [
-      "icons",
-      "content",
-      "media"
-    ]
+    "keywords": ["icons", "content", "media"]
   },
   {
     "name": "identity-card",
@@ -4503,11 +4320,7 @@
     "name": "import",
     "title": "Import",
     "category": "Actions & Controls",
-    "keywords": [
-      "import",
-      "actions",
-      "controls"
-    ]
+    "keywords": ["import", "actions", "controls"]
   },
   {
     "name": "in-progress",
@@ -4528,31 +4341,19 @@
     "name": "incentive",
     "title": "Incentive",
     "category": "General & Objects",
-    "keywords": [
-      "incentive",
-      "general",
-      "objects"
-    ]
+    "keywords": ["incentive", "general", "objects"]
   },
   {
     "name": "incoming",
     "title": "Incoming",
     "category": "General & Objects",
-    "keywords": [
-      "incoming",
-      "general",
-      "objects"
-    ]
+    "keywords": ["incoming", "general", "objects"]
   },
   {
     "name": "incomplete",
     "title": "Incomplete",
     "category": "Feedback & Security",
-    "keywords": [
-      "incomplete",
-      "feedback",
-      "security"
-    ]
+    "keywords": ["incomplete", "feedback", "security"]
   },
   {
     "name": "info",
@@ -4579,20 +4380,13 @@
     "name": "inheritance",
     "title": "Inheritance",
     "category": "General & Objects",
-    "keywords": [
-      "inheritance",
-      "general",
-      "objects"
-    ]
+    "keywords": ["inheritance", "general", "objects"]
   },
   {
     "name": "inventory",
     "title": "Inventory",
     "category": "Products & Inventory",
-    "keywords": [
-      "inventory",
-      "products"
-    ]
+    "keywords": ["inventory", "products"]
   },
   {
     "name": "inventory-updated",
@@ -4652,11 +4446,7 @@
     "name": "keyboard",
     "title": "Keyboard",
     "category": "Devices & Layout",
-    "keywords": [
-      "keyboard",
-      "devices",
-      "layout"
-    ]
+    "keywords": ["keyboard", "devices", "layout"]
   },
   {
     "name": "keyboard-filled",
@@ -4719,11 +4509,7 @@
     "name": "language",
     "title": "Language",
     "category": "General & Objects",
-    "keywords": [
-      "language",
-      "general",
-      "objects"
-    ]
+    "keywords": ["language", "general", "objects"]
   },
   {
     "name": "language-translate",
@@ -4744,11 +4530,7 @@
     "name": "layer",
     "title": "Layer",
     "category": "Devices & Layout",
-    "keywords": [
-      "layer",
-      "devices",
-      "layout"
-    ]
+    "keywords": ["layer", "devices", "layout"]
   },
   {
     "name": "layout-block",
@@ -4976,11 +4758,7 @@
     "name": "lightbulb",
     "title": "Lightbulb",
     "category": "General & Objects",
-    "keywords": [
-      "lightbulb",
-      "general",
-      "objects"
-    ]
+    "keywords": ["lightbulb", "general", "objects"]
   },
   {
     "name": "link",
@@ -5057,21 +4835,13 @@
     "name": "live",
     "title": "Live",
     "category": "Analytics & Data",
-    "keywords": [
-      "live",
-      "analytics",
-      "data"
-    ]
+    "keywords": ["live", "analytics", "data"]
   },
   {
     "name": "location",
     "title": "Location",
     "category": "General & Objects",
-    "keywords": [
-      "location",
-      "general",
-      "objects"
-    ]
+    "keywords": ["location", "general", "objects"]
   },
   {
     "name": "location-none",
@@ -5111,11 +4881,7 @@
     "name": "map",
     "title": "Map",
     "category": "General & Objects",
-    "keywords": [
-      "map",
-      "general",
-      "objects"
-    ]
+    "keywords": ["map", "general", "objects"]
   },
   {
     "name": "markets",
@@ -5212,11 +4978,7 @@
     "name": "maximize",
     "title": "Maximize",
     "category": "Actions & Controls",
-    "keywords": [
-      "maximize",
-      "actions",
-      "controls"
-    ]
+    "keywords": ["maximize", "actions", "controls"]
   },
   {
     "name": "measurement-size",
@@ -5330,11 +5092,7 @@
     "name": "megaphone",
     "title": "Megaphone",
     "category": "Communication & Social",
-    "keywords": [
-      "megaphone",
-      "communication",
-      "social"
-    ]
+    "keywords": ["megaphone", "communication", "social"]
   },
   {
     "name": "mention",
@@ -5365,11 +5123,7 @@
     "name": "menu",
     "title": "Menu",
     "category": "Devices & Layout",
-    "keywords": [
-      "menu",
-      "devices",
-      "layout"
-    ]
+    "keywords": ["menu", "devices", "layout"]
   },
   {
     "name": "menu-horizontal",
@@ -5405,31 +5159,19 @@
     "name": "merge",
     "title": "Merge",
     "category": "General & Objects",
-    "keywords": [
-      "merge",
-      "general",
-      "objects"
-    ]
+    "keywords": ["merge", "general", "objects"]
   },
   {
     "name": "metafields",
     "title": "Metafields",
     "category": "General & Objects",
-    "keywords": [
-      "metafields",
-      "general",
-      "objects"
-    ]
+    "keywords": ["metafields", "general", "objects"]
   },
   {
     "name": "metaobject",
     "title": "Metaobject",
     "category": "General & Objects",
-    "keywords": [
-      "metaobject",
-      "general",
-      "objects"
-    ]
+    "keywords": ["metaobject", "general", "objects"]
   },
   {
     "name": "metaobject-list",
@@ -5506,11 +5248,7 @@
     "name": "minimize",
     "title": "Minimize",
     "category": "Actions & Controls",
-    "keywords": [
-      "minimize",
-      "actions",
-      "controls"
-    ]
+    "keywords": ["minimize", "actions", "controls"]
   },
   {
     "name": "minus",
@@ -5631,21 +5369,13 @@
     "name": "nature",
     "title": "Nature",
     "category": "General & Objects",
-    "keywords": [
-      "nature",
-      "general",
-      "objects"
-    ]
+    "keywords": ["nature", "general", "objects"]
   },
   {
     "name": "note",
     "title": "Note",
     "category": "Content & Media",
-    "keywords": [
-      "note",
-      "content",
-      "media"
-    ]
+    "keywords": ["note", "content", "media"]
   },
   {
     "name": "note-add",
@@ -5676,11 +5406,7 @@
     "name": "notification",
     "title": "Notification",
     "category": "Communication & Social",
-    "keywords": [
-      "notification",
-      "communication",
-      "social"
-    ]
+    "keywords": ["notification", "communication", "social"]
   },
   {
     "name": "number-one",
@@ -5896,31 +5622,19 @@
     "name": "outdent",
     "title": "Outdent",
     "category": "Formatting & Text",
-    "keywords": [
-      "outdent",
-      "formatting",
-      "text"
-    ]
+    "keywords": ["outdent", "formatting", "text"]
   },
   {
     "name": "outgoing",
     "title": "Outgoing",
     "category": "General & Objects",
-    "keywords": [
-      "outgoing",
-      "general",
-      "objects"
-    ]
+    "keywords": ["outgoing", "general", "objects"]
   },
   {
     "name": "package",
     "title": "Package",
     "category": "Products & Inventory",
-    "keywords": [
-      "package",
-      "products",
-      "inventory"
-    ]
+    "keywords": ["package", "products", "inventory"]
   },
   {
     "name": "package-fulfilled",
@@ -5972,11 +5686,7 @@
     "name": "page",
     "title": "Page",
     "category": "Content & Media",
-    "keywords": [
-      "page",
-      "content",
-      "media"
-    ]
+    "keywords": ["page", "content", "media"]
   },
   {
     "name": "page-add",
@@ -6161,16 +5871,7 @@
     "name": "page-up",
     "title": "Page Up",
     "category": "Content & Media",
-    "keywords": [
-      "page-up",
-      "page up",
-      "pageup",
-      "page",
-      "up",
-      "pu",
-      "content",
-      "media"
-    ]
+    "keywords": ["page-up", "page up", "pageup", "page", "up", "pu", "content", "media"]
   },
   {
     "name": "pagination-end",
@@ -6333,11 +6034,7 @@
     "name": "payment",
     "title": "Payment",
     "category": "Commerce & Orders",
-    "keywords": [
-      "payment",
-      "commerce",
-      "orders"
-    ]
+    "keywords": ["payment", "commerce", "orders"]
   },
   {
     "name": "payment-capture",
@@ -6908,11 +6605,7 @@
     "name": "pin",
     "title": "Pin",
     "category": "General & Objects",
-    "keywords": [
-      "pin",
-      "general",
-      "objects"
-    ]
+    "keywords": ["pin", "general", "objects"]
   },
   {
     "name": "pin-remove",
@@ -6949,21 +6642,13 @@
     "name": "plan",
     "title": "Plan",
     "category": "General & Objects",
-    "keywords": [
-      "plan",
-      "general",
-      "objects"
-    ]
+    "keywords": ["plan", "general", "objects"]
   },
   {
     "name": "play",
     "title": "Play",
     "category": "Actions & Controls",
-    "keywords": [
-      "play",
-      "actions",
-      "controls"
-    ]
+    "keywords": ["play", "actions", "controls"]
   },
   {
     "name": "play-circle",
@@ -7161,21 +6846,13 @@
     "name": "print",
     "title": "Print",
     "category": "Actions & Controls",
-    "keywords": [
-      "print",
-      "actions",
-      "controls"
-    ]
+    "keywords": ["print", "actions", "controls"]
   },
   {
     "name": "product",
     "title": "Product",
     "category": "Products & Inventory",
-    "keywords": [
-      "product",
-      "products",
-      "inventory"
-    ]
+    "keywords": ["product", "products", "inventory"]
   },
   {
     "name": "product-add",
@@ -7663,21 +7340,13 @@
     "name": "receivables",
     "title": "Receivables",
     "category": "Commerce & Orders",
-    "keywords": [
-      "receivables",
-      "commerce",
-      "orders"
-    ]
+    "keywords": ["receivables", "commerce", "orders"]
   },
   {
     "name": "redo",
     "title": "Redo",
     "category": "Navigation & Arrows",
-    "keywords": [
-      "redo",
-      "navigation",
-      "arrows"
-    ]
+    "keywords": ["redo", "navigation", "arrows"]
   },
   {
     "name": "referral-code",
@@ -7708,11 +7377,7 @@
     "name": "refresh",
     "title": "Refresh",
     "category": "Navigation & Arrows",
-    "keywords": [
-      "refresh",
-      "navigation",
-      "arrows"
-    ]
+    "keywords": ["refresh", "navigation", "arrows"]
   },
   {
     "name": "remove-background",
@@ -7749,61 +7414,37 @@
     "name": "replace",
     "title": "Replace",
     "category": "Actions & Controls",
-    "keywords": [
-      "replace",
-      "actions",
-      "controls"
-    ]
+    "keywords": ["replace", "actions", "controls"]
   },
   {
     "name": "replay",
     "title": "Replay",
     "category": "Navigation & Arrows",
-    "keywords": [
-      "replay",
-      "navigation",
-      "arrows"
-    ]
+    "keywords": ["replay", "navigation", "arrows"]
   },
   {
     "name": "reset",
     "title": "Reset",
     "category": "Navigation & Arrows",
-    "keywords": [
-      "reset",
-      "navigation",
-      "arrows"
-    ]
+    "keywords": ["reset", "navigation", "arrows"]
   },
   {
     "name": "return",
     "title": "Return",
     "category": "General & Objects",
-    "keywords": [
-      "return",
-      "general",
-      "objects"
-    ]
+    "keywords": ["return", "general", "objects"]
   },
   {
     "name": "reward",
     "title": "Reward",
     "category": "General & Objects",
-    "keywords": [
-      "reward",
-      "general",
-      "objects"
-    ]
+    "keywords": ["reward", "general", "objects"]
   },
   {
     "name": "rocket",
     "title": "Rocket",
     "category": "General & Objects",
-    "keywords": [
-      "rocket",
-      "general",
-      "objects"
-    ]
+    "keywords": ["rocket", "general", "objects"]
   },
   {
     "name": "rotate-left",
@@ -7839,11 +7480,7 @@
     "name": "sandbox",
     "title": "Sandbox",
     "category": "Actions & Controls",
-    "keywords": [
-      "sandbox",
-      "actions",
-      "controls"
-    ]
+    "keywords": ["sandbox", "actions", "controls"]
   },
   {
     "name": "save",
@@ -8020,21 +7657,13 @@
     "name": "select",
     "title": "Select",
     "category": "Actions & Controls",
-    "keywords": [
-      "select",
-      "actions",
-      "controls"
-    ]
+    "keywords": ["select", "actions", "controls"]
   },
   {
     "name": "send",
     "title": "Send",
     "category": "Actions & Controls",
-    "keywords": [
-      "send",
-      "actions",
-      "controls"
-    ]
+    "keywords": ["send", "actions", "controls"]
   },
   {
     "name": "settings",
@@ -8064,11 +7693,7 @@
     "name": "share",
     "title": "Share",
     "category": "Actions & Controls",
-    "keywords": [
-      "share",
-      "actions",
-      "controls"
-    ]
+    "keywords": ["share", "actions", "controls"]
   },
   {
     "name": "shield-check-mark",
@@ -8210,11 +7835,7 @@
     "name": "shopcodes",
     "title": "Shopcodes",
     "category": "General & Objects",
-    "keywords": [
-      "shopcodes",
-      "general",
-      "objects"
-    ]
+    "keywords": ["shopcodes", "general", "objects"]
   },
   {
     "name": "slideshow",
@@ -8399,21 +8020,13 @@
     "name": "split",
     "title": "Split",
     "category": "Actions & Controls",
-    "keywords": [
-      "split",
-      "actions",
-      "controls"
-    ]
+    "keywords": ["split", "actions", "controls"]
   },
   {
     "name": "sports",
     "title": "Sports",
     "category": "General & Objects",
-    "keywords": [
-      "sports",
-      "general",
-      "objects"
-    ]
+    "keywords": ["sports", "general", "objects"]
   },
   {
     "name": "star",
@@ -8501,11 +8114,7 @@
     "name": "status",
     "title": "Status",
     "category": "Analytics & Data",
-    "keywords": [
-      "status",
-      "analytics",
-      "data"
-    ]
+    "keywords": ["status", "analytics", "data"]
   },
   {
     "name": "status-active",
@@ -8673,11 +8282,7 @@
     "name": "table",
     "title": "Table",
     "category": "Analytics & Data",
-    "keywords": [
-      "table",
-      "analytics",
-      "data"
-    ]
+    "keywords": ["table", "analytics", "data"]
   },
   {
     "name": "table-masonry",
@@ -8714,11 +8319,7 @@
     "name": "target",
     "title": "Target",
     "category": "Analytics & Data",
-    "keywords": [
-      "target",
-      "analytics",
-      "data"
-    ]
+    "keywords": ["target", "analytics", "data"]
   },
   {
     "name": "tax",
@@ -8766,10 +8367,7 @@
     "name": "text",
     "title": "Text",
     "category": "Formatting & Text",
-    "keywords": [
-      "text",
-      "formatting"
-    ]
+    "keywords": ["text", "formatting"]
   },
   {
     "name": "text-align-center",
@@ -8834,15 +8432,7 @@
     "name": "text-bold",
     "title": "Text Bold",
     "category": "Formatting & Text",
-    "keywords": [
-      "text-bold",
-      "text bold",
-      "textbold",
-      "text",
-      "bold",
-      "tb",
-      "formatting"
-    ]
+    "keywords": ["text-bold", "text bold", "textbold", "text", "bold", "tb", "formatting"]
   },
   {
     "name": "text-color",
@@ -8871,15 +8461,7 @@
     "name": "text-font",
     "title": "Text Font",
     "category": "Formatting & Text",
-    "keywords": [
-      "text-font",
-      "text font",
-      "textfont",
-      "text",
-      "font",
-      "tf",
-      "formatting"
-    ]
+    "keywords": ["text-font", "text font", "textfont", "text", "font", "tf", "formatting"]
   },
   {
     "name": "text-font-list",
@@ -9038,11 +8620,7 @@
     "name": "theme",
     "title": "Theme",
     "category": "Devices & Layout",
-    "keywords": [
-      "theme",
-      "devices",
-      "layout"
-    ]
+    "keywords": ["theme", "devices", "layout"]
   },
   {
     "name": "theme-cart",
@@ -9190,16 +8768,7 @@
     "name": "tip-jar",
     "title": "Tip Jar",
     "category": "Commerce & Orders",
-    "keywords": [
-      "tip-jar",
-      "tip jar",
-      "tipjar",
-      "tip",
-      "jar",
-      "tj",
-      "commerce",
-      "orders"
-    ]
+    "keywords": ["tip-jar", "tip jar", "tipjar", "tip", "jar", "tj", "commerce", "orders"]
   },
   {
     "name": "toggle-off",
@@ -9378,11 +8947,7 @@
     "name": "transfer",
     "title": "Transfer",
     "category": "Navigation & Arrows",
-    "keywords": [
-      "transfer",
-      "navigation",
-      "arrows"
-    ]
+    "keywords": ["transfer", "navigation", "arrows"]
   },
   {
     "name": "transfer-in",
@@ -9433,11 +8998,7 @@
     "name": "undo",
     "title": "Undo",
     "category": "Navigation & Arrows",
-    "keywords": [
-      "undo",
-      "navigation",
-      "arrows"
-    ]
+    "keywords": ["undo", "navigation", "arrows"]
   },
   {
     "name": "unknown-device",
@@ -9476,21 +9037,13 @@
     "name": "upload",
     "title": "Upload",
     "category": "Actions & Controls",
-    "keywords": [
-      "upload",
-      "actions",
-      "controls"
-    ]
+    "keywords": ["upload", "actions", "controls"]
   },
   {
     "name": "variant",
     "title": "Variant",
     "category": "Products & Inventory",
-    "keywords": [
-      "variant",
-      "products",
-      "inventory"
-    ]
+    "keywords": ["variant", "products", "inventory"]
   },
   {
     "name": "variant-list",
@@ -9723,11 +9276,7 @@
     "name": "work",
     "title": "Work",
     "category": "Organization & People",
-    "keywords": [
-      "work",
-      "organization",
-      "people"
-    ]
+    "keywords": ["work", "organization", "people"]
   },
   {
     "name": "work-list",

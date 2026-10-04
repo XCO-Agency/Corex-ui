@@ -10,22 +10,6 @@ import { Switch } from "../Switch";
 import { Text } from "../Text";
 import type { IndexTableBulkActionType, IndexTablePropsType } from "./IndexTable.types";
 
-/** An ActionList that closes the popover it sits in once an item runs. */
-function PopoverActionList({ items }: { items: ActionListItemType[] }) {
-  const { close } = usePopover();
-  return (
-    <ActionList
-      items={items.map((item) => ({
-        ...item,
-        onAction: () => {
-          close();
-          item.onAction?.();
-        },
-      }))}
-    />
-  );
-}
-
 function toActionListItem(action: IndexTableBulkActionType): ActionListItemType {
   return {
     content: action.content,
@@ -91,34 +75,28 @@ export function IndexTableBulkActions({
             onChange={() => onSelectionChange?.("page", false)}
           />
 
-          <Popover>
-            <Popover.Trigger>
+          <ActionList
+            activator={
               <Button variant="tertiary">
-                <InlineStack alignItems="center" gap="small-400" wrap={false}>
-                  <Text fontWeight="semibold">{selectedLabel}</Text>
-                  <Icon type="chevron-down" />
-                </InlineStack>
+                {selectedLabel}
+                <Icon type="chevron-down" size="small" />
               </Button>
-            </Popover.Trigger>
-            <Popover.Content>
-              <PopoverActionList
-                items={[
-                  {
-                    content: `Select all ${itemCount} ${plural}`,
-                    onAction: () => onSelectionChange?.("all", true),
-                  },
-                  {
-                    content: "Select page",
-                    onAction: () => onSelectionChange?.("page", true),
-                  },
-                  {
-                    content: "Deselect all",
-                    onAction: () => onSelectionChange?.("page", false),
-                  },
-                ]}
-              />
-            </Popover.Content>
-          </Popover>
+            }
+            items={[
+              {
+                content: `Select all ${itemCount} ${plural}`,
+                onAction: () => onSelectionChange?.("all", true),
+              },
+              {
+                content: "Select page",
+                onAction: () => onSelectionChange?.("page", true),
+              },
+              {
+                content: "Deselect all",
+                onAction: () => onSelectionChange?.("page", false),
+              },
+            ]}
+          />
 
           {visiblePromoted.map((action, index) => (
             <Button
@@ -133,18 +111,7 @@ export function IndexTableBulkActions({
           ))}
 
           {menuActions.length > 0 && (
-            <Popover>
-              <Popover.Trigger>
-                <Button
-                  variant="secondary"
-                  icon="menu-horizontal"
-                  accessibilityLabel="More actions"
-                />
-              </Popover.Trigger>
-              <Popover.Content>
-                <PopoverActionList items={menuActions.map(toActionListItem)} />
-              </Popover.Content>
-            </Popover>
+            <ActionList items={menuActions.map(toActionListItem)} />
           )}
         </InlineStack>
 

@@ -13,4 +13,3 @@ export type {
   NavigationComponentType,
   NavigationItemComponentType,
 } from "./Navigation.types";
-

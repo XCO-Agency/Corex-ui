@@ -32,7 +32,7 @@ type NoEvents = {};
  * nothing.
  */
 const LOWERCASE_ATTRIBUTES: Record<string, string> = {
- // Standard HTML attributes
+  // Standard HTML attributes
   tabIndex: "tabindex",
   accessKey: "accesskey",
   autoCapitalize: "autocapitalize",

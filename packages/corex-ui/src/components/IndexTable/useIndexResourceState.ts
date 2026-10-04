@@ -63,8 +63,7 @@ export function useIndexResourceState<T extends { id?: string | number }>(
 
   return {
     selectedResources,
-    allResourcesSelected:
-      allIds.length > 0 && selectedResources.length === allIds.length,
+    allResourcesSelected: allIds.length > 0 && selectedResources.length === allIds.length,
     handleSelectionChange,
     clearSelection,
     removeSelectedResources,

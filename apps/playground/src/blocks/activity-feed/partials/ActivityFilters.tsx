@@ -1,9 +1,5 @@
 import * as React from "react";
-import {
-  InlineStack,
-  Text,
-  Button,
-} from "@xco-agency/corex-ui";
+import { InlineStack, Text, Button } from "@xco-agency/corex-ui";
 import { FILTER_OPTIONS } from "../constants";
 import type { ActivityFiltersPropsType } from "../types";
 
@@ -18,10 +14,7 @@ export function ActivityFilters({
 
   React.useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(event.target as Node)
-      ) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         setFilterOpen(false);
       }
     }

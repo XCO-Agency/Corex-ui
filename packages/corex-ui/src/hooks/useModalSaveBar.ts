@@ -111,9 +111,11 @@ export function useModalSaveBar(
   // Synchronize state with Shopify App Bridge and host window
   useEffect(() => {
     if (open !== undefined) {
-      const shopify =
-        typeof window !== "undefined" ? (window as any).shopify : undefined;
-      if (typeof shopify?.saveBar?.show === "function" && typeof shopify?.saveBar?.hide === "function") {
+      const shopify = typeof window !== "undefined" ? (window as any).shopify : undefined;
+      if (
+        typeof shopify?.saveBar?.show === "function" &&
+        typeof shopify?.saveBar?.hide === "function"
+      ) {
         if (open) {
           shopify.saveBar.show(resolvedSaveBarId);
         } else {
@@ -152,11 +154,7 @@ export function useModalSaveBar(
     }
 
     // 2. PostMessage to parent
-    if (
-      typeof window !== "undefined" &&
-      window.parent &&
-      window.parent !== window
-    ) {
+    if (typeof window !== "undefined" && window.parent && window.parent !== window) {
       window.parent.postMessage(syncPayload, "*");
       window.parent.postMessage(claimifyPayload, "*");
     }
@@ -180,8 +178,7 @@ export function useModalSaveBar(
   // Cleanup on unmount
   useEffect(() => {
     return () => {
-      const shopify =
-        typeof window !== "undefined" ? (window as any).shopify : undefined;
+      const shopify = typeof window !== "undefined" ? (window as any).shopify : undefined;
       if (typeof shopify?.saveBar?.hide === "function") {
         shopify.saveBar.hide(resolvedSaveBarId);
       }
@@ -209,11 +206,7 @@ export function useModalSaveBar(
         }
       }
 
-      if (
-        typeof window !== "undefined" &&
-        window.parent &&
-        window.parent !== window
-      ) {
+      if (typeof window !== "undefined" && window.parent && window.parent !== window) {
         window.parent.postMessage(cleanupPayload, "*");
         window.parent.postMessage(claimifyCleanup, "*");
       }

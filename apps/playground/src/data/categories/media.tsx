@@ -52,7 +52,8 @@ export const mediaComponents: ComponentEntry[] = [
     name: "Image",
     slug: "image",
     category: "Media",
-    description: "Renders responsive images with aspect ratio, object-fit, and Polaris styling.",
+    description:
+      "Renders responsive images with aspect ratio, object-fit, and Polaris styling.",
     examples: [
       {
         title: "Responsive images",

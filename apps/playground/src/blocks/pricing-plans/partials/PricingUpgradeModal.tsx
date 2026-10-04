@@ -13,9 +13,7 @@ export function PricingUpgradeModal({
   if (!selectedPlan) return null;
 
   const price =
-    interval === "annual"
-      ? selectedPlan.annualPrice
-      : selectedPlan.monthlyPrice;
+    interval === "annual" ? selectedPlan.annualPrice : selectedPlan.monthlyPrice;
 
   return (
     <Modal
@@ -38,11 +36,7 @@ export function PricingUpgradeModal({
       ]}
     >
       <BlockStack gap="base">
-        <InlineStack
-          justifyContent="space-between"
-          alignItems="center"
-          gap="small-200"
-        >
+        <InlineStack justifyContent="space-between" alignItems="center" gap="small-200">
           <BlockStack gap="none">
             <Text variant="base" heading>
               {selectedPlan.name} Plan
@@ -84,8 +78,8 @@ export function PricingUpgradeModal({
               </Text>
             </InlineStack>
             <Text variant="small" tone="neutral">
-              By confirming, Shopify will prorate your current billing period and
-              apply the new plan limits immediately to your storefront.
+              By confirming, Shopify will prorate your current billing period and apply
+              the new plan limits immediately to your storefront.
             </Text>
           </BlockStack>
         </div>

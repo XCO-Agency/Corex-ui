@@ -40,8 +40,10 @@ export function ModalMaxIframeSaveBarExample() {
   });
 
   // Local simulated iframe state
-  const [preferences, setPreferences] = useState<PreferencesStateType>(INITIAL_PREFERENCES);
-  const [initialPreferences, setInitialPreferences] = useState<PreferencesStateType>(INITIAL_PREFERENCES);
+  const [preferences, setPreferences] =
+    useState<PreferencesStateType>(INITIAL_PREFERENCES);
+  const [initialPreferences, setInitialPreferences] =
+    useState<PreferencesStateType>(INITIAL_PREFERENCES);
   const [resetKey, setResetKey] = useState(0);
   const [logMessages, setLogMessages] = useState<string[]>([]);
 
@@ -126,7 +128,9 @@ export function ModalMaxIframeSaveBarExample() {
           addLog("Iframe save completed. State committed.");
         }
         if (e.data?.type === "claimify-modal-discard") {
-          addLog("Iframe executing handleDiscard(): resetting state and bumping resetKey");
+          addLog(
+            "Iframe executing handleDiscard(): resetting state and bumping resetKey",
+          );
           setPreferences({ ...initialPreferences });
           setResetKey((k) => k + 1);
           setSaveState({ visible: false, disabled: false, saving: false });
@@ -154,9 +158,10 @@ export function ModalMaxIframeSaveBarExample() {
           </Text>
           <Text as="p" tone="subdued">
             Used when the modal loads a nested route via <code>src=&quot;...&quot;</code>.
-            Because nested iframes lack App Bridge custom elements, <code>&lt;SaveBar&gt;</code>{" "}
-            lives on the host <code>&lt;Modal&gt;</code>. An active <code>BroadcastChannel</code>{" "}
-            synchronizes dirty state, validity, and triggers Save/Discard actions across documents.
+            Because nested iframes lack App Bridge custom elements,{" "}
+            <code>&lt;SaveBar&gt;</code> lives on the host <code>&lt;Modal&gt;</code>. An
+            active <code>BroadcastChannel</code> synchronizes dirty state, validity, and
+            triggers Save/Discard actions across documents.
           </Text>
         </BlockStack>
 
@@ -194,7 +199,8 @@ export function ModalMaxIframeSaveBarExample() {
             </InlineStack>
             {logMessages.length === 0 ? (
               <Text as="p" variant="small" tone="subdued">
-                No events recorded yet. Open modal and modify preferences to inspect channel traffic.
+                No events recorded yet. Open modal and modify preferences to inspect
+                channel traffic.
               </Text>
             ) : (
               logMessages.map((log, index) => (
@@ -217,11 +223,7 @@ export function ModalMaxIframeSaveBarExample() {
           <TitleBar title="Settings &amp; Preferences" />
 
           {/* Host SaveBar attached to Modal, mirroring iframe state */}
-          <SaveBar
-            id="preferences-save-bar"
-            open={saveState.visible}
-            discardConfirmation
-          >
+          <SaveBar id="preferences-save-bar" open={saveState.visible} discardConfirmation>
             {/* First button = Save, Second button = Discard. App Bridge localized labels. */}
             <button
               type="button"

@@ -107,9 +107,10 @@ export function resolveKeyframes(
   };
 }
 
-export function resolveDuration(
-  duration: TransitionDurationType | undefined,
-): { enter: number; exit: number } {
+export function resolveDuration(duration: TransitionDurationType | undefined): {
+  enter: number;
+  exit: number;
+} {
   if (typeof duration === "number") {
     return { enter: duration, exit: duration };
   }
@@ -122,9 +123,10 @@ export function resolveDuration(
   return DEFAULT_TRANSITION_DURATION;
 }
 
-export function resolveDelay(
-  delay: TransitionDelayType | undefined,
-): { enter: number; exit: number } {
+export function resolveDelay(delay: TransitionDelayType | undefined): {
+  enter: number;
+  exit: number;
+} {
   if (typeof delay === "number") {
     return { enter: delay, exit: delay };
   }
@@ -137,9 +139,10 @@ export function resolveDelay(
   return { enter: 0, exit: 0 };
 }
 
-export function resolveEasing(
-  easing: TransitionEasingType | undefined,
-): { enter: string; exit: string } {
+export function resolveEasing(easing: TransitionEasingType | undefined): {
+  enter: string;
+  exit: string;
+} {
   if (typeof easing === "string") {
     return { enter: easing, exit: easing };
   }

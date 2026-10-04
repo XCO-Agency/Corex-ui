@@ -8,15 +8,16 @@ const SOrderedList = createWebComponent<HTMLElement>("s-ordered-list");
 const SListItem = createWebComponent<HTMLElement>("s-list-item");
 
 /** A list item. Only valid inside a `List`, which is what the elements accept. */
-export const ListItem = forwardRef<HTMLElement, ListItemPropsType>(
-  function ListItem({ children, ...rest }, ref) {
-    return (
-      <SListItem ref={ref} {...rest}>
-        {children}
-      </SListItem>
-    );
-  },
-);
+export const ListItem = forwardRef<HTMLElement, ListItemPropsType>(function ListItem(
+  { children, ...rest },
+  ref,
+) {
+  return (
+    <SListItem ref={ref} {...rest}>
+      {children}
+    </SListItem>
+  );
+});
 
 const ListRoot = forwardRef<HTMLElement, ListPropsType>(function List(
   { children, type = "bullet", gap, ...rest },

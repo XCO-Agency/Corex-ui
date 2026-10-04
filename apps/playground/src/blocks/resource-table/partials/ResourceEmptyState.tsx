@@ -53,8 +53,8 @@ export function ResourceEmptyState({
       padding="large-100"
     >
       <Text as="p" tone="neutral" variant="small">
-        Track inventory levels, variants, pricing, and fulfillment across your
-        entire catalog from one centralized dashboard.
+        Track inventory levels, variants, pricing, and fulfillment across your entire
+        catalog from one centralized dashboard.
       </Text>
     </EmptyState>
   );

@@ -2,11 +2,7 @@ import type * as React from "react";
 import type { ToneType } from "@xco-agency/corex-ui";
 
 export type IntegrationCategoryType =
-  | "all"
-  | "marketing"
-  | "support"
-  | "analytics"
-  | "webhooks";
+  "all" | "marketing" | "support" | "analytics" | "webhooks";
 
 export type IntegrationStatusType = "connected" | "disconnected" | "error";
 

@@ -30,7 +30,8 @@ export function TierPreviewSidebarCard({
             Storefront Table Preview
           </Text>
           <Text color="subdued" variant="bodySm">
-            This live widget simulates how your volume break table displays on product pages.
+            This live widget simulates how your volume break table displays on product
+            pages.
           </Text>
 
           <Box

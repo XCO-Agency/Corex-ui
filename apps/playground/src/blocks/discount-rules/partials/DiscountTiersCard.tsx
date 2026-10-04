@@ -104,12 +104,8 @@ export function DiscountTiersCard({
                     <NumberField
                       label="Discount Value"
                       labelAccessibilityVisibility="exclusive"
-                      prefix={
-                        tier.discountType === "fixed_amount" ? "$" : undefined
-                      }
-                      suffix={
-                        tier.discountType === "percentage" ? "%" : undefined
-                      }
+                      prefix={tier.discountType === "fixed_amount" ? "$" : undefined}
+                      suffix={tier.discountType === "percentage" ? "%" : undefined}
                       value={String(tier.discountValue)}
                       min={0}
                       onChange={(val) =>
@@ -128,9 +124,7 @@ export function DiscountTiersCard({
                       labelAccessibilityVisibility="exclusive"
                       placeholder="e.g. Popular"
                       value={tier.badgeLabel ?? ""}
-                      onChange={(val) =>
-                        onUpdateTier(tier.id, { badgeLabel: val })
-                      }
+                      onChange={(val) => onUpdateTier(tier.id, { badgeLabel: val })}
                     />
                   </div>
                 </Table.Cell>

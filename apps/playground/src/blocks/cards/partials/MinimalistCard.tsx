@@ -11,7 +11,8 @@ import {
 } from "@xco-agency/corex-ui";
 import type { ReactNode } from "react";
 
-export type CardBadgeToneType = "info" | "success" | "warning" | "critical" | "neutral" | ToneType;
+export type CardBadgeToneType =
+  "info" | "success" | "warning" | "critical" | "neutral" | ToneType;
 
 export type CardBadgeType = {
   text: string;

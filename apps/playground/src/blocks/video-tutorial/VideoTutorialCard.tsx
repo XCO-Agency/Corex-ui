@@ -39,7 +39,12 @@ export function VideoTutorialCard({
 
         <Box minInlineSize="0">
           <BlockStack gap="small-200">
-            <InlineStack justifyContent="space-between" alignItems="center" wrap={false} gap="base">
+            <InlineStack
+              justifyContent="space-between"
+              alignItems="center"
+              wrap={false}
+              gap="base"
+            >
               <Text variant="headingMd" as="h2" fontWeight="semibold">
                 {title}
               </Text>

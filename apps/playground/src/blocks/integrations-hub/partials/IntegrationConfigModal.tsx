@@ -77,18 +77,12 @@ export function IntegrationConfigModal({
             setTestResult(null);
           }}
           placeholder={
-            isWebhook
-              ? "https://api.yourdomain.com/webhooks/orders"
-              : "e.g. pk_live_..."
+            isWebhook ? "https://api.yourdomain.com/webhooks/orders" : "e.g. pk_live_..."
           }
           helpText="Credentials are encrypted at rest using AES-256."
         />
 
-        <InlineStack
-          justifyContent="space-between"
-          alignItems="center"
-          gap="small-200"
-        >
+        <InlineStack justifyContent="space-between" alignItems="center" gap="small-200">
           <Button
             variant="secondary"
             loading={testing}

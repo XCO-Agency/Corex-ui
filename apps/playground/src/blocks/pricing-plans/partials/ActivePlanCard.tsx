@@ -29,12 +29,7 @@ export function ActivePlanCard({
       <Card>
         <BlockStack gap="base">
           {/* Main Header Row */}
-          <InlineStack
-            justifyContent="space-between"
-            alignItems="center"
-            gap="base"
-            wrap
-          >
+          <InlineStack justifyContent="space-between" alignItems="center" gap="base" wrap>
             <InlineStack gap="base" alignItems="center">
               <PlanAvatar planId={plan.id} size={52} />
 
@@ -73,12 +68,7 @@ export function ActivePlanCard({
           <Divider />
 
           {/* Quick Stats Strip */}
-          <InlineStack
-            justifyContent="space-between"
-            alignItems="center"
-            gap="base"
-            wrap
-          >
+          <InlineStack justifyContent="space-between" alignItems="center" gap="base" wrap>
             <InlineStack gap="small-300" alignItems="baseline">
               <Text variant="small" tone="neutral">
                 Current Recurring Rate:
@@ -110,12 +100,7 @@ export function ActivePlanCard({
   // Default Banner Variant (matches user reference layout)
   return (
     <Card>
-      <InlineStack
-        justifyContent="space-between"
-        alignItems="center"
-        gap="base"
-        wrap
-      >
+      <InlineStack justifyContent="space-between" alignItems="center" gap="base" wrap>
         {/* Left Side: Avatar + Plan Info */}
         <InlineStack gap="base" alignItems="center">
           <PlanAvatar planId={plan.id} size={48} />

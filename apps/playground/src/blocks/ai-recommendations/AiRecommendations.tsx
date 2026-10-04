@@ -113,11 +113,7 @@ export function AiRecommendations({
           ))}
         </BlockStack>
       ) : (
-        <Box
-          padding="base"
-          borderRadius="large"
-          background="bg-surface-secondary"
-        >
+        <Box padding="base" borderRadius="large" background="bg-surface-secondary">
           <InlineStack justifyContent="center">
             <Text as="p" color="subdued">
               No active recommendations — check back as new orders come in.

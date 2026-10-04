@@ -1,11 +1,5 @@
 import * as React from "react";
-import {
-  Box,
-  InlineStack,
-  Text,
-  Badge,
-  Button,
-} from "@xco-agency/corex-ui";
+import { Box, InlineStack, Text, Badge, Button } from "@xco-agency/corex-ui";
 import { RecommendationIllustration } from "./RecommendationIllustrations";
 
 export type RecommendationItemType = {
@@ -127,10 +121,7 @@ export function RecommendationItem({
 
               {item.liftBadge && (
                 <div style={{ flexShrink: 0 }}>
-                  <Badge
-                    tone={item.liftBadge.tone || "success"}
-                    icon="arrow-up-right"
-                  >
+                  <Badge tone={item.liftBadge.tone || "success"} icon="arrow-up-right">
                     {item.liftBadge.text}
                   </Badge>
                 </div>
@@ -158,7 +149,9 @@ export function RecommendationItem({
           <InlineStack gap="small-200" alignItems="center">
             {item.primaryAction && (
               <Button
-                variant={activated ? "secondary" : item.primaryAction.variant || "primary"}
+                variant={
+                  activated ? "secondary" : item.primaryAction.variant || "primary"
+                }
                 onClick={handlePrimaryClick}
                 loading={loading}
                 disabled={activated}
@@ -169,10 +162,7 @@ export function RecommendationItem({
             )}
 
             {item.secondaryAction && (
-              <Button
-                variant="tertiary"
-                onClick={handleSecondaryClick}
-              >
+              <Button variant="tertiary" onClick={handleSecondaryClick}>
                 {item.secondaryAction.label}
               </Button>
             )}

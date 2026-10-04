@@ -26,12 +26,7 @@ export function SupportHubBannerExample() {
   return (
     <BlockStack gap="base">
       <Card>
-        <InlineStack
-          justifyContent="space-between"
-          alignItems="center"
-          gap="base"
-          wrap
-        >
+        <InlineStack justifyContent="space-between" alignItems="center" gap="base" wrap>
           {/* Left Column: Avatars & Status */}
           <InlineStack gap="base" alignItems="center" wrap>
             <SupportTeamAvatars members={DEFAULT_TEAM_MEMBERS} />
@@ -47,7 +42,8 @@ export function SupportHubBannerExample() {
               </InlineStack>
 
               <Text variant="bodySm" tone="subdued" as="p">
-                Customer Care Team &bull; {DEFAULT_SUPPORT_HOURS.days} ({DEFAULT_SUPPORT_HOURS.time})
+                Customer Care Team &bull; {DEFAULT_SUPPORT_HOURS.days} (
+                {DEFAULT_SUPPORT_HOURS.time})
               </Text>
             </BlockStack>
           </InlineStack>
@@ -68,7 +64,9 @@ export function SupportHubBannerExample() {
             </Button>
             <Button
               icon="email"
-              onClick={() => showToast(`Opening email client to ${DEFAULT_SUPPORT_EMAIL}...`)}
+              onClick={() =>
+                showToast(`Opening email client to ${DEFAULT_SUPPORT_EMAIL}...`)
+              }
             >
               Contact us via email
             </Button>

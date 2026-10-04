@@ -12,7 +12,10 @@ describe("useSaveBar", () => {
     const hide = vi.fn();
     const toggle = vi.fn();
     const leaveConfirmation = vi.fn().mockResolvedValue(undefined);
-    window.shopify = { toast: { show: vi.fn() }, saveBar: { show, hide, toggle, leaveConfirmation } } as any;
+    window.shopify = {
+      toast: { show: vi.fn() },
+      saveBar: { show, hide, toggle, leaveConfirmation },
+    } as any;
 
     const { result } = renderHook(() => useSaveBar());
     result.current.show("modal-save-bar");

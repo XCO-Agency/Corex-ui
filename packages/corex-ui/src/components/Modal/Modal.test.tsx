@@ -153,13 +153,7 @@ describe("Modal", () => {
     };
 
     const { unmount } = render(
-      <Modal
-        open
-        id="savebar-test-modal"
-        variant="max"
-        saveBar
-        onClose={() => {}}
-      >
+      <Modal open id="savebar-test-modal" variant="max" saveBar onClose={() => {}}>
         Modal content
       </Modal>,
     );

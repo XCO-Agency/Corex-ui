@@ -40,7 +40,9 @@ describe("IndexFilters", () => {
   it("fires onQueryChange on text typing", () => {
     const onQueryChange = vi.fn();
 
-    render(<IndexFilters queryValue="" debounceDelay={0} onQueryChange={onQueryChange} />);
+    render(
+      <IndexFilters queryValue="" debounceDelay={0} onQueryChange={onQueryChange} />,
+    );
 
     const inputEl = document.querySelector('input[type="text"]')!;
     fireEvent.change(inputEl, { target: { value: "headphones" } });
@@ -338,9 +340,13 @@ describe("IndexFilters", () => {
     ];
 
     const getItems = () =>
-      Array.from(document.querySelectorAll<HTMLElement>("[data-corex-index-filters-column]"));
+      Array.from(
+        document.querySelectorAll<HTMLElement>("[data-corex-index-filters-column]"),
+      );
     const getHandle = (label: string) =>
-      document.querySelector<HTMLElement>(`[accessibilitylabel^="Reorder ${label} column"]`)!;
+      document.querySelector<HTMLElement>(
+        `[accessibilitylabel^="Reorder ${label} column"]`,
+      )!;
 
     it("renders the trigger and every composed section", () => {
       render(
@@ -367,9 +373,9 @@ describe("IndexFilters", () => {
       expect(popoverEl.textContent).toContain("Sort by");
       expect(popoverEl.textContent).toContain("Hide archived");
       expect(popoverEl.textContent).toContain("Columns");
-      expect(getItems().map((el) => el.getAttribute("data-corex-index-filters-column"))).toEqual(
-        ["product", "status", "inventory", "vendor"],
-      );
+      expect(
+        getItems().map((el) => el.getAttribute("data-corex-index-filters-column")),
+      ).toEqual(["product", "status", "inventory", "vendor"]);
       // A divider between each of the three sections.
       expect(popoverEl.querySelectorAll("s-divider")).toHaveLength(2);
     });
@@ -386,7 +392,9 @@ describe("IndexFilters", () => {
           onChange={onChange}
         />,
       );
-      const select = document.querySelector("s-select") as HTMLElement & { value: string };
+      const select = document.querySelector("s-select") as HTMLElement & {
+        value: string;
+      };
       select.value = "title";
       select.dispatchEvent(new Event("change", { bubbles: true }));
       expect(onChange).toHaveBeenCalledWith("title");
@@ -398,12 +406,19 @@ describe("IndexFilters", () => {
       render(
         <IndexFilters.ViewOptionsToggles
           items={[
-            { key: "archived", label: "Hide archived", checked: false, onChange: onItemChange },
+            {
+              key: "archived",
+              label: "Hide archived",
+              checked: false,
+              onChange: onItemChange,
+            },
           ]}
           onChange={onChange}
         />,
       );
-      const switchEl = document.querySelector("s-switch") as HTMLElement & { checked: boolean };
+      const switchEl = document.querySelector("s-switch") as HTMLElement & {
+        checked: boolean;
+      };
       switchEl.checked = true;
       fireEvent(switchEl, new Event("change", { bubbles: true }));
       expect(onItemChange).toHaveBeenCalledWith(true);
@@ -412,9 +427,13 @@ describe("IndexFilters", () => {
 
     it("toggles column visibility and returns the full list", () => {
       const onChange = vi.fn();
-      render(<IndexFilters.ViewOptionsColumns columns={baseColumns} onChange={onChange} />);
+      render(
+        <IndexFilters.ViewOptionsColumns columns={baseColumns} onChange={onChange} />,
+      );
 
-      fireEvent.click(document.querySelector('[accessibilitylabel="Show Inventory column"]')!);
+      fireEvent.click(
+        document.querySelector('[accessibilitylabel="Show Inventory column"]')!,
+      );
       expect(onChange).toHaveBeenCalledWith([
         baseColumns[0],
         baseColumns[1],
@@ -430,7 +449,9 @@ describe("IndexFilters", () => {
     });
 
     it("renders no drag handle for fixed columns", () => {
-      render(<IndexFilters.ViewOptionsColumns columns={baseColumns} onChange={() => {}} />);
+      render(
+        <IndexFilters.ViewOptionsColumns columns={baseColumns} onChange={() => {}} />,
+      );
       expect(
         document.querySelector('[accessibilitylabel^="Reorder Product column"]'),
       ).toBeNull();
@@ -439,7 +460,9 @@ describe("IndexFilters", () => {
 
     it("reorders with the arrow keys and keeps fixed columns in place", () => {
       const onChange = vi.fn();
-      render(<IndexFilters.ViewOptionsColumns columns={baseColumns} onChange={onChange} />);
+      render(
+        <IndexFilters.ViewOptionsColumns columns={baseColumns} onChange={onChange} />,
+      );
 
       fireEvent.keyDown(getHandle("Vendor"), { key: "ArrowUp" });
       expect(onChange.mock.calls[0]![0].map((c: { key: string }) => c.key)).toEqual([
@@ -477,12 +500,21 @@ describe("IndexFilters", () => {
 
     it("reorders by dragging the handle", () => {
       const onChange = vi.fn();
-      render(<IndexFilters.ViewOptionsColumns columns={baseColumns} onChange={onChange} />);
+      render(
+        <IndexFilters.ViewOptionsColumns columns={baseColumns} onChange={onChange} />,
+      );
 
       // Stack the items 30px apart: 0, 30, 60, 90.
       getItems().forEach((item, index) => {
         item.getBoundingClientRect = () =>
-          ({ top: index * 30, bottom: index * 30 + 30, height: 30, left: 0, right: 200, width: 200 }) as DOMRect;
+          ({
+            top: index * 30,
+            bottom: index * 30 + 30,
+            height: 30,
+            left: 0,
+            right: 200,
+            width: 200,
+          }) as DOMRect;
       });
 
       const handle = getHandle("Status").parentElement!;

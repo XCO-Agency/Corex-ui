@@ -19,11 +19,7 @@ export function ResourceTable({
         {/* Master Select All Checkbox */}
         <Table.Header>
           <Box paddingBlock="none">
-            <Checkbox
-              label=""
-              checked={allSelected}
-              onChange={onToggleSelectAll}
-            />
+            <Checkbox label="" checked={allSelected} onChange={onToggleSelectAll} />
           </Box>
         </Table.Header>
         <Table.Header listSlot="primary">Resource</Table.Header>
@@ -46,9 +42,7 @@ export function ResourceTable({
             onToggleSelect={() => onToggleSelectItem(item.id)}
             onDelete={onDeleteItem ? () => onDeleteItem(item.id) : undefined}
             onStatusChange={
-              onStatusChange
-                ? (status) => onStatusChange(item.id, status)
-                : undefined
+              onStatusChange ? (status) => onStatusChange(item.id, status) : undefined
             }
           />
         ))}

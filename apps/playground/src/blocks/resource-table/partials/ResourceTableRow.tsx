@@ -33,11 +33,7 @@ export function ResourceTableRow({
       {/* Selection checkbox */}
       <Table.Cell>
         <Box paddingBlock="none">
-          <Checkbox
-            label=""
-            checked={isSelected}
-            onChange={onToggleSelect}
-          />
+          <Checkbox label="" checked={isSelected} onChange={onToggleSelect} />
         </Box>
       </Table.Cell>
 
@@ -45,11 +41,7 @@ export function ResourceTableRow({
       <Table.Cell>
         <InlineStack gap="small-300" alignItems="center">
           {item.imageUrl ? (
-            <Thumbnail
-              src={item.imageUrl}
-              alt={item.title}
-              size="small"
-            />
+            <Thumbnail src={item.imageUrl} alt={item.title} size="small" />
           ) : (
             <InlineStack
               alignItems="center"
@@ -96,10 +88,7 @@ export function ResourceTableRow({
       {/* Inventory */}
       <Table.Cell>
         <BlockStack gap="none">
-          <Text
-            variant="small"
-            tone={isLowInventory ? "warning" : "neutral"}
-          >
+          <Text variant="small" tone={isLowInventory ? "warning" : "neutral"}>
             {item.inventory} in stock
           </Text>
           {isLowInventory && (
@@ -138,20 +127,14 @@ export function ResourceTableRow({
             <Button
               variant="tertiary"
               onClick={() =>
-                onStatusChange(
-                  item.status === "active" ? "draft" : "active",
-                )
+                onStatusChange(item.status === "active" ? "draft" : "active")
               }
             >
               {item.status === "active" ? "Draft" : "Activate"}
             </Button>
           )}
           {onDelete && (
-            <Button
-              variant="tertiary"
-              tone="critical"
-              onClick={onDelete}
-            >
+            <Button variant="tertiary" tone="critical" onClick={onDelete}>
               Delete
             </Button>
           )}

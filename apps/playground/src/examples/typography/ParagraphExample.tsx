@@ -6,8 +6,8 @@ export function ParagraphExample() {
       <BlockStack gap="base">
         <Text heading>Order Fulfillment Terms</Text>
         <Paragraph>
-          Orders placed before 2:00 PM EST are processed the same business day.
-          Standard shipping transit times range from two to five business days depending on
+          Orders placed before 2:00 PM EST are processed the same business day. Standard
+          shipping transit times range from two to five business days depending on
           destination location and inventory availability.
         </Paragraph>
         <Paragraph>

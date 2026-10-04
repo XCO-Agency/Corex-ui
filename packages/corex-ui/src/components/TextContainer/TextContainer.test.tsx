@@ -10,9 +10,7 @@ describe("TextContainer", () => {
       </TextContainer>,
     );
 
-    expect(screen.getByText("Prose").parentElement!.style.gap).toContain(
-      "--p-space-400",
-    );
+    expect(screen.getByText("Prose").parentElement!.style.gap).toContain("--p-space-400");
   });
 
   it("tightens the rhythm on request", () => {
@@ -22,8 +20,6 @@ describe("TextContainer", () => {
       </TextContainer>,
     );
 
-    expect(screen.getByText("Prose").parentElement!.style.gap).toContain(
-      "--p-space-200",
-    );
+    expect(screen.getByText("Prose").parentElement!.style.gap).toContain("--p-space-200");
   });
 });

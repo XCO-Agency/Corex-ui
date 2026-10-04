@@ -34,7 +34,8 @@ type HookDocItemType = {
   id: string;
   name: string;
   badge: string;
-  badgeVariant?: "default" | "secondary" | "outline" | "destructive" | "success" | "warning";
+  badgeVariant?:
+    "default" | "secondary" | "outline" | "destructive" | "success" | "warning";
   description: string;
   importCode: string;
   DemoComponent: React.ComponentType;
@@ -95,7 +96,8 @@ const HOOKS_DATA: HookDocItemType[] = [
       {
         name: "windowId",
         type: "string",
-        description: "Window ID matching the parent AppWindow id. Defaults to 'corex-app-window'.",
+        description:
+          "Window ID matching the parent AppWindow id. Defaults to 'corex-app-window'.",
       },
       {
         name: "open",
@@ -105,7 +107,8 @@ const HOOKS_DATA: HookDocItemType[] = [
       {
         name: "loading",
         type: "boolean",
-        description: "Sets the host Save button to loading state during asynchronous saves.",
+        description:
+          "Sets the host Save button to loading state during asynchronous saves.",
       },
       {
         name: "onSave",
@@ -115,7 +118,8 @@ const HOOKS_DATA: HookDocItemType[] = [
       {
         name: "onDiscard",
         type: "() => void | Promise<void>",
-        description: "Callback fired when the merchant clicks Discard on the host save bar.",
+        description:
+          "Callback fired when the merchant clicks Discard on the host save bar.",
       },
     ],
     returns: [
@@ -172,24 +176,38 @@ const HOOKS_DATA: HookDocItemType[] = [
       {
         name: "debounceMs",
         type: "number",
-        description: "Optional debounce duration in milliseconds (defaults to 0 for immediate tracking).",
+        description:
+          "Optional debounce duration in milliseconds (defaults to 0 for immediate tracking).",
       },
       {
         name: "initialDimension",
         type: "{ width: number; height: number }",
-        description: "SSR fallback dimensions (defaults to { width: 1040, height: 800 }).",
+        description:
+          "SSR fallback dimensions (defaults to { width: 1040, height: 800 }).",
       },
     ],
     returns: [
       { name: "width", type: "number", description: "Current observed width in pixels." },
-      { name: "height", type: "number", description: "Current observed height in pixels." },
+      {
+        name: "height",
+        type: "number",
+        description: "Current observed height in pixels.",
+      },
       {
         name: "breakpoint",
         type: "'xs' | 'sm' | 'md' | 'lg'",
         description: "Calculated Polaris breakpoint token.",
       },
-      { name: "isXs / isSm / isMd / isLg", type: "boolean", description: "Convenience boolean flags." },
-      { name: "ref", type: "(node: HTMLElement | null) => void", description: "Callback ref to attach to target container element." },
+      {
+        name: "isXs / isSm / isMd / isLg",
+        type: "boolean",
+        description: "Convenience boolean flags.",
+      },
+      {
+        name: "ref",
+        type: "(node: HTMLElement | null) => void",
+        description: "Callback ref to attach to target container element.",
+      },
     ],
   },
   {
@@ -205,9 +223,21 @@ const HOOKS_DATA: HookDocItemType[] = [
     filename: "UseParamsExample.tsx",
     parameters: [],
     returns: [
-      { name: "shop", type: "string | null", description: "Sanitized myshopify.com domain if present in query." },
-      { name: "host", type: "string | null", description: "Base64 Shopify App Bridge host parameter." },
-      { name: "locale", type: "string | null", description: "Shopify merchant locale string (e.g. 'en', 'fr')." },
+      {
+        name: "shop",
+        type: "string | null",
+        description: "Sanitized myshopify.com domain if present in query.",
+      },
+      {
+        name: "host",
+        type: "string | null",
+        description: "Base64 Shopify App Bridge host parameter.",
+      },
+      {
+        name: "locale",
+        type: "string | null",
+        description: "Shopify merchant locale string (e.g. 'en', 'fr').",
+      },
       {
         name: "setParam",
         type: "(key: string, value: string | null | undefined) => void",
@@ -232,16 +262,40 @@ const HOOKS_DATA: HookDocItemType[] = [
     code: UseStorageDemoRaw,
     filename: "UseStorageExample.tsx",
     parameters: [
-      { name: "key", type: "string", description: "Storage key identifier in browser storage." },
-      { name: "storage", type: "'session' | 'local'", description: "Storage backend. Defaults to 'session'." },
+      {
+        name: "key",
+        type: "string",
+        description: "Storage key identifier in browser storage.",
+      },
+      {
+        name: "storage",
+        type: "'session' | 'local'",
+        description: "Storage backend. Defaults to 'session'.",
+      },
       { name: "initialValue", type: "T", description: "Default fallback value." },
-      { name: "expiresIn", type: "number", description: "TTL expiration in minutes (e.g. 60 for 1 hour)." },
-      { name: "syncTabs", type: "boolean", description: "Sync changes across tabs via StorageEvent. Defaults to true." },
+      {
+        name: "expiresIn",
+        type: "number",
+        description: "TTL expiration in minutes (e.g. 60 for 1 hour).",
+      },
+      {
+        name: "syncTabs",
+        type: "boolean",
+        description: "Sync changes across tabs via StorageEvent. Defaults to true.",
+      },
     ],
     returns: [
       { name: "value / [0]", type: "T", description: "Current deserialized value." },
-      { name: "setValue / update", type: "(val: T | ((prev: T) => T)) => void", description: "Reactive updater." },
-      { name: "remove / reset", type: "() => void", description: "Removes stored key and resets to initial value." },
+      {
+        name: "setValue / update",
+        type: "(val: T | ((prev: T) => T)) => void",
+        description: "Reactive updater.",
+      },
+      {
+        name: "remove / reset",
+        type: "() => void",
+        description: "Removes stored key and resets to initial value.",
+      },
     ],
   },
 ];
@@ -279,8 +333,9 @@ export function Utils() {
             Utilities &amp; Hooks
           </h1>
           <p className="text-base text-muted-foreground max-w-3xl leading-relaxed">
-            A comprehensive suite of custom React hooks tailored specifically for Shopify app embeds,
-            Polaris web components, and App Bridge communication. Fully typed with zero external runtime dependencies.
+            A comprehensive suite of custom React hooks tailored specifically for Shopify
+            app embeds, Polaris web components, and App Bridge communication. Fully typed
+            with zero external runtime dependencies.
           </p>
         </div>
 
@@ -292,7 +347,9 @@ export function Utils() {
               href={`#${hook.id}`}
               className="inline-flex items-center gap-1.5 rounded-full border border-border/80 bg-card px-3 py-1.5 text-xs font-medium text-muted-foreground transition-colors hover:border-foreground/20 hover:text-foreground hover:bg-muted/50"
             >
-              <span className="font-mono text-foreground font-semibold">{hook.name}()</span>
+              <span className="font-mono text-foreground font-semibold">
+                {hook.name}()
+              </span>
               <span className="text-[10px] text-muted-foreground/80">({hook.badge})</span>
             </a>
           ))}
@@ -382,7 +439,9 @@ export function Utils() {
 
                 {hook.parameters.length > 0 && (
                   <div className="space-y-2">
-                    <h4 className="text-xs font-medium text-foreground">Parameters / Options</h4>
+                    <h4 className="text-xs font-medium text-foreground">
+                      Parameters / Options
+                    </h4>
                     <div className="overflow-x-auto rounded-lg border border-border">
                       <table className="w-full text-left text-xs">
                         <thead className="bg-muted/50 text-muted-foreground">
@@ -414,7 +473,9 @@ export function Utils() {
 
                 {hook.returns.length > 0 && (
                   <div className="space-y-2">
-                    <h4 className="text-xs font-medium text-foreground">Return Value / Methods</h4>
+                    <h4 className="text-xs font-medium text-foreground">
+                      Return Value / Methods
+                    </h4>
                     <div className="overflow-x-auto rounded-lg border border-border">
                       <table className="w-full text-left text-xs">
                         <thead className="bg-muted/50 text-muted-foreground">

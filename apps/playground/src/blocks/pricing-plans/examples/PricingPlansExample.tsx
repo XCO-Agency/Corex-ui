@@ -34,12 +34,9 @@ export function PricingPlansExample({
   initialPlanId = "free",
   initialInterval = "monthly",
 }: PricingPlansExamplePropsType) {
-  const [currentPlanId, setCurrentPlanId] =
-    React.useState<PlanTierIdType>(initialPlanId);
-  const [interval, setInterval] =
-    React.useState<BillingIntervalType>(initialInterval);
-  const [variant, setVariant] =
-    React.useState<ActivePlanCardVariantType>("banner");
+  const [currentPlanId, setCurrentPlanId] = React.useState<PlanTierIdType>(initialPlanId);
+  const [interval, setInterval] = React.useState<BillingIntervalType>(initialInterval);
+  const [variant, setVariant] = React.useState<ActivePlanCardVariantType>("banner");
   const [selectedPlanForUpgrade, setSelectedPlanForUpgrade] =
     React.useState<PricingPlanType | null>(null);
   const [isProcessing, setIsProcessing] = React.useState(false);
@@ -95,9 +92,7 @@ export function PricingPlansExample({
           variant={variant}
           nextBillingDate="Oct 01, 2026"
           onChangePlan={handleChangePlanClick}
-          onManageBilling={() =>
-            setSuccessBanner("Opening Shopify billing portal...")
-          }
+          onManageBilling={() => setSuccessBanner("Opening Shopify billing portal...")}
         />
 
         {/* Interactive Controls Bar: Quick Avatar Switcher & Card/Banner Style Toggle */}

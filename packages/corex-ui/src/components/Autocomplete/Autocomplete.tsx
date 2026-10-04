@@ -74,7 +74,7 @@ export const Autocomplete = forwardRef<HTMLDivElement, AutocompletePropsType>(
     const selectedLabel =
       typeof selectedItem?.label === "string"
         ? selectedItem.label
-        : selectedItem?.value ?? "";
+        : (selectedItem?.value ?? "");
 
     const [internalValue, setInternalValue] = useState(selectedLabel);
 

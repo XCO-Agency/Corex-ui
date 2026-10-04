@@ -54,23 +54,15 @@ export type BlockGroupType = {
 export const blocks: BlockGroupType[] = [
   {
     category: "E-Commerce & Merchandising",
-    components: [
-      ...discountRulesBlocks,
-      ...pricingBlocks,
-    ],
+    components: [...discountRulesBlocks, ...pricingBlocks],
   },
   {
     category: "Marketing & Automation",
-    components: [
-      ...workflowBuilderBlocks,
-      ...notificationTemplatesBlocks,
-    ],
+    components: [...workflowBuilderBlocks, ...notificationTemplatesBlocks],
   },
   {
     category: "Operations & Logistics",
-    components: [
-      ...integrationsBlocks,
-    ],
+    components: [...integrationsBlocks],
   },
   {
     category: "Billing & SaaS",
@@ -91,18 +83,11 @@ export const blocks: BlockGroupType[] = [
   },
   {
     category: "Onboarding",
-    components: [
-      ...onboardingBlocks,
-      ...onboardingNewBlocks,
-    ],
+    components: [...onboardingBlocks, ...onboardingNewBlocks],
   },
   {
     category: "Growth & Ecosystem",
-    components: [
-      ...appCrossSellBlocks,
-      ...videoTutorialBlocks,
-      ...supportHubBlocks,
-    ],
+    components: [...appCrossSellBlocks, ...videoTutorialBlocks, ...supportHubBlocks],
   },
 ];
 

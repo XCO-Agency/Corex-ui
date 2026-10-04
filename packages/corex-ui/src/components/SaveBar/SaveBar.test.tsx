@@ -89,7 +89,6 @@ describe("SaveBar", () => {
     expect(show).toHaveBeenCalledWith("corex-ui-save-bar");
   });
 
-
   it("formats discardconfirmation attribute correctly as empty flag without hyphen", () => {
     render(
       <SaveBar id="confirm-save-bar" discardConfirmation={true}>

@@ -98,9 +98,7 @@ describe("useModalSaveBar", () => {
       },
     };
 
-    const { result } = renderHook(() =>
-      useModalSaveBar({ modalId: "leave-modal" }),
-    );
+    const { result } = renderHook(() => useModalSaveBar({ modalId: "leave-modal" }));
 
     await result.current.leaveConfirmation();
     expect(leaveConfirmationSpy).toHaveBeenCalledTimes(1);

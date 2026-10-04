@@ -3,10 +3,7 @@ import { BlockStack } from "../BlockStack";
 import { Box } from "../Box";
 import { InlineGrid } from "../InlineGrid";
 import { Text } from "../Text";
-import type {
-  FormLayoutGroupPropsType,
-  FormLayoutPropsType,
-} from "./FormLayout.types";
+import type { FormLayoutGroupPropsType, FormLayoutPropsType } from "./FormLayout.types";
 
 /**
  * Fields in a row with equal sizing across the available space.
@@ -19,8 +16,7 @@ export const FormLayoutGroup = forwardRef<HTMLDivElement, FormLayoutGroupPropsTy
   ) {
     const validChildren = Children.toArray(children).filter(Boolean);
     const count = Math.max(1, validChildren.length);
-    const resolvedColumns =
-      columns ?? (count === 1 ? 1 : { xs: 1, sm: count });
+    const resolvedColumns = columns ?? (count === 1 ? 1 : { xs: 1, sm: count });
     const gap = condensed ? "small-200" : "base";
 
     const grid = (

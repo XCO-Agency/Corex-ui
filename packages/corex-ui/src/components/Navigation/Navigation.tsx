@@ -87,4 +87,3 @@ Navigation.Footer = NavigationFooter;
 export const Navigations = Navigation;
 
 export type { NavigationComponentType } from "./Navigation.types";
-

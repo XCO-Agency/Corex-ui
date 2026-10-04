@@ -10,12 +10,10 @@ export function FlexPopoverExample() {
       <BlockStack gap="base">
         <Text heading>Floating Filter Panel</Text>
         <Text color="subdued">
-          FlexPopover ports to the document body with automatic viewport boundary clamping.
+          FlexPopover ports to the document body with automatic viewport boundary
+          clamping.
         </Text>
-        <Button
-          ref={buttonRef}
-          onClick={() => setOpen((prev) => !prev)}
-        >
+        <Button ref={buttonRef} onClick={() => setOpen((prev) => !prev)}>
           {open ? "Close Filter Panel" : "Open Filter Panel"}
         </Button>
 

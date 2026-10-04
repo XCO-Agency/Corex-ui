@@ -291,9 +291,7 @@ export function IndexFiltersSearchField({
     const trigger = regionRef.current?.ownerDocument.getElementById(
       getValueTriggerId(activePillKey),
     );
-    revealInRegion(
-      trigger?.closest(`[${CHIP_ATTR}], [${LEGACY_CHIP_ATTR}]`) ?? null,
-    );
+    revealInRegion(trigger?.closest(`[${CHIP_ATTR}], [${LEGACY_CHIP_ATTR}]`) ?? null);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activePillKey, chipCount]);
 

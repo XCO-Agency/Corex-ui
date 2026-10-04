@@ -1,4 +1,10 @@
-import type { CSSProperties, ElementType, FocusEvent, MouseEvent, ReactNode } from "react";
+import type {
+  CSSProperties,
+  ElementType,
+  FocusEvent,
+  MouseEvent,
+  ReactNode,
+} from "react";
 import type {
   BoxPaddingDirectionType,
   BoxPaddingType,

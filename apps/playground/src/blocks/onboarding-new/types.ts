@@ -59,4 +59,3 @@ export type StageTransitionPropsType = {
   children: ReactNode;
   leaving?: boolean;
 };
-

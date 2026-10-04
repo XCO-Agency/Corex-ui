@@ -155,7 +155,11 @@ export function CartDrawerExample() {
               </Text>
             ) : (
               <Text as="span" color="subdued">
-                Add <Text as="span" fontWeight="bold">${remainingForFreeShipping.toFixed(2)}</Text> more to unlock FREE Shipping
+                Add{" "}
+                <Text as="span" fontWeight="bold">
+                  ${remainingForFreeShipping.toFixed(2)}
+                </Text>{" "}
+                more to unlock FREE Shipping
               </Text>
             )}
           </Text>
@@ -242,7 +246,11 @@ export function CartDrawerExample() {
           >
             <InlineStack justifyContent="space-between" alignItems="center">
               <InlineStack gap="small-200" alignItems="center">
-                <Thumbnail size="small" source={UPSELL_ITEM.image} alt={UPSELL_ITEM.title} />
+                <Thumbnail
+                  size="small"
+                  source={UPSELL_ITEM.image}
+                  alt={UPSELL_ITEM.title}
+                />
                 <BlockStack gap="none">
                   <Text variant="bodySm" fontWeight="semibold">
                     {UPSELL_ITEM.title}

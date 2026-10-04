@@ -1,9 +1,5 @@
 import * as React from "react";
-import {
-  Page,
-  BlockStack,
-  Banner,
-} from "@xco-agency/corex-ui";
+import { Page, BlockStack, Banner } from "@xco-agency/corex-ui";
 import {
   INITIAL_USAGE,
   MOCK_INVOICES,
@@ -57,9 +53,7 @@ export function SubscriptionManagementExample() {
   };
 
   const handleUpdatePayment = () => {
-    setNotification(
-      "Directing to secure Shopify Billing payment method verification...",
-    );
+    setNotification("Directing to secure Shopify Billing payment method verification...");
   };
 
   return (
@@ -88,10 +82,7 @@ export function SubscriptionManagementExample() {
         />
 
         {/* Resource Usage Meters */}
-        <UsageMetersCard
-          usage={state.usage}
-          cycleEndDate={state.nextBillingDate}
-        />
+        <UsageMetersCard usage={state.usage} cycleEndDate={state.nextBillingDate} />
 
         {/* Plan Comparison & Upgrades */}
         <PlanSwitchComparisonCard

@@ -152,7 +152,6 @@ function renderAccessory(
   return <span slot="accessory">{resolved}</span>;
 }
 
-
 /**
  * Top-level layout wrapper over `s-page`.
  * Supports native `s-page` attributes and slots while providing complete

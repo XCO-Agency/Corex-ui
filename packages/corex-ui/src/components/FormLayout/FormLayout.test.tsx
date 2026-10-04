@@ -14,7 +14,11 @@ describe("FormLayout", () => {
 
     const first = screen.getByText("First");
     const stack = first.parentElement!;
-    expect(stack).toHaveStyle({ display: "flex", flexDirection: "column", width: "100%" });
+    expect(stack).toHaveStyle({
+      display: "flex",
+      flexDirection: "column",
+      width: "100%",
+    });
   });
 
   it("lays out fields in a group using equal columns", () => {
@@ -66,7 +70,6 @@ describe("FormLayout", () => {
     const layoutRef = createRef<HTMLDivElement>();
     const groupRef = createRef<HTMLDivElement>();
 
-
     render(
       <FormLayout ref={layoutRef}>
         <FormLayout.Group ref={groupRef}>
@@ -79,4 +82,3 @@ describe("FormLayout", () => {
     expect(groupRef.current).toBeInstanceOf(HTMLElement);
   });
 });
-

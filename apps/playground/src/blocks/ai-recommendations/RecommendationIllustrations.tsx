@@ -31,8 +31,24 @@ export function FrequentlyBoughtTogetherIllustration(): React.JSX.Element {
       {/* Main product box */}
       <g transform="translate(14 26)">
         <rect width="36" height="36" rx="7" fill="url(#fbt-box-a)" />
-        <rect x="6" y="11" width="22" height="3.5" rx="1.5" fill="#FFFFFF" opacity="0.9" />
-        <rect x="6" y="18" width="14" height="3.5" rx="1.5" fill="#FFFFFF" opacity="0.6" />
+        <rect
+          x="6"
+          y="11"
+          width="22"
+          height="3.5"
+          rx="1.5"
+          fill="#FFFFFF"
+          opacity="0.9"
+        />
+        <rect
+          x="6"
+          y="18"
+          width="14"
+          height="3.5"
+          rx="1.5"
+          fill="#FFFFFF"
+          opacity="0.6"
+        />
         <circle cx="26" cy="26" r="3" fill="#A5B4FC" />
       </g>
 
@@ -174,10 +190,7 @@ export function PostPurchaseFunnelIllustration(): React.JSX.Element {
       {/* Instant 1-Click Lightning Badge */}
       <g transform="translate(60 18)">
         <circle cx="19" cy="19" r="18" fill="url(#bolt-grad)" />
-        <path
-          d="M21 9L11 21h7l-2 10 10-13h-7z"
-          fill="#FFFFFF"
-        />
+        <path d="M21 9L11 21h7l-2 10 10-13h-7z" fill="#FFFFFF" />
       </g>
 
       {/* 20% OFF Pill */}

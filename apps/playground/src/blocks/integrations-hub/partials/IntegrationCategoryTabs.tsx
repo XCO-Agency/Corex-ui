@@ -1,10 +1,7 @@
 import * as React from "react";
 import { Box, Tabs } from "@xco-agency/corex-ui";
 import type { TabItemType } from "@xco-agency/corex-ui";
-import type {
-  IntegrationCategoryTabsPropsType,
-  IntegrationCategoryType,
-} from "../types";
+import type { IntegrationCategoryTabsPropsType, IntegrationCategoryType } from "../types";
 
 export function IntegrationCategoryTabs({
   categories,

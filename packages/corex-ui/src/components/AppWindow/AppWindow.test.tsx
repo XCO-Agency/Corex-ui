@@ -91,8 +91,16 @@ describe("AppWindow", () => {
         .filter((d) => d?.type === "COREX_APP_WINDOW_SAVE_BAR_ACTION");
 
       expect(actionMessages).toEqual([
-        { type: "COREX_APP_WINDOW_SAVE_BAR_ACTION", action: "save", windowId: "builder-win" },
-        { type: "COREX_APP_WINDOW_SAVE_BAR_ACTION", action: "discard", windowId: "builder-win" },
+        {
+          type: "COREX_APP_WINDOW_SAVE_BAR_ACTION",
+          action: "save",
+          windowId: "builder-win",
+        },
+        {
+          type: "COREX_APP_WINDOW_SAVE_BAR_ACTION",
+          action: "discard",
+          windowId: "builder-win",
+        },
       ]);
     });
 
@@ -116,7 +124,7 @@ describe("AppWindow", () => {
         saveBar
         onHide={onHide}
         onClose={onClose}
-      />
+      />,
     );
 
     const el = document.querySelector("s-app-window#dismiss-window");
@@ -138,9 +146,7 @@ describe("AppWindow", () => {
       },
     };
 
-    const { unmount } = render(
-      <AppWindow src="/builder" id="unmount-window" saveBar />
-    );
+    const { unmount } = render(<AppWindow src="/builder" id="unmount-window" saveBar />);
 
     unmount();
     expect(hideSpy).toHaveBeenCalledWith("unmount-window-save-bar");

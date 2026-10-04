@@ -90,7 +90,9 @@ export function startListDrag({
   // Items are laid out with a constant gap; recover it from the overall extent.
   const totalSize = measures.reduce((sum, m) => sum + m.size, 0);
   const gap =
-    items.length > 1 ? (last.start + last.size - first.start - totalSize) / (items.length - 1) : 0;
+    items.length > 1
+      ? (last.start + last.size - first.start - totalSize) / (items.length - 1)
+      : 0;
 
   const savedItemStyles = items.map((item) => ({
     transform: item.style.transform,

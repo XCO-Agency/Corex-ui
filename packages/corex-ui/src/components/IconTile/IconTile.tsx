@@ -11,7 +11,8 @@ type IconTileToneType =
   | "critical"
   | "transparent";
 export type IconTileColorType = "base" | "strong";
-type IconTileBorderRadiusType = "none" | "small" | "base" | "large" | "large-100" | "large-200" |"full" ;
+type IconTileBorderRadiusType =
+  "none" | "small" | "base" | "large" | "large-100" | "large-200" | "full";
 type IconTileSizeType = "small" | "base" | "large" | "auto";
 
 export type IconTilePropsType = {

@@ -6,10 +6,7 @@ import { Button } from "../Button";
 describe("Page", () => {
   it("maps legacy title to heading and composes primaryAction as a Button", () => {
     render(
-      <Page
-        title="Products"
-        primaryAction={{ content: "Add product" }}
-      >
+      <Page title="Products" primaryAction={{ content: "Add product" }}>
         Body
       </Page>,
     );
@@ -33,12 +30,7 @@ describe("Page", () => {
 
   it("prioritizes new props over deprecated props", () => {
     render(
-      <Page
-        heading="New Heading"
-        title="Old Title"
-        inlineSize="small"
-        fullWidth
-      >
+      <Page heading="New Heading" title="Old Title" inlineSize="small" fullWidth>
         Content
       </Page>,
     );

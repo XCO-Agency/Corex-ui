@@ -128,8 +128,6 @@ export function DatePickerPanel({
     }
   };
 
-
-
   const handleCalendarRangeChange = (newRange: DateRangeType) => {
     setCurrentRange(newRange);
     setActivePresetId("custom");

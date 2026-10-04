@@ -11,7 +11,12 @@ export type InlineGridTrackType = number | string | string[];
 
 export type InlineGridColumnsType =
   | InlineGridTrackType
-  | { xs?: InlineGridTrackType; sm?: InlineGridTrackType; md?: InlineGridTrackType; lg?: InlineGridTrackType };
+  | {
+      xs?: InlineGridTrackType;
+      sm?: InlineGridTrackType;
+      md?: InlineGridTrackType;
+      lg?: InlineGridTrackType;
+    };
 
 export type InlineGridPropsType = {
   children?: ReactNode;

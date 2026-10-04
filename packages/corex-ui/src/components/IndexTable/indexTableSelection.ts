@@ -94,7 +94,8 @@ export function getToggleChanges(
     const allAfter = selectableChildren(ancestor).every((child) =>
       child.id === branchId ? branchState : getSelectionState(child) === "all",
     );
-    if (ancestor.selectable && ancestor.id !== undefined) target.set(ancestor.id, allAfter);
+    if (ancestor.selectable && ancestor.id !== undefined)
+      target.set(ancestor.id, allAfter);
     branchId = ancestor.id;
     branchState = allAfter;
   }

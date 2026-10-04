@@ -28,16 +28,8 @@ function flattenChildren(children: ReactNode): ReactNode[] {
   const result: ReactNode[] = [];
   Children.forEach(children, (child) => {
     if (isValidElement(child) && child.type === Fragment) {
-      result.push(
-        ...flattenChildren(
-          (child.props as { children?: ReactNode }).children,
-        ),
-      );
-    } else if (
-      child !== null &&
-      child !== undefined &&
-      typeof child !== "boolean"
-    ) {
+      result.push(...flattenChildren((child.props as { children?: ReactNode }).children));
+    } else if (child !== null && child !== undefined && typeof child !== "boolean") {
       result.push(child);
     }
   });
@@ -57,12 +49,12 @@ function getDeclaredSpan(child: ReactNode): number | undefined {
     (props.fullWidth
       ? "fullWidth"
       : props.oneThird || props.secondary
-      ? "oneThird"
-      : props.oneHalf
-      ? "oneHalf"
-      : props.oneFourth
-      ? "oneFourth"
-      : undefined);
+        ? "oneThird"
+        : props.oneHalf
+          ? "oneHalf"
+          : props.oneFourth
+            ? "oneFourth"
+            : undefined);
 
   if (variant && variant in SECTION_SPAN) {
     return SECTION_SPAN[variant];
@@ -239,25 +231,24 @@ export const LayoutSection = forwardRef<HTMLElement, LayoutSectionPropsType>(
       (fullWidth
         ? "fullWidth"
         : oneThird || secondary
-        ? "oneThird"
-        : oneHalf
-        ? "oneHalf"
-        : oneFourth
-        ? "oneFourth"
-        : undefined);
+          ? "oneThird"
+          : oneHalf
+            ? "oneHalf"
+            : oneFourth
+              ? "oneFourth"
+              : undefined);
 
     const span =
       resolvedVariant && SECTION_SPAN[resolvedVariant]
         ? SECTION_SPAN[resolvedVariant]
-        : _calculatedSpan ?? COLUMN_COUNT;
+        : (_calculatedSpan ?? COLUMN_COUNT);
 
-    const resolvedColumnSpan =
-      columnSpan ?? {
-        xs: 1,
-        sm: 1,
-        md: span,
-        lg: span,
-      };
+    const resolvedColumnSpan = columnSpan ?? {
+      xs: 1,
+      sm: 1,
+      md: span,
+      lg: span,
+    };
 
     return (
       <Grid.Item ref={ref} columnSpan={resolvedColumnSpan} {...rest}>
@@ -279,10 +270,7 @@ const LayoutRoot = forwardRef<HTMLElement, LayoutPropsType>(function Layout(
   ref,
 ) {
   const childrenArray = useMemo(() => flattenChildren(children), [children]);
-  const spans = useMemo(
-    () => computeSectionSpans(childrenArray),
-    [childrenArray],
-  );
+  const spans = useMemo(() => computeSectionSpans(childrenArray), [childrenArray]);
 
   return (
     <Grid ref={ref} columns={columns} gap={gap} {...rest}>
@@ -302,4 +290,3 @@ const LayoutRoot = forwardRef<HTMLElement, LayoutPropsType>(function Layout(
 LayoutRoot.displayName = "Layout";
 
 export const Layout = Object.assign(LayoutRoot, { Section: LayoutSection });
-

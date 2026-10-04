@@ -44,11 +44,11 @@ export const AppWindow = forwardRef<AppWindowElement, AppWindowPropsType>(
 
     const saveBarId = id ? `${id}-save-bar` : "corex-app-window-save-bar";
 
-
     const handleDismiss = useCallback(() => {
       setChildState((prev) => (prev.open ? { ...prev, open: false } : prev));
       if (saveBar) {
-        const shopify = typeof window !== "undefined" ? (window as any).shopify : undefined;
+        const shopify =
+          typeof window !== "undefined" ? (window as any).shopify : undefined;
         shopify?.saveBar?.hide(saveBarId);
       }
       onHide?.();
@@ -62,7 +62,8 @@ export const AppWindow = forwardRef<AppWindowElement, AppWindowPropsType>(
     useEffect(() => {
       return () => {
         if (saveBar) {
-          const shopify = typeof window !== "undefined" ? (window as any).shopify : undefined;
+          const shopify =
+            typeof window !== "undefined" ? (window as any).shopify : undefined;
           shopify?.saveBar?.hide(saveBarId);
         }
       };

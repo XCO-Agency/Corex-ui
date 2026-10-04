@@ -2,9 +2,7 @@ import * as React from "react";
 import { EmptyState, Text } from "@xco-agency/corex-ui";
 import type { ActivityEmptyStatePropsType } from "../types";
 
-export function ActivityEmptyState({
-  onReset,
-}: ActivityEmptyStatePropsType) {
+export function ActivityEmptyState({ onReset }: ActivityEmptyStatePropsType) {
   return (
     <EmptyState
       heading="No activity found"
@@ -17,7 +15,8 @@ export function ActivityEmptyState({
       padding="large-100"
     >
       <Text as="p" tone="neutral" variant="small">
-        There are no activity events matching the selected filter. Try selecting "All activities" or refreshing.
+        There are no activity events matching the selected filter. Try selecting "All
+        activities" or refreshing.
       </Text>
     </EmptyState>
   );

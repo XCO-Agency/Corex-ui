@@ -39,7 +39,10 @@ describe("useIndexResourceState", () => {
   });
 
   it("honours a custom id resolver and an initial selection", () => {
-    const resources = [{ id: 1, gid: "gid://1" }, { id: 2, gid: "gid://2" }];
+    const resources = [
+      { id: 1, gid: "gid://1" },
+      { id: 2, gid: "gid://2" },
+    ];
     const { result } = renderHook(() =>
       useIndexResourceState(resources, {
         resourceIDResolver: (resource) => resource.gid,

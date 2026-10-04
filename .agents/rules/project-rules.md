@@ -8,7 +8,7 @@ trigger: always_on
    - Consuming Shopify apps do not have Tailwind CSS installed and do not support custom CSS or inline styling hacks.
    - Tailwind CSS is **strictly limited** to the playground app shell itself (e.g. playground sidebar, overview, layout shell).
    - In all UI component examples (`apps/playground/src/examples/**`) and blocks (`apps/playground/src/blocks/**`), **NEVER use Tailwind CSS classes, custom HTML tags (`<div>`, `<button>`, `<input>`, `<textarea>`, `<svg>`, `<span>`, `<p>`, `<a>`, etc.), or inline `style={{ ... }}` objects**.
-   - **Always remember this rule**: You must compose layouts exclusively using `@xco-agency/corex-ui` components (`Box`, `BlockStack`, `InlineStack`, `Grid`, `Card`, `Text`, `Badge`, `Divider`, `Button`, `Icon`, `Avatar`, `Thumbnail`, `Modal`, `ProgressBar`, `Link`, `Clickable`, etc.). *(Exception: 3rd-party App/Partner logos such as in `AppIconBadge` represent external brand identities and use dedicated branded vector logos/images).*
+   - **Always remember this rule**: You must compose layouts exclusively using `@xco-agency/corex-ui` components (`Box`, `BlockStack`, `InlineStack`, `Grid`, `Card`, `Text`, `Badge`, `Divider`, `Button`, `Icon`, `Avatar`, `Thumbnail`, `Modal`, `ProgressBar`, `Link`, `Clickable`, etc.). _(Exception: 3rd-party App/Partner logos such as in `AppIconBadge` represent external brand identities and use dedicated branded vector logos/images)._
    - Use `Box` (with its props: `padding`, `background`, `borderWidth`, `borderColor`, `borderRadius`, `inlineSize`, `maxInlineSize`, `position`, etc.), `BlockStack`, `InlineStack`, and `Grid` for all layout structures instead of raw HTML elements or inline CSS.
 
 2. **Modular Architecture & Conventions**:

@@ -67,7 +67,8 @@ export function SupportHubExample() {
           <Box padding="base">
             <BlockStack gap="base">
               <Text variant="bodyMd">
-                Have an idea to make the app even better, or spotted a bug? Let our team know!
+                Have an idea to make the app even better, or spotted a bug? Let our team
+                know!
               </Text>
               <TextField
                 label="Feature description"
@@ -85,7 +86,9 @@ export function SupportHubExample() {
                   onClick={() => {
                     setActiveModal(null);
                     setFeatureFeedback("");
-                    showToast("Thank you! Your feedback has been sent to our product team.");
+                    showToast(
+                      "Thank you! Your feedback has been sent to our product team.",
+                    );
                   }}
                 >
                   Send Feedback
@@ -110,7 +113,8 @@ export function SupportHubExample() {
                   How do I enable the cart drawer in my theme?
                 </Text>
                 <Text variant="bodySm" tone="subdued">
-                  Navigate to Online Store &gt; Themes &gt; Customize, then enable the App Embed for Cart Drawer.
+                  Navigate to Online Store &gt; Themes &gt; Customize, then enable the App
+                  Embed for Cart Drawer.
                 </Text>
               </BlockStack>
               <BlockStack gap="small-500">
@@ -118,7 +122,8 @@ export function SupportHubExample() {
                   Can I customize the upsell recommendations?
                 </Text>
                 <Text variant="bodySm" tone="subdued">
-                  Yes, under the Addons tab you can create manual collections or AI-driven cross-sells.
+                  Yes, under the Addons tab you can create manual collections or AI-driven
+                  cross-sells.
                 </Text>
               </BlockStack>
             </BlockStack>
@@ -136,7 +141,8 @@ export function SupportHubExample() {
           <Box padding="base">
             <BlockStack gap="base">
               <Text variant="bodyMd">
-                Schedule a 15-minute screen share with Ihar or Marina from our Customer Care team.
+                Schedule a 15-minute screen share with Ihar or Marina from our Customer
+                Care team.
               </Text>
               <InlineStack justifyContent="flex-end" gap="small-300">
                 <Button variant="secondary" onClick={() => setActiveModal(null)}>

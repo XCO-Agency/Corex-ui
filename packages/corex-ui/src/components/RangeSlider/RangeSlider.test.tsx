@@ -63,13 +63,7 @@ describe("RangeSlider", () => {
 
   it("renders the output tooltip bubble with current value when output is true", () => {
     render(
-      <RangeSlider
-        label="Quantity"
-        id="qty"
-        value={25}
-        output
-        onChange={vi.fn()}
-      />,
+      <RangeSlider label="Quantity" id="qty" value={25} output onChange={vi.fn()} />,
     );
     const output = screen.getByRole("status");
     expect(output).toBeInTheDocument();
@@ -102,9 +96,6 @@ describe("RangeSlider", () => {
       />,
     );
     expect(screen.getByText("Pick a value")).toBeInTheDocument();
-    expect(screen.getByRole("slider")).toHaveAttribute(
-      "aria-describedby",
-      "qtyHelpText",
-    );
+    expect(screen.getByRole("slider")).toHaveAttribute("aria-describedby", "qtyHelpText");
   });
 });

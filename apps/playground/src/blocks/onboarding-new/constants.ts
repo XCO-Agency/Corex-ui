@@ -74,4 +74,3 @@ export function getStageProcessingTexts(
       return ["Saving your preferences...", "Getting things ready..."];
   }
 }
-

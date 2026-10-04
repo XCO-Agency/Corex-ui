@@ -30,28 +30,36 @@ The interactive CLI will detect your project and prompt you to select your AI co
 You can install directly for your specific tool using the `-a` flag:
 
 ### Cursor
+
 ```bash
 pnpm dlx skills add XCO-Agency/Corex-ui -a cursor
 ```
-*Installs the rule into your project's `.cursor/rules/` directory.*
+
+_Installs the rule into your project's `.cursor/rules/` directory._
 
 ### Claude Code
+
 ```bash
 pnpm dlx skills add XCO-Agency/Corex-ui -a claude-code
 ```
-*Installs the skill into your project's `.claude/skills/` directory.*
+
+_Installs the skill into your project's `.claude/skills/` directory._
 
 ### Antigravity / Gemini
+
 ```bash
 pnpm dlx skills add XCO-Agency/Corex-ui -a antigravity
 ```
-*Installs the skill into `.agents/skills/corex-ui-components/SKILL.md`.*
+
+_Installs the skill into `.agents/skills/corex-ui-components/SKILL.md`._
 
 ### GitHub Copilot
+
 ```bash
 pnpm dlx skills add XCO-Agency/Corex-ui -a copilot
 ```
-*Configures instructions in `.github/copilot-instructions.md`.*
+
+_Configures instructions in `.github/copilot-instructions.md`._
 
 ---
 
@@ -72,21 +80,25 @@ curl -sSL https://raw.githubusercontent.com/XCO-Agency/Corex-ui/main/.agents/ski
 If you want to paste the skill prompt directly into your AI assistant chat, custom instructions, or Cursor rules:
 
 ### macOS
+
 ```bash
 curl -sSL https://raw.githubusercontent.com/XCO-Agency/Corex-ui/main/.agents/skills/corex-ui-components/SKILL.md | pbcopy
 ```
 
 ### Linux (`xclip`)
+
 ```bash
 curl -sSL https://raw.githubusercontent.com/XCO-Agency/Corex-ui/main/.agents/skills/corex-ui-components/SKILL.md | xclip -selection clipboard
 ```
 
 ### Windows (PowerShell)
+
 ```powershell
 (Invoke-WebRequest -Uri "https://raw.githubusercontent.com/XCO-Agency/Corex-ui/main/.agents/skills/corex-ui-components/SKILL.md").Content | Set-Clipboard
 ```
 
 ### Raw Markdown Link
+
 - [View & Copy Raw SKILL.md](https://raw.githubusercontent.com/XCO-Agency/Corex-ui/main/.agents/skills/corex-ui-components/SKILL.md)
 
 ---

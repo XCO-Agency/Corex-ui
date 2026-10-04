@@ -10,11 +10,7 @@ import {
   Box,
   Divider,
 } from "@xco-agency/corex-ui";
-import type {
-  BillingIntervalType,
-  PaymentMethodType,
-  PlanTierType,
-} from "../types";
+import type { BillingIntervalType, PaymentMethodType, PlanTierType } from "../types";
 
 type ActivePlanHeroCardPropsType = {
   currentPlan: PlanTierType;

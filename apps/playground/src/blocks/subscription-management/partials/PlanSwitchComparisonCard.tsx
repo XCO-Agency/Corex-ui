@@ -32,7 +32,8 @@ export function PlanSwitchComparisonCard({
               Available Subscription Tiers
             </Text>
             <Text color="subdued" variant="bodySm">
-              Upgrade or downgrade your plan at any time. Prorated credits are automatically applied.
+              Upgrade or downgrade your plan at any time. Prorated credits are
+              automatically applied.
             </Text>
           </BlockStack>
           <Badge tone="info">Instant Prorated Billing</Badge>
@@ -80,9 +81,7 @@ export function PlanSwitchComparisonCard({
                       {tier.name}
                     </Text>
                     {tier.badge && (
-                      <Badge tone={isCurrent ? "success" : "info"}>
-                        {tier.badge}
-                      </Badge>
+                      <Badge tone={isCurrent ? "success" : "info"}>{tier.badge}</Badge>
                     )}
                   </InlineStack>
 

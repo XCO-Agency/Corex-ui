@@ -94,7 +94,7 @@ async function checkAndInstallCorexUI(cwd: string, autoConfirm: boolean) {
   }
 
   console.log(
-    `\n${c.yellow("Notice:")} ${c.bold(PKG_NAME)} is required for Corex UI blocks but is not in package.json.`
+    `\n${c.yellow("Notice:")} ${c.bold(PKG_NAME)} is required for Corex UI blocks but is not in package.json.`,
   );
 
   const pm = detectPackageManager(cwd);
@@ -118,12 +118,12 @@ async function checkAndInstallCorexUI(cwd: string, autoConfirm: boolean) {
       console.log(`${c.green("✔")} Successfully installed ${PKG_NAME}\n`);
     } catch {
       console.log(
-        `${c.yellow("⚠")} Automatic install failed. Please run manually: ${c.cyan(installCmd)}\n`
+        `${c.yellow("⚠")} Automatic install failed. Please run manually: ${c.cyan(installCmd)}\n`,
       );
     }
   } else {
     console.log(
-      `${c.yellow("Skipping install.")} Make sure to install ${PKG_NAME} manually: ${c.cyan(installCmd)}\n`
+      `${c.yellow("Skipping install.")} Make sure to install ${PKG_NAME} manually: ${c.cyan(installCmd)}\n`,
     );
   }
 }
@@ -157,14 +157,16 @@ async function fetchRegistryIndex(): Promise<RegistryBlockItem[]> {
   ) {
     const filePath = path.resolve(
       DEFAULT_REGISTRY_URL.replace(/^file:\/\//, ""),
-      "index.json"
+      "index.json",
     );
     const content = fs.readFileSync(filePath, "utf-8");
     return JSON.parse(content);
   }
   const res = await fetch(`${DEFAULT_REGISTRY_URL}/index.json`);
   if (!res.ok) {
-    throw new Error(`Failed to fetch block index from ${DEFAULT_REGISTRY_URL}/index.json`);
+    throw new Error(
+      `Failed to fetch block index from ${DEFAULT_REGISTRY_URL}/index.json`,
+    );
   }
   return res.json() as Promise<RegistryBlockItem[]>;
 }
@@ -177,7 +179,7 @@ async function fetchBlock(blockName: string): Promise<BlockSchema> {
   ) {
     const filePath = path.resolve(
       DEFAULT_REGISTRY_URL.replace(/^file:\/\//, ""),
-      `blocks/${blockName}.json`
+      `blocks/${blockName}.json`,
     );
     if (!fs.existsSync(filePath)) {
       throw new Error(`Block "${blockName}" was not found in registry.`);
@@ -249,7 +251,9 @@ For full details, visit: ${c.cyan("https://github.com/XCO-Agency/Corex-ui/blob/m
 
   const isAddCommand = args[0] === "add";
   if (!isAddCommand) {
-    console.log(`${c.red("Unknown command:")} "${args[0]}". Did you mean "add" or "skill"?`);
+    console.log(
+      `${c.red("Unknown command:")} "${args[0]}". Did you mean "add" or "skill"?`,
+    );
     return;
   }
 
@@ -265,7 +269,10 @@ For full details, visit: ${c.cyan("https://github.com/XCO-Agency/Corex-ui/blob/m
   // Determine block name (first positional argument after "add")
   const positionalArgs = args
     .slice(1)
-    .filter((arg, i, arr) => !arg.startsWith("-") && arr[i - 1] !== "-d" && arr[i - 1] !== "--dir");
+    .filter(
+      (arg, i, arr) =>
+        !arg.startsWith("-") && arr[i - 1] !== "-d" && arr[i - 1] !== "--dir",
+    );
 
   let blockName = positionalArgs[0];
 
@@ -285,7 +292,7 @@ For full details, visit: ${c.cyan("https://github.com/XCO-Agency/Corex-ui/blob/m
     console.log(`\n${c.bold("Available Blocks:")}`);
     indexList.forEach((item, idx) => {
       console.log(
-        `  ${c.dim(`${(idx + 1).toString().padStart(2, " ")}.`)} ${c.bold(item.name.padEnd(25, " "))} ${c.dim(item.description)}`
+        `  ${c.dim(`${(idx + 1).toString().padStart(2, " ")}.`)} ${c.bold(item.name.padEnd(25, " "))} ${c.dim(item.description)}`,
       );
     });
 
@@ -297,9 +304,7 @@ For full details, visit: ${c.cyan("https://github.com/XCO-Agency/Corex-ui/blob/m
 
     const num = parseInt(choice, 10);
     const selectedItem =
-      !isNaN(num) && num >= 1 && num <= indexList.length
-        ? indexList[num - 1]
-        : undefined;
+      !isNaN(num) && num >= 1 && num <= indexList.length ? indexList[num - 1] : undefined;
     if (selectedItem) {
       blockName = selectedItem.name;
     } else {
@@ -308,7 +313,9 @@ For full details, visit: ${c.cyan("https://github.com/XCO-Agency/Corex-ui/blob/m
   }
 
   // 2. Fetch block schema
-  console.log(`\n${c.dim("Fetching")} ${c.cyan(blockName)} ${c.dim("from Corex UI registry...")}`);
+  console.log(
+    `\n${c.dim("Fetching")} ${c.cyan(blockName)} ${c.dim("from Corex UI registry...")}`,
+  );
   let blockData: BlockSchema;
   try {
     blockData = await fetchBlock(blockName);
@@ -330,7 +337,7 @@ For full details, visit: ${c.cyan("https://github.com/XCO-Agency/Corex-ui/blob/m
   if (!yes) {
     const ok = await confirm(
       `Ready to install ${c.boldCyan(blockData.title)} (${blockData.files.length} files) into ${c.cyan(relativeTargetDir)}?`,
-      true
+      true,
     );
     if (!ok) {
       console.log("Installation cancelled.");
@@ -362,7 +369,7 @@ For full details, visit: ${c.cyan("https://github.com/XCO-Agency/Corex-ui/blob/m
       }
       const replace = await confirm(
         `  ${c.yellow("File exists:")} ${path.relative(cwd, targetFilePath)}. Overwrite?`,
-        false
+        false,
       );
       if (!replace) {
         skippedCount++;
@@ -378,7 +385,7 @@ For full details, visit: ${c.cyan("https://github.com/XCO-Agency/Corex-ui/blob/m
   // 6. Print next steps
   console.log(`\n${c.boldGreen("✔ Successfully installed")} ${c.bold(blockData.title)}!`);
   console.log(
-    `  Installed ${c.cyan(`${writtenCount} file(s)`)} directly to ${c.boldCyan(relativeTargetDir)}`
+    `  Installed ${c.cyan(`${writtenCount} file(s)`)} directly to ${c.boldCyan(relativeTargetDir)}`,
   );
   if (skippedCount > 0) {
     console.log(`  ${c.dim(`(${skippedCount} unchanged files skipped)`)}`);
@@ -387,7 +394,7 @@ For full details, visit: ${c.cyan("https://github.com/XCO-Agency/Corex-ui/blob/m
   console.log(`\n${c.bold("Next steps:")}`);
   console.log(`  Import the block in your route or component:`);
   console.log(
-    `  ${c.cyan(`import { ${toPascalCase(blockName)} } from "~/components/${blockName}";`)}\n`
+    `  ${c.cyan(`import { ${toPascalCase(blockName)} } from "~/components/${blockName}";`)}\n`,
   );
 }
 

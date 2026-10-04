@@ -55,7 +55,5 @@ export const TextField = forwardRef<HTMLElement, TextFieldPropsType>(function Te
     return <STextArea rows={rows} {...sharedProps} />;
   }
 
-  return <STextField {...sharedProps} >
-    {rest.children}
-  </STextField>;
+  return <STextField {...sharedProps}>{rest.children}</STextField>;
 });

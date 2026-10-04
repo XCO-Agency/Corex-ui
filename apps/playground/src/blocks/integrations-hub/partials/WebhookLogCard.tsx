@@ -14,11 +14,7 @@ export function WebhookLogCard({ logs, onRefresh }: WebhookLogCardPropsType) {
   return (
     <Card padding="none">
       <div style={{ padding: "16px" }}>
-        <InlineStack
-          justifyContent="space-between"
-          alignItems="center"
-          gap="small-200"
-        >
+        <InlineStack justifyContent="space-between" alignItems="center" gap="small-200">
           <BlockStack gap="none">
             <Text variant="base" heading>
               Recent webhook events & delivery log

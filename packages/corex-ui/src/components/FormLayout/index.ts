@@ -1,5 +1,2 @@
 export { FormLayout, FormLayoutGroup } from "./FormLayout";
-export type {
-  FormLayoutGroupPropsType,
-  FormLayoutPropsType,
-} from "./FormLayout.types";
+export type { FormLayoutGroupPropsType, FormLayoutPropsType } from "./FormLayout.types";

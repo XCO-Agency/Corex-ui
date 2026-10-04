@@ -45,4 +45,3 @@ export type LayoutSectionPropsType = {
   className?: string;
   style?: CSSProperties;
 };
-

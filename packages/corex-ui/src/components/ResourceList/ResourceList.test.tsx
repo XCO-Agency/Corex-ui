@@ -43,17 +43,12 @@ describe("ResourceItem", () => {
   it("is a link when given a url", () => {
     const { container } = render(<ResourceItem url="/orders/1">#1001</ResourceItem>);
 
-    expect(container.querySelector("s-clickable")).toHaveAttribute(
-      "href",
-      "/orders/1",
-    );
+    expect(container.querySelector("s-clickable")).toHaveAttribute("href", "/orders/1");
   });
 
   it("calls onClick when it has no url", () => {
     const onClick = vi.fn();
-    const { container } = render(
-      <ResourceItem onClick={onClick}>#1001</ResourceItem>,
-    );
+    const { container } = render(<ResourceItem onClick={onClick}>#1001</ResourceItem>);
 
     fireEvent.click(container.querySelector("s-clickable")!);
 

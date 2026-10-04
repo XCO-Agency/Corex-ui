@@ -11,7 +11,8 @@ export const PLAN_TIERS: PlanTierType[] = [
     name: "Starter",
     monthlyPrice: 29,
     annualPrice: 290,
-    description: "Essential merchandising toolkit for emerging direct-to-consumer storefronts.",
+    description:
+      "Essential merchandising toolkit for emerging direct-to-consumer storefronts.",
     features: [
       "Up to 2,000 orders / month",
       "2 staff seats with role permissions",
@@ -32,7 +33,8 @@ export const PLAN_TIERS: PlanTierType[] = [
     annualPrice: 790,
     badge: "Most Popular",
     isCurrent: true,
-    description: "Advanced automations and multi-location inventory sync for expanding brands.",
+    description:
+      "Advanced automations and multi-location inventory sync for expanding brands.",
     features: [
       "Up to 10,000 orders / month",
       "5 staff seats with audit history",
@@ -53,7 +55,8 @@ export const PLAN_TIERS: PlanTierType[] = [
     monthlyPrice: 199,
     annualPrice: 1990,
     badge: "High Volume",
-    description: "Unlimited scalability, dedicated server isolation, and tailored SLA contracts.",
+    description:
+      "Unlimited scalability, dedicated server isolation, and tailored SLA contracts.",
     features: [
       "Unlimited orders / month",
       "Unlimited staff seats & SSO",

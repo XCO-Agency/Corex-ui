@@ -128,13 +128,7 @@ export interface SUrlFieldElement extends HTMLElement {
 }
 
 export type SProgressToneType =
-  | "info"
-  | "success"
-  | "warning"
-  | "critical"
-  | "auto"
-  | "neutral"
-  | "caution";
+  "info" | "success" | "warning" | "critical" | "auto" | "neutral" | "caution";
 
 export interface SProgressElement extends HTMLElement {
   accessibilityLabel?: string;
@@ -152,7 +146,6 @@ export type SProgressProps = DetailedHTMLProps<
   tone?: SProgressToneType;
   value?: number | string;
 };
-
 
 export interface SDatePickerElement extends HTMLElement {
   type?: "single" | "multiple" | "range";
@@ -225,4 +218,3 @@ declare module "react" {
 }
 
 export {};
-

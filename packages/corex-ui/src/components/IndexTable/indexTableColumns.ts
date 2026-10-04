@@ -98,7 +98,8 @@ export function resolveLayout({
     const sticky = stickyOverrides[index] ?? heading.sticky;
     const pxWidth = parsePx(heading.width);
     const isPrimary = index === primaryIndex;
-    const minWidth = pxWidth ?? heading.minWidth ?? defaultMinWidth(heading, index, isPrimary);
+    const minWidth =
+      pxWidth ?? heading.minWidth ?? defaultMinWidth(heading, index, isPrimary);
 
     let track: string;
     if (sticky) {
@@ -153,7 +154,11 @@ export function resolveLayout({
  * Returns a copy of `items` with the item at `fromIndex` moved to `toIndex` —
  * the companion to `IndexTable`'s `onReorder`.
  */
-export function reorderItems<T>(items: readonly T[], fromIndex: number, toIndex: number): T[] {
+export function reorderItems<T>(
+  items: readonly T[],
+  fromIndex: number,
+  toIndex: number,
+): T[] {
   const next = [...items];
   const [moved] = next.splice(fromIndex, 1);
   if (moved === undefined) return next;

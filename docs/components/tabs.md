@@ -41,15 +41,15 @@ const [selectedIndex, setSelectedIndex] = useState(0);
 
 ## Prop mapping
 
-| Prop | Behavior |
-| ----------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `tabs`      | Array of `{ id, label, icon, badge, badgeTone, tooltip, accessibilityLabel, disabled }`. |
-| `value`     | ID of the currently selected tab (`string \| number`). Takes precedence over `selected`. |
-| `onChange`  | Callback fired when a tab is clicked, passed the selected tab's `id`. |
-| `selected`  | _(Deprecated: use `value`)_ Index of the currently selected tab (Polaris legacy index-based selection). |
-| `onSelect`  | _(Deprecated: use `onChange`)_ Callback fired when a tab is clicked, passed the selected tab's `index` (`number`). |
-| `children`  | Rendered as the panel content for whichever tab is currently selected. |
-| `rightSide` | Additional actions/content placed on the right side of the tab bar. |
+| Prop        | Behavior                                                                                                                                            |
+| ----------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `tabs`      | Array of `{ id, label, icon, badge, badgeTone, tooltip, accessibilityLabel, disabled }`.                                                            |
+| `value`     | ID of the currently selected tab (`string \| number`). Takes precedence over `selected`.                                                            |
+| `onChange`  | Callback fired when a tab is clicked, passed the selected tab's `id`.                                                                               |
+| `selected`  | _(Deprecated: use `value`)_ Index of the currently selected tab (Polaris legacy index-based selection).                                             |
+| `onSelect`  | _(Deprecated: use `onChange`)_ Callback fired when a tab is clicked, passed the selected tab's `index` (`number`).                                  |
+| `children`  | Rendered as the panel content for whichever tab is currently selected.                                                                              |
+| `rightSide` | Additional actions/content placed on the right side of the tab bar.                                                                                 |
 | `compact`   | Boolean. When `true`, renders as a minimalist dropdown selector (inspired by Polaris IndexFilters view switcher) instead of a horizontal tab strip. |
 
 Because very custom `Tabs` styling from Polaris React (via `overrideStyles` or CSS overrides)

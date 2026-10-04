@@ -1,7 +1,4 @@
-export {
-  AiRecommendations,
-  DEFAULT_AI_RECOMMENDATIONS,
-} from "./AiRecommendations";
+export { AiRecommendations, DEFAULT_AI_RECOMMENDATIONS } from "./AiRecommendations";
 export type { AiRecommendationsPropsType } from "./AiRecommendations";
 export { RecommendationItem } from "./RecommendationItem";
 export type {

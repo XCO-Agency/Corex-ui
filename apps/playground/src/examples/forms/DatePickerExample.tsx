@@ -10,11 +10,15 @@ export function DatePickerExample() {
 
   return (
     <BlockStack gap="large-200">
-      <Box padding="base" background="base" borderRadius="base" borderWidth="small-100" borderColor="subdued">
+      <Box
+        padding="base"
+        background="base"
+        borderRadius="base"
+        borderWidth="small-100"
+        borderColor="subdued"
+      >
         <BlockStack gap="small-100">
-          <Text heading>
-            Popover DatePicker (2-Month View & Presets)
-          </Text>
+          <Text heading>Popover DatePicker (2-Month View & Presets)</Text>
           <DatePicker
             type="range"
             name="reporting-period"
@@ -30,11 +34,15 @@ export function DatePickerExample() {
         </BlockStack>
       </Box>
 
-      <Box padding="base" background="base" borderRadius="base" borderWidth="small-100" borderColor="subdued">
+      <Box
+        padding="base"
+        background="base"
+        borderRadius="base"
+        borderWidth="small-100"
+        borderColor="subdued"
+      >
         <BlockStack gap="small-100">
-          <Text heading>
-            Inline DatePicker (2-Month View & Presets)
-          </Text>
+          <Text heading>Inline DatePicker (2-Month View & Presets)</Text>
           <DatePicker
             inline
             type="range"
@@ -47,7 +55,6 @@ export function DatePickerExample() {
           />
         </BlockStack>
       </Box>
-      
     </BlockStack>
   );
 }

@@ -156,7 +156,8 @@ export function startRowDrag({
 
   const floating = createFloatingRow(grid, dragged.elements[0]!);
   grid.classList.add("cx-it__grid--dragging");
-  for (const element of dragged.elements) element.classList.add("cx-it__row--placeholder");
+  for (const element of dragged.elements)
+    element.classList.add("cx-it__row--placeholder");
   for (const block of blocks) {
     for (const element of block.elements) element.style.transition = SHIFT_TRANSITION;
   }

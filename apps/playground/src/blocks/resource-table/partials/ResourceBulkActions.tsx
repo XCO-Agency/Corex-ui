@@ -27,12 +27,7 @@ export function ResourceBulkActions({
         borderBottom: "1px solid var(--p-color-border-subdued)",
       }}
     >
-      <InlineStack
-        gap="base"
-        alignItems="center"
-        justifyContent="space-between"
-        wrap
-      >
+      <InlineStack gap="base" alignItems="center" justifyContent="space-between" wrap>
         <InlineStack gap="small-200" alignItems="center">
           <Badge tone="info">{`${selectedCount} selected`}</Badge>
           <Text as="span" tone="neutral" variant="small">
@@ -44,29 +39,16 @@ export function ResourceBulkActions({
         </InlineStack>
 
         <ButtonGroup>
-          <Button
-            variant="secondary"
-            onClick={() => onBulkStatusChange("active")}
-          >
+          <Button variant="secondary" onClick={() => onBulkStatusChange("active")}>
             Set active
           </Button>
-          <Button
-            variant="secondary"
-            onClick={() => onBulkStatusChange("draft")}
-          >
+          <Button variant="secondary" onClick={() => onBulkStatusChange("draft")}>
             Set draft
           </Button>
-          <Button
-            variant="secondary"
-            onClick={() => onBulkStatusChange("archived")}
-          >
+          <Button variant="secondary" onClick={() => onBulkStatusChange("archived")}>
             Archive
           </Button>
-          <Button
-            variant="secondary"
-            tone="critical"
-            onClick={onBulkDelete}
-          >
+          <Button variant="secondary" tone="critical" onClick={onBulkDelete}>
             Delete
           </Button>
         </ButtonGroup>

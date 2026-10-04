@@ -17,12 +17,18 @@ function node(
 describe("getSelectionState", () => {
   it("uses the row's own flag when it has no selectable children", () => {
     expect(getSelectionState(node("a", true))).toBe("all");
-    expect(getSelectionState(node("a", false, [node("x", true, [], false)]))).toBe("none");
+    expect(getSelectionState(node("a", false, [node("x", true, [], false)]))).toBe(
+      "none",
+    );
   });
 
   it("derives all / some / none from selectable children", () => {
-    expect(getSelectionState(node("p", false, [node("a", true), node("b", true)]))).toBe("all");
-    expect(getSelectionState(node("p", false, [node("a", true), node("b")]))).toBe("some");
+    expect(getSelectionState(node("p", false, [node("a", true), node("b", true)]))).toBe(
+      "all",
+    );
+    expect(getSelectionState(node("p", false, [node("a", true), node("b")]))).toBe(
+      "some",
+    );
     expect(getSelectionState(node("p", true, [node("a"), node("b")]))).toBe("none");
   });
 
@@ -32,14 +38,21 @@ describe("getSelectionState", () => {
   });
 
   it("works through several levels", () => {
-    const tree = node("p", false, [node("g", false, [node("a", true), node("b")]), node("c", true)]);
+    const tree = node("p", false, [
+      node("g", false, [node("a", true), node("b")]),
+      node("c", true),
+    ]);
     expect(getSelectionState(tree)).toBe("some");
   });
 });
 
 describe("getToggleChanges", () => {
   it("selects a parent's whole subtree", () => {
-    const parent = node("p", false, [node("a"), node("b", true), node("x", false, [], false)]);
+    const parent = node("p", false, [
+      node("a"),
+      node("b", true),
+      node("x", false, [], false),
+    ]);
     expect(getToggleChanges(parent, true, [])).toEqual([
       { id: "p", selected: true },
       { id: "a", selected: true },

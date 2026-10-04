@@ -1,14 +1,11 @@
 import * as React from "react";
 import { BlockStack, InlineStack, Button, Text, Box } from "@xco-agency/corex-ui";
-import {
-  AiRecommendations,
-  DEFAULT_AI_RECOMMENDATIONS,
-} from "./AiRecommendations";
+import { AiRecommendations, DEFAULT_AI_RECOMMENDATIONS } from "./AiRecommendations";
 import type { RecommendationItemType } from "./RecommendationItem";
 
 export function AiRecommendationsExample() {
   const [items, setItems] = React.useState<RecommendationItemType[]>(
-    DEFAULT_AI_RECOMMENDATIONS
+    DEFAULT_AI_RECOMMENDATIONS,
   );
   const [isDismissed, setIsDismissed] = React.useState(false);
 
@@ -30,11 +27,7 @@ export function AiRecommendationsExample() {
           onDismiss={() => setIsDismissed(true)}
         />
       ) : (
-        <Box
-          padding="base"
-          background="bg-surface-secondary"
-          borderRadius="large"
-        >
+        <Box padding="base" background="bg-surface-secondary" borderRadius="large">
           <InlineStack justifyContent="space-between" alignItems="center">
             <Text color="subdued">Recommendations card was dismissed.</Text>
             <Button variant="secondary" onClick={() => setIsDismissed(false)}>

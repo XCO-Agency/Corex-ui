@@ -6,8 +6,7 @@ import { RESOURCE_TABS } from "../constants";
 import type { ResourceTabIdType } from "../types";
 
 export function ResourceEmptyExample() {
-  const [selectedTab, setSelectedTab] =
-    React.useState<ResourceTabIdType>("all");
+  const [selectedTab, setSelectedTab] = React.useState<ResourceTabIdType>("all");
 
   const emptyTabs = RESOURCE_TABS.map((tab) => ({
     ...tab,
@@ -31,10 +30,7 @@ export function ResourceEmptyExample() {
             selectedTab={selectedTab}
             onSelectTab={setSelectedTab}
           />
-          <ResourceEmptyState
-            type="zero-records"
-            onCreateResource={() => {}}
-          />
+          <ResourceEmptyState type="zero-records" onCreateResource={() => {}} />
         </Card>
       </BlockStack>
     </Page>

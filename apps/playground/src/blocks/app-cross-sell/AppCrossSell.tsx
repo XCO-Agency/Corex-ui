@@ -1,12 +1,5 @@
 import * as React from "react";
-import {
-  Card,
-  Box,
-  BlockStack,
-  InlineStack,
-  Text,
-  Button,
-} from "@xco-agency/corex-ui";
+import { Card, Box, BlockStack, InlineStack, Text, Button } from "@xco-agency/corex-ui";
 import type { AppCrossSellPropsType } from "./types";
 import { DEFAULT_APPS_LIST, DEFAULT_DISCOUNT_TIERS } from "./constants";
 import { AppCrossSellTierProgress } from "./partials/AppCrossSellTierProgress";
@@ -59,10 +52,7 @@ export function AppCrossSell({
         </InlineStack>
 
         {/* Milestone Discount Stepper */}
-        <AppCrossSellTierProgress
-          tiers={tiers}
-          installedCount={currentInstalledCount}
-        />
+        <AppCrossSellTierProgress tiers={tiers} installedCount={currentInstalledCount} />
 
         {/* Bordered Apps Container */}
         <Box
@@ -84,7 +74,10 @@ export function AppCrossSell({
                 key={app.id}
                 app={formattedApp}
                 onInstall={onInstall}
-                isLast={index === displayedApps.length - 1 && (!apps.length || apps.length <= 5 || showAll)}
+                isLast={
+                  index === displayedApps.length - 1 &&
+                  (!apps.length || apps.length <= 5 || showAll)
+                }
               />
             );
           })}

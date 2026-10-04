@@ -4,7 +4,8 @@ export const MOCK_INTEGRATIONS: IntegrationItemType[] = [
   {
     id: "klaviyo",
     name: "Klaviyo",
-    description: "Sync cart abandonments, profiles, and custom customer events to email flows.",
+    description:
+      "Sync cart abandonments, profiles, and custom customer events to email flows.",
     category: "marketing",
     status: "connected",
     syncEnabled: true,
@@ -15,7 +16,8 @@ export const MOCK_INTEGRATIONS: IntegrationItemType[] = [
   {
     id: "gorgias",
     name: "Gorgias",
-    description: "Display live customer cart contents directly inside agent support tickets.",
+    description:
+      "Display live customer cart contents directly inside agent support tickets.",
     category: "support",
     status: "connected",
     syncEnabled: true,
@@ -26,7 +28,8 @@ export const MOCK_INTEGRATIONS: IntegrationItemType[] = [
   {
     id: "ga4",
     name: "Google Analytics 4",
-    description: "Transmit client-side cart drawer engagement and add-to-cart events directly to GA4.",
+    description:
+      "Transmit client-side cart drawer engagement and add-to-cart events directly to GA4.",
     category: "analytics",
     status: "connected",
     syncEnabled: false,
@@ -37,7 +40,8 @@ export const MOCK_INTEGRATIONS: IntegrationItemType[] = [
   {
     id: "meta",
     name: "Meta Pixel & CAPI",
-    description: "Server-side Conversions API integration for high-accuracy conversion tracking.",
+    description:
+      "Server-side Conversions API integration for high-accuracy conversion tracking.",
     category: "marketing",
     status: "disconnected",
     syncEnabled: false,
@@ -46,7 +50,8 @@ export const MOCK_INTEGRATIONS: IntegrationItemType[] = [
   {
     id: "slack",
     name: "Slack Notifications",
-    description: "Send instant notifications to a designated channel whenever a high-value order completes.",
+    description:
+      "Send instant notifications to a designated channel whenever a high-value order completes.",
     category: "support",
     status: "disconnected",
     syncEnabled: false,
@@ -55,7 +60,8 @@ export const MOCK_INTEGRATIONS: IntegrationItemType[] = [
   {
     id: "custom-webhook",
     name: "Custom Outbound Webhook",
-    description: "Trigger raw HTTP POST payloads to your external ERP, warehouse, or Zapier endpoint.",
+    description:
+      "Trigger raw HTTP POST payloads to your external ERP, warehouse, or Zapier endpoint.",
     category: "webhooks",
     status: "connected",
     syncEnabled: true,

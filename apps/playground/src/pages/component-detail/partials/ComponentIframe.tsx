@@ -22,7 +22,9 @@ export function ComponentIframe({ children, className }: ComponentIframePropsTyp
       const win = iframe.contentWindow;
 
       if (!doc || !win) return;
-{/* <script src="https://cdn.shopify.com/shopifycloud/polaris-2.0-rc.js"></script> */}
+      {
+        /* <script src="https://cdn.shopify.com/shopifycloud/polaris-2.0-rc.js"></script> */
+      }
       /*
        * Create the iframe document once.
        */

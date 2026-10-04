@@ -1,10 +1,5 @@
 import * as React from "react";
-import {
-  Page,
-  BlockStack,
-  Banner,
-  SaveBar,
-} from "@xco-agency/corex-ui";
+import { Page, BlockStack, Banner, SaveBar } from "@xco-agency/corex-ui";
 import { INITIAL_DISCOUNT_FORM } from "../constants";
 import { DiscountGeneralCard } from "../partials/DiscountGeneralCard";
 import { DiscountTiersCard } from "../partials/DiscountTiersCard";
@@ -129,9 +124,7 @@ export function DiscountRulesExample() {
                   "New Seasonal Collection",
                 ])
               }
-              onUpdateCombinesShipping={(val) =>
-                updateField("combinesWithShipping", val)
-              }
+              onUpdateCombinesShipping={(val) => updateField("combinesWithShipping", val)}
               onUpdateCombinesProducts={(val) =>
                 updateField("combinesWithProductDiscounts", val)
               }

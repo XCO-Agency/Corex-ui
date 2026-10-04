@@ -3,11 +3,7 @@ import type {
   SupportHoursType,
   SupportQuickLinkType,
 } from "./types";
-import {
-  AVATAR_IHAR,
-  AVATAR_MARINA,
-  AVATAR_ANDRII,
-} from "./avatars-data";
+import { AVATAR_IHAR, AVATAR_MARINA, AVATAR_ANDRII } from "./avatars-data";
 
 export const DEFAULT_TEAM_MEMBERS: SupportTeamMemberType[] = [
   {

@@ -42,7 +42,12 @@ export function SupportContactCard({
     >
       <BlockStack gap="base">
         {/* Top Header: Need help + Avatars */}
-        <InlineStack justifyContent="space-between" alignItems="center" gap="base" wrap={false}>
+        <InlineStack
+          justifyContent="space-between"
+          alignItems="center"
+          gap="base"
+          wrap={false}
+        >
           <BlockStack gap="small-300">
             <Text variant="headingSm" as="h3" fontWeight="bold">
               {needHelpTitle}
@@ -64,7 +69,12 @@ export function SupportContactCard({
             {contactHeading}
           </Text>
 
-          <InlineStack justifyContent="space-between" alignItems="flex-start" gap="base" wrap={false}>
+          <InlineStack
+            justifyContent="space-between"
+            alignItems="flex-start"
+            gap="base"
+            wrap={false}
+          >
             {/* Working hours */}
             <BlockStack gap="none">
               <Text variant="bodySm">{hours.days}</Text>

@@ -1,11 +1,5 @@
 import * as React from "react";
-import {
-  Box,
-  BlockStack,
-  Grid,
-  Text,
-  Banner,
-} from "@xco-agency/corex-ui";
+import { Box, BlockStack, Grid, Text, Banner } from "@xco-agency/corex-ui";
 import { MediaCard } from "../partials/MediaCard";
 import type { CardBadgeType } from "../partials/MinimalistCard";
 
@@ -77,7 +71,9 @@ export function CardsMediaExample() {
 
       <Box>
         <Text variant="bodyMd" color="subdued">
-          Media cards showcase rich imagery with 16:9 aspect ratios and rounded corners, paired with headings and descriptive copy. Ideal for tutorials, case studies, and feature highlights.
+          Media cards showcase rich imagery with 16:9 aspect ratios and rounded corners,
+          paired with headings and descriptive copy. Ideal for tutorials, case studies,
+          and feature highlights.
         </Text>
       </Box>
 

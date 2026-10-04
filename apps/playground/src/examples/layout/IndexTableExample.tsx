@@ -246,7 +246,9 @@ export function IndexTableExample() {
           sortDirection={sortDirection}
           onSort={handleSort}
           // Adds a drag handle to each row; Arrow ↑/↓ on a handle also moves it.
-          onReorder={(from, to) => setProducts((current) => reorderItems(current, from, to))}
+          onReorder={(from, to) =>
+            setProducts((current) => reorderItems(current, from, to))
+          }
           pagination={{
             floating: true,
             hasPrevious: page > 1,
@@ -302,7 +304,7 @@ export function IndexTableExample() {
             { content: "Add tags", onAction: () => alert("Add tags") },
             { content: "Remove tags", onAction: () => alert("Remove tags") },
           ]}
-          
+
           footerContent={
             <InlineStack justifyContent="center" alignItems="center">
               <Link url="#" onClick={() => alert("Learn more")}>
@@ -315,7 +317,7 @@ export function IndexTableExample() {
             <IndexTable.Row
               key={product.id}
               id={product.id}
-              
+
               selected={selectedResources.includes(product.id)}
               onClick={() => alert(`Open ${product.name}`)}
               subRows={variantsByProduct[product.id]?.map((variant) => (
@@ -338,17 +340,11 @@ export function IndexTableExample() {
             >
               {/* sticky on a cell pins the whole column, header and checkbox included */}
               <IndexTable.Cell sticky="left" flush>
-                <Thumbnail
-                  source={product.thumbnail}
-                  alt={product.name}
-                  size="small"
-                />
+                <Thumbnail source={product.thumbnail} alt={product.name} size="small" />
               </IndexTable.Cell>
               {/* Pinning the name too keeps it — and variant names — in view. */}
-              <IndexTable.Cell >
-                <Text heading>
-                  {product.name}
-                </Text>
+              <IndexTable.Cell>
+                <Text heading>{product.name}</Text>
               </IndexTable.Cell>
 
               <IndexTable.Cell>
@@ -356,15 +352,11 @@ export function IndexTableExample() {
               </IndexTable.Cell>
 
               <IndexTable.Cell>
-                <Text color="subdued" >
-                  {product.inventory}
-                </Text>
+                <Text color="subdued">{product.inventory}</Text>
               </IndexTable.Cell>
 
               <IndexTable.Cell>
-                <Text>
-                  {product.category}
-                </Text>
+                <Text>{product.category}</Text>
               </IndexTable.Cell>
 
               <IndexTable.Cell alignment="center">
@@ -394,8 +386,6 @@ export function IndexTableExample() {
               </IndexTable.Cell>
             </IndexTable.Row>
           ))}
-
-
         </IndexTable>
       </Page>
     </Box>

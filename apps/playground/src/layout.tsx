@@ -48,8 +48,8 @@ export default function Layout({ children }: LayoutPropsType) {
                     {isInstallation || isIcons || isAppsIcons || isUtils
                       ? "Corex UI"
                       : isBlock
-                      ? "Blocks"
-                      : "Components"}
+                        ? "Blocks"
+                        : "Components"}
                   </BreadcrumbLink>
                 </BreadcrumbItem>
                 {isInstallation ? (

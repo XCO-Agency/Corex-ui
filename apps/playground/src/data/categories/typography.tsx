@@ -27,8 +27,7 @@ export const typographyComponents: ComponentEntry[] = [
     name: "Paragraph",
     slug: "paragraph",
     category: "Typography",
-    description:
-      "Displays paragraph body copy using Polaris <s-paragraph> primitive.",
+    description: "Displays paragraph body copy using Polaris <s-paragraph> primitive.",
     examples: [
       {
         title: "Paragraph body text",

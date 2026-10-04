@@ -1,11 +1,5 @@
 import * as React from "react";
-import {
-  InlineStack,
-  ButtonGroup,
-  Button,
-  Badge,
-  Text,
-} from "@xco-agency/corex-ui";
+import { InlineStack, ButtonGroup, Button, Badge, Text } from "@xco-agency/corex-ui";
 import type { PricingIntervalTogglePropsType } from "../types";
 
 export function PricingIntervalToggle({

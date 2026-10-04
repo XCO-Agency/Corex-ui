@@ -22,9 +22,7 @@ describe("ProgressBar", () => {
   });
 
   it("renders indeterminate progress bar when value is omitted", () => {
-    const { container } = render(
-      <ProgressBar accessibilityLabel="Importing products" />,
-    );
+    const { container } = render(<ProgressBar accessibilityLabel="Importing products" />);
     const el = container.querySelector("s-progress");
     expect(el).toBeInTheDocument();
     expect(el).toHaveAttribute("accessibility-label", "Importing products");
@@ -33,13 +31,23 @@ describe("ProgressBar", () => {
 
   it("applies tone correctly", () => {
     const { container, rerender } = render(
-      <ProgressBar accessibilityLabel="Storage used" value={72} max={100} tone="caution" />,
+      <ProgressBar
+        accessibilityLabel="Storage used"
+        value={72}
+        max={100}
+        tone="caution"
+      />,
     );
     let el = container.querySelector("s-progress");
     expect(el).toHaveAttribute("tone", "caution");
 
     rerender(
-      <ProgressBar accessibilityLabel="API rate limit" value={96} max={100} tone="critical" />,
+      <ProgressBar
+        accessibilityLabel="API rate limit"
+        value={96}
+        max={100}
+        tone="critical"
+      />,
     );
     el = container.querySelector("s-progress");
     expect(el).toHaveAttribute("tone", "critical");

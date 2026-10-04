@@ -15,12 +15,11 @@ import { FormLayout, TextField } from "@xco-agency/corex-ui";
 </FormLayout>;
 ```
 
-| Prop                                  | Behavior                                                                                       |
-| ------------------------------------- | ---------------------------------------------------------------------------------------------- |
-| `gap`                                 | Space between fields. Defaults to `base`.                                                      |
-| `inlineSize`                          | Width of the form layout. Defaults to `100%`.                                                  |
-| `FormLayout.Group.condensed`          | Tightens the row gap to `small-200` instead of `base`.                                         |
-| `FormLayout.Group.title`              | Group title/heading rendered above the fields.                                                 |
-| `FormLayout.Group.helpText`           | Help text rendered beneath the fields in a subdued tone.                                       |
-| `FormLayout.Group.columns`            | Custom columns count or responsive spec (defaults to equal `1fr` columns across children).    |
-
+| Prop                         | Behavior                                                                                   |
+| ---------------------------- | ------------------------------------------------------------------------------------------ |
+| `gap`                        | Space between fields. Defaults to `base`.                                                  |
+| `inlineSize`                 | Width of the form layout. Defaults to `100%`.                                              |
+| `FormLayout.Group.condensed` | Tightens the row gap to `small-200` instead of `base`.                                     |
+| `FormLayout.Group.title`     | Group title/heading rendered above the fields.                                             |
+| `FormLayout.Group.helpText`  | Help text rendered beneath the fields in a subdued tone.                                   |
+| `FormLayout.Group.columns`   | Custom columns count or responsive spec (defaults to equal `1fr` columns across children). |

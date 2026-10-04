@@ -266,11 +266,7 @@ describe("Combobox", () => {
       { label: "Backend", value: "backend" },
     ];
     render(
-      <Combobox
-        items={categories}
-        itemToStringValue={(cat) => cat.label}
-        open
-      >
+      <Combobox items={categories} itemToStringValue={(cat) => cat.label} open>
         <Combobox.Input placeholder="Choose category..." />
         <Combobox.Content>
           <Combobox.List>

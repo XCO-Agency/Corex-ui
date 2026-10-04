@@ -212,11 +212,7 @@ describe("Navigation", () => {
 
       // Directly passing setTab to onChange and onSelect without wrapper functions:
       return (
-        <Navigation
-          selected={tab}
-          onChange={setTab}
-          onSelect={setTab}
-        >
+        <Navigation selected={tab} onChange={setTab} onSelect={setTab}>
           <Navigation.Item id="cart" label="Cart" />
           <Navigation.Item id="saved" label="Saved" />
         </Navigation>
@@ -247,4 +243,3 @@ describe("Navigation", () => {
     expect(Navigations).toBe(Navigation);
   });
 });
-

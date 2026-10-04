@@ -22,7 +22,7 @@ export function AppCrossSellGridExample() {
 
   const handleInstall = (id: string) => {
     setApps((current) =>
-      current.map((a) => (a.id === id ? { ...a, installed: true } : a))
+      current.map((a) => (a.id === id ? { ...a, installed: true } : a)),
     );
   };
 
@@ -36,7 +36,8 @@ export function AppCrossSellGridExample() {
               Get more from every customer and save up to 30%
             </Text>
             <Text variant="bodySm" tone="subdued" as="p">
-              The more apps you install, the higher your revenue, the bigger your discount on all of them.
+              The more apps you install, the higher your revenue, the bigger your discount
+              on all of them.
             </Text>
           </BlockStack>
 

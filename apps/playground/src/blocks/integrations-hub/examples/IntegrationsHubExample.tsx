@@ -14,8 +14,7 @@ import type {
 export function IntegrationsHubExample() {
   const [integrations, setIntegrations] =
     React.useState<IntegrationItemType[]>(MOCK_INTEGRATIONS);
-  const [logs, setLogs] =
-    React.useState<WebhookLogItemType[]>(MOCK_WEBHOOK_LOGS);
+  const [logs, setLogs] = React.useState<WebhookLogItemType[]>(MOCK_WEBHOOK_LOGS);
   const [selectedCategory, setSelectedCategory] =
     React.useState<IntegrationCategoryType>("all");
   const [activeConfigIntegration, setActiveConfigIntegration] =
@@ -59,9 +58,7 @@ export function IntegrationsHubExample() {
 
   const handleToggleSync = (id: string, enabled: boolean) => {
     setIntegrations((prev) =>
-      prev.map((item) =>
-        item.id === id ? { ...item, syncEnabled: enabled } : item,
-      ),
+      prev.map((item) => (item.id === id ? { ...item, syncEnabled: enabled } : item)),
     );
   };
 

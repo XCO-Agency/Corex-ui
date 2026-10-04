@@ -1,12 +1,5 @@
 import * as React from "react";
-import {
-  Card,
-  BlockStack,
-  InlineStack,
-  Text,
-  Badge,
-  Button,
-} from "@xco-agency/corex-ui";
+import { Card, BlockStack, InlineStack, Text, Badge, Button } from "@xco-agency/corex-ui";
 import { TEMPLATE_VARIABLE_TAGS } from "../constants";
 
 type DynamicVariablesCardPropsType = {
@@ -22,17 +15,14 @@ export function DynamicVariablesCard({ onInsertTag }: DynamicVariablesCardPropsT
             Insert Dynamic Liquid Variables
           </Text>
           <Text color="subdued" variant="bodySm">
-            Click any placeholder tag below to insert it at cursor position in your template.
+            Click any placeholder tag below to insert it at cursor position in your
+            template.
           </Text>
         </BlockStack>
 
         <InlineStack gap="small-200" wrap>
           {TEMPLATE_VARIABLE_TAGS.map((t) => (
-            <Button
-              key={t.key}
-              variant="secondary"
-              onClick={() => onInsertTag(t.key)}
-            >
+            <Button key={t.key} variant="secondary" onClick={() => onInsertTag(t.key)}>
               + {t.label} ({t.key})
             </Button>
           ))}

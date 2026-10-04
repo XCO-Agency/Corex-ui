@@ -16,21 +16,24 @@ const UTILS_ENTRIES: ComponentEntry[] = [
     name: "useSaveBar",
     slug: "utils#use-save-bar",
     category: "Utilities",
-    description: "App Bridge hook to show, hide, toggle, and manage confirmation for the SaveBar.",
+    description:
+      "App Bridge hook to show, hide, toggle, and manage confirmation for the SaveBar.",
     examples: [],
   },
   {
     name: "useAppWindowSaveBar",
     slug: "utils#use-app-window-save-bar",
     category: "Utilities",
-    description: "Bidirectional SaveBar bridge hook for iframe pages opened via <AppWindow saveBar />.",
+    description:
+      "Bidirectional SaveBar bridge hook for iframe pages opened via <AppWindow saveBar />.",
     examples: [],
   },
   {
     name: "useToast",
     slug: "utils#use-toast",
     category: "Utilities",
-    description: "App Bridge hook to trigger native non-blocking toast notifications in Shopify admin.",
+    description:
+      "App Bridge hook to trigger native non-blocking toast notifications in Shopify admin.",
     examples: [],
   },
   {
@@ -44,14 +47,16 @@ const UTILS_ENTRIES: ComponentEntry[] = [
     name: "useParams",
     slug: "utils#use-params",
     category: "Utilities",
-    description: "URL search parameters hook with Shopify app embed param extraction (shop, host, locale).",
+    description:
+      "URL search parameters hook with Shopify app embed param extraction (shop, host, locale).",
     examples: [],
   },
   {
     name: "useStorage",
     slug: "utils#use-storage",
     category: "Utilities",
-    description: "Reactive localStorage and sessionStorage hook with TTL expiration and multi-tab sync.",
+    description:
+      "Reactive localStorage and sessionStorage hook with TTL expiration and multi-tab sync.",
     examples: [],
   },
 ];
@@ -60,7 +65,8 @@ const ICONS_ENTRY: ComponentEntry = {
   name: "Icons Library",
   slug: "icons",
   category: "Media",
-  description: "Browse, search, preview, and copy all 517 official Shopify Polaris icons with tones and keywords.",
+  description:
+    "Browse, search, preview, and copy all 517 official Shopify Polaris icons with tones and keywords.",
   examples: [],
 };
 
@@ -68,11 +74,17 @@ const APPS_ICONS_ENTRY: ComponentEntry = {
   name: "Apps Icons & Trust Badges",
   slug: "apps-icons",
   category: "Media",
-  description: "High-converting store trust badges, free shipping, easy returns, secure checkout, 24/7 support, and payment vector SVGs.",
+  description:
+    "High-converting store trust badges, free shipping, easy returns, secure checkout, 24/7 support, and payment vector SVGs.",
   examples: [],
 };
 
-const searchableEntries = [...allEntries, ...UTILS_ENTRIES, ICONS_ENTRY, APPS_ICONS_ENTRY];
+const searchableEntries = [
+  ...allEntries,
+  ...UTILS_ENTRIES,
+  ICONS_ENTRY,
+  APPS_ICONS_ENTRY,
+];
 
 function getSearchScore(entry: ComponentEntry, query: string): number {
   const name = entry.name.toLowerCase();

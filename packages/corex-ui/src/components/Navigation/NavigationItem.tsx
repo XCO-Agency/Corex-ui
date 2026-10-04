@@ -4,8 +4,10 @@ import { Clickable } from "../Clickable";
 import { InlineStack } from "../InlineStack";
 import { Text } from "../Text";
 import { useNavigationContext } from "./Navigation.context";
-import type { NavigationItemComponentType, NavigationItemPropsType } from "./Navigation.types";
-
+import type {
+  NavigationItemComponentType,
+  NavigationItemPropsType,
+} from "./Navigation.types";
 
 function NavigationItemInner<TId extends string | number = string>(
   {
@@ -90,4 +92,3 @@ export const NavigationItem = React.forwardRef(
   NavigationItemInner,
 ) as unknown as NavigationItemComponentType;
 NavigationItem.displayName = "NavigationItem";
-

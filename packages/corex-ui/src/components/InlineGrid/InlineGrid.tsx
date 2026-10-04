@@ -20,7 +20,9 @@ const FRACTION_TRACK: Record<string, string> = {
   threeFourths: "3fr",
 };
 
-function resolveTrack(value: InlineGridTrackType | undefined): string | number | undefined {
+function resolveTrack(
+  value: InlineGridTrackType | undefined,
+): string | number | undefined {
   if (value === undefined) return undefined;
   if (typeof value === "number") return value;
   if (Array.isArray(value)) {
@@ -54,7 +56,5 @@ export const InlineGrid = forwardRef<HTMLElement, InlineGridPropsType>(
 function isResponsive(
   columns: InlineGridColumnsType | undefined,
 ): columns is Exclude<InlineGridColumnsType, InlineGridTrackType> {
-  return (
-    typeof columns === "object" && columns !== null && !Array.isArray(columns)
-  );
+  return typeof columns === "object" && columns !== null && !Array.isArray(columns);
 }

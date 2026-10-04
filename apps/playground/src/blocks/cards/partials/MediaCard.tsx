@@ -59,7 +59,11 @@ export function MediaCard({
 
           <BlockStack gap="small-200">
             {(selectable || badge || onOptionsClick) && (
-              <InlineStack justifyContent="space-between" alignItems="center" gap="small-200">
+              <InlineStack
+                justifyContent="space-between"
+                alignItems="center"
+                gap="small-200"
+              >
                 <InlineStack gap="small-200" alignItems="center">
                   {selectable && (
                     <Checkbox

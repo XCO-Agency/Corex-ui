@@ -78,9 +78,7 @@ export function InvoiceHistoryCard({
                         <Text fontWeight="semibold" variant="bodySm">
                           {inv.invoiceNumber}
                         </Text>
-                        <Badge tone={statusTone}>
-                          {inv.status.toUpperCase()}
-                        </Badge>
+                        <Badge tone={statusTone}>{inv.status.toUpperCase()}</Badge>
                       </InlineStack>
                       <Text color="subdued" variant="bodySm">
                         Billed on {inv.date} · Automatic charge
@@ -93,10 +91,7 @@ export function InvoiceHistoryCard({
                       ${inv.amount.toFixed(2)} {inv.currency}
                     </Text>
 
-                    <Button
-                      variant="secondary"
-                      onClick={() => onDownloadInvoice(inv)}
-                    >
+                    <Button variant="secondary" onClick={() => onDownloadInvoice(inv)}>
                       Download PDF
                     </Button>
                   </InlineStack>

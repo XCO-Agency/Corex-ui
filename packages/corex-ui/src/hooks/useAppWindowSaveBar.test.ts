@@ -107,7 +107,10 @@ describe("useAppWindowSaveBar", () => {
     const show = vi.fn();
     const hide = vi.fn();
     const leaveConfirmation = vi.fn().mockResolvedValue(undefined);
-    window.shopify = { toast: { show: vi.fn() }, saveBar: { show, hide, leaveConfirmation } } as any;
+    window.shopify = {
+      toast: { show: vi.fn() },
+      saveBar: { show, hide, leaveConfirmation },
+    } as any;
 
     const { result } = renderHook(() =>
       useAppWindowSaveBar({

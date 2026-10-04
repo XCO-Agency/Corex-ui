@@ -1,11 +1,5 @@
 import * as React from "react";
-import {
-  BlockStack,
-  InlineStack,
-  Text,
-  Button,
-  ButtonGroup,
-} from "@xco-agency/corex-ui";
+import { BlockStack, InlineStack, Text, Button, ButtonGroup } from "@xco-agency/corex-ui";
 import type { ResourcePaginationPropsType } from "../types";
 
 export function ResourcePagination({
@@ -27,12 +21,7 @@ export function ResourcePagination({
         borderTop: "1px solid var(--p-color-border-subdued)",
       }}
     >
-      <InlineStack
-        alignItems="center"
-        justifyContent="space-between"
-        wrap
-        gap="base"
-      >
+      <InlineStack alignItems="center" justifyContent="space-between" wrap gap="base">
         <Text as="span" variant="small" tone="neutral">
           {totalItems > 0
             ? `Showing ${fromIndex}–${toIndex} of ${totalItems} items`

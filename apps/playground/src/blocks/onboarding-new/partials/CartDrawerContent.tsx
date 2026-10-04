@@ -90,10 +90,7 @@ export function CartDrawerContent({
           style={{ width: "70%", height: 7, marginBottom: 8, opacity: 0.35 }}
         />
         <div className={styles.drawerShippingTrack}>
-          <div
-            className={styles.drawerShippingFill}
-            style={{ width: "68%" }}
-          />
+          <div className={styles.drawerShippingFill} style={{ width: "68%" }} />
         </div>
       </div>
 
@@ -156,10 +153,7 @@ export function CartDrawerContent({
             <span className={styles.drawerUpsellBadge}>+ Offer</span>
           </div>
           <div className={styles.drawerUpsellContent}>
-            <div
-              className={styles.placeholderThumb}
-              style={{ width: 36, height: 42 }}
-            />
+            <div className={styles.placeholderThumb} style={{ width: 36, height: 42 }} />
             <div className={styles.drawerUpsellInfo}>
               <div
                 className={styles.placeholderBar}
@@ -170,11 +164,7 @@ export function CartDrawerContent({
                 style={{ width: "35%", height: 7, opacity: 0.3 }}
               />
             </div>
-            <button
-              type="button"
-              className={styles.drawerUpsellBtn}
-              tabIndex={-1}
-            >
+            <button type="button" className={styles.drawerUpsellBtn} tabIndex={-1}>
               + Add
             </button>
           </div>
@@ -195,11 +185,7 @@ export function CartDrawerContent({
         </div>
 
         {/* Primary Checkout CTA Placeholder */}
-        <button
-          type="button"
-          className={styles.drawerCheckoutBtn}
-          tabIndex={-1}
-        >
+        <button type="button" className={styles.drawerCheckoutBtn} tabIndex={-1}>
           <span>Checkout</span>
           <span>→</span>
         </button>

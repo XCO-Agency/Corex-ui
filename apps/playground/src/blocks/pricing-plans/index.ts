@@ -8,4 +8,3 @@ export { PricingUsageMeter } from "./partials/PricingUsageMeter";
 export { PricingFaq } from "./partials/PricingFaq";
 export { PricingUpgradeModal } from "./partials/PricingUpgradeModal";
 export { PricingPlansExample } from "./examples/PricingPlansExample";
-

@@ -15,10 +15,7 @@ type UsageMetersCardPropsType = {
   cycleEndDate: string;
 };
 
-export function UsageMetersCard({
-  usage,
-  cycleEndDate,
-}: UsageMetersCardPropsType) {
+export function UsageMetersCard({ usage, cycleEndDate }: UsageMetersCardPropsType) {
   return (
     <Card>
       <BlockStack gap="base">
@@ -61,7 +58,8 @@ export function UsageMetersCard({
                     )}
                   </InlineStack>
                   <Text variant="bodySm" fontWeight="medium">
-                    {quota.used.toLocaleString()} / {quota.total.toLocaleString()} {quota.unit} ({percentage}%)
+                    {quota.used.toLocaleString()} / {quota.total.toLocaleString()}{" "}
+                    {quota.unit} ({percentage}%)
                   </Text>
                 </InlineStack>
 

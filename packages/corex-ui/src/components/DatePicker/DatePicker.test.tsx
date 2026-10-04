@@ -93,11 +93,7 @@ describe("DatePicker", () => {
   });
 
   it("handles range string with normalizeDateRange in popover mode", () => {
-    render(
-      <DatePicker
-        selected="2025-05-20--2025-06-10"
-      />,
-    );
+    render(<DatePicker selected="2025-05-20--2025-06-10" />);
 
     expect(screen.getByText("20 May–10 Jun 2025")).toBeInTheDocument();
   });

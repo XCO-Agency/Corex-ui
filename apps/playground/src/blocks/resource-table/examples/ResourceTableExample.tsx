@@ -1,10 +1,6 @@
 import * as React from "react";
 import { Page, Card, BlockStack } from "@xco-agency/corex-ui";
-import {
-  DEFAULT_PAGE_SIZE,
-  MOCK_RESOURCES,
-  RESOURCE_CATEGORIES,
-} from "../constants";
+import { DEFAULT_PAGE_SIZE, MOCK_RESOURCES, RESOURCE_CATEGORIES } from "../constants";
 import { ResourceBulkActions } from "../partials/ResourceBulkActions";
 import { ResourceEmptyState } from "../partials/ResourceEmptyState";
 import { ResourceFilters } from "../partials/ResourceFilters";
@@ -76,10 +72,7 @@ export function ResourceTableExample() {
         return false;
       }
       // Category dropdown filter
-      if (
-        filters.category !== "All categories" &&
-        item.category !== filters.category
-      ) {
+      if (filters.category !== "All categories" && item.category !== filters.category) {
         return false;
       }
       // Search query
@@ -124,10 +117,8 @@ export function ResourceTableExample() {
   }, [filteredItems, currentPage]);
 
   const pageIds = paginatedItems.map((i) => i.id);
-  const allSelected =
-    pageIds.length > 0 && pageIds.every((id) => selectedIds.has(id));
-  const someSelected =
-    pageIds.some((id) => selectedIds.has(id)) && !allSelected;
+  const allSelected = pageIds.length > 0 && pageIds.every((id) => selectedIds.has(id));
+  const someSelected = pageIds.some((id) => selectedIds.has(id)) && !allSelected;
 
   const handleToggleSelectAll = () => {
     setSelectedIds((prev) => {
@@ -155,9 +146,7 @@ export function ResourceTableExample() {
 
   const handleBulkStatusChange = (status: ResourceStatusType) => {
     setItems((prev) =>
-      prev.map((item) =>
-        selectedIds.has(item.id) ? { ...item, status } : item,
-      ),
+      prev.map((item) => (selectedIds.has(item.id) ? { ...item, status } : item)),
     );
     setSelectedIds(new Set());
   };
@@ -168,9 +157,7 @@ export function ResourceTableExample() {
   };
 
   const handleItemStatusChange = (id: string, status: ResourceStatusType) => {
-    setItems((prev) =>
-      prev.map((item) => (item.id === id ? { ...item, status } : item)),
-    );
+    setItems((prev) => prev.map((item) => (item.id === id ? { ...item, status } : item)));
   };
 
   const handleDeleteItem = (id: string) => {
@@ -264,12 +251,8 @@ export function ResourceTableExample() {
                 totalPages={totalPages}
                 totalItems={filteredItems.length}
                 pageSize={DEFAULT_PAGE_SIZE}
-                onPreviousPage={() =>
-                  setCurrentPage((p) => Math.max(1, p - 1))
-                }
-                onNextPage={() =>
-                  setCurrentPage((p) => Math.min(totalPages, p + 1))
-                }
+                onPreviousPage={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                onNextPage={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
               />
             </>
           )}

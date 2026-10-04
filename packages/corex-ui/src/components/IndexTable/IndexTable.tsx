@@ -164,7 +164,11 @@ function useSubRowsHeight(expanded: boolean) {
       return;
     }
     const element = ref.current;
-    if (!element || typeof element.animate !== "function" || prefersReducedMotion(element)) {
+    if (
+      !element ||
+      typeof element.animate !== "function" ||
+      prefersReducedMotion(element)
+    ) {
       return;
     }
 

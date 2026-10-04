@@ -1,10 +1,5 @@
 import * as React from "react";
-import {
-  Page,
-  BlockStack,
-  Banner,
-  SaveBar,
-} from "@xco-agency/corex-ui";
+import { Page, BlockStack, Banner, SaveBar } from "@xco-agency/corex-ui";
 import { INITIAL_TEMPLATE_FORM } from "../constants";
 import { TemplateConfigCard } from "../partials/TemplateConfigCard";
 import { DynamicVariablesCard } from "../partials/DynamicVariablesCard";
@@ -13,9 +8,8 @@ import { DevicePreviewSidebarCard } from "../partials/DevicePreviewSidebarCard";
 import type { NotificationTemplateFormType, TemplateChannelType } from "../types";
 
 export function NotificationTemplatesExample() {
-  const [form, setForm] = React.useState<NotificationTemplateFormType>(
-    INITIAL_TEMPLATE_FORM,
-  );
+  const [form, setForm] =
+    React.useState<NotificationTemplateFormType>(INITIAL_TEMPLATE_FORM);
   const [isDirty, setIsDirty] = React.useState(false);
   const [isSaving, setIsSaving] = React.useState(false);
   const [notification, setNotification] = React.useState<string | null>(null);
@@ -83,9 +77,7 @@ export function NotificationTemplatesExample() {
               senderName={form.senderName}
               subject={form.subject}
               onUpdateName={(val) => updateField("name", val)}
-              onUpdateChannel={(val: TemplateChannelType) =>
-                updateField("channel", val)
-              }
+              onUpdateChannel={(val: TemplateChannelType) => updateField("channel", val)}
               onUpdateSenderName={(val) => updateField("senderName", val)}
               onUpdateSubject={(val) => updateField("subject", val)}
             />
@@ -100,10 +92,7 @@ export function NotificationTemplatesExample() {
           </BlockStack>
 
           {/* Sidebar Preview Column */}
-          <DevicePreviewSidebarCard
-            template={form}
-            onSendTest={handleSendTest}
-          />
+          <DevicePreviewSidebarCard template={form} onSendTest={handleSendTest} />
         </div>
 
         {isDirty && (

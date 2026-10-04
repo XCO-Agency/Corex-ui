@@ -5,7 +5,12 @@ scoped stylesheet. Rows and cells are your own children, so any content fits in
 a cell.
 
 ```tsx
-import { IndexTable, Page, reorderItems, useIndexResourceState } from "@xco-agency/corex-ui";
+import {
+  IndexTable,
+  Page,
+  reorderItems,
+  useIndexResourceState,
+} from "@xco-agency/corex-ui";
 
 const [products, setProducts] = useState(initialProducts);
 const { selectedResources, allResourcesSelected, handleSelectionChange } =
@@ -44,9 +49,13 @@ const { selectedResources, allResourcesSelected, handleSelectionChange } =
         ))}
       >
         <IndexTable.Cell sticky="left">{product.title}</IndexTable.Cell>
-        <IndexTable.Cell><Badge tone="success">{product.status}</Badge></IndexTable.Cell>
+        <IndexTable.Cell>
+          <Badge tone="success">{product.status}</Badge>
+        </IndexTable.Cell>
         <IndexTable.Cell>{product.total}</IndexTable.Cell>
-        <IndexTable.Cell><Button icon="view" variant="tertiary" /></IndexTable.Cell>
+        <IndexTable.Cell>
+          <Button icon="view" variant="tertiary" />
+        </IndexTable.Cell>
       </IndexTable.Row>
     ))}
   </IndexTable>
@@ -202,25 +211,25 @@ retheme, set any of these on an ancestor:
 
 ## Props
 
-| Prop                                         | Behavior                                                                                                                                      |
-| -------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
-| `headings`                                   | `{ title, hidden, format, alignment, width, minWidth, sticky, sortable, defaultSortDirection }`. `numeric` and `currency` right-align a column. |
-| `itemCount`                                  | Drives the header checkbox and the `emptyState` switch.                                                                                       |
-| `selectedItemsCount`                         | A count, or `"All"` when every row across every page is selected.                                                                             |
-| `onSelectionChange`                          | v12's `(selectionType, toggleType, selection)`. The header checkbox reports `page`; a row reports `single` with its id.                       |
-| `selectable`                                 | `false` drops the selection column entirely.                                                                                                  |
-| `bulkActions` / `promotedBulkActions`        | Shown in the bulk bar once something is selected.                                                                                             |
-| `showAllSelectedToggle`                      | Shows the "Show all selected" switch in the bulk bar (default `true`).                                                                        |
-| `sortColumnIndex` / `sortDirection` / `onSort` | Controlled column sorting.                                                                                                                  |
-| `onReorder`                                  | Enables drag-to-reorder of top-level rows.                                                                                                    |
-| `pagination`                                 | `{ floating, hasPrevious, hasNext, onPrevious, onNext, label }`. When `floating: true`, floats the pagination pill at the bottom-left.       |
-| `footerContent`                              | Rendered under the table, e.g. a "Learn more" link.                                                                                           |
-| `emptyState`                                 | Replaces the whole table when `itemCount` is 0.                                                                                               |
-| `loading`                                    | Dims the rows and blocks interaction.                                                                                                         |
-| `rows` / `columnContentTypes`                | DataTable-style data: a 2D array of cells, used instead of children.                                                                          |
-| `hasZebraStriping`                           | Shades odd rows.                                                                                                                              |
-| `increasedTableDensity`                      | Tighter vertical cell padding.                                                                                                                |
-| `verticalAlign` / `truncate`                 | Cell content alignment, and single-line cells.                                                                                                |
+| Prop                                           | Behavior                                                                                                                                        |
+| ---------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
+| `headings`                                     | `{ title, hidden, format, alignment, width, minWidth, sticky, sortable, defaultSortDirection }`. `numeric` and `currency` right-align a column. |
+| `itemCount`                                    | Drives the header checkbox and the `emptyState` switch.                                                                                         |
+| `selectedItemsCount`                           | A count, or `"All"` when every row across every page is selected.                                                                               |
+| `onSelectionChange`                            | v12's `(selectionType, toggleType, selection)`. The header checkbox reports `page`; a row reports `single` with its id.                         |
+| `selectable`                                   | `false` drops the selection column entirely.                                                                                                    |
+| `bulkActions` / `promotedBulkActions`          | Shown in the bulk bar once something is selected.                                                                                               |
+| `showAllSelectedToggle`                        | Shows the "Show all selected" switch in the bulk bar (default `true`).                                                                          |
+| `sortColumnIndex` / `sortDirection` / `onSort` | Controlled column sorting.                                                                                                                      |
+| `onReorder`                                    | Enables drag-to-reorder of top-level rows.                                                                                                      |
+| `pagination`                                   | `{ floating, hasPrevious, hasNext, onPrevious, onNext, label }`. When `floating: true`, floats the pagination pill at the bottom-left.          |
+| `footerContent`                                | Rendered under the table, e.g. a "Learn more" link.                                                                                             |
+| `emptyState`                                   | Replaces the whole table when `itemCount` is 0.                                                                                                 |
+| `loading`                                      | Dims the rows and blocks interaction.                                                                                                           |
+| `rows` / `columnContentTypes`                  | DataTable-style data: a 2D array of cells, used instead of children.                                                                            |
+| `hasZebraStriping`                             | Shades odd rows.                                                                                                                                |
+| `increasedTableDensity`                        | Tighter vertical cell padding.                                                                                                                  |
+| `verticalAlign` / `truncate`                   | Cell content alignment, and single-line cells.                                                                                                  |
 
 `IndexTable.Row` takes `id`, `selected`, `selectable`, `disabled`, `onClick`, `position`, and
 `subRows` / `expanded` / `defaultExpanded` / `onExpandedChange`.

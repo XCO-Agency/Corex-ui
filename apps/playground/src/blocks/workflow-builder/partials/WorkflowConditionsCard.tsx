@@ -11,23 +11,14 @@ import {
   Box,
   Divider,
 } from "@xco-agency/corex-ui";
-import {
-  CONDITION_FIELD_OPTIONS,
-  CONDITION_OPERATOR_OPTIONS,
-} from "../constants";
-import type {
-  WorkflowConditionItemType,
-  WorkflowConditionOperatorType,
-} from "../types";
+import { CONDITION_FIELD_OPTIONS, CONDITION_OPERATOR_OPTIONS } from "../constants";
+import type { WorkflowConditionItemType, WorkflowConditionOperatorType } from "../types";
 
 type WorkflowConditionsCardPropsType = {
   logicGate: "AND" | "OR";
   conditions: WorkflowConditionItemType[];
   onUpdateLogicGate: (gate: "AND" | "OR") => void;
-  onUpdateCondition: (
-    id: string,
-    updates: Partial<WorkflowConditionItemType>,
-  ) => void;
+  onUpdateCondition: (id: string, updates: Partial<WorkflowConditionItemType>) => void;
   onAddCondition: () => void;
   onRemoveCondition: (id: string) => void;
 };
@@ -90,9 +81,7 @@ export function WorkflowConditionsCard({
             >
               <InlineStack gap="base" alignItems="center" justifyContent="space-between">
                 <Box inlineSize="60px">
-                  <Badge tone="neutral">
-                    {idx === 0 ? "IF" : logicGate}
-                  </Badge>
+                  <Badge tone="neutral">{idx === 0 ? "IF" : logicGate}</Badge>
                 </Box>
 
                 <div style={{ flex: 1 }}>

@@ -1,11 +1,5 @@
 import * as React from "react";
-import {
-  Box,
-  BlockStack,
-  Grid,
-  Text,
-  Banner,
-} from "@xco-agency/corex-ui";
+import { Box, BlockStack, Grid, Text, Banner } from "@xco-agency/corex-ui";
 import { MediaActionCard, type CardActionType } from "../partials/MediaActionCard";
 import type { CardBadgeType } from "../partials/MinimalistCard";
 
@@ -97,7 +91,9 @@ export function CardsMediaActionExample() {
 
       <Box>
         <Text variant="bodyMd" color="subdued">
-          Media Action cards combine impactful visual assets with prominent primary and secondary call-to-action buttons. Ideal for marketing campaigns, workflow templates, and high-converting app blocks.
+          Media Action cards combine impactful visual assets with prominent primary and
+          secondary call-to-action buttons. Ideal for marketing campaigns, workflow
+          templates, and high-converting app blocks.
         </Text>
       </Box>
 
@@ -113,11 +109,17 @@ export function CardsMediaActionExample() {
             metaText={item.metaText}
             primaryAction={{
               content: item.primaryAction!.content,
-              onAction: () => setActiveAction(`Executed: ${item.primaryAction!.content} for "${item.title}"`),
+              onAction: () =>
+                setActiveAction(
+                  `Executed: ${item.primaryAction!.content} for "${item.title}"`,
+                ),
             }}
             secondaryAction={{
               content: item.secondaryAction!.content,
-              onAction: () => setActiveAction(`Opened: ${item.secondaryAction!.content} for "${item.title}"`),
+              onAction: () =>
+                setActiveAction(
+                  `Opened: ${item.secondaryAction!.content} for "${item.title}"`,
+                ),
             }}
             onOptionsClick={() => setActiveAction(`More options for "${item.title}"`)}
           />

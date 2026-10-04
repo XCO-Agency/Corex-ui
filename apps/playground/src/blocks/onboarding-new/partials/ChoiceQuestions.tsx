@@ -30,10 +30,7 @@ export type ChoiceQuestionsPropsType = {
   setAnswers: Dispatch<SetStateAction<OnboardingNewAnswersType>>;
 };
 
-export function ChoiceQuestions({
-  answers,
-  setAnswers,
-}: ChoiceQuestionsPropsType) {
+export function ChoiceQuestions({ answers, setAnswers }: ChoiceQuestionsPropsType) {
   const val = answers.volume;
   const selectedValues = val ? [val] : [];
 
@@ -53,4 +50,3 @@ export function ChoiceQuestions({
     </Card>
   );
 }
-

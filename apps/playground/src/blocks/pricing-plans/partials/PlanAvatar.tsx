@@ -2,11 +2,7 @@ import * as React from "react";
 import { Box, InlineStack } from "@xco-agency/corex-ui";
 import type { PlanAvatarPropsType } from "../types";
 
-export function PlanAvatar({
-  planId,
-  size = 48,
-  customSvg,
-}: PlanAvatarPropsType) {
+export function PlanAvatar({ planId, size = 48, customSvg }: PlanAvatarPropsType) {
   const iconSize = Math.round(size * 0.62);
   const normalizedId = (planId || "free").toLowerCase();
 
@@ -168,7 +164,14 @@ export function PlanAvatar({
             />
 
             {/* Porthole Window */}
-            <circle cx="16" cy="15" r="2.8" fill="#38bdf8" stroke="#ffffff" strokeWidth="1" />
+            <circle
+              cx="16"
+              cy="15"
+              r="2.8"
+              fill="#38bdf8"
+              stroke="#ffffff"
+              strokeWidth="1"
+            />
             <circle cx="15.2" cy="14.2" r="0.8" fill="#ffffff" />
           </svg>
         ) : normalizedId === "growth" ? (
@@ -202,7 +205,14 @@ export function PlanAvatar({
             {/* Bar 1 */}
             <rect x="5" y="18" width="5.5" height="9" rx="2" fill="url(#growthBar1)" />
             {/* Bar 2 */}
-            <rect x="13.25" y="12" width="5.5" height="15" rx="2" fill="url(#growthBar2)" />
+            <rect
+              x="13.25"
+              y="12"
+              width="5.5"
+              height="15"
+              rx="2"
+              fill="url(#growthBar2)"
+            />
             {/* Bar 3 */}
             <rect x="21.5" y="6" width="5.5" height="21" rx="2" fill="url(#growthBar3)" />
 
@@ -223,10 +233,7 @@ export function PlanAvatar({
             />
 
             {/* Star Sparkle at Peak */}
-            <polygon
-              points="24,2 25,4 27,5 25,6 24,8 23,6 21,5 23,4"
-              fill="#fbbf24"
-            />
+            <polygon points="24,2 25,4 27,5 25,6 24,8 23,6 21,5 23,4" fill="#fbbf24" />
           </svg>
         ) : normalizedId === "scale" ? (
           /* 4. Scale Plan - Sovereign Imperial Crown 👑 */
@@ -261,7 +268,11 @@ export function PlanAvatar({
             />
 
             {/* Center Peak Highlight */}
-            <polygon points="16,8 11,16 16,23 21,16" fill="url(#crownGold2)" opacity="0.85" />
+            <polygon
+              points="16,8 11,16 16,23 21,16"
+              fill="url(#crownGold2)"
+              opacity="0.85"
+            />
 
             {/* Crown Bottom Rim */}
             <rect x="4.5" y="22" width="23" height="4.5" rx="2" fill="url(#crownRim)" />

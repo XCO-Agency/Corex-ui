@@ -117,4 +117,3 @@ describe("Layout", () => {
     expect(items[3]).toHaveAttribute("grid-column", "span 6");
   });
 });
-

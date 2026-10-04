@@ -79,7 +79,8 @@ export function Installation() {
 
   const handleCopySkill = async () => {
     try {
-      const raw = await import("../../../../.agents/skills/corex-ui-components/SKILL.md?raw");
+      const raw =
+        await import("../../../../.agents/skills/corex-ui-components/SKILL.md?raw");
       await navigator.clipboard.writeText(raw.default);
       setCopiedSkill(true);
       setTimeout(() => setCopiedSkill(false), 2000);
@@ -272,7 +273,10 @@ export function Installation() {
                 <h2 className="text-base font-semibold text-foreground">
                   Add AI Assistant Skill
                 </h2>
-                <Badge variant="outline" className="text-[10px] text-muted-foreground font-normal">
+                <Badge
+                  variant="outline"
+                  className="text-[10px] text-muted-foreground font-normal"
+                >
                   Optional
                 </Badge>
               </div>
@@ -306,8 +310,8 @@ export function Installation() {
             <p className="text-sm text-muted-foreground">
               Building with AI coding assistants (<strong>Cursor</strong>,{" "}
               <strong>Claude Code</strong>, <strong>Antigravity</strong>, or{" "}
-              <strong>Copilot</strong>)? Equip your agent with the official Corex UI skill so
-              it knows all modern props, spacing tokens, and components:
+              <strong>Copilot</strong>)? Equip your agent with the official Corex UI skill
+              so it knows all modern props, spacing tokens, and components:
             </p>
 
             {/* Mode switcher: skills.sh CLI vs Direct / Raw .md */}
@@ -371,9 +375,10 @@ export function Installation() {
                   language="bash"
                 />
                 <p className="text-[12px] text-muted-foreground">
-                  The CLI detects your installed coding assistants and automatically places the
-                  skill rules into your project (e.g. <code>.cursor/rules/</code>,{" "}
-                  <code>.claude/skills/</code>, or <code>.agents/skills/</code>).
+                  The CLI detects your installed coding assistants and automatically
+                  places the skill rules into your project (e.g.{" "}
+                  <code>.cursor/rules/</code>, <code>.claude/skills/</code>, or{" "}
+                  <code>.agents/skills/</code>).
                 </p>
               </div>
             ) : (
@@ -426,9 +431,9 @@ export function Installation() {
                 </div>
 
                 <p className="text-xs text-muted-foreground">
-                  Contains strict Corex UI rules, modern Polaris spacing tokens, deprecation
-                  replacements, and exact TypeScript prop signatures. Paste directly into your
-                  assistant rules or custom prompt.
+                  Contains strict Corex UI rules, modern Polaris spacing tokens,
+                  deprecation replacements, and exact TypeScript prop signatures. Paste
+                  directly into your assistant rules or custom prompt.
                 </p>
 
                 <div className="pt-1">

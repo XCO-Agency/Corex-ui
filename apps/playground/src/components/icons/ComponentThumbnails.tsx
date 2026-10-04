@@ -970,7 +970,15 @@ export function SearchFieldThumbnail() {
         strokeWidth="1.5"
       />
       <circle cx="42" cy="52" r="4" fill="none" stroke={textMuted} strokeWidth="1.5" />
-      <line x1="45" y1="55" x2="49" y2="59" stroke={textMuted} strokeWidth="1.5" strokeLinecap="round" />
+      <line
+        x1="45"
+        y1="55"
+        x2="49"
+        y2="59"
+        stroke={textMuted}
+        strokeWidth="1.5"
+        strokeLinecap="round"
+      />
       <rect
         x="54"
         y="49"
@@ -1621,23 +1629,9 @@ export function RangeSliderThumbnail() {
       />
 
       {/* Floating output tooltip above active thumb */}
-      <rect
-        x="79"
-        y="30"
-        width="26"
-        height="14"
-        rx="4"
-        fill={textPrimary}
-      />
+      <rect x="79" y="30" width="26" height="14" rx="4" fill={textPrimary} />
       <path d="M89 44 L92 47.5 L95 44 Z" fill={textPrimary} />
-      <rect
-        x="84"
-        y="35"
-        width="16"
-        height="4"
-        rx="1.5"
-        fill={cardBg}
-      />
+      <rect x="84" y="35" width="16" height="4" rx="1.5" fill={cardBg} />
 
       {/* Inactive track */}
       <rect
@@ -1652,25 +1646,11 @@ export function RangeSliderThumbnail() {
       />
 
       {/* Active track progress */}
-      <rect
-        x="28"
-        y="54"
-        width="64"
-        height="5"
-        rx="2.5"
-        fill={accent}
-      />
+      <rect x="28" y="54" width="64" height="5" rx="2.5" fill={accent} />
 
       {/* Draggable thumb */}
       <circle cx="92" cy="57.5" r="8.5" fill="rgba(0, 0, 0, 0.12)" />
-      <circle
-        cx="92"
-        cy="56.5"
-        r="8"
-        fill={cardBg}
-        stroke={accent}
-        strokeWidth="2"
-      />
+      <circle cx="92" cy="56.5" r="8" fill={cardBg} stroke={accent} strokeWidth="2" />
       <circle cx="92" cy="56.5" r="2.5" fill={accent} />
 
       {/* Scale tick marks & bound labels */}

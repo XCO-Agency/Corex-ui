@@ -2,13 +2,7 @@ import { forwardRef } from "react";
 import { createWebComponent } from "../../core/createWebComponent";
 
 export type ProgressBarToneType =
-  | "info"
-  | "success"
-  | "warning"
-  | "critical"
-  | "auto"
-  | "neutral"
-  | "caution";
+  "info" | "success" | "warning" | "critical" | "auto" | "neutral" | "caution";
 
 export type ProgressToneType = ProgressBarToneType;
 
@@ -58,16 +52,7 @@ const SProgress = createWebComponent<HTMLElement>("s-progress");
  * instead.
  */
 export const ProgressBar = forwardRef<HTMLElement, ProgressBarPropsType>(
-  function ProgressBar(
-    {
-      accessibilityLabel,
-      max,
-      tone,
-      value,
-      ...rest
-    },
-    ref,
-  ) {
+  function ProgressBar({ accessibilityLabel, max, tone, value, ...rest }, ref) {
     return (
       <SProgress
         ref={ref}

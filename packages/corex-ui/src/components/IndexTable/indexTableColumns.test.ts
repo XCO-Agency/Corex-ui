@@ -24,14 +24,20 @@ describe("resolveLayout", () => {
 
   it("pins left columns after the checkbox and fixes their width", () => {
     const layout = resolveLayout({
-      headings: [{ title: "Product", sticky: "left", width: "240px" }, { title: "Status" }],
+      headings: [
+        { title: "Product", sticky: "left", width: "240px" },
+        { title: "Status" },
+      ],
       columnCount: 0,
       selectable: true,
       stickyOverrides: {},
     });
 
     expect(layout.selectionSticky).toBe("left");
-    expect(layout.columns[0]).toMatchObject({ track: "240px", offset: `${SELECTION_COLUMN_WIDTH}px` });
+    expect(layout.columns[0]).toMatchObject({
+      track: "240px",
+      offset: `${SELECTION_COLUMN_WIDTH}px`,
+    });
     expect(layout.columns[1]?.sticky).toBeUndefined();
   });
 
@@ -60,7 +66,11 @@ describe("resolveLayout", () => {
       stickyOverrides: { 0: "left" },
     });
 
-    expect(layout.columns[0]).toMatchObject({ sticky: "left", offset: "0px", track: "200px" });
+    expect(layout.columns[0]).toMatchObject({
+      sticky: "left",
+      offset: "0px",
+      track: "200px",
+    });
   });
 
   it("sizes columns from the row data when there are no headings", () => {
@@ -87,7 +97,9 @@ describe("resolveLayout", () => {
       `${HANDLE_COLUMN_WIDTH}px ${SELECTION_COLUMN_WIDTH}px 240px`,
     );
     expect(layout.selectionOffset).toBe(`${HANDLE_COLUMN_WIDTH}px`);
-    expect(layout.columns[0]?.offset).toBe(`${HANDLE_COLUMN_WIDTH + SELECTION_COLUMN_WIDTH}px`);
+    expect(layout.columns[0]?.offset).toBe(
+      `${HANDLE_COLUMN_WIDTH + SELECTION_COLUMN_WIDTH}px`,
+    );
   });
 });
 

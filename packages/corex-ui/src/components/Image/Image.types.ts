@@ -3,10 +3,7 @@ import type { PolarisPropsType } from "../../types/common";
 
 type NativeImageProps = PolarisPropsType<"s-image">;
 
-export type ImagePropsType = Omit<
-  NativeImageProps,
-  "src" | "onLoad" | "onError"
-> & {
+export type ImagePropsType = Omit<NativeImageProps, "src" | "onLoad" | "onError"> & {
   /**
    * Source URL of the image.
    */

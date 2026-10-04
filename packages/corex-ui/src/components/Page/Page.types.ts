@@ -79,7 +79,6 @@ export type PageBackActionType = {
   [key: string]: unknown;
 };
 
-
 /**
  * Props for the `Page` component.
  * Combines native `s-page` web component attributes/slots with backward-compatible legacy Polaris props.
@@ -188,7 +187,6 @@ export type PagePropsType = {
    * @deprecated Filtering action list items is not supported on `s-page`.
    */
   filterActions?: boolean;
-
 
   /**
    * @deprecated Action groups are not directly supported on `s-page`. Provide individual actions in `secondaryActions`.

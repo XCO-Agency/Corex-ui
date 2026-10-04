@@ -10,13 +10,13 @@ import { Icon } from "@xco-agency/corex-ui";
 
 ## Prop mapping
 
-| Prop                 | Behavior                                                                                       |
-| -------------------- | ---------------------------------------------------------------------------------------------- |
-| `source`             | Maps to `s-icon`'s `type` attribute or renders custom React SVG component.                    |
-| `type`               | Maps to `s-icon`'s `type` attribute directly (e.g. `"save"`, `"star"`).                         |
+| Prop                 | Behavior                                                                                                                                 |
+| -------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| `source`             | Maps to `s-icon`'s `type` attribute or renders custom React SVG component.                                                               |
+| `type`               | Maps to `s-icon`'s `type` attribute directly (e.g. `"save"`, `"star"`).                                                                  |
 | `tone`               | Polaris tone (`"auto"`, `"info"`, `"success"`, `"caution"`, `"warning"`, `"critical"`, `"neutral"`). Supports `"white"` for white icons. |
-| `accessibilityLabel` | Passed through to `aria-label` attribute.                                                      |
-| `style`              | Custom inline CSS styles forwarded to the icon element.                                       |
+| `accessibilityLabel` | Passed through to `aria-label` attribute.                                                                                                |
+| `style`              | Custom inline CSS styles forwarded to the icon element.                                                                                  |
 
 ## White Icon Usage
 
@@ -33,4 +33,3 @@ import { Icon, IconTile } from "@xco-agency/corex-ui";
   <Icon type="delete" tone="white" />
 </IconTile>
 ```
-

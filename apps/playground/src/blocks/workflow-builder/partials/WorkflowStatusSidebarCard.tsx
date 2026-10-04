@@ -101,7 +101,8 @@ export function WorkflowStatusSidebarCard({
             Test & Dry Run
           </Text>
           <Text color="subdued" variant="bodySm">
-            Send a sample mock payload to verify conditions without mutating live store data.
+            Send a sample mock payload to verify conditions without mutating live store
+            data.
           </Text>
           <Box padding="small" background="subdued" borderRadius="base">
             <InlineStack justifyContent="space-between" alignItems="center">

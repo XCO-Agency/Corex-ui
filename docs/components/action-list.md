@@ -4,22 +4,17 @@ v12's list of actions, for use inside a [`Popover`](./popover.md). It is a menu 
 all but name.
 
 ```tsx
-import { ActionList, Button, Popover } from "@xco-agency/corex-ui";
+import { ActionList, Button } from "@xco-agency/corex-ui";
 
-<Popover>
-  <Popover.Trigger>
-    <Button>More actions</Button>
-  </Popover.Trigger>
-  <Popover.Content>
     <ActionList
       items={[
         { content: "Edit", icon: "edit", onAction: edit },
         { content: "Duplicate", onAction: duplicate, helpText: "Keeps the original" },
         { content: "Delete", icon: "delete", destructive: true, onAction: remove },
       ]}
-    />
-  </Popover.Content>
-</Popover>;
+    >
+     <Button>More actions</Button>
+    </ActionList>;
 ```
 
 | Item field          | Behavior                                                   |

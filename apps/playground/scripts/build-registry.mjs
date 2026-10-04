@@ -20,9 +20,10 @@ const BLOCK_METADATA = {
     title: "App Cross-Sell",
     description: "Ecosystem app promotion card with one-click installation trigger.",
   },
-  "cards": {
+  cards: {
     title: "Cards",
-    description: "Three versatile card layouts: minimalist, media showcase, and media with actions.",
+    description:
+      "Three versatile card layouts: minimalist, media showcase, and media with actions.",
   },
   "discount-rules": {
     title: "Discount Rules",
@@ -34,13 +35,14 @@ const BLOCK_METADATA = {
   },
   "metrics-dashboard": {
     title: "Metrics Dashboard",
-    description: "Executive revenue, conversion, and order KPI overview with comparison trends.",
+    description:
+      "Executive revenue, conversion, and order KPI overview with comparison trends.",
   },
   "notification-templates": {
     title: "Notification Templates",
     description: "Email & SMS transactional template customizer with variable insertion.",
   },
-  "onboarding": {
+  onboarding: {
     title: "Merchant Onboarding",
     description: "Multi-step Shopify onboarding wizard with theme embed verification.",
   },
@@ -50,31 +52,38 @@ const BLOCK_METADATA = {
   },
   "pricing-plans": {
     title: "Pricing Plans",
-    description: "Subscription plan selection with billing interval toggle and Shopify confirmation modal.",
+    description:
+      "Subscription plan selection with billing interval toggle and Shopify confirmation modal.",
   },
   "resource-table": {
     title: "Resource Table",
-    description: "Data table with multi-criteria filtering, bulk actions, and pagination.",
+    description:
+      "Data table with multi-criteria filtering, bulk actions, and pagination.",
   },
   "settings-layout": {
     title: "Settings Layout",
-    description: "Two-column annotated configuration layout matching Shopify Admin conventions.",
+    description:
+      "Two-column annotated configuration layout matching Shopify Admin conventions.",
   },
   "subscription-management": {
     title: "Subscription Management",
-    description: "Recurring revenue plan management, usage limits, and plan tier modifiers.",
+    description:
+      "Recurring revenue plan management, usage limits, and plan tier modifiers.",
   },
   "support-hub": {
     title: "Support Hub",
-    description: "Knowledge base FAQ accordion, diagnostic system health, and priority support.",
+    description:
+      "Knowledge base FAQ accordion, diagnostic system health, and priority support.",
   },
   "video-tutorial": {
     title: "Video Tutorial",
-    description: "Interactive video lesson viewer with timestamps, resources, and checklist.",
+    description:
+      "Interactive video lesson viewer with timestamps, resources, and checklist.",
   },
   "workflow-builder": {
     title: "Workflow Builder",
-    description: "Visual logic automation editor with triggers, conditional branches, and actions.",
+    description:
+      "Visual logic automation editor with triggers, conditional branches, and actions.",
   },
 };
 
@@ -165,20 +174,26 @@ export function buildRegistry({ silent = false } = {}) {
   if (!silent) {
     console.log(`\x1b[32m✔ Registry built successfully!\x1b[0m`);
     console.log(`  Blocks generated: \x1b[36m${indexList.length}\x1b[0m`);
-    console.log(`  Registry folder:  \x1b[36m${path.relative(playgroundDir, outputDir)}\x1b[0m`);
-    console.log(`  Index file:       \x1b[36m${path.relative(playgroundDir, outputIndexFile)}\x1b[0m`);
-    console.log(`  AI Skill copied:  \x1b[36m${path.relative(playgroundDir, skillDest)}\x1b[0m`);
+    console.log(
+      `  Registry folder:  \x1b[36m${path.relative(playgroundDir, outputDir)}\x1b[0m`,
+    );
+    console.log(
+      `  Index file:       \x1b[36m${path.relative(playgroundDir, outputIndexFile)}\x1b[0m`,
+    );
+    console.log(
+      `  AI Skill copied:  \x1b[36m${path.relative(playgroundDir, skillDest)}\x1b[0m`,
+    );
   } else {
-    console.log(`\x1b[32m✔ [registry-watcher] Synced ${indexList.length} blocks to public/r/blocks\x1b[0m`);
+    console.log(
+      `\x1b[32m✔ [registry-watcher] Synced ${indexList.length} blocks to public/r/blocks\x1b[0m`,
+    );
   }
 }
 
 // Only run automatically if executed directly via CLI (e.g. node build-registry.mjs)
 const isDirectRun =
-  process.argv[1] &&
-  fileURLToPath(import.meta.url) === path.resolve(process.argv[1]);
+  process.argv[1] && fileURLToPath(import.meta.url) === path.resolve(process.argv[1]);
 
 if (isDirectRun) {
   buildRegistry();
 }
-

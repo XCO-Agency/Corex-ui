@@ -111,14 +111,14 @@ export function DatePickerManualInputs({
 
       {/* Time Row - hidden until time is enabled */}
       {timeEnabled && (
-        <InlineStack alignItems="center" gap="small-200" >
+        <InlineStack alignItems="center" gap="small-200">
           <InlineStack flex={1}>
             <TextField
               value={startTime}
               onChange={(val) => setStartTime(val)}
               placeholder="00:00"
               icon="clock"
-            labelAccessibilityVisibility="exclusive"
+              labelAccessibilityVisibility="exclusive"
             />
           </InlineStack>
 
@@ -130,7 +130,7 @@ export function DatePickerManualInputs({
               onChange={(val) => setEndTime(val)}
               placeholder="23:59"
               icon="clock"
-            labelAccessibilityVisibility="exclusive"
+              labelAccessibilityVisibility="exclusive"
             />
           </InlineStack>
           <div style={{ inlineSize: "28px" }} />

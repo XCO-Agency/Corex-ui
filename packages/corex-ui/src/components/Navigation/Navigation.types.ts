@@ -17,7 +17,8 @@ export type NavigationItemPropsType<TId extends string | number = string> = {
   ariaLabel?: string;
 };
 
-export type NavigationItemType<TId extends string | number = string> = NavigationItemPropsType<TId>;
+export type NavigationItemType<TId extends string | number = string> =
+  NavigationItemPropsType<TId>;
 
 export type NavigationActionType =
   | {
@@ -39,7 +40,8 @@ export type NavigationSectionPropsType<TId extends string | number = string> = {
   children?: React.ReactNode;
 };
 
-export type NavigationSectionType<TId extends string | number = string> = NavigationSectionPropsType<TId>;
+export type NavigationSectionType<TId extends string | number = string> =
+  NavigationSectionPropsType<TId>;
 
 export type NavigationSearchPropsType = SearchFieldPropsType;
 
@@ -98,4 +100,3 @@ export type NavigationComponentType = {
     NavigationFooterPropsType & React.RefAttributes<HTMLDivElement>
   >;
 };
-

@@ -56,10 +56,7 @@ export function AppCrossSellRow({
               Installed
             </Badge>
           ) : (
-            <Button
-              variant="secondary"
-              onClick={() => onInstall?.(app.id)}
-            >
+            <Button variant="secondary" onClick={() => onInstall?.(app.id)}>
               {app.unlockDiscountText || "Install to unlock 30% off"}
             </Button>
           )}

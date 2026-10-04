@@ -57,7 +57,8 @@ const TILE_STYLES = [
 
 export function AppsIcons() {
   const [query, setQuery] = React.useState("");
-  const [selectedCategory, setSelectedCategory] = React.useState<AppIconCategoryType>("All");
+  const [selectedCategory, setSelectedCategory] =
+    React.useState<AppIconCategoryType>("All");
   const [iconSize, setIconSize] = React.useState<number>(28);
   const [strokeWidth, setStrokeWidth] = React.useState<number>(1.75);
   const [selectedColor, setSelectedColor] = React.useState<string>("currentColor");
@@ -65,9 +66,13 @@ export function AppsIcons() {
   const [tileStyle, setTileStyle] = React.useState<string>("rounded");
   const [copiedId, setCopiedId] = React.useState<string | null>(null);
   const [inspectIcon, setInspectIcon] = React.useState<AppIconItemType | null>(null);
-  const [modalTab, setModalTab] = React.useState<"svg" | "react" | "liquid" | "dataUri">("svg");
+  const [modalTab, setModalTab] = React.useState<"svg" | "react" | "liquid" | "dataUri">(
+    "svg",
+  );
   const [copiedModalSnippet, setCopiedModalSnippet] = React.useState<string | null>(null);
-  const [modalBg, setModalBg] = React.useState<"light" | "dark" | "slate" | "tint">("light");
+  const [modalBg, setModalBg] = React.useState<"light" | "dark" | "slate" | "tint">(
+    "light",
+  );
 
   const searchInputRef = React.useRef<HTMLInputElement>(null);
 
@@ -101,7 +106,9 @@ export function AppsIcons() {
       const idMatch = icon.id.toLowerCase().includes(trimmed);
       const descMatch = icon.description.toLowerCase().includes(trimmed);
       const keywordMatch = icon.keywords.some((k) => k.toLowerCase().includes(trimmed));
-      const placementMatch = icon.placements.some((p) => p.toLowerCase().includes(trimmed));
+      const placementMatch = icon.placements.some((p) =>
+        p.toLowerCase().includes(trimmed),
+      );
 
       return titleMatch || idMatch || descMatch || keywordMatch || placementMatch;
     });
@@ -126,7 +133,7 @@ export function AppsIcons() {
       document.body.removeChild(link);
       URL.revokeObjectURL(url);
     },
-    [selectedColor, strokeWidth]
+    [selectedColor, strokeWidth],
   );
 
   // Quick copy SVG helper
@@ -143,7 +150,7 @@ export function AppsIcons() {
         setCopiedId((curr) => (curr === icon.id ? null : curr));
       }, 1800);
     },
-    [selectedColor, strokeWidth, iconSize]
+    [selectedColor, strokeWidth, iconSize],
   );
 
   // Copy modal snippet
@@ -159,15 +166,18 @@ export function AppsIcons() {
     selectedColor === "custom"
       ? customColor
       : selectedColor === "currentColor"
-      ? undefined
-      : selectedColor;
+        ? undefined
+        : selectedColor;
 
   return (
     <div className="mx-auto w-full max-w-7xl px-2 pb-24 sm:px-4">
       {/* Hero Header */}
       <header className="relative space-y-4 pt-4 pb-6 text-center sm:pt-6">
         <div className="flex items-center justify-center gap-2">
-          <Badge variant="secondary" className="gap-1.5 px-3 py-1 font-mono text-xs text-amber-600 dark:text-amber-400 bg-amber-500/10 border-amber-500/20">
+          <Badge
+            variant="secondary"
+            className="gap-1.5 px-3 py-1 font-mono text-xs text-amber-600 dark:text-amber-400 bg-amber-500/10 border-amber-500/20"
+          >
             <BadgeCheck className="size-3.5" />
             Shopify Storefront &amp; Apps
           </Badge>
@@ -181,8 +191,9 @@ export function AppsIcons() {
             Apps Icons &amp; Trust Badges
           </h1>
           <p className="mx-auto max-w-3xl text-sm text-muted-foreground sm:text-base">
-            High-converting store trust badges, shipping, returns, security seals, and payment icons.
-            Clean, lightweight vector SVGs ready to embed in Shopify themes, app embeds, cart drawers, and product pages.
+            High-converting store trust badges, shipping, returns, security seals, and
+            payment icons. Clean, lightweight vector SVGs ready to embed in Shopify
+            themes, app embeds, cart drawers, and product pages.
           </p>
         </div>
 
@@ -239,7 +250,7 @@ export function AppsIcons() {
                 "flex shrink-0 items-center gap-1.5 rounded-full px-3.5 py-1.5 text-xs font-medium transition-all cursor-pointer",
                 isSelected
                   ? "bg-primary text-primary-foreground shadow-xs"
-                  : "bg-muted/70 text-muted-foreground hover:bg-muted hover:text-foreground border border-border/50"
+                  : "bg-muted/70 text-muted-foreground hover:bg-muted hover:text-foreground border border-border/50",
               )}
             >
               <span>{cat}</span>
@@ -248,7 +259,7 @@ export function AppsIcons() {
                   "rounded-full px-1.5 py-0.2 text-[10px] font-mono",
                   isSelected
                     ? "bg-primary-foreground/20 text-primary-foreground"
-                    : "bg-background/80 text-muted-foreground"
+                    : "bg-background/80 text-muted-foreground",
                 )}
               >
                 {count}
@@ -277,7 +288,7 @@ export function AppsIcons() {
                     "flex size-6 items-center justify-center rounded-full border transition-all cursor-pointer",
                     selectedColor === preset.color
                       ? "ring-2 ring-primary ring-offset-2 scale-110 border-transparent"
-                      : "border-border hover:scale-105"
+                      : "border-border hover:scale-105",
                   )}
                 >
                   <span className={cn("size-4 rounded-full", preset.bgClass)} />
@@ -301,7 +312,7 @@ export function AppsIcons() {
                     "flex size-6 items-center justify-center rounded-full border cursor-pointer",
                     selectedColor === "custom"
                       ? "ring-2 ring-primary ring-offset-2 scale-110 border-transparent"
-                      : "border-border"
+                      : "border-border",
                   )}
                   style={{ backgroundColor: customColor }}
                   title="Pick custom color"
@@ -323,7 +334,7 @@ export function AppsIcons() {
                     "px-2 py-0.5 text-xs font-mono rounded-md transition-all cursor-pointer",
                     iconSize === size
                       ? "bg-background text-foreground font-semibold shadow-xs"
-                      : "text-muted-foreground hover:text-foreground"
+                      : "text-muted-foreground hover:text-foreground",
                   )}
                 >
                   {size}px
@@ -345,7 +356,7 @@ export function AppsIcons() {
                     "px-2 py-0.5 text-xs font-mono rounded-md transition-all cursor-pointer",
                     strokeWidth === stroke
                       ? "bg-background text-foreground font-semibold shadow-xs"
-                      : "text-muted-foreground hover:text-foreground"
+                      : "text-muted-foreground hover:text-foreground",
                   )}
                 >
                   {stroke}
@@ -367,7 +378,7 @@ export function AppsIcons() {
                     "px-2 py-0.5 text-xs rounded-md transition-all cursor-pointer",
                     tileStyle === style.id
                       ? "bg-background text-foreground font-semibold shadow-xs"
-                      : "text-muted-foreground hover:text-foreground"
+                      : "text-muted-foreground hover:text-foreground",
                   )}
                 >
                   {style.label}
@@ -379,7 +390,8 @@ export function AppsIcons() {
 
         {/* Status Count */}
         <div className="text-xs font-mono text-muted-foreground">
-          Showing <span className="font-semibold text-foreground">{filteredIcons.length}</span> of{" "}
+          Showing{" "}
+          <span className="font-semibold text-foreground">{filteredIcons.length}</span> of{" "}
           {APP_ICONS_DATA.length} icons
         </div>
       </div>
@@ -390,9 +402,12 @@ export function AppsIcons() {
           <div className="flex size-14 items-center justify-center rounded-2xl bg-muted/50 text-muted-foreground">
             <Search className="size-7" />
           </div>
-          <h3 className="mt-4 text-base font-semibold text-foreground">No store icons found</h3>
+          <h3 className="mt-4 text-base font-semibold text-foreground">
+            No store icons found
+          </h3>
           <p className="mt-1 max-w-sm text-xs text-muted-foreground sm:text-sm">
-            No matching icons found for &ldquo;{query}&rdquo;. Try another search term or click below to clear.
+            No matching icons found for &ldquo;{query}&rdquo;. Try another search term or
+            click below to clear.
           </p>
           <div className="mt-5 flex gap-2">
             <button
@@ -430,7 +445,7 @@ export function AppsIcons() {
                   "group relative flex flex-col items-center justify-between rounded-xl border p-3 transition-all duration-150 cursor-pointer select-none focus:outline-none focus-visible:ring-2 focus-visible:ring-primary",
                   isCopied
                     ? "border-emerald-500 bg-emerald-500/10 shadow-xs"
-                    : "border-border/80 bg-card hover:border-primary/50 hover:bg-accent/30 hover:shadow-sm"
+                    : "border-border/80 bg-card hover:border-primary/50 hover:bg-accent/30 hover:shadow-sm",
                 )}
                 title={`Click to copy raw SVG: ${icon.title}`}
               >
@@ -468,8 +483,9 @@ export function AppsIcons() {
                     "flex h-20 w-full items-center justify-center transition-all group-hover:scale-105",
                     tileStyle === "rounded" && "rounded-xl bg-muted/60",
                     tileStyle === "circle" && "mx-auto size-16 rounded-full bg-muted/60",
-                    tileStyle === "bordered" && "rounded-xl border border-dashed border-border/80 bg-background",
-                    tileStyle === "none" && ""
+                    tileStyle === "bordered" &&
+                      "rounded-xl border border-dashed border-border/80 bg-background",
+                    tileStyle === "none" && "",
                   )}
                 >
                   <AppIcon
@@ -487,7 +503,7 @@ export function AppsIcons() {
                       "block w-full truncate text-xs font-medium transition-colors",
                       isCopied
                         ? "font-semibold text-emerald-600 dark:text-emerald-400"
-                        : "text-foreground group-hover:text-primary"
+                        : "text-foreground group-hover:text-primary",
                     )}
                     title={icon.title}
                   >
@@ -565,7 +581,7 @@ export function AppsIcons() {
                         "rounded px-2 py-0.5 text-[11px] transition-colors cursor-pointer",
                         modalBg === "light"
                           ? "bg-foreground text-background font-semibold"
-                          : "hover:bg-muted"
+                          : "hover:bg-muted",
                       )}
                     >
                       Light
@@ -577,7 +593,7 @@ export function AppsIcons() {
                         "rounded px-2 py-0.5 text-[11px] transition-colors cursor-pointer",
                         modalBg === "dark"
                           ? "bg-foreground text-background font-semibold"
-                          : "hover:bg-muted"
+                          : "hover:bg-muted",
                       )}
                     >
                       Dark
@@ -589,7 +605,7 @@ export function AppsIcons() {
                         "rounded px-2 py-0.5 text-[11px] transition-colors cursor-pointer",
                         modalBg === "slate"
                           ? "bg-foreground text-background font-semibold"
-                          : "hover:bg-muted"
+                          : "hover:bg-muted",
                       )}
                     >
                       Slate
@@ -601,7 +617,7 @@ export function AppsIcons() {
                         "rounded px-2 py-0.5 text-[11px] transition-colors cursor-pointer",
                         modalBg === "tint"
                           ? "bg-foreground text-background font-semibold"
-                          : "hover:bg-muted"
+                          : "hover:bg-muted",
                       )}
                     >
                       Tint
@@ -614,8 +630,10 @@ export function AppsIcons() {
                     "flex h-36 items-center justify-center rounded-xl border border-border transition-colors",
                     modalBg === "light" && "bg-white text-zinc-900",
                     modalBg === "dark" && "bg-zinc-950 text-white",
-                    modalBg === "slate" && "bg-slate-200 text-slate-900 dark:bg-slate-800 dark:text-white",
-                    modalBg === "tint" && "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400"
+                    modalBg === "slate" &&
+                      "bg-slate-200 text-slate-900 dark:bg-slate-800 dark:text-white",
+                    modalBg === "tint" &&
+                      "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400",
                   )}
                 >
                   <AppIcon
@@ -656,7 +674,7 @@ export function AppsIcons() {
                         "px-2.5 py-1 text-xs font-medium rounded-md transition-all cursor-pointer",
                         modalTab === "svg"
                           ? "bg-background text-foreground font-semibold shadow-xs"
-                          : "text-muted-foreground hover:text-foreground"
+                          : "text-muted-foreground hover:text-foreground",
                       )}
                     >
                       Raw SVG
@@ -668,7 +686,7 @@ export function AppsIcons() {
                         "px-2.5 py-1 text-xs font-medium rounded-md transition-all cursor-pointer",
                         modalTab === "react"
                           ? "bg-background text-foreground font-semibold shadow-xs"
-                          : "text-muted-foreground hover:text-foreground"
+                          : "text-muted-foreground hover:text-foreground",
                       )}
                     >
                       React Component
@@ -680,7 +698,7 @@ export function AppsIcons() {
                         "px-2.5 py-1 text-xs font-medium rounded-md transition-all cursor-pointer",
                         modalTab === "liquid"
                           ? "bg-background text-foreground font-semibold shadow-xs"
-                          : "text-muted-foreground hover:text-foreground"
+                          : "text-muted-foreground hover:text-foreground",
                       )}
                     >
                       Shopify Liquid
@@ -692,7 +710,7 @@ export function AppsIcons() {
                         "px-2.5 py-1 text-xs font-medium rounded-md transition-all cursor-pointer",
                         modalTab === "dataUri"
                           ? "bg-background text-foreground font-semibold shadow-xs"
-                          : "text-muted-foreground hover:text-foreground"
+                          : "text-muted-foreground hover:text-foreground",
                       )}
                     >
                       CSS Data URI
@@ -705,7 +723,10 @@ export function AppsIcons() {
                       let code = "";
                       if (modalTab === "svg") {
                         code = getRawSvg(inspectIcon, {
-                          color: selectedColor === "currentColor" ? "currentColor" : selectedColor,
+                          color:
+                            selectedColor === "currentColor"
+                              ? "currentColor"
+                              : selectedColor,
                           strokeWidth,
                           size: 24,
                         });
@@ -739,7 +760,10 @@ export function AppsIcons() {
                   <pre className="whitespace-pre-wrap">
                     {modalTab === "svg" &&
                       getRawSvg(inspectIcon, {
-                        color: selectedColor === "currentColor" ? "currentColor" : selectedColor,
+                        color:
+                          selectedColor === "currentColor"
+                            ? "currentColor"
+                            : selectedColor,
                         strokeWidth,
                         size: 24,
                       })}

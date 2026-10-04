@@ -519,7 +519,9 @@ export function IndexFiltersExample() {
                 {filteredProducts.map((product) => (
                   <Table.Row key={product.id}>
                     {visibleColumns.map((column) => (
-                      <Table.Cell key={column.key}>{renderCell[column.key]?.(product)}</Table.Cell>
+                      <Table.Cell key={column.key}>
+                        {renderCell[column.key]?.(product)}
+                      </Table.Cell>
                     ))}
                   </Table.Row>
                 ))}

@@ -1,10 +1,7 @@
 import { forwardRef } from "react";
 import type { ForwardRefExoticComponent, RefAttributes } from "react";
 import { createWebComponent } from "../../core/createWebComponent";
-import type {
-  DatePickerVisibleMonthsType,
-  DateRangeType,
-} from "./DatePicker.types";
+import type { DatePickerVisibleMonthsType, DateRangeType } from "./DatePicker.types";
 
 export const SDatePicker = createWebComponent<
   HTMLElement,
@@ -173,7 +170,7 @@ export const DatePickerCalendar: ForwardRefExoticComponent<
       allowDays={allowDays}
       disallowDays={disallowDays}
       onInput={handleInput}
-      
+
       onChange={handleChange}
       onViewChange={handleViewChange}
       className={className}

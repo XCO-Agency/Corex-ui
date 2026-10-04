@@ -88,4 +88,3 @@ export type PricingPlansExamplePropsType = {
   initialPlanId?: PlanTierIdType;
   initialInterval?: BillingIntervalType;
 };
-
