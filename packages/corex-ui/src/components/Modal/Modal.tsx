@@ -173,7 +173,7 @@ export const Modal = forwardRef<ModalElement, ModalPropsType>(function Modal(
   const handleDismiss = useCallback(() => {
     if (isOpenRef.current) {
       onHide?.();
-      onClose();
+      onClose?.();
     }
     if (saveBar) {
       setChildState((prev) => (prev.open ? { ...prev, open: false } : prev));

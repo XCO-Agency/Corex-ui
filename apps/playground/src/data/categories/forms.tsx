@@ -23,6 +23,8 @@ import { SelectExample } from "@/examples/forms/SelectExample";
 import SelectExampleRaw from "@/examples/forms/SelectExample.tsx?raw";
 import { CheckboxExample } from "@/examples/forms/CheckboxExample";
 import CheckboxExampleRaw from "@/examples/forms/CheckboxExample.tsx?raw";
+import { SwitchExample } from "@/examples/forms/SwitchExample";
+import SwitchExampleRaw from "@/examples/forms/SwitchExample.tsx?raw";
 import { ChoiceListExample } from "@/examples/forms/ChoiceListExample";
 import ChoiceListExampleRaw from "@/examples/forms/ChoiceListExample.tsx?raw";
 import { DateFieldExample } from "@/examples/forms/DateFieldExample";
@@ -199,6 +201,20 @@ export const formsComponents: ComponentEntry[] = [
         title: "Controlled checkbox",
         Example: CheckboxExample,
         code: CheckboxExampleRaw,
+      },
+    ],
+  },
+  {
+    name: "Switch",
+    slug: "switch",
+    category: "Forms",
+    description:
+      "A toggle switch control for binary settings and preferences, controlled via checked/onChange.",
+    examples: [
+      {
+        title: "Controlled toggle switch",
+        Example: SwitchExample,
+        code: SwitchExampleRaw,
       },
     ],
   },

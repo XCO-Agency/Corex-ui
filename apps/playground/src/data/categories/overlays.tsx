@@ -11,6 +11,8 @@ import { FloatingAbsoluteExample } from "@/examples/overlays/FloatingAbsoluteExa
 import FloatingAbsoluteExampleRaw from "@/examples/overlays/FloatingAbsoluteExample.tsx?raw";
 import { PopoverExample } from "@/examples/overlays/PopoverExample";
 import PopoverExampleRaw from "@/examples/overlays/PopoverExample.tsx?raw";
+import { FlexPopoverExample } from "@/examples/overlays/FlexPopoverExample";
+import FlexPopoverExampleRaw from "@/examples/overlays/FlexPopoverExample.tsx?raw";
 import { ActionListExample } from "@/examples/overlays/ActionListExample";
 import ActionListExampleRaw from "@/examples/overlays/ActionListExample.tsx?raw";
 
@@ -134,6 +136,20 @@ export const overlaysComponents: ComponentEntry[] = [
         title: "Filter Popover with programmatic close",
         Example: PopoverExample,
         code: PopoverExampleRaw,
+      },
+    ],
+  },
+  {
+    name: "FlexPopover",
+    slug: "flex-popover",
+    category: "Overlays",
+    description:
+      "Controlled floating popover portalled into body with automatic viewport boundary clamping and light-dismiss.",
+    examples: [
+      {
+        title: "Floating Filter Panel",
+        Example: FlexPopoverExample,
+        code: FlexPopoverExampleRaw,
       },
     ],
   },

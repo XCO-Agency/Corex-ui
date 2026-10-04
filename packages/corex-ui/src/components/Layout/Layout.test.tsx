@@ -54,4 +54,67 @@ describe("Layout", () => {
       "span 4",
     );
   });
+
+  it("auto-fills the remaining columns when paired with oneThird", () => {
+    const { container } = render(
+      <Layout>
+        <Layout.Section variant="oneThird">Sidebar</Layout.Section>
+        <Layout.Section>Main Content</Layout.Section>
+      </Layout>,
+    );
+
+    const items = container.querySelectorAll("s-grid-item");
+    expect(items).toHaveLength(2);
+    expect(items[0]).toHaveAttribute("grid-column", "span 4");
+    expect(items[1]).toHaveAttribute("grid-column", "span 8");
+  });
+
+  it("auto-fills the remaining columns when unvarianted section comes first", () => {
+    const { container } = render(
+      <Layout>
+        <Layout.Section>Main Content</Layout.Section>
+        <Layout.Section variant="oneThird">Sidebar</Layout.Section>
+      </Layout>,
+    );
+
+    const items = container.querySelectorAll("s-grid-item");
+    expect(items).toHaveLength(2);
+    expect(items[0]).toHaveAttribute("grid-column", "span 8");
+    expect(items[1]).toHaveAttribute("grid-column", "span 4");
+  });
+
+  it("auto-fills the remaining columns when paired with oneFourth", () => {
+    const { container } = render(
+      <Layout>
+        <Layout.Section variant="oneFourth">Sidebar</Layout.Section>
+        <Layout.Section>Main Content</Layout.Section>
+      </Layout>,
+    );
+
+    const items = container.querySelectorAll("s-grid-item");
+    expect(items).toHaveLength(2);
+    expect(items[0]).toHaveAttribute("grid-column", "span 3");
+    expect(items[1]).toHaveAttribute("grid-column", "span 9");
+  });
+
+  it("handles multi-row layouts with auto-fill sections and paired halves", () => {
+    const { container } = render(
+      <Layout>
+        <Layout.Section variant="oneThird">Filters</Layout.Section>
+        <Layout.Section>Results</Layout.Section>
+        <Layout.Section variant="oneHalf">Half Left</Layout.Section>
+        <Layout.Section variant="oneHalf">Half Right</Layout.Section>
+      </Layout>,
+    );
+
+    const items = container.querySelectorAll("s-grid-item");
+    expect(items).toHaveLength(4);
+    // Row 1
+    expect(items[0]).toHaveAttribute("grid-column", "span 4");
+    expect(items[1]).toHaveAttribute("grid-column", "span 8");
+    // Row 2
+    expect(items[2]).toHaveAttribute("grid-column", "span 6");
+    expect(items[3]).toHaveAttribute("grid-column", "span 6");
+  });
 });
+

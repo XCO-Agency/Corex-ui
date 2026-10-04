@@ -56,9 +56,20 @@ No `.npmrc` configuration or authentication tokens are required.
 
 Or automatically via GitHub Actions release workflow (`.github/workflows/publish.yml`).
 
+## AI Coding Assistant Skill
+
+Add the official Corex UI skill to your AI coding agents (**Cursor**, **Claude Code**, **Antigravity**, **Copilot**):
+
+```sh
+pnpm dlx skills add XCO-Agency/Corex-ui
+# or
+npx skills add XCO-Agency/Corex-ui
+```
+
 ## Documentation
 
 - [`packages/corex-ui/README.md`](./packages/corex-ui/README.md) — install & usage for the library itself.
+- [`docs/agent-skills.md`](./docs/agent-skills.md) — setup guide for AI coding assistants (skills.sh, Cursor, Claude Code, Antigravity).
 - [`docs/architecture.md`](./docs/architecture.md) — how the wrapper layer works, and how to add new components.
 - [`docs/migration-guide.md`](./docs/migration-guide.md) — moving an existing app off `@shopify/polaris`.
 - [`docs/components/`](./docs/components/) — one page per component, with a legacy-prop-to-new-prop table.

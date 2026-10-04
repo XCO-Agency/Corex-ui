@@ -11,7 +11,7 @@ type IconTileToneType =
   | "critical"
   | "transparent";
 export type IconTileColorType = "base" | "strong";
-type IconTileBorderRadiusType = "none" | "small" | "base" | "large" | "full";
+type IconTileBorderRadiusType = "none" | "small" | "base" | "large" | "large-100" | "large-200" |"full" ;
 type IconTileSizeType = "small" | "base" | "large" | "auto";
 
 export type IconTilePropsType = {
@@ -142,6 +142,8 @@ const BORDER_RADIUS_STYLES: Record<IconTileBorderRadiusType, { borderRadius: str
   small: { borderRadius: "0.25rem" },
   base: { borderRadius: "0.5rem" },
   large: { borderRadius: "0.8125rem" },
+  "large-100": { borderRadius: "1.125rem" },
+  "large-200": { borderRadius: "2.0625rem" },
   full: { borderRadius: "9999px" },
 };
 

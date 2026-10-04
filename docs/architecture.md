@@ -151,6 +151,8 @@ silently dropping behavior.
    the playground against the real CDN script — the unit tests run against jsdom stand-ins,
    not the real Polaris runtime, so they only prove the prop/event translation is correct, not
    that the real element accepts the attribute names used.
+8. Update the AI Agent Skill reference in [`.agents/skills/corex-ui-components/SKILL.md`](../.agents/skills/corex-ui-components/SKILL.md)
+   with its category table row, modern props, subcomponents, and usage example.
 
 ## A caveat on exact web-component APIs
 

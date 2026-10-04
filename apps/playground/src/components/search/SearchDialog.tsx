@@ -11,60 +11,6 @@ import { allEntries, blocks, type ComponentEntry } from "@/data/registry";
 import { getCategoryIcon } from "@/lib/category-icons";
 import { cn } from "@/lib/utils";
 
-export type SearchDialogPropsType = {
-  open?: boolean;
-  onOpenChange?: (open: boolean) => void;
-};
-
-export function SearchDialog({
-  open: controlledOpen,
-  onOpenChange,
-}: SearchDialogPropsType) {
-  const [internalOpen, setInternalOpen] = React.useState(false);
-  const [query, setQuery] = React.useState("");
-  const [activeIndex, setActiveIndex] = React.useState(0);
-  const inputRef = React.useRef<HTMLInputElement>(null);
-  const listRef = React.useRef<HTMLDivElement>(null);
-  const navigate = useNavigate();
-
-  const isControlled = controlledOpen !== undefined;
-  const isOpen = isControlled ? controlledOpen : internalOpen;
-
-  const setOpen = React.useCallback(
-    (nextOpen: boolean) => {
-      if (isControlled) {
-        onOpenChange?.(nextOpen);
-      } else {
-        setInternalOpen(nextOpen);
-      }
-      if (!nextOpen) {
-        setQuery("");
-        setActiveIndex(0);
-      }
-    },
-    [isControlled, onOpenChange],
-  );
-
-  // Global keyboard shortcut: Cmd+K / Ctrl+K or /
-  React.useEffect(() => {
-    function handleKeyDown(e: KeyboardEvent) {
-      if ((e.metaKey || e.ctrlKey) && e.key === "k") {
-        e.preventDefault();
-        setOpen(!isOpen);
-      } else if (
-        e.key === "/" &&
-        !isOpen &&
-        !(e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement)
-      ) {
-        e.preventDefault();
-        setOpen(true);
-      }
-    }
-
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [isOpen, setOpen]);
-
 const UTILS_ENTRIES: ComponentEntry[] = [
   {
     name: "useSaveBar",
@@ -128,19 +74,110 @@ const APPS_ICONS_ENTRY: ComponentEntry = {
 
 const searchableEntries = [...allEntries, ...UTILS_ENTRIES, ICONS_ENTRY, APPS_ICONS_ENTRY];
 
-  // Filter components, blocks, and utils
+function getSearchScore(entry: ComponentEntry, query: string): number {
+  const name = entry.name.toLowerCase();
+  const slug = entry.slug.toLowerCase();
+  const category = entry.category.toLowerCase();
+  const desc = entry.description.toLowerCase();
+
+  // 1. Exact match on component name or slug (top priority)
+  if (name === query || slug === query) return 1000;
+
+  // 2. Name starts with search query
+  if (name.startsWith(query)) return 500;
+
+  // 3. Slug starts with search query
+  if (slug.startsWith(query)) return 400;
+
+  // 4. Name contains a word starting with query (e.g. "Settings Layout" matching "layout")
+  const words = name.split(/[\s-_]+/);
+  if (words.some((w) => w.startsWith(query))) return 300;
+
+  // 5. Name contains query substring (e.g. "FormLayout" matching "layout")
+  if (name.includes(query)) return 200;
+
+  // 6. Slug contains query substring
+  if (slug.includes(query)) return 150;
+
+  // 7. Description exact word match or starts with query
+  const descWords = desc.split(/[\s-_]+/);
+  if (descWords.some((w) => w === query)) return 80;
+  if (desc.includes(query)) return 50;
+
+  // 8. Category exact match
+  if (category === query) return 30;
+
+  // 9. Category contains query
+  if (category.includes(query)) return 10;
+
+  return 0;
+}
+
+export type SearchDialogPropsType = {
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
+};
+
+export function SearchDialog({
+  open: controlledOpen,
+  onOpenChange,
+}: SearchDialogPropsType) {
+  const [internalOpen, setInternalOpen] = React.useState(false);
+  const [query, setQuery] = React.useState("");
+  const [activeIndex, setActiveIndex] = React.useState(0);
+  const inputRef = React.useRef<HTMLInputElement>(null);
+  const listRef = React.useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
+
+  const isControlled = controlledOpen !== undefined;
+  const isOpen = isControlled ? controlledOpen : internalOpen;
+
+  const setOpen = React.useCallback(
+    (nextOpen: boolean) => {
+      if (isControlled) {
+        onOpenChange?.(nextOpen);
+      } else {
+        setInternalOpen(nextOpen);
+      }
+      if (!nextOpen) {
+        setQuery("");
+        setActiveIndex(0);
+      }
+    },
+    [isControlled, onOpenChange],
+  );
+
+  // Global keyboard shortcut: Cmd+K / Ctrl+K or /
+  React.useEffect(() => {
+    function handleKeyDown(e: KeyboardEvent) {
+      if ((e.metaKey || e.ctrlKey) && e.key === "k") {
+        e.preventDefault();
+        setOpen(!isOpen);
+      } else if (
+        e.key === "/" &&
+        !isOpen &&
+        !(e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement)
+      ) {
+        e.preventDefault();
+        setOpen(true);
+      }
+    }
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isOpen, setOpen]);
+
+  // Filter components, blocks, and utils with intelligent scoring & ranking
   const results = React.useMemo(() => {
     const trimmed = query.trim().toLowerCase();
     if (!trimmed) {
       return searchableEntries;
     }
-    return searchableEntries.filter((component) => {
-      const nameMatch = component.name.toLowerCase().includes(trimmed);
-      const slugMatch = component.slug.toLowerCase().includes(trimmed);
-      const categoryMatch = component.category.toLowerCase().includes(trimmed);
-      const descMatch = component.description.toLowerCase().includes(trimmed);
-      return nameMatch || slugMatch || categoryMatch || descMatch;
-    });
+    return searchableEntries
+      .map((entry) => ({ entry, score: getSearchScore(entry, trimmed) }))
+      .filter((item) => item.score > 0)
+      .sort((a, b) => b.score - a.score || a.entry.name.localeCompare(b.entry.name))
+      .map((item) => item.entry);
   }, [query]);
 
   // Reset active index when query changes

@@ -7,7 +7,7 @@ export function LayoutExample() {
         <Card>
           <BlockStack gap="small-200">
             <Text heading>Filters</Text>
-            <Text color="subdued">A third of the row on desktop.</Text>
+            <Text color="subdued">One third of the row on desktop.</Text>
           </BlockStack>
         </Card>
       </Layout.Section>
@@ -16,8 +16,9 @@ export function LayoutExample() {
           <BlockStack gap="small-200">
             <Text heading>Results</Text>
             <Text color="subdued">
-              A section with no variant takes the full row. Below the md breakpoint both
-              stack instead of squeezing onto a phone.
+              A section with no variant automatically fills the remaining columns of the
+              row (two thirds). Below the md breakpoint both stack instead of squeezing
+              onto a phone.
             </Text>
           </BlockStack>
         </Card>

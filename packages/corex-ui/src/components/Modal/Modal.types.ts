@@ -33,7 +33,7 @@ export type ModalPropsType = Omit<NativeModalProps, "children" | "title"> & {
   children?: ReactNode;
   /** Controls visibility. `Modal` owns no internal open state, matching legacy `Modal`. */
   open: boolean;
-  onClose: () => void;
+  onClose?: () => void;
   /** App Bridge modal dismiss callback, called whenever modal hides. */
   onHide?: () => void;
   title?: ReactNode;

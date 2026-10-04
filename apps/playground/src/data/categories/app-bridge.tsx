@@ -17,6 +17,8 @@ import { SaveBarExample } from "@/examples/app-bridge/SaveBarExample";
 import SaveBarExampleRaw from "@/examples/app-bridge/SaveBarExample.tsx?raw";
 import { SaveBarFormExample } from "@/examples/app-bridge/SaveBarFormExample";
 import SaveBarFormExampleRaw from "@/examples/app-bridge/SaveBarFormExample.tsx?raw";
+import { TitleBarExample } from "@/examples/app-bridge/TitleBarExample";
+import TitleBarExampleRaw from "@/examples/app-bridge/TitleBarExample.tsx?raw";
 
 import { AppWindowSaveBarExample } from "@/examples/app-bridge/AppWindowSaveBarExample";
 import AppWindowSaveBarExampleRaw from "@/examples/app-bridge/AppWindowSaveBarExample.tsx?raw";
@@ -181,6 +183,21 @@ export const appBridgeComponents: ComponentEntry[] = [
         title: "Same-page form (no wrapper needed)",
         Example: SaveBarFormExample,
         code: SaveBarFormExampleRaw,
+      },
+    ],
+  },
+  {
+    name: "TitleBar",
+    slug: "title-bar",
+    category: "App Bridge",
+    description:
+      "Shopify App Bridge title bar component for modal dialogs and embedded pages.",
+    requiresEmbeddedContext: true,
+    examples: [
+      {
+        title: "Modal TitleBar with actions",
+        Example: TitleBarExample,
+        code: TitleBarExampleRaw,
       },
     ],
   },

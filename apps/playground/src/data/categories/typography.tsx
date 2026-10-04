@@ -1,6 +1,8 @@
 import type { ComponentEntry } from "../types";
 import { TextVariants } from "@/examples/typography/TextVariants";
 import TextVariantsRaw from "@/examples/typography/TextVariants.tsx?raw";
+import { ParagraphExample } from "@/examples/typography/ParagraphExample";
+import ParagraphExampleRaw from "@/examples/typography/ParagraphExample.tsx?raw";
 import { InlineCodeExample } from "@/examples/typography/InlineCodeExample";
 import InlineCodeExampleRaw from "@/examples/typography/InlineCodeExample.tsx?raw";
 import { InlineErrorExample } from "@/examples/typography/InlineErrorExample";
@@ -18,6 +20,20 @@ export const typographyComponents: ComponentEntry[] = [
         title: "Variants & tones",
         Example: TextVariants,
         code: TextVariantsRaw,
+      },
+    ],
+  },
+  {
+    name: "Paragraph",
+    slug: "paragraph",
+    category: "Typography",
+    description:
+      "Displays paragraph body copy using Polaris <s-paragraph> primitive.",
+    examples: [
+      {
+        title: "Paragraph body text",
+        Example: ParagraphExample,
+        code: ParagraphExampleRaw,
       },
     ],
   },

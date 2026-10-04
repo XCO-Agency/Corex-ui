@@ -71,7 +71,7 @@ export function SelectableCard({
     <Box position="relative" inlineSize="100%">
       {selected && (
         <Floating position="top-right" strategy="absolute" offset={12} zIndex={10}>
-          <Badge tone="success" icon="check">
+          <Badge tone="info" icon="check">
             Selected
           </Badge>
         </Floating>
@@ -80,8 +80,8 @@ export function SelectableCard({
       <Clickable onClick={handleToggle} inlineSize="fill" borderRadius="large-100">
         <IconTile
           size="auto"
-          tone={selected ? "success" : "neutral"}
-          borderRadius="large"
+          tone={selected ? "info" : "neutral"}
+          borderRadius="large-100"
         >
           <Box padding="small-500">
             <Card padding="none">
@@ -169,7 +169,7 @@ export function SelectableCard({
                   label="Template Title"
                   value={editableTitle}
                   onChange={(val) => setEditableTitle(val)}
-                  autoComplete="off"
+                  autocomplete="off"
                   helpText="Displayed on your storefront onboarding dashboard."
                 />
 

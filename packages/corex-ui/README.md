@@ -60,9 +60,22 @@ legacy-prop-to-new-prop mapping table. See [`docs/component-coverage.md`](../../
 for what's not yet covered. More components are added incrementally — see
 [`docs/architecture.md`](../../docs/architecture.md#adding-a-new-component) for the pattern.
 
+## AI Coding Assistant Skill
+
+Teach AI coding assistants (**Cursor**, **Claude Code**, **Antigravity**, **Copilot**) how to use Corex UI components, modern props, and spacing tokens:
+
+```sh
+pnpm dlx skills add XCO-Agency/Corex-ui
+# or
+npx skills add XCO-Agency/Corex-ui
+```
+
+See the [Agent Skills guide](../../docs/agent-skills.md) for tool-specific setup and details.
+
 ## Documentation
 
 - [Architecture](../../docs/architecture.md) — how the wrapper layer is built, and how to add components.
+- [Agent Skills](../../docs/agent-skills.md) — install AI skills for Cursor, Claude Code, Antigravity, and Copilot.
 - [Migration guide](../../docs/migration-guide.md) — moving an app off `@shopify/polaris`.
 - [Component docs](../../docs/components/) — one page per component.
 - [Component coverage](../../docs/component-coverage.md) — full audit against Polaris's web component catalog.

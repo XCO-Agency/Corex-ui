@@ -203,6 +203,7 @@ export function IndexTableExample() {
             { content: "Add tags", onAction: () => alert("Add tags") },
             { content: "Remove tags", onAction: () => alert("Remove tags") },
           ]}
+          
           footerContent={
             <InlineStack justifyContent="center" alignItems="center">
               <Link url="#" onClick={() => alert("Learn more")}>
@@ -293,6 +294,8 @@ export function IndexTableExample() {
               </IndexTable.Cell>
             </IndexTable.Row>
           ))}
+
+
         </IndexTable>
       </Page>
     </Box>

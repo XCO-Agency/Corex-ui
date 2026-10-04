@@ -23,6 +23,10 @@ import { TransitionExample } from "@/examples/layout/TransitionExample";
 import TransitionExampleRaw from "@/examples/layout/TransitionExample.tsx?raw";
 import { LayoutExample } from "@/examples/layout/LayoutExample";
 import LayoutExampleRaw from "@/examples/layout/LayoutExample.tsx?raw";
+import { GridExample } from "@/examples/layout/GridExample";
+import GridExampleRaw from "@/examples/layout/GridExample.tsx?raw";
+import { QueryContainerExample } from "@/examples/layout/QueryContainerExample";
+import QueryContainerExampleRaw from "@/examples/layout/QueryContainerExample.tsx?raw";
 import { InlineGridExample } from "@/examples/layout/InlineGridExample";
 import InlineGridExampleRaw from "@/examples/layout/InlineGridExample.tsx?raw";
 import { FormLayoutExample } from "@/examples/layout/FormLayoutExample";
@@ -183,6 +187,20 @@ export const layoutComponents: ComponentEntry[] = [
     ],
   },
   {
+    name: "Grid",
+    slug: "grid",
+    category: "Layout",
+    description:
+      "CSS Grid container with responsive tracks (columns/rows), gaps, and Grid.Item placement.",
+    examples: [
+      {
+        title: "Responsive columns and gaps",
+        Example: GridExample,
+        code: GridExampleRaw,
+      },
+    ],
+  },
+  {
     name: "Layout",
     slug: "layout",
     category: "Layout",
@@ -207,6 +225,20 @@ export const layoutComponents: ComponentEntry[] = [
         title: "Counts, tracks and breakpoints",
         Example: InlineGridExample,
         code: InlineGridExampleRaw,
+      },
+    ],
+  },
+  {
+    name: "QueryContainer",
+    slug: "query-container",
+    category: "Layout",
+    description:
+      "Establishes a CSS container query context so child elements adapt based on component size.",
+    examples: [
+      {
+        title: "Container query context",
+        Example: QueryContainerExample,
+        code: QueryContainerExampleRaw,
       },
     ],
   },

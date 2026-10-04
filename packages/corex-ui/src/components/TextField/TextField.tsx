@@ -27,6 +27,8 @@ export const TextField = forwardRef<HTMLElement, TextFieldPropsType>(function Te
     multiline,
     requiredIndicator,
     required,
+    autoComplete,
+    autocomplete,
     ...rest
   },
   ref,
@@ -44,6 +46,7 @@ export const TextField = forwardRef<HTMLElement, TextFieldPropsType>(function Te
     required: required ?? requiredIndicator,
     label: computedLabel,
     onChange: handleInput,
+    autoComplete: autocomplete ?? autoComplete,
     ...rest,
   };
 
@@ -52,7 +55,7 @@ export const TextField = forwardRef<HTMLElement, TextFieldPropsType>(function Te
     return <STextArea rows={rows} {...sharedProps} />;
   }
 
-  return <STextField {...sharedProps}>
+  return <STextField {...sharedProps} >
     {rest.children}
   </STextField>;
 });

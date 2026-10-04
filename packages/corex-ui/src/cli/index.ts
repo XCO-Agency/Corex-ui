@@ -201,6 +201,7 @@ ${c.boldCyan("Corex UI CLI")} - Add blocks directly to your Shopify app
 
 ${c.bold("Usage:")}
   npx @xco-agency/corex-ui@latest add [block-name] [options]
+  npx @xco-agency/corex-ui@latest skill
 
 ${c.bold("Options:")}
   -y, --yes          Skip confirmation prompts and accept defaults
@@ -213,6 +214,7 @@ ${c.bold("Examples:")}
   npx @xco-agency/corex-ui@latest add onboarding
   npx @xco-agency/corex-ui@latest add pricing-plans
   npx @xco-agency/corex-ui@latest add --dir app/components
+  npx @xco-agency/corex-ui@latest skill
 `);
     return;
   }
@@ -222,9 +224,29 @@ ${c.bold("Examples:")}
     return;
   }
 
+  if (args[0] === "skill" || args[0] === "skills") {
+    console.log(`
+${c.boldCyan("Corex UI AI Agent Skill")}
+
+To install the official Corex UI skill for your AI coding assistant (Cursor, Claude Code, Antigravity, Copilot):
+
+  ${c.bold("Using pnpm:")}
+    ${c.green("pnpm dlx skills add XCO-Agency/Corex-ui")}
+
+  ${c.bold("Using npm:")}
+    ${c.green("npx skills add XCO-Agency/Corex-ui")}
+
+  ${c.bold("Direct download (cURL):")}
+    ${c.green("mkdir -p .agents/skills/corex-ui-components && curl -sSL https://raw.githubusercontent.com/XCO-Agency/Corex-ui/main/.agents/skills/corex-ui-components/SKILL.md -o .agents/skills/corex-ui-components/SKILL.md")}
+
+For full details, visit: ${c.cyan("https://github.com/XCO-Agency/Corex-ui/blob/main/docs/agent-skills.md")}
+`);
+    return;
+  }
+
   const isAddCommand = args[0] === "add";
   if (!isAddCommand) {
-    console.log(`${c.red("Unknown command:")} "${args[0]}". Did you mean "add"?`);
+    console.log(`${c.red("Unknown command:")} "${args[0]}". Did you mean "add" or "skill"?`);
     return;
   }
 

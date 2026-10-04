@@ -211,6 +211,34 @@ export function Installation() {
           </div>
         </section>
 
+        {/* Step 4: AI Skill */}
+        <section className="space-y-3">
+          <div className="flex items-center gap-3">
+            <StepNumber n={4} />
+            <h2 className="text-base font-semibold text-foreground">
+              Add AI Assistant Skill (Optional)
+            </h2>
+          </div>
+
+          <div className="ml-10 space-y-3">
+            <p className="text-sm text-muted-foreground">
+              Building with AI coding assistants (<strong>Cursor</strong>,{" "}
+              <strong>Claude Code</strong>, <strong>Antigravity</strong>, or{" "}
+              <strong>Copilot</strong>)? Install the official Corex UI skill so your agent
+              knows all modern props, spacing tokens, and components:
+            </p>
+            <ComponentCodeViewer
+              code={
+                pm === "pnpm"
+                  ? "pnpm dlx skills add XCO-Agency/Corex-ui"
+                  : "npx skills add XCO-Agency/Corex-ui"
+              }
+              filename="Terminal"
+              language="bash"
+            />
+          </div>
+        </section>
+
         {/* Next steps */}
         <section className="rounded-2xl border border-dashed border-border/80 p-5">
           <div className="flex items-center gap-2 pb-1">
