@@ -1,52 +1,40 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
-import {
-  ArrowRight,
-  Bot,
-  Check,
-  CheckCircle2,
-  Copy,
-  Download,
-  ExternalLink,
-  FileCode,
-  Package,
-  Rocket,
-  ShieldCheck,
-  Sparkles,
-  Terminal,
-} from "lucide-react";
-import { Badge } from "@/components/ui/badge";
-import { VersionBadge } from "@/components/VersionBadge";
+import { ArrowRight, Check, Copy, Download, Info } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { CommandSnippet } from "@/components/CommandSnippet";
+import { registry } from "@/data/registry";
+import { COREX_UI_VERSION } from "@/lib/version";
 import { cn } from "@/lib/utils";
 import { ComponentCodeViewer } from "./component-detail/partials/ComponentCodeViewer";
 
 const PACKAGE_MANAGERS = [
-  { id: "npm", label: "npm", command: "npm install @xco-agency/corex-ui" },
-  { id: "pnpm", label: "pnpm", command: "pnpm add @xco-agency/corex-ui" },
-  { id: "yarn", label: "yarn", command: "yarn add @xco-agency/corex-ui" },
+  { id: "pnpm", install: "pnpm add @xco-agency/corex-ui", dlx: "pnpm dlx" },
+  { id: "npm", install: "npm install @xco-agency/corex-ui", dlx: "npx" },
+  { id: "yarn", install: "yarn add @xco-agency/corex-ui", dlx: "npx" },
 ] as const;
+
+type PackageManagerIdType = (typeof PACKAGE_MANAGERS)[number]["id"];
 
 const CDN_SCRIPT_CODE = `<script src="https://cdn.shopify.com/shopifycloud/polaris-2.0-rc.js"></script>`;
 
-const USAGE_CODE = `import { Page, Card, TextField, Button } from "@xco-agency/corex-ui";
+const USAGE_CODE = `import { useState } from "react";
+import { Page, Card, TextField, Button } from "@xco-agency/corex-ui";
 
 function ProductForm() {
   const [title, setTitle] = useState("");
 
   return (
-    <Page title="New product">
+    <Page heading="New product">
       <Card>
         <TextField label="Title" value={title} onChange={setTitle} />
-        <Button primary onClick={save}>
+        <Button variant="primary" onClick={save}>
           Save
         </Button>
       </Card>
     </Page>
   );
 }`;
-
-const TYPES_CODE = `npm install --save-dev @shopify/polaris-types`;
 
 const CURL_SKILL_CODE = `mkdir -p .agents/skills/corex-ui-components && \\
 curl -sSL https://raw.githubusercontent.com/XCO-Agency/Corex-ui/main/.agents/skills/corex-ui-components/SKILL.md \\
@@ -60,418 +48,265 @@ const ASSISTANT_TARGETS = [
   { id: "copilot", label: "Copilot" },
 ] as const;
 
-function StepNumber({ n }: { n: number }) {
+const REQUIREMENTS = [
+  "React 18 or 19.",
+  "A Shopify app rendered in the admin, or a page that loads the Polaris web components script.",
+  "No .npmrc or auth token: the package is on the public npm registry.",
+];
+
+function Segmented<T extends string>({
+  value,
+  options,
+  onChange,
+}: {
+  value: T;
+  options: readonly { id: T; label: string }[];
+  onChange: (id: T) => void;
+}) {
   return (
-    <span className="flex size-7 shrink-0 items-center justify-center rounded-full bg-primary text-xs font-semibold text-primary-foreground">
-      {n}
-    </span>
+    <div className="inline-flex rounded-md border border-border/80 p-0.5">
+      {options.map((option) => (
+        <button
+          key={option.id}
+          type="button"
+          onClick={() => onChange(option.id)}
+          className={cn(
+            "cursor-pointer rounded px-2 py-0.5 text-xs transition-colors",
+            value === option.id
+              ? "bg-muted font-medium text-foreground"
+              : "text-muted-foreground hover:text-foreground",
+          )}
+        >
+          {option.label}
+        </button>
+      ))}
+    </div>
   );
 }
 
+function Step({
+  n,
+  title,
+  aside,
+  children,
+}: {
+  n: number;
+  title: React.ReactNode;
+  aside?: React.ReactNode;
+  children: React.ReactNode;
+}) {
+  return (
+    <li className="relative pb-10 pl-8 last:pb-0">
+      <span className="absolute top-0 left-0 flex size-5 items-center justify-center rounded-full border border-border bg-background font-mono text-[10px] font-medium text-foreground">
+        {n}
+      </span>
+      <div className="mb-3 flex min-h-5 flex-wrap items-center justify-between gap-2">
+        <h2 className="text-sm font-semibold text-foreground">{title}</h2>
+        {aside}
+      </div>
+      <div className="space-y-3 text-[13px] leading-relaxed text-muted-foreground">
+        {children}
+      </div>
+    </li>
+  );
+}
+
+const Code = ({ children }: { children: React.ReactNode }) => (
+  <code className="rounded bg-muted px-1 py-0.5 font-mono text-[12px] text-foreground">
+    {children}
+  </code>
+);
+
 export function Installation() {
-  const [pm, setPm] = React.useState<(typeof PACKAGE_MANAGERS)[number]["id"]>("pnpm");
+  const [pm, setPm] = React.useState<PackageManagerIdType>("pnpm");
   const activePm = PACKAGE_MANAGERS.find((p) => p.id === pm)!;
 
   const [copiedSkill, setCopiedSkill] = React.useState(false);
-  const [skillInstallMode, setSkillInstallMode] = React.useState<"cli" | "raw">("cli");
-  const [targetAssistant, setTargetAssistant] =
+  const [skillMode, setSkillMode] = React.useState<"cli" | "raw">("cli");
+  const [target, setTarget] =
     React.useState<(typeof ASSISTANT_TARGETS)[number]["id"]>("all");
 
   const handleCopySkill = async () => {
     try {
-      const raw =
-        await import("../../../../.agents/skills/corex-ui-components/SKILL.md?raw");
-      await navigator.clipboard.writeText(raw.default);
+      const res = await fetch("/SKILL.md");
+      await navigator.clipboard.writeText(await res.text());
       setCopiedSkill(true);
       setTimeout(() => setCopiedSkill(false), 2000);
     } catch {
-      try {
-        const res = await fetch("/SKILL.md");
-        const text = await res.text();
-        await navigator.clipboard.writeText(text);
-        setCopiedSkill(true);
-        setTimeout(() => setCopiedSkill(false), 2000);
-      } catch {
-        window.open("/SKILL.md", "_blank");
-      }
+      window.open("/SKILL.md", "_blank");
     }
   };
 
-  const getSkillCliCommand = () => {
-    const base =
-      pm === "pnpm"
-        ? "pnpm dlx skills add XCO-Agency/Corex-ui"
-        : "npx skills add XCO-Agency/Corex-ui";
-    if (targetAssistant === "all") return base;
-    return `${base} -a ${targetAssistant}`;
-  };
+  const skillCommand = `${activePm.dlx} skills add XCO-Agency/Corex-ui${
+    target === "all" ? "" : ` -a ${target}`
+  }`;
 
   return (
-    <div className="mx-auto w-full max-w-3xl px-3 pb-24 md:px-4">
-      {/* Branded header, matching component detail pages */}
-      <header className="space-y-4 pb-8">
-        <div className="flex flex-wrap items-center gap-2">
-          <Badge variant="outline" className="gap-1.5 px-2.5 py-1 text-xs font-medium">
-            <Rocket className="size-3.5 text-muted-foreground" />
-            <span>Getting started</span>
-          </Badge>
-          <VersionBadge />
-        </div>
-
-        <h1 className="text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl">
+    <div className="mx-auto w-full max-w-2xl pb-16">
+      <header className="space-y-2 pt-4 pb-8">
+        <p className="font-mono text-[11px] text-muted-foreground">
+          Getting started · v{COREX_UI_VERSION}
+        </p>
+        <h1 className="text-2xl font-semibold tracking-tight text-foreground sm:text-[28px]">
           Installation
         </h1>
-
-        <p className="max-w-2xl text-base leading-relaxed text-muted-foreground">
-          Add{" "}
-          <code className="rounded bg-muted px-1.5 py-0.5 font-mono text-[13px] text-foreground">
-            @xco-agency/corex-ui
-          </code>{" "}
-          to your Shopify app in a few minutes. It's a drop-in,
-          legacy-Polaris-React-compatible component set backed by Shopify's actively
-          maintained Polaris web components.
+        <p className="text-sm leading-relaxed text-muted-foreground">
+          Add <Code>@xco-agency/corex-ui</Code> to your Shopify app. It keeps the legacy
+          Polaris React API and renders Shopify's Polaris web components underneath.
         </p>
       </header>
 
-      <div className="space-y-10">
-        {/* Requirements */}
-        <section className="rounded-2xl border border-border/80 bg-card p-5 shadow-xs">
-          <div className="mb-3 flex items-center gap-2">
-            <ShieldCheck className="size-4 text-muted-foreground" />
-            <h2 className="text-sm font-semibold text-foreground">Requirements</h2>
-          </div>
-          <ul className="space-y-2 text-sm text-muted-foreground">
-            <li className="flex items-start gap-2">
-              <CheckCircle2 className="mt-0.5 size-4 shrink-0 text-emerald-600 dark:text-emerald-400" />
-              <span>React 18 or 19, as either a peer dependency.</span>
+      <section className="mb-10 rounded-lg border border-border/70 px-4 py-3">
+        <h2 className="mb-2 text-xs font-medium text-foreground">Requirements</h2>
+        <ul className="space-y-1.5 text-[13px] text-muted-foreground">
+          {REQUIREMENTS.map((item) => (
+            <li key={item} className="flex gap-2">
+              <Check className="mt-0.5 size-3.5 shrink-0 text-foreground/50" />
+              {item}
             </li>
-            <li className="flex items-start gap-2">
-              <CheckCircle2 className="mt-0.5 size-4 shrink-0 text-emerald-600 dark:text-emerald-400" />
-              <span>
-                A Shopify app shell that loads the Polaris web components CDN script
-                &mdash; Shopify CLI-scaffolded apps already do this.
-              </span>
-            </li>
-            <li className="flex items-start gap-2">
-              <CheckCircle2 className="mt-0.5 size-4 shrink-0 text-emerald-600 dark:text-emerald-400" />
-              <span>
-                No{" "}
-                <code className="rounded bg-muted px-1 py-0.5 font-mono text-xs">
-                  .npmrc
-                </code>{" "}
-                configuration or authentication tokens &mdash; it's published to the
-                public npm registry.
-              </span>
-            </li>
-          </ul>
-        </section>
+          ))}
+        </ul>
+      </section>
 
-        {/* Step 1: install */}
-        <section className="space-y-3">
-          <div className="flex items-center gap-3">
-            <StepNumber n={1} />
-            <h2 className="text-base font-semibold text-foreground">
-              Install the package
-            </h2>
-          </div>
-
-          <div className="ml-10 space-y-3">
-            <div className="inline-flex rounded-lg border border-border/80 bg-muted/40 p-0.5">
-              {PACKAGE_MANAGERS.map((manager) => (
-                <button
-                  key={manager.id}
-                  type="button"
-                  onClick={() => setPm(manager.id)}
-                  className={cn(
-                    "rounded-md px-3 py-1 text-xs font-medium transition-colors cursor-pointer",
-                    pm === manager.id
-                      ? "bg-background text-foreground shadow-xs"
-                      : "text-muted-foreground hover:text-foreground",
-                  )}
-                >
-                  {manager.label}
-                </button>
-              ))}
-            </div>
-
-            <ComponentCodeViewer
-              code={activePm.command}
-              filename="Terminal"
-              language="bash"
+      <ol className="relative before:absolute before:top-2 before:bottom-2 before:left-2.5 before:w-px before:bg-border">
+        <Step
+          n={1}
+          title="Install the package"
+          aside={
+            <Segmented
+              value={pm}
+              options={PACKAGE_MANAGERS.map((p) => ({ id: p.id, label: p.id }))}
+              onChange={setPm}
             />
+          }
+        >
+          <CommandSnippet command={activePm.install} />
+        </Step>
 
-            {/* <p className="text-xs text-muted-foreground">
-              Optional but recommended &mdash; install prop types for editor autocomplete:
-            </p>
-            <ComponentCodeViewer code={TYPES_CODE} filename="Terminal" language="bash" /> */}
-          </div>
-        </section>
-
-        {/* Step 2: CDN script */}
-        <section className="space-y-3">
-          <div className="flex items-center gap-3">
-            <StepNumber n={2} />
-            <h2 className="text-base font-semibold text-foreground">
-              Load the Polaris web components
-            </h2>
-          </div>
-
-          <div className="ml-10 space-y-3">
-            <p className="text-sm text-muted-foreground">
-              <code className="rounded bg-muted px-1.5 py-0.5 font-mono text-xs text-foreground">
-                @xco-agency/corex-ui
-              </code>{" "}
-              has no runtime dependency on Polaris &mdash; this script is what registers
-              the{" "}
-              <code className="rounded bg-muted px-1.5 py-0.5 font-mono text-xs text-foreground">
-                s-*
-              </code>{" "}
-              custom elements the library wraps. Add it to your app's HTML shell:
-            </p>
-            <s-banner tone="critical">
-              for the new version of polaris UI , you don't need to install the cdn the s-
-              components are globally available custom elements served buy shopify admin
-              it self.
-            </s-banner>
-            <ComponentCodeViewer
-              code={CDN_SCRIPT_CODE}
-              filename="index.html"
-              language="markup"
-            />
-          </div>
-        </section>
-
-        {/* Step 3: usage */}
-        <section className="space-y-3">
-          <div className="flex items-center gap-3">
-            <StepNumber n={3} />
-            <h2 className="text-base font-semibold text-foreground">Start building</h2>
-          </div>
-
-          <div className="ml-10 space-y-3">
-            <p className="text-sm text-muted-foreground">
-              Import components exactly like you would from{" "}
-              <code className="rounded bg-muted px-1.5 py-0.5 font-mono text-xs text-foreground">
-                @shopify/polaris
-              </code>
-              &mdash; prop names carry over one-to-one.
-            </p>
-            <ComponentCodeViewer
-              code={USAGE_CODE}
-              filename="ProductForm.tsx"
-              language="tsx"
-            />
-          </div>
-        </section>
-
-        {/* Step 4: AI Skill */}
-        <section className="space-y-4">
-          <div className="flex flex-wrap items-center justify-between gap-3">
-            <div className="flex items-center gap-3">
-              <StepNumber n={4} />
-              <div className="flex items-center gap-2">
-                <h2 className="text-base font-semibold text-foreground">
-                  Add AI Assistant Skill
-                </h2>
-                <Badge
-                  variant="outline"
-                  className="text-[10px] text-muted-foreground font-normal"
-                >
-                  Optional
-                </Badge>
-              </div>
-            </div>
-
-            {/* Quick Action to Copy Skill Markdown */}
-            <Button
-              type="button"
-              variant="outline"
-              size="sm"
-              onClick={handleCopySkill}
-              className="gap-1.5 text-xs font-medium cursor-pointer"
-            >
-              {copiedSkill ? (
-                <>
-                  <Check className="size-3.5 text-emerald-600 dark:text-emerald-400" />
-                  <span className="text-emerald-600 dark:text-emerald-400 font-semibold">
-                    Skill copied!
-                  </span>
-                </>
-              ) : (
-                <>
-                  <Copy className="size-3.5 text-muted-foreground" />
-                  <span>Copy skill (.md)</span>
-                </>
-              )}
-            </Button>
-          </div>
-
-          <div className="ml-10 space-y-4">
-            <p className="text-sm text-muted-foreground">
-              Building with AI coding assistants (<strong>Cursor</strong>,{" "}
-              <strong>Claude Code</strong>, <strong>Antigravity</strong>, or{" "}
-              <strong>Copilot</strong>)? Equip your agent with the official Corex UI skill
-              so it knows all modern props, spacing tokens, and components:
-            </p>
-
-            {/* Mode switcher: skills.sh CLI vs Direct / Raw .md */}
-            <div className="flex flex-wrap items-center justify-between gap-3">
-              <div className="inline-flex rounded-lg border border-border/80 bg-muted/40 p-0.5">
-                <button
-                  type="button"
-                  onClick={() => setSkillInstallMode("cli")}
-                  className={cn(
-                    "flex items-center gap-1.5 rounded-md px-3 py-1 text-xs font-medium transition-colors cursor-pointer",
-                    skillInstallMode === "cli"
-                      ? "bg-background text-foreground shadow-xs"
-                      : "text-muted-foreground hover:text-foreground",
-                  )}
-                >
-                  <Terminal className="size-3.5" />
-                  <span>CLI (skills.sh)</span>
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setSkillInstallMode("raw")}
-                  className={cn(
-                    "flex items-center gap-1.5 rounded-md px-3 py-1 text-xs font-medium transition-colors cursor-pointer",
-                    skillInstallMode === "raw"
-                      ? "bg-background text-foreground shadow-xs"
-                      : "text-muted-foreground hover:text-foreground",
-                  )}
-                >
-                  <FileCode className="size-3.5" />
-                  <span>Direct Skill (.md)</span>
-                </button>
-              </div>
-
-              {skillInstallMode === "cli" && (
-                <div className="flex flex-wrap items-center gap-1 text-xs">
-                  <span className="text-muted-foreground mr-1 text-[11px]">Target:</span>
-                  {ASSISTANT_TARGETS.map((target) => (
-                    <button
-                      key={target.id}
-                      type="button"
-                      onClick={() => setTargetAssistant(target.id)}
-                      className={cn(
-                        "rounded px-2 py-0.5 text-[11px] font-medium transition-colors cursor-pointer",
-                        targetAssistant === target.id
-                          ? "bg-primary/10 text-primary font-semibold"
-                          : "text-muted-foreground hover:bg-muted hover:text-foreground",
-                      )}
-                    >
-                      {target.label}
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div>
-
-            {skillInstallMode === "cli" ? (
-              <div className="space-y-2">
-                <ComponentCodeViewer
-                  code={getSkillCliCommand()}
-                  filename="Terminal"
-                  language="bash"
-                />
-                <p className="text-[12px] text-muted-foreground">
-                  The CLI detects your installed coding assistants and automatically
-                  places the skill rules into your project (e.g.{" "}
-                  <code>.cursor/rules/</code>, <code>.claude/skills/</code>, or{" "}
-                  <code>.agents/skills/</code>).
-                </p>
-              </div>
-            ) : (
-              <div className="space-y-3 rounded-xl border border-border/80 bg-card p-4 shadow-xs">
-                <div className="flex flex-wrap items-center justify-between gap-3">
-                  <div className="flex items-center gap-2">
-                    <FileCode className="size-4 text-primary" />
-                    <span className="font-mono text-xs font-semibold text-foreground">
-                      .agents/skills/corex-ui-components/SKILL.md
-                    </span>
-                    <Badge variant="secondary" className="text-[10px]">
-                      77 Components
-                    </Badge>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Button
-                      type="button"
-                      size="sm"
-                      onClick={handleCopySkill}
-                      className="gap-1.5 text-xs cursor-pointer"
-                    >
-                      {copiedSkill ? (
-                        <>
-                          <Check className="size-3.5" />
-                          <span>Copied skill!</span>
-                        </>
-                      ) : (
-                        <>
-                          <Copy className="size-3.5" />
-                          <span>Copy full skill</span>
-                        </>
-                      )}
-                    </Button>
-                    <Button
-                      type="button"
-                      variant="outline"
-                      size="sm"
-                      render={
-                        <a
-                          href="/SKILL.md"
-                          download="corex-ui-skill.md"
-                          className="gap-1.5 text-xs"
-                        />
-                      }
-                    >
-                      <Download className="size-3.5" />
-                      <span>Download</span>
-                    </Button>
-                  </div>
-                </div>
-
-                <p className="text-xs text-muted-foreground">
-                  Contains strict Corex UI rules, modern Polaris spacing tokens,
-                  deprecation replacements, and exact TypeScript prop signatures. Paste
-                  directly into your assistant rules or custom prompt.
-                </p>
-
-                <div className="pt-1">
-                  <span className="text-[11px] font-medium text-muted-foreground block mb-1.5">
-                    Or download via cURL:
-                  </span>
-                  <ComponentCodeViewer
-                    code={CURL_SKILL_CODE}
-                    filename="Terminal"
-                    language="bash"
-                  />
-                </div>
-              </div>
-            )}
-          </div>
-        </section>
-
-        {/* Next steps */}
-        <section className="rounded-2xl border border-dashed border-border/80 p-5">
-          <div className="flex items-center gap-2 pb-1">
-            <Package className="size-4 text-muted-foreground" />
-            <h2 className="text-sm font-semibold text-foreground">Next steps</h2>
-          </div>
-          <p className="pb-4 text-sm text-muted-foreground">
-            Browse every component with a live example and copyable source, or jump
-            straight into the blocks library for ready-made page compositions.
+        <Step n={2} title="Polaris web components">
+          <p>
+            The library wraps Shopify's <Code>s-*</Code> custom elements. Inside the Shopify
+            admin they are already registered globally, so embedded apps need nothing extra.
           </p>
-          <div className="flex flex-wrap gap-3">
-            <Button render={<Link to="/" />}>
-              Browse components
-              <ArrowRight />
-            </Button>
-            <Button render={<Link to="/#Layouts" />}>
-              <Terminal />
-              Explore blocks
-            </Button>
+          <div className="flex gap-2 rounded-md bg-muted/40 px-3 py-2 text-xs">
+            <Info className="mt-0.5 size-3.5 shrink-0" />
+            <span>
+              Rendering outside the admin (a standalone preview, Storybook, tests)? Load the
+              script in your HTML shell:
+            </span>
           </div>
-        </section>
+          <CommandSnippet command={CDN_SCRIPT_CODE} prompt={null} />
+        </Step>
+
+        <Step n={3} title="Start building">
+          <p>
+            Import from <Code>@xco-agency/corex-ui</Code> instead of{" "}
+            <Code>@shopify/polaris</Code>. Prefer the modern props shown in each component's API
+            reference.
+          </p>
+          <ComponentCodeViewer
+            code={USAGE_CODE}
+            filename="ProductForm.tsx"
+            language="tsx"
+            className="rounded-lg shadow-none"
+          />
+        </Step>
+
+        <Step
+          n={4}
+          title={
+            <>
+              AI assistant skill{" "}
+              <span className="ml-1 font-normal text-muted-foreground">optional</span>
+            </>
+          }
+          aside={
+            <Segmented
+              value={skillMode}
+              options={[
+                { id: "cli", label: "CLI" },
+                { id: "raw", label: "SKILL.md" },
+              ]}
+              onChange={setSkillMode}
+            />
+          }
+        >
+          <p>
+            Gives Cursor, Claude Code, Antigravity or Copilot the full component catalog (
+            {registry.length} components) with modern props only, so they don't reach for
+            deprecated Polaris APIs.
+          </p>
+
+          {skillMode === "cli" ? (
+            <>
+              <div className="flex flex-wrap items-center gap-1">
+                {ASSISTANT_TARGETS.map((t) => (
+                  <button
+                    key={t.id}
+                    type="button"
+                    onClick={() => setTarget(t.id)}
+                    className={cn(
+                      "cursor-pointer rounded px-2 py-0.5 text-xs transition-colors",
+                      target === t.id
+                        ? "bg-foreground text-background"
+                        : "text-muted-foreground hover:bg-muted hover:text-foreground",
+                    )}
+                  >
+                    {t.label}
+                  </button>
+                ))}
+              </div>
+              <CommandSnippet command={skillCommand} />
+              <p className="text-xs">
+                Writes the skill to <Code>.cursor/rules/</Code>, <Code>.claude/skills/</Code> or{" "}
+                <Code>.agents/skills/</Code> depending on the assistant.
+              </p>
+            </>
+          ) : (
+            <>
+              <div className="flex flex-wrap gap-2">
+                <Button size="xs" className="h-7 px-2.5" onClick={handleCopySkill}>
+                  {copiedSkill ? <Check /> : <Copy />}
+                  {copiedSkill ? "Copied" : "Copy SKILL.md"}
+                </Button>
+                <Button
+                  size="xs"
+                  variant="outline"
+                  nativeButton={false}
+                  className="h-7 px-2.5"
+                  render={<a href="/SKILL.md" download="corex-ui-skill.md" />}
+                >
+                  <Download />
+                  Download
+                </Button>
+              </div>
+              <ComponentCodeViewer
+                code={CURL_SKILL_CODE}
+                filename="Terminal"
+                language="bash"
+                className="rounded-lg shadow-none"
+              />
+            </>
+          )}
+        </Step>
+      </ol>
+
+      <div className="mt-12 flex flex-wrap items-center justify-between gap-3 border-t border-border/60 pt-5 text-[13px]">
+        <span className="text-muted-foreground">Next: browse live examples.</span>
+        <div className="flex gap-4">
+          <Link
+            to="/"
+            className="inline-flex items-center gap-1 font-medium text-foreground/80 hover:text-foreground"
+          >
+            Components <ArrowRight className="size-3.5" />
+          </Link>
+          <Link
+            to="/#blocks"
+            className="inline-flex items-center gap-1 font-medium text-foreground/80 hover:text-foreground"
+          >
+            Blocks <ArrowRight className="size-3.5" />
+          </Link>
+        </div>
       </div>
     </div>
   );

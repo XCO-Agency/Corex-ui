@@ -16,7 +16,7 @@ import type { CanvasViewportType } from "../types";
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
-export type ExampleToolbarVariantType = "inline" | "overlay";
+export type ExampleToolbarVariantType = "inline" | "overlay" | "card";
 
 export type ComponentExampleToolbarPropsType = {
   variant?: ExampleToolbarVariantType;
@@ -335,6 +335,39 @@ export function ComponentExampleToolbar({
       )}
     </div>
   );
+
+  // Embedded in the example card: the title lives above the card and the
+  // import is in the page header, so only blocks keep their copy pill.
+  if (variant === "card") {
+    return (
+      <div className="flex flex-wrap items-center justify-between gap-2 border-b border-border/60 px-2 py-1.5">
+        <TabSwitcher activeTab={activeTab} onChange={onActiveTabChange} />
+        <div className="flex items-center gap-2">
+          {isBlock && (
+            <CopyPill
+              actionText={actionText}
+              copyText={copyText}
+              copied={copied}
+              onCopy={onCopy}
+              isBlock
+              componentName={componentName}
+              className="hidden sm:inline-flex"
+            />
+          )}
+          {activeTab === "preview" ? (
+            <ViewportPill
+              viewport={viewport}
+              onViewportChange={onViewportChange}
+              onRemount={onRemount}
+              onToggleFullscreen={onToggleFullscreen}
+            />
+          ) : (
+            <FullscreenOnlyPill onToggleFullscreen={onToggleFullscreen} />
+          )}
+        </div>
+      </div>
+    );
+  }
 
   if (isOverlay) {
     return (

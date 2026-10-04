@@ -65,8 +65,8 @@ export function ComponentIframe({ children, className }: ComponentIframePropsTyp
                 }
 
                 body {
-                  min-height: 240px;
-                  padding: 20px;
+                  min-height: 160px;
+                  padding: 24px;
                   color: #202223;
                   font-family:
                     Inter,
@@ -87,7 +87,6 @@ export function ComponentIframe({ children, className }: ComponentIframePropsTyp
 
                 #preview-root {
                   width: 100%;
-                  min-height: 200px;
                 }
 
                 #preview-root:empty {
@@ -244,7 +243,9 @@ export function ComponentIframe({ children, className }: ComponentIframePropsTyp
       const root = doc.getElementById("preview-root");
       if (!root) return;
 
-      const height = Math.max(240, root.scrollHeight + 40, doc.body?.scrollHeight ?? 0);
+      // Body padding is 24px on each side. `body.scrollHeight` is left out: the
+      // body has `min-height: 100%`, so it would pin the iframe at its current size.
+      const height = Math.max(160, root.scrollHeight + 48);
 
       iframe.style.height = `${height}px`;
     };
@@ -278,7 +279,7 @@ export function ComponentIframe({ children, className }: ComponentIframePropsTyp
       title="Component Preview"
       className={cn("w-full border-0 bg-transparent", className)}
       style={{
-        minHeight: "460px",
+        minHeight: "160px",
         display: "block",
       }}
     >

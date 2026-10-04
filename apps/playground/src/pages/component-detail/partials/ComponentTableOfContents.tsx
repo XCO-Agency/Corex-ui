@@ -54,13 +54,11 @@ export function ComponentTableOfContents({ items }: ComponentTableOfContentsProp
 
   return (
     <aside className="hidden lg:block">
-      <div className="sticky top-20 max-h-[calc(100vh-6rem)] overflow-y-auto pl-6 border-l border-border/60">
-        <p className="mb-3 text-xs font-semibold tracking-wider text-foreground uppercase">
-          On this page
-        </p>
+      <div className="sticky top-20 max-h-[calc(100vh-6rem)] overflow-y-auto">
+        <p className="mb-3 text-xs font-medium text-foreground">On this page</p>
 
         <nav aria-label="Table of contents">
-          <ul className="space-y-2 text-xs">
+          <ul className="border-l border-border/70 text-[13px]">
             {items.map((item) => {
               const isActive = activeId === item.id;
               return (
@@ -69,8 +67,11 @@ export function ComponentTableOfContents({ items }: ComponentTableOfContentsProp
                     href={`#${item.id}`}
                     onClick={(e) => scrollToId(e, item.id)}
                     className={cn(
-                      "block line-clamp-1 py-1 transition-colors hover:text-foreground",
-                      isActive ? "font-semibold text-primary" : "text-muted-foreground",
+                      "-ml-px block truncate border-l py-1 transition-colors hover:text-foreground",
+                      item.level === 2 ? "pl-6 text-xs" : "pl-3",
+                      isActive
+                        ? "border-foreground font-medium text-foreground"
+                        : "border-transparent text-muted-foreground",
                     )}
                   >
                     {item.title}

@@ -1,4 +1,5 @@
 import * as React from "react";
+import { Hash } from "lucide-react";
 import type { ComponentExampleType } from "@/data/types";
 import type { CanvasViewportType } from "../types";
 import { ComponentCanvas } from "./ComponentCanvas";
@@ -53,35 +54,48 @@ export function ComponentExampleCard({
 
   return (
     <section id={anchorId} className="group/section scroll-mt-20 space-y-3">
-      {/* Shared Toolbar */}
-      <ComponentExampleToolbar
-        activeTab={activeTab}
-        onActiveTabChange={setActiveTab}
-        title={example.title}
-        componentName={componentName}
-        viewport={viewport}
-        onViewportChange={setViewport}
-        onRemount={handleRemount}
-        actionText={actionText}
-        copyText={copyText}
-        copied={copiedImport}
-        onCopy={handleCopyAction}
-        isBlock={isBlock}
-        onToggleFullscreen={() => setIsFullscreen(true)}
-      />
+      <h3 className="flex items-center gap-1.5 text-sm font-semibold tracking-tight text-foreground">
+        {example.title}
+        <a
+          href={`#${anchorId}`}
+          className="text-transparent transition-colors group-hover/section:text-muted-foreground/60 hover:text-foreground! focus-visible:text-muted-foreground"
+          aria-label={`Link to ${example.title}`}
+        >
+          <Hash className="size-3.5" />
+        </a>
+      </h3>
 
-      {/* Main Preview Canvas or Code Panel */}
-      {activeTab === "preview" ? (
-        <ComponentCanvas viewport={viewport} key={remountKey}>
-          <example.Example />
-        </ComponentCanvas>
-      ) : (
-        <ComponentCodeViewer
-          code={example.code ?? ""}
-          filename={example.filename ?? `${componentName}.tsx`}
-          files={example.files}
+      <div className="overflow-hidden rounded-lg border border-border/80 bg-card">
+        <ComponentExampleToolbar
+          variant="card"
+          activeTab={activeTab}
+          onActiveTabChange={setActiveTab}
+          title={example.title}
+          componentName={componentName}
+          viewport={viewport}
+          onViewportChange={setViewport}
+          onRemount={handleRemount}
+          actionText={actionText}
+          copyText={copyText}
+          copied={copiedImport}
+          onCopy={handleCopyAction}
+          isBlock={isBlock}
+          onToggleFullscreen={() => setIsFullscreen(true)}
         />
-      )}
+
+        {activeTab === "preview" ? (
+          <ComponentCanvas viewport={viewport} key={remountKey} embedded>
+            <example.Example />
+          </ComponentCanvas>
+        ) : (
+          <ComponentCodeViewer
+            code={example.code ?? ""}
+            filename={example.filename ?? `${componentName}.tsx`}
+            files={example.files}
+            className="max-h-140 overflow-auto rounded-none border-0 shadow-none"
+          />
+        )}
+      </div>
 
       {/* Full Screen Overlay Portal */}
       <ComponentFullscreenOverlay

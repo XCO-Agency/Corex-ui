@@ -1,19 +1,17 @@
 import * as React from "react";
+import { Link, useLocation } from "react-router-dom";
 import {
-  Command,
-  Inbox,
+  BadgeCheck,
+  BookOpen,
+  ChevronRight,
+  Code2,
+  Grid2x2,
   Rocket,
   Search,
-  Sparkles,
-  ChevronDown,
-  Code2,
-  Grid,
-  BadgeCheck,
 } from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
-  SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
   SidebarGroupLabel,
@@ -25,257 +23,186 @@ import {
 } from "@/components/ui/sidebar";
 import {
   Collapsible,
-  CollapsibleTrigger,
   CollapsibleContent,
+  CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 import { SidebarCategoryItem } from "@/components/SidebarCategoryItem";
-import { type ComponentEntry, registry, blocks } from "@/data/registry";
-import { getCategoryIcon } from "@/lib/category-icons";
-import { Link, useLocation } from "react-router-dom";
+import { type ComponentEntry, blocks, registry } from "@/data/registry";
+import { APP_ICONS_DATA } from "@/data/apps-icons";
+import { COREX_UI_VERSION } from "@/lib/version";
 import { cn } from "@/lib/utils";
-import { VERSION_LABEL } from "@/lib/version";
 
 export type AppSidebarPropsType = React.ComponentProps<typeof Sidebar> & {
   onOpenSearch?: () => void;
 };
 
-export function AppSidebar({ onOpenSearch, ...props }: AppSidebarPropsType) {
-  const location = useLocation();
-  const currentPath = location.pathname;
+const GUIDE_LINKS = [
+  { to: "/", label: "Overview", icon: BookOpen, match: (p: string) => p === "/" },
+  {
+    to: "/installation",
+    label: "Installation",
+    icon: Rocket,
+    match: (p: string) => p === "/installation",
+  },
+  { to: "/icons", label: "Icons", icon: Grid2x2, match: (p: string) => p === "/icons" },
+  {
+    to: "/apps-icons",
+    label: "Apps Icons",
+    icon: BadgeCheck,
+    match: (p: string) => p === "/apps-icons" || p === "/app-icons",
+    count: APP_ICONS_DATA.length,
+  },
+  {
+    to: "/utils",
+    label: "Utils & Hooks",
+    icon: Code2,
+    match: (p: string) => p.startsWith("/utils"),
+  },
+];
 
-  const isBlockRoute = currentPath.startsWith("/blocks");
-  const [isComponentsOpen, setIsComponentsOpen] = React.useState(true);
-  const [isBlocksOpen, setIsBlocksOpen] = React.useState(() => isBlockRoute);
+const navButtonClass =
+  "h-7 gap-2.5 px-2 text-[13px] text-muted-foreground hover:bg-foreground/5 hover:text-foreground data-active:bg-foreground/[0.06] data-active:text-foreground [&_svg]:size-3.5";
 
+const groupByCategory = (entries: ComponentEntry[]) =>
+  Object.entries(
+    entries.reduce<Record<string, ComponentEntry[]>>((acc, entry) => {
+      (acc[entry.category] ??= []).push(entry);
+      return acc;
+    }, {}),
+  ).map(([category, components]) => ({ category, components }));
+
+function SectionGroup({
+  label,
+  count,
+  defaultOpen,
+  children,
+}: {
+  label: string;
+  count: number;
+  defaultOpen: boolean;
+  children: React.ReactNode;
+}) {
+  const [open, setOpen] = React.useState(defaultOpen);
   React.useEffect(() => {
-    if (isBlockRoute) {
-      setIsBlocksOpen(true);
-    } else if (currentPath.startsWith("/components")) {
-      setIsComponentsOpen(true);
-    }
-  }, [currentPath, isBlockRoute]);
+    if (defaultOpen) setOpen(true);
+  }, [defaultOpen]);
 
-  // const isComponentsOpen = isComponentsOpen;
-  const effectiveBlocksOpen = isBlocksOpen;
+  return (
+    <Collapsible open={open} onOpenChange={setOpen}>
+      <SidebarGroup className="py-1">
+        <SidebarGroupLabel
+          render={
+            <CollapsibleTrigger className="group/label flex h-7 w-full cursor-pointer items-center justify-between px-2 text-[11px] font-medium tracking-wide text-muted-foreground/80 uppercase hover:text-foreground" />
+          }
+        >
+          <span>{label}</span>
+          <span className="flex items-center gap-1 font-mono text-[10px] normal-case tracking-normal">
+            {count}
+            <ChevronRight
+              className={cn("size-3 transition-transform duration-200", open && "rotate-90")}
+            />
+          </span>
+        </SidebarGroupLabel>
+        <CollapsibleContent>
+          <SidebarGroupContent>
+            <SidebarMenu className="gap-px">{children}</SidebarMenu>
+          </SidebarGroupContent>
+        </CollapsibleContent>
+      </SidebarGroup>
+    </Collapsible>
+  );
+}
 
-  const groupedExamples = React.useMemo(() => {
-    const grouped = registry.reduce(
-      (acc, component) => {
-        const groupName = component.category;
-        if (!acc[groupName]) {
-          acc[groupName] = [];
-        }
-        acc[groupName].push(component);
-        return acc;
-      },
-      {} as Record<string, ComponentEntry[]>,
-    );
-
-    return Object.entries(grouped).map(([category, components]) => ({
-      category,
-      components,
-    }));
-  }, []);
+export function AppSidebar({ onOpenSearch, ...props }: AppSidebarPropsType) {
+  const { pathname } = useLocation();
+  const componentGroups = React.useMemo(() => groupByCategory(registry), []);
+  const blockCount = blocks.reduce((acc, group) => acc + group.components.length, 0);
 
   return (
     <Sidebar {...props}>
-      <SidebarHeader className="gap-3 pb-2">
-        <SidebarMenu>
-          <SidebarMenuItem>
-            <SidebarMenuButton size="lg" render={<Link to="/" />}>
-              <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
-                <Command className="size-4" />
-              </div>
-              <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-semibold">Corex UI</span>
-                <span className="truncate text-xs text-muted-foreground">
-                  Shopify UI library
-                </span>
-              </div>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-        </SidebarMenu>
+      <SidebarHeader className="gap-2.5 px-3 pt-3 pb-2">
+        <Link to="/" className="flex h-7 items-center gap-2 px-1">
+          <span className="flex size-5 items-center justify-center rounded-[5px] bg-foreground font-mono text-[10px] font-bold text-background">
+            cx
+          </span>
+          <span className="text-sm font-semibold tracking-tight">Corex UI</span>
+          <span className="ml-auto rounded border border-sidebar-border px-1.5 py-px font-mono text-[10px] text-muted-foreground">
+            v{COREX_UI_VERSION}
+          </span>
+        </Link>
 
-        {/* Search / Command Dialog Button */}
-        <div className="px-1">
-          <button
-            type="button"
-            onClick={onOpenSearch}
-            className="flex h-8 w-full cursor-pointer items-center justify-between rounded-md border border-sidebar-border bg-sidebar-accent/40 pl-2.5 pr-1.5 text-xs text-muted-foreground transition-colors hover:bg-sidebar-accent hover:text-sidebar-foreground"
-          >
-            <div className="flex items-center gap-2">
-              <Search className="size-3.5" />
-              <span>Search documentation...</span>
-            </div>
-            <kbd className="pointer-events-none flex h-5 select-none items-center gap-0.5 rounded  bg-gray-200 px-1.5 font-mono text-[10px] font-medium text-muted-foreground">
-              <span className="text-[14px]/1px">⌘</span>K
-            </kbd>
-          </button>
-        </div>
+        <button
+          type="button"
+          onClick={onOpenSearch}
+          className="flex h-7 w-full cursor-pointer items-center gap-2 rounded-md border border-sidebar-border bg-background px-2 text-xs text-muted-foreground transition-colors hover:border-foreground/20 hover:text-foreground"
+        >
+          <Search className="size-3.5" />
+          <span className="flex-1 text-left">Search</span>
+          <kbd className="pointer-events-none font-mono text-[10px] text-muted-foreground/80">
+            ⌘K
+          </kbd>
+        </button>
       </SidebarHeader>
 
-      <SidebarContent>
-        <SidebarGroup>
+      <SidebarContent className="gap-0 px-1 pb-4">
+        <SidebarGroup className="py-1">
           <SidebarGroupContent>
-            <SidebarMenu>
-              <SidebarMenuItem>
-                <SidebarMenuButton
-                  render={<Link to="/" />}
-                  isActive={currentPath === "/"}
-                >
-                  <Inbox className="size-4" />
-                  <span>Overview</span>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-              <SidebarMenuItem>
-                <SidebarMenuButton
-                  render={<Link to="/installation" />}
-                  isActive={currentPath === "/installation"}
-                >
-                  <Rocket className="size-4" />
-                  <span>Installation</span>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-              <SidebarMenuItem>
-                <SidebarMenuButton
-                  render={<Link to="/icons" />}
-                  isActive={currentPath === "/icons"}
-                >
-                  <Grid className="size-4 text-sky-500" />
-                  <span>Icons</span>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-              <SidebarMenuItem>
-                <SidebarMenuButton
-                  render={<Link to="/apps-icons" />}
-                  isActive={currentPath === "/apps-icons" || currentPath === "/app-icons"}
-                >
-                  <BadgeCheck className="size-4 text-amber-500" />
-                  <span className="flex flex-1 items-center justify-between">
-                    <span>Apps Icons</span>
-                    <span className="rounded bg-amber-500/15 px-1 py-0.2 font-mono text-[9px] font-semibold text-amber-600 dark:text-amber-400">
-                      51
-                    </span>
-                  </span>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-              <SidebarMenuItem>
-                <SidebarMenuButton
-                  render={<Link to="/utils" />}
-                  isActive={currentPath === "/utils" || currentPath.startsWith("/utils")}
-                >
-                  <Code2 className="size-4 text-emerald-500" />
-                  <span>Utils &amp; Hooks</span>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
+            <SidebarMenu className="gap-px">
+              {GUIDE_LINKS.map(({ to, label, icon: Icon, match, count }) => (
+                <SidebarMenuItem key={to}>
+                  <SidebarMenuButton
+                    render={<Link to={to} />}
+                    isActive={match(pathname)}
+                    className={navButtonClass}
+                  >
+                    <Icon />
+                    <span className="flex-1">{label}</span>
+                    {count !== undefined && (
+                      <span className="font-mono text-[10px] text-muted-foreground/70">
+                        {count}
+                      </span>
+                    )}
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ))}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
 
-        {/* Components SidebarGroup */}
-        <Collapsible
-          open={isComponentsOpen}
-          defaultOpen={true}
-          onOpenChange={setIsComponentsOpen}
-          className="group/components-collapsible"
+        <SectionGroup
+          label="Components"
+          count={registry.length}
+          defaultOpen={!pathname.startsWith("/blocks")}
         >
-          <SidebarGroup>
-            <SidebarGroupLabel
-              render={
-                <CollapsibleTrigger className="flex w-full cursor-pointer items-center justify-between rounded-md px-2 transition-colors hover:bg-sidebar-accent/50" />
-              }
-            >
-              <span>Components</span>
-              <div className="flex items-center gap-1.5">
-                <span className="text-[10px] font-mono text-muted-foreground">
-                  {registry.length}
-                </span>
-                <ChevronDown
-                  className={cn(
-                    "size-3.5 text-muted-foreground transition-transform duration-200",
-                    !isComponentsOpen && "-rotate-90",
-                  )}
-                />
-              </div>
-            </SidebarGroupLabel>
-            <CollapsibleContent>
-              <SidebarGroupContent>
-                <SidebarMenu>
-                  {groupedExamples.map(({ category, components }) => (
-                    <SidebarCategoryItem
-                      key={category}
-                      category={category}
-                      components={components}
-                      icon={getCategoryIcon(category)}
-                      basePath="components"
-                      currentPath={currentPath}
-                    />
-                  ))}
-                </SidebarMenu>
-              </SidebarGroupContent>
-            </CollapsibleContent>
-          </SidebarGroup>
-        </Collapsible>
+          {componentGroups.map(({ category, components }) => (
+            <SidebarCategoryItem
+              key={category}
+              category={category}
+              components={components}
+              basePath="components"
+              currentPath={pathname}
+            />
+          ))}
+        </SectionGroup>
 
         {blocks.length > 0 && (
-          <Collapsible
-            open={true}
-            onOpenChange={setIsBlocksOpen}
-            className="group/blocks-collapsible"
+          <SectionGroup
+            label="Blocks"
+            count={blockCount}
+            defaultOpen={pathname.startsWith("/blocks")}
           >
-            <SidebarGroup>
-              <SidebarGroupLabel
-                render={
-                  <CollapsibleTrigger className="flex w-full cursor-pointer items-center justify-between rounded-md px-2 transition-colors hover:bg-sidebar-accent/50" />
-                }
-              >
-                <span>Blocks</span>
-                <div className="flex items-center gap-1.5">
-                  <span className="text-[10px] font-mono text-muted-foreground">
-                    {blocks.reduce((acc, g) => acc + g.components.length, 0)}
-                  </span>
-                  <ChevronDown
-                    className={cn(
-                      "size-3.5 text-muted-foreground transition-transform duration-200",
-                      !effectiveBlocksOpen && "-rotate-90",
-                    )}
-                  />
-                </div>
-              </SidebarGroupLabel>
-              <CollapsibleContent>
-                <SidebarGroupContent>
-                  <SidebarMenu>
-                    {blocks.map(({ category, components }) => (
-                      <SidebarCategoryItem
-                        key={category}
-                        category={category}
-                        components={components}
-                        icon={getCategoryIcon(category)}
-                        basePath="blocks"
-                        currentPath={currentPath}
-                      />
-                    ))}
-                  </SidebarMenu>
-                </SidebarGroupContent>
-              </CollapsibleContent>
-            </SidebarGroup>
-          </Collapsible>
+            {blocks.map(({ category, components }) => (
+              <SidebarCategoryItem
+                key={category}
+                category={category}
+                components={components}
+                basePath="blocks"
+                currentPath={pathname}
+              />
+            ))}
+          </SectionGroup>
         )}
       </SidebarContent>
-
-      <SidebarFooter>
-        <SidebarMenu>
-          <SidebarMenuItem>
-            <SidebarMenuButton
-              size="sm"
-              className="text-muted-foreground hover:text-foreground"
-            >
-              <Sparkles className="size-4 text-emerald-500" />
-              <span>{VERSION_LABEL}</span>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-        </SidebarMenu>
-      </SidebarFooter>
 
       <SidebarRail />
     </Sidebar>

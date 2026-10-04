@@ -44,31 +44,50 @@ When specifying `gap`, `padding`, `rowGap`, or `columnGap`, use **exclusively** 
 
 ## Critical Deprecation Replacements
 
-| Component        | Deprecated Legacy Prop               | Modern Replacement                                 |
-| :--------------- | :----------------------------------- | :------------------------------------------------- |
-| `BlockStack`     | `align`                              | `alignItems`                                       |
-| `BlockStack`     | `inlineAlign`                        | `justifyContent`                                   |
-| `InlineStack`    | `align`                              | `justifyContent`                                   |
-| `InlineStack`    | `blockAlign`                         | `alignItems`                                       |
-| `Button`         | `primary`                            | `variant="primary"`                                |
-| `Button`         | `destructive`                        | `tone="critical"`                                  |
-| `Button`         | `plain`                              | `variant="plain"`                                  |
-| `Button`         | `outline`                            | `variant="secondary"`                              |
-| `Button`         | `fullWidth`                          | `inlineSize="fill"`                                |
-| `Button`         | `url`                                | `href`                                             |
-| `Button`         | `external`                           | `target="_blank"`                                  |
-| `Banner`         | `title`                              | `heading`                                          |
-| `Banner`         | `status`                             | `tone`                                             |
-| `Badge`          | `status`                             | `tone`                                             |
-| `Card`           | `title`                              | `heading`                                          |
-| `Card`           | `style`                              | Wrap `<Card>` in `<Box ...>`                       |
-| `Page`           | `title`                              | `heading`                                          |
-| `Page`           | `fullWidth`                          | `inlineSize="large"`                               |
-| `Page`           | `narrowWidth`                        | `inlineSize="small"`                               |
-| `Page`           | `backAction`                         | `breadcrumbActions`                                |
-| `Table`          | `Table.Header`                       | `Table.HeaderCell`                                 |
-| `Tag`            | `url`                                | Wrap in `<Link>`                                   |
-| `Layout.Section` | `fullWidth` / `oneHalf` / `oneThird` | `variant="fullWidth"` / `"oneHalf"` / `"oneThird"` |
+| Component           | Deprecated Legacy Prop                                                                                                                                                            | Modern Replacement                                                                                                                                   |
+| :------------------ | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `BlockStack`        | `align`                                                                                                                                                                           | `alignItems`                                                                                                                                         |
+| `BlockStack`        | `inlineAlign`                                                                                                                                                                     | `justifyContent`                                                                                                                                     |
+| `InlineStack`       | `align`                                                                                                                                                                           | `justifyContent`                                                                                                                                     |
+| `InlineStack`       | `blockAlign`                                                                                                                                                                      | `alignItems`                                                                                                                                         |
+| `Button`            | `primary`                                                                                                                                                                         | `variant="primary"`                                                                                                                                  |
+| `Button`            | `destructive`                                                                                                                                                                     | `tone="critical"`                                                                                                                                    |
+| `Button`            | `plain`                                                                                                                                                                           | `variant="plain"`                                                                                                                                    |
+| `Button`            | `outline`                                                                                                                                                                         | `variant="secondary"`                                                                                                                                |
+| `Button`            | `fullWidth`                                                                                                                                                                       | `inlineSize="fill"`                                                                                                                                  |
+| `Button`            | `url`                                                                                                                                                                             | `href`                                                                                                                                               |
+| `Button`            | `external`                                                                                                                                                                        | `target="_blank"`                                                                                                                                    |
+| `Banner`            | `title`                                                                                                                                                                           | `heading`                                                                                                                                            |
+| `Banner`            | `status`                                                                                                                                                                          | `tone`                                                                                                                                               |
+| `Badge`             | `status`                                                                                                                                                                          | `tone`                                                                                                                                               |
+| `Card`              | `title`                                                                                                                                                                           | `heading`                                                                                                                                            |
+| `Card`              | `style`                                                                                                                                                                           | Wrap `<Card>` in `<Box ...>`                                                                                                                         |
+| `Page`              | `title`                                                                                                                                                                           | `heading`                                                                                                                                            |
+| `Page`              | `fullWidth`                                                                                                                                                                       | `inlineSize="large"`                                                                                                                                 |
+| `Page`              | `narrowWidth`                                                                                                                                                                     | `inlineSize="small"`                                                                                                                                 |
+| `Page`              | `backAction`                                                                                                                                                                      | `breadcrumbActions`                                                                                                                                  |
+| `Table`             | `Table.Header`                                                                                                                                                                    | `Table.HeaderCell`                                                                                                                                   |
+| `Tag`               | `url`                                                                                                                                                                             | Wrap in `<Link>`                                                                                                                                     |
+| `Layout.Section`    | `fullWidth` / `oneHalf` / `oneThird`                                                                                                                                              | `variant="fullWidth"` / `"oneHalf"` / `"oneThird"`                                                                                                   |
+| `Layout.Section`    | `oneFourth` / `secondary`                                                                                                                                                         | `variant="oneFourth"` / `variant="secondary"`                                                                                                        |
+| `Box`               | `width` / `minWidth` / `maxWidth`                                                                                                                                                 | `inlineSize` / `minInlineSize` / `maxInlineSize`                                                                                                     |
+| `Box`               | `height` / `minHeight` / `maxHeight`                                                                                                                                              | `blockSize` / `minBlockSize` / `maxBlockSize`                                                                                                        |
+| `Box`               | `as`, `color`, `shadow`, `position`, `inset*`, `zIndex`, `opacity`, `outline*`, `overflowX`/`overflowY`, per-side `border*Width`/`border*Radius`, `printHidden`, `visuallyHidden` | Not supported by `<s-box>`. Use the modern `Box` props (`border`, `borderRadius`, `overflow`, `accessibilityVisibility`) or compose other components |
+| `Button`            | `monochrome`, `style`                                                                                                                                                             | Not supported; remove                                                                                                                                |
+| `ButtonGroup`       | `variant="segmented"`                                                                                                                                                             | `gap="none"`                                                                                                                                         |
+| `Card`              | `sectioned`                                                                                                                                                                       | Remove; `Card` always pads its content                                                                                                               |
+| `ActionList`        | `activator`                                                                                                                                                                       | `children` (the trigger)                                                                                                                             |
+| `ActionList` item   | `url`                                                                                                                                                                             | `href`                                                                                                                                               |
+| `DatePicker`        | `activator`                                                                                                                                                                       | `children` render function                                                                                                                           |
+| `TextField`         | `requiredIndicator`                                                                                                                                                               | `required`                                                                                                                                           |
+| `Link`              | `monochrome` / `removeUnderline`                                                                                                                                                  | Not supported; remove                                                                                                                                |
+| `List`              | `gap`                                                                                                                                                                             | Remove; native lists own their spacing                                                                                                               |
+| `Page`              | `subtitle`, `titleHidden`, `titleMetadata`, `additionalMetadata`, `actionGroups`, `compactTitle`, ...                                                                             | `accessory` / page body content / `secondaryActions`                                                                                                 |
+| `Pagination`        | `accessibilityLabel`                                                                                                                                                              | Remove                                                                                                                                               |
+| `ResourceList` item | `persistActions` / `shortcutActions` / `verticalAlignment`                                                                                                                        | Pass row actions in `children`                                                                                                                       |
+| `SkeletonPage`      | `narrowWidth` / `fullWidth`                                                                                                                                                       | Wrap in a `Page` with `inlineSize`                                                                                                                   |
+| `Toast`             | `action`                                                                                                                                                                          | Remove; App Bridge toasts have no action                                                                                                             |
+| `Combobox`          | `allowMultiple` / `active` / `activator`                                                                                                                                          | `multiple` / `open` / `Combobox.Input` (removed props)                                                                                               |
 
 ---
 
@@ -213,28 +232,27 @@ import { ActionList, Button } from "@xco-agency/corex-ui";
 
 #### Modern Props
 
-| Prop         | Type                                       | Description                                                                                                                   |
-| :----------- | :----------------------------------------- | :---------------------------------------------------------------------------------------------------------------------------- |
-| `children`   | `ReactNode &#124; undefined`               | The trigger element for the Popover. Defaults to `<Button variant="tertiary" icon="menu-horizontal" />` when omitted.        |
-| `items`      | `ActionListItemType[] &#124; undefined`    | Array of action items to display.                                                                                             |
-| `sections`   | `ActionListSectionType[] &#124; undefined` | Array of grouped action sections, each with an optional `title` and `items`.                                                  |
-| `id`         | `string &#124; undefined`                  | Optional ID for the list container.                                                                                           |
-| `activator`  | `ReactNode &#124; undefined`               | *(Deprecated)* Prefer using `children`.                                                                                       |
+| Prop       | Type                                       | Description                                                                                                           |
+| :--------- | :----------------------------------------- | :-------------------------------------------------------------------------------------------------------------------- |
+| `children` | `ReactNode &#124; undefined`               | The trigger element for the Popover. Defaults to `<Button variant="tertiary" icon="menu-horizontal" />` when omitted. |
+| `items`    | `ActionListItemType[] &#124; undefined`    | Array of action items to display.                                                                                     |
+| `sections` | `ActionListSectionType[] &#124; undefined` | Array of grouped action sections, each with an optional `title` and `items`.                                          |
+| `id`       | `string &#124; undefined`                  | Optional ID for the list container.                                                                                   |
 
 #### Item Fields (`ActionListItemType`)
 
-| Field         | Type                                               | Description                                                                 |
-| :------------ | :------------------------------------------------- | :-------------------------------------------------------------------------- |
-| `content`     | `ReactNode`                                        | Action label or title.                                                      |
-| `onAction`    | `(() => void) &#124; undefined`                    | Callback when clicked. Automatically closes the popover.                    |
-| `href`        | `string &#124; undefined`                          | Link URL. Renders the item as a real anchor link.                           |
-| `icon`        | `IconType &#124; IconSourceType &#124; undefined`  | Polaris icon name string (e.g. `"edit"`, `"delete"`) or SVG component.     |
-| `destructive` | `boolean &#124; undefined`                         | Critical red styling on label and icon.                                     |
-| `disabled`    | `boolean &#124; undefined`                         | Disables the item.                                                          |
-| `helpText`    | `ReactNode &#124; undefined`                       | Subdued description beneath the label.                                      |
-| `active`      | `boolean &#124; undefined`                         | Subdued background state indicating current selection.                      |
-| `prefix`      | `ReactNode &#124; undefined`                       | Element displayed before icon/label.                                        |
-| `suffix`      | `ReactNode &#124; undefined`                       | Element displayed at the end of the row.                                    |
+| Field         | Type                                              | Description                                                            |
+| :------------ | :------------------------------------------------ | :--------------------------------------------------------------------- |
+| `content`     | `ReactNode`                                       | Action label or title.                                                 |
+| `onAction`    | `(() => void) &#124; undefined`                   | Callback when clicked. Automatically closes the popover.               |
+| `href`        | `string &#124; undefined`                         | Link URL. Renders the item as a real anchor link.                      |
+| `icon`        | `IconType &#124; IconSourceType &#124; undefined` | Polaris icon name string (e.g. `"edit"`, `"delete"`) or SVG component. |
+| `destructive` | `boolean &#124; undefined`                        | Critical red styling on label and icon.                                |
+| `disabled`    | `boolean &#124; undefined`                        | Disables the item.                                                     |
+| `helpText`    | `ReactNode &#124; undefined`                      | Subdued description beneath the label.                                 |
+| `active`      | `boolean &#124; undefined`                        | Subdued background state indicating current selection.                 |
+| `prefix`      | `ReactNode &#124; undefined`                      | Element displayed before icon/label.                                   |
+| `suffix`      | `ReactNode &#124; undefined`                      | Element displayed at the end of the row.                               |
 
 > [!CAUTION]
 > **Forbidden Legacy Props (DO NOT USE)**:
@@ -264,7 +282,12 @@ import { ActionList, Button } from "@xco-agency/corex-ui";
   items={[
     { content: "Edit", icon: "edit", onAction: () => handleEdit() },
     { content: "Duplicate", onAction: () => handleDuplicate() },
-    { content: "Delete", icon: "delete", destructive: true, onAction: () => handleDelete() },
+    {
+      content: "Delete",
+      icon: "delete",
+      destructive: true,
+      onAction: () => handleDelete(),
+    },
   ]}
 />
 ```
@@ -278,13 +301,23 @@ import { ActionList, Button } from "@xco-agency/corex-ui";
       title: "Manage",
       items: [
         { content: "Edit", icon: "edit", onAction: () => edit() },
-        { content: "Duplicate", icon: "duplicate", helpText: "Keeps the original", onAction: () => duplicate() },
+        {
+          content: "Duplicate",
+          icon: "duplicate",
+          helpText: "Keeps the original",
+          onAction: () => duplicate(),
+        },
       ],
     },
     {
       title: "Danger zone",
       items: [
-        { content: "Delete", icon: "delete", destructive: true, onAction: () => remove() },
+        {
+          content: "Delete",
+          icon: "delete",
+          destructive: true,
+          onAction: () => remove(),
+        },
       ],
     },
   ]}
@@ -292,7 +325,6 @@ import { ActionList, Button } from "@xco-agency/corex-ui";
   <Button variant="tertiary">Actions</Button>
 </ActionList>
 ```
-
 
 ---
 
@@ -1086,18 +1118,19 @@ import { Collapsible } from "@xco-agency/corex-ui";
 
 #### Modern Props
 
-| Prop                      | Type                                                                     | Description                                                                                                                                                                                                          |
-| :------------------------ | :----------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `expanded`                | `boolean &#124; undefined`                                               | Controlled expanded state. Omit to let the component manage its own state via `defaultExpanded`.                                                                                                                     |
-| `separator`               | `boolean &#124; undefined`                                               | Whether to show a separator between the target and the content.                                                                                                                                                      |
-| `defaultExpanded`         | `boolean &#124; undefined`                                               | Initial expanded state when uncontrolled.                                                                                                                                                                            |
-| `onExpandedChange`        | `((expanded: boolean) =&gt; void) &#124; undefined`                      | Fired whenever the expanded state changes, whether controlled or uncontrolled.                                                                                                                                       |
-| `children` **(required)** | `ReactNode &#124; ((props: CollapsibleRenderPropsType) =&gt; ReactNode)` | The always-visible target — a card grid, a row header, a trigger button. Accepts a render function to read the current expanded state and its `toggle`/`expand`/`collapse` helpers (e.g. to build a custom trigger). |
-| `framed`                  | `boolean &#124; undefined`                                               | Frames the target and content together with a shared border/background while expanded, so individual targets (e.g. cards) can drop their own outline and read as one grouped surface.                                |
-| `duration`                | `number &#124; undefined`                                                | Expand/collapse transition duration, in milliseconds.                                                                                                                                                                |
-| `easing`                  | `string &#124; undefined`                                                | Transition timing function applied to the expand/collapse animation.                                                                                                                                                 |
-| `accessibilityLabel`      | `string &#124; undefined`                                                | Accessible label for the root wrapper.                                                                                                                                                                               |
-| `id`                      | `string &#124; undefined`                                                | Id applied to the content region (and used to derive `aria-controls`).                                                                                                                                               |
+| Prop                      | Type                                                                                      | Description                                                                                                                                                                                                          |
+| :------------------------ | :---------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `expanded`                | `boolean &#124; undefined`                                                                | Controlled expanded state. Omit to let the component manage its own state via `defaultExpanded`.                                                                                                                     |
+| `separator`               | `boolean &#124; undefined`                                                                | Whether to show a separator between the target and the content.                                                                                                                                                      |
+| `defaultExpanded`         | `boolean &#124; undefined`                                                                | Initial expanded state when uncontrolled.                                                                                                                                                                            |
+| `onExpandedChange`        | `((expanded: boolean) =&gt; void) &#124; undefined`                                       | Fired whenever the expanded state changes, whether controlled or uncontrolled.                                                                                                                                       |
+| `children` **(required)** | `ReactNode &#124; ((props: CollapsibleRenderPropsType) =&gt; ReactNode)`                  | The always-visible target — a card grid, a row header, a trigger button. Accepts a render function to read the current expanded state and its `toggle`/`expand`/`collapse` helpers (e.g. to build a custom trigger). |
+| `framed`                  | `boolean &#124; undefined`                                                                | Frames the target and content together with a shared border/background while expanded, so individual targets (e.g. cards) can drop their own outline and read as one grouped surface.                                |
+| `duration`                | `number &#124; undefined`                                                                 | Expand/collapse transition duration, in milliseconds.                                                                                                                                                                |
+| `easing`                  | `string &#124; undefined`                                                                 | Transition timing function applied to the expand/collapse animation.                                                                                                                                                 |
+| `accessibilityLabel`      | `string &#124; undefined`                                                                 | Accessible label for the root wrapper.                                                                                                                                                                               |
+| `id`                      | `string &#124; undefined`                                                                 | Id applied to the content region (and used to derive `aria-controls`).                                                                                                                                               |
+| `content`                 | `ReactNode &#124; ((props: CollapsibleRenderPropsType) =&gt; ReactNode) &#124; undefined` | The collapsible region revealed when expanded. Stays mounted so the height animation works for content of any size. Accepts a render function for the expanded state and helpers.                                    |
 
 #### Example
 
@@ -1173,34 +1206,36 @@ import { Combobox } from "@xco-agency/corex-ui";
 
 #### Modern Props
 
-| Prop                  | Type                                                                                 | Description                                                        |
-| :-------------------- | :----------------------------------------------------------------------------------- | :----------------------------------------------------------------- |
-| `items`               | `readonly T[] &#124; undefined`                                                      | The collection of items for combobox suggestions.                  |
-| `itemToStringValue`   | `((item: T) =&gt; string) &#124; undefined`                                          | Convert item to string representation for display and search.      |
-| `value`               | `any`                                                                                | Controlled value (or array of values if multiple).                 |
-| `defaultValue`        | `any`                                                                                | Initial uncontrolled value.                                        |
-| `onValueChange`       | `((value: any) =&gt; void) &#124; undefined`                                         | Callback when selection changes.                                   |
-| `multiple`            | `boolean &#124; undefined`                                                           | Enable multi-selection (displays tags).                            |
-| `allowMultiple`       | `boolean &#124; undefined`                                                           | Alias for multiple (legacy Polaris compatibility).                 |
-| `open`                | `boolean &#124; undefined`                                                           | Controlled open state.                                             |
-| `active`              | `boolean &#124; undefined`                                                           | Alias for open (legacy Polaris compatibility).                     |
-| `defaultOpen`         | `boolean &#124; undefined`                                                           | Initial uncontrolled open state.                                   |
-| `onOpenChange`        | `((open: boolean) =&gt; void) &#124; undefined`                                      | Callback when open state changes.                                  |
-| `onClose`             | `(() =&gt; void) &#124; undefined`                                                   | Alias callback when popover closes (legacy Polaris compatibility). |
-| `inputValue`          | `string &#124; undefined`                                                            | Controlled search input query.                                     |
-| `onInputValueChange`  | `((inputValue: string) =&gt; void) &#124; undefined`                                 | Callback when input query changes.                                 |
-| `filter`              | `false &#124; ((item: T, query: string) =&gt; boolean) &#124; null &#124; undefined` | Custom filter function, or false to disable built-in filtering.    |
-| `autoHighlight`       | `boolean &#124; undefined`                                                           | Highlight first matching suggestion automatically.                 |
-| `disabled`            | `boolean &#124; undefined`                                                           | Whether the combobox is disabled.                                  |
-| `readOnly`            | `boolean &#124; undefined`                                                           | Whether the combobox is read-only.                                 |
-| `activator`           | `ReactNode`                                                                          | Custom trigger element.                                            |
-| `preferredPosition`   | `"above" &#124; "below" &#124; "mostSpace" &#124; undefined`                         | —                                                                  |
-| `willLoadMoreOptions` | `boolean &#124; undefined`                                                           | —                                                                  |
-| `onScrolledToBottom`  | `(() =&gt; void) &#124; undefined`                                                   | —                                                                  |
-| `id`                  | `string &#124; undefined`                                                            | —                                                                  |
-| `className`           | `string &#124; undefined`                                                            | —                                                                  |
-| `style`               | `CSSProperties &#124; undefined`                                                     | —                                                                  |
-| `children`            | `ReactNode`                                                                          | —                                                                  |
+| Prop                 | Type                                                                                 | Description                                                     |
+| :------------------- | :----------------------------------------------------------------------------------- | :-------------------------------------------------------------- |
+| `items`              | `readonly T[] &#124; undefined`                                                      | The collection of items for combobox suggestions.               |
+| `itemToStringValue`  | `((item: T) =&gt; string) &#124; undefined`                                          | Convert item to string representation for display and search.   |
+| `value`              | `any`                                                                                | Controlled value (or array of values if multiple).              |
+| `defaultValue`       | `any`                                                                                | Initial uncontrolled value.                                     |
+| `onValueChange`      | `((value: any) =&gt; void) &#124; undefined`                                         | Callback when selection changes.                                |
+| `multiple`           | `boolean &#124; undefined`                                                           | Enable multi-selection (displays tags).                         |
+| `open`               | `boolean &#124; undefined`                                                           | Controlled open state.                                          |
+| `defaultOpen`        | `boolean &#124; undefined`                                                           | Initial uncontrolled open state.                                |
+| `onOpenChange`       | `((open: boolean) =&gt; void) &#124; undefined`                                      | Callback when open state changes.                               |
+| `onClose`            | `(() =&gt; void) &#124; undefined`                                                   | Callback when the popover closes.                               |
+| `inputValue`         | `string &#124; undefined`                                                            | Controlled search input query.                                  |
+| `onInputValueChange` | `((inputValue: string) =&gt; void) &#124; undefined`                                 | Callback when input query changes.                              |
+| `filter`             | `false &#124; ((item: T, query: string) =&gt; boolean) &#124; null &#124; undefined` | Custom filter function, or false to disable built-in filtering. |
+| `autoHighlight`      | `boolean &#124; undefined`                                                           | Highlight first matching suggestion automatically.              |
+| `disabled`           | `boolean &#124; undefined`                                                           | Whether the combobox is disabled.                               |
+| `readOnly`           | `boolean &#124; undefined`                                                           | Whether the combobox is read-only.                              |
+| `id`                 | `string &#124; undefined`                                                            | —                                                               |
+| `className`          | `string &#124; undefined`                                                            | —                                                               |
+| `style`              | `CSSProperties &#124; undefined`                                                     | —                                                               |
+| `children`           | `ReactNode`                                                                          | —                                                               |
+
+> [!CAUTION]
+> **Forbidden Legacy Props (DO NOT USE)**:
+>
+> - `allowMultiple`: Removed. Use `multiple`.
+> - `active`: Removed. Use `open`.
+> - `activator`: Removed. Compose `Combobox.Input` as the trigger.
+> - `preferredPosition / willLoadMoreOptions / onScrolledToBottom`: Removed with the v12 Listbox implementation.
 
 #### Example
 
@@ -1850,6 +1885,8 @@ import { Image } from "@xco-agency/corex-ui";
 | `height`             | `string &#124; number &#124; undefined`                                                                                                                      | Explicit height of the image.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
 | `className`          | `string &#124; undefined`                                                                                                                                    | —                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
 | `style`              | `CSSProperties &#124; undefined`                                                                                                                             | —                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
+| `onLoad`             | `((event: Event) =&gt; void) &#124; undefined`                                                                                                               | Fired when the image successfully loads.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| `onError`            | `((event: Event) =&gt; void) &#124; undefined`                                                                                                               | Fired if the image fails to load.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
 
 #### Example
 
@@ -1979,6 +2016,10 @@ import { IndexTable } from "@xco-agency/corex-ui";
 | `truncate`              | `boolean &#124; undefined`                                                                                                             | —                                                                                                                                                        |
 | `verticalAlign`         | `"baseline" &#124; "top" &#124; "bottom" &#124; "middle" &#124; undefined`                                                             | —                                                                                                                                                        |
 | `hasZebraStriping`      | `boolean &#124; undefined`                                                                                                             | —                                                                                                                                                        |
+| `sortColumnIndex`       | `number &#124; undefined`                                                                                                              | Index of the currently sorted column.                                                                                                                    |
+| `sortDirection`         | `"ascending" &#124; "descending" &#124; undefined`                                                                                     | Direction of the current sort.                                                                                                                           |
+| `onSort`                | `((columnIndex: number, direction: IndexTableSortDirectionType) =&gt; void) &#124; undefined`                                          | Called when a sortable heading is clicked, with the column and its next direction.                                                                       |
+| `onReorder`             | `((fromIndex: number, toIndex: number) =&gt; void) &#124; undefined`                                                                   | Enables drag-to-reorder rows (also Alt+↑/↓). Reorder your data with `reorderItems`.                                                                      |
 
 #### Example
 
@@ -2193,13 +2234,14 @@ import { Layout } from "@xco-agency/corex-ui";
 
 #### Modern Props
 
-| Prop        | Type                             | Description                                                                                                                               |
-| :---------- | :------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------- |
-| `children`  | `ReactNode`                      | —                                                                                                                                         |
-| `gap`       | `PolarisSpacingType`             | Spacing between elements. Use modern Polaris spacing tokens ("none", "small-500"..."large-500", "base"). Never use legacy numeric tokens. |
-| `id`        | `string &#124; undefined`        | —                                                                                                                                         |
-| `className` | `string &#124; undefined`        | —                                                                                                                                         |
-| `style`     | `CSSProperties &#124; undefined` | —                                                                                                                                         |
+| Prop        | Type                               | Description                                                                                                                               |
+| :---------- | :--------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------- |
+| `children`  | `ReactNode`                        | —                                                                                                                                         |
+| `gap`       | `PolarisSpacingType`               | Spacing between elements. Use modern Polaris spacing tokens ("none", "small-500"..."large-500", "base"). Never use legacy numeric tokens. |
+| `id`        | `string &#124; undefined`          | —                                                                                                                                         |
+| `className` | `string &#124; undefined`          | —                                                                                                                                         |
+| `style`     | `CSSProperties &#124; undefined`   | —                                                                                                                                         |
+| `columns`   | `GridColumnsType &#124; undefined` | Grid columns configuration. Defaults to responsive `{ xs: 1, sm: 1, md: 12, lg: 12 }`.                                                    |
 
 #### Example
 
@@ -2244,6 +2286,7 @@ import { Link } from "@xco-agency/corex-ui";
 | `download`           | `string &#124; boolean &#124; undefined`                                                      | Prompts the user to save the linked URL instead of navigating.                                                                                                                                                                                                                                                                                                                              |
 | `className`          | `string &#124; undefined`                                                                     | —                                                                                                                                                                                                                                                                                                                                                                                           |
 | `style`              | `CSSProperties &#124; undefined`                                                              | —                                                                                                                                                                                                                                                                                                                                                                                           |
+| `rel`                | `string &#124; undefined`                                                                     | Link relationship (e.g. `'noopener noreferrer'`).                                                                                                                                                                                                                                                                                                                                           |
 
 > [!CAUTION]
 > **Forbidden Legacy Props (DO NOT USE)**:
@@ -2666,18 +2709,19 @@ import { Pagination } from "@xco-agency/corex-ui";
 
 #### Modern Props
 
-| Prop              | Type                               | Description                                                   |
-| :---------------- | :--------------------------------- | :------------------------------------------------------------ |
-| `hasPrevious`     | `boolean &#124; undefined`         | —                                                             |
-| `hasNext`         | `boolean &#124; undefined`         | —                                                             |
-| `onPrevious`      | `(() =&gt; void) &#124; undefined` | —                                                             |
-| `onNext`          | `(() =&gt; void) &#124; undefined` | —                                                             |
-| `label`           | `ReactNode`                        | Rendered between the two buttons, e.g. "Showing 1–20 of 240". |
-| `previousTooltip` | `string &#124; undefined`          | Accessible names for the two buttons.                         |
-| `nextTooltip`     | `string &#124; undefined`          | —                                                             |
-| `id`              | `string &#124; undefined`          | —                                                             |
-| `className`       | `string &#124; undefined`          | —                                                             |
-| `style`           | `CSSProperties &#124; undefined`   | —                                                             |
+| Prop              | Type                               | Description                                                                                                          |
+| :---------------- | :--------------------------------- | :------------------------------------------------------------------------------------------------------------------- |
+| `hasPrevious`     | `boolean &#124; undefined`         | —                                                                                                                    |
+| `hasNext`         | `boolean &#124; undefined`         | —                                                                                                                    |
+| `onPrevious`      | `(() =&gt; void) &#124; undefined` | —                                                                                                                    |
+| `onNext`          | `(() =&gt; void) &#124; undefined` | —                                                                                                                    |
+| `label`           | `ReactNode`                        | Rendered between the two buttons, e.g. "Showing 1–20 of 240".                                                        |
+| `previousTooltip` | `string &#124; undefined`          | Accessible names for the two buttons.                                                                                |
+| `nextTooltip`     | `string &#124; undefined`          | —                                                                                                                    |
+| `id`              | `string &#124; undefined`          | —                                                                                                                    |
+| `className`       | `string &#124; undefined`          | —                                                                                                                    |
+| `style`           | `CSSProperties &#124; undefined`   | —                                                                                                                    |
+| `floating`        | `boolean &#124; undefined`         | Renders the control as a raised pill (white surface, shadow) with quiet buttons, for use floating over page content. |
 
 > [!CAUTION]
 > **Forbidden Legacy Props (DO NOT USE)**:
@@ -3456,7 +3500,11 @@ import { TextField } from "@xco-agency/corex-ui";
 | `helpText`                     | `string &#124; undefined`                                                                | —                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
 | `multiline`                    | `number &#124; boolean &#124; undefined`                                                 | `true`/a row count renders `s-text-area` instead of `s-text-field`.                                                                                                                                                                                                                                                                                                                                                                                                                                           |
 | `autoComplete`                 | `string &#124; undefined`                                                                | —                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
-| `requiredIndicator`            | `boolean &#124; undefined`                                                               | —                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+
+> [!CAUTION]
+> **Forbidden Legacy Props (DO NOT USE)**:
+>
+> - `requiredIndicator`: Deprecated. Use `required` instead.
 
 #### Example
 
@@ -3567,6 +3615,7 @@ import { Toast } from "@xco-agency/corex-ui";
 | `error`     | `boolean &#124; undefined`         | —                                                                                                                                                                                                         |
 | `duration`  | `number &#124; undefined`          | Milliseconds the toast stays up.                                                                                                                                                                          |
 | `onDismiss` | `(() =&gt; void) &#124; undefined` | v12 called this when the toast timed out or was dismissed. App Bridge gives no such callback, so it fires once the toast has been raised — which is what call sites use it for: clearing their own state. |
+| `content`   | `string &#124; undefined`          | Toast message. Nothing is raised without content.                                                                                                                                                         |
 
 > [!CAUTION]
 > **Forbidden Legacy Props (DO NOT USE)**:
@@ -3597,6 +3646,7 @@ import { Tooltip } from "@xco-agency/corex-ui";
 | `slot`                    | `Lowercase&lt;string&gt; &#124; undefined` | Assigns this element to a parent's slot. |
 | `children` **(required)** | `ReactNode`                                | The element the tooltip is anchored to.  |
 | `className`               | `string &#124; undefined`                  | —                                        |
+| `content` **(required)**  | `ReactNode`                                | The tooltip content.                     |
 
 #### Example
 
@@ -3644,6 +3694,7 @@ import { Transition } from "@xco-agency/corex-ui";
 | `style`          | `CSSProperties &#124; undefined`                                        | Additional custom inline styles.                                                                                                          |
 | `className`      | `string &#124; undefined`                                               | Additional class name.                                                                                                                    |
 | `id`             | `string &#124; undefined`                                               | HTML element ID.                                                                                                                          |
+| `role`           | `string &#124; undefined`                                               | ARIA role of the wrapper, e.g. `"rowgroup"`.                                                                                              |
 
 #### Example
 

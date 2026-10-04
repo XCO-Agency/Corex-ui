@@ -14,6 +14,8 @@ export type ComponentCanvasPropsType = {
   viewport?: CanvasViewportType;
   className?: string;
   isFullscreen?: boolean;
+  /** Rendered inside the example card, which supplies the frame. */
+  embedded?: boolean;
 };
 
 export function ComponentCanvas({
@@ -21,6 +23,7 @@ export function ComponentCanvas({
   viewport = "100%",
   className,
   isFullscreen = false,
+  embedded = false,
 }: ComponentCanvasPropsType) {
   const panelRef = usePanelRef();
   const [isDragging, setIsDragging] = React.useState(false);
@@ -54,7 +57,7 @@ export function ComponentCanvas({
     <div className={cn(className)}>
       <ResizablePanelGroup
         orientation="horizontal"
-        className={cn(isFullscreen ? "min-h-[calc(100vh-9rem)]" : "min-h-65", "w-full")}
+        className={cn(isFullscreen ? "min-h-[calc(100vh-9rem)]" : "min-h-40", "w-full")}
       >
         {/* Resizable Preview Canvas Panel */}
         <ResizablePanel
@@ -62,8 +65,8 @@ export function ComponentCanvas({
           defaultSize="100%"
           minSize="300px"
           className={cn(
-            "relative flex justify-center bg-gray-50  overflow-clip  bg-[radial-gradient(oklch(0.7_0_0/0.2)_1px,transparent_1px)] dark:bg-[radial-gradient(oklch(1_0_0/0.15)_1px,transparent_1px)] bg-size-[16px_16px]",
-            isFullscreen ? "items-start" : "items-center rounded-xl border",
+            "relative flex justify-center bg-muted/30 overflow-clip  bg-[radial-gradient(oklch(0.7_0_0/0.2)_1px,transparent_1px)] dark:bg-[radial-gradient(oklch(1_0_0/0.15)_1px,transparent_1px)] bg-size-[16px_16px]",
+            isFullscreen ? "items-start" : embedded ? "items-center" : "items-center rounded-xl border",
           )}
         >
           {/* Prevent iframe from capturing pointer events during drag resizing */}
