@@ -52,7 +52,6 @@ export type IndexTablePaginationType = {
   label?: ReactNode;
   previousTooltip?: string;
   nextTooltip?: string;
-  accessibilityLabel?: string;
 };
 
 export type IndexTablePropsType = {

@@ -600,7 +600,7 @@ function IndexTableInner(
           pagination.floating ? (
             <Floating position="bottom-left" offset={{ x: 16, y: 16 }}>
               <Card padding="none">
-                <Box padding="small-100">
+                <Box padding="small-300">
                   <Pagination
                     hasPrevious={pagination.hasPrevious}
                     hasNext={pagination.hasNext}
@@ -609,7 +609,6 @@ function IndexTableInner(
                     label={pagination.label}
                     previousTooltip={pagination.previousTooltip ?? "Previous page"}
                     nextTooltip={pagination.nextTooltip ?? "Next page"}
-                    accessibilityLabel={pagination.accessibilityLabel}
                   />
                 </Box>
               </Card>
@@ -624,7 +623,6 @@ function IndexTableInner(
                 label={pagination.label}
                 previousTooltip={pagination.previousTooltip ?? "Previous page"}
                 nextTooltip={pagination.nextTooltip ?? "Next page"}
-                accessibilityLabel={pagination.accessibilityLabel}
               />
             </div>
           )
