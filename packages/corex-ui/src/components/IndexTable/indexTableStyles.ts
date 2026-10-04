@@ -22,13 +22,51 @@ export const INDEX_TABLE_CSS = `
   --cx-it-focus: var(--cx-it-focus-color, #005bd3);
   /* What sits behind the table; shows in the corners of pinned cells. */
   --cx-it-backdrop: var(--cx-it-backdrop-color, var(--cx-it-surface));
+  --cx-it-scrollbar-thumb: var(--cx-it-scrollbar-thumb-color, rgba(0, 0, 0, 0.18));
+  --cx-it-scrollbar-thumb-hover: var(--cx-it-scrollbar-thumb-hover-color, rgba(0, 0, 0, 0.32));
   position: relative;
   color: var(--cx-it-text);
   font-size: 0.8125rem;
   line-height: 1.25rem;
 }
 
-.cx-it__scroll { overflow-x: auto; overscroll-behavior-x: contain; }
+@media (prefers-color-scheme: dark) {
+  .cx-it {
+    --cx-it-scrollbar-thumb: var(--cx-it-scrollbar-thumb-color, rgba(255, 255, 255, 0.22));
+    --cx-it-scrollbar-thumb-hover: var(--cx-it-scrollbar-thumb-hover-color, rgba(255, 255, 255, 0.4));
+  }
+}
+
+.cx-it__scroll {
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-width: thin;
+  scrollbar-color: var(--cx-it-scrollbar-thumb) transparent;
+}
+.cx-it__scroll:hover {
+  scrollbar-color: var(--cx-it-scrollbar-thumb-hover) transparent;
+}
+.cx-it__scroll::-webkit-scrollbar {
+  height: 6px;
+  width: 6px;
+}
+.cx-it__scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+.cx-it__scroll::-webkit-scrollbar-thumb {
+  background-color: var(--cx-it-scrollbar-thumb);
+  border-radius: 9999px;
+  border: 1px solid transparent;
+  background-clip: padding-box;
+  transition: background-color 150ms ease;
+}
+.cx-it__scroll:hover::-webkit-scrollbar-thumb,
+.cx-it__scroll::-webkit-scrollbar-thumb:hover {
+  background-color: var(--cx-it-scrollbar-thumb-hover);
+}
+.cx-it__scroll::-webkit-scrollbar-corner {
+  background: transparent;
+}
 
 .cx-it__grid {
   position: relative;
@@ -152,6 +190,7 @@ export const INDEX_TABLE_CSS = `
   gap: 8px;
   min-width: 0;
   padding: 8px;
+  min-height: 30px;
 }
 .cx-it--dense .cx-it__cell { padding-block: 4px; }
 .cx-it--align-top .cx-it__cell { align-items: flex-start; }
@@ -219,7 +258,7 @@ export const INDEX_TABLE_CSS = `
 }
 
 /* No borders around footer and pagination. */
-.cx-it__pagination { display: flex; justify-content: flex-end; padding: 8px; }
+.cx-it__pagination { display: flex; justify-content: left; padding: 12px 8px; }
 .cx-it__footer { display: flex; justify-content: center; padding: 12px 8px; }
 .cx-it__empty { padding: 24px 16px; }
 `;

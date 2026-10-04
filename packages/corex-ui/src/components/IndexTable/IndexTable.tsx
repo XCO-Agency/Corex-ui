@@ -51,6 +51,8 @@ import type {
   IndexTableSortDirectionType,
   IndexTableStickyType,
 } from "./IndexTable.types";
+import { Floating } from "../Floating";
+import { Card } from "../Card";
 
 const useIsomorphicLayoutEffect =
   typeof window !== "undefined" ? useLayoutEffect : useEffect;
@@ -569,7 +571,23 @@ function IndexTableInner(
           </div>
         </div>
 
-        {pagination && (
+        {pagination ? (pagination.floating ? <Floating
+        position="bottom-left"
+
+        >
+          <Card padding="none">
+           <Pagination
+              style={{padding: 8}}
+              hasPrevious={pagination.hasPrevious}
+              hasNext={pagination.hasNext}
+              onPrevious={pagination.onPrevious}
+              onNext={pagination.onNext}
+              label={pagination.label}
+              previousTooltip={pagination.previousTooltip ?? "Previous page"}
+              nextTooltip={pagination.nextTooltip ?? "Next page"}
+            />
+            </Card>
+        </Floating> : (
           <div className="cx-it__pagination">
             <Pagination
               hasPrevious={pagination.hasPrevious}
@@ -577,11 +595,11 @@ function IndexTableInner(
               onPrevious={pagination.onPrevious}
               onNext={pagination.onNext}
               label={pagination.label}
-              previousTooltip="Previous page"
-              nextTooltip="Next page"
+              previousTooltip={pagination.previousTooltip ?? "Previous page"}
+              nextTooltip={pagination.nextTooltip ?? "Next page"}
             />
           </div>
-        )}
+        )): null}
 
         {footerContent && <div className="cx-it__footer">{footerContent}</div>}
       </div>

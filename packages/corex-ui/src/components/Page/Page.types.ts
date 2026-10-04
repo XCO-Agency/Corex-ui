@@ -79,33 +79,6 @@ export type PageBackActionType = {
   [key: string]: unknown;
 };
 
-/**
- * Page-level pagination. Floats at the bottom-left of the page while the
- * content scrolls, the way the Shopify admin pages long resource lists.
- */
-export type PagePaginationPropsType = {
-  /** Text between the buttons, e.g. "1-50". */
-  label?: ReactNode;
-  /** Tooltip for next page button */
-  nextTooltip?: string;
-  /** Tooltip for previous page button */
-  previousTooltip?: string;
-  /** URL for next page */
-  nextURL?: string;
-  /** URL for previous page */
-  previousURL?: string;
-  /** Whether a next page exists */
-  hasNext?: boolean;
-  /** Whether a previous page exists */
-  hasPrevious?: boolean;
-  /** Accessibility label */
-  accessibilityLabel?: string;
-  /** Callback for next page */
-  onNext?: () => void;
-  /** Callback for previous page */
-  onPrevious?: () => void;
-  [key: string]: unknown;
-};
 
 /**
  * Props for the `Page` component.
@@ -216,11 +189,6 @@ export type PagePropsType = {
    */
   filterActions?: boolean;
 
-  /**
-   * Previous/next pager floating at the bottom-left of the page — it stays in
-   * view while a long list scrolls and settles under the content at the end.
-   */
-  pagination?: PagePaginationPropsType;
 
   /**
    * @deprecated Action groups are not directly supported on `s-page`. Provide individual actions in `secondaryActions`.

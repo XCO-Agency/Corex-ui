@@ -120,6 +120,10 @@ export function IndexTableExample() {
           .filter((variant) => variant.selectable !== false)
           .map((variant) => variant.id),
     });
+const pageSize = 5;
+const start = (page - 1) * pageSize + 1;
+const end = Math.min(page * pageSize, products.length);
+
 
   const handleSort = (_columnIndex: number, direction: IndexTableSortDirectionType) => {
     setSortDirection(direction);
@@ -133,20 +137,15 @@ export function IndexTableExample() {
   };
 
   return (
-    <Box background="base">
+    <Box background="base" position="relative">
       <Page
         heading="IndexTable example"
+        inlineSize="large"
         primaryAction={{ content: "Add product", onAction: () => alert("Add product") }}
-        // Floats at the bottom-left while the list scrolls.
-        pagination={{
-          hasPrevious: page > 1,
-          hasNext: page < 3,
-          label: `${(page - 1) * 50 + 1}-${page * 50}`,
-          onPrevious: () => setPage((current) => current - 1),
-          onNext: () => setPage((current) => current + 1),
-        }}
       >
+        texasadsa
         <IndexTable
+        increasedTableDensity
           resourceName={{ singular: "product", plural: "products" }}
           itemCount={products.length}
           selectedItemsCount={allResourcesSelected ? "All" : selectedResources.length}
@@ -156,6 +155,14 @@ export function IndexTableExample() {
           onSort={handleSort}
           // Adds a drag handle to each row; Arrow ↑/↓ on a handle also moves it.
           onReorder={(from, to) => setProducts((current) => reorderItems(current, from, to))}
+          pagination={{
+            floating: true,
+            hasPrevious: page > 1,
+            hasNext: page < 3,
+            label: `${start} – ${end} of ${products.length}`,
+            onPrevious: () => setPage((current) => current - 1),
+            onNext: () => setPage((current) => current + 1),
+          }}
           headings={[
             // Thumbnail column: pinned columns get a fixed width, set by minWidth.
             { title: "", hidden: true, minWidth: 96 },
@@ -216,6 +223,7 @@ export function IndexTableExample() {
             <IndexTable.Row
               key={product.id}
               id={product.id}
+              
               selected={selectedResources.includes(product.id)}
               onClick={() => alert(`Open ${product.name}`)}
               subRows={variantsByProduct[product.id]?.map((variant) => (
@@ -237,16 +245,16 @@ export function IndexTableExample() {
               ))}
             >
               {/* sticky on a cell pins the whole column, header and checkbox included */}
-              <IndexTable.Cell sticky="left">
+              <IndexTable.Cell sticky="left" flush>
                 <Thumbnail
                   source={product.thumbnail}
                   alt={product.name}
-                  size="small-200"
+                  size="small"
                 />
               </IndexTable.Cell>
               {/* Pinning the name too keeps it — and variant names — in view. */}
-              <IndexTable.Cell sticky="left">
-                <Text heading lineClamp={1}>
+              <IndexTable.Cell >
+                <Text heading>
                   {product.name}
                 </Text>
               </IndexTable.Cell>
@@ -256,31 +264,31 @@ export function IndexTableExample() {
               </IndexTable.Cell>
 
               <IndexTable.Cell>
-                <Text as="span" color="subdued" lineClamp={1}>
+                <Text color="subdued" >
                   {product.inventory}
                 </Text>
               </IndexTable.Cell>
 
               <IndexTable.Cell>
-                <Text as="span" lineClamp={1}>
+                <Text>
                   {product.category}
                 </Text>
               </IndexTable.Cell>
 
               <IndexTable.Cell alignment="center">
-                <Text lineClamp={1}>{product.channels}</Text>
+                <Text>{product.channels}</Text>
               </IndexTable.Cell>
 
               <IndexTable.Cell alignment="center">
-                <Text lineClamp={1}>{product.catalogs}</Text>
+                <Text>{product.catalogs}</Text>
               </IndexTable.Cell>
 
               <IndexTable.Cell>
-                <Text lineClamp={1}>{product.productType}</Text>
+                <Text>{product.productType}</Text>
               </IndexTable.Cell>
 
               <IndexTable.Cell>
-                <Text lineClamp={1}>{product.vendor}</Text>
+                <Text>{product.vendor}</Text>
               </IndexTable.Cell>
 
               <IndexTable.Cell>

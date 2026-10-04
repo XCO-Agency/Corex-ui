@@ -154,11 +154,20 @@ export function buildRegistry({ silent = false } = {}) {
 
   fs.writeFileSync(outputIndexFile, JSON.stringify(indexList, null, 2), "utf-8");
 
+  // Sync AI Skill to public directory for direct download and raw viewing
+  const rootDir = path.resolve(playgroundDir, "../..");
+  const skillSrc = path.resolve(rootDir, ".agents/skills/corex-ui-components/SKILL.md");
+  const skillDest = path.resolve(playgroundDir, "public/SKILL.md");
+  if (fs.existsSync(skillSrc)) {
+    fs.copyFileSync(skillSrc, skillDest);
+  }
+
   if (!silent) {
     console.log(`\x1b[32m✔ Registry built successfully!\x1b[0m`);
     console.log(`  Blocks generated: \x1b[36m${indexList.length}\x1b[0m`);
     console.log(`  Registry folder:  \x1b[36m${path.relative(playgroundDir, outputDir)}\x1b[0m`);
     console.log(`  Index file:       \x1b[36m${path.relative(playgroundDir, outputIndexFile)}\x1b[0m`);
+    console.log(`  AI Skill copied:  \x1b[36m${path.relative(playgroundDir, skillDest)}\x1b[0m`);
   } else {
     console.log(`\x1b[32m✔ [registry-watcher] Synced ${indexList.length} blocks to public/r/blocks\x1b[0m`);
   }

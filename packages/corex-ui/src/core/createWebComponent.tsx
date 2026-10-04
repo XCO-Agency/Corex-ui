@@ -51,11 +51,7 @@ const LOWERCASE_ATTRIBUTES: Record<string, string> = {
   minLength: "minlength",
   maxLength: "maxlength",
   srcSet: "srcset",
-  // Polaris Accessibility
-  labelAccessibilityVisibility: "labelaccessibilityvisibility",
-  accessibilityLabel: "accessibilitylabel",
-  accessibilityRole: "accessibilityrole",
-  accessibilityVisibility: "accessibilityvisibility",
+  inlineSize: "inlinesize",
   // Polaris Form defaults & controls
   defaultValue: "defaultvalue",
   defaultChecked: "defaultchecked",

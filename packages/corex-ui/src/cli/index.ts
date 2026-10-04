@@ -239,6 +239,9 @@ To install the official Corex UI skill for your AI coding assistant (Cursor, Cla
   ${c.bold("Direct download (cURL):")}
     ${c.green("mkdir -p .agents/skills/corex-ui-components && curl -sSL https://raw.githubusercontent.com/XCO-Agency/Corex-ui/main/.agents/skills/corex-ui-components/SKILL.md -o .agents/skills/corex-ui-components/SKILL.md")}
 
+  ${c.bold("Copy to clipboard (macOS):")}
+    ${c.green("curl -sSL https://raw.githubusercontent.com/XCO-Agency/Corex-ui/main/.agents/skills/corex-ui-components/SKILL.md | pbcopy")}
+
 For full details, visit: ${c.cyan("https://github.com/XCO-Agency/Corex-ui/blob/main/docs/agent-skills.md")}
 `);
     return;

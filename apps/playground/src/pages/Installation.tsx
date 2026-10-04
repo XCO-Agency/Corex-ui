@@ -2,10 +2,17 @@ import * as React from "react";
 import { Link } from "react-router-dom";
 import {
   ArrowRight,
+  Bot,
+  Check,
   CheckCircle2,
+  Copy,
+  Download,
+  ExternalLink,
+  FileCode,
   Package,
   Rocket,
   ShieldCheck,
+  Sparkles,
   Terminal,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
@@ -41,6 +48,18 @@ function ProductForm() {
 
 const TYPES_CODE = `npm install --save-dev @shopify/polaris-types`;
 
+const CURL_SKILL_CODE = `mkdir -p .agents/skills/corex-ui-components && \\
+curl -sSL https://raw.githubusercontent.com/XCO-Agency/Corex-ui/main/.agents/skills/corex-ui-components/SKILL.md \\
+  -o .agents/skills/corex-ui-components/SKILL.md`;
+
+const ASSISTANT_TARGETS = [
+  { id: "all", label: "Auto-detect" },
+  { id: "cursor", label: "Cursor" },
+  { id: "claude-code", label: "Claude Code" },
+  { id: "antigravity", label: "Antigravity" },
+  { id: "copilot", label: "Copilot" },
+] as const;
+
 function StepNumber({ n }: { n: number }) {
   return (
     <span className="flex size-7 shrink-0 items-center justify-center rounded-full bg-primary text-xs font-semibold text-primary-foreground">
@@ -52,6 +71,39 @@ function StepNumber({ n }: { n: number }) {
 export function Installation() {
   const [pm, setPm] = React.useState<(typeof PACKAGE_MANAGERS)[number]["id"]>("pnpm");
   const activePm = PACKAGE_MANAGERS.find((p) => p.id === pm)!;
+
+  const [copiedSkill, setCopiedSkill] = React.useState(false);
+  const [skillInstallMode, setSkillInstallMode] = React.useState<"cli" | "raw">("cli");
+  const [targetAssistant, setTargetAssistant] =
+    React.useState<(typeof ASSISTANT_TARGETS)[number]["id"]>("all");
+
+  const handleCopySkill = async () => {
+    try {
+      const raw = await import("../../../../.agents/skills/corex-ui-components/SKILL.md?raw");
+      await navigator.clipboard.writeText(raw.default);
+      setCopiedSkill(true);
+      setTimeout(() => setCopiedSkill(false), 2000);
+    } catch {
+      try {
+        const res = await fetch("/SKILL.md");
+        const text = await res.text();
+        await navigator.clipboard.writeText(text);
+        setCopiedSkill(true);
+        setTimeout(() => setCopiedSkill(false), 2000);
+      } catch {
+        window.open("/SKILL.md", "_blank");
+      }
+    }
+  };
+
+  const getSkillCliCommand = () => {
+    const base =
+      pm === "pnpm"
+        ? "pnpm dlx skills add XCO-Agency/Corex-ui"
+        : "npx skills add XCO-Agency/Corex-ui";
+    if (targetAssistant === "all") return base;
+    return `${base} -a ${targetAssistant}`;
+  };
 
   return (
     <div className="mx-auto w-full max-w-3xl px-3 pb-24 md:px-4">
@@ -212,30 +264,185 @@ export function Installation() {
         </section>
 
         {/* Step 4: AI Skill */}
-        <section className="space-y-3">
-          <div className="flex items-center gap-3">
-            <StepNumber n={4} />
-            <h2 className="text-base font-semibold text-foreground">
-              Add AI Assistant Skill (Optional)
-            </h2>
+        <section className="space-y-4">
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <div className="flex items-center gap-3">
+              <StepNumber n={4} />
+              <div className="flex items-center gap-2">
+                <h2 className="text-base font-semibold text-foreground">
+                  Add AI Assistant Skill
+                </h2>
+                <Badge variant="outline" className="text-[10px] text-muted-foreground font-normal">
+                  Optional
+                </Badge>
+              </div>
+            </div>
+
+            {/* Quick Action to Copy Skill Markdown */}
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={handleCopySkill}
+              className="gap-1.5 text-xs font-medium cursor-pointer"
+            >
+              {copiedSkill ? (
+                <>
+                  <Check className="size-3.5 text-emerald-600 dark:text-emerald-400" />
+                  <span className="text-emerald-600 dark:text-emerald-400 font-semibold">
+                    Skill copied!
+                  </span>
+                </>
+              ) : (
+                <>
+                  <Copy className="size-3.5 text-muted-foreground" />
+                  <span>Copy skill (.md)</span>
+                </>
+              )}
+            </Button>
           </div>
 
-          <div className="ml-10 space-y-3">
+          <div className="ml-10 space-y-4">
             <p className="text-sm text-muted-foreground">
               Building with AI coding assistants (<strong>Cursor</strong>,{" "}
               <strong>Claude Code</strong>, <strong>Antigravity</strong>, or{" "}
-              <strong>Copilot</strong>)? Install the official Corex UI skill so your agent
-              knows all modern props, spacing tokens, and components:
+              <strong>Copilot</strong>)? Equip your agent with the official Corex UI skill so
+              it knows all modern props, spacing tokens, and components:
             </p>
-            <ComponentCodeViewer
-              code={
-                pm === "pnpm"
-                  ? "pnpm dlx skills add XCO-Agency/Corex-ui"
-                  : "npx skills add XCO-Agency/Corex-ui"
-              }
-              filename="Terminal"
-              language="bash"
-            />
+
+            {/* Mode switcher: skills.sh CLI vs Direct / Raw .md */}
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <div className="inline-flex rounded-lg border border-border/80 bg-muted/40 p-0.5">
+                <button
+                  type="button"
+                  onClick={() => setSkillInstallMode("cli")}
+                  className={cn(
+                    "flex items-center gap-1.5 rounded-md px-3 py-1 text-xs font-medium transition-colors cursor-pointer",
+                    skillInstallMode === "cli"
+                      ? "bg-background text-foreground shadow-xs"
+                      : "text-muted-foreground hover:text-foreground",
+                  )}
+                >
+                  <Terminal className="size-3.5" />
+                  <span>CLI (skills.sh)</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setSkillInstallMode("raw")}
+                  className={cn(
+                    "flex items-center gap-1.5 rounded-md px-3 py-1 text-xs font-medium transition-colors cursor-pointer",
+                    skillInstallMode === "raw"
+                      ? "bg-background text-foreground shadow-xs"
+                      : "text-muted-foreground hover:text-foreground",
+                  )}
+                >
+                  <FileCode className="size-3.5" />
+                  <span>Direct Skill (.md)</span>
+                </button>
+              </div>
+
+              {skillInstallMode === "cli" && (
+                <div className="flex flex-wrap items-center gap-1 text-xs">
+                  <span className="text-muted-foreground mr-1 text-[11px]">Target:</span>
+                  {ASSISTANT_TARGETS.map((target) => (
+                    <button
+                      key={target.id}
+                      type="button"
+                      onClick={() => setTargetAssistant(target.id)}
+                      className={cn(
+                        "rounded px-2 py-0.5 text-[11px] font-medium transition-colors cursor-pointer",
+                        targetAssistant === target.id
+                          ? "bg-primary/10 text-primary font-semibold"
+                          : "text-muted-foreground hover:bg-muted hover:text-foreground",
+                      )}
+                    >
+                      {target.label}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {skillInstallMode === "cli" ? (
+              <div className="space-y-2">
+                <ComponentCodeViewer
+                  code={getSkillCliCommand()}
+                  filename="Terminal"
+                  language="bash"
+                />
+                <p className="text-[12px] text-muted-foreground">
+                  The CLI detects your installed coding assistants and automatically places the
+                  skill rules into your project (e.g. <code>.cursor/rules/</code>,{" "}
+                  <code>.claude/skills/</code>, or <code>.agents/skills/</code>).
+                </p>
+              </div>
+            ) : (
+              <div className="space-y-3 rounded-xl border border-border/80 bg-card p-4 shadow-xs">
+                <div className="flex flex-wrap items-center justify-between gap-3">
+                  <div className="flex items-center gap-2">
+                    <FileCode className="size-4 text-primary" />
+                    <span className="font-mono text-xs font-semibold text-foreground">
+                      .agents/skills/corex-ui-components/SKILL.md
+                    </span>
+                    <Badge variant="secondary" className="text-[10px]">
+                      77 Components
+                    </Badge>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Button
+                      type="button"
+                      size="sm"
+                      onClick={handleCopySkill}
+                      className="gap-1.5 text-xs cursor-pointer"
+                    >
+                      {copiedSkill ? (
+                        <>
+                          <Check className="size-3.5" />
+                          <span>Copied skill!</span>
+                        </>
+                      ) : (
+                        <>
+                          <Copy className="size-3.5" />
+                          <span>Copy full skill</span>
+                        </>
+                      )}
+                    </Button>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      render={
+                        <a
+                          href="/SKILL.md"
+                          download="corex-ui-skill.md"
+                          className="gap-1.5 text-xs"
+                        />
+                      }
+                    >
+                      <Download className="size-3.5" />
+                      <span>Download</span>
+                    </Button>
+                  </div>
+                </div>
+
+                <p className="text-xs text-muted-foreground">
+                  Contains strict Corex UI rules, modern Polaris spacing tokens, deprecation
+                  replacements, and exact TypeScript prop signatures. Paste directly into your
+                  assistant rules or custom prompt.
+                </p>
+
+                <div className="pt-1">
+                  <span className="text-[11px] font-medium text-muted-foreground block mb-1.5">
+                    Or download via cURL:
+                  </span>
+                  <ComponentCodeViewer
+                    code={CURL_SKILL_CODE}
+                    filename="Terminal"
+                    language="bash"
+                  />
+                </div>
+              </div>
+            )}
           </div>
         </section>
 

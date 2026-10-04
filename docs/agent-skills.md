@@ -67,6 +67,30 @@ curl -sSL https://raw.githubusercontent.com/XCO-Agency/Corex-ui/main/.agents/ski
 
 ---
 
+## Copy Skill Directly to Clipboard
+
+If you want to paste the skill prompt directly into your AI assistant chat, custom instructions, or Cursor rules:
+
+### macOS
+```bash
+curl -sSL https://raw.githubusercontent.com/XCO-Agency/Corex-ui/main/.agents/skills/corex-ui-components/SKILL.md | pbcopy
+```
+
+### Linux (`xclip`)
+```bash
+curl -sSL https://raw.githubusercontent.com/XCO-Agency/Corex-ui/main/.agents/skills/corex-ui-components/SKILL.md | xclip -selection clipboard
+```
+
+### Windows (PowerShell)
+```powershell
+(Invoke-WebRequest -Uri "https://raw.githubusercontent.com/XCO-Agency/Corex-ui/main/.agents/skills/corex-ui-components/SKILL.md").Content | Set-Clipboard
+```
+
+### Raw Markdown Link
+- [View & Copy Raw SKILL.md](https://raw.githubusercontent.com/XCO-Agency/Corex-ui/main/.agents/skills/corex-ui-components/SKILL.md)
+
+---
+
 ## What the Skill Teaches Your AI Agent
 
 1. **Strict Corex UI Component Usage**:

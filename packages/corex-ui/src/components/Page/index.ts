@@ -6,5 +6,4 @@ export type {
   PageMenuActionDescriptorType,
   PageMenuGroupDescriptorType,
   PageBackActionType,
-  PagePaginationPropsType,
 } from "./Page.types";

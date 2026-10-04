@@ -54,7 +54,7 @@ import { Page, Button } from "@xco-agency/corex-ui";
 | `primaryAction`               | Supported     | Accepts legacy action descriptor objects (e.g. `{ content, onAction, destructive, disabled }`) or React elements. |
 | `secondaryActions`            | Supported     | Accepts array of legacy action descriptor objects or React elements.                                              |
 | `actionGroups`                | `@deprecated` | Provide individual actions via `secondaryActions` or a custom header menu. Logs dev-mode warning.                 |
-| `pagination`                  | `@deprecated` | Render pagination controls directly inside the page body. Logs dev-mode warning.                                  |
+| `pagination`                  | Removed       | Pagination belongs on resource components (e.g. `IndexTable.pagination`) or directly via `<Pagination>`.          |
 | `titleHidden`                 | `@deprecated` | Visually hiding titles is not supported on `s-page`. Logs dev-mode warning.                                       |
 | `pageReadyAccessibilityLabel` | `@deprecated` | Accessibility labels are handled differently on web components.                                                   |
 | `filterActions`               | `@deprecated` | Filtering action lists is not supported on `s-page`.                                                              |

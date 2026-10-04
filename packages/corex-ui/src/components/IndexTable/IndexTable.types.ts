@@ -44,11 +44,15 @@ export type IndexTableBulkActionType = {
 };
 
 export type IndexTablePaginationType = {
+  floating?: boolean;
   hasPrevious?: boolean;
   hasNext?: boolean;
   onPrevious?: () => void;
   onNext?: () => void;
   label?: ReactNode;
+  previousTooltip?: string;
+  nextTooltip?: string;
+  accessibilityLabel?: string;
 };
 
 export type IndexTablePropsType = {

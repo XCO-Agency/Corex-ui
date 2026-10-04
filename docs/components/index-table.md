@@ -11,9 +11,10 @@ const [products, setProducts] = useState(initialProducts);
 const { selectedResources, allResourcesSelected, handleSelectionChange } =
   useIndexResourceState(products);
 
-<Page heading="Products" pagination={{ hasNext, onNext, label: "1-50" }}>
+<Page heading="Products">
   <IndexTable
     resourceName={{ singular: "product", plural: "products" }}
+    pagination={{ hasNext, onNext, label: "1-50" }}
     headings={[
       { title: "Product", minWidth: 280, sortable: true },
       { title: "Status" },
