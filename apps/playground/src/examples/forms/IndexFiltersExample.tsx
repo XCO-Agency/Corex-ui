@@ -148,9 +148,7 @@ const initialColumns: IndexFilterColumnItemType[] = [
 const renderCell: Record<string, (product: ProductItemType) => ReactNode> = {
   product: (product) => (
     <BlockStack gap="small-500">
-      <Link url="#">
-        <Text heading>{product.title}</Text>
-      </Link>
+      <Text>{product.title}</Text>
       {product.tags.length > 0 && (
         <InlineStack gap="small-400">
           {product.tags.slice(0, 3).map((tag) => (
@@ -422,7 +420,7 @@ export function IndexFiltersExample() {
 
   return (
     <Page>
-      <BlockStack gap="large-100" inlineSize="100%">
+      <BlockStack gap="base" inlineSize="100%">
         {savedNotice ? (
           <Box background="strong" borderRadius="base" padding="small-200">
             <Text variant="small" tone="neutral">
@@ -490,7 +488,7 @@ export function IndexFiltersExample() {
         </IndexFilters>
 
         {/* Table is rendered outside IndexFilters in its own Card/Box */}
-        <Card>
+        <Card padding="none">
           {filteredProducts.length === 0 ? (
             <Box paddingBlock="large-300" paddingInline="large-100">
               <EmptyState
@@ -501,11 +499,9 @@ export function IndexFiltersExample() {
                   content: "Clear search and filters",
                   onAction: handleClearAll,
                 }}
+                footerContent={<Link url="#">Learn more about products</Link>}
               >
-                <BlockStack gap="small-200" inlineAlign="center">
-                  <Text tone="neutral">Try changing the filters or search term</Text>
-                  <Link url="#">Learn more about products</Link>
-                </BlockStack>
+                <Text tone="neutral">Try changing the filters or search term</Text>
               </EmptyState>
             </Box>
           ) : (
