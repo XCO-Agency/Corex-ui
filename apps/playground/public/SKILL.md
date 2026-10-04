@@ -188,7 +188,7 @@ When specifying `gap`, `padding`, `rowGap`, or `columnGap`, use **exclusively** 
 | [**Collapsible**](#collapsible) | Smoothly animated expand/collapse container.                                                                       | —                                                                                                     |
 | [**Transition**](#transition)   | Animated transition wrapper for enter/exit animations.                                                             | —                                                                                                     |
 | [**EmptyState**](#emptystate)   | Prominent placeholder UI for empty screens or zero search results.                                                 | —                                                                                                     |
-| [**ActionList**](#actionlist)   | Vertical menu list of actions and choices.                                                                         | —                                                                                                     |
+| [**ActionList**](#actionlist)   | Action menu list of actions and choices with integrated Popover overlay.                                           | —                                                                                                     |
 
 ### App Bridge Chrome
 
@@ -205,28 +205,46 @@ When specifying `gap`, `padding`, `rowGap`, or `columnGap`, use **exclusively** 
 
 ### ActionList
 
-Vertical menu list of actions and choices.
+Action menu list of actions and choices with an integrated Popover overlay. Automatically wraps its trigger (`children`, or a default 3-dots `<Button variant="tertiary" icon="menu-horizontal" />`) and content in a Popover. Clicking any action item automatically dismisses the popover.
 
 ```tsx
-import { ActionList } from "@xco-agency/corex-ui";
+import { ActionList, Button } from "@xco-agency/corex-ui";
 ```
 
 #### Modern Props
 
-| Prop        | Type                                       | Description |
-| :---------- | :----------------------------------------- | :---------- |
-| `items`     | `ActionListItemType[] &#124; undefined`    | —           |
-| `sections`  | `ActionListSectionType[] &#124; undefined` | —           |
-| `id`        | `string &#124; undefined`                  | —           |
-| `className` | `string &#124; undefined`                  | —           |
-| `style`     | `CSSProperties &#124; undefined`           | —           |
+| Prop         | Type                                       | Description                                                                                                                   |
+| :----------- | :----------------------------------------- | :---------------------------------------------------------------------------------------------------------------------------- |
+| `children`   | `ReactNode &#124; undefined`               | The trigger element for the Popover. Defaults to `<Button variant="tertiary" icon="menu-horizontal" />` when omitted.        |
+| `items`      | `ActionListItemType[] &#124; undefined`    | Array of action items to display.                                                                                             |
+| `sections`   | `ActionListSectionType[] &#124; undefined` | Array of grouped action sections, each with an optional `title` and `items`.                                                  |
+| `id`         | `string &#124; undefined`                  | Optional ID for the list container.                                                                                           |
+| `activator`  | `ReactNode &#124; undefined`               | *(Deprecated)* Prefer using `children`.                                                                                       |
+
+#### Item Fields (`ActionListItemType`)
+
+| Field         | Type                                               | Description                                                                 |
+| :------------ | :------------------------------------------------- | :-------------------------------------------------------------------------- |
+| `content`     | `ReactNode`                                        | Action label or title.                                                      |
+| `onAction`    | `(() => void) &#124; undefined`                    | Callback when clicked. Automatically closes the popover.                    |
+| `href`        | `string &#124; undefined`                          | Link URL. Renders the item as a real anchor link.                           |
+| `icon`        | `IconType &#124; IconSourceType &#124; undefined`  | Polaris icon name string (e.g. `"edit"`, `"delete"`) or SVG component.     |
+| `destructive` | `boolean &#124; undefined`                         | Critical red styling on label and icon.                                     |
+| `disabled`    | `boolean &#124; undefined`                         | Disables the item.                                                          |
+| `helpText`    | `ReactNode &#124; undefined`                       | Subdued description beneath the label.                                      |
+| `active`      | `boolean &#124; undefined`                         | Subdued background state indicating current selection.                      |
+| `prefix`      | `ReactNode &#124; undefined`                       | Element displayed before icon/label.                                        |
+| `suffix`      | `ReactNode &#124; undefined`                       | Element displayed at the end of the row.                                    |
 
 > [!CAUTION]
 > **Forbidden Legacy Props (DO NOT USE)**:
 >
 > - `actionRole`: v12 switched the items between `button` and `menuitem`.
+> - `url`: Deprecated on `ActionListItemType`, use `href` instead.
 
-#### Example
+#### Examples
+
+**With custom trigger button:**
 
 ```tsx
 <ActionList
@@ -234,8 +252,47 @@ import { ActionList } from "@xco-agency/corex-ui";
     { content: "Export CSV", onAction: () => exportCsv() },
     { content: "Import CSV", onAction: () => importCsv() },
   ]}
+>
+  <Button variant="secondary">More actions</Button>
+</ActionList>
+```
+
+**With default 3-dots trigger:**
+
+```tsx
+<ActionList
+  items={[
+    { content: "Edit", icon: "edit", onAction: () => handleEdit() },
+    { content: "Duplicate", onAction: () => handleDuplicate() },
+    { content: "Delete", icon: "delete", destructive: true, onAction: () => handleDelete() },
+  ]}
 />
 ```
+
+**With sections:**
+
+```tsx
+<ActionList
+  sections={[
+    {
+      title: "Manage",
+      items: [
+        { content: "Edit", icon: "edit", onAction: () => edit() },
+        { content: "Duplicate", icon: "duplicate", helpText: "Keeps the original", onAction: () => duplicate() },
+      ],
+    },
+    {
+      title: "Danger zone",
+      items: [
+        { content: "Delete", icon: "delete", destructive: true, onAction: () => remove() },
+      ],
+    },
+  ]}
+>
+  <Button variant="tertiary">Actions</Button>
+</ActionList>
+```
+
 
 ---
 
@@ -2265,8 +2322,11 @@ import { Menu } from "@xco-agency/corex-ui";
 #### Example
 
 ```tsx
+<Button commandFor="order-actions-menu" icon="menu">More actions</Button>
 <Menu id="order-actions-menu">
-  <ActionList items={[{ content: "Duplicate" }, { content: "Archive" }]} />
+  <Button icon="duplicate">Duplicate</Button>
+  <Button icon="archive">Archive</Button>
+  <Button icon="delete" tone="critical">Delete</Button>
 </Menu>
 ```
 

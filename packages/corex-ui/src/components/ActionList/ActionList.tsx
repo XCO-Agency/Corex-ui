@@ -55,10 +55,11 @@ function ActionListItem({ item }: { item: ActionListItemType }) {
 }
 
 /**
- * v12's list of actions, for use inside a [`Popover`](../../docs/components/popover.md).
+ * Action menu list with an integrated `Popover` overlay.
  *
- * It is a menu in all but name, and `sections` keeps v12's grouping with an
- * optional title per group.
+ * Automatically wraps its trigger (`children`, or a default 3-dots `Button`)
+ * and content in a `Popover`. Clicking any item automatically closes the popover.
+ * Supports grouped items via `sections`.
  */
 export const ActionList = forwardRef<HTMLDivElement, ActionListPropsType>(
   function ActionList({ items, sections, children, activator, ...rest }, ref) {
