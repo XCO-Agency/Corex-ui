@@ -27,8 +27,10 @@ export const Switch = forwardRef<HTMLElement, SwitchPropsType>(function Switch(
       label={label}
       checked={checked}
       details={details}
-      accessibilityLabel={label ?? rest.accessibilityLabel ?? "Swicher"}
-      labelAccessibilityVisibility={label ? undefined : "exclusive"}
+      accessibilityLabel={label ?? rest.accessibilityLabel ?? "Switch"}
+      labelAccessibilityVisibility={
+        label ? rest.labelAccessibilityVisibility : "exclusive"
+      }
       onChange={handleChange}
       {...rest}
     />
