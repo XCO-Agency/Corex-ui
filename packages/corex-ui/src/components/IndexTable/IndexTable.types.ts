@@ -38,6 +38,7 @@ export type IndexTableBulkActionType = {
   id?: string;
   content?: ReactNode;
   onAction?: () => void;
+  loading?: boolean;
   destructive?: boolean;
   disabled?: boolean;
   icon?: string;
@@ -65,10 +66,18 @@ export type IndexTablePropsType = {
   itemCount?: number;
   /** A count, or `"All"` when every row across every page is selected. */
   selectedItemsCount?: number | "All";
+  /**
+   * - `"single"`: one row, `selection` is its id.
+   * - `"page"`: the rows currently shown (header checkbox, "Select page");
+   *   `pageIds` lists their ids, sub-rows included. Rows on other pages are
+   *   left as they are.
+   * - `"all"`: every resource across every page ("Select all", "Deselect all").
+   */
   onSelectionChange?: (
     selectionType: IndexTableSelectionTypeType,
     toggleType: boolean,
     selection?: string,
+    pageIds?: string[],
   ) => void;
   selectable?: boolean;
   bulkActions?: IndexTableBulkActionType[];
@@ -164,6 +173,7 @@ export type UseIndexResourceStateResultType = {
     selectionType: IndexTableSelectionTypeType,
     toggleType: boolean,
     selection?: string,
+    pageIds?: string[],
   ) => void;
   clearSelection: () => void;
   removeSelectedResources: (ids: string[]) => void;

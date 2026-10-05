@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import {
+  getPageSelection,
   getSelectionState,
   getToggleChanges,
   type SelectionNodeType,
@@ -69,5 +70,29 @@ describe("getToggleChanges", () => {
       { id: "g", selected: true },
       { id: "r", selected: true },
     ]);
+  });
+});
+
+describe("getPageSelection", () => {
+  it("collects every selectable id on the page, sub-rows included", () => {
+    const page = [
+      node("p1", false, [node("v1"), node("v2", false, [], false)]),
+      node("p2"),
+      node("locked", false, [], false),
+    ];
+
+    expect(getPageSelection(page).ids).toEqual(["p1", "v1", "p2"]);
+  });
+
+  it("reports all, some or none of the page as selected", () => {
+    expect(getPageSelection([node("a", true), node("b", true)]).state).toBe("all");
+    expect(getPageSelection([node("a", true), node("b")]).state).toBe("some");
+    expect(getPageSelection([node("a"), node("b")]).state).toBe("none");
+    expect(getPageSelection([]).state).toBe("none");
+  });
+
+  it("ignores rows that cannot be selected when judging the page", () => {
+    const page = [node("a", true), node("locked", false, [], false)];
+    expect(getPageSelection(page).state).toBe("all");
   });
 });

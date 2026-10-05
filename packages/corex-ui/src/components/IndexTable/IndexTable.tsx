@@ -36,6 +36,7 @@ import {
 } from "./indexTableColumns";
 import {
   buildSelectionNode,
+  getPageSelection,
   getSelectionState,
   getToggleChanges,
   hasAnySelected,
@@ -287,7 +288,6 @@ function IndexTableInner(
   const selectedCount =
     selectedItemsCount === "All" ? effectiveItemCount : (selectedItemsCount ?? 0);
   const allSelected = effectiveItemCount > 0 && selectedCount >= effectiveItemCount;
-  const isIndeterminate = selectedCount > 0 && !allSelected;
   const plural = resourceName?.plural ?? "items";
   const isBulkActive = selectable && selectedCount > 0;
 
@@ -357,6 +357,27 @@ function IndexTableInner(
   }, [rows, children]);
 
   const rowCount = bodyRows.length;
+
+  // The rows on screen, as one selection. "Show all selected" hides the
+  // unselected ones, so they are not part of the page either.
+  const pageSelection = useMemo(() => {
+    const nodes: SelectionNodeType[] =
+      rows && rows.length > 0
+        ? rows.map((_, rowIndex) => buildSelectionNode({ id: String(rowIndex) }))
+        : Children.toArray(children)
+            .filter(isValidElement)
+            .map((child) =>
+              buildSelectionNode(child.props as Parameters<typeof buildSelectionNode>[0]),
+            );
+    return getPageSelection(
+      showSelectedOnly ? nodes.filter(hasAnySelected) : nodes,
+    );
+  }, [rows, children, showSelectedOnly]);
+
+  const selectPage = useCallback(
+    (next: boolean) => onSelectionChange?.("page", next, undefined, pageSelection.ids),
+    [onSelectionChange, pageSelection.ids],
+  );
 
   const beginDrag = useCallback(
     (index: number, event: ReactPointerEvent<HTMLElement>) => {
@@ -489,9 +510,12 @@ function IndexTableInner(
             itemCount={effectiveItemCount}
             plural={plural}
             allSelected={allSelected}
+            pageSelectionState={pageSelection.state}
+            onSelectPage={() => selectPage(true)}
+            onSelectAll={() => onSelectionChange?.("all", true)}
+            onDeselectAll={() => onSelectionChange?.("all", false)}
             promotedBulkActions={promotedBulkActions}
             bulkActions={bulkActions}
-            onSelectionChange={onSelectionChange}
             showAllSelectedToggle={showAllSelectedToggle}
             showSelectedOnly={showSelectedOnly}
             onShowSelectedOnlyChange={setShowSelectedOnly}
@@ -535,9 +559,9 @@ function IndexTableInner(
                     <Checkbox
                       label={`Select all ${plural}`}
                       labelAccessibilityVisibility="exclusive"
-                      checked={allSelected}
-                      indeterminate={isIndeterminate}
-                      onChange={(checked) => onSelectionChange?.("page", checked)}
+                      checked={pageSelection.state === "all"}
+                      indeterminate={pageSelection.state === "some"}
+                      onChange={(checked) => selectPage(checked)}
                     />
                   </div>
                 )}

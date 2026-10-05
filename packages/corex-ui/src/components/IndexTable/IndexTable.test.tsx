@@ -1,6 +1,8 @@
 import { describe, expect, it, vi } from "vitest";
+import { useState } from "react";
 import { act, fireEvent, render, screen } from "@testing-library/react";
 import { IndexTable } from "./IndexTable";
+import { useIndexResourceState } from "./useIndexResourceState";
 
 // jsdom has no PointerEvent; without it pointer events carry no coordinates.
 if (typeof window.PointerEvent === "undefined") {
@@ -76,7 +78,7 @@ describe("IndexTable", () => {
     const headerCheckbox = container.querySelector("s-checkbox")!;
     toggle(headerCheckbox);
 
-    expect(onSelectionChange).toHaveBeenCalledWith("page", true);
+    expect(onSelectionChange).toHaveBeenCalledWith("page", true, undefined, ["1", "2"]);
   });
 
   it("does not open the row when its checkbox is clicked", () => {
@@ -629,5 +631,81 @@ describe("IndexTable", () => {
     expect(childRow.children).toHaveLength(
       container.querySelector(".cx-it__row--head")!.children.length,
     );
+  });
+
+  describe("selection across pages", () => {
+    const orders = ["1", "2", "3", "4"].map((id) => ({ id }));
+
+    /** Two orders per page; the hook is given every order, the table one page. */
+    function PagedTable() {
+      const [page, setPage] = useState(0);
+      const { selectedResources, allResourcesSelected, handleSelectionChange } =
+        useIndexResourceState(orders);
+      const visible = orders.slice(page * 2, page * 2 + 2);
+
+      return (
+        <>
+          <IndexTable
+            headings={[{ title: "Order" }]}
+            itemCount={orders.length}
+            selectedItemsCount={allResourcesSelected ? "All" : selectedResources.length}
+            onSelectionChange={handleSelectionChange}
+            resourceName={{ singular: "order", plural: "orders" }}
+            bulkActions={[{ content: "Archive" }]}
+          >
+            {visible.map(({ id }) => (
+              <IndexTable.Row key={id} id={id} selected={selectedResources.includes(id)}>
+                <IndexTable.Cell>#{id}</IndexTable.Cell>
+              </IndexTable.Row>
+            ))}
+          </IndexTable>
+          <output data-testid="selected">{selectedResources.join(",")}</output>
+          <button type="button" onClick={() => setPage(1)}>
+            Next
+          </button>
+        </>
+      );
+    }
+
+    const selected = () => screen.getByTestId("selected").textContent;
+    const selectPageFromHeader = (container: HTMLElement) =>
+      act(() => toggle(container.querySelector("s-checkbox")!));
+
+    it("selects only the rows on screen from the header checkbox", () => {
+      const { container } = render(<PagedTable />);
+      selectPageFromHeader(container);
+
+      expect(selected()).toBe("1,2");
+      expect(screen.getByText("2 selected")).toBeInTheDocument();
+    });
+
+    it("adds the next page with 'Select page' and keeps the first", () => {
+      const { container } = render(<PagedTable />);
+      selectPageFromHeader(container);
+      fireEvent.click(screen.getByText("Next"));
+      fireEvent.click(screen.getByText("Select page"));
+
+      expect(selected()).toBe("1,2,3,4");
+    });
+
+    it("selects every row on every page with 'Select all'", () => {
+      const { container } = render(<PagedTable />);
+      selectPageFromHeader(container);
+      fireEvent.click(screen.getByText("Select all 4 orders"));
+
+      expect(selected()).toBe("1,2,3,4");
+      expect(screen.getByText("All 4 orders selected")).toBeInTheDocument();
+    });
+
+    it("clears every page with 'Deselect all'", () => {
+      const { container } = render(<PagedTable />);
+      fireEvent.click(screen.getByText("Next"));
+      selectPageFromHeader(container);
+      fireEvent.click(screen.getByText("Select all 4 orders"));
+      fireEvent.click(screen.getByText("Deselect all"));
+
+      expect(selected()).toBe("");
+      expect(screen.queryByRole("toolbar")).not.toBeInTheDocument();
+    });
   });
 });

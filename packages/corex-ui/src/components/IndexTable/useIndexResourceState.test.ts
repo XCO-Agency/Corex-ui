@@ -73,4 +73,38 @@ describe("useIndexResourceState", () => {
     act(() => result.current.handleSelectionChange("single", true));
     expect(result.current.selectedResources).toEqual([]);
   });
+
+  it("toggles only the given page ids and keeps other pages' selections", () => {
+    const { result } = renderHook(() => useIndexResourceState(orders));
+
+    act(() => result.current.handleSelectionChange("single", true, "3"));
+    act(() => result.current.handleSelectionChange("page", true, undefined, ["1", "2"]));
+    expect(result.current.selectedResources).toEqual(["3", "1", "2"]);
+
+    act(() => result.current.handleSelectionChange("page", false, undefined, ["1", "2"]));
+    expect(result.current.selectedResources).toEqual(["3"]);
+  });
+
+  it("keeps 'all' selected after Select all, until something is deselected", () => {
+    // Server-side pagination: the hook only ever sees the current page.
+    const page = [{ id: "1" }, { id: "2" }];
+    const { result } = renderHook(() => useIndexResourceState(page));
+
+    act(() => result.current.handleSelectionChange("all", true));
+    expect(result.current.allResourcesSelected).toBe(true);
+
+    act(() => result.current.handleSelectionChange("single", false, "2"));
+    expect(result.current.allResourcesSelected).toBe(false);
+    expect(result.current.selectedResources).toEqual(["1"]);
+  });
+
+  it("clears every page on a deselect-all", () => {
+    const { result } = renderHook(() => useIndexResourceState(orders));
+
+    act(() => result.current.handleSelectionChange("all", true));
+    act(() => result.current.handleSelectionChange("all", false));
+
+    expect(result.current.selectedResources).toEqual([]);
+    expect(result.current.allResourcesSelected).toBe(false);
+  });
 });

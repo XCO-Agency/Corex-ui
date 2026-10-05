@@ -104,3 +104,37 @@ export function getToggleChanges(
     .filter(([id, selected]) => current.get(id) !== selected)
     .map(([id, selected]) => ({ id, selected }));
 }
+
+function hasSelectableDescendant(node: SelectionNodeType): boolean {
+  return node.children.some((child) => child.selectable || hasSelectableDescendant(child));
+}
+
+function collectSelectableIds(node: SelectionNodeType, ids: string[]): void {
+  if (node.selectable && node.id !== undefined) ids.push(node.id);
+  node.children.forEach((child) => collectSelectableIds(child, ids));
+}
+
+/**
+ * The rows the table is showing right now, as one selection: every selectable
+ * id among them (sub-rows included) and whether all, some or none of those are
+ * selected. Rows on other pages, or filtered out of the body, are not part of
+ * it, so "Select page" and the header checkbox only ever touch what is shown.
+ */
+export function getPageSelection(nodes: SelectionNodeType[]): {
+  ids: string[];
+  state: SelectionStateType;
+} {
+  const roots = nodes.filter((node) => node.selectable || hasSelectableDescendant(node));
+  const ids: string[] = [];
+  roots.forEach((node) => collectSelectableIds(node, ids));
+
+  const states = roots.map(getSelectionState);
+  const state: SelectionStateType =
+    states.length > 0 && states.every((s) => s === "all")
+      ? "all"
+      : states.some((s) => s !== "none")
+        ? "some"
+        : "none";
+
+  return { ids, state };
+}
