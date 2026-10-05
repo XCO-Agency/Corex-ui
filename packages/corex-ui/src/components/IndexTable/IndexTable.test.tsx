@@ -166,7 +166,7 @@ describe("IndexTable", () => {
       pagination: { hasNext: true, hasPrevious: false, onNext },
     });
 
-    const nextBtn = container.querySelector("s-button[accessibility-label='Next page']")!;
+    const nextBtn = container.querySelector("s-button[accessibilitylabel='Next page']")!;
     expect(nextBtn).toBeInTheDocument();
     fireEvent.click(nextBtn);
     expect(onNext).toHaveBeenCalledTimes(1);

@@ -199,12 +199,12 @@ describe("Combobox", () => {
 
     // Clear button replaces chevron when value exists and showClear is true
     const clearBtn = document.querySelector(
-      '[accessibilitylabel="Clear selection"], [accessibility-label="Clear selection"]',
+      '[accessibilitylabel="Clear selection"], [accessibilitylabel="Clear selection"]',
     );
     expect(clearBtn).toBeInTheDocument();
     expect(
       document.querySelector(
-        '[accessibilitylabel="Open suggestions"], [accessibility-label="Open suggestions"]',
+        '[accessibilitylabel="Open suggestions"], [accessibilitylabel="Open suggestions"]',
       ),
     ).toBeNull();
 
@@ -220,12 +220,12 @@ describe("Combobox", () => {
     );
     expect(
       document.querySelector(
-        '[accessibilitylabel="Clear selection"], [accessibility-label="Clear selection"]',
+        '[accessibilitylabel="Clear selection"], [accessibilitylabel="Clear selection"]',
       ),
     ).toBeNull();
     expect(
       document.querySelector(
-        '[accessibilitylabel="Open suggestions"], [accessibility-label="Open suggestions"], [accessibilitylabel="Close suggestions"], [accessibility-label="Close suggestions"]',
+        '[accessibilitylabel="Open suggestions"], [accessibilitylabel="Open suggestions"], [accessibilitylabel="Close suggestions"], [accessibilitylabel="Close suggestions"]',
       ),
     ).toBeInTheDocument();
   });

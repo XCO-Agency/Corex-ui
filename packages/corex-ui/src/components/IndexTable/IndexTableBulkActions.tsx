@@ -5,10 +5,10 @@ import { Button } from "../Button";
 import { Checkbox } from "../Checkbox";
 import { Icon } from "../Icon";
 import { InlineStack } from "../InlineStack";
-import { Popover, usePopover } from "../Popover";
 import { Switch } from "../Switch";
-import { Text } from "../Text";
+
 import type { IndexTableBulkActionType, IndexTablePropsType } from "./IndexTable.types";
+import { Clickable } from "../Clickable";
 
 function toActionListItem(action: IndexTableBulkActionType): ActionListItemType {
   return {
@@ -76,12 +76,6 @@ export function IndexTableBulkActions({
           />
 
           <ActionList
-            activator={
-              <Button variant="tertiary">
-                {selectedLabel}
-                <Icon type="chevron-down" size="small" />
-              </Button>
-            }
             items={[
               {
                 content: `Select all ${itemCount} ${plural}`,
@@ -96,12 +90,19 @@ export function IndexTableBulkActions({
                 onAction: () => onSelectionChange?.("page", false),
               },
             ]}
-          />
+          >
+            <Clickable background="strong" borderRadius="large-200" blockSize="28px">
+              <InlineStack alignItems="center" gap="small-300">
+                {selectedLabel}
+                <Icon type="chevron-down" size="small" />
+              </InlineStack>
+            </Clickable>
+          </ActionList>
 
           {visiblePromoted.map((action, index) => (
             <Button
               key={action.id ?? index}
-              variant="secondary"
+              variant={action.destructive ? "primary" : "secondary"}
               tone={action.destructive ? "critical" : undefined}
               disabled={action.disabled}
               onClick={action.onAction}

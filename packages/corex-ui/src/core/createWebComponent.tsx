@@ -1,89 +1,92 @@
-import { forwardRef, useEffect, useLayoutEffect, useMemo, useRef } from "react";
-
-const useIsomorphicLayoutEffect =
-  typeof window !== "undefined" ? useLayoutEffect : useEffect;
+import { forwardRef, useMemo, useRef } from "react";
 import type { ReactNode } from "react";
 import { assignDomProp } from "./assignDomProp";
 import { mergeRefs } from "./mergeRefs";
 import { useDomEvent } from "./useDomEvent";
+import { useIsomorphicLayoutEffect } from "./useIsomorphicLayoutEffect";
 import type { CreateWebComponentOptions, DomEventHandler, EventMap } from "./types";
+
+// eslint-disable-next-line @typescript-eslint/ban-types
+type NoEvents = {};
+
+/**
+ * Props React consumes itself. They must reach React under their exact name
+ * and value, never be renamed into an attribute.
+ */
+const REACT_RESERVED_PROPS = new Set([
+  "style",
+  "suppressHydrationWarning",
+  "dangerouslySetInnerHTML",
+]);
+
+/**
+ * Attributes whose `"false"` value is meaningful (enumerated, not boolean),
+ * so a `false` prop must be written out rather than dropped.
+ */
+const ENUMERATED_FALSE_ATTRIBUTES = new Set(["spellcheck", "draggable", "contenteditable"]);
+
+/** `onClick`, `onKeyDown`, ...: left for React's own event system. */
+const REACT_EVENT_PROP = /^on[A-Z]/;
+
+/**
+ * The attribute a prop is written as, or the prop name itself when React has
+ * to see it unchanged.
+ *
+ * Polaris `s-*` elements observe the all-lowercase collapse of each property
+ * name (`borderWidth` -> `borderwidth`): the runtime's property reflector
+ * derives the attribute as `name.toLowerCase()`, the same name the HTML parser
+ * produces for `<s-box borderWidth>`. Kebab-case (`border-width`) is ignored.
+ */
+function toAttributeName(key: string): string {
+  if (key === "className") return "class";
+  if (
+    REACT_RESERVED_PROPS.has(key) ||
+    REACT_EVENT_PROP.test(key) ||
+    key.includes("-") ||
+    !/[A-Z]/.test(key)
+  ) {
+    return key;
+  }
+  return key.toLowerCase();
+}
+
+/**
+ * Polaris boolean attributes are presence-based: the runtime parses any string
+ * value, `"false"` included, as `true`. React 18 stringifies every
+ * custom-element prop, so `disabled={false}` would render `disabled="false"`
+ * and disable the element. `true` is written as the empty attribute and
+ * `false` omits it.
+ *
+ * Returns `undefined` when the attribute must not be written at all.
+ */
+function toAttributeValue(name: string, value: unknown): unknown {
+  if (typeof value !== "boolean") return value;
+  if (name.includes("-") || ENUMERATED_FALSE_ATTRIBUTES.has(name)) return value;
+  return value ? "" : undefined;
+}
+
+const hasOwn = (object: object, key: string) =>
+  Object.prototype.hasOwnProperty.call(object, key);
 
 /**
  * Builds a typed React component that renders a given Polaris `s-*` custom
  * element and bridges React conventions onto it:
  *  - `domProps`: values assigned as DOM properties (see `assignDomProp`),
- *    so objects/arrays/booleans behave correctly instead of being stringified.
+ *    so objects/arrays behave correctly instead of being stringified.
+ *    Primitive values are also written as attributes so server-rendered HTML
+ *    carries them.
  *  - `events`: React-style event props (`onClick`) bound as native
  *    `addEventListener` subscriptions to the DOM event Polaris actually fires.
- *  - everything else passes through as a plain JSX prop (HTML attribute).
+ *    Other `on*` props go to React's own event system unchanged.
+ *  - `staticAttributes`: always written, and always win over a prop of the
+ *    same name.
+ *  - everything else is written as an HTML attribute (see `toAttributeName`
+ *    and `toAttributeValue`).
  *
  * This is the single seam between React and the web-component runtime; every
  * component wrapper in `components/` is built on top of it, either directly
  * (thin wrappers) or by composing several factory-built elements together.
  */
-// eslint-disable-next-line @typescript-eslint/ban-types
-type NoEvents = {};
-
-/**
- * React spellings of global HTML attributes whose real attribute name is the
- * all-lowercase form, not a kebab-case one. Polaris's own multi-word props are
- * kebab-case (`accessibility-label`), but `tabIndex` is not a Polaris prop at
- * all — it is the HTML attribute every element carries, and `tab-index` does
- * nothing.
- */
-const LOWERCASE_ATTRIBUTES: Record<string, string> = {
-  // Standard HTML attributes
-  tabIndex: "tabindex",
-  accessKey: "accesskey",
-  autoCapitalize: "autocapitalize",
-  autoFocus: "autofocus",
-  contentEditable: "contenteditable",
-  enterKeyHint: "enterkeyhint",
-  inputMode: "inputmode",
-  itemID: "itemid",
-  itemProp: "itemprop",
-  itemRef: "itemref",
-  itemScope: "itemscope",
-  itemType: "itemtype",
-  spellCheck: "spellcheck",
-  autoComplete: "autocomplete",
-  readOnly: "readonly",
-  minLength: "minlength",
-  maxLength: "maxlength",
-  srcSet: "srcset",
-  inlineSize: "inlinesize",
-  // Polaris Form defaults & controls
-  defaultValue: "defaultvalue",
-  defaultChecked: "defaultchecked",
-  defaultSelected: "defaultselected",
-  defaultPressed: "defaultpressed",
-  defaultIndeterminate: "defaultindeterminate",
-  currencyCode: "currencycode",
-  // Polaris DatePicker
-  visibleMonths: "visiblemonths",
-  defaultView: "defaultview",
-  allowDays: "allowdays",
-  disallowDays: "disallowdays",
-  // Polaris Typography & Media
-  lineClamp: "lineclamp",
-  fontSize: "fontsize",
-  fontWeight: "fontweight",
-  fontVariantNumeric: "fontvariantnumeric",
-  aspectRatio: "aspectratio",
-  objectFit: "objectfit",
-  // Polaris Navigation / Pagination / Invokers
-  commandFor: "commandfor",
-  interestFor: "interestfor",
-  clickDelegate: "clickdelegate",
-  containerName: "containername",
-  hasNextPage: "hasnextpage",
-  hasPreviousPage: "haspreviouspage",
-};
-
-function toKebabCase(str: string): string {
-  return str.replace(/([a-z0-9]|(?=[A-Z]))([A-Z])/g, "$1-$2").toLowerCase();
-}
-
 export function createWebComponent<
   TElement extends HTMLElement,
   TEvents extends EventMap = NoEvents,
@@ -106,16 +109,6 @@ export function createWebComponent<
       useIsomorphicLayoutEffect(() => {
         const node = innerRef.current;
         if (!node) return;
-        for (const [attr, value] of Object.entries(staticAttributes)) {
-          node.setAttribute(attr, value);
-        }
-        // Static attributes never change, so this only needs to run once.
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-      }, []);
-
-      useIsomorphicLayoutEffect(() => {
-        const node = innerRef.current;
-        if (!node) return;
         for (const key of domProps) {
           if (key in rest) {
             assignDomProp(node, key, rest[key]);
@@ -126,7 +119,6 @@ export function createWebComponent<
       // `eventEntries` is fixed per call to `createWebComponent`, so the
       // number/order of hook calls below is stable across renders of any
       // given instance of `Component`.
-      // eslint-disable-next-line react-hooks/rules-of-hooks
       for (const [reactEventName, domEventName] of eventEntries) {
         // eslint-disable-next-line react-hooks/rules-of-hooks
         useDomEvent(
@@ -136,55 +128,22 @@ export function createWebComponent<
         );
       }
 
-      const passthroughProps: Record<string, unknown> = { ...staticAttributes };
+      const attributes: Record<string, unknown> = {};
       for (const [key, value] of Object.entries(rest)) {
-        if (key in events) continue;
-        if (value === undefined) continue;
+        if (value === undefined || hasOwn(events, key)) continue;
 
-        if (key === "commandFor") {
-          passthroughProps["commandfor"] = value;
-          continue;
-        }
-        if (key === "interestFor") {
-          passthroughProps["interestfor"] = value;
-          continue;
-        }
-        if (key === "discardConfirmation") {
-          if (value) {
-            passthroughProps["discardConfirmation"] = "";
-          }
-          continue;
-        }
-
-        if (key === "className") {
-          passthroughProps["class"] = value;
-          continue;
-        }
-
-        const lowercaseAttribute = LOWERCASE_ATTRIBUTES[key];
-        if (lowercaseAttribute) {
-          passthroughProps[lowercaseAttribute] = value;
-          continue;
-        }
-
-        // Non-primitive objects/arrays in domProps shouldn't be stringified as attributes
+        // Objects/arrays only make sense as the DOM property set above.
         if (domProps.includes(key) && typeof value === "object" && value !== null) {
           continue;
         }
 
-        // Convert camelCase prop names to kebab-case HTML attributes for custom
-        // elements. The camelCase spelling means nothing to a custom element, so
-        // it is replaced rather than emitted alongside the kebab-case one.
-        if (
-          !key.includes("-") &&
-          key !== "style" &&
-          key !== "suppressHydrationWarning" &&
-          /[A-Z]/.test(key)
-        ) {
-          passthroughProps[toKebabCase(key)] = value;
-          continue;
+        const name = toAttributeName(key);
+        const attributeValue = REACT_RESERVED_PROPS.has(key)
+          ? value
+          : toAttributeValue(name, value);
+        if (attributeValue !== undefined) {
+          attributes[name] = attributeValue;
         }
-        passthroughProps[key] = value;
       }
 
       // The tag name is only known at runtime; type safety for consumers is
@@ -194,7 +153,7 @@ export function createWebComponent<
       const Tag: any = tagName;
 
       return (
-        <Tag suppressHydrationWarning {...passthroughProps} ref={mergedRef}>
+        <Tag {...attributes} {...staticAttributes} ref={mergedRef}>
           {children}
         </Tag>
       );

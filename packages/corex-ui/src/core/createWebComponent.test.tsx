@@ -1,31 +1,30 @@
-import { describe, expect, it } from "vitest";
-import { render } from "@testing-library/react";
+import { describe, expect, it, vi } from "vitest";
+import { fireEvent, render } from "@testing-library/react";
 import { createWebComponent } from "./createWebComponent";
 
 const SProbe = createWebComponent<HTMLElement>("s-probe");
 
 /**
- * HTML attribute names are case-insensitive, so a camelCase prop written as an
- * attribute lands as its all-lowercase spelling (`accessibilityLabel` ->
- * `accessibilitylabel`). That spelling means nothing to a Polaris custom
- * element: only the kebab-case one is read. Emitting both inflated every SSR
- * payload and risked hydration mismatches, so the factory must emit exactly one
- * attribute per prop.
+ * Polaris custom elements read the all-lowercase collapse of a camelCase prop
+ * (`accessibilityLabel` -> `accessibilitylabel`), the name the HTML parser
+ * produces for `<s-button accessibilityLabel>`. The kebab-case spelling
+ * (`accessibility-label`) is ignored by them. The factory must emit exactly
+ * one attribute per prop, and it must be the lowercase one.
  */
 describe("createWebComponent", () => {
-  it("emits a camelCase prop as its kebab-case attribute only", () => {
+  it("emits a camelCase prop as its lowercase attribute only", () => {
     const { container } = render(
       <SProbe accessibilityLabel="Resume" autoComplete="off" />,
     );
     const el = container.querySelector("s-probe")!;
 
-    expect(el).toHaveAttribute("accessibility-label", "Resume");
-    expect(el).toHaveAttribute("auto-complete", "off");
-    expect(el).not.toHaveAttribute("accessibilitylabel");
-    expect(el).not.toHaveAttribute("autocomplete");
+    expect(el).toHaveAttribute("accessibilitylabel", "Resume");
+    expect(el).toHaveAttribute("autocomplete", "off");
+    expect(el).not.toHaveAttribute("accessibility-label");
+    expect(el).not.toHaveAttribute("auto-complete");
   });
 
-  it("never carries both the kebab-case and camelCase spelling of a prop", () => {
+  it("never emits a kebab-case attribute for a camelCase prop", () => {
     const { container } = render(
       <SProbe
         accessibilityLabel="Resume"
@@ -35,14 +34,13 @@ describe("createWebComponent", () => {
       />,
     );
 
-    for (const el of container.querySelectorAll("*")) {
-      const names = el.getAttributeNames();
-      for (const name of names) {
-        if (!name.includes("-")) continue;
-        const collapsed = name.replace(/-/g, "");
-        expect(names).not.toContain(collapsed);
-      }
-    }
+    const el = container.querySelector("s-probe")!;
+    expect(el.getAttributeNames().sort()).toEqual([
+      "accessibilitylabel",
+      "inlinesize",
+      "labelaccessibilityvisibility",
+      "maxblocksize",
+    ]);
   });
 
   it("leaves already-kebab-case and lowercase props untouched", () => {
@@ -73,5 +71,87 @@ describe("createWebComponent", () => {
     expect(el).toHaveAttribute("spellcheck", "false");
     expect(el).not.toHaveAttribute("tab-index");
     expect(el).not.toHaveAttribute("spell-check");
+  });
+
+  it("omits a false boolean and writes true as the empty attribute", () => {
+    // Polaris parses any present attribute, "false" included, as true.
+    const { container, rerender } = render(<SProbe disabled={false} loading />);
+    const el = container.querySelector("s-probe")!;
+
+    expect(el).not.toHaveAttribute("disabled");
+    expect(el).toHaveAttribute("loading", "");
+
+    rerender(<SProbe disabled loading={false} />);
+    expect(el).toHaveAttribute("disabled", "");
+    expect(el).not.toHaveAttribute("loading");
+  });
+
+  it("keeps a false value where the attribute is enumerated", () => {
+    const { container } = render(
+      <SProbe spellCheck={false} aria-expanded={false} data-open={false} />,
+    );
+    const el = container.querySelector("s-probe")!;
+
+    expect(el).toHaveAttribute("spellcheck", "false");
+    expect(el).toHaveAttribute("aria-expanded", "false");
+    expect(el).toHaveAttribute("data-open", "false");
+  });
+
+  it("hands on* props that are not in `events` to React's event system", () => {
+    const onClick = vi.fn();
+    const onKeyDown = vi.fn();
+    const { container } = render(<SProbe onClick={onClick} onKeyDown={onKeyDown} />);
+    const el = container.querySelector("s-probe")!;
+
+    fireEvent.click(el);
+    fireEvent.keyDown(el, { key: "Enter" });
+
+    expect(onClick).toHaveBeenCalledTimes(1);
+    expect(onKeyDown).toHaveBeenCalledTimes(1);
+    expect(el).not.toHaveAttribute("onclick");
+  });
+
+  it("binds a mapped event once, as a native listener", () => {
+    const SMapped = createWebComponent<HTMLElement, { onClick: "click" }>("s-mapped", {
+      events: { onClick: "click" },
+    });
+    const onClick = vi.fn();
+    const { container } = render(<SMapped onClick={onClick} />);
+
+    fireEvent.click(container.querySelector("s-mapped")!);
+    expect(onClick).toHaveBeenCalledTimes(1);
+  });
+
+  it("lets static attributes win over a prop of the same name, on every render", () => {
+    const SStatic = createWebComponent<HTMLElement>("s-static", {
+      staticAttributes: { direction: "inline" },
+    });
+    const { container, rerender } = render(<SStatic direction="block" />);
+    const el = container.querySelector("s-static")!;
+
+    expect(el).toHaveAttribute("direction", "inline");
+    rerender(<SStatic direction="block-end" />);
+    expect(el).toHaveAttribute("direction", "inline");
+  });
+
+  it("passes React-reserved props through untouched", () => {
+    const { container } = render(
+      <SProbe style={{ color: "red" }} dangerouslySetInnerHTML={{ __html: "<b>hi</b>" }} />,
+    );
+    const el = container.querySelector("s-probe")!;
+
+    expect(el).toHaveStyle({ color: "rgb(255, 0, 0)" });
+    expect(el.innerHTML).toBe("<b>hi</b>");
+    expect(el).not.toHaveAttribute("dangerouslysetinnerhtml");
+  });
+
+  it("assigns object domProps as properties, never as attributes", () => {
+    const SList = createWebComponent<HTMLElement>("s-list", { domProps: ["items"] });
+    const items = [{ id: 1 }];
+    const { container } = render(<SList items={items} />);
+    const el = container.querySelector("s-list") as HTMLElement & { items?: unknown };
+
+    expect(el.items).toBe(items);
+    expect(el).not.toHaveAttribute("items");
   });
 });

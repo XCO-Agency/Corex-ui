@@ -3,5 +3,12 @@ import { TextField } from "@xco-agency/corex-ui";
 
 export function TextFieldExample() {
   const [name, setName] = useState("Ada Lovelace");
-  return <TextField label="Name" value={name} onChange={(value) => setName(value)} />;
+  return (
+    <TextField
+      label="Name"
+      labelAccessibilityVisibility="exclusive"
+      value={name}
+      onChange={(value) => setName(value)}
+    />
+  );
 }

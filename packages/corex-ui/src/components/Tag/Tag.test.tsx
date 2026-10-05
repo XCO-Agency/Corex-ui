@@ -14,7 +14,7 @@ describe("Tag", () => {
   it("becomes removable once a handler is passed", () => {
     const { container } = render(<Tag onRemove={() => {}}>Draft</Tag>);
 
-    expect(container.querySelector("s-chip")).toHaveAttribute("removable", "true");
+    expect(container.querySelector("s-chip")).toHaveAttribute("removable", "");
   });
 
   it("calls onRemove when the element fires remove", () => {
@@ -35,6 +35,6 @@ describe("Tag", () => {
       </Tag>,
     );
 
-    expect(container.querySelector("s-chip")).toHaveAttribute("removable", "false");
+    expect(container.querySelector("s-chip")).not.toHaveAttribute("removable");
   });
 });

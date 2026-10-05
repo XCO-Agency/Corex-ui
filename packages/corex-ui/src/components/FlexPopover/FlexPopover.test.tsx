@@ -16,7 +16,7 @@ describe("FlexPopover", () => {
     expect(screen.getByText("Content")).toBeInTheDocument();
 
     const closeBtn = document.querySelector(
-      '[accessibility-label="Close filters popup"]',
+      '[accessibilitylabel="Close filters popup"]',
     );
     expect(closeBtn).toBeInTheDocument();
 
@@ -33,7 +33,7 @@ describe("FlexPopover", () => {
     );
 
     expect(screen.getByText("Categories")).toBeInTheDocument();
-    const closeBtn = document.querySelector('[accessibility-label="Close popup"]');
+    const closeBtn = document.querySelector('[accessibilitylabel="Close popup"]');
     expect(closeBtn).toBeInTheDocument();
   });
 
@@ -51,7 +51,7 @@ describe("FlexPopover", () => {
     );
 
     expect(screen.getByText("Custom Node Header")).toBeInTheDocument();
-    const closeBtn = document.querySelector('[accessibility-label="Dismiss modal"]');
+    const closeBtn = document.querySelector('[accessibilitylabel="Dismiss modal"]');
     expect(closeBtn).toBeInTheDocument();
   });
 

@@ -23,6 +23,6 @@ describe("ChoiceList types", () => {
     const options = container.querySelectorAll("s-choice");
     expect(options).toHaveLength(2);
     expect(options[1]).toHaveAttribute("value", "");
-    expect(options[1]).toHaveAttribute("accessibility-label", "");
+    expect(options[1]).toHaveAttribute("accessibilitylabel", "");
   });
 });

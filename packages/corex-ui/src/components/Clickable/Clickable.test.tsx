@@ -88,15 +88,15 @@ describe("Clickable", () => {
     );
     const el = screen.getByText("Box Styled Action");
     expect(el).toHaveAttribute("background", "subdued");
-    expect(el).toHaveAttribute("border-width", "base");
-    expect(el).toHaveAttribute("border-style", "solid");
-    expect(el).toHaveAttribute("border-color", "base");
-    expect(el).toHaveAttribute("border-radius", "base");
+    expect(el).toHaveAttribute("borderwidth", "base");
+    expect(el).toHaveAttribute("borderstyle", "solid");
+    expect(el).toHaveAttribute("bordercolor", "base");
+    expect(el).toHaveAttribute("borderradius", "base");
     expect(el).toHaveAttribute("padding", "base");
     expect(el).toHaveAttribute("display", "auto");
     expect(el).toHaveAttribute("overflow", "hidden");
-    expect(el).toHaveAttribute("block-size", "40px");
-    expect(el).toHaveAttribute("accessibility-role", "generic");
+    expect(el).toHaveAttribute("blocksize", "40px");
+    expect(el).toHaveAttribute("accessibilityrole", "generic");
     expect(el.parentElement).toHaveStyle({ width: "100%" });
   });
 
@@ -123,7 +123,7 @@ describe("Clickable", () => {
       </Clickable>,
     );
     const el = screen.getByText("Command Button");
-    expect(el).toHaveAttribute("accessibility-label", "Perform specialized action");
+    expect(el).toHaveAttribute("accessibilitylabel", "Perform specialized action");
     expect(el).toHaveAttribute("command", "--show");
     expect(el).toHaveAttribute("commandfor", "custom-modal");
     expect(el).toHaveAttribute("interestfor", "custom-popover");

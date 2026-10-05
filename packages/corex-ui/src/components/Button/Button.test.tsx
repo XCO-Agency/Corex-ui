@@ -40,7 +40,7 @@ describe("Button", () => {
   describe("accessible name", () => {
     it("takes the name from a string child", () => {
       render(<Button>Save</Button>);
-      expect(screen.getByText("Save")).toHaveAttribute("accessibility-label", "Save");
+      expect(screen.getByText("Save")).toHaveAttribute("accessibilitylabel", "Save");
     });
 
     it("takes the name from the text alongside an icon", () => {
@@ -51,7 +51,7 @@ describe("Button", () => {
       );
 
       const el = container.querySelector("s-button")!;
-      expect(el).toHaveAttribute("accessibility-label", "Resume");
+      expect(el).toHaveAttribute("accessibilitylabel", "Resume");
     });
 
     it("falls back to a generated name for an icon-only button", () => {
@@ -62,7 +62,7 @@ describe("Button", () => {
       );
 
       const el = container.querySelector("s-button")!;
-      expect(el.getAttribute("accessibility-label")).toBe("Action plain");
+      expect(el.getAttribute("accessibilitylabel")).toBe("Action plain");
     });
 
     it("prefers an explicit accessibilityLabel over the children text", () => {
@@ -73,7 +73,7 @@ describe("Button", () => {
       );
 
       const el = container.querySelector("s-button")!;
-      expect(el).toHaveAttribute("accessibility-label", "Resume playback");
+      expect(el).toHaveAttribute("accessibilitylabel", "Resume playback");
     });
   });
 

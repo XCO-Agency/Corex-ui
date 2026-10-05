@@ -7,8 +7,8 @@ describe("Pagination", () => {
     const { container } = render(<Pagination hasNext />);
     const [previous, next] = Array.from(container.querySelectorAll("s-button"));
 
-    expect(previous).toHaveAttribute("disabled", "true");
-    expect(next).not.toHaveAttribute("disabled", "true");
+    expect(previous).toHaveAttribute("disabled", "");
+    expect(next).not.toHaveAttribute("disabled");
   });
 
   it("calls the handlers on click", () => {
@@ -32,8 +32,8 @@ describe("Pagination", () => {
     );
     const [previous, next] = Array.from(container.querySelectorAll("s-button"));
 
-    expect(previous).toHaveAttribute("accessibility-label", "Older");
-    expect(next).toHaveAttribute("accessibility-label", "Newer");
+    expect(previous).toHaveAttribute("accessibilitylabel", "Older");
+    expect(next).toHaveAttribute("accessibilitylabel", "Newer");
     expect(container.querySelector("s-text")).toHaveTextContent("1 – 20 of 240");
   });
 

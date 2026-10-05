@@ -179,7 +179,7 @@ describe("Tabs", () => {
         's-clickable[commandfor^="corex-tabs-popover"]',
       );
       expect(trigger).toBeInTheDocument();
-      expect(trigger).toHaveAttribute("accessibility-label", "All");
+      expect(trigger).toHaveAttribute("accessibilitylabel", "All");
 
       const selectIcon = document.querySelector('s-icon[type="select"]');
       expect(selectIcon).toBeInTheDocument();
@@ -217,7 +217,7 @@ describe("Tabs", () => {
 
       const popoverEl = document.querySelector("s-popover");
       const draftsItem = popoverEl?.querySelector(
-        's-clickable[accessibility-label="Drafts"]',
+        's-clickable[accessibilitylabel="Drafts"]',
       );
       expect(draftsItem).toBeInTheDocument();
 
@@ -247,7 +247,7 @@ describe("Tabs", () => {
 
       const popoverEl = document.querySelector("s-popover");
       const archivedItem = popoverEl?.querySelector(
-        's-clickable[accessibility-label="Archived"]',
+        's-clickable[accessibilitylabel="Archived"]',
       );
       expect(archivedItem).toBeInTheDocument();
 

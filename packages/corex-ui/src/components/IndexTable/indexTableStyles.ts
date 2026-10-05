@@ -100,7 +100,7 @@ export const INDEX_TABLE_CSS = `
 .cx-it__row--head,
 .cx-it__bulk {
   border-radius: var(--cx-it-radius);
-  min-height: 40px;
+  min-height: 32px;
 }
 .cx-it__bulk { background-color: var(--cx-it-header); }
 
@@ -278,7 +278,7 @@ export const INDEX_TABLE_CSS = `
 .cx-it__bulk {
   display: flex;
   align-items: center;
-  padding-block: 4px;
+  padding-block: 2px;
   padding-inline: calc(8px + var(--cx-it-lead, 0px)) 12px;
 }
 

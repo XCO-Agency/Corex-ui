@@ -15,7 +15,7 @@ describe("ProgressBar", () => {
     );
     const el = container.querySelector("s-progress");
     expect(el).toBeInTheDocument();
-    expect(el).toHaveAttribute("accessibility-label", "Order fulfillment");
+    expect(el).toHaveAttribute("accessibilitylabel", "Order fulfillment");
     expect(el).toHaveAttribute("value", "3");
     expect(el).toHaveAttribute("max", "5");
     expect(el).toHaveAttribute("tone", "success");
@@ -25,7 +25,7 @@ describe("ProgressBar", () => {
     const { container } = render(<ProgressBar accessibilityLabel="Importing products" />);
     const el = container.querySelector("s-progress");
     expect(el).toBeInTheDocument();
-    expect(el).toHaveAttribute("accessibility-label", "Importing products");
+    expect(el).toHaveAttribute("accessibilitylabel", "Importing products");
     expect(el).not.toHaveAttribute("value");
   });
 

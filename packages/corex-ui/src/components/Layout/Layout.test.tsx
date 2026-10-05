@@ -12,7 +12,7 @@ describe("Layout", () => {
     );
 
     const grid = container.querySelector("s-grid")!;
-    expect(grid).toHaveAttribute("grid-template-columns", "1fr ".repeat(12).trim());
+    expect(grid).toHaveAttribute("gridtemplatecolumns", "1fr ".repeat(12).trim());
     expect(grid.querySelectorAll("s-grid-item")).toHaveLength(2);
   });
 
@@ -24,7 +24,7 @@ describe("Layout", () => {
     );
 
     expect(container.querySelector("s-grid-item")).toHaveAttribute(
-      "grid-column",
+      "gridcolumn",
       "span 4",
     );
   });
@@ -37,7 +37,7 @@ describe("Layout", () => {
     );
 
     expect(container.querySelector("s-grid-item")).toHaveAttribute(
-      "grid-column",
+      "gridcolumn",
       "span 12",
     );
   });
@@ -50,7 +50,7 @@ describe("Layout", () => {
     );
 
     expect(container.querySelector("s-grid-item")).toHaveAttribute(
-      "grid-column",
+      "gridcolumn",
       "span 4",
     );
   });
@@ -65,8 +65,8 @@ describe("Layout", () => {
 
     const items = container.querySelectorAll("s-grid-item");
     expect(items).toHaveLength(2);
-    expect(items[0]).toHaveAttribute("grid-column", "span 4");
-    expect(items[1]).toHaveAttribute("grid-column", "span 8");
+    expect(items[0]).toHaveAttribute("gridcolumn", "span 4");
+    expect(items[1]).toHaveAttribute("gridcolumn", "span 8");
   });
 
   it("auto-fills the remaining columns when unvarianted section comes first", () => {
@@ -79,8 +79,8 @@ describe("Layout", () => {
 
     const items = container.querySelectorAll("s-grid-item");
     expect(items).toHaveLength(2);
-    expect(items[0]).toHaveAttribute("grid-column", "span 8");
-    expect(items[1]).toHaveAttribute("grid-column", "span 4");
+    expect(items[0]).toHaveAttribute("gridcolumn", "span 8");
+    expect(items[1]).toHaveAttribute("gridcolumn", "span 4");
   });
 
   it("auto-fills the remaining columns when paired with oneFourth", () => {
@@ -93,8 +93,8 @@ describe("Layout", () => {
 
     const items = container.querySelectorAll("s-grid-item");
     expect(items).toHaveLength(2);
-    expect(items[0]).toHaveAttribute("grid-column", "span 3");
-    expect(items[1]).toHaveAttribute("grid-column", "span 9");
+    expect(items[0]).toHaveAttribute("gridcolumn", "span 3");
+    expect(items[1]).toHaveAttribute("gridcolumn", "span 9");
   });
 
   it("handles multi-row layouts with auto-fill sections and paired halves", () => {
@@ -110,10 +110,10 @@ describe("Layout", () => {
     const items = container.querySelectorAll("s-grid-item");
     expect(items).toHaveLength(4);
     // Row 1
-    expect(items[0]).toHaveAttribute("grid-column", "span 4");
-    expect(items[1]).toHaveAttribute("grid-column", "span 8");
+    expect(items[0]).toHaveAttribute("gridcolumn", "span 4");
+    expect(items[1]).toHaveAttribute("gridcolumn", "span 8");
     // Row 2
-    expect(items[2]).toHaveAttribute("grid-column", "span 6");
-    expect(items[3]).toHaveAttribute("grid-column", "span 6");
+    expect(items[2]).toHaveAttribute("gridcolumn", "span 6");
+    expect(items[3]).toHaveAttribute("gridcolumn", "span 6");
   });
 });

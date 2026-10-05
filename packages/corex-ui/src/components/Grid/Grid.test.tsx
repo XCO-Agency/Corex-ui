@@ -17,8 +17,8 @@ describe("Grid", () => {
 
     const el = screen.getByTestId("grid-test");
     expect(el.tagName.toLowerCase()).toBe("s-grid");
-    expect(el).toHaveAttribute("grid-template-columns", "repeat(4, 1fr)");
-    expect(el).toHaveAttribute("grid-template-rows", "auto 1fr");
+    expect(el).toHaveAttribute("gridtemplatecolumns", "repeat(4, 1fr)");
+    expect(el).toHaveAttribute("gridtemplaterows", "auto 1fr");
   });
 
   it("maps numeric columns prop to space-separated 1fr tracks", () => {
@@ -29,7 +29,7 @@ describe("Grid", () => {
     );
 
     const el = screen.getByTestId("grid-columns");
-    expect(el).toHaveAttribute("grid-template-columns", "1fr 1fr 1fr");
+    expect(el).toHaveAttribute("gridtemplatecolumns", "1fr 1fr 1fr");
   });
 
   it("resolves responsive columns dynamically based on dimension", () => {
@@ -44,7 +44,7 @@ describe("Grid", () => {
     );
 
     const el = screen.getByTestId("grid-responsive-columns");
-    expect(el).toHaveAttribute("grid-template-columns", "1fr 1fr 1fr 1fr");
+    expect(el).toHaveAttribute("gridtemplatecolumns", "1fr 1fr 1fr 1fr");
 
     act(() => {
       vi.stubGlobal("innerWidth", 800);
@@ -60,7 +60,7 @@ describe("Grid", () => {
       </Grid>,
     );
 
-    expect(el).toHaveAttribute("grid-template-columns", "1fr 1fr 1fr");
+    expect(el).toHaveAttribute("gridtemplatecolumns", "1fr 1fr 1fr");
 
     act(() => {
       vi.stubGlobal("innerWidth", 600);
@@ -76,7 +76,7 @@ describe("Grid", () => {
       </Grid>,
     );
 
-    expect(el).toHaveAttribute("grid-template-columns", "1fr 1fr");
+    expect(el).toHaveAttribute("gridtemplatecolumns", "1fr 1fr");
 
     act(() => {
       vi.stubGlobal("innerWidth", 360);
@@ -92,7 +92,7 @@ describe("Grid", () => {
       </Grid>,
     );
 
-    expect(el).toHaveAttribute("grid-template-columns", "1fr");
+    expect(el).toHaveAttribute("gridtemplatecolumns", "1fr");
   });
 
   it("maps legacy gap, rowGap, and columnGap tokens to modern tokens", () => {
@@ -104,8 +104,8 @@ describe("Grid", () => {
 
     const el = screen.getByTestId("grid-gaps");
     expect(el).toHaveAttribute("gap", "small-200");
-    expect(el).toHaveAttribute("row-gap", "base");
-    expect(el).toHaveAttribute("column-gap", "small-300");
+    expect(el).toHaveAttribute("rowgap", "base");
+    expect(el).toHaveAttribute("columngap", "small-300");
   });
 
   it("forwards ref to the underlying s-grid element", () => {
@@ -127,8 +127,8 @@ describe("Grid", () => {
 
     const item = screen.getByTestId("grid-item");
     expect(item.tagName.toLowerCase()).toBe("s-grid-item");
-    expect(item).toHaveAttribute("grid-column", "span 2");
-    expect(item).toHaveAttribute("grid-row", "span 3");
+    expect(item).toHaveAttribute("gridcolumn", "span 2");
+    expect(item).toHaveAttribute("gridrow", "span 3");
   });
 
   it("supports standalone GridItem and direct gridColumn/gridRow props", () => {
@@ -142,8 +142,8 @@ describe("Grid", () => {
 
     const item = screen.getByTestId("standalone-item");
     expect(item.tagName.toLowerCase()).toBe("s-grid-item");
-    expect(item).toHaveAttribute("grid-column", "1 / 3");
-    expect(item).toHaveAttribute("grid-row", "2 / 4");
+    expect(item).toHaveAttribute("gridcolumn", "1 / 3");
+    expect(item).toHaveAttribute("gridrow", "2 / 4");
   });
 
   it("forwards ref to the underlying s-grid-item element", () => {

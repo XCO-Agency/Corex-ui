@@ -45,7 +45,7 @@ export const TextField = forwardRef<HTMLElement, TextFieldPropsType>(function Te
     details: details ?? helpText,
     required: required ?? requiredIndicator,
     label: computedLabel,
-    onChange: handleInput,
+    onInput: handleInput,
     autoComplete: autocomplete ?? autoComplete,
     ...rest,
   };

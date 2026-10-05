@@ -10,7 +10,9 @@
       "Bash(node --experimental-strip-types --no-warnings /private/tmp/claude-501/-Users-user-Documents-beyonders-xco-Corex-ui/ba521d79-6f83-4810-a249-e79ec0b2df9a/scratchpad/t.mts .agents/skills/corex-ui-components/SKILL.md)",
       "Bash(npx tsc *)",
       "Bash(python3 -)",
-      "Bash(pnpm --filter playground run build)"
+      "Bash(pnpm --filter playground run build)",
+      "Bash(cd /Users/user/Documents/beyonders/xco/Corex-ui/packages/corex-ui && grep -rnoE '\"[a-z]+-[a-z]+\\(-[a-z]+\\)*\"' src --include=*.test.tsx | grep -vE 'aria-|data-|\"s-' | head -30; grep -rnE 'observedAttributes|accessibilitylabel|paddingblock' node_modules/@shopify/polaris-types/dist/*.d.ts 2>/dev/null | head -5; ls node_modules/@shopify 2>/dev/null || ls ../../node_modules/@shopify)",
+      "Read(//Users/user/Documents/beyonders/node_modules/**)"
     ]
   }
 }

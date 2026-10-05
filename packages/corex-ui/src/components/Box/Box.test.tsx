@@ -21,9 +21,9 @@ describe("Box", () => {
     expect(el.tagName.toLowerCase()).toBe("s-box");
     expect(el).toHaveAttribute("padding", "base");
     expect(el).toHaveAttribute("background", "subdued");
-    expect(el).toHaveAttribute("border-width", "small-100");
-    expect(el).toHaveAttribute("border-color", "base");
-    expect(el).toHaveAttribute("border-radius", "base");
+    expect(el).toHaveAttribute("borderwidth", "small-100");
+    expect(el).toHaveAttribute("bordercolor", "base");
+    expect(el).toHaveAttribute("borderradius", "base");
     expect(el).toHaveAttribute("display", "auto");
     expect(el).toHaveAttribute("overflow", "hidden");
   });
@@ -31,7 +31,7 @@ describe("Box", () => {
   it("should have accessibilityVisibility='exclusive' when visuallyHidden is true", () => {
     render(<Box accessibilityVisibility="exclusive">Screen reader content</Box>);
     const el = screen.getByText("Screen reader content");
-    expect(el).toHaveAttribute("accessibility-visibility", "exclusive");
+    expect(el).toHaveAttribute("accessibilityvisibility", "exclusive");
   });
 
   it("translates legacy width and height to inlineSize and blockSize", () => {
@@ -41,10 +41,10 @@ describe("Box", () => {
       </Box>,
     );
     const el = screen.getByText("Sized box");
-    expect(el).toHaveAttribute("inline-size", "200px");
-    expect(el).toHaveAttribute("block-size", "100px");
-    expect(el).toHaveAttribute("min-inline-size", "50px");
-    expect(el).toHaveAttribute("max-block-size", "300px");
+    expect(el).toHaveAttribute("inlinesize", "200px");
+    expect(el).toHaveAttribute("blocksize", "100px");
+    expect(el).toHaveAttribute("mininlinesize", "50px");
+    expect(el).toHaveAttribute("maxblocksize", "300px");
   });
 
   it("supports legacy as prop gracefully", () => {
@@ -73,7 +73,7 @@ describe("Box", () => {
     expect(el).toHaveAttribute("padding", "small-200 base");
   });
 
-  it("translates directional padding props and kebab-cases attributes", () => {
+  it("translates directional padding props to lowercase attributes", () => {
     render(
       <Box
         paddingBlock="400"
@@ -86,10 +86,10 @@ describe("Box", () => {
       </Box>,
     );
     const el = screen.getByTestId("directional-box");
-    expect(el).toHaveAttribute("padding-block", "base");
-    expect(el).toHaveAttribute("padding-inline", "small-200");
-    expect(el).toHaveAttribute("padding-block-start", "small-300");
-    expect(el).toHaveAttribute("padding-inline-end", "small-400");
+    expect(el).toHaveAttribute("paddingblock", "base");
+    expect(el).toHaveAttribute("paddinginline", "small-200");
+    expect(el).toHaveAttribute("paddingblockstart", "small-300");
+    expect(el).toHaveAttribute("paddinginlineend", "small-400");
   });
 
   it("translates legacy background and border tokens", () => {
@@ -106,9 +106,9 @@ describe("Box", () => {
     );
     const el = screen.getByTestId("styled-legacy-box");
     expect(el).toHaveAttribute("background", "base");
-    expect(el).toHaveAttribute("border-color", "base");
-    expect(el).toHaveAttribute("border-radius", "max");
-    expect(el).toHaveAttribute("border-width", "base");
+    expect(el).toHaveAttribute("bordercolor", "base");
+    expect(el).toHaveAttribute("borderradius", "max");
+    expect(el).toHaveAttribute("borderwidth", "base");
   });
 
   it("never passes style directly to s-box and wraps in a div when positioning or legacy layout styles are applied", () => {

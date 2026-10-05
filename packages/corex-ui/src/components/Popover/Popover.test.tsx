@@ -122,7 +122,7 @@ describe("Popover", () => {
 
       const popoverEl = document.querySelector("s-popover");
       expect(popoverEl).toBeInTheDocument();
-      expect(popoverEl).toHaveAttribute("inline-size", "320px");
+      expect(popoverEl).toHaveAttribute("inlinesize", "320px");
     } finally {
       HTMLElement.prototype.getBoundingClientRect = originalGetBoundingClientRect;
     }

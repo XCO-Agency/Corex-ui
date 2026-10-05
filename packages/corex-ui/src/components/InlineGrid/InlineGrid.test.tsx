@@ -7,7 +7,7 @@ describe("InlineGrid", () => {
     const { container } = render(<InlineGrid columns={3}>cells</InlineGrid>);
 
     expect(container.querySelector("s-grid")).toHaveAttribute(
-      "grid-template-columns",
+      "gridtemplatecolumns",
       "1fr 1fr 1fr",
     );
   });
@@ -16,7 +16,7 @@ describe("InlineGrid", () => {
     const { container } = render(<InlineGrid columns="1fr auto">cells</InlineGrid>);
 
     expect(container.querySelector("s-grid")).toHaveAttribute(
-      "grid-template-columns",
+      "gridtemplatecolumns",
       "1fr auto",
     );
   });
@@ -27,7 +27,7 @@ describe("InlineGrid", () => {
     );
 
     expect(container.querySelector("s-grid")).toHaveAttribute(
-      "grid-template-columns",
+      "gridtemplatecolumns",
       "1fr 2fr",
     );
   });
@@ -39,7 +39,7 @@ describe("InlineGrid", () => {
     );
 
     expect(container.querySelector("s-grid")).toHaveAttribute(
-      "grid-template-columns",
+      "gridtemplatecolumns",
       "1fr 1fr",
     );
   });
@@ -50,7 +50,7 @@ describe("InlineGrid", () => {
     );
 
     expect(container.querySelector("s-grid")).toHaveAttribute(
-      "grid-template-columns",
+      "gridtemplatecolumns",
       "1fr",
     );
   });
