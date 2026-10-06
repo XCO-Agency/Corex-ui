@@ -23,8 +23,9 @@
     "dist"
   ],
   "scripts": {
-    "build": "tsup && node ./scripts/declare-children-alias.mjs",
-    "dev": "tsup --watch",
+    "build": "node scripts/sync-version.mjs && tsup && node ./scripts/declare-children-alias.mjs",
+    "dev": "node scripts/sync-version.mjs && tsup --watch",
+    "sync:version": "node scripts/sync-version.mjs",
     "test": "vitest run",
     "test:watch": "vitest",
     "typecheck": "tsc --noEmit"
