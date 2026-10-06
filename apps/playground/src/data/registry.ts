@@ -9,6 +9,7 @@ import { navigationComponents } from "./categories/navigation";
 import { appBridgeComponents } from "./categories/app-bridge";
 import { settingsBlocks } from "./blocks/settings";
 import { resourceTableBlocks } from "./blocks/resource-table";
+import { productIndexBlocks } from "./blocks/product-index";
 import { pricingBlocks } from "./blocks/pricing";
 import { integrationsBlocks } from "./blocks/integrations";
 import { activityFeedBlocks } from "./blocks/activity-feed";
@@ -74,6 +75,7 @@ export const blocks: BlockGroupType[] = [
       ...cardsBlocks,
       ...settingsBlocks,
       ...resourceTableBlocks,
+      ...productIndexBlocks,
       ...activityFeedBlocks,
     ],
   },

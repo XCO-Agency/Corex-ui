@@ -1,0 +1,1717 @@
+[
+  {
+    "id": "prod-1",
+    "title": "Hydrating Cleanser in Rust",
+    "imageUrl": "https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=100&h=100&fit=crop&auto=format&q=60",
+    "status": "active",
+    "inventory": 25,
+    "variants": 1,
+    "category": "Beauty",
+    "vendor": "Monochrome",
+    "productType": "Body care",
+    "tags": [],
+    "channels": 2,
+    "price": 195,
+    "updatedAt": "2026-04-03"
+  },
+  {
+    "id": "prod-2",
+    "title": "Glass Dripper",
+    "imageUrl": "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=100&h=100&fit=crop&auto=format&q=60",
+    "status": "active",
+    "inventory": 162,
+    "variants": 7,
+    "category": "Home",
+    "vendor": "Hario",
+    "productType": "Kitchen",
+    "tags": [],
+    "channels": 3,
+    "price": 388,
+    "updatedAt": "2026-05-14"
+  },
+  {
+    "id": "prod-3",
+    "title": "Field Overcoat in Navy",
+    "imageUrl": "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=100&h=100&fit=crop&auto=format&q=60",
+    "status": "active",
+    "inventory": 47,
+    "variants": 4,
+    "category": "Outerwear",
+    "vendor": "Everlane",
+    "productType": "Coats",
+    "tags": [],
+    "channels": 3,
+    "price": 38,
+    "updatedAt": "2026-04-16"
+  },
+  {
+    "id": "prod-4",
+    "title": "Glass Mug in Olive",
+    "imageUrl": "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=100&h=100&fit=crop&auto=format&q=60",
+    "status": "active",
+    "inventory": 77,
+    "variants": 3,
+    "category": "Home",
+    "vendor": "Hario",
+    "productType": "Kitchen",
+    "tags": [
+      "discontinued",
+      "sale"
+    ],
+    "channels": 2,
+    "price": 331,
+    "updatedAt": "2026-05-20"
+  },
+  {
+    "id": "prod-5",
+    "title": "Linen Jacket in Olive",
+    "imageUrl": "https://images.unsplash.com/photo-1473966968600-fa801b869a1a?w=100&h=100&fit=crop&auto=format&q=60",
+    "status": "active",
+    "inventory": 239,
+    "variants": 7,
+    "category": "Clothing",
+    "vendor": "Aglini",
+    "productType": "Shirts",
+    "tags": [
+      "gift",
+      "sale"
+    ],
+    "channels": 3,
+    "price": 230,
+    "updatedAt": "2026-08-03"
+  },
+  {
+    "id": "prod-6",
+    "title": "Wrap Sweater in Rust",
+    "imageUrl": "https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?w=100&h=100&fit=crop&auto=format&q=60",
+    "status": "active",
+    "inventory": 0,
+    "variants": 5,
+    "category": "Clothing",
+    "vendor": "Hovman",
+    "productType": "Pants",
+    "tags": [
+      "gift",
+      "new",
+      "summer"
+    ],
+    "channels": 2,
+    "price": 86,
+    "updatedAt": "2026-02-16"
+  },
+  {
+    "id": "prod-7",
+    "title": "Oxford Trousers in Black",
+    "imageUrl": "https://images.unsplash.com/photo-1473966968600-fa801b869a1a?w=100&h=100&fit=crop&auto=format&q=60",
+    "status": "draft",
+    "inventory": 235,
+    "variants": 2,
+    "category": "Clothing",
+    "vendor": "Everlane",
+    "productType": "Knitwear",
+    "tags": [
+      "basics",
+      "sale",
+      "winter"
+    ],
+    "channels": 2,
+    "price": 390,
+    "updatedAt": "2026-05-23"
+  },
+  {
+    "id": "prod-8",
+    "title": "Woven Wallet in Black",
+    "imageUrl": "https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=100&h=100&fit=crop&auto=format&q=60",
+    "status": "active",
+    "inventory": 60,
+    "variants": 1,
+    "category": "Accessories",
+    "vendor": "Aglini",
+    "productType": "Bags",
+    "tags": [
+      "basics",
+      "summer"
+    ],
+    "channels": 1,
+    "price": 195,
+    "updatedAt": "2026-06-20"
+  },
+  {
+    "id": "prod-9",
+    "title": "Cedar Candle in Rust",
+    "imageUrl": "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=100&h=100&fit=crop&auto=format&q=60",
+    "status": "draft",
+    "inventory": 168,
+    "variants": 8,
+    "category": "Home",
+    "vendor": "P.F. Candle Co.",
+    "productType": "Candles",
+    "tags": [
+      "new",
+      "restock",
+      "winter"
+    ],
+    "channels": 3,
+    "price": 187,
+    "updatedAt": "2026-04-03"
+  },
+  {
+    "id": "prod-10",
+    "title": "Heritage Parka in Sand",
+    "imageUrl": "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=100&h=100&fit=crop&auto=format&q=60",
+    "status": "active",
+    "inventory": 0,
+    "variants": 3,
+    "category": "Outerwear",
+    "vendor": "Norse Projects",
+    "productType": "Jackets",
+    "tags": [],
+    "channels": 1,
+    "price": 395,
+    "updatedAt": "2026-10-13"
+  },
+  {
+    "id": "prod-11",
+    "title": "Rain Bomber in Navy",
+    "imageUrl": "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=100&h=100&fit=crop&auto=format&q=60",
+    "status": "active",
+    "inventory": 218,
+    "variants": 8,
+    "category": "Outerwear",
+    "vendor": "Everlane",
+    "productType": "Jackets",
+    "tags": [
+      "bestseller",
+      "winter"
+    ],
+    "channels": 1,
+    "price": 340,
+    "updatedAt": "2026-05-16"
+  },
+  {
+    "id": "prod-12",
+    "title": "Field Overcoat in Black",
+    "imageUrl": "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=100&h=100&fit=crop&auto=format&q=60",
+    "status": "archived",
+    "inventory": 38,
+    "variants": 5,
+    "category": "Outerwear",
+    "vendor": "Norse Projects",
+    "productType": "Jackets",
+    "tags": [
+      "bestseller",
+      "gift"
+    ],
+    "channels": 1,
+    "price": 245,
+    "updatedAt": "2026-09-11"
+  },
+  {
+    "id": "prod-13",
+    "title": "Field Parka",
+    "imageUrl": "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=100&h=100&fit=crop&auto=format&q=60",
+    "status": "active",
+    "inventory": 206,
+    "variants": 4,
+    "category": "Outerwear",
+    "vendor": "Everlane",
+    "productType": "Jackets",
+    "tags": [],
+    "channels": 1,
+    "price": 358,
+    "updatedAt": "2026-08-09"
+  },
+  {
+    "id": "prod-14",
+    "title": "Field Bomber in Olive",
+    "imageUrl": "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=100&h=100&fit=crop&auto=format&q=60",
+    "status": "draft",
+    "inventory": 90,
+    "variants": 2,
+    "category": "Outerwear",
+    "vendor": "Norse Projects",
+    "productType": "Coats",
+    "tags": [
+      "discontinued"
+    ],
+    "channels": 1,
+    "price": 160,
+    "updatedAt": "2026-08-20"
+  },
+  {
+    "id": "prod-15",
+    "title": "Ceramic Carafe in Rust",
+    "imageUrl": "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=100&h=100&fit=crop&auto=format&q=60",
+    "status": "active",
+    "inventory": 214,
+    "variants": 7,
+    "category": "Home",
+    "vendor": "Hario",
+    "productType": "Candles",
+    "tags": [
+      "restock"
+    ],
+    "channels": 3,
+    "price": 158,
+    "updatedAt": "2026-07-15"
+  },
+  {
+    "id": "prod-16",
+    "title": "Leather Crossbody in Black",
+    "imageUrl": "https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=100&h=100&fit=crop&auto=format&q=60",
+    "status": "archived",
+    "inventory": 0,
+    "variants": 3,
+    "category": "Accessories",
+    "vendor": "Aglini",
+    "productType": "Belts",
+    "tags": [
+      "sale"
+    ],
+    "channels": 3,
+    "price": 69,
+    "updatedAt": "2026-01-26"
+  },
+  {
+    "id": "prod-17",
+    "title": "Merino Dress in Olive",
+    "imageUrl": "https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?w=100&h=100&fit=crop&auto=format&q=60",
+    "status": "archived",
+    "inventory": 224,
+    "variants": 1,
+    "category": "Clothing",
+    "vendor": "Amelia Toro",
+    "productType": "Dresses",
+    "tags": [
+      "new",
+      "sale"
+    ],
+    "channels": 3,
+    "price": 155,
+    "updatedAt": "2026-09-14"
+  },
+  {
+    "id": "prod-18",
+    "title": "Wool Bomber in Olive",
+    "imageUrl": "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=100&h=100&fit=crop&auto=format&q=60",
+    "status": "active",
+    "inventory": 133,
+    "variants": 3,
+    "category": "Outerwear",
+    "vendor": "Norse Projects",
+    "productType": "Coats",
+    "tags": [
+      "bestseller",
+      "restock",
+      "summer"
+    ],
+    "channels": 1,
+    "price": 87,
+    "updatedAt": "2026-08-20"
+  },
+  {
+    "id": "prod-19",
+    "title": "Merino Shirt in White",
+    "imageUrl": "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=100&h=100&fit=crop&auto=format&q=60",
+    "status": "active",
+    "inventory": 124,
+    "variants": 1,
+    "category": "Clothing",
+    "vendor": "Everlane",
+    "productType": "Dresses",
+    "tags": [
+      "summer",
+      "winter"
+    ],
+    "channels": 3,
+    "price": 210,
+    "updatedAt": "2026-01-25"
+  },
+  {
+    "id": "prod-20",
+    "title": "Chino Trousers in Navy",
+    "imageUrl": "https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?w=100&h=100&fit=crop&auto=format&q=60",
+    "status": "archived",
+    "inventory": 52,
+    "variants": 5,
+    "category": "Clothing",
+    "vendor": "Hovman",
+    "productType": "Knitwear",
+    "tags": [
+      "sale"
+    ],
+    "channels": 2,
+    "price": 416,
+    "updatedAt": "2026-04-27"
+  },
+  {
+    "id": "prod-21",
+    "title": "Canvas Wallet in Sand",
+    "imageUrl": "https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=100&h=100&fit=crop&auto=format&q=60",
+    "status": "active",
+    "inventory": 172,
+    "variants": 7,
+    "category": "Accessories",
+    "vendor": "Cuyana",
+    "productType": "Bags",
+    "tags": [
+      "bestseller",
+      "winter"
+    ],
+    "channels": 3,
+    "price": 294,
+    "updatedAt": "2026-06-05"
+  },
+  {
+    "id": "prod-22",
+    "title": "Hydrating Cleanser in Black",
+    "imageUrl": "https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=100&h=100&fit=crop&auto=format&q=60",
+    "status": "draft",
+    "inventory": 0,
+    "variants": 3,
+    "category": "Beauty",
+    "vendor": "Monochrome",
+    "productType": "Body care",
+    "tags": [
+      "bestseller",
+      "restock",
+      "sale"
+    ],
+    "channels": 2,
+    "price": 98,
+    "updatedAt": "2026-06-03"
+  },
+  {
+    "id": "prod-23",
+    "title": "Botanical Serum in Navy",
+    "imageUrl": "https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=100&h=100&fit=crop&auto=format&q=60",
+    "status": "active",
+    "inventory": 99,
+    "variants": 5,
+    "category": "Beauty",
+    "vendor": "Monochrome",
+    "productType": "Body care",
+    "tags": [
+      "winter"
+    ],
+    "channels": 1,
+    "price": 128,
+    "updatedAt": "2026-01-25"
+  },
+  {
+    "id": "prod-24",
+    "title": "Rain Parka",
+    "imageUrl": "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=100&h=100&fit=crop&auto=format&q=60",
+    "status": "active",
+    "inventory": 210,
+    "variants": 7,
+    "category": "Outerwear",
+    "vendor": "Norse Projects",
+    "productType": "Jackets",
+    "tags": [
+      "basics",
+      "winter"
+    ],
+    "channels": 1,
+    "price": 362,
+    "updatedAt": "2026-03-14"
+  },
+  {
+    "id": "prod-25",
+    "title": "Wrap Shirt in Rust",
+    "imageUrl": "https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?w=100&h=100&fit=crop&auto=format&q=60",
+    "status": "active",
+    "inventory": 156,
+    "variants": 2,
+    "category": "Clothing",
+    "vendor": "Amelia Toro",
+    "productType": "Shirts",
+    "tags": [
+      "basics",
+      "gift",
+      "summer"
+    ],
+    "channels": 2,
+    "price": 418,
+    "updatedAt": "2026-05-20"
+  },
+  {
+    "id": "prod-26",
+    "title": "Wool Parka in Sand",
+    "imageUrl": "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=100&h=100&fit=crop&auto=format&q=60",
+    "status": "archived",
+    "inventory": 47,
+    "variants": 5,
+    "category": "Outerwear",
+    "vendor": "Everlane",
+    "productType": "Coats",
+    "tags": [
+      "bestseller",
+      "discontinued"
+    ],
+    "channels": 2,
+    "price": 164,
+    "updatedAt": "2026-01-09"
+  },
+  {
+    "id": "prod-27",
+    "title": "Linen Shirt in Rust",
+    "imageUrl": "https://images.unsplash.com/photo-1473966968600-fa801b869a1a?w=100&h=100&fit=crop&auto=format&q=60",
+    "status": "active",
+    "inventory": 132,
+    "variants": 4,
+    "category": "Clothing",
+    "vendor": "Hovman",
+    "productType": "Shirts",
+    "tags": [
+      "basics",
+      "discontinued",
+      "restock"
+    ],
+    "channels": 2,
+    "price": 313,
+    "updatedAt": "2026-04-11"
+  },
+  {
+    "id": "prod-28",
+    "title": "Quilted Trench in White",
+    "imageUrl": "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=100&h=100&fit=crop&auto=format&q=60",
+    "status": "archived",
+    "inventory": 4,
+    "variants": 5,
+    "category": "Outerwear",
+    "vendor": "Everlane",
+    "productType": "Coats",
+    "tags": [],
+    "channels": 1,
+    "price": 303,
+    "updatedAt": "2026-07-28"
+  },
+  {
+    "id": "prod-29",
+    "title": "Cedar Diffuser in Black",
+    "imageUrl": "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=100&h=100&fit=crop&auto=format&q=60",
+    "status": "active",
+    "inventory": 0,
+    "variants": 3,
+    "category": "Home",
+    "vendor": "P.F. Candle Co.",
+    "productType": "Candles",
+    "tags": [],
+    "channels": 2,
+    "price": 171,
+    "updatedAt": "2026-06-18"
+  },
+  {
+    "id": "prod-30",
+    "title": "Hydrating Lotion in White",
+    "imageUrl": "https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=100&h=100&fit=crop&auto=format&q=60",
+    "status": "active",
+    "inventory": 86,
+    "variants": 2,
+    "category": "Beauty",
+    "vendor": "Kiehl's",
+    "productType": "Skin care",
+    "tags": [
+      "new"
+    ],
+    "channels": 3,
+    "price": 352,
+    "updatedAt": "2026-02-09"
+  },
+  {
+    "id": "prod-31",
+    "title": "Oxford Sweater in Navy",
+    "imageUrl": "https://images.unsplash.com/photo-1572804013309-59a88b7e92f1?w=100&h=100&fit=crop&auto=format&q=60",
+    "status": "active",
+    "inventory": 0,
+    "variants": 4,
+    "category": "Clothing",
+    "vendor": "Aglini",
+    "productType": "Dresses",
+    "tags": [
+      "discontinued",
+      "gift",
+      "winter"
+    ],
+    "channels": 2,
+    "price": 329,
+    "updatedAt": "2026-03-02"
+  },
+  {
+    "id": "prod-32",
+    "title": "Glass Diffuser in Black",
+    "imageUrl": "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=100&h=100&fit=crop&auto=format&q=60",
+    "status": "archived",
+    "inventory": 146,
+    "variants": 4,
+    "category": "Home",
+    "vendor": "Hario",
+    "productType": "Kitchen",
+    "tags": [],
+    "channels": 1,
+    "price": 291,
+    "updatedAt": "2026-02-13"
+  },
+  {
+    "id": "prod-33",
+    "title": "Leather Tote in Rust",
+    "imageUrl": "https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=100&h=100&fit=crop&auto=format&q=60",
+    "status": "active",
+    "inventory": 68,
+    "variants": 8,
+    "category": "Accessories",
+    "vendor": "Cuyana",
+    "productType": "Bags",
+    "tags": [],
+    "channels": 3,
+    "price": 335,
+    "updatedAt": "2026-05-26"
+  },
+  {
+    "id": "prod-34",
+    "title": "Pleated Trousers in Black",
+    "imageUrl": "https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?w=100&h=100&fit=crop&auto=format&q=60",
+    "status": "draft",
+    "inventory": 190,
+    "variants": 8,
+    "category": "Clothing",
+    "vendor": "Hovman",
+    "productType": "Knitwear",
+    "tags": [],
+    "channels": 2,
+    "price": 411,
+    "updatedAt": "2026-05-25"
+  },
+  {
+    "id": "prod-35",
+    "title": "Merino Dress in Sand",
+    "imageUrl": "https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?w=100&h=100&fit=crop&auto=format&q=60",
+    "status": "active",
+    "inventory": 167,
+    "variants": 5,
+    "category": "Clothing",
+    "vendor": "Everlane",
+    "productType": "Shirts",
+    "tags": [
+      "bestseller",
+      "discontinued",
+      "summer"
+    ],
+    "channels": 3,
+    "price": 56,
+    "updatedAt": "2026-04-22"
+  },
+  {
+    "id": "prod-36",
+    "title": "Woven Belt in Olive",
+    "imageUrl": "https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=100&h=100&fit=crop&auto=format&q=60",
+    "status": "active",
+    "inventory": 229,
+    "variants": 5,
+    "category": "Accessories",
+    "vendor": "Cuyana",
+    "productType": "Belts",
+    "tags": [],
+    "channels": 2,
+    "price": 213,
+    "updatedAt": "2026-09-15"
+  },
+  {
+    "id": "prod-37",
+    "title": "Charcoal Scrub in Black",
+    "imageUrl": "https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=100&h=100&fit=crop&auto=format&q=60",
+    "status": "active",
+    "inventory": 0,
+    "variants": 6,
+    "category": "Beauty",
+    "vendor": "Monochrome",
+    "productType": "Skin care",
+    "tags": [],
+    "channels": 3,
+    "price": 172,
+    "updatedAt": "2026-08-16"
+  },
+  {
+    "id": "prod-38",
+    "title": "Leather Crossbody in Sand",
+    "imageUrl": "https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=100&h=100&fit=crop&auto=format&q=60",
+    "status": "archived",
+    "inventory": 104,
+    "variants": 3,
+    "category": "Accessories",
+    "vendor": "Aglini",
+    "productType": "Belts",
+    "tags": [
+      "gift",
+      "restock",
+      "winter"
+    ],
+    "channels": 2,
+    "price": 13,
+    "updatedAt": "2026-06-27"
+  },
+  {
+    "id": "prod-39",
+    "title": "Leather Crossbody in Rust",
+    "imageUrl": "https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=100&h=100&fit=crop&auto=format&q=60",
+    "status": "active",
+    "inventory": 65,
+    "variants": 2,
+    "category": "Accessories",
+    "vendor": "Aglini",
+    "productType": "Belts",
+    "tags": [],
+    "channels": 2,
+    "price": 417,
+    "updatedAt": "2026-05-28"
+  },
+  {
+    "id": "prod-40",
+    "title": "Wrap Shirt in Sand",
+    "imageUrl": "https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?w=100&h=100&fit=crop&auto=format&q=60",
+    "status": "draft",
+    "inventory": 240,
+    "variants": 4,
+    "category": "Clothing",
+    "vendor": "Amelia Toro",
+    "productType": "Knitwear",
+    "tags": [
+      "gift",
+      "new"
+    ],
+    "channels": 2,
+    "price": 399,
+    "updatedAt": "2026-07-18"
+  },
+  {
+    "id": "prod-41",
+    "title": "Amber Dripper in Sand",
+    "imageUrl": "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=100&h=100&fit=crop&auto=format&q=60",
+    "status": "archived",
+    "inventory": 158,
+    "variants": 5,
+    "category": "Home",
+    "vendor": "P.F. Candle Co.",
+    "productType": "Kitchen",
+    "tags": [
+      "bestseller"
+    ],
+    "channels": 2,
+    "price": 194,
+    "updatedAt": "2026-05-10"
+  },
+  {
+    "id": "prod-42",
+    "title": "Citrus Cleanser in Rust",
+    "imageUrl": "https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=100&h=100&fit=crop&auto=format&q=60",
+    "status": "active",
+    "inventory": 172,
+    "variants": 2,
+    "category": "Beauty",
+    "vendor": "Monochrome",
+    "productType": "Body care",
+    "tags": [],
+    "channels": 1,
+    "price": 231,
+    "updatedAt": "2026-08-18"
+  },
+  {
+    "id": "prod-43",
+    "title": "Heritage Bomber",
+    "imageUrl": "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=100&h=100&fit=crop&auto=format&q=60",
+    "status": "active",
+    "inventory": 50,
+    "variants": 2,
+    "category": "Outerwear",
+    "vendor": "Norse Projects",
+    "productType": "Jackets",
+    "tags": [],
+    "channels": 2,
+    "price": 117,
+    "updatedAt": "2026-05-26"
+  },
+  {
+    "id": "prod-44",
+    "title": "Amber Dripper in Rust",
+    "imageUrl": "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=100&h=100&fit=crop&auto=format&q=60",
+    "status": "draft",
+    "inventory": 191,
+    "variants": 7,
+    "category": "Home",
+    "vendor": "P.F. Candle Co.",
+    "productType": "Candles",
+    "tags": [],
+    "channels": 2,
+    "price": 134,
+    "updatedAt": "2026-06-05"
+  },
+  {
+    "id": "prod-45",
+    "title": "Stoneware Candle in Sand",
+    "imageUrl": "https://images.unsplash.com/photo-1603006905003-be475563bc59?w=100&h=100&fit=crop&auto=format&q=60",
+    "status": "active",
+    "inventory": 103,
+    "variants": 7,
+    "category": "Home",
+    "vendor": "P.F. Candle Co.",
+    "productType": "Kitchen",
+    "tags": [
+      "summer"
+    ],
+    "channels": 2,
+    "price": 323,
+    "updatedAt": "2026-08-19"
+  },
+  {
+    "id": "prod-46",
+    "title": "Leather Tote in Olive",
+    "imageUrl": "https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=100&h=100&fit=crop&auto=format&q=60",
+    "status": "archived",
+    "inventory": 136,
+    "variants": 8,
+    "category": "Accessories",
+    "vendor": "Cuyana",
+    "productType": "Bags",
+    "tags": [
+      "bestseller"
+    ],
+    "channels": 1,
+    "price": 241,
+    "updatedAt": "2026-02-27"
+  },
+  {
+    "id": "prod-47",
+    "title": "Leather Tote in Sand",
+    "imageUrl": "https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=100&h=100&fit=crop&auto=format&q=60",
+    "status": "draft",
+    "inventory": 236,
+    "variants": 5,
+    "category": "Accessories",
+    "vendor": "Cuyana",
+    "productType": "Belts",
+    "tags": [
+      "sale",
+      "summer",
+      "winter"
+    ],
+    "channels": 2,
+    "price": 242,
+    "updatedAt": "2026-10-07"
+  },
+  {
+    "id": "prod-48",
+    "title": "Woven Crossbody",
+    "imageUrl": "https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=100&h=100&fit=crop&auto=format&q=60",
+    "status": "active",
+    "inventory": 0,
+    "variants": 8,
+    "category": "Accessories",
+    "vendor": "Aglini",
+    "productType": "Belts",
+    "tags": [
+      "discontinued"
+    ],
+    "channels": 3,
+    "price": 115,
+    "updatedAt": "2026-04-01"
+  },
+  {
+    "id": "prod-49",
+    "title": "Woven Tote in Sand",
+    "imageUrl": "https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=100&h=100&fit=crop&auto=format&q=60",
+    "status": "active",
+    "inventory": 166,
+    "variants": 2,
+    "category": "Accessories",
+    "vendor": "Aglini",
+    "productType": "Bags",
+    "tags": [
+      "discontinued",
+      "gift",
+      "new"
+    ],
+    "channels": 1,
+    "price": 317,
+    "updatedAt": "2026-07-12"
+  },
+  {
+    "id": "prod-50",
+    "title": "Canvas Tote",
+    "imageUrl": "https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=100&h=100&fit=crop&auto=format&q=60",
+    "status": "active",
+    "inventory": 18,
+    "variants": 8,
+    "category": "Accessories",
+    "vendor": "Cuyana",
+    "productType": "Belts",
+    "tags": [
+      "new"
+    ],
+    "channels": 2,
+    "price": 109,
+    "updatedAt": "2026-05-04"
+  },
+  {
+    "id": "prod-51",
+    "title": "Heritage Trench in Rust",
+    "imageUrl": "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=100&h=100&fit=crop&auto=format&q=60",
+    "status": "active",
+    "inventory": 237,
+    "variants": 1,
+    "category": "Outerwear",
+    "vendor": "Norse Projects",
+    "productType": "Coats",
+    "tags": [
+      "restock"
+    ],
+    "channels": 1,
+    "price": 323,
+    "updatedAt": "2026-03-13"
+  },
+  {
+    "id": "prod-52",
+    "title": "Rain Parka in Black",
+    "imageUrl": "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=100&h=100&fit=crop&auto=format&q=60",
+    "status": "active",
+    "inventory": 120,
+    "variants": 5,
+    "category": "Outerwear",
+    "vendor": "Everlane",
+    "productType": "Jackets",
+    "tags": [
+      "bestseller",
+      "discontinued"
+    ],
+    "channels": 1,
+    "price": 13,
+    "updatedAt": "2026-05-03"
+  },
+  {
+    "id": "prod-53",
+    "title": "Charcoal Lotion in Navy",
+    "imageUrl": "https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=100&h=100&fit=crop&auto=format&q=60",
+    "status": "archived",
+    "inventory": 92,
+    "variants": 7,
+    "category": "Beauty",
+    "vendor": "Monochrome",
+    "productType": "Body care",
+    "tags": [
+      "basics",
+      "gift",
+      "new"
+    ],
+    "channels": 2,
+    "price": 97,
+    "updatedAt": "2026-06-24"
+  },
+  {
+    "id": "prod-54",
+    "title": "Leather Wallet in Black",
+    "imageUrl": "https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=100&h=100&fit=crop&auto=format&q=60",
+    "status": "draft",
+    "inventory": 11,
+    "variants": 1,
+    "category": "Accessories",
+    "vendor": "Aglini",
+    "productType": "Bags",
+    "tags": [],
+    "channels": 2,
+    "price": 97,
+    "updatedAt": "2026-02-20"
+  },
+  {
+    "id": "prod-55",
+    "title": "Citrus Serum in White",
+    "imageUrl": "https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=100&h=100&fit=crop&auto=format&q=60",
+    "status": "archived",
+    "inventory": 68,
+    "variants": 5,
+    "category": "Beauty",
+    "vendor": "Kiehl's",
+    "productType": "Body care",
+    "tags": [],
+    "channels": 1,
+    "price": 374,
+    "updatedAt": "2026-02-16"
+  },
+  {
+    "id": "prod-56",
+    "title": "Structured Belt in Olive",
+    "imageUrl": "https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=100&h=100&fit=crop&auto=format&q=60",
+    "status": "draft",
+    "inventory": 128,
+    "variants": 1,
+    "category": "Accessories",
+    "vendor": "Aglini",
+    "productType": "Bags",
+    "tags": [
+      "gift"
+    ],
+    "channels": 2,
+    "price": 214,
+    "updatedAt": "2026-10-03"
+  },
+  {
+    "id": "prod-57",
+    "title": "Amber Carafe",
+    "imageUrl": "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=100&h=100&fit=crop&auto=format&q=60",
+    "status": "active",
+    "inventory": 167,
+    "variants": 8,
+    "category": "Home",
+    "vendor": "P.F. Candle Co.",
+    "productType": "Kitchen",
+    "tags": [
+      "bestseller",
+      "sale",
+      "winter"
+    ],
+    "channels": 3,
+    "price": 49,
+    "updatedAt": "2026-02-14"
+  },
+  {
+    "id": "prod-58",
+    "title": "Structured Crossbody in Black",
+    "imageUrl": "https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=100&h=100&fit=crop&auto=format&q=60",
+    "status": "active",
+    "inventory": 229,
+    "variants": 2,
+    "category": "Accessories",
+    "vendor": "Aglini",
+    "productType": "Belts",
+    "tags": [
+      "basics",
+      "gift"
+    ],
+    "channels": 2,
+    "price": 335,
+    "updatedAt": "2026-04-15"
+  },
+  {
+    "id": "prod-59",
+    "title": "Quilted Parka in Black",
+    "imageUrl": "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=100&h=100&fit=crop&auto=format&q=60",
+    "status": "active",
+    "inventory": 149,
+    "variants": 6,
+    "category": "Outerwear",
+    "vendor": "Norse Projects",
+    "productType": "Jackets",
+    "tags": [
+      "new",
+      "sale"
+    ],
+    "channels": 3,
+    "price": 366,
+    "updatedAt": "2026-08-02"
+  },
+  {
+    "id": "prod-60",
+    "title": "Linen Sweater",
+    "imageUrl": "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=100&h=100&fit=crop&auto=format&q=60",
+    "status": "active",
+    "inventory": 96,
+    "variants": 5,
+    "category": "Clothing",
+    "vendor": "Everlane",
+    "productType": "Shirts",
+    "tags": [],
+    "channels": 1,
+    "price": 275,
+    "updatedAt": "2026-10-07"
+  },
+  {
+    "id": "prod-61",
+    "title": "Wrap Jacket",
+    "imageUrl": "https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?w=100&h=100&fit=crop&auto=format&q=60",
+    "status": "active",
+    "inventory": 199,
+    "variants": 1,
+    "category": "Clothing",
+    "vendor": "Aglini",
+    "productType": "Pants",
+    "tags": [
+      "summer"
+    ],
+    "channels": 2,
+    "price": 161,
+    "updatedAt": "2026-01-07"
+  },
+  {
+    "id": "prod-62",
+    "title": "Botanical Balm in Rust",
+    "imageUrl": "https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=100&h=100&fit=crop&auto=format&q=60",
+    "status": "active",
+    "inventory": 3,
+    "variants": 7,
+    "category": "Beauty",
+    "vendor": "Kiehl's",
+    "productType": "Body care",
+    "tags": [
+      "new",
+      "winter"
+    ],
+    "channels": 1,
+    "price": 360,
+    "updatedAt": "2026-09-16"
+  },
+  {
+    "id": "prod-63",
+    "title": "Chino Shirt",
+    "imageUrl": "https://images.unsplash.com/photo-1598033129183-c4f50c736f10?w=100&h=100&fit=crop&auto=format&q=60",
+    "status": "active",
+    "inventory": 164,
+    "variants": 2,
+    "category": "Clothing",
+    "vendor": "Everlane",
+    "productType": "Knitwear",
+    "tags": [
+      "basics",
+      "restock"
+    ],
+    "channels": 3,
+    "price": 147,
+    "updatedAt": "2026-01-10"
+  },
+  {
+    "id": "prod-64",
+    "title": "Cedar Carafe in Olive",
+    "imageUrl": "https://images.unsplash.com/photo-1603006905003-be475563bc59?w=100&h=100&fit=crop&auto=format&q=60",
+    "status": "active",
+    "inventory": 206,
+    "variants": 4,
+    "category": "Home",
+    "vendor": "P.F. Candle Co.",
+    "productType": "Candles",
+    "tags": [
+      "summer"
+    ],
+    "channels": 2,
+    "price": 407,
+    "updatedAt": "2026-07-04"
+  },
+  {
+    "id": "prod-65",
+    "title": "Chino Jacket in White",
+    "imageUrl": "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=100&h=100&fit=crop&auto=format&q=60",
+    "status": "active",
+    "inventory": 4,
+    "variants": 3,
+    "category": "Clothing",
+    "vendor": "Hovman",
+    "productType": "Shirts",
+    "tags": [
+      "bestseller",
+      "sale"
+    ],
+    "channels": 1,
+    "price": 164,
+    "updatedAt": "2026-03-17"
+  },
+  {
+    "id": "prod-66",
+    "title": "Wool Overcoat in Olive",
+    "imageUrl": "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=100&h=100&fit=crop&auto=format&q=60",
+    "status": "active",
+    "inventory": 207,
+    "variants": 5,
+    "category": "Outerwear",
+    "vendor": "Norse Projects",
+    "productType": "Coats",
+    "tags": [
+      "basics",
+      "gift",
+      "summer"
+    ],
+    "channels": 3,
+    "price": 182,
+    "updatedAt": "2026-10-23"
+  },
+  {
+    "id": "prod-67",
+    "title": "Quilted Trench in Navy",
+    "imageUrl": "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=100&h=100&fit=crop&auto=format&q=60",
+    "status": "draft",
+    "inventory": 47,
+    "variants": 1,
+    "category": "Outerwear",
+    "vendor": "Everlane",
+    "productType": "Coats",
+    "tags": [
+      "discontinued",
+      "gift",
+      "winter"
+    ],
+    "channels": 1,
+    "price": 437,
+    "updatedAt": "2026-04-02"
+  },
+  {
+    "id": "prod-68",
+    "title": "Ceramic Mug in Sand",
+    "imageUrl": "https://images.unsplash.com/photo-1603006905003-be475563bc59?w=100&h=100&fit=crop&auto=format&q=60",
+    "status": "active",
+    "inventory": 218,
+    "variants": 7,
+    "category": "Home",
+    "vendor": "P.F. Candle Co.",
+    "productType": "Kitchen",
+    "tags": [
+      "gift",
+      "new",
+      "restock"
+    ],
+    "channels": 3,
+    "price": 204,
+    "updatedAt": "2026-01-01"
+  },
+  {
+    "id": "prod-69",
+    "title": "Glass Carafe in Black",
+    "imageUrl": "https://images.unsplash.com/photo-1603006905003-be475563bc59?w=100&h=100&fit=crop&auto=format&q=60",
+    "status": "active",
+    "inventory": 210,
+    "variants": 3,
+    "category": "Home",
+    "vendor": "P.F. Candle Co.",
+    "productType": "Candles",
+    "tags": [],
+    "channels": 1,
+    "price": 68,
+    "updatedAt": "2026-07-12"
+  },
+  {
+    "id": "prod-70",
+    "title": "Pleated Sweater in Navy",
+    "imageUrl": "https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?w=100&h=100&fit=crop&auto=format&q=60",
+    "status": "active",
+    "inventory": 0,
+    "variants": 3,
+    "category": "Clothing",
+    "vendor": "Aglini",
+    "productType": "Pants",
+    "tags": [],
+    "channels": 1,
+    "price": 341,
+    "updatedAt": "2026-07-21"
+  },
+  {
+    "id": "prod-71",
+    "title": "Wool Overcoat in Navy",
+    "imageUrl": "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=100&h=100&fit=crop&auto=format&q=60",
+    "status": "draft",
+    "inventory": 50,
+    "variants": 8,
+    "category": "Outerwear",
+    "vendor": "Everlane",
+    "productType": "Coats",
+    "tags": [
+      "winter"
+    ],
+    "channels": 2,
+    "price": 279,
+    "updatedAt": "2026-05-06"
+  },
+  {
+    "id": "prod-72",
+    "title": "Rose Serum",
+    "imageUrl": "https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=100&h=100&fit=crop&auto=format&q=60",
+    "status": "active",
+    "inventory": 236,
+    "variants": 4,
+    "category": "Beauty",
+    "vendor": "Kiehl's",
+    "productType": "Body care",
+    "tags": [
+      "gift",
+      "summer"
+    ],
+    "channels": 1,
+    "price": 92,
+    "updatedAt": "2026-03-21"
+  },
+  {
+    "id": "prod-73",
+    "title": "Citrus Cleanser in Black",
+    "imageUrl": "https://images.unsplash.com/photo-1556228720-195a672e8a03?w=100&h=100&fit=crop&auto=format&q=60",
+    "status": "draft",
+    "inventory": 197,
+    "variants": 6,
+    "category": "Beauty",
+    "vendor": "Kiehl's",
+    "productType": "Body care",
+    "tags": [
+      "restock",
+      "sale"
+    ],
+    "channels": 3,
+    "price": 361,
+    "updatedAt": "2026-05-13"
+  },
+  {
+    "id": "prod-74",
+    "title": "Rose Scrub in White",
+    "imageUrl": "https://images.unsplash.com/photo-1556228720-195a672e8a03?w=100&h=100&fit=crop&auto=format&q=60",
+    "status": "active",
+    "inventory": 0,
+    "variants": 3,
+    "category": "Beauty",
+    "vendor": "Monochrome",
+    "productType": "Skin care",
+    "tags": [
+      "basics",
+      "gift"
+    ],
+    "channels": 3,
+    "price": 13,
+    "updatedAt": "2026-01-08"
+  },
+  {
+    "id": "prod-75",
+    "title": "Rain Trench in Olive",
+    "imageUrl": "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=100&h=100&fit=crop&auto=format&q=60",
+    "status": "active",
+    "inventory": 34,
+    "variants": 4,
+    "category": "Outerwear",
+    "vendor": "Norse Projects",
+    "productType": "Coats",
+    "tags": [],
+    "channels": 1,
+    "price": 260,
+    "updatedAt": "2026-05-04"
+  },
+  {
+    "id": "prod-76",
+    "title": "Woven Crossbody in Black",
+    "imageUrl": "https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=100&h=100&fit=crop&auto=format&q=60",
+    "status": "active",
+    "inventory": 41,
+    "variants": 1,
+    "category": "Accessories",
+    "vendor": "Cuyana",
+    "productType": "Bags",
+    "tags": [
+      "gift",
+      "sale",
+      "winter"
+    ],
+    "channels": 1,
+    "price": 394,
+    "updatedAt": "2026-05-13"
+  },
+  {
+    "id": "prod-77",
+    "title": "Botanical Lotion in Rust",
+    "imageUrl": "https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=100&h=100&fit=crop&auto=format&q=60",
+    "status": "draft",
+    "inventory": 153,
+    "variants": 8,
+    "category": "Beauty",
+    "vendor": "Monochrome",
+    "productType": "Body care",
+    "tags": [],
+    "channels": 1,
+    "price": 39,
+    "updatedAt": "2026-01-13"
+  },
+  {
+    "id": "prod-78",
+    "title": "Quilted Parka in Sand",
+    "imageUrl": "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=100&h=100&fit=crop&auto=format&q=60",
+    "status": "archived",
+    "inventory": 0,
+    "variants": 3,
+    "category": "Outerwear",
+    "vendor": "Everlane",
+    "productType": "Coats",
+    "tags": [
+      "basics",
+      "bestseller",
+      "summer"
+    ],
+    "channels": 2,
+    "price": 286,
+    "updatedAt": "2026-08-23"
+  },
+  {
+    "id": "prod-79",
+    "title": "Ceramic Carafe",
+    "imageUrl": "https://images.unsplash.com/photo-1603006905003-be475563bc59?w=100&h=100&fit=crop&auto=format&q=60",
+    "status": "active",
+    "inventory": 21,
+    "variants": 3,
+    "category": "Home",
+    "vendor": "Hario",
+    "productType": "Kitchen",
+    "tags": [
+      "new",
+      "summer"
+    ],
+    "channels": 1,
+    "price": 159,
+    "updatedAt": "2026-05-23"
+  },
+  {
+    "id": "prod-80",
+    "title": "Wrap Jacket in Rust",
+    "imageUrl": "https://images.unsplash.com/photo-1572804013309-59a88b7e92f1?w=100&h=100&fit=crop&auto=format&q=60",
+    "status": "active",
+    "inventory": 134,
+    "variants": 5,
+    "category": "Clothing",
+    "vendor": "Everlane",
+    "productType": "Shirts",
+    "tags": [],
+    "channels": 1,
+    "price": 126,
+    "updatedAt": "2026-04-27"
+  },
+  {
+    "id": "prod-81",
+    "title": "Quilted Bomber in Black",
+    "imageUrl": "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=100&h=100&fit=crop&auto=format&q=60",
+    "status": "draft",
+    "inventory": 62,
+    "variants": 8,
+    "category": "Outerwear",
+    "vendor": "Everlane",
+    "productType": "Coats",
+    "tags": [],
+    "channels": 2,
+    "price": 431,
+    "updatedAt": "2026-04-19"
+  },
+  {
+    "id": "prod-82",
+    "title": "Hydrating Cleanser in Navy",
+    "imageUrl": "https://images.unsplash.com/photo-1556228720-195a672e8a03?w=100&h=100&fit=crop&auto=format&q=60",
+    "status": "active",
+    "inventory": 44,
+    "variants": 1,
+    "category": "Beauty",
+    "vendor": "Monochrome",
+    "productType": "Body care",
+    "tags": [],
+    "channels": 3,
+    "price": 419,
+    "updatedAt": "2026-06-05"
+  },
+  {
+    "id": "prod-83",
+    "title": "Linen Shirt in Black",
+    "imageUrl": "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=100&h=100&fit=crop&auto=format&q=60",
+    "status": "active",
+    "inventory": 179,
+    "variants": 1,
+    "category": "Clothing",
+    "vendor": "Aglini",
+    "productType": "Pants",
+    "tags": [
+      "sale"
+    ],
+    "channels": 3,
+    "price": 41,
+    "updatedAt": "2026-07-04"
+  },
+  {
+    "id": "prod-84",
+    "title": "Linen Shirt",
+    "imageUrl": "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=100&h=100&fit=crop&auto=format&q=60",
+    "status": "draft",
+    "inventory": 123,
+    "variants": 3,
+    "category": "Clothing",
+    "vendor": "Aglini",
+    "productType": "Dresses",
+    "tags": [
+      "gift",
+      "sale"
+    ],
+    "channels": 2,
+    "price": 126,
+    "updatedAt": "2026-06-09"
+  },
+  {
+    "id": "prod-85",
+    "title": "Botanical Serum in White",
+    "imageUrl": "https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=100&h=100&fit=crop&auto=format&q=60",
+    "status": "draft",
+    "inventory": 122,
+    "variants": 1,
+    "category": "Beauty",
+    "vendor": "Kiehl's",
+    "productType": "Body care",
+    "tags": [
+      "bestseller",
+      "sale",
+      "winter"
+    ],
+    "channels": 2,
+    "price": 321,
+    "updatedAt": "2026-09-19"
+  },
+  {
+    "id": "prod-86",
+    "title": "Wool Bomber in Black",
+    "imageUrl": "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=100&h=100&fit=crop&auto=format&q=60",
+    "status": "active",
+    "inventory": 74,
+    "variants": 1,
+    "category": "Outerwear",
+    "vendor": "Everlane",
+    "productType": "Jackets",
+    "tags": [],
+    "channels": 2,
+    "price": 317,
+    "updatedAt": "2026-03-16"
+  },
+  {
+    "id": "prod-87",
+    "title": "Cedar Diffuser in White",
+    "imageUrl": "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=100&h=100&fit=crop&auto=format&q=60",
+    "status": "active",
+    "inventory": 209,
+    "variants": 4,
+    "category": "Home",
+    "vendor": "P.F. Candle Co.",
+    "productType": "Kitchen",
+    "tags": [],
+    "channels": 3,
+    "price": 348,
+    "updatedAt": "2026-08-26"
+  },
+  {
+    "id": "prod-88",
+    "title": "Ceramic Mug in White",
+    "imageUrl": "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=100&h=100&fit=crop&auto=format&q=60",
+    "status": "active",
+    "inventory": 229,
+    "variants": 7,
+    "category": "Home",
+    "vendor": "Hario",
+    "productType": "Candles",
+    "tags": [
+      "basics"
+    ],
+    "channels": 2,
+    "price": 199,
+    "updatedAt": "2026-09-17"
+  },
+  {
+    "id": "prod-89",
+    "title": "Heritage Parka in Olive",
+    "imageUrl": "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=100&h=100&fit=crop&auto=format&q=60",
+    "status": "active",
+    "inventory": 177,
+    "variants": 6,
+    "category": "Outerwear",
+    "vendor": "Everlane",
+    "productType": "Coats",
+    "tags": [
+      "gift",
+      "sale",
+      "winter"
+    ],
+    "channels": 2,
+    "price": 204,
+    "updatedAt": "2026-05-19"
+  },
+  {
+    "id": "prod-90",
+    "title": "Quilted Bomber in Olive",
+    "imageUrl": "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=100&h=100&fit=crop&auto=format&q=60",
+    "status": "active",
+    "inventory": 130,
+    "variants": 5,
+    "category": "Outerwear",
+    "vendor": "Everlane",
+    "productType": "Coats",
+    "tags": [
+      "new"
+    ],
+    "channels": 3,
+    "price": 155,
+    "updatedAt": "2026-09-12"
+  },
+  {
+    "id": "prod-91",
+    "title": "Botanical Scrub in Rust",
+    "imageUrl": "https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=100&h=100&fit=crop&auto=format&q=60",
+    "status": "active",
+    "inventory": 38,
+    "variants": 5,
+    "category": "Beauty",
+    "vendor": "Kiehl's",
+    "productType": "Skin care",
+    "tags": [
+      "winter"
+    ],
+    "channels": 3,
+    "price": 411,
+    "updatedAt": "2026-05-07"
+  },
+  {
+    "id": "prod-92",
+    "title": "Structured Tote in Sand",
+    "imageUrl": "https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=100&h=100&fit=crop&auto=format&q=60",
+    "status": "active",
+    "inventory": 178,
+    "variants": 5,
+    "category": "Accessories",
+    "vendor": "Aglini",
+    "productType": "Bags",
+    "tags": [
+      "basics"
+    ],
+    "channels": 3,
+    "price": 335,
+    "updatedAt": "2026-01-24"
+  },
+  {
+    "id": "prod-93",
+    "title": "Heritage Trench",
+    "imageUrl": "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=100&h=100&fit=crop&auto=format&q=60",
+    "status": "active",
+    "inventory": 226,
+    "variants": 3,
+    "category": "Outerwear",
+    "vendor": "Norse Projects",
+    "productType": "Jackets",
+    "tags": [
+      "basics",
+      "gift",
+      "sale"
+    ],
+    "channels": 3,
+    "price": 55,
+    "updatedAt": "2026-07-08"
+  },
+  {
+    "id": "prod-94",
+    "title": "Canvas Belt",
+    "imageUrl": "https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=100&h=100&fit=crop&auto=format&q=60",
+    "status": "active",
+    "inventory": 160,
+    "variants": 3,
+    "category": "Accessories",
+    "vendor": "Aglini",
+    "productType": "Bags",
+    "tags": [
+      "discontinued",
+      "summer",
+      "winter"
+    ],
+    "channels": 2,
+    "price": 250,
+    "updatedAt": "2026-03-23"
+  },
+  {
+    "id": "prod-95",
+    "title": "Field Bomber in Sand",
+    "imageUrl": "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=100&h=100&fit=crop&auto=format&q=60",
+    "status": "draft",
+    "inventory": 53,
+    "variants": 1,
+    "category": "Outerwear",
+    "vendor": "Everlane",
+    "productType": "Jackets",
+    "tags": [
+      "discontinued",
+      "gift",
+      "new"
+    ],
+    "channels": 1,
+    "price": 184,
+    "updatedAt": "2026-02-24"
+  },
+  {
+    "id": "prod-96",
+    "title": "Cedar Dripper in White",
+    "imageUrl": "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=100&h=100&fit=crop&auto=format&q=60",
+    "status": "active",
+    "inventory": 4,
+    "variants": 7,
+    "category": "Home",
+    "vendor": "P.F. Candle Co.",
+    "productType": "Candles",
+    "tags": [
+      "new",
+      "winter"
+    ],
+    "channels": 2,
+    "price": 337,
+    "updatedAt": "2026-09-08"
+  },
+  {
+    "id": "prod-97",
+    "title": "Wool Parka in Olive",
+    "imageUrl": "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=100&h=100&fit=crop&auto=format&q=60",
+    "status": "active",
+    "inventory": 209,
+    "variants": 6,
+    "category": "Outerwear",
+    "vendor": "Everlane",
+    "productType": "Jackets",
+    "tags": [
+      "bestseller",
+      "sale"
+    ],
+    "channels": 2,
+    "price": 167,
+    "updatedAt": "2026-04-09"
+  },
+  {
+    "id": "prod-98",
+    "title": "Woven Wallet in Rust",
+    "imageUrl": "https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=100&h=100&fit=crop&auto=format&q=60",
+    "status": "active",
+    "inventory": 0,
+    "variants": 6,
+    "category": "Accessories",
+    "vendor": "Cuyana",
+    "productType": "Belts",
+    "tags": [
+      "discontinued",
+      "sale"
+    ],
+    "channels": 2,
+    "price": 285,
+    "updatedAt": "2026-02-22"
+  },
+  {
+    "id": "prod-99",
+    "title": "Hydrating Serum",
+    "imageUrl": "https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=100&h=100&fit=crop&auto=format&q=60",
+    "status": "active",
+    "inventory": 0,
+    "variants": 3,
+    "category": "Beauty",
+    "vendor": "Kiehl's",
+    "productType": "Body care",
+    "tags": [],
+    "channels": 1,
+    "price": 429,
+    "updatedAt": "2026-05-09"
+  },
+  {
+    "id": "prod-100",
+    "title": "Ceramic Diffuser in Black",
+    "imageUrl": "https://images.unsplash.com/photo-1603006905003-be475563bc59?w=100&h=100&fit=crop&auto=format&q=60",
+    "status": "draft",
+    "inventory": 116,
+    "variants": 3,
+    "category": "Home",
+    "vendor": "Hario",
+    "productType": "Candles",
+    "tags": [
+      "winter"
+    ],
+    "channels": 3,
+    "price": 407,
+    "updatedAt": "2026-09-26"
+  }
+]

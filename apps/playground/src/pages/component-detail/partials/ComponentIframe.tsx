@@ -66,7 +66,6 @@ export function ComponentIframe({ children, className }: ComponentIframePropsTyp
 
                 body {
                   min-height: 160px;
-                  padding: 24px;
                   color: #202223;
                   font-family:
                     Inter,
@@ -81,10 +80,7 @@ export function ComponentIframe({ children, className }: ComponentIframePropsTyp
                   -webkit-font-smoothing: antialiased;
                 }
 
-                html.dark body {
-                  color: #f6f6f7;
-                }
-
+         
                 #preview-root {
                   width: 100%;
                 }
@@ -95,10 +91,6 @@ export function ComponentIframe({ children, className }: ComponentIframePropsTyp
                   justify-content: center;
                 }
 
-                s-page {
-                  display: block;
-                  width: 100%;
-                }
 
                 @keyframes spin {
                   to {
@@ -279,7 +271,8 @@ export function ComponentIframe({ children, className }: ComponentIframePropsTyp
       title="Component Preview"
       className={cn("w-full border-0 bg-transparent", className)}
       style={{
-        minHeight: "160px",
+        minHeight: "260px",
+        maxHeight: "100vh",
         display: "block",
       }}
     >

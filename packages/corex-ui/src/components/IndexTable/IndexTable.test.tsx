@@ -44,6 +44,23 @@ function renderTable(props: Partial<Parameters<typeof IndexTable>[0]> = {}) {
 }
 
 describe("IndexTable", () => {
+  it("switches to the empty state and back without breaking hook order", () => {
+    const table = (count: number) => (
+      <IndexTable itemCount={count} headings={["Name"]} emptyState={<span>Nothing here</span>}>
+        {count > 0 ? (
+          <IndexTable.Row id="a">
+            <IndexTable.Cell>Row A</IndexTable.Cell>
+          </IndexTable.Row>
+        ) : null}
+      </IndexTable>
+    );
+    const { rerender } = render(table(1));
+    rerender(table(0));
+    expect(screen.getByText("Nothing here")).toBeInTheDocument();
+    rerender(table(1));
+    expect(screen.getByText("Row A")).toBeInTheDocument();
+  });
+
   it("renders a header row of cells plus one for selection", () => {
     const { container } = renderTable();
     expect(screen.getByText("Order")).toBeInTheDocument();

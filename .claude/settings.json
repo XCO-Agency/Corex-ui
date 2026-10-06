@@ -12,7 +12,8 @@
       "Bash(python3 -)",
       "Bash(pnpm --filter playground run build)",
       "Bash(cd /Users/user/Documents/beyonders/xco/Corex-ui/packages/corex-ui && grep -rnoE '\"[a-z]+-[a-z]+\\(-[a-z]+\\)*\"' src --include=*.test.tsx | grep -vE 'aria-|data-|\"s-' | head -30; grep -rnE 'observedAttributes|accessibilitylabel|paddingblock' node_modules/@shopify/polaris-types/dist/*.d.ts 2>/dev/null | head -5; ls node_modules/@shopify 2>/dev/null || ls ../../node_modules/@shopify)",
-      "Read(//Users/user/Documents/beyonders/node_modules/**)"
+      "Read(//Users/user/Documents/beyonders/node_modules/**)",
+      "ClaudeInChromeDomain(localhost:5173)"
     ]
   }
 }

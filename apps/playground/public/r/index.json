@@ -66,6 +66,12 @@
     "filesCount": 11
   },
   {
+    "name": "product-index",
+    "title": "Product Index",
+    "description": "Product index page with IndexFilters (tabs, saved views, filter pills, columns) and an IndexTable.",
+    "filesCount": 9
+  },
+  {
     "name": "resource-table",
     "title": "Resource Table",
     "description": "Data table with multi-criteria filtering, bulk actions, and pagination.",

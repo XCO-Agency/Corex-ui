@@ -449,6 +449,25 @@ function IndexTableInner(
     className,
   );
 
+  // Hooks stay above the empty-state early return so the hook count never
+  // changes when a search empties the table.
+  const [isScrolling, setIsScrolling] = useState(false);
+  const scrollTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const handleScroll = useCallback(() => {
+    setIsScrolling(true);
+    if (scrollTimerRef.current) clearTimeout(scrollTimerRef.current);
+    scrollTimerRef.current = setTimeout(() => {
+      setIsScrolling(false);
+    }, 1000);
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      if (scrollTimerRef.current) clearTimeout(scrollTimerRef.current);
+    };
+  }, []);
+
   if (effectiveItemCount === 0 && emptyState) {
     return (
       <div ref={rootRef} id={id} className={rootClassName} style={style}>
@@ -479,23 +498,6 @@ function IndexTableInner(
     "--cx-it-lead": reorderable ? `${HANDLE_COLUMN_WIDTH}px` : "0px",
     ...style,
   } as CSSProperties;
-
-  const [isScrolling, setIsScrolling] = useState(false);
-  const scrollTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-  const handleScroll = useCallback(() => {
-    setIsScrolling(true);
-    if (scrollTimerRef.current) clearTimeout(scrollTimerRef.current);
-    scrollTimerRef.current = setTimeout(() => {
-      setIsScrolling(false);
-    }, 1000);
-  }, []);
-
-  useEffect(() => {
-    return () => {
-      if (scrollTimerRef.current) clearTimeout(scrollTimerRef.current);
-    };
-  }, []);
 
   return (
     <IndexTableContext.Provider value={contextValue}>

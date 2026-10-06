@@ -55,6 +55,11 @@ const BLOCK_METADATA = {
     description:
       "Subscription plan selection with billing interval toggle and Shopify confirmation modal.",
   },
+  "product-index": {
+    title: "Product Index",
+    description:
+      "Product index page with IndexFilters (tabs, saved views, filter pills, columns) and an IndexTable.",
+  },
   "resource-table": {
     title: "Resource Table",
     description:

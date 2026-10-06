@@ -100,7 +100,11 @@ export const INDEX_TABLE_CSS = `
 .cx-it__row--head,
 .cx-it__bulk {
   border-radius: var(--cx-it-radius);
-  min-height:28px;
+  height:30px;
+  padding: 0;
+  position: sticky;
+  top: 52px;
+  z-index: 99;
 }
 .cx-it__bulk { background-color: var(--cx-it-header); }
 
