@@ -5,6 +5,8 @@ import readline from "node:readline/promises";
 import { stdin as input, stdout as output } from "node:process";
 import { execSync } from "node:child_process";
 
+import { COREX_UI_VERSION } from "../version";
+
 const PKG_NAME = "@xco-agency/corex-ui";
 const DEFAULT_REGISTRY_URL =
   process.env.COREX_REGISTRY_URL || "https://corex-ui.xco.agency/r";
@@ -222,7 +224,7 @@ ${c.bold("Examples:")}
   }
 
   if (args.includes("-v") || args.includes("--version")) {
-    console.log("0.1.7");
+    console.log(COREX_UI_VERSION);
     return;
   }
 
