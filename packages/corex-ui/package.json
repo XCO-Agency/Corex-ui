@@ -1,6 +1,6 @@
 {
   "name": "@xco-agency/corex-ui",
-  "version": "2.1.4",
+  "version": "2.1.5",
   "description": "Legacy-Polaris-React-compatible React components, backed by Shopify's Polaris web components.",
   "license": "MIT",
   "type": "module",
