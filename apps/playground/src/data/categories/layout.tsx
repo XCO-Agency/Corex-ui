@@ -9,6 +9,8 @@ import { CardExample } from "@/examples/layout/CardExample";
 import CardExampleRaw from "@/examples/layout/CardExample.tsx?raw";
 import { PageExample } from "@/examples/layout/PageExample";
 import PageExampleRaw from "@/examples/layout/PageExample.tsx?raw";
+import { SelectableExample } from "@/examples/layout/SelectableExample";
+import SelectableExampleRaw from "@/examples/layout/SelectableExample.tsx?raw";
 import { DividerExample } from "@/examples/layout/DividerExample";
 import DividerExampleRaw from "@/examples/layout/DividerExample.tsx?raw";
 import { MetricCardExample } from "@/examples/layout/MetricCardExample";
@@ -123,6 +125,20 @@ export const layoutComponents: ComponentEntry[] = [
         title: "With a primary action",
         Example: PageExample,
         code: PageExampleRaw,
+      },
+    ],
+  },
+  {
+    name: "Selectable",
+    slug: "selectable",
+    category: "Layout",
+    description:
+      "Wraps a card or any element and draws a toned outline while it is selected. Works standalone or in a group with radio or multi-select behaviour.",
+    examples: [
+      {
+        title: "Plans, channels and tones",
+        Example: SelectableExample,
+        code: SelectableExampleRaw,
       },
     ],
   },

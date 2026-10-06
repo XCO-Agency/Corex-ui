@@ -2175,6 +2175,27 @@ export function PageThumbnail() {
   );
 }
 
+export function SelectableThumbnail() {
+  return (
+    <Frame>
+      <rect
+        x="22"
+        y="20"
+        width="48"
+        height="40"
+        rx="6"
+        fill="none"
+        stroke="#005bd3"
+        strokeWidth="2"
+      />
+      <rect x="29" y="28" width="26" height="5" rx="2.5" fill={textPrimary} fillOpacity="0.7" />
+      <rect x="29" y="38" width="34" height="4" rx="2" fill={textMuted} fillOpacity="0.3" />
+      <circle cx="70" cy="20" r="6" fill="#005bd3" />
+      <rect x="84" y="24" width="48" height="32" rx="6" fill="none" stroke={textMuted} strokeOpacity="0.3" />
+    </Frame>
+  );
+}
+
 export function DividerThumbnail() {
   return (
     <Frame>
@@ -3309,6 +3330,7 @@ export const thumbnails: Record<string, React.ComponentType> = {
   "metric-card": MetricCardThumbnail,
   page: PageThumbnail,
   divider: DividerThumbnail,
+  selectable: SelectableThumbnail,
   table: TableThumbnail,
   collapsible: CollapsibleThumbnail,
 

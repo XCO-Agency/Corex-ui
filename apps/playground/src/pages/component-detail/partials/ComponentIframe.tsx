@@ -84,7 +84,10 @@ export function ComponentIframe({ children, className }: ComponentIframePropsTyp
                 #preview-root {
                   width: 100%;
                 }
-
+      
+                #preview-root:not(:has(> s-page)) {
+                  padding: 24px;
+                }
                 #preview-root:empty {
                   display: flex;
                   align-items: center;
@@ -171,11 +174,6 @@ export function ComponentIframe({ children, className }: ComponentIframePropsTyp
       syncStyles(doc);
 
       /*
-       * Sync theme.
-       */
-      syncTheme(doc);
-
-      /*
        * Wait for Polaris itself.
        *
        * s-button is used as a Polaris bootstrap signal,
@@ -200,25 +198,6 @@ export function ComponentIframe({ children, className }: ComponentIframePropsTyp
     return () => {
       cancelled = true;
     };
-  }, []);
-
-  /*
-   * Sync theme changes.
-   */
-  React.useEffect(() => {
-    const observer = new MutationObserver(() => {
-      const doc = iframeRef.current?.contentDocument;
-      if (!doc) return;
-
-      syncTheme(doc);
-    });
-
-    observer.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ["class"],
-    });
-
-    return () => observer.disconnect();
   }, []);
 
   /*
@@ -284,12 +263,6 @@ export function ComponentIframe({ children, className }: ComponentIframePropsTyp
 /* -------------------------------------------------------------------------- */
 /* Helpers                                                                    */
 /* -------------------------------------------------------------------------- */
-
-function syncTheme(doc: Document) {
-  const isDark = document.documentElement.classList.contains("dark");
-
-  doc.documentElement.classList.toggle("dark", isDark);
-}
 
 function syncStyles(doc: Document) {
   const parentStyles = document.querySelectorAll("style, link[rel='stylesheet']");
