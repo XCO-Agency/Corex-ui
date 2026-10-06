@@ -1,4 +1,3 @@
-import * as React from "react";
 import { Card, BlockStack, InlineStack, Text, ProgressBar } from "@xco-agency/corex-ui";
 import type { PricingUsageMeterPropsType } from "../types";
 
@@ -16,28 +15,33 @@ export function PricingUsageMeter({ limits }: PricingUsageMeterPropsType) {
         </BlockStack>
 
         <BlockStack gap="base">
-          {limits.map((item, idx) => {
-            const percent = Math.min(100, Math.round((item.used / item.limit) * 100));
+          {limits.map((item) => {
+            const { limit } = item;
+            const percent =
+              limit === null ? 0 : Math.min(100, Math.round((item.used / limit) * 100));
             const isHighUsage = percent >= 80;
 
             return (
-              <BlockStack key={idx} gap="small-200">
+              <BlockStack key={item.key} gap="small-200">
                 <InlineStack justifyContent="space-between" alignItems="center">
                   <Text variant="small" heading>
                     {item.label}
                   </Text>
                   <Text variant="small" tone={isHighUsage ? "warning" : "neutral"}>
-                    {item.used.toLocaleString()} / {item.limit.toLocaleString()}{" "}
-                    {item.unit} ({percent}%)
+                    {limit === null
+                      ? `${item.used.toLocaleString()} ${item.unit} (unlimited)`
+                      : `${item.used.toLocaleString()} / ${limit.toLocaleString()} ${item.unit} (${percent}%)`}
                   </Text>
                 </InlineStack>
 
-                <ProgressBar
-                  value={item.used}
-                  max={item.limit}
-                  accessibilityLabel={item.label}
-                  tone={isHighUsage ? "caution" : "success"}
-                />
+                {limit === null ? null : (
+                  <ProgressBar
+                    value={item.used}
+                    max={limit}
+                    accessibilityLabel={item.label}
+                    tone={isHighUsage ? "caution" : "success"}
+                  />
+                )}
               </BlockStack>
             );
           })}

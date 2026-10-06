@@ -1,4 +1,9 @@
-import type { FaqItemType, PlanUsageLimitType, PricingPlanType } from "./types";
+import type {
+  FaqItemType,
+  PlanComparisonRowType,
+  PlanLimitKeyType,
+  PricingPlanType,
+} from "./types";
 
 export const FREE_PLAN: PricingPlanType = {
   id: "free",
@@ -6,6 +11,7 @@ export const FREE_PLAN: PricingPlanType = {
   monthlyPrice: 0,
   annualPrice: 0,
   description: "Core revenue essentials to get started with zero monthly cost.",
+  limits: { orders: 100, addOns: 2, webhooks: 1000 },
   features: [
     { title: "Up to 100 monthly tracked orders", included: true },
     { title: "Standard cart drawer add-ons", included: true },
@@ -23,6 +29,7 @@ export const PRICING_PLANS: PricingPlanType[] = [
     monthlyPrice: 29,
     annualPrice: 24,
     description: "Essential revenue tools for growing Shopify storefronts.",
+    limits: { orders: 500, addOns: 5, webhooks: 5000 },
     features: [
       { title: "Up to 500 monthly tracked orders", included: true },
       { title: "Standard cart drawer add-ons", included: true },
@@ -40,6 +47,7 @@ export const PRICING_PLANS: PricingPlanType[] = [
     description: "High-conversion features for scaling Shopify brands.",
     badge: "Most Popular",
     isPopular: true,
+    limits: { orders: 2500, addOns: 10, webhooks: 25000 },
     features: [
       { title: "Up to 2,500 monthly tracked orders", included: true },
       { title: "All cart drawer modules & upsells", included: true },
@@ -55,6 +63,7 @@ export const PRICING_PLANS: PricingPlanType[] = [
     monthlyPrice: 199,
     annualPrice: 159,
     description: "Maximum scale and personalized support for enterprise merchants.",
+    limits: { orders: null, addOns: null, webhooks: 100000 },
     features: [
       { title: "Unlimited monthly tracked orders", included: true },
       { title: "All cart modules + VIP early access", included: true },
@@ -68,24 +77,54 @@ export const PRICING_PLANS: PricingPlanType[] = [
 
 export const ALL_PRICING_PLANS: PricingPlanType[] = [FREE_PLAN, ...PRICING_PLANS];
 
-export const CURRENT_USAGE_LIMITS: PlanUsageLimitType[] = [
+export const USAGE_METRICS: { key: PlanLimitKeyType; label: string; unit: string }[] = [
+  { key: "orders", label: "Monthly Tracked Orders", unit: "orders" },
+  { key: "addOns", label: "Active Cart Add-ons", unit: "modules" },
+  { key: "webhooks", label: "Monthly API Webhooks", unit: "calls" },
+];
+
+/** What the store has used so far in the current billing cycle. */
+export const CURRENT_USAGE: Record<PlanLimitKeyType, number> = {
+  orders: 1840,
+  addOns: 4,
+  webhooks: 14200,
+};
+
+export const NEXT_BILLING_DATE = "Oct 01, 2026";
+
+export const COMPARISON_ROWS: PlanComparisonRowType[] = [
   {
-    label: "Monthly Tracked Orders",
-    used: 1840,
-    limit: 2500,
-    unit: "orders",
+    label: "Tracked orders / month",
+    values: { free: "100", starter: "500", growth: "2,500", scale: "Unlimited" },
   },
   {
-    label: "Active Cart Add-ons",
-    used: 4,
-    limit: 10,
-    unit: "modules",
+    label: "Cart add-on modules",
+    values: { free: "2", starter: "5", growth: "10", scale: "Unlimited" },
   },
   {
-    label: "Monthly API Webhooks",
-    used: 14200,
-    limit: 25000,
-    unit: "calls",
+    label: "API webhooks / month",
+    values: { free: "1,000", starter: "5,000", growth: "25,000", scale: "100,000" },
+  },
+  {
+    label: "Advanced revenue attribution",
+    values: { free: false, starter: false, growth: true, scale: true },
+  },
+  {
+    label: "Custom CSS & theme tokens",
+    values: { free: false, starter: false, growth: true, scale: true },
+  },
+  {
+    label: "White-label branding",
+    values: { free: false, starter: false, growth: false, scale: true },
+  },
+  {
+    label: "Support",
+    values: {
+      free: "Email",
+      starter: "Email (24h)",
+      growth: "Email & chat",
+      scale: "Phone & Slack",
+    },
   },
 ];
 

@@ -1,4 +1,3 @@
-import * as React from "react";
 import {
   Card,
   BlockStack,
@@ -19,6 +18,7 @@ export function ActivePlanCard({
   billingNote = "Billed natively through your Shopify unified monthly invoice. Cancel anytime.",
   nextBillingDate,
   variant = "banner",
+  annualDiscount,
   onChangePlan,
   onManageBilling,
 }: ActivePlanCardPropsType) {
@@ -39,9 +39,9 @@ export function ActivePlanCard({
                     {plan.name} Plan
                   </Text>
                   <Badge tone={statusTone}>{statusText}</Badge>
-                  {interval === "annual" && (
-                    <Badge tone="success">Annual 20% Savings</Badge>
-                  )}
+                  {interval === "annual" && annualDiscount ? (
+                    <Badge tone="success">{`Annual ${annualDiscount}% savings`}</Badge>
+                  ) : null}
                 </InlineStack>
 
                 <Text variant="small" tone="neutral">

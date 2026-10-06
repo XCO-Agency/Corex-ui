@@ -25,10 +25,6 @@ const BLOCK_METADATA = {
     description:
       "Three versatile card layouts: minimalist, media showcase, and media with actions.",
   },
-  "discount-rules": {
-    title: "Discount Rules",
-    description: "Volume tiers, free gifts, and automated BOGO promotional rules.",
-  },
   "integrations-hub": {
     title: "Integrations Hub",
     description: "Third-party ERP, CRM, and marketing connectors management.",
@@ -65,11 +61,6 @@ const BLOCK_METADATA = {
     description:
       "Two-column annotated configuration layout matching Shopify Admin conventions.",
   },
-  "subscription-management": {
-    title: "Subscription Management",
-    description:
-      "Recurring revenue plan management, usage limits, and plan tier modifiers.",
-  },
   "support-hub": {
     title: "Support Hub",
     description:
@@ -79,11 +70,6 @@ const BLOCK_METADATA = {
     title: "Video Tutorial",
     description:
       "Interactive video lesson viewer with timestamps, resources, and checklist.",
-  },
-  "workflow-builder": {
-    title: "Workflow Builder",
-    description:
-      "Visual logic automation editor with triggers, conditional branches, and actions.",
   },
 };
 

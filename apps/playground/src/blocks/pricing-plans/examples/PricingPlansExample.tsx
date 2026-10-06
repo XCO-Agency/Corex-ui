@@ -1,29 +1,28 @@
 import * as React from "react";
-import {
-  Page,
-  BlockStack,
-  InlineStack,
-  Grid,
-  Banner,
-  ButtonGroup,
-  Button,
-  Text,
-} from "@xco-agency/corex-ui";
+import { Page, BlockStack, Grid, Banner } from "@xco-agency/corex-ui";
 import {
   ALL_PRICING_PLANS,
-  CURRENT_USAGE_LIMITS,
+  COMPARISON_ROWS,
   FREE_PLAN,
+  NEXT_BILLING_DATE,
   PRICING_FAQS,
   PRICING_PLANS,
 } from "../constants";
 import { ActivePlanCard } from "../partials/ActivePlanCard";
 import { PricingCard } from "../partials/PricingCard";
+import { PricingComparisonTable } from "../partials/PricingComparisonTable";
+import { PricingEnterpriseCta } from "../partials/PricingEnterpriseCta";
 import { PricingFaq } from "../partials/PricingFaq";
 import { PricingIntervalToggle } from "../partials/PricingIntervalToggle";
 import { PricingUpgradeModal } from "../partials/PricingUpgradeModal";
 import { PricingUsageMeter } from "../partials/PricingUsageMeter";
+import {
+  buildUsage,
+  getChangeKind,
+  getMaxDiscountPercent,
+  getSuggestedPlan,
+} from "../utils";
 import type {
-  ActivePlanCardVariantType,
   BillingIntervalType,
   PlanTierIdType,
   PricingPlanType,
@@ -31,133 +30,68 @@ import type {
 } from "../types";
 
 export function PricingPlansExample({
-  initialPlanId = "free",
+  initialPlanId = "growth",
   initialInterval = "monthly",
 }: PricingPlansExamplePropsType) {
   const [currentPlanId, setCurrentPlanId] = React.useState<PlanTierIdType>(initialPlanId);
+  const [pendingPlanId, setPendingPlanId] = React.useState<PlanTierIdType | null>(null);
   const [interval, setInterval] = React.useState<BillingIntervalType>(initialInterval);
-  const [variant, setVariant] = React.useState<ActivePlanCardVariantType>("banner");
-  const [selectedPlanForUpgrade, setSelectedPlanForUpgrade] =
-    React.useState<PricingPlanType | null>(null);
   const [isProcessing, setIsProcessing] = React.useState(false);
-  const [successBanner, setSuccessBanner] = React.useState<string | null>(null);
+  const [notice, setNotice] = React.useState<string | null>(null);
 
   const currentPlan: PricingPlanType =
-    ALL_PRICING_PLANS.find((p) => p.id === currentPlanId) ?? FREE_PLAN;
+    ALL_PRICING_PLANS.find((plan) => plan.id === currentPlanId) ?? FREE_PLAN;
+  const selectedPlan =
+    ALL_PRICING_PLANS.find((plan) => plan.id === pendingPlanId) ?? null;
+  const discountPercentage = getMaxDiscountPercent(PRICING_PLANS);
 
-  const handleSelectPlan = (plan: PricingPlanType) => {
-    setSelectedPlanForUpgrade(plan);
-  };
-
-  const handleChangePlanClick = () => {
-    // Open upgrade modal with Growth or next tier
-    const nextPlan =
-      PRICING_PLANS.find((p) => p.id !== currentPlanId) ?? PRICING_PLANS[1]!;
-    setSelectedPlanForUpgrade(nextPlan);
-  };
-
-  const handleConfirmUpgrade = () => {
-    if (!selectedPlanForUpgrade) return;
+  const handleConfirm = () => {
+    if (!selectedPlan) return;
+    const kind = getChangeKind(currentPlan, selectedPlan);
     setIsProcessing(true);
 
+    // Stand-in for the Shopify billing approval round trip.
     setTimeout(() => {
-      setCurrentPlanId(selectedPlanForUpgrade.id);
       setIsProcessing(false);
-      setSuccessBanner(
-        `Successfully subscribed to the ${selectedPlanForUpgrade.name} plan!`,
-      );
-      setSelectedPlanForUpgrade(null);
+      setPendingPlanId(null);
+      if (kind === "upgrade") {
+        setCurrentPlanId(selectedPlan.id);
+        setNotice(`You are now on the ${selectedPlan.name} plan.`);
+      } else {
+        // A downgrade is scheduled, so the current plan stays active until renewal.
+        setNotice(
+          `Your plan changes to ${selectedPlan.name} on ${NEXT_BILLING_DATE}. Until then you keep ${currentPlan.name}.`,
+        );
+      }
     }, 600);
   };
 
   return (
     <Page
       heading="Plans & Billing"
-      subheading="Manage your active subscription, compare tiers, and unlock advanced revenue engines."
+      subtitle="Manage your active subscription, compare tiers, and unlock advanced revenue engines."
       inlineSize="large"
     >
       <BlockStack gap="base">
-        {successBanner && (
-          <Banner
-            tone="success"
-            title={successBanner}
-            onDismiss={() => setSuccessBanner(null)}
-          />
-        )}
+        {notice ? (
+          <Banner tone="success" title={notice} onDismiss={() => setNotice(null)} />
+        ) : null}
 
-        {/* Active Plan Component with Plan Avatar SVG */}
         <ActivePlanCard
           plan={currentPlan}
           interval={interval}
-          variant={variant}
-          nextBillingDate="Oct 01, 2026"
-          onChangePlan={handleChangePlanClick}
-          onManageBilling={() => setSuccessBanner("Opening Shopify billing portal...")}
+          annualDiscount={discountPercentage}
+          nextBillingDate={NEXT_BILLING_DATE}
+          onChangePlan={() => setPendingPlanId(getSuggestedPlan(currentPlan).id)}
+          onManageBilling={() => setNotice("Opening the Shopify billing portal...")}
         />
 
-        {/* Interactive Controls Bar: Quick Avatar Switcher & Card/Banner Style Toggle */}
-        <InlineStack justifyContent="space-between" alignItems="center" gap="base" wrap>
-          <InlineStack gap="small-200" alignItems="center">
-            <Text variant="small" tone="neutral">
-              Simulate Active Tier:
-            </Text>
-            <InlineStack gap="small-100" alignItems="center">
-              <Button
-                variant={currentPlanId === "free" ? "primary" : "secondary"}
-                onClick={() => setCurrentPlanId("free")}
-              >
-                Free (Gem)
-              </Button>
-              <Button
-                variant={currentPlanId === "starter" ? "primary" : "secondary"}
-                onClick={() => setCurrentPlanId("starter")}
-              >
-                Starter (Rocket)
-              </Button>
-              <Button
-                variant={currentPlanId === "growth" ? "primary" : "secondary"}
-                onClick={() => setCurrentPlanId("growth")}
-              >
-                Growth (Surge)
-              </Button>
-              <Button
-                variant={currentPlanId === "scale" ? "primary" : "secondary"}
-                onClick={() => setCurrentPlanId("scale")}
-              >
-                Scale (Crown)
-              </Button>
-            </InlineStack>
-          </InlineStack>
-
-          <InlineStack gap="small-200" alignItems="center">
-            <Text variant="small" tone="neutral">
-              Component Style:
-            </Text>
-            <InlineStack gap="small-100" alignItems="center">
-              <Button
-                variant={variant === "banner" ? "primary" : "secondary"}
-                onClick={() => setVariant("banner")}
-              >
-                Banner Style
-              </Button>
-              <Button
-                variant={variant === "card" ? "primary" : "secondary"}
-                onClick={() => setVariant("card")}
-              >
-                Card Style
-              </Button>
-            </InlineStack>
-          </InlineStack>
-        </InlineStack>
-
-        {/* Billing Interval Toggle */}
         <PricingIntervalToggle
           interval={interval}
-          discountPercentage={20}
+          discountPercentage={discountPercentage}
           onChange={setInterval}
         />
 
-        {/* 3-Tier Pricing Cards Grid */}
         <Grid columns={{ xs: 1, sm: 1, md: 3, lg: 3 }} gap="base">
           {PRICING_PLANS.map((plan) => (
             <PricingCard
@@ -165,25 +99,36 @@ export function PricingPlansExample({
               plan={plan}
               interval={interval}
               isCurrent={plan.id === currentPlanId}
-              onSelectPlan={handleSelectPlan}
+              currentPlan={currentPlan}
+              onSelectPlan={(selected) => setPendingPlanId(selected.id)}
             />
           ))}
         </Grid>
 
-        {/* Current Billing Usage Meter */}
-        <PricingUsageMeter limits={CURRENT_USAGE_LIMITS} />
+        <PricingComparisonTable
+          plans={ALL_PRICING_PLANS}
+          rows={COMPARISON_ROWS}
+          interval={interval}
+          currentPlanId={currentPlanId}
+        />
 
-        {/* FAQ Accordion */}
+        <PricingUsageMeter limits={buildUsage(currentPlan)} />
+
+        <PricingEnterpriseCta
+          onContactSales={() => setNotice("Our sales team will reach out within a day.")}
+        />
+
         <PricingFaq items={PRICING_FAQS} />
 
-        {/* Upgrade / Confirmation Modal */}
         <PricingUpgradeModal
-          open={selectedPlanForUpgrade !== null}
-          selectedPlan={selectedPlanForUpgrade}
+          open={selectedPlan !== null}
+          selectedPlan={selectedPlan}
+          currentPlan={currentPlan}
+          nextBillingDate={NEXT_BILLING_DATE}
           interval={interval}
           isProcessing={isProcessing}
-          onClose={() => setSelectedPlanForUpgrade(null)}
-          onConfirm={handleConfirmUpgrade}
+          onClose={() => setPendingPlanId(null)}
+          onConfirm={handleConfirm}
         />
       </BlockStack>
     </Page>

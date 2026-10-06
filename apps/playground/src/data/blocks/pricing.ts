@@ -10,6 +10,9 @@ import PricingCardRaw from "@/blocks/pricing-plans/partials/PricingCard.tsx?raw"
 import PricingUsageMeterRaw from "@/blocks/pricing-plans/partials/PricingUsageMeter.tsx?raw";
 import PricingFaqRaw from "@/blocks/pricing-plans/partials/PricingFaq.tsx?raw";
 import PricingUpgradeModalRaw from "@/blocks/pricing-plans/partials/PricingUpgradeModal.tsx?raw";
+import PricingComparisonTableRaw from "@/blocks/pricing-plans/partials/PricingComparisonTable.tsx?raw";
+import PricingEnterpriseCtaRaw from "@/blocks/pricing-plans/partials/PricingEnterpriseCta.tsx?raw";
+import utilsRaw from "@/blocks/pricing-plans/utils.ts?raw";
 import constantsRaw from "@/blocks/pricing-plans/constants.ts?raw";
 import typesRaw from "@/blocks/pricing-plans/types.ts?raw";
 import indexRaw from "@/blocks/pricing-plans/index.ts?raw";
@@ -55,6 +58,17 @@ const blockFiles: FileItemType[] = [
     path: "partials/PricingUpgradeModal.tsx",
     code: PricingUpgradeModalRaw,
   },
+  {
+    name: "PricingComparisonTable.tsx",
+    path: "partials/PricingComparisonTable.tsx",
+    code: PricingComparisonTableRaw,
+  },
+  {
+    name: "PricingEnterpriseCta.tsx",
+    path: "partials/PricingEnterpriseCta.tsx",
+    code: PricingEnterpriseCtaRaw,
+  },
+  { name: "utils.ts", path: "utils.ts", code: utilsRaw },
   {
     name: "constants.ts",
     path: "constants.ts",

@@ -1,4 +1,3 @@
-import * as React from "react";
 import {
   Card,
   BlockStack,
@@ -7,19 +6,22 @@ import {
   Badge,
   Button,
   Divider,
-  IconTile,
   Icon,
 } from "@xco-agency/corex-ui";
 import type { PricingCardPropsType } from "../types";
+import { formatLimit, formatMoney, getAnnualSavings, getChangeKind } from "../utils";
 
 export function PricingCard({
   plan,
   interval,
   isCurrent,
+  currentPlan,
   onSelectPlan,
 }: PricingCardPropsType) {
   const price = interval === "annual" ? plan.annualPrice : plan.monthlyPrice;
   const annualTotal = plan.annualPrice * 12;
+  const savings = getAnnualSavings(plan);
+  const kind = getChangeKind(currentPlan, plan);
 
   return (
     <Card>
@@ -44,26 +46,22 @@ export function PricingCard({
         {/* Price Display */}
         <BlockStack gap="none">
           <InlineStack alignItems="baseline" gap="small-100">
-            <span
-              style={{
-                fontSize: "32px",
-                fontWeight: 700,
-                color: "var(--p-color-text)",
-                lineHeight: 1.1,
-              }}
-            >
-              ${price}
-            </span>
+            <Text variant="headingXl" heading>
+              {formatMoney(price)}
+            </Text>
             <Text as="span" variant="small" tone="neutral">
               / month
             </Text>
           </InlineStack>
 
-          {interval === "annual" && (
-            <Text variant="xs" tone="neutral">
-              ${annualTotal} billed once per year
-            </Text>
-          )}
+          {interval === "annual" && plan.monthlyPrice > 0 ? (
+            <InlineStack gap="small-200" alignItems="center">
+              <Text variant="xs" tone="neutral">
+                {formatMoney(annualTotal)} billed once per year
+              </Text>
+              <Badge tone="success">{`Save ${formatMoney(savings)}/yr`}</Badge>
+            </InlineStack>
+          ) : null}
         </BlockStack>
 
         {/* CTA Button */}
@@ -73,12 +71,34 @@ export function PricingCard({
           </Button>
         ) : (
           <Button
-            variant={plan.isPopular ? "primary" : "secondary"}
+            variant={plan.isPopular && kind === "upgrade" ? "primary" : "secondary"}
             onClick={() => onSelectPlan(plan)}
           >
-            {`Select ${plan.name}`}
+            {`${kind === "upgrade" ? "Upgrade" : "Downgrade"} to ${plan.name}`}
           </Button>
         )}
+
+        <Divider />
+
+        {/* Key limits */}
+        <BlockStack gap="small-300">
+          <InlineStack justifyContent="space-between">
+            <Text variant="small" color="subdued">
+              Tracked orders
+            </Text>
+            <Text variant="small" fontWeight="semibold">
+              {formatLimit("orders", plan)}
+            </Text>
+          </InlineStack>
+          <InlineStack justifyContent="space-between">
+            <Text variant="small" color="subdued">
+              Cart add-ons
+            </Text>
+            <Text variant="small" fontWeight="semibold">
+              {formatLimit("addOns", plan)}
+            </Text>
+          </InlineStack>
+        </BlockStack>
 
         <Divider />
 
@@ -92,7 +112,7 @@ export function PricingCard({
             <InlineStack key={idx} gap="small-200" alignItems="start">
               <Icon type={feature.included ? "check" : "minus"} size="small" />
 
-              <Text as="span" type={feature.included ? "generic" : "redundant"}>
+              <Text as="span" color={feature.included ? "base" : "subdued"}>
                 {feature.title}
               </Text>
             </InlineStack>

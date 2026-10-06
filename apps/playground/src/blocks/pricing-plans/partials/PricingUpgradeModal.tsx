@@ -1,10 +1,24 @@
-import * as React from "react";
-import { Modal, BlockStack, InlineStack, Text, Badge } from "@xco-agency/corex-ui";
+import {
+  Modal,
+  Banner,
+  BlockStack,
+  Box,
+  InlineStack,
+  Text,
+  Badge,
+} from "@xco-agency/corex-ui";
 import type { PricingUpgradeModalPropsType } from "../types";
+import { formatMoney, getChangeKind, getOverLimit, getPlanPrice } from "../utils";
 
+/**
+ * Confirms a plan change. Upgrades apply now (prorated by Shopify); downgrades
+ * wait for the next renewal and warn about lost features and exceeded limits.
+ */
 export function PricingUpgradeModal({
   open,
   selectedPlan,
+  currentPlan,
+  nextBillingDate,
   interval,
   isProcessing,
   onClose,
@@ -12,27 +26,37 @@ export function PricingUpgradeModal({
 }: PricingUpgradeModalPropsType) {
   if (!selectedPlan) return null;
 
-  const price =
-    interval === "annual" ? selectedPlan.annualPrice : selectedPlan.monthlyPrice;
+  const price = getPlanPrice(selectedPlan, interval);
+  const kind = getChangeKind(currentPlan, selectedPlan);
+  const isDowngrade = kind === "downgrade";
+  const overLimit = isDowngrade ? getOverLimit(selectedPlan) : [];
+  const lostFeatures = isDowngrade
+    ? currentPlan.features.filter(
+        (feature) =>
+          feature.included &&
+          !selectedPlan.features.some(
+            (other) => other.included && other.title === feature.title,
+          ),
+      )
+    : [];
 
   return (
     <Modal
       open={open}
       onClose={onClose}
-      title={`Confirm subscription: ${selectedPlan.name}`}
+      title={`${isDowngrade ? "Downgrade to" : "Upgrade to"} ${selectedPlan.name}`}
       primaryAction={{
         content: isProcessing
           ? "Approving with Shopify..."
-          : `Approve $${price}/mo on Shopify`,
+          : isDowngrade
+            ? `Downgrade to ${selectedPlan.name}`
+            : `Approve ${formatMoney(price)}/mo on Shopify`,
         onAction: onConfirm,
         loading: isProcessing,
+        destructive: isDowngrade,
       }}
       secondaryActions={[
-        {
-          content: "Cancel",
-          onAction: onClose,
-          disabled: isProcessing,
-        },
+        { content: "Cancel", onAction: onClose, disabled: isProcessing },
       ]}
     >
       <BlockStack gap="base">
@@ -47,29 +71,40 @@ export function PricingUpgradeModal({
           </BlockStack>
 
           <InlineStack gap="small-100" alignItems="baseline">
-            <span
-              style={{
-                fontSize: "24px",
-                fontWeight: 700,
-                color: "var(--p-color-text)",
-              }}
-            >
-              ${price}
-            </span>
+            <Text variant="headingLg" heading>
+              {formatMoney(price)}
+            </Text>
             <Text as="span" variant="xs" tone="neutral">
               / mo
             </Text>
           </InlineStack>
         </InlineStack>
 
-        <div
-          style={{
-            background: "var(--p-color-bg-surface-secondary)",
-            padding: "12px 16px",
-            borderRadius: "var(--p-border-radius-100)",
-            border: "1px solid var(--p-color-border-subdued)",
-          }}
-        >
+        {overLimit.length > 0 ? (
+          <Banner tone="warning" title="Your usage exceeds this plan's limits">
+            {overLimit
+              .map(
+                (item) =>
+                  `${item.label}: ${item.used.toLocaleString()} used, ${item.limit?.toLocaleString()} allowed`,
+              )
+              .join(" · ")}
+          </Banner>
+        ) : null}
+
+        {lostFeatures.length > 0 ? (
+          <BlockStack gap="small-200">
+            <Text variant="small" heading>
+              You will lose
+            </Text>
+            {lostFeatures.map((feature) => (
+              <Text key={feature.title} variant="small" tone="neutral">
+                {`• ${feature.title}`}
+              </Text>
+            ))}
+          </BlockStack>
+        ) : null}
+
+        <Box background="subdued" padding="base" borderRadius="base">
           <BlockStack gap="small-100">
             <InlineStack gap="small-200" alignItems="center">
               <Badge tone="info">Shopify App Billing</Badge>
@@ -78,11 +113,12 @@ export function PricingUpgradeModal({
               </Text>
             </InlineStack>
             <Text variant="small" tone="neutral">
-              By confirming, Shopify will prorate your current billing period and apply
-              the new plan limits immediately to your storefront.
+              {isDowngrade
+                ? `Your ${currentPlan.name} plan stays active until ${nextBillingDate}. The ${selectedPlan.name} plan and its limits apply from then on.`
+                : "By confirming, Shopify will prorate your current billing period and apply the new plan limits immediately to your storefront."}
             </Text>
           </BlockStack>
-        </div>
+        </Box>
       </BlockStack>
     </Modal>
   );

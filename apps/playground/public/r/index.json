@@ -24,12 +24,6 @@
     "filesCount": 10
   },
   {
-    "name": "discount-rules",
-    "title": "Discount Rules",
-    "description": "Volume tiers, free gifts, and automated BOGO promotional rules.",
-    "filesCount": 8
-  },
-  {
     "name": "integrations-hub",
     "title": "Integrations Hub",
     "description": "Third-party ERP, CRM, and marketing connectors management.",
@@ -63,7 +57,7 @@
     "name": "pricing-plans",
     "title": "Pricing Plans",
     "description": "Subscription plan selection with billing interval toggle and Shopify confirmation modal.",
-    "filesCount": 11
+    "filesCount": 14
   },
   {
     "name": "product-index",
@@ -78,12 +72,6 @@
     "filesCount": 10
   },
   {
-    "name": "subscription-management",
-    "title": "Subscription Management",
-    "description": "Recurring revenue plan management, usage limits, and plan tier modifiers.",
-    "filesCount": 8
-  },
-  {
     "name": "support-hub",
     "title": "Support Hub",
     "description": "Knowledge base FAQ accordion, diagnostic system health, and priority support.",
@@ -94,11 +82,5 @@
     "title": "Video Tutorial",
     "description": "Interactive video lesson viewer with timestamps, resources, and checklist.",
     "filesCount": 6
-  },
-  {
-    "name": "workflow-builder",
-    "title": "Workflow Builder",
-    "description": "Visual logic automation editor with triggers, conditional branches, and actions.",
-    "filesCount": 8
   }
 ]

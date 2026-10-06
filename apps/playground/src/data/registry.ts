@@ -15,10 +15,7 @@ import { activityFeedBlocks } from "./blocks/activity-feed";
 import { metricsBlocks } from "./blocks/metrics";
 import { onboardingBlocks } from "./blocks/onboarding";
 import { onboardingNewBlocks } from "./blocks/onboarding-new";
-import { discountRulesBlocks } from "./blocks/discount-rules";
-import { workflowBuilderBlocks } from "./blocks/workflow-builder";
 import { notificationTemplatesBlocks } from "./blocks/notification-templates";
-import { subscriptionManagementBlocks } from "./blocks/subscription-management";
 import { appCrossSellBlocks } from "./blocks/app-cross-sell";
 import { videoTutorialBlocks } from "./blocks/video-tutorial";
 import { supportHubBlocks } from "./blocks/support-hub";
@@ -54,19 +51,15 @@ export type BlockGroupType = {
 export const blocks: BlockGroupType[] = [
   {
     category: "E-Commerce & Merchandising",
-    components: [...discountRulesBlocks, ...pricingBlocks],
+    components: pricingBlocks,
   },
   {
     category: "Marketing & Automation",
-    components: [...workflowBuilderBlocks, ...notificationTemplatesBlocks],
+    components: notificationTemplatesBlocks,
   },
   {
     category: "Operations & Logistics",
     components: [...integrationsBlocks],
-  },
-  {
-    category: "Billing & SaaS",
-    components: subscriptionManagementBlocks,
   },
   {
     category: "Layouts & Administration",

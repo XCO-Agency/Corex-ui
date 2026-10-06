@@ -1,10 +1,9 @@
-import * as React from "react";
 import { InlineStack, ButtonGroup, Button, Badge, Text } from "@xco-agency/corex-ui";
 import type { PricingIntervalTogglePropsType } from "../types";
 
 export function PricingIntervalToggle({
   interval,
-  discountPercentage = 20,
+  discountPercentage,
   onChange,
 }: PricingIntervalTogglePropsType) {
   return (
@@ -24,12 +23,14 @@ export function PricingIntervalToggle({
         </Button>
       </ButtonGroup>
 
-      <InlineStack gap="small-200" alignItems="center">
-        <Badge tone="success">{`Save ${discountPercentage}%`}</Badge>
-        <Text as="span" variant="xs" tone="neutral">
-          Billed annually
-        </Text>
-      </InlineStack>
+      {discountPercentage ? (
+        <InlineStack gap="small-200" alignItems="center">
+          <Badge tone="success">{`Save up to ${discountPercentage}%`}</Badge>
+          <Text as="span" variant="xs" tone="neutral">
+            with annual billing
+          </Text>
+        </InlineStack>
+      ) : null}
     </InlineStack>
   );
 }
