@@ -194,22 +194,19 @@ function TabsInner<TId extends string | number = string>(
               <Clickable
                 background="transparent"
                 disabled={tabs.length === 0}
-                paddingInline="small-200"
-                blockSize="28px"
-                borderRadius="large-100"
+                paddingInlineStart="small-200"
+                paddingInlineEnd="small-400"
+                blockSize="24px"
+                borderRadius="base"
                 accessibilityLabel={
                   currentTab?.accessibilityLabel ?? currentTab?.label ?? "Select tab"
                 }
               >
-                <div
-                  style={
-                    {
-                      display: "flex",
-                      alignItems: "center",
-                      gap: 6,
-                      height: "100%",
-                    } as CSSProperties
-                  }
+                <InlineStack
+                  alignItems="center"
+                  gap="small-400"
+                  inlineSize="fill"
+                  blockSize="fill"
                 >
                   {currentTab?.icon && <Icon type={currentTab.icon} />}
                   {currentTab?.label && (
@@ -231,8 +228,8 @@ function TabsInner<TId extends string | number = string>(
                       {currentTab.badge}
                     </Badge>
                   )}
-                  <Icon type="select" tone="neutral" />
-                </div>
+                  <Icon type="select" color="subdued" />
+                </InlineStack>
               </Clickable>
             </Popover.Trigger>
             <Popover.Content>

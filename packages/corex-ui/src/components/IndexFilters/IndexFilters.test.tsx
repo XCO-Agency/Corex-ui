@@ -611,6 +611,180 @@ describe("IndexFilters", () => {
     expect(document.body.textContent).toContain("Custom Action");
   });
 
+  describe("save action and ViewVisibleActiveFilter", () => {
+    const activeFilter = [
+      { key: "vendor", field: "Vendor", operator: "is", value: "apple", onRemove: () => {} },
+    ];
+    const getActiveOnly = () =>
+      Array.from(document.querySelectorAll("[data-corex-index-filters-active-only]"));
+    const clickButton = (label: string) =>
+      screen
+        .getAllByText(label)
+        .find((el) => el.tagName === "S-BUTTON")!
+        .dispatchEvent(new MouseEvent("click", { bubbles: true }));
+
+    it("renders the built-in save action collapsed until a filter is active", () => {
+      const { rerender } = render(
+        <IndexFilters>
+          <IndexFilters.SearchField appliedFilters={[]} />
+          <IndexFilters.Actions />
+        </IndexFilters>,
+      );
+      expect(getActiveOnly()).toHaveLength(1);
+      expect(getActiveOnly()[0]).toHaveAttribute(
+        "data-corex-index-filters-active-only",
+        "hidden",
+      );
+
+      rerender(
+        <IndexFilters>
+          <IndexFilters.SearchField appliedFilters={activeFilter} />
+          <IndexFilters.Actions />
+        </IndexFilters>,
+      );
+      expect(getActiveOnly()[0]).toHaveAttribute(
+        "data-corex-index-filters-active-only",
+        "visible",
+      );
+    });
+
+    it("ignores filter pills without a value and counts a non-blank query", () => {
+      const { rerender } = render(
+        <IndexFilters appliedFilters={[{ key: "vendor", value: [], onRemove: () => {} }]} />,
+      );
+      expect(getActiveOnly()[0]).toHaveAttribute(
+        "data-corex-index-filters-active-only",
+        "hidden",
+      );
+
+      rerender(<IndexFilters queryValue="shoes" />);
+      expect(getActiveOnly()[0]).toHaveAttribute(
+        "data-corex-index-filters-active-only",
+        "visible",
+      );
+    });
+
+    it("removes the save action when saveAction is false", () => {
+      render(<IndexFilters appliedFilters={activeFilter} saveAction={false} />);
+      expect(getActiveOnly()).toHaveLength(0);
+      expect(screen.queryByText("Save")).toBeNull();
+    });
+
+    it("keeps custom ViewVisibleActiveFilter groups separate from the save action", () => {
+      render(
+        <IndexFilters>
+          <IndexFilters.SearchField appliedFilters={activeFilter} />
+          <IndexFilters.Actions>
+            <IndexFilters.ViewVisibleActiveFilter>
+              <span>Export</span>
+            </IndexFilters.ViewVisibleActiveFilter>
+          </IndexFilters.Actions>
+        </IndexFilters>,
+      );
+      const groups = getActiveOnly();
+      expect(groups).toHaveLength(2);
+      expect(groups[0]).toHaveTextContent("Export");
+      expect(groups[1]).toHaveTextContent("Save");
+    });
+
+    it("renders the save action once when placed explicitly", () => {
+      render(
+        <IndexFilters>
+          <IndexFilters.SearchField appliedFilters={activeFilter} />
+          <IndexFilters.SaveAction />
+          <IndexFilters.Actions>
+            <span>Refresh</span>
+          </IndexFilters.Actions>
+        </IndexFilters>,
+      );
+      expect(getActiveOnly()).toHaveLength(1);
+      expect(getActiveOnly()[0]).toHaveTextContent("Save");
+    });
+
+    it("renders the save action without an Actions container", () => {
+      render(
+        <IndexFilters>
+          <IndexFilters.SearchField appliedFilters={activeFilter} />
+        </IndexFilters>,
+      );
+      expect(getActiveOnly()).toHaveLength(1);
+      expect(getActiveOnly()[0]).toHaveTextContent("Save");
+    });
+
+    it("follows hasActiveFilters and the visible override", () => {
+      render(
+        <IndexFilters hasActiveFilters>
+          <IndexFilters.SearchField appliedFilters={[]} />
+          <IndexFilters.Actions>
+            <IndexFilters.ViewVisibleActiveFilter visible={false}>
+              <span>Export</span>
+            </IndexFilters.ViewVisibleActiveFilter>
+          </IndexFilters.Actions>
+        </IndexFilters>,
+      );
+      const [custom, save] = getActiveOnly();
+      expect(custom).toHaveAttribute("data-corex-index-filters-active-only", "hidden");
+      expect(save).toHaveAttribute("data-corex-index-filters-active-only", "visible");
+    });
+
+    it("asks for a name and saves the current search and filters", async () => {
+      const onSaveView = vi.fn();
+      render(
+        <IndexFilters
+          queryValue="phone"
+          appliedFilters={activeFilter}
+          onSaveView={onSaveView}
+          saveAction={{ modalTitle: "Save as tab", saveLabel: "Create" }}
+        />,
+      );
+
+      act(() => clickButton("Save"));
+      expect(document.querySelector("s-modal")).toHaveAttribute("heading", "Save as tab");
+
+      const field = document.querySelector("s-text-field") as HTMLElement & {
+        value?: string;
+      };
+      act(() => {
+        field.value = "  Apple phones ";
+        field.dispatchEvent(new Event("input", { bubbles: true }));
+      });
+      await act(async () => clickButton("Create"));
+
+      expect(onSaveView).toHaveBeenCalledWith({
+        name: "Apple phones",
+        query: "phone",
+        filters: [{ key: "vendor", field: "Vendor", operator: "is", value: "apple" }],
+      });
+    });
+
+    it("blocks the save when validateName returns an error", async () => {
+      const onSaveView = vi.fn();
+      render(
+        <IndexFilters
+          appliedFilters={activeFilter}
+          onSaveView={onSaveView}
+          saveAction={{ validateName: (name) => (name === "All" ? "Name taken" : undefined) }}
+        />,
+      );
+
+      act(() => clickButton("Save"));
+      const field = document.querySelector("s-text-field") as HTMLElement & {
+        value?: string;
+      };
+      act(() => {
+        field.value = "All";
+        field.dispatchEvent(new Event("input", { bubbles: true }));
+      });
+      const modalSave = document.querySelector('s-modal s-button[slot="primary-action"]')!;
+      await act(async () => {
+        modalSave.dispatchEvent(new MouseEvent("click", { bubbles: true }));
+      });
+
+      expect(onSaveView).not.toHaveBeenCalled();
+      expect(field).toHaveAttribute("error", "Name taken");
+    });
+  });
+
   describe("token input behaviour", () => {
     const tokenFilters = [
       { key: "vendor", label: "Vendor", options: [{ label: "Apple", value: "apple" }] },

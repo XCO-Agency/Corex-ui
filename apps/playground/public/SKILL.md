@@ -163,9 +163,9 @@ When specifying `gap`, `padding`, `rowGap`, or `columnGap`, use **exclusively** 
 
 ### Filtering & Search
 
-| Component                         | Description                                                                                       | Subcomponents                                                                                                                                                                        |
-| :-------------------------------- | :------------------------------------------------------------------------------------------------ | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [**IndexFilters**](#indexfilters) | Unified search, filtering pills, saved views, and column selector matching Polaris table headers. | `IndexFilters.SearchField`, `IndexFilters.Actions`, `IndexFilters.ViewOptions`, `IndexFilters.ViewOptionsSort`, `IndexFilters.ViewOptionsToggles`, `IndexFilters.ViewOptionsColumns` |
+| Component                         | Description                                                                                       | Subcomponents                                                                                                                                                                                                                                           |
+| :-------------------------------- | :------------------------------------------------------------------------------------------------ | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| [**IndexFilters**](#indexfilters) | Unified search, filtering pills, saved views, and column selector matching Polaris table headers. | `IndexFilters.SearchField`, `IndexFilters.Actions`, `IndexFilters.ViewOptions`, `IndexFilters.ViewOptionsSort`, `IndexFilters.ViewOptionsToggles`, `IndexFilters.ViewOptionsColumns`, `IndexFilters.ViewVisibleActiveFilter`, `IndexFilters.SaveAction` |
 
 ### Feedback & Indicators
 
@@ -1906,14 +1906,16 @@ import { IndexFilters } from "@xco-agency/corex-ui";
 
 #### Subcomponents
 
-| Subcomponent                      | Description                                                                                                               | Key Props                                                                                                                                                                               |
-| :-------------------------------- | :------------------------------------------------------------------------------------------------------------------------ | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `IndexFilters.SearchField`        | Search input with debouncing and active filter pills.                                                                     | `queryValue?: string, onQueryChange?: (val) => void, filters?: IndexFilterItemType[], appliedFilters?: IndexAppliedFilterType[], onClearAll?: () => void`                               |
-| `IndexFilters.Actions`            | Right-side container for custom action buttons in the filters bar.                                                        | `children`                                                                                                                                                                              |
-| `IndexFilters.ViewOptions`        | View options popover; composes the sections below with dividers between them.                                             | `children, activator?: ReactElement, icon?: IconType, accessibilityLabel?: string, disabled?: boolean, minInlineSize?, maxInlineSize?`                                                  |
-| `IndexFilters.ViewOptionsSort`    | Sort row with a select.                                                                                                   | `options: IndexFilterSortOptionType[], value?: string, onChange?: (value) => void, label?: string, icon?: IconType &#124; null`                                                         |
-| `IndexFilters.ViewOptionsToggles` | Switch rows (e.g. "Hide archived").                                                                                       | `items: IndexFilterViewToggleItemType[] ({ key, label, icon?, checked, disabled?, onChange? }), onChange?: (key, checked) => void`                                                      |
-| `IndexFilters.ViewOptionsColumns` | Column list: show/hide via eye button, reorder via drag handle or arrow keys. `onChange` returns the full reordered list. | `columns: IndexFilterColumnItemType[] ({ key, label, visible?, hideable?, reorderable? }), onChange?: (columns) => void, title?: ReactNode, direction?: "vertical" &#124; "horizontal"` |
+| Subcomponent                           | Description                                                                                                                                                                                                                                | Key Props                                                                                                                                                                               |
+| :------------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `IndexFilters.SearchField`             | Search input with debouncing and active filter pills.                                                                                                                                                                                      | `queryValue?: string, onQueryChange?: (val) => void, filters?: IndexFilterItemType[], appliedFilters?: IndexAppliedFilterType[], onClearAll?: () => void`                               |
+| `IndexFilters.Actions`                 | Right-side container for custom action buttons. Inside `IndexFilters` it ends with the built-in save action (unless disabled or placed with `IndexFilters.SaveAction`).                                                                    | `children`                                                                                                                                                                              |
+| `IndexFilters.ViewVisibleActiveFilter` | Shows its children only while a search or filter is active, with a horizontal expand/collapse animation. Each instance animates independently, so it never conflicts with the built-in save action. Always visible outside `IndexFilters`. | `children, visible?: boolean (overrides active state), duration?: number (ms, default 200)`                                                                                             |
+| `IndexFilters.SaveAction`              | Places the built-in save action explicitly; the automatic one in `Actions` is then skipped (never rendered twice).                                                                                                                         | none (configured via root `saveAction` / `onSaveView`)                                                                                                                                  |
+| `IndexFilters.ViewOptions`             | View options popover; composes the sections below with dividers between them.                                                                                                                                                              | `children, activator?: ReactElement, icon?: IconType, accessibilityLabel?: string, disabled?: boolean, minInlineSize?, maxInlineSize?`                                                  |
+| `IndexFilters.ViewOptionsSort`         | Sort row with a select.                                                                                                                                                                                                                    | `options: IndexFilterSortOptionType[], value?: string, onChange?: (value) => void, label?: string, icon?: IconType &#124; null`                                                         |
+| `IndexFilters.ViewOptionsToggles`      | Switch rows (e.g. "Hide archived").                                                                                                                                                                                                        | `items: IndexFilterViewToggleItemType[] ({ key, label, icon?, checked, disabled?, onChange? }), onChange?: (key, checked) => void`                                                      |
+| `IndexFilters.ViewOptionsColumns`      | Column list: show/hide via eye button, reorder via drag handle or arrow keys. `onChange` returns the full reordered list.                                                                                                                  | `columns: IndexFilterColumnItemType[] ({ key, label, visible?, hideable?, reorderable? }), onChange?: (columns) => void, title?: ReactNode, direction?: "vertical" &#124; "horizontal"` |
 
 #### Modern Props
 
@@ -1936,17 +1938,51 @@ import { IndexFilters } from "@xco-agency/corex-ui";
 | `disabled`         | `boolean &#124; undefined`                                                                                             | Whether the search field is disabled.                                                                                                                                                                        |
 | `id`               | `string &#124; undefined`                                                                                              | Optional DOM element ID.                                                                                                                                                                                     |
 
+#### Root Props (`<IndexFilters>`)
+
+The root also accepts all search field props above (declarative mode).
+
+| Prop               | Type                                                                                         | Description                                                                                                                                                                         |
+| :----------------- | :------------------------------------------------------------------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `children`         | `ReactNode`                                                                                  | Composable toolbar (`IndexFilters.SearchField`, `IndexFilters.Actions`, ...).                                                                                                       |
+| `actions`          | `ReactNode`                                                                                  | Right-side content in declarative mode (no `children`).                                                                                                                             |
+| `saveAction`       | `boolean &#124; IndexFiltersSaveActionType`                                                  | Built-in "Save" action, shown only while filters are active; opens a modal asking for the view name. **Enabled by default.** `false` removes it; an object configures it.           |
+| `onSaveView`       | `((view: IndexFiltersSavedViewType) =&gt; void &#124; Promise&lt;void&gt;) &#124; undefined` | Called with `{ name, query, filters }` (filters without `onRemove`). Store it and render it as a tab. A thrown error / rejected promise keeps the modal open and shows the message. |
+| `hasActiveFilters` | `boolean &#124; undefined`                                                                   | Overrides active detection. By default active = non-blank `queryValue` or any applied filter with a non-empty `value`.                                                              |
+
+`IndexFiltersSaveActionType`: `{ label?: string ("Save"), disabled?: boolean, modalTitle?: string ("Save as new view"), nameLabel?: string ("Name"), namePlaceholder?: string, saveLabel?: string ("Save"), cancelLabel?: string ("Cancel"), validateName?: (name) => string | undefined }` — return an error message from `validateName` to block the save (e.g. duplicate tab names).
+
+> Do not add a manual "Save" button to `IndexFilters.Actions` — use the built-in save action. Wrap other filter-dependent actions (e.g. "Export") in `IndexFilters.ViewVisibleActiveFilter`.
+
 #### Example
 
 ```tsx
-<IndexFilters>
+<IndexFilters
+  // Built-in save: shown while filters are active, asks for a name, then stores a tab.
+  onSaveView={(view) =>
+    setSavedViews((prev) => [...prev, { ...view, id: crypto.randomUUID() }])
+  }
+  saveAction={{
+    validateName: (name) =>
+      tabs.some((tab) => tab.label === name)
+        ? "A view with this name already exists"
+        : undefined,
+  }}
+>
   <IndexFilters.SearchField
+    tabs={<Tabs tabs={tabs} selected={selectedTab} onSelect={selectTab} compact />}
     queryValue={search}
     onQueryChange={(q) => setSearch(q)}
     filters={availableFilters}
     appliedFilters={appliedFilters}
   />
   <IndexFilters.Actions>
+    {/* Custom actions visible only while filters are active */}
+    <IndexFilters.ViewVisibleActiveFilter>
+      <Button variant="tertiary" icon="export" onClick={exportFiltered}>
+        Export
+      </Button>
+    </IndexFilters.ViewVisibleActiveFilter>
     <IndexFilters.ViewOptions>
       <IndexFilters.ViewOptionsSort
         options={sortOptions}

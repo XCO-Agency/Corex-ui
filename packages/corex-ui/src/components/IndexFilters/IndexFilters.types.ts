@@ -221,6 +221,58 @@ export type IndexFiltersSearchFieldPropsType = {
   id?: string;
 };
 
+/**
+ * Serializable snapshot of an applied filter, stored with a saved view.
+ */
+export type IndexSavedFilterType = Omit<IndexAppliedFilterType, "onRemove">;
+
+/**
+ * View handed to `onSaveView`: the name typed in the save modal plus the
+ * search and filters that were active. Store it and render it as a tab.
+ */
+export type IndexFiltersSavedViewType = {
+  /** Name typed in the save modal (trimmed). */
+  name: string;
+  /** Search query at save time. */
+  query: string;
+  /** Applied filters at save time, without their `onRemove` callbacks. */
+  filters: IndexSavedFilterType[];
+};
+
+/**
+ * Configuration of the built-in "Save" action of `IndexFilters`.
+ */
+export type IndexFiltersSaveActionType = {
+  /** Button label. Defaults to "Save". */
+  label?: string;
+  /** Renders the button disabled. */
+  disabled?: boolean;
+  /** Modal heading. Defaults to "Save as new view". */
+  modalTitle?: string;
+  /** Name field label. Defaults to "Name". */
+  nameLabel?: string;
+  /** Name field placeholder. */
+  namePlaceholder?: string;
+  /** Modal confirm button label. Defaults to "Save". */
+  saveLabel?: string;
+  /** Modal cancel button label. Defaults to "Cancel". */
+  cancelLabel?: string;
+  /** Returns an error message to block the save (e.g. duplicate names). */
+  validateName?: (name: string) => string | undefined;
+};
+
+/**
+ * Props for `IndexFilters.ViewVisibleActiveFilter`.
+ */
+export type IndexFiltersViewVisibleActiveFilterPropsType = {
+  /** Actions shown only while a search or filter is active. */
+  children?: ReactNode;
+  /** Forces the visibility instead of following the active filters. */
+  visible?: boolean;
+  /** Expand/collapse duration in ms. Defaults to 200. */
+  duration?: number;
+};
+
 // Aliases for backwards compatibility
 export type FilterOptionType = IndexFilterOptionType;
 export type FilterOperatorType = IndexFilterOperatorType;

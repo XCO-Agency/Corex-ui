@@ -29,6 +29,7 @@ import type {
 import { Transition } from "../Transition";
 import { Tooltip } from "../Tooltip";
 import { FlexPopover } from "../FlexPopover";
+import { useIndexFiltersContext } from "./IndexFiltersContext";
 
 /** Number of values shown inside a pill before collapsing into "+ n more". */
 const MAX_VISIBLE_VALUES = 3;
@@ -160,6 +161,13 @@ export function IndexFiltersSearchField({
   const hasApplied = chipCount > 0;
   const hasQuery = localQuery.length > 0;
   const isCategoriesOpen = activePopover?.type === "categories";
+
+  // Let the IndexFilters root know whether filters are active (save action,
+  // `ViewVisibleActiveFilter`) and what to snapshot when a view is saved.
+  const reportFieldState = useIndexFiltersContext()?.reportFieldState;
+  useLayoutEffect(() => {
+    reportFieldState?.({ query: queryValue, appliedFilters });
+  }, [reportFieldState, queryValue, appliedFilters]);
 
   /* ---------------------------------------------------------------- query */
 
@@ -972,7 +980,7 @@ export function IndexFiltersSearchField({
       ref={containerRef}
       id={id}
       alignItems="center"
-      gap="small-200"
+      gap="small-400"
       wrap={false}
       flex="1 1 0%"
       minInlineSize="0"
@@ -998,7 +1006,8 @@ export function IndexFiltersSearchField({
           {tabs}
         </InlineStack>
       ) : null}
-
+      <Icon type="search" color="subdued" />
+      <span></span>
       <InlineStack
         ref={regionRef}
         className={SCROLL_CLASS}
@@ -1099,19 +1108,23 @@ export function IndexFiltersSearchField({
 
       {hasQuery || hasApplied ? (
         <InlineStack alignItems="center" shrink={false}>
-          <Clickable
+          <Button
             disabled={disabled}
-            background="transparent"
-            padding="small-500"
-            borderRadius="base"
-            accessibilityLabel="Clear search and filters"
+            variant="tertiary"
+            icon="x-circle"
             onClick={(event) => {
               event.stopPropagation();
               handleClear();
             }}
-          >
-            <Icon type="x-circle" tone="neutral" />
-          </Clickable>
+          />
+          <span
+            style={{
+              width: 1,
+              height: 16,
+              backgroundColor: "#E1E3E4",
+              marginInline: "4px",
+            }}
+          />
         </InlineStack>
       ) : null}
 

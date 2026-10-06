@@ -45,7 +45,7 @@ export type EmptyStatePropsType = {
    */
   heading?: ReactNode;
   /**
-   * Legacy Polaris alias for `heading`.
+   * @deprecated use `heading` instead. Legacy Polaris alias for `heading`.
    */
   title?: ReactNode;
   /**

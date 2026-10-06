@@ -114,6 +114,7 @@ export const Clickable: ForwardRefExoticComponent<
     <div
       style={{
         opacity: disabled ? 0.5 : undefined,
+        pointerEvents: disabled ? "none" : undefined,
         width:
           inlineSize === "auto"
             ? "fit-content"

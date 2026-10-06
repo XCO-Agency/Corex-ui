@@ -18,9 +18,12 @@ import type {
   IndexAppliedFilterType,
   IndexFilterColumnItemType,
   IndexFilterItemType,
+  IndexFiltersSavedViewType,
   IndexFilterSortOptionType,
   TabItemType,
 } from "@xco-agency/corex-ui";
+
+type SavedViewTabType = IndexFiltersSavedViewType & { id: string };
 
 type ProductItemType = {
   id: string;
@@ -117,7 +120,7 @@ const initialProducts: ProductItemType[] = [
   },
 ];
 
-const viewTabs: TabItemType[] = [
+const statusTabs: TabItemType[] = [
   { id: "all", label: "All" },
   { id: "active", label: "Active" },
   { id: "draft", label: "Draft" },
@@ -255,6 +258,7 @@ const filterDefinitions: IndexFilterItemType[] = [
 
 export function IndexFiltersExample() {
   const [selectedView, setSelectedView] = useState("all");
+  const [savedViews, setSavedViews] = useState<SavedViewTabType[]>([]);
   const [query, setQuery] = useState("");
   const [appliedFilters, setAppliedFilters] = useState<IndexAppliedFilterType[]>([
     {
@@ -346,6 +350,11 @@ export function IndexFiltersExample() {
     setAppliedFilters([]);
   };
 
+  const handleExport = () => {
+    setSavedNotice(`Exported ${filteredProducts.length} filtered product(s)`);
+    setTimeout(() => setSavedNotice(""), 3000);
+  };
+
   const handleRefresh = () => {
     setRefreshing(true);
     setTimeout(() => {
@@ -353,12 +362,34 @@ export function IndexFiltersExample() {
     }, 600);
   };
 
-  const handleSave = () => {
-    setSavedNotice(
-      `Saved view "${selectedView}" with ${appliedFilters.length} active filter(s)`,
-    );
+  // Built-in save action: store the named search + filters as a new tab.
+  const handleSaveView = (view: IndexFiltersSavedViewType) => {
+    const id = `saved-${Date.now()}`;
+    setSavedViews((prev) => [...prev, { ...view, id }]);
+    setSelectedView(id);
+    setSavedNotice(`Saved view "${view.name}" with ${view.filters.length} filter(s)`);
     setTimeout(() => setSavedNotice(""), 3000);
   };
+
+  const handleSelectView = (tabId: string) => {
+    setSelectedView(tabId);
+    const saved = savedViews.find((view) => view.id === tabId);
+    if (!saved) return;
+    // Restore the saved search and filters.
+    setQuery(saved.query);
+    setAppliedFilters(
+      saved.filters.map((filter) => ({
+        ...filter,
+        onRemove: () => handleRemoveFilter(filter.key),
+      })),
+    );
+  };
+
+  const viewTabs: TabItemType[] = [
+    ...statusTabs,
+    ...savedViews.map((view) => ({ id: view.id, label: view.name })),
+  ];
+  const isStatusView = statusTabs.some((tab) => tab.id === selectedView);
 
   // Filter products based on search, view tabs, applied filters, and column visibility
   const filteredProducts = initialProducts.filter((product) => {
@@ -368,7 +399,7 @@ export function IndexFiltersExample() {
     }
 
     // 2. View Tab filter
-    if (selectedView !== "all" && product.status !== selectedView) {
+    if (isStatusView && selectedView !== "all" && product.status !== selectedView) {
       return false;
     }
 
@@ -430,13 +461,24 @@ export function IndexFiltersExample() {
         ) : null}
 
         {/* Primary Composable IndexFilters Toolbar (Transparent & No Border) */}
-        <IndexFilters>
+        {/* "Save" is built in: it expands while a search or filter is active. */}
+        <IndexFilters
+          onSaveView={handleSaveView}
+          saveAction={{
+            modalTitle: "Save as new view",
+            namePlaceholder: "e.g. Apple products",
+            validateName: (name) =>
+              viewTabs.some((tab) => tab.label?.toLowerCase() === name.toLowerCase())
+                ? "A view with this name already exists"
+                : undefined,
+          }}
+        >
           <IndexFilters.SearchField
             tabs={
               <Tabs
                 tabs={viewTabs}
                 selected={selectedView}
-                onSelect={(tabId: string | number) => setSelectedView(String(tabId))}
+                onSelect={(tabId: string | number) => handleSelectView(String(tabId))}
                 compact
               />
             }
@@ -481,9 +523,12 @@ export function IndexFiltersExample() {
               icon="refresh"
             />
 
-            <Button variant="tertiary" onClick={handleSave}>
-              Save
-            </Button>
+            {/* Custom actions shown only while filters are active. */}
+            <IndexFilters.ViewVisibleActiveFilter>
+              <Button variant="tertiary" icon="export" onClick={handleExport}>
+                Export
+              </Button>
+            </IndexFilters.ViewVisibleActiveFilter>
           </IndexFilters.Actions>
         </IndexFilters>
 
@@ -493,7 +538,6 @@ export function IndexFiltersExample() {
             <Box paddingBlock="large-300" paddingInline="large-100">
               <EmptyState
                 heading="No products found"
-                title="No products found"
                 icon="search"
                 action={{
                   content: "Clear search and filters",

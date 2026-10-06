@@ -23,7 +23,7 @@ export const NumberField = forwardRef<HTMLElement, NumberFieldPropsType>(
         ref={ref}
         id={id}
         details={details ?? helpText}
-        onInput={handleInput}
+        onChange={handleInput}
         {...rest}
       />
     );
