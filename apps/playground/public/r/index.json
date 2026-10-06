@@ -72,12 +72,6 @@
     "filesCount": 9
   },
   {
-    "name": "resource-table",
-    "title": "Resource Table",
-    "description": "Data table with multi-criteria filtering, bulk actions, and pagination.",
-    "filesCount": 12
-  },
-  {
     "name": "settings-layout",
     "title": "Settings Layout",
     "description": "Two-column annotated configuration layout matching Shopify Admin conventions.",

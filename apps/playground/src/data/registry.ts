@@ -8,7 +8,6 @@ import { typographyComponents } from "./categories/typography";
 import { navigationComponents } from "./categories/navigation";
 import { appBridgeComponents } from "./categories/app-bridge";
 import { settingsBlocks } from "./blocks/settings";
-import { resourceTableBlocks } from "./blocks/resource-table";
 import { productIndexBlocks } from "./blocks/product-index";
 import { pricingBlocks } from "./blocks/pricing";
 import { integrationsBlocks } from "./blocks/integrations";
@@ -74,7 +73,6 @@ export const blocks: BlockGroupType[] = [
     components: [
       ...cardsBlocks,
       ...settingsBlocks,
-      ...resourceTableBlocks,
       ...productIndexBlocks,
       ...activityFeedBlocks,
     ],

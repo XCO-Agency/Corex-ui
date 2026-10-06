@@ -60,11 +60,6 @@ const BLOCK_METADATA = {
     description:
       "Product index page with IndexFilters (tabs, saved views, filter pills, columns) and an IndexTable.",
   },
-  "resource-table": {
-    title: "Resource Table",
-    description:
-      "Data table with multi-criteria filtering, bulk actions, and pagination.",
-  },
   "settings-layout": {
     title: "Settings Layout",
     description:
