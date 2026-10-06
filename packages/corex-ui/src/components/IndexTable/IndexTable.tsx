@@ -268,6 +268,7 @@ function IndexTableInner(
     sortDirection,
     onSort,
     onReorder,
+    stickyHeader = true,
   }: IndexTablePropsType,
   ref: ForwardedRef<HTMLElement>,
 ): ReactElement {
@@ -276,6 +277,9 @@ function IndexTableInner(
     Record<number, IndexTableStickyType>
   >({});
   const gridRef = useRef<HTMLDivElement>(null);
+  const bodyScrollRef = useRef<HTMLDivElement>(null);
+  const tableRef = useRef<HTMLDivElement>(null);
+  const headScrollRef = useRef<HTMLDivElement>(null);
   const cancelDragRef = useRef<(() => void) | null>(null);
   const { isXs, isSm, ref: measureRef } = useDimension();
   const rootRef = useMemo(
@@ -369,9 +373,7 @@ function IndexTableInner(
             .map((child) =>
               buildSelectionNode(child.props as Parameters<typeof buildSelectionNode>[0]),
             );
-    return getPageSelection(
-      showSelectedOnly ? nodes.filter(hasAnySelected) : nodes,
-    );
+    return getPageSelection(showSelectedOnly ? nodes.filter(hasAnySelected) : nodes);
   }, [rows, children, showSelectedOnly]);
 
   const selectPage = useCallback(
@@ -454,19 +456,47 @@ function IndexTableInner(
   const [isScrolling, setIsScrolling] = useState(false);
   const scrollTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
+  // The header lives outside the horizontal scroller (an `overflow` ancestor
+  // would trap its `position: sticky`), so it follows the body's scroll here.
+  // It also publishes how much of the rows is scrolled out of view on each
+  // side, so highlighted rows can round their *visible* edges (see the
+  // `--cx-it-clip-*` rules in the styles).
+  const syncHeaderScroll = useCallback(() => {
+    const body = bodyScrollRef.current;
+    if (!body) return;
+    if (headScrollRef.current) headScrollRef.current.scrollLeft = body.scrollLeft;
+    const hiddenEnd = Math.max(0, body.scrollWidth - body.clientWidth - body.scrollLeft);
+    const table = tableRef.current;
+    table?.style.setProperty("--cx-it-clip-start", `${Math.max(0, body.scrollLeft)}px`);
+    table?.style.setProperty("--cx-it-clip-end", `${hiddenEnd}px`);
+  }, []);
+
   const handleScroll = useCallback(() => {
+    syncHeaderScroll();
     setIsScrolling(true);
     if (scrollTimerRef.current) clearTimeout(scrollTimerRef.current);
     scrollTimerRef.current = setTimeout(() => {
       setIsScrolling(false);
     }, 1000);
-  }, []);
+  }, [syncHeaderScroll]);
 
   useEffect(() => {
     return () => {
       if (scrollTimerRef.current) clearTimeout(scrollTimerRef.current);
     };
   }, []);
+
+  useIsomorphicLayoutEffect(syncHeaderScroll, [isBulkActive, syncHeaderScroll]);
+
+  // The hidden widths change with the container and column sizes too.
+  useEffect(() => {
+    const body = bodyScrollRef.current;
+    if (!body || typeof ResizeObserver === "undefined") return;
+    const observer = new ResizeObserver(() => syncHeaderScroll());
+    observer.observe(body);
+    if (gridRef.current) observer.observe(gridRef.current);
+    return () => observer.disconnect();
+  }, [syncHeaderScroll, effectiveItemCount]);
 
   if (effectiveItemCount === 0 && emptyState) {
     return (
@@ -496,6 +526,9 @@ function IndexTableInner(
     "--cx-it-cols": layout.gridTemplateColumns,
     "--cx-it-min": layout.minInlineSize,
     "--cx-it-lead": reorderable ? `${HANDLE_COLUMN_WIDTH}px` : "0px",
+    ...(typeof stickyHeader === "number"
+      ? { "--cx-it-sticky-top": `${stickyHeader + 2}px` }
+      : {}),
     ...style,
   } as CSSProperties;
 
@@ -504,121 +537,132 @@ function IndexTableInner(
       <div ref={rootRef} id={id} className={rootClassName} style={rootStyle}>
         <style>{INDEX_TABLE_CSS}</style>
 
-        {/* The bulk bar replaces the header row. It sits outside the scroller so
-            it stays in view while the columns scroll sideways. */}
-        {isBulkActive && (
-          <IndexTableBulkActions
-            selectedLabel={selectedLabel}
-            itemCount={effectiveItemCount}
-            plural={plural}
-            allSelected={allSelected}
-            pageSelectionState={pageSelection.state}
-            onSelectPage={() => selectPage(true)}
-            onSelectAll={() => onSelectionChange?.("all", true)}
-            onDeselectAll={() => onSelectionChange?.("all", false)}
-            promotedBulkActions={promotedBulkActions}
-            bulkActions={bulkActions}
-            showAllSelectedToggle={showAllSelectedToggle}
-            showSelectedOnly={showSelectedOnly}
-            onShowSelectedOnlyChange={setShowSelectedOnly}
-            compact={isXs || isSm}
-          />
-        )}
-
         <div
-          className={cx("cx-it__scroll", isScrolling && "cx-it__scroll--scrolling")}
-          onScroll={handleScroll}
+          ref={tableRef}
+          role="table"
+          aria-label={resourceName?.plural}
+          aria-busy={loading || undefined}
         >
+          {/* Header and bulk bar sit outside the horizontal scroller so they can
+              stick to the top of the page while it scrolls. */}
           <div
-            role="table"
-            aria-label={resourceName?.plural}
-            aria-busy={loading || undefined}
-            className="cx-it__grid"
-            ref={gridRef}
+            className={cx("cx-it__head", stickyHeader !== false && "cx-it__head--sticky")}
           >
-            {!isBulkActive && normalizedHeadings.length > 0 && (
-              <div role="row" className="cx-it__row cx-it__row--head">
-                {reorderable && (
-                  <div
-                    role="columnheader"
-                    aria-label="Reorder"
-                    className={cx(
-                      "cx-it__cell cx-it__cell--control",
-                      layout.selectionSticky && "cx-it__cell--sticky",
-                    )}
-                    style={pinStyle(layout.selectionSticky)}
-                  />
-                )}
-                {selectable && (
-                  <div
-                    role="columnheader"
-                    className={cx(
-                      "cx-it__cell cx-it__cell--control",
-                      layout.selectionSticky && "cx-it__cell--sticky",
-                    )}
-                    style={pinStyle(layout.selectionSticky, layout.selectionOffset)}
-                  >
-                    <Checkbox
-                      label={`Select all ${plural}`}
-                      labelAccessibilityVisibility="exclusive"
-                      checked={pageSelection.state === "all"}
-                      indeterminate={pageSelection.state === "some"}
-                      onChange={(checked) => selectPage(checked)}
-                    />
-                  </div>
-                )}
-                {layout.columns.map((column, index) => {
-                  const heading = normalizedHeadings[index];
-                  const isSorted = sortColumnIndex === index;
-                  return (
-                    <div
-                      key={heading?.id ?? index}
-                      role="columnheader"
-                      aria-sort={
-                        heading?.sortable
-                          ? isSorted
-                            ? (sortDirection ?? "descending")
-                            : "none"
-                          : undefined
-                      }
-                      className={cx(
-                        "cx-it__cell cx-it__cell--head",
-                        alignmentClass(column.alignment),
-                        column.sticky && "cx-it__cell--sticky",
-                      )}
-                      style={pinStyle(column.sticky, column.offset)}
-                    >
-                      {heading && !heading.hidden && heading.sortable ? (
-                        <button
-                          type="button"
-                          className={cx(
-                            "cx-it__control cx-it__sort",
-                            isSorted && "cx-it__sort--active",
-                          )}
-                          onClick={() => handleSort(index, heading)}
-                        >
-                          {heading.title}
-                          <span className="cx-it__sort-icon" aria-hidden="true">
-                            <Icon
-                              type={
-                                isSorted && sortDirection === "ascending"
-                                  ? "arrow-up"
-                                  : "arrow-down"
-                              }
-                              size="small"
-                            />
-                          </span>
-                        </button>
-                      ) : heading && !heading.hidden ? (
-                        heading.title
-                      ) : null}
-                    </div>
-                  );
-                })}
-              </div>
+            {/* The bulk bar replaces the header row. */}
+            {isBulkActive && (
+              <IndexTableBulkActions
+                selectedLabel={selectedLabel}
+                itemCount={effectiveItemCount}
+                plural={plural}
+                allSelected={allSelected}
+                pageSelectionState={pageSelection.state}
+                onSelectPage={() => selectPage(true)}
+                onSelectAll={() => onSelectionChange?.("all", true)}
+                onDeselectAll={() => onSelectionChange?.("all", false)}
+                promotedBulkActions={promotedBulkActions}
+                bulkActions={bulkActions}
+                showAllSelectedToggle={showAllSelectedToggle}
+                showSelectedOnly={showSelectedOnly}
+                onShowSelectedOnlyChange={setShowSelectedOnly}
+                compact={isXs || isSm}
+              />
             )}
 
-            {bodyRows}
+            {!isBulkActive && normalizedHeadings.length > 0 && (
+              <div ref={headScrollRef} className="cx-it__head-scroll">
+                <div role="rowgroup" className="cx-it__grid">
+                  <div role="row" className="cx-it__row cx-it__row--head">
+                    {reorderable && (
+                      <div
+                        role="columnheader"
+                        aria-label="Reorder"
+                        className={cx(
+                          "cx-it__cell cx-it__cell--control",
+                          layout.selectionSticky && "cx-it__cell--sticky",
+                        )}
+                        style={pinStyle(layout.selectionSticky)}
+                      />
+                    )}
+                    {selectable && (
+                      <div
+                        role="columnheader"
+                        className={cx(
+                          "cx-it__cell cx-it__cell--control",
+                          layout.selectionSticky && "cx-it__cell--sticky",
+                        )}
+                        style={pinStyle(layout.selectionSticky, layout.selectionOffset)}
+                      >
+                        <Checkbox
+                          label={`Select all ${plural}`}
+                          labelAccessibilityVisibility="exclusive"
+                          checked={pageSelection.state === "all"}
+                          indeterminate={pageSelection.state === "some"}
+                          onChange={(checked) => selectPage(checked)}
+                        />
+                      </div>
+                    )}
+                    {layout.columns.map((column, index) => {
+                      const heading = normalizedHeadings[index];
+                      const isSorted = sortColumnIndex === index;
+                      return (
+                        <div
+                          key={heading?.id ?? index}
+                          role="columnheader"
+                          aria-sort={
+                            heading?.sortable
+                              ? isSorted
+                                ? (sortDirection ?? "descending")
+                                : "none"
+                              : undefined
+                          }
+                          className={cx(
+                            "cx-it__cell cx-it__cell--head",
+                            alignmentClass(column.alignment),
+                            column.sticky && "cx-it__cell--sticky",
+                          )}
+                          style={pinStyle(column.sticky, column.offset)}
+                        >
+                          {heading && !heading.hidden && heading.sortable ? (
+                            <button
+                              type="button"
+                              className={cx(
+                                "cx-it__control cx-it__sort",
+                                isSorted && "cx-it__sort--active",
+                              )}
+                              onClick={() => handleSort(index, heading)}
+                            >
+                              {heading.title}
+                              <span className="cx-it__sort-icon" aria-hidden="true">
+                                <Icon
+                                  type={
+                                    isSorted && sortDirection === "ascending"
+                                      ? "arrow-up"
+                                      : "arrow-down"
+                                  }
+                                  size="small"
+                                />
+                              </span>
+                            </button>
+                          ) : heading && !heading.hidden ? (
+                            heading.title
+                          ) : null}
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+
+          <div
+            ref={bodyScrollRef}
+            className={cx("cx-it__scroll", isScrolling && "cx-it__scroll--scrolling")}
+            onScroll={handleScroll}
+          >
+            <div role="rowgroup" className="cx-it__grid" ref={gridRef}>
+              {bodyRows}
+            </div>
           </div>
         </div>
 

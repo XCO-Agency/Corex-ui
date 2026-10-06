@@ -114,6 +114,12 @@ export type IndexTablePropsType = {
    * your data with `reorderItems`.
    */
   onReorder?: (fromIndex: number, toIndex: number) => void;
+  /**
+   * Keeps the header row (and the bulk bar) pinned to the top of the page
+   * while it scrolls. Pass a number to offset it from the top in px, e.g. under
+   * a fixed app bar. @default true
+   */
+  stickyHeader?: boolean | number;
 };
 
 export type IndexTableRowPropsType = {

@@ -117,6 +117,8 @@ export function ProductIndexTable({
   return (
     <IndexTable
       resourceName={{ singular: "product", plural: "products" }}
+      // Pin the header under the page title bar while the page scrolls.
+      stickyHeader={52}
       itemCount={totalCount}
       selectedItemsCount={allSelected ? "All" : selectedIds.length}
       onSelectionChange={onSelectionChange}
@@ -135,6 +137,7 @@ export function ProductIndexTable({
         { content: "Delete products", destructive: true, onAction: onBulkDelete },
       ]}
       pagination={{
+        floating: true,
         hasPrevious: page > 1,
         hasNext: page < pageCount,
         label: `${start}–${end} of ${totalCount}`,

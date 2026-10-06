@@ -100,11 +100,24 @@ export const INDEX_TABLE_CSS = `
 .cx-it__row--head,
 .cx-it__bulk {
   border-radius: var(--cx-it-radius);
-  height:30px;
+  height: 30px;
   padding: 0;
+}
+
+/* Header and bulk bar live outside the scroller, so sticky follows the page. */
+.cx-it__head {
+  position: relative;
+  z-index: 10;
+  background-color: var(--cx-it-surface);
+}
+.cx-it__head--sticky {
   position: sticky;
-  top: 52px;
-  z-index: 99;
+  top: var(--cx-it-sticky-top, 0px);
+  box-shadow: 0px -2px 0px 0px #ffffff;
+}
+/* Mirrors the body's horizontal scroll (synced in JS); no scrollbar of its own. */
+.cx-it__head-scroll {
+  overflow: hidden;
 }
 .cx-it__bulk { background-color: var(--cx-it-header); }
 
@@ -114,7 +127,6 @@ export const INDEX_TABLE_CSS = `
   --cx-it-row-bg: var(--cx-it-surface);
   border-top: 1px solid var(--cx-it-border);
 }
-.cx-it__row--head + .cx-it__row--body,
 .cx-it__row--body:first-child { border-top-color: transparent; }
 .cx-it__row--zebra { --cx-it-row-bg: var(--cx-it-zebra); }
 .cx-it__row--clickable { cursor: pointer; }
@@ -146,6 +158,17 @@ export const INDEX_TABLE_CSS = `
   > .cx-it__cell--sticky:last-child::before {
   border-start-end-radius: var(--cx-it-radius);
   border-end-end-radius: var(--cx-it-radius);
+}
+
+/*
+ * Rows wider than the scroller are cut at its edges, so their own rounded
+ * corners sit out of view. Clip highlighted rows to the visible part instead
+ * (offsets set from the scroll position in JS) and round that.
+ */
+.cx-it__row:is(.cx-it__row--head, .cx-it__row--body:hover, [aria-selected="true"]) {
+  clip-path: inset(
+    0 var(--cx-it-clip-end, 0px) 0 var(--cx-it-clip-start, 0px) round var(--cx-it-radius)
+  );
 }
 
 /* Drag to reorder: the row floats under the pointer; its slot becomes a placeholder. */

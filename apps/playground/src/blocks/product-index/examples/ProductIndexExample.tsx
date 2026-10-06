@@ -154,6 +154,7 @@ export function ProductIndexExample() {
 
   return (
     <Page
+      inlineSize="large"
       heading="Products"
       primaryAction={{
         content: "Add product",
