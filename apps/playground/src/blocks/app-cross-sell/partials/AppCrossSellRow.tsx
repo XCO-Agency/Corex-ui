@@ -6,12 +6,18 @@ import { AppIconBadge } from "./AppIconBadge";
 export type AppCrossSellRowPropsType = {
   app: AppCrossSellItemType;
   onInstall?: (id: string) => void;
+  /** Button label, e.g. "Install to unlock 20% off". */
+  installLabel?: string;
+  /** Shows the install button as busy while the install runs. */
+  installing?: boolean;
   isLast?: boolean;
 };
 
 export function AppCrossSellRow({
   app,
   onInstall,
+  installLabel = "Install",
+  installing = false,
   isLast = false,
 }: AppCrossSellRowPropsType) {
   return (
@@ -35,17 +41,25 @@ export function AppCrossSellRow({
               <Text variant="base" fontWeight="semibold">
                 {app.name}
               </Text>
-              {app.builtForShopify && (
-                <Badge tone="info" size="small">
-                  Built for Shopify
-                </Badge>
-              )}
+              {app.builtForShopify && <Badge tone="info">Built for Shopify</Badge>}
             </InlineStack>
             {app.category && (
-              <Text variant="xs" tone="subdued">
+              <Text variant="xs" color="subdued">
                 {app.category}
               </Text>
             )}
+            {app.rating || app.pricingBadge ? (
+              <Text variant="xs" color="subdued">
+                {[
+                  app.rating
+                    ? `★ ${app.rating.toFixed(1)}${app.reviewsCount ? ` (${app.reviewsCount})` : ""}`
+                    : null,
+                  app.pricingBadge,
+                ]
+                  .filter(Boolean)
+                  .join(" · ")}
+              </Text>
+            ) : null}
           </BlockStack>
         </InlineStack>
 
@@ -56,8 +70,12 @@ export function AppCrossSellRow({
               Installed
             </Badge>
           ) : (
-            <Button variant="secondary" onClick={() => onInstall?.(app.id)}>
-              {app.unlockDiscountText || "Install to unlock 30% off"}
+            <Button
+              variant="secondary"
+              loading={installing}
+              onClick={() => onInstall?.(app.id)}
+            >
+              {installLabel}
             </Button>
           )}
         </InlineStack>

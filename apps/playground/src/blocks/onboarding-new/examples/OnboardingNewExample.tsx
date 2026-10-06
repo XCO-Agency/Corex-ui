@@ -1,13 +1,16 @@
+import { Page } from "@xco-agency/corex-ui";
 import { OnboardingNew } from "../OnboardingNew";
 
 export function OnboardingNewExample() {
   return (
-    <OnboardingNew
-      initialCompletedStages={["volume", "brand"]}
-      onGoToDashboard={() => {
-        alert("Navigating to Merchant Dashboard!");
-      }}
-    />
+    <Page heading="Get started" inlineSize="large">
+      <OnboardingNew
+        initialCompletedStages={["volume", "brand"]}
+        onGoToDashboard={() => {
+          alert("Navigating to Merchant Dashboard!");
+        }}
+      />
+    </Page>
   );
 }
 

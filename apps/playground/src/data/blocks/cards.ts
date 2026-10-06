@@ -73,12 +73,12 @@ export const cardsBlocks: ComponentEntry[] = [
   {
     name: "Cards",
     slug: "cards",
-    category: "Layouts & Administration",
+    category: "Layouts",
     description:
       "Versatile responsive card layouts across 3 essential variants: Minimalist (typography & status), Media (16:9 visual cover, title & description), and Media Actions (cover image, title, description, and interactive action buttons).",
     examples: [
       {
-        title: "Overview: 3 Card Variants",
+        title: "All Variants",
         Example: CardsOverviewExample,
         code: CardsOverviewExampleRaw,
         filename: "CardsOverviewExample.tsx",
@@ -86,7 +86,7 @@ export const cardsBlocks: ComponentEntry[] = [
         npxCommand: "npx @xco-agency/corex-ui@latest add cards",
       },
       {
-        title: "Variant 1: Minimalist Cards",
+        title: "Minimalist Cards",
         Example: CardsMinimalistExample,
         code: CardsMinimalistExampleRaw,
         filename: "CardsMinimalistExample.tsx",
@@ -94,7 +94,7 @@ export const cardsBlocks: ComponentEntry[] = [
         npxCommand: "npx @xco-agency/corex-ui@latest add cards",
       },
       {
-        title: "Variant 2: Media Cards (Image + Title + Description)",
+        title: "Media Cards",
         Example: CardsMediaExample,
         code: CardsMediaExampleRaw,
         filename: "CardsMediaExample.tsx",
@@ -102,7 +102,7 @@ export const cardsBlocks: ComponentEntry[] = [
         npxCommand: "npx @xco-agency/corex-ui@latest add cards",
       },
       {
-        title: "Variant 3: Media Action Cards (Image + Title + Description + Actions)",
+        title: "Media Action Cards",
         Example: CardsMediaActionExample,
         code: CardsMediaActionExampleRaw,
         filename: "CardsMediaActionExample.tsx",

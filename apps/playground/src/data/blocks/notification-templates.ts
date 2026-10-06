@@ -56,14 +56,14 @@ const blockFiles: FileItemType[] = [
 
 export const notificationTemplatesBlocks: ComponentEntry[] = [
   {
-    name: "Notification & Template Designer",
+    name: "Notifications",
     slug: "notification-templates",
-    category: "Marketing",
+    category: "Settings",
     description:
       "Dual-pane notification and marketing copy editor with clickable Liquid variable tag injection, multi-channel (SMS/Email) configuration, and live mobile phone mockup simulation.",
     examples: [
       {
-        title: "Transactional Message Designer",
+        title: "Notification Templates",
         Example: NotificationTemplatesExample,
         code: NotificationTemplatesExampleRaw,
         filename: "NotificationTemplatesExample.tsx",

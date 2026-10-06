@@ -1,7 +1,7 @@
 {
   "name": "product-index",
   "type": "registry:block",
-  "title": "Product Index",
+  "title": "Resource Index",
   "description": "Product index page with IndexFilters (tabs, saved views, filter pills, columns) and an IndexTable.",
   "dependencies": [
     "@xco-agency/corex-ui"

@@ -1,7 +1,7 @@
 {
   "name": "onboarding-new",
   "type": "registry:block",
-  "title": "Modern Onboarding Flow",
+  "title": "Store Onboarding",
   "description": "Streamlined interactive checklist onboarding with progress tracking.",
   "dependencies": [
     "@xco-agency/corex-ui"
@@ -27,7 +27,7 @@
     },
     {
       "path": "examples/OnboardingNewExample.tsx",
-      "content": "import { OnboardingNew } from \"../OnboardingNew\";\n\nexport function OnboardingNewExample() {\n  return (\n    <OnboardingNew\n      initialCompletedStages={[\"volume\", \"brand\"]}\n      onGoToDashboard={() => {\n        alert(\"Navigating to Merchant Dashboard!\");\n      }}\n    />\n  );\n}\n\nexport default OnboardingNewExample;\n",
+      "content": "import { Page } from \"@xco-agency/corex-ui\";\nimport { OnboardingNew } from \"../OnboardingNew\";\n\nexport function OnboardingNewExample() {\n  return (\n    <Page heading=\"Get started\" inlineSize=\"large\">\n      <OnboardingNew\n        initialCompletedStages={[\"volume\", \"brand\"]}\n        onGoToDashboard={() => {\n          alert(\"Navigating to Merchant Dashboard!\");\n        }}\n      />\n    </Page>\n  );\n}\n\nexport default OnboardingNewExample;\n",
       "type": "registry:block",
       "target": "components/onboarding-new/examples/OnboardingNewExample.tsx"
     },

@@ -46,14 +46,14 @@ const aiRecommendationsFiles: FileItemType[] = [
 
 export const metricsBlocks: ComponentEntry[] = [
   {
-    name: "Metrics Dashboard",
+    name: "Analytics Dashboard",
     slug: "metrics-dashboard",
-    category: "Metrics",
+    category: "Analytics",
     description:
       "A production-ready Shopify metrics dashboard block featuring interactive DatePicker filtering, KPI cards with sparklines, and period-over-period comparative trends.",
     examples: [
       {
-        title: "Performance Overview with DatePicker",
+        title: "Performance Overview",
         Example: MetricsDashboardExample,
         code: MetricsDashboardExampleRaw,
         filename: "MetricsDashboardExample.tsx",
@@ -72,7 +72,7 @@ export const metricsBlocks: ComponentEntry[] = [
         npxCommand: "npx @xco-agency/corex-ui@latest add metrics-dashboard",
       },
       {
-        title: "Independent Card Interactions (Expand vs External Click)",
+        title: "Expandable Metric Cards",
         Example: MetricsDashboardAdvancedExample,
         code: MetricsDashboardAdvancedExampleRaw,
         filename: "MetricsDashboardAdvancedExample.tsx",
@@ -93,14 +93,14 @@ export const metricsBlocks: ComponentEntry[] = [
     ],
   },
   {
-    name: "AI Strategy Copilot",
+    name: "AI Recommendations",
     slug: "ai-recommendations",
-    category: "Metrics",
+    category: "Analytics",
     description:
       "Order history basket mining and high-impact revenue opportunities with AI-calculated lift badges, custom vector illustrations, and instant 1-click action triggers.",
     examples: [
       {
-        title: "AI Strategy Copilot Card",
+        title: "Recommendation Cards",
         Example: AiRecommendationsExample,
         code: AiRecommendationsExampleRaw,
         filename: "AiRecommendationsExample.tsx",

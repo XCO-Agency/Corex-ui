@@ -1,7 +1,7 @@
 {
   "name": "metrics-dashboard",
   "type": "registry:block",
-  "title": "Metrics Dashboard",
+  "title": "Analytics Dashboard",
   "description": "Executive revenue, conversion, and order KPI overview with comparison trends.",
   "dependencies": [
     "@xco-agency/corex-ui"

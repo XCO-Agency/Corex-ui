@@ -15,7 +15,7 @@
     },
     {
       "path": "examples/OnboardingExample.tsx",
-      "content": "import { Onboarding } from \"../onboarding\";\n\nexport function OnboardingExample() {\n  return (\n    <Onboarding\n      onGoToDashboard={() => {\n        alert(\"Redirect to Revenue Dashboard\");\n      }}\n      onExit={() => {\n        alert(\"Exit onboarding setup\");\n      }}\n    />\n  );\n}\n\nexport default OnboardingExample;\n",
+      "content": "import { Page } from \"@xco-agency/corex-ui\";\nimport { Onboarding } from \"../onboarding\";\n\nexport function OnboardingExample() {\n  return (\n    <Page heading=\"Get started\" inlineSize=\"large\">\n      <Onboarding\n        onGoToDashboard={() => {\n          alert(\"Redirect to Revenue Dashboard\");\n        }}\n        onExit={() => {\n          alert(\"Exit onboarding setup\");\n        }}\n      />\n    </Page>\n  );\n}\n\nexport default OnboardingExample;\n",
       "type": "registry:block",
       "target": "components/onboarding/examples/OnboardingExample.tsx"
     },

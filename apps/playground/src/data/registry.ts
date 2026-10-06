@@ -48,41 +48,42 @@ export type BlockGroupType = {
   components: ComponentEntry[];
 };
 
+const byName = (a: ComponentEntry, b: ComponentEntry) => a.name.localeCompare(b.name);
+
+/**
+ * Ready-made blocks, grouped by what they are for. Group order is fixed;
+ * blocks inside a group are sorted by name.
+ */
 export const blocks: BlockGroupType[] = [
-  {
-    category: "E-Commerce & Merchandising",
-    components: pricingBlocks,
-  },
-  {
-    category: "Marketing & Automation",
-    components: notificationTemplatesBlocks,
-  },
-  {
-    category: "Operations & Logistics",
-    components: [...integrationsBlocks],
-  },
-  {
-    category: "Layouts & Administration",
-    components: [
-      ...cardsBlocks,
-      ...settingsBlocks,
-      ...productIndexBlocks,
-      ...activityFeedBlocks,
-    ],
-  },
-  {
-    category: "Metrics",
-    components: metricsBlocks,
-  },
   {
     category: "Onboarding",
     components: [...onboardingBlocks, ...onboardingNewBlocks],
   },
   {
-    category: "Growth & Ecosystem",
-    components: [...appCrossSellBlocks, ...videoTutorialBlocks, ...supportHubBlocks],
+    category: "Settings",
+    components: [
+      ...settingsBlocks,
+      ...integrationsBlocks,
+      ...notificationTemplatesBlocks,
+      ...pricingBlocks,
+    ],
   },
-];
+  {
+    category: "Layouts",
+    components: [
+      ...productIndexBlocks,
+      ...cardsBlocks,
+      ...activityFeedBlocks,
+      ...supportHubBlocks,
+      ...videoTutorialBlocks,
+      ...appCrossSellBlocks,
+    ],
+  },
+  {
+    category: "Analytics",
+    components: metricsBlocks,
+  },
+].map((group) => ({ ...group, components: [...group.components].sort(byName) }));
 
 export const allEntries: ComponentEntry[] = [
   ...registry,

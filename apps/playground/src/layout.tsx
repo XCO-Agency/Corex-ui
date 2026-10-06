@@ -59,11 +59,14 @@ export default function Layout({ children }: LayoutPropsType) {
         <header className="sticky top-0 z-20 flex h-11 shrink-0 items-center justify-between gap-2 border-b border-border/60 bg-background/80 px-3 backdrop-blur-md">
           <div className="flex min-w-0 items-center gap-2">
             <SidebarTrigger className="size-7 text-muted-foreground" />
-            <Separator orientation="vertical" className="mr-1.5 h-3.5" />
+            <Separator orientation="vertical" className="mr-1.5 h-4 my-2" />
             <Breadcrumb>
               <BreadcrumbList className="gap-1 text-[13px] sm:gap-1.5">
                 <BreadcrumbItem className="hidden sm:block">
-                  <BreadcrumbLink render={<Link to="/" />} className="text-muted-foreground">
+                  <BreadcrumbLink
+                    render={<Link to="/" />}
+                    className="text-muted-foreground"
+                  >
                     {root}
                   </BreadcrumbLink>
                 </BreadcrumbItem>

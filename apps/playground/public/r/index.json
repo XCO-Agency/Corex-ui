@@ -7,13 +7,13 @@
   },
   {
     "name": "ai-recommendations",
-    "title": "Ai Recommendations",
-    "description": "Ai Recommendations block for Shopify applications.",
+    "title": "AI Recommendations",
+    "description": "AI-calculated revenue opportunities with lift badges and one-click actions.",
     "filesCount": 5
   },
   {
     "name": "app-cross-sell",
-    "title": "App Cross-Sell",
+    "title": "App Promotion",
     "description": "Ecosystem app promotion card with one-click installation trigger.",
     "filesCount": 10
   },
@@ -25,19 +25,19 @@
   },
   {
     "name": "integrations-hub",
-    "title": "Integrations Hub",
+    "title": "Integrations",
     "description": "Third-party ERP, CRM, and marketing connectors management.",
     "filesCount": 8
   },
   {
     "name": "metrics-dashboard",
-    "title": "Metrics Dashboard",
+    "title": "Analytics Dashboard",
     "description": "Executive revenue, conversion, and order KPI overview with comparison trends.",
     "filesCount": 3
   },
   {
     "name": "notification-templates",
-    "title": "Notification Templates",
+    "title": "Notifications",
     "description": "Email & SMS transactional template customizer with variable insertion.",
     "filesCount": 8
   },
@@ -49,31 +49,31 @@
   },
   {
     "name": "onboarding-new",
-    "title": "Modern Onboarding Flow",
+    "title": "Store Onboarding",
     "description": "Streamlined interactive checklist onboarding with progress tracking.",
     "filesCount": 17
   },
   {
     "name": "pricing-plans",
-    "title": "Pricing Plans",
+    "title": "Plans & Billing",
     "description": "Subscription plan selection with billing interval toggle and Shopify confirmation modal.",
     "filesCount": 14
   },
   {
     "name": "product-index",
-    "title": "Product Index",
+    "title": "Resource Index",
     "description": "Product index page with IndexFilters (tabs, saved views, filter pills, columns) and an IndexTable.",
     "filesCount": 9
   },
   {
     "name": "settings-layout",
-    "title": "Settings Layout",
+    "title": "Settings",
     "description": "Two-column annotated configuration layout matching Shopify Admin conventions.",
     "filesCount": 10
   },
   {
     "name": "support-hub",
-    "title": "Support Hub",
+    "title": "Support",
     "description": "Knowledge base FAQ accordion, diagnostic system health, and priority support.",
     "filesCount": 11
   },

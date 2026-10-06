@@ -1,15 +1,18 @@
+import { Page } from "@xco-agency/corex-ui";
 import { Onboarding } from "../onboarding";
 
 export function OnboardingExample() {
   return (
-    <Onboarding
-      onGoToDashboard={() => {
-        alert("Redirect to Revenue Dashboard");
-      }}
-      onExit={() => {
-        alert("Exit onboarding setup");
-      }}
-    />
+    <Page heading="Get started" inlineSize="large">
+      <Onboarding
+        onGoToDashboard={() => {
+          alert("Redirect to Revenue Dashboard");
+        }}
+        onExit={() => {
+          alert("Exit onboarding setup");
+        }}
+      />
+    </Page>
   );
 }
 

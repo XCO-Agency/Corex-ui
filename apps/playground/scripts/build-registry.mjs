@@ -16,8 +16,13 @@ const BLOCK_METADATA = {
     title: "Activity Feed",
     description: "Chronological audit log and real-time merchant events feed.",
   },
+  "ai-recommendations": {
+    title: "AI Recommendations",
+    description:
+      "AI-calculated revenue opportunities with lift badges and one-click actions.",
+  },
   "app-cross-sell": {
-    title: "App Cross-Sell",
+    title: "App Promotion",
     description: "Ecosystem app promotion card with one-click installation trigger.",
   },
   cards: {
@@ -26,16 +31,16 @@ const BLOCK_METADATA = {
       "Three versatile card layouts: minimalist, media showcase, and media with actions.",
   },
   "integrations-hub": {
-    title: "Integrations Hub",
+    title: "Integrations",
     description: "Third-party ERP, CRM, and marketing connectors management.",
   },
   "metrics-dashboard": {
-    title: "Metrics Dashboard",
+    title: "Analytics Dashboard",
     description:
       "Executive revenue, conversion, and order KPI overview with comparison trends.",
   },
   "notification-templates": {
-    title: "Notification Templates",
+    title: "Notifications",
     description: "Email & SMS transactional template customizer with variable insertion.",
   },
   onboarding: {
@@ -43,26 +48,26 @@ const BLOCK_METADATA = {
     description: "Multi-step Shopify onboarding wizard with theme embed verification.",
   },
   "onboarding-new": {
-    title: "Modern Onboarding Flow",
+    title: "Store Onboarding",
     description: "Streamlined interactive checklist onboarding with progress tracking.",
   },
   "pricing-plans": {
-    title: "Pricing Plans",
+    title: "Plans & Billing",
     description:
       "Subscription plan selection with billing interval toggle and Shopify confirmation modal.",
   },
   "product-index": {
-    title: "Product Index",
+    title: "Resource Index",
     description:
       "Product index page with IndexFilters (tabs, saved views, filter pills, columns) and an IndexTable.",
   },
   "settings-layout": {
-    title: "Settings Layout",
+    title: "Settings",
     description:
       "Two-column annotated configuration layout matching Shopify Admin conventions.",
   },
   "support-hub": {
-    title: "Support Hub",
+    title: "Support",
     description:
       "Knowledge base FAQ accordion, diagnostic system health, and priority support.",
   },

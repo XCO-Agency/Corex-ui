@@ -6,7 +6,6 @@ export type AppCrossSellItemType = {
   iconBg?: string;
   iconType?: string;
   logoUrl?: string;
-  unlockDiscountText?: string;
   appUrl?: string;
   rating?: number;
   reviewsCount?: number;
@@ -26,7 +25,8 @@ export type AppCrossSellPropsType = {
   description?: string;
   tiers?: DiscountTierType[];
   apps?: AppCrossSellItemType[];
-  onInstall?: (appId: string) => void;
+  /** May return a promise; the row shows a loading state until it settles. */
+  onInstall?: (appId: string) => void | Promise<void>;
   onDismiss?: () => void;
   installedCount?: number;
 };

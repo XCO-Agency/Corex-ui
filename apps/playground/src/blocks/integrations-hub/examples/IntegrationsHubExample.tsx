@@ -102,7 +102,7 @@ export function IntegrationsHubExample() {
   return (
     <Page
       heading="Integrations & Webhooks"
-      subheading="Connect external services to synchronize cart events, customer profiles, and notifications."
+      subtitle="Connect external services to synchronize cart events, customer profiles, and notifications."
       inlineSize="large"
     >
       <BlockStack gap="base">

@@ -66,9 +66,9 @@ const blockFiles: FileItemType[] = [
 
 export const settingsBlocks: ComponentEntry[] = [
   {
-    name: "Settings Layout",
+    name: "Settings",
     slug: "settings-layout",
-    category: "Layouts",
+    category: "Settings",
     description:
       "Production-ready Shopify settings page layouts composed with Corex UI components, supporting annotated two-column and vertical navigation patterns.",
     examples: [

@@ -88,14 +88,14 @@ const blockFiles: FileItemType[] = [
 
 export const pricingBlocks: ComponentEntry[] = [
   {
-    name: "Pricing Plans",
+    name: "Plans & Billing",
     slug: "pricing-plans",
-    category: "Layouts",
+    category: "Settings",
     description:
       "Subscription plan selection and upgrade layout with billing interval toggle, feature comparison checklist, usage quota progress bars, and Shopify billing confirmation modal.",
     examples: [
       {
-        title: "Tiered Pricing & Billing Plans",
+        title: "Plans & Billing Page",
         Example: PricingPlansExample,
         code: PricingPlansExampleRaw,
         filename: "PricingPlansExample.tsx",

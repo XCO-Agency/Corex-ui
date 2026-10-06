@@ -49,7 +49,7 @@ export function NotificationTemplatesExample() {
   return (
     <Page
       heading="Notification & Message Template Designer"
-      subheading="Design high-converting SMS and Email notification copy with live Liquid tag interpolation."
+      subtitle="Design high-converting SMS and Email notification copy with live Liquid tag interpolation."
       inlineSize="large"
     >
       <BlockStack gap="base">

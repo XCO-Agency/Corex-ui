@@ -5,6 +5,7 @@ import {
   BlockStack,
   InlineStack,
   Grid,
+  Page,
   Text,
   Badge,
   Button,
@@ -13,12 +14,17 @@ import { AppIconBadge } from "../partials/AppIconBadge";
 import { AppCrossSellTierProgress } from "../partials/AppCrossSellTierProgress";
 import { DEFAULT_APPS_LIST, DEFAULT_DISCOUNT_TIERS } from "../constants";
 import type { AppCrossSellItemType } from "../types";
+import { getMaxDiscount, getNextTier } from "../utils";
 
 export function AppCrossSellGridExample() {
   const [apps, setApps] = React.useState<AppCrossSellItemType[]>(DEFAULT_APPS_LIST);
 
   const installedCount = apps.filter((a) => a.installed).length;
   const displayedApps = apps.slice(0, 6);
+  const nextTier = getNextTier(DEFAULT_DISCOUNT_TIERS, installedCount);
+  const installLabel = nextTier
+    ? `Install to unlock ${nextTier.discountPercent}% off`
+    : "Install app";
 
   const handleInstall = (id: string) => {
     setApps((current) =>
@@ -27,15 +33,15 @@ export function AppCrossSellGridExample() {
   };
 
   return (
-    <BlockStack gap="base">
+    <Page heading="Partner apps" inlineSize="large">
       <Card>
         <BlockStack gap="base">
           {/* Header */}
           <BlockStack gap="small-300">
             <Text variant="headingMd" as="h2" fontWeight="bold">
-              Get more from every customer and save up to 30%
+              {`Get more from every customer and save up to ${getMaxDiscount(DEFAULT_DISCOUNT_TIERS)}%`}
             </Text>
-            <Text variant="bodySm" tone="subdued" as="p">
+            <Text variant="bodySm" color="subdued" as="p">
               The more apps you install, the higher your revenue, the bigger your discount
               on all of them.
             </Text>
@@ -69,13 +75,9 @@ export function AppCrossSellGridExample() {
                       />
 
                       {app.installed ? (
-                        <Badge tone="success" size="small">
-                          Installed
-                        </Badge>
+                        <Badge tone="success">Installed</Badge>
                       ) : app.builtForShopify ? (
-                        <Badge tone="info" size="small">
-                          Built for Shopify
-                        </Badge>
+                        <Badge tone="info">Built for Shopify</Badge>
                       ) : null}
                     </InlineStack>
 
@@ -90,12 +92,12 @@ export function AppCrossSellGridExample() {
                             ★ {app.rating.toFixed(1)}
                           </Text>
                           {app.reviewsCount && (
-                            <Text variant="bodySm" tone="subdued">
+                            <Text variant="bodySm" color="subdued">
                               ({app.reviewsCount})
                             </Text>
                           )}
                           {app.pricingBadge && (
-                            <Text variant="bodySm" tone="subdued">
+                            <Text variant="bodySm" color="subdued">
                               • {app.pricingBadge}
                             </Text>
                           )}
@@ -103,7 +105,7 @@ export function AppCrossSellGridExample() {
                       )}
                     </BlockStack>
 
-                    <Text variant="bodySm" tone="subdued" as="p">
+                    <Text variant="bodySm" color="subdued" as="p">
                       {app.category}
                     </Text>
                   </BlockStack>
@@ -123,7 +125,7 @@ export function AppCrossSellGridExample() {
                         variant="primary"
                         onClick={() => handleInstall(app.id)}
                       >
-                        {app.unlockDiscountText || "Install app"}
+                        {installLabel}
                       </Button>
                     )}
                   </Box>
@@ -133,6 +135,6 @@ export function AppCrossSellGridExample() {
           </Grid>
         </BlockStack>
       </Card>
-    </BlockStack>
+    </Page>
   );
 }

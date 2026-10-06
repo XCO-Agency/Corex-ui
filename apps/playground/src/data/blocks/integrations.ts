@@ -56,14 +56,14 @@ const blockFiles: FileItemType[] = [
 
 export const integrationsBlocks: ComponentEntry[] = [
   {
-    name: "Integrations Hub",
+    name: "Integrations",
     slug: "integrations-hub",
-    category: "Layouts",
+    category: "Settings",
     description:
       "App integrations and webhooks directory with service filter tabs, connection status indicators, live sync toggles, API key credentials modal, and webhook delivery log table.",
     examples: [
       {
-        title: "App Integrations & Webhooks Hub",
+        title: "Integrations Directory",
         Example: IntegrationsHubExample,
         code: IntegrationsHubExampleRaw,
         filename: "IntegrationsHubExample.tsx",

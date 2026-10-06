@@ -34,7 +34,6 @@ export const DEFAULT_APPS_LIST: AppCrossSellItemType[] = [
     reviewsCount: 6,
     pricingBadge: "Free trial available",
     appUrl: "https://apps.shopify.com/claimify",
-    unlockDiscountText: "Install to unlock 10% off",
   },
   {
     id: "maestro-theme-scheduler",
@@ -48,7 +47,6 @@ export const DEFAULT_APPS_LIST: AppCrossSellItemType[] = [
     reviewsCount: 10,
     pricingBadge: "Free trial available",
     appUrl: "https://apps.shopify.com/maestro-theme-scheduler",
-    unlockDiscountText: "Installed",
   },
   {
     id: "maestro-products-scheduler",
@@ -62,7 +60,6 @@ export const DEFAULT_APPS_LIST: AppCrossSellItemType[] = [
     reviewsCount: 5,
     pricingBadge: "Free trial available",
     appUrl: "https://apps.shopify.com/product-maestro-scheduler",
-    unlockDiscountText: "Install to unlock 10% off",
   },
   {
     id: "giftcard-balance-checker",
@@ -75,7 +72,6 @@ export const DEFAULT_APPS_LIST: AppCrossSellItemType[] = [
     reviewsCount: 4,
     pricingBadge: "Free trial available",
     appUrl: "https://apps.shopify.com/giftcard-balance-checker",
-    unlockDiscountText: "Install to unlock 10% off",
   },
   {
     id: "floaty",
@@ -86,7 +82,6 @@ export const DEFAULT_APPS_LIST: AppCrossSellItemType[] = [
     iconType: "floaty",
     pricingBadge: "Free plan available",
     appUrl: "https://apps.shopify.com/floaty",
-    unlockDiscountText: "Install to unlock 10% off",
   },
   {
     id: "theme-visibility-scheduler",
@@ -99,7 +94,6 @@ export const DEFAULT_APPS_LIST: AppCrossSellItemType[] = [
     reviewsCount: 3,
     pricingBadge: "Free trial available",
     appUrl: "https://apps.shopify.com/theme-visibility-scheduler",
-    unlockDiscountText: "Install to unlock 10% off",
   },
   {
     id: "workify",
@@ -112,7 +106,6 @@ export const DEFAULT_APPS_LIST: AppCrossSellItemType[] = [
     reviewsCount: 1,
     pricingBadge: "Free trial available",
     appUrl: "https://apps.shopify.com/workify",
-    unlockDiscountText: "Installed",
   },
   {
     id: "rank-smart-collections",
@@ -125,7 +118,6 @@ export const DEFAULT_APPS_LIST: AppCrossSellItemType[] = [
     reviewsCount: 2,
     pricingBadge: "Free trial available",
     appUrl: "https://apps.shopify.com/rankify-smart-collection-sort",
-    unlockDiscountText: "Install to unlock 10% off",
   },
   {
     id: "maestro-collections-scheduler",
@@ -136,7 +128,6 @@ export const DEFAULT_APPS_LIST: AppCrossSellItemType[] = [
     iconType: "collections-scheduler",
     pricingBadge: "Free plan available",
     appUrl: "https://apps.shopify.com/maestro-collections-schedule",
-    unlockDiscountText: "Install to unlock 10% off",
   },
   {
     id: "orda",
@@ -147,7 +138,6 @@ export const DEFAULT_APPS_LIST: AppCrossSellItemType[] = [
     iconType: "orda",
     pricingBadge: "Free",
     appUrl: "https://apps.shopify.com/order-helper-dev",
-    unlockDiscountText: "Install to unlock 10% off",
   },
   {
     id: "cartify",
@@ -158,7 +148,6 @@ export const DEFAULT_APPS_LIST: AppCrossSellItemType[] = [
     iconType: "cartify",
     pricingBadge: "Free",
     appUrl: "https://apps.shopify.com/cartify-multi-carts-sharing",
-    unlockDiscountText: "Install to unlock 10% off",
   },
   {
     id: "quick-notice",
@@ -169,7 +158,6 @@ export const DEFAULT_APPS_LIST: AppCrossSellItemType[] = [
     iconType: "quick-notice",
     pricingBadge: "Free plan available",
     appUrl: "https://apps.shopify.com/quick-notice-clear-alert",
-    unlockDiscountText: "Install to unlock 10% off",
   },
   {
     id: "matchly",
@@ -180,7 +168,6 @@ export const DEFAULT_APPS_LIST: AppCrossSellItemType[] = [
     iconType: "matchly",
     pricingBadge: "Free trial available",
     appUrl: "https://apps.shopify.com/matchly-1",
-    unlockDiscountText: "Install to unlock 10% off",
   },
   {
     id: "prizify",
@@ -191,7 +178,6 @@ export const DEFAULT_APPS_LIST: AppCrossSellItemType[] = [
     iconType: "prizify",
     pricingBadge: "Free plan available",
     appUrl: "https://apps.shopify.com/prizify-loyalty-rewards",
-    unlockDiscountText: "Installed",
   },
   {
     id: "subflow",
@@ -202,6 +188,5 @@ export const DEFAULT_APPS_LIST: AppCrossSellItemType[] = [
     iconType: "subflow",
     pricingBadge: "Free",
     appUrl: "https://apps.shopify.com/subscriptions-5",
-    unlockDiscountText: "Install to unlock 10% off",
   },
 ];

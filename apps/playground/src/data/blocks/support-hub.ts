@@ -78,14 +78,14 @@ const blockFiles: FileItemType[] = [
 
 export const supportHubBlocks: ComponentEntry[] = [
   {
-    name: "Explore more support",
+    name: "Support",
     slug: "support-hub",
-    category: "Growth & Ecosystem",
+    category: "Layouts",
     description:
       "A merchant assistance and support hub featuring live team avatars, operating schedule, direct chat/call/email actions, and quick-access cards for Feature Requests and FAQ documentation.",
     examples: [
       {
-        title: "Explore more support",
+        title: "Support Hub",
         Example: SupportHubExample,
         code: SupportHubExampleRaw,
         filename: "SupportHubExample.tsx",
@@ -93,7 +93,7 @@ export const supportHubBlocks: ComponentEntry[] = [
         npxCommand: "npx @xco-agency/corex-ui@latest add support-hub",
       },
       {
-        title: "Full-Width Horizontal Banner Layout",
+        title: "Horizontal Banner",
         Example: SupportHubBannerExample,
         code: SupportHubBannerExampleRaw,
         filename: "SupportHubBannerExample.tsx",
@@ -101,7 +101,7 @@ export const supportHubBlocks: ComponentEntry[] = [
         npxCommand: "npx @xco-agency/corex-ui@latest add support-hub",
       },
       {
-        title: "3-Column Symmetrical Resource Grid",
+        title: "Resource Grid",
         Example: SupportHubGridExample,
         code: SupportHubGridExampleRaw,
         filename: "SupportHubGridExample.tsx",

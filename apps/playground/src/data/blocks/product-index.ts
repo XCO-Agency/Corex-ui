@@ -42,14 +42,14 @@ const blockFiles: FileItemType[] = [
 
 export const productIndexBlocks: ComponentEntry[] = [
   {
-    name: "Product Index",
+    name: "Resource Index",
     slug: "product-index",
     category: "Layouts",
     description:
       "Full Shopify admin product index page: IndexFilters with view tabs, saved views, filter pills, sort and column settings, wired to an IndexTable with selection, bulk actions, sortable headings, pagination and an empty state.",
     examples: [
       {
-        title: "Product Index Page",
+        title: "Index Page",
         Example: ProductIndexExample,
         code: ProductIndexExampleRaw,
         filename: "ProductIndexExample.tsx",

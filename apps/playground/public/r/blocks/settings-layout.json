@@ -1,7 +1,7 @@
 {
   "name": "settings-layout",
   "type": "registry:block",
-  "title": "Settings Layout",
+  "title": "Settings",
   "description": "Two-column annotated configuration layout matching Shopify Admin conventions.",
   "dependencies": [
     "@xco-agency/corex-ui"

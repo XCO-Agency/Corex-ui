@@ -1,7 +1,7 @@
 {
   "name": "pricing-plans",
   "type": "registry:block",
-  "title": "Pricing Plans",
+  "title": "Plans & Billing",
   "description": "Subscription plan selection with billing interval toggle and Shopify confirmation modal.",
   "dependencies": [
     "@xco-agency/corex-ui"

@@ -56,14 +56,14 @@ const blockFiles: FileItemType[] = [
 
 export const activityFeedBlocks: ComponentEntry[] = [
   {
-    name: "Activity & Audit Feed",
+    name: "Activity Feed",
     slug: "activity-feed",
     category: "Layouts",
     description:
       "Chronological audit trail and activity log feed with search & event filters, user avatars, severity badges, JSON payload inspector modal, and empty states.",
     examples: [
       {
-        title: "Activity & Audit Feed",
+        title: "Activity Feed",
         Example: ActivityFeedExample,
         code: ActivityFeedExampleRaw,
         filename: "ActivityFeedExample.tsx",

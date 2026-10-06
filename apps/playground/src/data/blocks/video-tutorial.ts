@@ -46,14 +46,14 @@ const blockFiles: FileItemType[] = [
 
 export const videoTutorialBlocks: ComponentEntry[] = [
   {
-    name: "Learn how to set up a fully optimized Shopify cart drawer",
+    name: "Video Tutorial",
     slug: "video-tutorial",
-    category: "Growth & Ecosystem",
+    category: "Layouts",
     description:
       "Educational onboarding card with 16:9 video thumbnail preview, duration timestamp, title, description, and contextual options menu matching Shopify app onboarding.",
     examples: [
       {
-        title: "Learn how to set up a fully optimized Shopify cart drawer",
+        title: "Video Card",
         Example: VideoTutorialExample,
         code: VideoTutorialExampleRaw,
         filename: "VideoTutorialExample.tsx",
@@ -61,7 +61,7 @@ export const videoTutorialBlocks: ComponentEntry[] = [
         npxCommand: "npx @xco-agency/corex-ui@latest add video-tutorial",
       },
       {
-        title: "Compact Sidebar Video Card",
+        title: "Compact Video Card",
         Example: VideoTutorialCompactExample,
         code: VideoTutorialCompactExampleRaw,
         filename: "VideoTutorialCompactExample.tsx",
