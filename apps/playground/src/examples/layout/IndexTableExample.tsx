@@ -322,7 +322,7 @@ export function IndexTableExample() {
                 product.status === "Archived"
                   ? "critical"
                   : product.status === "Draft"
-                    ? "success"
+                    ? "subdued"
                     : undefined
               }
               background={product.id === "prod-2" ? "#eef6ff" : undefined}
@@ -356,7 +356,9 @@ export function IndexTableExample() {
               </IndexTable.Cell>
 
               <IndexTable.Cell>
-                <Badge tone="success">{product.status}</Badge>
+                <Badge tone={product.status === "Draft" ? "neutral" : "success"}>
+                  {product.status}
+                </Badge>
               </IndexTable.Cell>
 
               <IndexTable.Cell>
