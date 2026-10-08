@@ -224,7 +224,7 @@ describe("IndexTable", () => {
         <IndexTable.Row id="a" tone="critical">
           <IndexTable.Cell>A</IndexTable.Cell>
         </IndexTable.Row>
-        <IndexTable.Row id="b" tone="success" backgroundColor="#fef3c7">
+        <IndexTable.Row id="b" tone="success" background="#fef3c7">
           <IndexTable.Cell>B</IndexTable.Cell>
         </IndexTable.Row>
       </IndexTable>,

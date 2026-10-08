@@ -317,15 +317,15 @@ export function IndexTableExample() {
             <IndexTable.Row
               key={product.id}
               id={product.id}
-              // Highlight rows with a tone, or any custom colour via backgroundColor.
+              // Highlight rows with a tone, or any custom colour via background.
               tone={
                 product.status === "Archived"
                   ? "critical"
                   : product.status === "Draft"
-                    ? "caution"
+                    ? "success"
                     : undefined
               }
-              backgroundColor={product.id === "prod-2" ? "#eef6ff" : undefined}
+              background={product.id === "prod-2" ? "#eef6ff" : undefined}
               selected={selectedResources.includes(product.id)}
               onClick={() => alert(`Open ${product.name}`)}
               subRows={variantsByProduct[product.id]?.map((variant) => (

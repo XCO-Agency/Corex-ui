@@ -122,15 +122,15 @@ export type IndexTablePropsType = {
   stickyHeader?: boolean | number;
 };
 
-/** Background tone used to highlight a row. */
+/** Background tone used to highlight a row; matches IconTile's tones. */
 export type IndexTableRowToneType =
   | "info"
   | "success"
   | "warning"
   | "caution"
   | "critical"
-  | "magic"
-  | "neutral";
+  | "neutral"
+  | "subdued";
 
 export type IndexTableRowPropsType = {
   children?: ReactNode;
@@ -160,7 +160,7 @@ export type IndexTableRowPropsType = {
    * Highlights the row with a custom colour (any CSS colour, e.g. `"#fef3c7"`).
    * Overrides `tone`; hover darkens it slightly.
    */
-  backgroundColor?: string;
+  background?: string;
   className?: string;
   style?: CSSProperties;
 };

@@ -132,14 +132,15 @@ export const INDEX_TABLE_CSS = `
 .cx-it__row--clickable { cursor: pointer; }
 
 .cx-it__row--body:hover { --cx-it-row-bg: var(--cx-it-hover); }
-/* Highlighted rows (\`tone\` / \`backgroundColor\`). Selection still wins. */
-.cx-it__row--tone-info { --cx-it-row-tone: var(--cx-it-tone-info-color, #eaf4ff); }
-.cx-it__row--tone-success { --cx-it-row-tone: var(--cx-it-tone-success-color, #cdfee1); }
-.cx-it__row--tone-warning { --cx-it-row-tone: var(--cx-it-tone-warning-color, #fff1e3); }
-.cx-it__row--tone-caution { --cx-it-row-tone: var(--cx-it-tone-caution-color, #fff8db); }
-.cx-it__row--tone-critical { --cx-it-row-tone: var(--cx-it-tone-critical-color, #fee8eb); }
-.cx-it__row--tone-magic { --cx-it-row-tone: var(--cx-it-tone-magic-color, #f5f0ff); }
-.cx-it__row--tone-neutral { --cx-it-row-tone: var(--cx-it-tone-neutral-color, #f1f1f1); }
+/* Highlighted rows (\`tone\` / \`background\`). Selection still wins. */
+/* Tone colours: IconTile's \`base\` tones, mixed with 70% white. */
+.cx-it__row--tone-info { --cx-it-row-tone: var(--cx-it-tone-info-color, #e0f6fe); }
+.cx-it__row--tone-success { --cx-it-row-tone: var(--cx-it-tone-success-color, #ebfdd8); }
+.cx-it__row--tone-warning { --cx-it-row-tone: var(--cx-it-tone-warning-color, #fceddc); }
+.cx-it__row--tone-caution { --cx-it-row-tone: var(--cx-it-tone-caution-color, #fef5da); }
+.cx-it__row--tone-critical { --cx-it-row-tone: var(--cx-it-tone-critical-color, #fdf2f0); }
+.cx-it__row--tone-neutral { --cx-it-row-tone: var(--cx-it-tone-neutral-color, #f5f5f5); }
+.cx-it__row--tone-subdued { --cx-it-row-tone: var(--cx-it-tone-subdued-color, #f8f8f8); }
 .cx-it__row--toned { --cx-it-row-bg: var(--cx-it-row-tone); }
 .cx-it__row--toned:hover { --cx-it-row-bg: color-mix(in srgb, var(--cx-it-row-tone) 94%, #000000); }
 .cx-it__row--body[aria-selected="true"] { --cx-it-row-bg: var(--cx-it-selected); }

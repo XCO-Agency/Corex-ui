@@ -721,7 +721,7 @@ function IndexTableRow({
   defaultExpanded = false,
   onExpandedChange,
   tone,
-  backgroundColor,
+  background,
   className,
   style,
 }: IndexTableRowPropsType): ReactElement | null {
@@ -821,13 +821,13 @@ function IndexTableRow({
           "cx-it__row cx-it__row--body",
           onClick && "cx-it__row--clickable",
           table.zebra && zebraIndex % 2 === 1 && "cx-it__row--zebra",
-          (tone || backgroundColor) && "cx-it__row--toned",
-          tone && !backgroundColor && `cx-it__row--tone-${tone}`,
+          (tone || background) && "cx-it__row--toned",
+          tone && !background && `cx-it__row--tone-${tone}`,
           className,
         )}
         style={
-          backgroundColor
-            ? ({ "--cx-it-row-tone": backgroundColor, ...style } as CSSProperties)
+          background
+            ? ({ "--cx-it-row-tone": background, ...style } as CSSProperties)
             : style
         }
         {...(canDrag ? { [DRAG_INDEX_ATTRIBUTE]: index } : {})}
