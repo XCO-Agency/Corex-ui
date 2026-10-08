@@ -195,14 +195,7 @@ declare global {
 
   namespace JSX {
     interface IntrinsicElements {
-      "s-money-field": any;
-      "s-color-field": any;
-      "s-drop-zone": any;
-      "s-email-field": any;
-      "s-password-field": any;
-      "s-url-field": any;
       "s-progress": SProgressProps;
-      "s-date-picker": any;
     }
   }
 }
@@ -211,7 +204,6 @@ declare module "react" {
   namespace JSX {
     interface IntrinsicElements {
       "s-progress": SProgressProps;
-      "s-date-picker": any;
     }
   }
 }

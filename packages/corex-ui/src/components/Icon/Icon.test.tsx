@@ -15,7 +15,7 @@ describe("Icon", () => {
     const { container } = render(<Icon type="save" tone="white" />);
     const el = document.querySelector("s-icon");
     expect(el).not.toBeNull();
-    expect(el).toHaveAttribute("tone", "white");
+    expect(el).toHaveAttribute("tone", "auto");
 
     const wrapper = container.querySelector("div");
     expect(wrapper).toHaveStyle({ display: "contents" });

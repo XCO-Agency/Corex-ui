@@ -7,7 +7,7 @@ describe("Pagination", () => {
     const { container } = render(<Pagination hasNext />);
     const [previous, next] = Array.from(container.querySelectorAll("s-button"));
 
-    expect(previous).toHaveAttribute("disabled", "");
+    expect(previous).toHaveAttribute("disabled", "true");
     expect(next).not.toHaveAttribute("disabled");
   });
 

@@ -54,15 +54,20 @@ function toAttributeName(key: string): string {
  * Polaris boolean attributes are presence-based: the runtime parses any string
  * value, `"false"` included, as `true`. React 18 stringifies every
  * custom-element prop, so `disabled={false}` would render `disabled="false"`
- * and disable the element. `true` is written as the empty attribute and
- * `false` omits it.
+ * and disable the element, so `false` omits it.
+ *
+ * `true` stays the boolean `true`, never `""`: the Polaris runtime patches
+ * React's props object and assigns every prop the element exposes as a
+ * property (`el.disabled = value`), and its boolean setter treats the falsy
+ * `""` as `false`. Without the runtime, React writes `disabled="true"`, which
+ * the presence-based parser still reads as `true`.
  *
  * Returns `undefined` when the attribute must not be written at all.
  */
 function toAttributeValue(name: string, value: unknown): unknown {
   if (typeof value !== "boolean") return value;
   if (name.includes("-") || ENUMERATED_FALSE_ATTRIBUTES.has(name)) return value;
-  return value ? "" : undefined;
+  return value ? true : undefined;
 }
 
 const hasOwn = (object: object, key: string) =>

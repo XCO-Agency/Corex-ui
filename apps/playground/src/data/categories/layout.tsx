@@ -9,6 +9,8 @@ import { CardExample } from "@/examples/layout/CardExample";
 import CardExampleRaw from "@/examples/layout/CardExample.tsx?raw";
 import { PageExample } from "@/examples/layout/PageExample";
 import PageExampleRaw from "@/examples/layout/PageExample.tsx?raw";
+import { HoverableExample } from "@/examples/layout/HoverableExample";
+import HoverableExampleRaw from "@/examples/layout/HoverableExample.tsx?raw";
 import { SelectableExample } from "@/examples/layout/SelectableExample";
 import SelectableExampleRaw from "@/examples/layout/SelectableExample.tsx?raw";
 import { DividerExample } from "@/examples/layout/DividerExample";
@@ -139,6 +141,20 @@ export const layoutComponents: ComponentEntry[] = [
         title: "Plans, channels and tones",
         Example: SelectableExample,
         code: SelectableExampleRaw,
+      },
+    ],
+  },
+  {
+    name: "Hoverable",
+    slug: "hoverable",
+    category: "Layout",
+    description:
+      "Hover group that shows or hides content anywhere inside it with an animation, without adding a box or shifting the layout. Also exposes the hover state to render-function children.",
+    examples: [
+      {
+        title: "Card actions and render function",
+        Example: HoverableExample,
+        code: HoverableExampleRaw,
       },
     ],
   },

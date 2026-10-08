@@ -79,10 +79,10 @@ describe("createWebComponent", () => {
     const el = container.querySelector("s-probe")!;
 
     expect(el).not.toHaveAttribute("disabled");
-    expect(el).toHaveAttribute("loading", "");
+    expect(el).toHaveAttribute("loading", "true");
 
     rerender(<SProbe disabled loading={false} />);
-    expect(el).toHaveAttribute("disabled", "");
+    expect(el).toHaveAttribute("disabled", "true");
     expect(el).not.toHaveAttribute("loading");
   });
 

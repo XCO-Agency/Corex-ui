@@ -1,9 +1,16 @@
 import {
   forwardRef,
+  useMemo,
   type CSSProperties,
   type ForwardRefExoticComponent,
   type RefAttributes,
 } from "react";
+import { mergeRefs } from "../../core/mergeRefs";
+import {
+  STACK_SCROLL_CLASS,
+  STACK_SCROLL_HIDDEN_CLASS,
+  useStackScrollbar,
+} from "../../core/useStackScrollbar";
 import { mapAlignment, resolveSpacing } from "../../core/stackUtils";
 import type { InlineStackPropsType } from "./InlineStack.types";
 
@@ -49,6 +56,7 @@ export const InlineStack: ForwardRefExoticComponent<
     overflow,
     overflowX,
     overflowY,
+    hideScrollbar,
     position,
     className,
     style,
@@ -129,10 +137,24 @@ export const InlineStack: ForwardRefExoticComponent<
     ? { ...computedStyles, ...style }
     : computedStyles;
 
+  const isScrollable = [overflow, overflowX, overflowY].some(
+    (value) => value === "auto" || value === "scroll",
+  );
+  const scrollRef = useStackScrollbar(isScrollable);
+  const mergedRef = useMemo(() => mergeRefs(scrollRef, ref), [scrollRef, ref]);
+  const classes =
+    [
+      className,
+      isScrollable && STACK_SCROLL_CLASS,
+      isScrollable && hideScrollbar && STACK_SCROLL_HIDDEN_CLASS,
+    ]
+      .filter(Boolean)
+      .join(" ") || undefined;
+
   const Component = (as || "div") as "div";
 
   return (
-    <Component ref={ref} id={id} className={className} style={finalStyle} {...rest}>
+    <Component ref={mergedRef} id={id} className={classes} style={finalStyle} {...rest}>
       {children}
     </Component>
   );

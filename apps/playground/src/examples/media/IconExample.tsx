@@ -47,7 +47,7 @@ export function IconExample() {
         <InlineStack gap="base" alignItems="center">
           <InlineStack gap="small-200" alignItems="center">
             <IconTile tone="critical" color="strong" size="small">
-              <Icon type="star" accessibilityLabel="Star" />
+              <Icon type="star" tone="white" accessibilityLabel="Star" />
             </IconTile>
             <IconTile tone="success" color="strong">
               <Icon type="heart" tone="white" accessibilityLabel="Heart" />

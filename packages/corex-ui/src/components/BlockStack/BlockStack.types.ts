@@ -87,6 +87,12 @@ export type BlockStackPropsType = Omit<
   overflow?: CSSProperties["overflow"];
   overflowX?: CSSProperties["overflowX"];
   overflowY?: CSSProperties["overflowY"];
+  /**
+   * Hides the scrollbar of an overflowing stack while keeping it scrollable.
+   * By default a minimalist scrollbar is shown only while scrolling.
+   * @default false
+   */
+  hideScrollbar?: boolean;
   /** Position. */
   position?: CSSProperties["position"];
   /** Additional CSS class names. */

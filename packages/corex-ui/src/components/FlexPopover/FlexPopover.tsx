@@ -17,11 +17,9 @@ const STYLE_ELEMENT_ID = "corex-flex-popover-styles";
 const POPOVER_CSS = `
 .corex-native-popover {
   padding: 0;
-  border-radius: 16px;
-  box-shadow:
-    0 4px 8px rgba(0, 0, 0, 0.06),
-    0 12px 30px rgba(0, 0, 0, 0.10);
+  background: transparent !important;
   opacity: 0;
+  border: none;
   transform: translateY(-4px) scale(0.97);
   transform-origin: top left;
   transition:
@@ -303,7 +301,7 @@ export function FlexPopover({
         maxHeight: maxHeight ?? "auto",
         boxSizing: "border-box",
         zIndex,
-        overflow: "clip",
+        overflow: "unset",
         visibility: isOpen ? "visible" : "hidden",
         ...(!isPopoverSupported ? { display: isOpen ? "block" : "none" } : {}),
         ...customStyle,

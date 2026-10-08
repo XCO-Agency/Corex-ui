@@ -1,4 +1,4 @@
-import { forwardRef, Ref } from "react";
+import { forwardRef, useCallback, Ref } from "react";
 import type { FunctionComponent, SVGProps } from "react";
 import { createWebComponent } from "../../core/createWebComponent";
 import type { IconPropsType } from "./Icon.types";
@@ -21,6 +21,47 @@ function iconPixelSize(size: IconPropsType["size"]): number {
 }
 
 /**
+ * Inside its shadow root `s-icon` colours the glyph with
+ * `color: var(--s-icon-color-<hash>, …)`, where `<hash>` changes with every
+ * Polaris build. Outside `color` is ignored, so to tint the icon we read the
+ * real variable name from the shadow stylesheet and set it on the host.
+ */
+const ICON_COLOR_VAR_PATTERN = /--s-icon-color-[\w-]+/;
+let iconColorVar: string | undefined;
+
+function findIconColorVar(root: ShadowRoot): string | undefined {
+  const sheets: CSSStyleSheet[] = [
+    ...(root.adoptedStyleSheets ?? []),
+    ...Array.from(root.styleSheets),
+  ];
+  for (const sheet of sheets) {
+    try {
+      for (const rule of Array.from(sheet.cssRules)) {
+        const match = rule.cssText.match(ICON_COLOR_VAR_PATTERN);
+        if (match) return match[0];
+      }
+    } catch {
+      // Cross-origin sheet; skip it.
+    }
+  }
+  const style = root.querySelector("style")?.textContent ?? "";
+  return style.match(ICON_COLOR_VAR_PATTERN)?.[0];
+}
+
+function applyIconColor(el: HTMLElement, color: string) {
+  const apply = () => {
+    if (!iconColorVar && el.shadowRoot) iconColorVar = findIconColorVar(el.shadowRoot);
+    if (!iconColorVar) return false;
+    el.style.setProperty(iconColorVar, color);
+    return true;
+  };
+  if (apply()) return;
+  customElements.whenDefined("s-icon").then(() => {
+    if (!apply()) requestAnimationFrame(apply);
+  });
+}
+
+/**
  * Icon component supporting Polaris icon source types:
  * - String identifier for Polaris web component (e.g. `"search"`, `"save"`, `"star"`).
  * - React component (Polaris SVG icon component).
@@ -30,7 +71,17 @@ export const Icon = forwardRef<HTMLElement, IconPropsType>(function Icon(
   ref,
 ) {
   const isWhite = tone === "white" || style?.color === "#fff" || style?.color === "white";
+  const iconVars: Record<string, string> = {};
+  const iconColor = isWhite ? "#fff" : undefined;
 
+  const setIconRef = useCallback(
+    (el: HTMLElement | null) => {
+      if (typeof ref === "function") ref(el);
+      else if (ref) ref.current = el;
+      if (el && iconColor) applyIconColor(el, iconColor);
+    },
+    [ref, iconColor],
+  );
   if (typeof source === "function") {
     const SourceComponent = source as FunctionComponent<SVGProps<SVGSVGElement>>;
     const pixelSize = iconPixelSize(size);
@@ -64,21 +115,15 @@ export const Icon = forwardRef<HTMLElement, IconPropsType>(function Icon(
     <div
       style={{
         display: "contents",
-        ...(isWhite
-          ? {
-              color: "#fff",
-              "--s-icon-color": "#fff",
-              "--p-color-icon": "#fff",
-              "--s-icon-color-26021": "#fff",
-            }
-          : {}),
+        ...iconVars,
         ...style,
       }}
     >
       <SIcon
-        ref={ref}
+        ref={setIconRef}
         type={type ?? source ?? undefined}
-        tone={tone}
+        // `s-icon` has no "white" tone; the colour is set via `setIconRef`.
+        tone={isWhite ? "auto" : tone}
         size={size}
         aria-label={accessibilityLabel ?? source}
         {...rest}
