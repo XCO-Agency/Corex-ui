@@ -132,14 +132,24 @@ export const INDEX_TABLE_CSS = `
 .cx-it__row--clickable { cursor: pointer; }
 
 .cx-it__row--body:hover { --cx-it-row-bg: var(--cx-it-hover); }
+/* Highlighted rows (\`tone\` / \`backgroundColor\`). Selection still wins. */
+.cx-it__row--tone-info { --cx-it-row-tone: var(--cx-it-tone-info-color, #eaf4ff); }
+.cx-it__row--tone-success { --cx-it-row-tone: var(--cx-it-tone-success-color, #cdfee1); }
+.cx-it__row--tone-warning { --cx-it-row-tone: var(--cx-it-tone-warning-color, #fff1e3); }
+.cx-it__row--tone-caution { --cx-it-row-tone: var(--cx-it-tone-caution-color, #fff8db); }
+.cx-it__row--tone-critical { --cx-it-row-tone: var(--cx-it-tone-critical-color, #fee8eb); }
+.cx-it__row--tone-magic { --cx-it-row-tone: var(--cx-it-tone-magic-color, #f5f0ff); }
+.cx-it__row--tone-neutral { --cx-it-row-tone: var(--cx-it-tone-neutral-color, #f1f1f1); }
+.cx-it__row--toned { --cx-it-row-bg: var(--cx-it-row-tone); }
+.cx-it__row--toned:hover { --cx-it-row-bg: color-mix(in srgb, var(--cx-it-row-tone) 94%, #000000); }
 .cx-it__row--body[aria-selected="true"] { --cx-it-row-bg: var(--cx-it-selected); }
 .cx-it__row--body[aria-selected="true"]:hover { --cx-it-row-bg: var(--cx-it-selected-hover); }
 
-.cx-it__row--body:is(:hover, [aria-selected="true"]) {
+.cx-it__row--body:is(:hover, [aria-selected="true"], .cx-it__row--toned) {
   border-radius: var(--cx-it-radius);
   border-top-color: transparent;
 }
-.cx-it__row--body:is(:hover, [aria-selected="true"]) + .cx-it__row--body {
+.cx-it__row--body:is(:hover, [aria-selected="true"], .cx-it__row--toned) + .cx-it__row--body {
   border-top-color: transparent;
 }
 
@@ -149,12 +159,12 @@ export const INDEX_TABLE_CSS = `
  * would show nothing. Instead the cell paints the backdrop, and a ::before
  * layer repaints the row colour with the rounded corners on top of it.
  */
-.cx-it__row:is(.cx-it__row--head, :hover, [aria-selected="true"])
+.cx-it__row:is(.cx-it__row--head, :hover, [aria-selected="true"], .cx-it__row--toned)
   > .cx-it__cell--sticky:first-child::before {
   border-start-start-radius: var(--cx-it-radius);
   border-end-start-radius: var(--cx-it-radius);
 }
-.cx-it__row:is(.cx-it__row--head, :hover, [aria-selected="true"])
+.cx-it__row:is(.cx-it__row--head, :hover, [aria-selected="true"], .cx-it__row--toned)
   > .cx-it__cell--sticky:last-child::before {
   border-start-end-radius: var(--cx-it-radius);
   border-end-end-radius: var(--cx-it-radius);
@@ -165,7 +175,7 @@ export const INDEX_TABLE_CSS = `
  * corners sit out of view. Clip highlighted rows to the visible part instead
  * (offsets set from the scroll position in JS) and round that.
  */
-.cx-it__row:is(.cx-it__row--head, .cx-it__row--body:hover, [aria-selected="true"]) {
+.cx-it__row:is(.cx-it__row--head, .cx-it__row--body:hover, [aria-selected="true"], .cx-it__row--toned) {
   clip-path: inset(
     0 var(--cx-it-clip-end, 0px) 0 var(--cx-it-clip-start, 0px) round var(--cx-it-radius)
   );
@@ -207,11 +217,11 @@ export const INDEX_TABLE_CSS = `
   grid-column: 1 / -1;
 }
 .cx-it__subrows > .cx-it__row--body:first-child { border-top-color: var(--cx-it-border); }
-.cx-it__row--body:is(:hover, [aria-selected="true"]) + .cx-it__subrows > .cx-it__row--body:first-child,
-.cx-it__subrows > .cx-it__row--body:first-child:is(:hover, [aria-selected="true"]) {
+.cx-it__row--body:is(:hover, [aria-selected="true"], .cx-it__row--toned) + .cx-it__subrows > .cx-it__row--body:first-child,
+.cx-it__subrows > .cx-it__row--body:first-child:is(:hover, [aria-selected="true"], .cx-it__row--toned) {
   border-top-color: transparent;
 }
-.cx-it__subrows:has(> .cx-it__row--body:last-child:is(:hover, [aria-selected="true"]))
+.cx-it__subrows:has(> .cx-it__row--body:last-child:is(:hover, [aria-selected="true"], .cx-it__row--toned))
   + .cx-it__row--body {
   border-top-color: transparent;
 }

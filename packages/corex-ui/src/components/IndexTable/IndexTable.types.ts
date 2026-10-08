@@ -122,6 +122,16 @@ export type IndexTablePropsType = {
   stickyHeader?: boolean | number;
 };
 
+/** Background tone used to highlight a row. */
+export type IndexTableRowToneType =
+  | "info"
+  | "success"
+  | "warning"
+  | "caution"
+  | "critical"
+  | "magic"
+  | "neutral";
+
 export type IndexTableRowPropsType = {
   children?: ReactNode;
   id?: string;
@@ -144,6 +154,13 @@ export type IndexTableRowPropsType = {
   /** Initial expanded state when uncontrolled. @default false */
   defaultExpanded?: boolean;
   onExpandedChange?: (expanded: boolean) => void;
+  /** Highlights the row with a tone background. Selection still takes precedence. */
+  tone?: IndexTableRowToneType;
+  /**
+   * Highlights the row with a custom colour (any CSS colour, e.g. `"#fef3c7"`).
+   * Overrides `tone`; hover darkens it slightly.
+   */
+  backgroundColor?: string;
   className?: string;
   style?: CSSProperties;
 };

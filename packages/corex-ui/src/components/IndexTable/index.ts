@@ -8,6 +8,7 @@ export type {
   IndexTablePaginationType,
   IndexTablePropsType,
   IndexTableRowPropsType,
+  IndexTableRowToneType,
   IndexTableSelectionTypeType,
   IndexTableSortDirectionType,
   IndexTableStickyType,

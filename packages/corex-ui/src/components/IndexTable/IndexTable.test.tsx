@@ -218,6 +218,25 @@ describe("IndexTable", () => {
     expect(cellOf("$24.00")).not.toHaveClass("cx-it__cell--sticky");
   });
 
+  it("highlights rows with a tone or a custom background colour", () => {
+    render(
+      <IndexTable headings={["Name"]} itemCount={2}>
+        <IndexTable.Row id="a" tone="critical">
+          <IndexTable.Cell>A</IndexTable.Cell>
+        </IndexTable.Row>
+        <IndexTable.Row id="b" tone="success" backgroundColor="#fef3c7">
+          <IndexTable.Cell>B</IndexTable.Cell>
+        </IndexTable.Row>
+      </IndexTable>,
+    );
+    const a = document.getElementById("a")!;
+    const b = document.getElementById("b")!;
+    expect(a).toHaveClass("cx-it__row--toned", "cx-it__row--tone-critical");
+    expect(b).toHaveClass("cx-it__row--toned");
+    expect(b).not.toHaveClass("cx-it__row--tone-success");
+    expect(b.style.getPropertyValue("--cx-it-row-tone")).toBe("#fef3c7");
+  });
+
   it("marks selected rows for the rounded selected style", () => {
     const { container } = render(
       <IndexTable headings={[{ title: "Order" }]} itemCount={2}>
