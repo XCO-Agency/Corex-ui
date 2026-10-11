@@ -2,13 +2,13 @@ import {
   useCallback,
   useEffect,
   useId,
-  useLayoutEffect,
   useRef,
   useState,
   type ChangeEvent,
   type KeyboardEvent,
   type MouseEvent,
 } from "react";
+import { useIsomorphicLayoutEffect } from "../../core/useIsomorphicLayoutEffect";
 import { Box } from "../Box";
 import { BlockStack } from "../BlockStack";
 import { InlineStack } from "../InlineStack";
@@ -165,7 +165,7 @@ export function IndexFiltersSearchField({
   // Let the IndexFilters root know whether filters are active (save action,
   // `ViewVisibleActiveFilter`) and what to snapshot when a view is saved.
   const reportFieldState = useIndexFiltersContext()?.reportFieldState;
-  useLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     reportFieldState?.({ query: queryValue, appliedFilters });
   }, [reportFieldState, queryValue, appliedFilters]);
 
@@ -247,7 +247,7 @@ export function IndexFiltersSearchField({
   }, []);
 
   // Content (pills, text) changes the scroll width without resizing the region.
-  useLayoutEffect(updateScrollEdges);
+  useIsomorphicLayoutEffect(updateScrollEdges);
 
   useEffect(() => {
     const region = regionRef.current;

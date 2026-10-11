@@ -25,10 +25,35 @@ export const INDEX_TABLE_CSS = `
   --cx-it-scrollbar-thumb: var(--cx-it-scrollbar-thumb-color, rgba(0, 0, 0, 0.28));
   --cx-it-scrollbar-thumb-hover: var(--cx-it-scrollbar-thumb-hover-color, rgba(0, 0, 0, 0.55));
   --cx-it-scrollbar-track: var(--cx-it-scrollbar-track-color, rgba(0, 0, 0, 0.05));
+  /* Header and bulk bar height; dense is 4px tighter. Both fit a 24px checkbox. */
+  --cx-it-head-height: var(--cx-it-header-height, 32px);
   position: relative;
   color: var(--cx-it-text);
   font-size: 0.8125rem;
   line-height: 1.25rem;
+}
+
+.cx-it--dense { --cx-it-head-height: var(--cx-it-header-height-dense, 28px); }
+
+/*
+ * Sizes below assume border-box. Set it here rather than relying on the host
+ * app's CSS reset: without one, padding is added on top of every height and
+ * min-height, and the fixed-height header cells overflow and get clipped.
+ */
+.cx-it,
+.cx-it__scroll,
+.cx-it__head,
+.cx-it__head-scroll,
+.cx-it__grid,
+.cx-it__row,
+.cx-it__subrows,
+.cx-it__cell,
+.cx-it__cell::before,
+.cx-it__bulk,
+.cx-it__pagination,
+.cx-it__footer,
+.cx-it__empty {
+  box-sizing: border-box;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -100,7 +125,9 @@ export const INDEX_TABLE_CSS = `
 .cx-it__row--head,
 .cx-it__bulk {
   border-radius: var(--cx-it-radius);
-  height: 30px;
+  height: var(--cx-it-head-height);
+  min-height: var(--cx-it-head-height);
+  max-height: var(--cx-it-head-height);
   padding: 0;
 }
 
@@ -265,6 +292,13 @@ export const INDEX_TABLE_CSS = `
   z-index: -1;
   background-color: var(--cx-it-row-bg);
 }
+/* Header cells fill the fixed-height row exactly: no block padding or
+   min-height to push their content (sort button, checkbox) past it. */
+.cx-it .cx-it__row--head > .cx-it__cell {
+  height: var(--cx-it-head-height);
+  min-height: 0;
+  padding-block: 0;
+}
 .cx-it__cell--head {
   color: var(--cx-it-text-subdued);
   font-size: 0.75rem;
@@ -316,7 +350,7 @@ export const INDEX_TABLE_CSS = `
 .cx-it__bulk {
   display: flex;
   align-items: center;
-  padding-block: 2px;
+  padding-block: 0;
   padding-inline: calc(8px + var(--cx-it-lead, 0px)) 12px;
 }
 

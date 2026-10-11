@@ -1,4 +1,5 @@
-import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { useIsomorphicLayoutEffect } from "../../core/useIsomorphicLayoutEffect";
 import { createPortal } from "react-dom";
 
 import { BlockStack } from "../BlockStack";
@@ -88,7 +89,7 @@ export function FlexPopover({
     typeof HTMLElement.prototype.showPopover === "function";
 
   // Resolve the owner document (e.g. an iframe) before the popover first renders
-  useLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     const doc = markerRef.current?.ownerDocument;
     const body = doc?.body ?? null;
     if (body !== mountTarget) setMountTarget(body);
@@ -132,7 +133,7 @@ export function FlexPopover({
   getAnchorRef.current = getAnchor;
 
   // Reposition whenever opened or the anchor moves/resizes
-  useLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     if (!isOpen) return;
 
     let retryFrame = 0;
@@ -224,7 +225,7 @@ export function FlexPopover({
   }, [isOpen, offset, matchAnchorWidth, anchorId, anchorRef, mountTarget]);
 
   // Sync with browser's native Popover API (manual mode = top layer, no light dismiss)
-  useLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     const popover = popoverRef.current;
     if (!popover || !isPopoverSupported) return;
 

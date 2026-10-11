@@ -4,6 +4,7 @@ export { DatePickerPresets } from "./DatePickerPresets";
 export { DatePickerCalendar, SDatePicker } from "./DatePickerCalendar";
 export { DatePickerManualInputs } from "./DatePickerManualInputs";
 export * from "./datePickerUtils";
+export { useDatePickerToday } from "./useDatePickerToday";
 export {
   resolveDateExpression,
   resolveSemanticRange,

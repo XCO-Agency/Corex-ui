@@ -190,7 +190,10 @@ export function resolveComparisonRange(
 // "custom" carries no `range`, since a custom selection is inherently absolute.
 // ---------------------------------------------------------------------------
 
-export function getPresetDefinitions(): DatePresetDefinitionType[] {
+export function getPresetDefinitions(
+  referenceDate: Date = new Date(),
+): DatePresetDefinitionType[] {
+  const year = referenceDate.getFullYear();
   return [
     {
       id: "today",
@@ -341,25 +344,25 @@ export function getPresetDefinitions(): DatePresetDefinitionType[] {
       children: [
         {
           id: "q1",
-          label: "Q1 " + new Date().getFullYear(),
+          label: "Q1 " + year,
           type: "dateRange",
           range: { since: "date(01-01)", until: "date(03-31)" },
         },
         {
           id: "q2",
-          label: "Q2 " + new Date().getFullYear(),
+          label: "Q2 " + year,
           type: "dateRange",
           range: { since: "date(04-01)", until: "date(06-30)" },
         },
         {
           id: "q3",
-          label: "Q3 " + new Date().getFullYear(),
+          label: "Q3 " + year,
           type: "dateRange",
           range: { since: "date(07-01)", until: "date(09-30)" },
         },
         {
           id: "q4",
-          label: "Q4 " + new Date().getFullYear(),
+          label: "Q4 " + year,
           type: "dateRange",
           range: { since: "date(10-01)", until: "date(12-31)" },
         },

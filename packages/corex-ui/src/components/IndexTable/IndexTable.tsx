@@ -636,8 +636,8 @@ function IndexTableInner(
                                 <Icon
                                   type={
                                     isSorted && sortDirection === "ascending"
-                                      ? "arrow-up"
-                                      : "arrow-down"
+                                      ? "chevron-up"
+                                      : "chevron-down"
                                   }
                                   size="small"
                                 />

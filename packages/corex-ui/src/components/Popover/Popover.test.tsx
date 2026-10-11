@@ -1,7 +1,8 @@
 import { describe, expect, it, vi } from "vitest";
-import { render } from "@testing-library/react";
+import { act, render } from "@testing-library/react";
 import { Popover, usePopover } from "./Popover";
 import { Button } from "../Button";
+import { renderAndHydrate } from "../../test-utils/ssr";
 
 describe("Popover", () => {
   it("renders compound Popover.Trigger and Popover.Content bound together", () => {
@@ -234,6 +235,72 @@ describe("Popover", () => {
       popoverEl.hideOverlay();
 
       expect(onClose).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe("server rendering", () => {
+    function SsrPopover(props: {
+      onShow?: (event?: Event) => void;
+      onToggle?: (event?: Event) => void;
+      onHide?: (event?: Event) => void;
+      onAfterShow?: (event?: Event) => void;
+    }) {
+      return (
+        <Popover id="ssr-popover">
+          <Popover.Trigger>
+            <Button>Options</Button>
+          </Popover.Trigger>
+          <Popover.Content fitTrigger {...props}>
+            <div>Body</div>
+          </Popover.Content>
+        </Popover>
+      );
+    }
+
+    it("hydrates PopoverContent event props without a mismatch or attribute", () => {
+      const handlers = {
+        onShow: vi.fn(),
+        onToggle: vi.fn(),
+        onHide: vi.fn(),
+        onAfterShow: vi.fn(),
+      };
+      const { container, messages, unmount } = renderAndHydrate(
+        <SsrPopover {...handlers} />,
+      );
+
+      expect(messages).toEqual([]);
+
+      const popoverEl = container.querySelector("s-popover") as HTMLElement;
+      for (const attr of ["onshow", "ontoggle", "onhide", "onaftershow"]) {
+        expect(popoverEl).not.toHaveAttribute(attr);
+      }
+
+      act(() => {
+        popoverEl.dispatchEvent(new Event("show"));
+        popoverEl.dispatchEvent(new Event("toggle"));
+        popoverEl.dispatchEvent(new Event("hide"));
+        popoverEl.dispatchEvent(new Event("aftershow"));
+      });
+      expect(handlers.onShow).toHaveBeenCalledTimes(1);
+      expect(handlers.onToggle).toHaveBeenCalledTimes(1);
+      expect(handlers.onHide).toHaveBeenCalledTimes(1);
+      expect(handlers.onAfterShow).toHaveBeenCalledTimes(1);
+
+      unmount();
+    });
+
+    it("still runs internal show handling when no onShow is passed", () => {
+      const { container, messages, unmount } = renderAndHydrate(<SsrPopover />);
+      expect(messages).toEqual([]);
+
+      const popoverEl = container.querySelector("s-popover") as HTMLElement;
+      expect(() =>
+        act(() => {
+          popoverEl.dispatchEvent(new Event("show"));
+        }),
+      ).not.toThrow();
+
+      unmount();
     });
   });
 });

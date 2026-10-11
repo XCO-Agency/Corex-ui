@@ -82,6 +82,7 @@ export function DatePickerManualInputs({
             onChange={(val) => setStartText(val)}
             onBlur={tryParseAndCommit}
             onInput={handleKeyDown}
+            label="Start date"
             placeholder="Start date"
             labelAccessibilityVisibility="exclusive"
           />
@@ -96,6 +97,7 @@ export function DatePickerManualInputs({
             onChange={(val) => setEndText(val)}
             onBlur={tryParseAndCommit}
             onInput={handleKeyDown}
+            label="End date"
             placeholder="End date"
             labelAccessibilityVisibility="exclusive"
           />
@@ -104,6 +106,7 @@ export function DatePickerManualInputs({
         {/* Clock icon toggles the time row */}
         <Button
           icon="clock"
+          accessibilityLabel="Toggle time"
           variant={timeEnabled ? "primary" : "tertiary"}
           onClick={() => setTimeEnabled((prev) => !prev)}
         />
@@ -116,6 +119,7 @@ export function DatePickerManualInputs({
             <TextField
               value={startTime}
               onChange={(val) => setStartTime(val)}
+              label="Start time"
               placeholder="00:00"
               icon="clock"
               labelAccessibilityVisibility="exclusive"
@@ -128,6 +132,7 @@ export function DatePickerManualInputs({
             <TextField
               value={endTime}
               onChange={(val) => setEndTime(val)}
+              label="End time"
               placeholder="23:59"
               icon="clock"
               labelAccessibilityVisibility="exclusive"

@@ -3,7 +3,6 @@ import {
   useCallback,
   useContext,
   useEffect,
-  useLayoutEffect,
   useRef,
   useState,
   type CSSProperties,
@@ -11,6 +10,7 @@ import {
   type MouseEvent,
   type ReactElement,
 } from "react";
+import { useIsomorphicLayoutEffect } from "../../core/useIsomorphicLayoutEffect";
 import type {
   HoverableAnimationType,
   HoverablePropsType,
@@ -148,7 +148,7 @@ function HoverableRoot({
   const [internalHovered, setInternalHovered] = useState(false);
   const lastHovered = useRef(false);
 
-  useLayoutEffect(() => ensureStyles(nodeRef.current), []);
+  useIsomorphicLayoutEffect(() => ensureStyles(nodeRef.current), []);
   useEffect(() => () => clearTimeout(timerRef.current), []);
 
   const sync = useCallback(() => {
@@ -225,7 +225,7 @@ function createSlot(showOnHover: boolean, displayName: string) {
 
     // Re-measured after every render, and once more on the next frame for
     // custom elements that upgrade (and attach their shadow root) late.
-    useLayoutEffect(() => {
+    useIsomorphicLayoutEffect(() => {
       const slot = slotRef.current;
       if (!slot) return;
       const update = () => {

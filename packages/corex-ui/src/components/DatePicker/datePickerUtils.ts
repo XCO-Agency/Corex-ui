@@ -51,12 +51,19 @@ export function parseISODate(dateStr: string): Date | null {
   return new Date(parts[0]!, parts[1]! - 1, parts[2]!);
 }
 
+/**
+ * An empty `value` falls back to `today`: an ISO date, the current local date
+ * when omitted, or an empty range when `null` (not known yet, e.g. while
+ * hydrating — see `useDatePickerToday`).
+ */
 export function normalizeDateRange(
   value?: string | DateRangeType | Date | null,
+  today?: string | null,
 ): DateRangeType {
   if (!value) {
-    const today = toISODateString(new Date());
-    return { start: today, end: today };
+    if (today === null) return { start: "", end: "" };
+    const resolvedToday = today ?? toISODateString(new Date());
+    return { start: resolvedToday, end: resolvedToday };
   }
   if (value instanceof Date) {
     const str = toISODateString(value);
@@ -216,5 +223,5 @@ export function getMonthTitle(year: number, month: number): string {
 export function getDefaultPresets(
   referenceDate: Date = new Date(),
 ): DatePresetItemType[] {
-  return resolvePresetDefinitions(getPresetDefinitions(), referenceDate);
+  return resolvePresetDefinitions(getPresetDefinitions(referenceDate), referenceDate);
 }

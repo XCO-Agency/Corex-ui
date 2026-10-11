@@ -1,11 +1,5 @@
-import {
-  forwardRef,
-  useEffect,
-  useId,
-  useLayoutEffect,
-  useState,
-  type CSSProperties,
-} from "react";
+import { forwardRef, useEffect, useId, useState, type CSSProperties } from "react";
+import { useIsomorphicLayoutEffect } from "../../core/useIsomorphicLayoutEffect";
 import { InlineStack } from "../InlineStack";
 import { Button } from "../Button";
 import { Modal } from "../Modal";
@@ -26,7 +20,10 @@ import type {
 export const IndexFiltersViewVisibleActiveFilter = forwardRef<
   HTMLDivElement,
   IndexFiltersViewVisibleActiveFilterPropsType
->(function IndexFiltersViewVisibleActiveFilter({ children, visible, duration = 200 }, ref) {
+>(function IndexFiltersViewVisibleActiveFilter(
+  { children, visible, duration = 200 },
+  ref,
+) {
   const context = useIndexFiltersContext();
   const shown = visible ?? context?.active ?? true;
 
@@ -94,7 +91,7 @@ export function IndexFiltersSaveAction() {
   const id = useId();
   const registerSaveAction = useIndexFiltersContext()?.registerSaveAction;
 
-  useLayoutEffect(() => registerSaveAction?.(id), [registerSaveAction, id]);
+  useIsomorphicLayoutEffect(() => registerSaveAction?.(id), [registerSaveAction, id]);
 
   return <IndexFiltersSaveButton />;
 }

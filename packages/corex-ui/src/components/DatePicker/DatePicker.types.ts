@@ -103,6 +103,16 @@ export type DatePickerPropsType = NativeDatePickerPropsType & {
    */
   maxDate?: string;
 
+  /**
+   * The date treated as "today": the default selection, the default `maxDate`
+   * and what relative presets resolve against. Pass an ISO date string
+   * (`"2026-10-11"`) computed once on the server and serialized to the client
+   * so server-rendered HTML shows the real date. Left unset, today is
+   * resolved in the browser after hydration and the server renders an empty
+   * selection, because the server's today can differ from the browser's.
+   */
+  referenceDate?: string | Date;
+
   disabled?: boolean;
   id?: string;
   className?: string;

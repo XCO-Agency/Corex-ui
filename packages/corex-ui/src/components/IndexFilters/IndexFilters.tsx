@@ -2,12 +2,12 @@ import {
   forwardRef,
   useCallback,
   useId,
-  useLayoutEffect,
   useMemo,
   useRef,
   useState,
   type ReactNode,
 } from "react";
+import { useIsomorphicLayoutEffect } from "../../core/useIsomorphicLayoutEffect";
 import { InlineStack } from "../InlineStack";
 import { Card } from "../Card";
 import { IndexFiltersSearchField } from "./IndexFiltersSearchField";
@@ -74,7 +74,7 @@ export function IndexFiltersActions({ children }: { children?: ReactNode }) {
   const context = useIndexFiltersContext();
   const registerActions = context?.registerActions;
 
-  useLayoutEffect(() => registerActions?.(id), [registerActions, id]);
+  useIsomorphicLayoutEffect(() => registerActions?.(id), [registerActions, id]);
 
   return (
     <IndexFiltersActionsContainer withSaveAction={context?.autoSaveOwnerId === id}>

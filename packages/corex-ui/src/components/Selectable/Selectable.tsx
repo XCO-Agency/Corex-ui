@@ -3,7 +3,6 @@ import {
   forwardRef,
   useCallback,
   useContext,
-  useLayoutEffect,
   useMemo,
   useRef,
   useState,
@@ -13,6 +12,7 @@ import {
   type ReactElement,
   type RefAttributes,
 } from "react";
+import { useIsomorphicLayoutEffect } from "../../core/useIsomorphicLayoutEffect";
 import { mergeRefs } from "../../core/mergeRefs";
 import { Icon } from "../Icon";
 import type {
@@ -154,7 +154,7 @@ const SelectableRoot: ForwardRefExoticComponent<
   ref,
 ): ReactElement {
   const nodeRef = useRef<HTMLDivElement | null>(null);
-  useLayoutEffect(() => ensureStyles(nodeRef.current), []);
+  useIsomorphicLayoutEffect(() => ensureStyles(nodeRef.current), []);
   const group = useContext(SelectableGroupContext);
   const inGroup = group !== null && value !== undefined;
 

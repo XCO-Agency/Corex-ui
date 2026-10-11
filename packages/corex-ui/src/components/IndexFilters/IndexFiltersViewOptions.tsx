@@ -4,11 +4,11 @@ import {
   isValidElement,
   useEffect,
   useId,
-  useLayoutEffect,
   useRef,
   type KeyboardEvent,
   type PointerEvent,
 } from "react";
+import { useIsomorphicLayoutEffect } from "../../core/useIsomorphicLayoutEffect";
 import { Box } from "../Box";
 import { BlockStack } from "../BlockStack";
 import { InlineStack } from "../InlineStack";
@@ -228,7 +228,7 @@ export function IndexFiltersViewOptionsColumns<C extends IndexFilterColumnItemTy
   };
 
   // Moving a focused node in the DOM drops its focus; hand it back to the handle.
-  useLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     const key = pendingFocusKeyRef.current;
     if (!key) return;
     pendingFocusKeyRef.current = null;

@@ -237,7 +237,6 @@ export function IndexTableExample() {
         primaryAction={{ content: "Add product", onAction: () => alert("Add product") }}
       >
         <IndexTable
-          increasedTableDensity
           resourceName={{ singular: "product", plural: "products" }}
           itemCount={products.length}
           selectedItemsCount={allResourcesSelected ? "All" : selectedResources.length}

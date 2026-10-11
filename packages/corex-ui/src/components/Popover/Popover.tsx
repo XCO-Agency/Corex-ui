@@ -22,8 +22,33 @@ import type {
   PopoverTriggerPropsType,
 } from "./Popover.types";
 
-const SPopover = createWebComponent<HTMLElement>("s-popover", {
-  events: { onClick: "click" },
+/**
+ * Every overlay event `s-popover` documents, bound as native listeners. React
+ * does not know `onShow`/`onHide`/`onAfter*` on a custom element and would
+ * otherwise write them as attributes on the client only (a hydration
+ * mismatch); `onToggle` it knows, but only wires up for `<details>`.
+ */
+type PopoverEvents = {
+  onClick: "click";
+  onShow: "show";
+  onHide: "hide";
+  onAfterShow: "aftershow";
+  onAfterHide: "afterhide";
+  onToggle: "toggle";
+  onAfterToggle: "aftertoggle";
+};
+const popoverEvents: PopoverEvents = {
+  onClick: "click",
+  onShow: "show",
+  onHide: "hide",
+  onAfterShow: "aftershow",
+  onAfterHide: "afterhide",
+  onToggle: "toggle",
+  onAfterToggle: "aftertoggle",
+};
+
+const SPopover = createWebComponent<HTMLElement, PopoverEvents>("s-popover", {
+  events: popoverEvents,
 });
 
 type InternalPopoverContextType = PopoverContextType & {

@@ -1,7 +1,7 @@
 import { useState, useMemo, Fragment } from "react";
 import type { MouseEvent } from "react";
 import type { DatePresetItemType } from "./DatePicker.types";
-import { getDefaultPresets } from "./datePickerUtils";
+import { getDefaultPresets, parseISODate } from "./datePickerUtils";
 import { BlockStack } from "../BlockStack";
 import { Clickable } from "../Clickable";
 import { Box } from "../Box";
@@ -15,6 +15,8 @@ export type DatePickerPresetsPropsType = {
   presets?: boolean | DatePresetItemType[];
   activePresetId?: string;
   onSelectPreset: (preset: DatePresetItemType) => void;
+  /** ISO date the default presets resolve against; the current date when unset. */
+  referenceDate?: string | null;
   className?: string;
 };
 
@@ -33,6 +35,7 @@ export function DatePickerPresets({
   presets,
   activePresetId,
   onSelectPreset,
+  referenceDate,
   className,
 }: DatePickerPresetsPropsType) {
   const [activeSubmenuId, setActiveSubmenuId] = useState<string | null>(null);
@@ -43,7 +46,9 @@ export function DatePickerPresets({
   const presetList = useMemo(() => {
     const list: DatePresetItemType[] = Array.isArray(presets)
       ? [...presets]
-      : getDefaultPresets();
+      : getDefaultPresets(
+          (referenceDate ? parseISODate(referenceDate) : null) ?? new Date(),
+        );
 
     // When presets are shown, always offer "Custom range" if the list lacks it
     if (!list.some((p) => p.id === "custom")) {
@@ -51,7 +56,7 @@ export function DatePickerPresets({
     }
 
     return list;
-  }, [presets]);
+  }, [presets, referenceDate]);
 
   // Looked up from the current list so the submenu never renders stale items
   const activeSubmenu = activeSubmenuId

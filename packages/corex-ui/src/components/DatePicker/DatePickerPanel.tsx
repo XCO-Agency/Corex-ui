@@ -7,7 +7,8 @@ import type {
 import { DatePickerPresets } from "./DatePickerPresets";
 import { DatePickerManualInputs } from "./DatePickerManualInputs";
 import { DatePickerCalendar } from "./DatePickerCalendar";
-import { normalizeDateRange, toISODateString } from "./datePickerUtils";
+import { normalizeDateRange } from "./datePickerUtils";
+import { useDatePickerToday } from "./useDatePickerToday";
 import { Button } from "../Button";
 import { Divider } from "../Divider";
 import { InlineStack } from "../InlineStack";
@@ -33,6 +34,7 @@ export type DatePickerPanelPropsType = Pick<
   | "disallowDays"
   | "onViewChange"
   | "onInput"
+  | "referenceDate"
 > & {
   onChangeRange?: (range: DateRangeType) => void;
   id: string;
@@ -61,12 +63,15 @@ export function DatePickerPanel({
   disallowDays,
   onViewChange,
   onInput,
+  referenceDate,
 }: DatePickerPanelPropsType) {
+  // `null` until today is known on the client, so SSR and hydration agree.
+  const today = useDatePickerToday(referenceDate);
   // Requirement: future dates are disabled by default (maxDate defaults to today).
-  const effectiveMaxDate = maxDate ?? toISODateString(new Date());
+  const effectiveMaxDate = maxDate ?? today ?? undefined;
   // Normalize initial range from selected / defaultValue prop
   const getInitialRange = (): DateRangeType => {
-    return normalizeDateRange(selected ?? defaultValue);
+    return normalizeDateRange(selected ?? defaultValue, today);
   };
 
   const [currentRange, setCurrentRange] = useState<DateRangeType>(getInitialRange);
@@ -76,12 +81,12 @@ export function DatePickerPanel({
   const [activePresetId, setActivePresetId] = useState<string>("custom");
 
   useEffect(() => {
-    const range = normalizeDateRange(selected ?? defaultValue);
+    const range = normalizeDateRange(selected ?? defaultValue, today);
     setCurrentRange(range);
     if (!view) {
       setViewDate(range.start);
     }
-  }, [selected, defaultValue, view]);
+  }, [selected, defaultValue, view, today]);
 
   // Sync / reset to default or selected date whenever the popover opens
   useEffect(() => {
@@ -110,7 +115,7 @@ export function DatePickerPanel({
       popoverEl.removeEventListener("toggle", handleToggle);
       popoverEl.removeEventListener("beforetoggle", handleToggle);
     };
-  }, [id, inline, selected, defaultValue]);
+  }, [id, inline, selected, defaultValue, today]);
 
   // Requirement 1: presets can be shown on left when available, otherwise hide
   const hasPresets = Boolean(presets);
@@ -172,6 +177,7 @@ export function DatePickerPanel({
             presets={presets}
             activePresetId={activePresetId}
             onSelectPreset={handleSelectPreset}
+            referenceDate={today}
           />
           <Divider direction="block" />
         </>
