@@ -18,4 +18,18 @@ describe("Tooltip", () => {
       contentEl.closest("s-tooltip")?.id,
     );
   });
+
+  it("keeps the s-tooltip out of the layout flow", () => {
+    render(
+      <div style={{ display: "flex", gap: "16px" }}>
+        <Tooltip content="Variant A">
+          <span>A</span>
+        </Tooltip>
+      </div>,
+    );
+    const wrapper = screen.getByText("Variant A").closest("s-tooltip")
+      ?.parentElement as HTMLElement;
+    expect(wrapper.tagName).toBe("SPAN");
+    expect(wrapper.style.position).toBe("absolute");
+  });
 });

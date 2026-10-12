@@ -34,7 +34,6 @@ export const ChoiceList = forwardRef<HTMLElement, ChoiceListPropsType>(
         multiple={multiple}
         name={name}
         onChange={handleChange}
-        labelAccessibilityVisibility={label ? undefined : "exclusive"}
         {...rest}
       >
         {choices?.map((choice, index) => {

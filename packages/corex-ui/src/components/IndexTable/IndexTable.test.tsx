@@ -265,6 +265,43 @@ describe("IndexTable", () => {
     expect(onClick).not.toHaveBeenCalled();
   });
 
+  it("renders heading titles through Text, with tooltips and badges", () => {
+    renderTable({
+      headings: [
+        { title: "Order", tooltip: "Order number", sortable: true },
+        { title: "Total", badge: { content: "New", tone: "success" } },
+      ],
+    });
+
+    const headers = screen.getAllByRole("columnheader");
+    const order = headers[1]!;
+    const total = headers[2]!;
+
+    // Titles sit in s-text, so header typography doesn't depend on the host app.
+    expect(order.querySelector("button s-text")).toHaveTextContent("Order");
+    expect(total.querySelector("s-text")).toHaveTextContent("Total");
+
+    const tooltip = order.querySelector("s-tooltip");
+    expect(tooltip).toHaveTextContent("Order number");
+    expect(order.querySelector("s-text")).toHaveAttribute(
+      "interestfor",
+      tooltip!.getAttribute("id")!,
+    );
+    expect(total.querySelector("s-tooltip")).toBeNull();
+
+    const badge = total.querySelector("s-badge");
+    expect(badge).toHaveTextContent("New");
+    expect(badge).toHaveAttribute("tone", "success");
+    expect(order.querySelector("s-badge")).toBeNull();
+  });
+
+  it("accepts a plain badge on a heading", () => {
+    renderTable({ headings: [{ title: "Order", badge: 3 }, { title: "Total" }] });
+    expect(screen.getAllByRole("columnheader")[1]!.querySelector("s-badge")).toHaveTextContent(
+      "3",
+    );
+  });
+
   it("toggles sorting from a sortable heading", () => {
     const onSort = vi.fn();
     const { rerender } = render(

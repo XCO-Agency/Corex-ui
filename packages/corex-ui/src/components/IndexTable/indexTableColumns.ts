@@ -8,6 +8,8 @@ export const HANDLE_COLUMN_WIDTH = 28;
 const DEFAULT_FIRST_MIN_WIDTH = 200;
 const DEFAULT_NUMERIC_MIN_WIDTH = 80;
 const DEFAULT_MIN_WIDTH = 120;
+/** Widest a content-sized column grows; apps can retheme it per table. */
+const DEFAULT_MAX_WIDTH = "var(--cx-it-cell-max-width, 260px)";
 
 export type IndexTableAlignmentType = "start" | "center" | "end";
 
@@ -16,6 +18,23 @@ export type ResolvedColumnType = {
   track: string;
   /** Narrowest the column renders, in px — summed into the grid's min width. */
   minWidth: number;
+  /**
+   * Content-sized column: its track is `fit-content(max)`, so it is as wide as
+   * its widest cell (header included) between `minWidth` and the max. The grid
+   * can only floor such a track through its content, so the table renders a
+   * hidden sizing cell `minWidth` wide in it.
+   */
+  contentSized: boolean;
+  /**
+   * The one column that takes the width left over once every content-sized
+   * column has what its content needs.
+   */
+  flexible: boolean;
+  /**
+   * The flexible column has no `maxWidth`, so its cells cap themselves to keep
+   * its natural width (when the table overflows) reasonable.
+   */
+  capContent: boolean;
   alignment: IndexTableAlignmentType;
   sticky?: IndexTableStickyType;
   /** Distance from the pinned edge, e.g. `"32px"`. Set only for sticky columns. */
@@ -70,6 +89,12 @@ function defaultMinWidth(
  * Turns headings into one shared grid layout: a track per column, the grid's
  * minimum width, and the inset of every pinned column.
  *
+ * Columns size to their content: each one is as wide as its widest cell or
+ * heading, between its `minWidth` and `maxWidth`. One flexible column — the
+ * primary one, or the last one free to grow when the primary is pinned or has
+ * a set width — takes whatever width is left, so the table still fills its
+ * container. An explicit `width` always wins.
+ *
  * Pinned columns get a fixed px track, so the offset of each pinned column is
  * just the sum of the pinned columns between it and its edge.
  */
@@ -93,24 +118,51 @@ export function resolveLayout({
   const firstNonHiddenIndex = headings.findIndex((h) => !h.hidden);
   const primaryIndex = firstNonHiddenIndex >= 0 ? firstNonHiddenIndex : 0;
 
+  const canGrow = (index: number) => {
+    const heading = headings[index] ?? {};
+    return !(stickyOverrides[index] ?? heading.sticky) && !heading.width && !heading.hidden;
+  };
+  let flexibleIndex = canGrow(primaryIndex) ? primaryIndex : -1;
+  for (let index = count - 1; flexibleIndex < 0 && index >= 0; index--) {
+    if (canGrow(index)) flexibleIndex = index;
+  }
+
   const columns: ResolvedColumnType[] = Array.from({ length: count }, (_, index) => {
     const heading = headings[index] ?? {};
     const sticky = stickyOverrides[index] ?? heading.sticky;
     const pxWidth = parsePx(heading.width);
     const isPrimary = index === primaryIndex;
+    const flexible = index === flexibleIndex;
     const minWidth =
       pxWidth ?? heading.minWidth ?? defaultMinWidth(heading, index, isPrimary);
 
     let track: string;
+    let contentSized = false;
     if (sticky) {
       track = `${minWidth}px`;
     } else if (heading.width) {
       track = heading.width;
+    } else if (flexible) {
+      track = heading.maxWidth
+        ? `minmax(${minWidth}px, ${Math.max(heading.maxWidth, minWidth)}px)`
+        : `minmax(${minWidth}px, 1fr)`;
     } else {
-      track = `minmax(${minWidth}px, ${isPrimary ? 2 : 1}fr)`;
+      contentSized = true;
+      const max = heading.maxWidth
+        ? `${Math.max(heading.maxWidth, minWidth)}px`
+        : `max(${minWidth}px, ${DEFAULT_MAX_WIDTH})`;
+      track = `fit-content(${max})`;
     }
 
-    return { track, minWidth, alignment: resolveAlignment(heading), sticky };
+    return {
+      track,
+      minWidth,
+      contentSized,
+      flexible,
+      capContent: flexible && !heading.maxWidth,
+      alignment: resolveAlignment(heading),
+      sticky,
+    };
   });
 
   const leadingWidth =

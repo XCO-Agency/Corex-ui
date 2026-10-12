@@ -1,4 +1,5 @@
 import type { CSSProperties, ReactNode } from "react";
+import type { BadgePropsType } from "../Badge";
 
 /** v12's three-argument selection shape, kept so existing handlers still fit. */
 export type IndexTableSelectionTypeType = "page" | "single" | "all";
@@ -8,9 +9,18 @@ export type IndexTableStickyType = "left" | "right";
 
 export type IndexTableSortDirectionType = "ascending" | "descending";
 
+/** A badge next to a heading's title: its content alone, or content and tone. */
+export type IndexTableHeadingBadgeType =
+  | ReactNode
+  | { content: ReactNode; tone?: BadgePropsType["tone"] };
+
 export type IndexTableHeadingType = {
   id?: string;
   title?: ReactNode;
+  /** Shown when the title is hovered or focused; the title gets a dotted underline. */
+  tooltip?: ReactNode;
+  /** Rendered after the title, e.g. a count or a "New" marker. */
+  badge?: IndexTableHeadingBadgeType;
   /** Renders an empty header cell, for a column of controls. */
   hidden?: boolean;
   /** Right-aligns the column. */
@@ -23,6 +33,12 @@ export type IndexTableHeadingType = {
    * narrow screen scrolls sideways instead of squashing content.
    */
   minWidth?: number;
+  /**
+   * Widest the column may get, in px. Columns size to their content (cells and
+   * heading) between `minWidth` and this; content past it wraps, or truncates
+   * with `truncate`. @default 260, or `--cx-it-cell-max-width`
+   */
+  maxWidth?: number;
   /**
    * Pins the column. A sticky column gets a fixed width (`width` in px, else
    * `minWidth`) so the offsets of neighbouring sticky columns stay exact.

@@ -102,12 +102,18 @@ export const INDEX_TABLE_CSS = `
   background: transparent;
 }
 
+/*
+ * The grid takes its content's width — each content-sized column as wide as
+ * its content needs, up to its max — and fills the container when that is
+ * narrower (the flexible column takes the rest). Wider than the container,
+ * the body scrolls sideways instead of wrapping cells below their max.
+ */
 .cx-it__grid {
   position: relative;
   display: grid;
   grid-template-columns: var(--cx-it-cols);
-  min-width: var(--cx-it-min);
-  width: 100%;
+  width: max-content;
+  min-width: max(100%, var(--cx-it-min));
 }
 .cx-it--loading .cx-it__grid { opacity: 0.5; pointer-events: none; }
 
@@ -263,7 +269,6 @@ export const INDEX_TABLE_CSS = `
   align-items: center;
   gap: 8px;
   min-width: 0;
-  max-width: var(--cx-it-col-max, var(--cx-it-cell-max-width, 260px));
   padding: 8px;
   min-height: 30px;
   word-break: normal;
@@ -277,9 +282,12 @@ export const INDEX_TABLE_CSS = `
 .cx-it--truncate .cx-it__cell > * { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .cx-it__cell--center { justify-content: center; text-align: center; }
 .cx-it__cell--end { justify-content: flex-end; text-align: end; }
-.cx-it__cell--flush { padding: 0; max-width: none; }
-.cx-it__cell--control { padding-inline: 0; justify-content: center; max-width: none; }
-.cx-it__cell--select { cursor: default; max-width: none; }
+/* The flexible column's natural width: its content, up to this. Any space
+   left in the container still goes to it. */
+.cx-it__cell--flex { max-width: var(--cx-it-flex-max-width, 400px); }
+.cx-it__cell--flush { padding: 0; }
+.cx-it__cell--control { padding-inline: 0; justify-content: center; }
+.cx-it__cell--select { cursor: default; }
 .cx-it__cell--sticky {
   position: sticky;
   z-index: 1;
@@ -304,7 +312,27 @@ export const INDEX_TABLE_CSS = `
   font-size: 0.75rem;
   font-weight: 550;
   white-space: nowrap;
-  max-width: none;
+}
+
+/* Zero-height row in the body grid that sizes the columns for the headings
+   (see IndexTable's sizerRow). */
+.cx-it__sizer {
+  height: 0;
+  overflow: hidden;
+  visibility: hidden;
+  pointer-events: none;
+}
+.cx-it .cx-it__sizer > .cx-it__cell {
+  height: 0;
+  min-height: 0;
+  padding-block: 0;
+}
+/* Stand-ins for the heading's title, sort icon (16px + 4px gap) and badge. */
+.cx-it__sizer > [data-title]::before { content: attr(data-title); }
+.cx-it__sizer > [data-sortable]::before { padding-inline-end: 20px; }
+.cx-it__sizer > [data-badge]::after {
+  content: attr(data-badge);
+  padding-inline: var(--cx-it-sizer-badge-padding, 8px);
 }
 .cx-it__cell > * {
   min-width: 0;
@@ -345,6 +373,45 @@ export const INDEX_TABLE_CSS = `
 .cx-it__sort--active { color: var(--cx-it-text); }
 
 .cx-it__indent { flex: none; }
+
+/*
+ * Linked scrolling. The header is outside the body's scroller, so by default
+ * IndexTable copies the body's scrollLeft onto it from a scroll listener,
+ * which lands a frame after the body moved. Where scroll-driven animations
+ * exist, the header instead follows the body's scroll timeline, on the same
+ * frame. \`--cx-it-scroll-max\` (the body's scroll range) is set from JS.
+ *  - The header grid slides left by the scrolled distance.
+ *  - Its pinned cells slide back, as the header itself no longer scrolls.
+ *  - The \`--cx-it-clip-*\` insets that round highlighted rows follow too.
+ */
+@property --cx-it-clip-start { syntax: "<length>"; inherits: true; initial-value: 0px; }
+@property --cx-it-clip-end { syntax: "<length>"; inherits: true; initial-value: 0px; }
+@keyframes cx-it-follow-scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(calc(-1 * var(--cx-it-scroll-max, 0px))); }
+}
+@keyframes cx-it-hold-pinned {
+  from { transform: translateX(0); }
+  to { transform: translateX(var(--cx-it-scroll-max, 0px)); }
+}
+@keyframes cx-it-clip-scrolled {
+  from { --cx-it-clip-start: 0px; --cx-it-clip-end: var(--cx-it-scroll-max, 0px); }
+  to { --cx-it-clip-start: var(--cx-it-scroll-max, 0px); --cx-it-clip-end: 0px; }
+}
+.cx-it--scroll-linked:dir(ltr) { timeline-scope: --cx-it-scroll; }
+.cx-it--scroll-linked:dir(ltr) .cx-it__scroll { scroll-timeline: --cx-it-scroll inline; }
+.cx-it--scroll-linked:dir(ltr) > [role="table"] {
+  animation: cx-it-clip-scrolled linear both;
+  animation-timeline: --cx-it-scroll;
+}
+.cx-it--scroll-linked:dir(ltr) .cx-it__head-scroll > .cx-it__grid {
+  animation: cx-it-follow-scroll linear both;
+  animation-timeline: --cx-it-scroll;
+}
+.cx-it--scroll-linked:dir(ltr) .cx-it__head-scroll .cx-it__cell--sticky {
+  animation: cx-it-hold-pinned linear both;
+  animation-timeline: --cx-it-scroll;
+}
 
 /* Bulk bar (replaces the header row while rows are selected). */
 .cx-it__bulk {

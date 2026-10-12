@@ -66,7 +66,13 @@ export const ActionList = forwardRef<HTMLDivElement, ActionListPropsType>(
     return (
       <Popover>
         <Popover.Trigger>
-          {children ?? activator ?? <Button variant="tertiary" icon="menu-horizontal" />}
+          {children ?? activator ?? (
+            <Button
+              variant="tertiary"
+              icon="menu-horizontal"
+              accessibilityLabel="More actions"
+            />
+          )}
         </Popover.Trigger>
         <Popover.Content>
           <BlockStack ref={ref} gap="small-400" padding="small-200" {...rest}>

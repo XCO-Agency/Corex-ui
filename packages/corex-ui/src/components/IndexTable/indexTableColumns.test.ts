@@ -16,10 +16,63 @@ describe("resolveLayout", () => {
     });
 
     expect(layout.gridTemplateColumns).toBe(
-      `${SELECTION_COLUMN_WIDTH}px minmax(200px, 2fr) minmax(80px, 1fr)`,
+      `${SELECTION_COLUMN_WIDTH}px minmax(200px, 1fr) ` +
+        "fit-content(max(80px, var(--cx-it-cell-max-width, 260px)))",
     );
     expect(layout.minInlineSize).toBe(`${SELECTION_COLUMN_WIDTH + 200 + 80}px`);
     expect(layout.columns[1]?.alignment).toBe("end");
+  });
+
+  it("sizes columns to their content between minWidth and maxWidth", () => {
+    const layout = resolveLayout({
+      headings: [
+        { title: "Product" },
+        { title: "Status", minWidth: 90, maxWidth: 140 },
+        { title: "Notes", minWidth: 300, maxWidth: 200 },
+        { title: "Vendor" },
+      ],
+      columnCount: 0,
+      selectable: false,
+      stickyOverrides: {},
+    });
+
+    expect(layout.columns.map((c) => c.track)).toEqual([
+      "minmax(200px, 1fr)",
+      "fit-content(140px)",
+      // A max below the min is raised to the min.
+      "fit-content(300px)",
+      "fit-content(max(120px, var(--cx-it-cell-max-width, 260px)))",
+    ]);
+    expect(layout.columns.map((c) => c.flexible)).toEqual([true, false, false, false]);
+    expect(layout.columns.map((c) => c.contentSized)).toEqual([false, true, true, true]);
+  });
+
+  it("caps the flexible column when it has a maxWidth", () => {
+    const layout = resolveLayout({
+      headings: [{ title: "Product", maxWidth: 400 }, { title: "Status" }],
+      columnCount: 0,
+      selectable: false,
+      stickyOverrides: {},
+    });
+
+    expect(layout.columns[0]?.track).toBe("minmax(200px, 400px)");
+  });
+
+  it("lets the last free column take the spare width when the primary is pinned", () => {
+    const layout = resolveLayout({
+      headings: [
+        { title: "Product", sticky: "left" },
+        { title: "Status" },
+        { title: "Vendor" },
+        { title: "", hidden: true, width: "48px" },
+      ],
+      columnCount: 0,
+      selectable: false,
+      stickyOverrides: {},
+    });
+
+    expect(layout.columns.map((c) => c.flexible)).toEqual([false, false, true, false]);
+    expect(layout.columns[2]?.track).toBe("minmax(120px, 1fr)");
   });
 
   it("pins left columns after the checkbox and fixes their width", () => {

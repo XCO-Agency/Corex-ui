@@ -4,6 +4,7 @@ export { reorderItems } from "./indexTableColumns";
 export type {
   IndexTableBulkActionType,
   IndexTableCellPropsType,
+  IndexTableHeadingBadgeType,
   IndexTableHeadingType,
   IndexTablePaginationType,
   IndexTablePropsType,

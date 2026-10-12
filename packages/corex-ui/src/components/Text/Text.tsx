@@ -2,6 +2,7 @@ import { forwardRef, useEffect, useId, useLayoutEffect, useMemo, useRef } from "
 import type { CSSProperties, ElementType } from "react";
 import { createWebComponent } from "../../core/createWebComponent";
 import { mergeRefs } from "../../core/mergeRefs";
+import { TOOLTIP_WRAPPER_STYLE } from "../Tooltip/Tooltip";
 import type { TextPropsType } from "./Text.types";
 
 const useIsomorphicLayoutEffect =
@@ -102,6 +103,19 @@ export const VARIANT_SIZE_MAP: Record<
     headingTag: "h2",
     headingWeight: 700,
   },
+};
+
+/**
+ * Dotted hint that the text has a tooltip. A text decoration (not a border) so it
+ * hugs the text at any width, never affects layout on hover, and the gap to the
+ * text is a single tunable value.
+ */
+const TOOLTIP_UNDERLINE_STYLE: CSSProperties = {
+  textDecorationLine: "underline",
+  textDecorationStyle: "dotted",
+  textDecorationThickness: "2px",
+  textDecorationColor: "var(--p-color-border-tertiary, #cccccc)",
+  textUnderlineOffset: "2px",
 };
 
 export const Text = forwardRef<HTMLElement, TextPropsType>(
@@ -230,7 +244,17 @@ export const Text = forwardRef<HTMLElement, TextPropsType>(
     };
 
     // Slotted light DOM span guarantees font/line-height/weight precedence over shadow root defaults
-    const slottedContent = <span style={typographyStyle}>{children}</span>;
+    const slottedContent = (
+      <span
+        style={
+          hasTooltip && underline
+            ? { ...typographyStyle, ...TOOLTIP_UNDERLINE_STYLE }
+            : typographyStyle
+        }
+      >
+        {children}
+      </span>
+    );
 
     const textNode = (
       <SText
@@ -255,10 +279,6 @@ export const Text = forwardRef<HTMLElement, TextPropsType>(
             style={{
               margin: 0,
               display: heading ? "flex" : undefined,
-              borderBlockEnd:
-                hasTooltip && underline
-                  ? "2px dotted var(--p-color-border-tertiary, #cccccc)"
-                  : "none",
               ...typographyStyle,
               ...style,
             }}
@@ -268,7 +288,11 @@ export const Text = forwardRef<HTMLElement, TextPropsType>(
         ) : (
           textNode
         )}
-        {tooltip && <STooltip id={id}>{tooltip}</STooltip>}
+        {tooltip && (
+          <span style={TOOLTIP_WRAPPER_STYLE}>
+            <STooltip id={id}>{tooltip}</STooltip>
+          </span>
+        )}
       </>
     );
   },

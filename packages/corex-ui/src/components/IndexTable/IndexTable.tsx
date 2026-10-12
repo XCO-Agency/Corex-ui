@@ -18,8 +18,11 @@ import {
   type ReactElement,
   type ReactNode,
 } from "react";
+import { childrenText } from "../../core/childrenText";
 import { mergeRefs } from "../../core/mergeRefs";
+import { useHydrated } from "../../core/useHydrated";
 import { useDimension } from "../../hooks/useDimension";
+import { Badge } from "../Badge";
 import { Checkbox } from "../Checkbox";
 import { Icon } from "../Icon";
 import { Pagination } from "../Pagination";
@@ -71,6 +74,21 @@ function alignmentClass(alignment: IndexTableAlignmentType): string | undefined 
   if (alignment === "end") return "cx-it__cell--end";
   if (alignment === "center") return "cx-it__cell--center";
   return undefined;
+}
+
+/**
+ * Whether the header can follow the body's horizontal scroll through a CSS
+ * scroll-driven animation (see `.cx-it--scroll-linked` in the styles). That
+ * runs on the browser's scrolling thread, in the same frame as the body;
+ * syncing `scrollLeft` from a `scroll` listener always lands a frame late.
+ */
+function supportsLinkedScroll(): boolean {
+  if (typeof CSS === "undefined" || typeof CSS.supports !== "function") return false;
+  return (
+    CSS.supports("animation-timeline: --cx-it-scroll") &&
+    CSS.supports("timeline-scope: --cx-it-scroll") &&
+    CSS.supports("selector(:dir(ltr))")
+  );
 }
 
 function pinStyle(
@@ -222,6 +240,30 @@ const RowContext = createContext<RowContextType>({
 /* IndexTable                                                                 */
 /* -------------------------------------------------------------------------- */
 
+/**
+ * A heading's title, with its tooltip. Always rendered through `Text` with the
+ * header's typography set explicitly, so the host app's font sizes and line
+ * heights can't leak into the fixed-height header row. Colour is inherited,
+ * so the sort toggle's hover and active colours still apply.
+ */
+function HeadingTitle({ heading }: { heading: IndexTableHeadingType }) {
+  return (
+    <Text variant="small" tooltip={heading.tooltip}>
+      {heading.title}
+    </Text>
+  );
+}
+
+function HeadingBadge({ badge }: { badge: IndexTableHeadingType["badge"] }) {
+  if (badge === undefined || badge === null || badge === false || badge === "") {
+    return null;
+  }
+  if (typeof badge === "object" && !isValidElement(badge) && "content" in badge) {
+    return <Badge tone={badge.tone}>{badge.content}</Badge>;
+  }
+  return <Badge>{badge as ReactNode}</Badge>;
+}
+
 function normalizeHeadings(
   headings: IndexTablePropsType["headings"],
   columnContentTypes: IndexTablePropsType["columnContentTypes"],
@@ -280,6 +322,8 @@ function IndexTableInner(
   const bodyScrollRef = useRef<HTMLDivElement>(null);
   const tableRef = useRef<HTMLDivElement>(null);
   const headScrollRef = useRef<HTMLDivElement>(null);
+  const headGridRef = useRef<HTMLDivElement>(null);
+  const sizerRef = useRef<HTMLDivElement>(null);
   const cancelDragRef = useRef<(() => void) | null>(null);
   const { isXs, isSm, ref: measureRef } = useDimension();
   const rootRef = useMemo(
@@ -440,6 +484,9 @@ function IndexTableInner(
     ],
   );
 
+  // Off on the server and while hydrating, so the class list matches.
+  const scrollLinked = useHydrated() && supportsLinkedScroll();
+
   const rootClassName = cx(
     "cx-it",
     increasedTableDensity && "cx-it--dense",
@@ -448,35 +495,75 @@ function IndexTableInner(
     verticalAlign === "top" && "cx-it--align-top",
     verticalAlign === "bottom" && "cx-it--align-bottom",
     verticalAlign === "baseline" && "cx-it--align-baseline",
+    scrollLinked && "cx-it--scroll-linked",
     className,
   );
 
   // Hooks stay above the empty-state early return so the hook count never
   // changes when a search empties the table.
-  const [isScrolling, setIsScrolling] = useState(false);
   const scrollTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // The header lives outside the horizontal scroller (an `overflow` ancestor
-  // would trap its `position: sticky`), so it follows the body's scroll here.
-  // It also publishes how much of the rows is scrolled out of view on each
-  // side, so highlighted rows can round their *visible* edges (see the
-  // `--cx-it-clip-*` rules in the styles).
+  // would trap its `position: sticky`), so it is its own grid and has to be
+  // kept in line with the body by hand:
+  //  - Columns: the body's tracks size to their content, which the header
+  //    can't see, so it copies the body's resolved track widths.
+  //  - Scroll: with linked scrolling, CSS moves the header with the body and
+  //    only `--cx-it-scroll-max` is needed here; otherwise `scrollLeft` is
+  //    copied over, plus how much of the rows is scrolled out of view on each
+  //    side, so highlighted rows can round their *visible* edges (see the
+  //    `--cx-it-clip-*` rules in the styles).
   const syncHeaderScroll = useCallback(() => {
     const body = bodyScrollRef.current;
     if (!body) return;
-    if (headScrollRef.current) headScrollRef.current.scrollLeft = body.scrollLeft;
-    const hiddenEnd = Math.max(0, body.scrollWidth - body.clientWidth - body.scrollLeft);
     const table = tableRef.current;
+    const head = headScrollRef.current;
+    const linked = Boolean(
+      tableRef.current?.parentElement?.classList.contains("cx-it--scroll-linked"),
+    );
+    const maxScroll = Math.max(0, body.scrollWidth - body.clientWidth);
+    table?.style.setProperty("--cx-it-scroll-max", `${maxScroll}px`);
+    if (linked) {
+      if (head && head.scrollLeft !== 0) head.scrollLeft = 0;
+      table?.style.removeProperty("--cx-it-clip-start");
+      table?.style.removeProperty("--cx-it-clip-end");
+      return;
+    }
+    if (head) head.scrollLeft = body.scrollLeft;
+    const hiddenEnd = Math.max(0, maxScroll - body.scrollLeft);
     table?.style.setProperty("--cx-it-clip-start", `${Math.max(0, body.scrollLeft)}px`);
     table?.style.setProperty("--cx-it-clip-end", `${hiddenEnd}px`);
   }, []);
 
+  const syncHeaderColumns = useCallback(() => {
+    const grid = gridRef.current;
+    const headGrid = headGridRef.current;
+    if (!grid || !headGrid) return;
+    const tracks = grid.ownerDocument.defaultView
+      ?.getComputedStyle(grid)
+      .getPropertyValue("grid-template-columns");
+    // Resolved px widths in a browser; anything else (jsdom) is left alone.
+    if (!tracks || !/^[\d.\spx]+$/.test(tracks)) return;
+    if (headGrid.style.gridTemplateColumns !== tracks) {
+      headGrid.style.gridTemplateColumns = tracks;
+    }
+  }, []);
+
+  const syncHeader = useCallback(() => {
+    syncHeaderColumns();
+    syncHeaderScroll();
+  }, [syncHeaderColumns, syncHeaderScroll]);
+
+  // Scrolling only touches the DOM: a React render here would hold up the
+  // main thread right as the scroll starts.
   const handleScroll = useCallback(() => {
     syncHeaderScroll();
-    setIsScrolling(true);
+    const body = bodyScrollRef.current;
+    if (!body) return;
+    body.classList.add("cx-it__scroll--scrolling");
     if (scrollTimerRef.current) clearTimeout(scrollTimerRef.current);
     scrollTimerRef.current = setTimeout(() => {
-      setIsScrolling(false);
+      body.classList.remove("cx-it__scroll--scrolling");
     }, 1000);
   }, [syncHeaderScroll]);
 
@@ -486,17 +573,23 @@ function IndexTableInner(
     };
   }, []);
 
-  useIsomorphicLayoutEffect(syncHeaderScroll, [isBulkActive, syncHeaderScroll]);
+  // Every render can change cell content, and with it the column widths.
+  useIsomorphicLayoutEffect(syncHeader);
 
-  // The hidden widths change with the container and column sizes too.
+  // Column widths also move without a render: fonts and images loading, the
+  // container resizing. The sizing row has one cell per column, as wide as
+  // its track, so watching it catches every width change.
   useEffect(() => {
     const body = bodyScrollRef.current;
     if (!body || typeof ResizeObserver === "undefined") return;
-    const observer = new ResizeObserver(() => syncHeaderScroll());
+    const observer = new ResizeObserver(() => syncHeader());
     observer.observe(body);
     if (gridRef.current) observer.observe(gridRef.current);
+    for (const cell of Array.from(sizerRef.current?.children ?? [])) {
+      observer.observe(cell);
+    }
     return () => observer.disconnect();
-  }, [syncHeaderScroll, effectiveItemCount]);
+  }, [syncHeader, effectiveItemCount, layout]);
 
   if (effectiveItemCount === 0 && emptyState) {
     return (
@@ -521,6 +614,77 @@ function IndexTableInner(
         : (heading.defaultSortDirection ?? "descending");
     onSort?.(index, next);
   };
+
+  const renderHeadingContent = (
+    heading: IndexTableHeadingType | undefined,
+    index: number,
+  ): ReactNode => {
+    if (!heading || heading.hidden) return null;
+    const isSorted = sortColumnIndex === index;
+    const title = <HeadingTitle heading={heading} />;
+    const sortIcon = (
+      <span className="cx-it__sort-icon" aria-hidden="true">
+        <Icon
+          type={isSorted && sortDirection === "ascending" ? "chevron-up" : "chevron-down"}
+          size="small"
+        />
+      </span>
+    );
+    return (
+      <>
+        {heading.sortable ? (
+          <button
+            type="button"
+            className={cx(
+              "cx-it__control cx-it__sort",
+              isSorted && "cx-it__sort--active",
+            )}
+            onClick={() => handleSort(index, heading)}
+          >
+            {title}
+            {sortIcon}
+          </button>
+        ) : (
+          title
+        )}
+        <HeadingBadge badge={heading.badge} />
+      </>
+    );
+  };
+
+  // A zero-height, hidden row in the body grid, one cell per column. It puts
+  // the headings' widths and each content-sized column's `minWidth` into the
+  // body's track sizing (the header is a separate grid), and its cells are
+  // what the column-width observer watches. The heading text is drawn by CSS
+  // from data attributes, so it never shows up as duplicate DOM text.
+  const sizerRow = (
+    <div ref={sizerRef} className="cx-it__row cx-it__sizer" aria-hidden="true">
+      {reorderable && <div className="cx-it__cell cx-it__cell--control" />}
+      {selectable && <div className="cx-it__cell cx-it__cell--control" />}
+      {layout.columns.map((column, index) => {
+        const heading = normalizedHeadings[index];
+        const measured = Boolean(heading && !heading.hidden && !column.sticky);
+        const badge = heading?.badge;
+        const badgeText =
+          badge &&
+          typeof badge === "object" &&
+          !isValidElement(badge) &&
+          "content" in badge
+            ? childrenText(badge.content)
+            : childrenText(badge as ReactNode);
+        return (
+          <div
+            key={index}
+            className="cx-it__cell cx-it__cell--head"
+            style={column.contentSized ? { minWidth: column.minWidth } : undefined}
+            data-title={measured ? childrenText(heading?.title) : undefined}
+            data-sortable={measured && heading?.sortable ? "" : undefined}
+            data-badge={measured && badgeText ? badgeText : undefined}
+          />
+        );
+      })}
+    </div>
+  );
 
   const rootStyle = {
     "--cx-it-cols": layout.gridTemplateColumns,
@@ -570,7 +734,7 @@ function IndexTableInner(
 
             {!isBulkActive && normalizedHeadings.length > 0 && (
               <div ref={headScrollRef} className="cx-it__head-scroll">
-                <div role="rowgroup" className="cx-it__grid">
+                <div role="rowgroup" className="cx-it__grid" ref={headGridRef}>
                   <div role="row" className="cx-it__row cx-it__row--head">
                     {reorderable && (
                       <div
@@ -622,30 +786,7 @@ function IndexTableInner(
                           )}
                           style={pinStyle(column.sticky, column.offset)}
                         >
-                          {heading && !heading.hidden && heading.sortable ? (
-                            <button
-                              type="button"
-                              className={cx(
-                                "cx-it__control cx-it__sort",
-                                isSorted && "cx-it__sort--active",
-                              )}
-                              onClick={() => handleSort(index, heading)}
-                            >
-                              {heading.title}
-                              <span className="cx-it__sort-icon" aria-hidden="true">
-                                <Icon
-                                  type={
-                                    isSorted && sortDirection === "ascending"
-                                      ? "chevron-up"
-                                      : "chevron-down"
-                                  }
-                                  size="small"
-                                />
-                              </span>
-                            </button>
-                          ) : heading && !heading.hidden ? (
-                            heading.title
-                          ) : null}
+                          {renderHeadingContent(heading, index)}
                         </div>
                       );
                     })}
@@ -655,13 +796,10 @@ function IndexTableInner(
             )}
           </div>
 
-          <div
-            ref={bodyScrollRef}
-            className={cx("cx-it__scroll", isScrolling && "cx-it__scroll--scrolling")}
-            onScroll={handleScroll}
-          >
+          <div ref={bodyScrollRef} className="cx-it__scroll" onScroll={handleScroll}>
             <div role="rowgroup" className="cx-it__grid" ref={gridRef}>
               {bodyRows}
+              {sizerRow}
             </div>
           </div>
         </div>
@@ -946,10 +1084,6 @@ function IndexTableCell({
   const resolvedAlignment =
     alignment ?? (format ? resolveAlignment({ format }) : (column?.alignment ?? "start"));
   const isFirst = columnIndex === 0;
-  const colMaxWidth =
-    column?.minWidth && column.minWidth > 260
-      ? ({ "--cx-it-col-max": `${column.minWidth}px` } as CSSProperties)
-      : undefined;
 
   return (
     <div
@@ -959,9 +1093,10 @@ function IndexTableCell({
         alignmentClass(resolvedAlignment),
         flush && "cx-it__cell--flush",
         pin && "cx-it__cell--sticky",
+        column?.capContent && "cx-it__cell--flex",
         className,
       )}
-      style={{ ...pinStyle(pin, column?.offset), ...colMaxWidth, ...style }}
+      style={{ ...pinStyle(pin, column?.offset), ...style }}
     >
       {isFirst && row.depth > 0 && (
         <div

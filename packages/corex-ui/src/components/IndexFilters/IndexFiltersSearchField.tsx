@@ -1112,6 +1112,7 @@ export function IndexFiltersSearchField({
             disabled={disabled}
             variant="tertiary"
             icon="x-circle"
+            accessibilityLabel="Clear search and filters"
             onClick={(event) => {
               event.stopPropagation();
               handleClear();

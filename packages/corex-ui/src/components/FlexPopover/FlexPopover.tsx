@@ -79,10 +79,11 @@ export function FlexPopover({
 }: FlexPopoverPropsType) {
   const markerRef = useRef<HTMLSpanElement | null>(null);
   const popoverRef = useRef<HTMLDivElement | null>(null);
-  /** Body of the document that owns the field; defaults to document.body on client. */
-  const [mountTarget, setMountTarget] = useState<HTMLElement | null>(() =>
-    typeof document !== "undefined" ? document.body : null,
-  );
+  /**
+   * Body of the document that owns the field. Starts null so the first client render
+   * matches the server (no portal); the layout effect below resolves it before paint.
+   */
+  const [mountTarget, setMountTarget] = useState<HTMLElement | null>(null);
 
   const isPopoverSupported =
     typeof HTMLElement !== "undefined" &&
