@@ -354,18 +354,32 @@ export const Modal = forwardRef<ModalElement, ModalPropsType>(function Modal(
 
   if (isAppBridgeModal) {
     return (
-      <UiModal
-        ref={mergedRef}
-        id={modalId}
-        variant={variant}
-        src={src}
-        accessibilityLabel={resolvedAccessibilityLabel}
-        {...rest}
-      >
-        {typeof title === "string" && <TitleBar title={title} />}
-        {automatedSaveBar}
+      <UiModal ref={mergedRef} variant={variant} id={modalId} src={src}>
+        {typeof title === "string" && (
+          <TitleBar title={title}>
+            {primaryAction && (
+              <button
+                variant="primary"
+                disabled={primaryAction.disabled}
+                loading={primaryAction.loading}
+                onClick={primaryAction.onAction}
+              >
+                {primaryAction.content}
+              </button>
+            )}
+            {secondaryActions?.map((action, i) => (
+              <button
+                key={i}
+                disabled={action.disabled}
+                loading={action.loading}
+                onClick={action.onAction}
+              >
+                {action.content}
+              </button>
+            ))}
+          </TitleBar>
+        )}
         {children}
-        {actionsContent}
       </UiModal>
     );
   }

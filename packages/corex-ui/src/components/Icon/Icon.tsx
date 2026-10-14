@@ -48,16 +48,28 @@ function findIconColorVar(root: ShadowRoot): string | undefined {
   return style.match(ICON_COLOR_VAR_PATTERN)?.[0];
 }
 
-function applyIconColor(el: HTMLElement, color: string) {
+// Latest colour requested per element, so a late async apply never wins
+// over a newer tone (e.g. selected -> unselected).
+const requestedColor = new WeakMap<HTMLElement, string | undefined>();
+
+function applyIconColor(el: HTMLElement, color: string | undefined) {
+  requestedColor.set(el, color);
   const apply = () => {
     if (!iconColorVar && el.shadowRoot) iconColorVar = findIconColorVar(el.shadowRoot);
     if (!iconColorVar) return false;
-    el.style.setProperty(iconColorVar, color);
+    const current = requestedColor.get(el);
+    if (current) el.style.setProperty(iconColorVar, current);
+    else el.style.removeProperty(iconColorVar);
     return true;
   };
   if (apply()) return;
+  if (!color) return;
   customElements.whenDefined("s-icon").then(() => {
-    if (!apply()) requestAnimationFrame(apply);
+    let tries = 0;
+    const retry = () => {
+      if (!apply() && ++tries < 10) requestAnimationFrame(retry);
+    };
+    retry();
   });
 }
 
@@ -78,7 +90,7 @@ export const Icon = forwardRef<HTMLElement, IconPropsType>(function Icon(
     (el: HTMLElement | null) => {
       if (typeof ref === "function") ref(el);
       else if (ref) ref.current = el;
-      if (el && iconColor) applyIconColor(el, iconColor);
+      if (el) applyIconColor(el, iconColor);
     },
     [ref, iconColor],
   );
