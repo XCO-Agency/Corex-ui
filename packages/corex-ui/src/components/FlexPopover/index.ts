@@ -1,2 +1,2 @@
 export { FlexPopover } from "./FlexPopover";
-export type { FlexPopoverPropsType } from "./FlexPopover.types";
+export type { FlexPopoverPositionType, FlexPopoverPropsType } from "./FlexPopover.types";

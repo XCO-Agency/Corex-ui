@@ -1636,15 +1636,20 @@ import { FlexPopover } from "@xco-agency/corex-ui";
 | `anchorId`                | `string &#124; undefined`                                   | ID of the element the popover is positioned against (resolved in the owner document). |
 | `anchorRef`               | `RefObject&lt;HTMLElement &#124; null&gt; &#124; undefined` | Direct ref to the anchor element.                                                     |
 | `isOpen` **(required)**   | `boolean`                                                   | —                                                                                     |
-| `onClose` **(required)**  | `() =&gt; void`                                             | Fired on Escape or on pointer-down outside the popover, the anchor and `boundaryRef`. |
+| `onClose` **(required)**  | `() =&gt; void`                                             | Fired on Escape, on pointer-down outside, or after a hover leave once `closeDelay` elapses. |
 | `heading`                 | `ReactNode`                                                 | Optional heading displayed in the popover header. Defaults to "Filters".              |
 | `closeAccessibilityLabel` | `string &#124; undefined`                                   | Optional accessibility label for the header close button.                             |
 | `width`                   | `string &#124; undefined`                                   | —                                                                                     |
 | `minWidth`                | `string &#124; undefined`                                   | —                                                                                     |
 | `maxHeight`               | `string &#124; undefined`                                   | —                                                                                     |
-| `offset`                  | `number &#124; undefined`                                   | —                                                                                     |
+| `offset`                  | `number &#124; undefined`                                   | Gap in pixels between the anchor and the popover. Defaults to 8.                     |
+| `position`                | `FlexPopoverPositionType &#124; undefined`                  | Preferred side: `top`, `bottom`, `left`, `right`, plus `-start` / `-end`. Defaults to `bottom-start`. Flips when it does not fit. |
+| `openOnHover`             | `boolean &#124; undefined`                                  | Opens when the pointer enters the anchor. Closing waits so the offset gap is not a leave. |
+| `onOpen`                  | `(() =&gt; void) &#124; undefined`                          | Fired when hover should open. Set `isOpen` from this; the popover stays controlled.  |
+| `closeDelay`              | `number &#124; undefined`                                   | Milliseconds to wait after the pointer leaves before closing. Defaults to 150. The offset gap still counts as inside. |
 | `matchAnchorWidth`        | `boolean &#124; undefined`                                  | Whether the popover should match the width of the anchor element.                     |
 | `boundaryRef`             | `RefObject&lt;HTMLElement &#124; null&gt; &#124; undefined` | Element whose clicks never dismiss the popover.                                       |
+| `boundarySelector`        | `string &#124; undefined`                             | Clicks inside a matching element never dismiss the popover (for a portalled submenu). |
 | `className`               | `string &#124; undefined`                                   | —                                                                                     |
 | `style`                   | `CSSProperties &#124; undefined`                            | —                                                                                     |
 | `zIndex`                  | `number &#124; undefined`                                   | —                                                                                     |

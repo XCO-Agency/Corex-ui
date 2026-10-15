@@ -5,7 +5,6 @@ import {
   ReactNode,
   RefAttributes,
 } from "react";
-import { ComponentChildren as ComponentChildren$1 } from "preact";
 
 type React = {
   forwardRef: typeof react.forwardRef;
@@ -3862,7 +3861,7 @@ type Styles = string;
 declare const shadowRootSymbol: unique symbol;
 declare const flushRenderSymbol: unique symbol;
 type RenderImpl = Omit<ShadowRootInit, "mode"> & {
-  ShadowRoot: (element: any) => ComponentChildren$1;
+  ShadowRoot: (element: any) => any;
   styles?: Styles;
   /**
    * Only needed once in the root element, to inject global shadow CSS for all components.
@@ -4061,8 +4060,8 @@ type FieldReactProps<T extends keyof HTMLElementTagNameMap> = {
  * string-only types via FieldSlotPreactProps.
  */
 type FieldSlotInternalReactProps = {
-  error?: preact.ComponentChildren;
-  details?: preact.ComponentChildren;
+  error?: any;
+  details?: any;
 };
 /**
  * Preact JSX string-only versions of field slot props.
@@ -4076,9 +4075,9 @@ type FieldSlotPreactProps = {
 /** Used when an element does not have children. */
 interface PreactBaseElementProps<TClass extends HTMLElement> {
   /** Assigns a unique key to this element. */
-  key?: preact.Key;
+  key?: string | number;
   /** Assigns a ref (generally from `useRef()`) to this element. */
-  ref?: preact.Ref<TClass>;
+  ref?: { current: TClass | null };
   /** Assigns this element to a parent's slot. */
   slot?: Lowercase<string>;
 }
@@ -4086,7 +4085,7 @@ interface PreactBaseElementProps<TClass extends HTMLElement> {
 interface PreactBaseElementPropsWithChildren<
   TClass extends HTMLElement,
 > extends PreactBaseElementProps<TClass> {
-  children?: preact.ComponentChildren;
+  children?: any;
 }
 
 interface PolarisGlobal {
@@ -4795,7 +4794,7 @@ interface ReactProps$V
   /**
    * The content of the Badge.
    */
-  children?: ComponentChildren$1;
+  children?: any;
 }
 
 declare abstract class BadgeBase
@@ -4844,13 +4843,13 @@ interface ReactProps$U
   /**
    * The content of the Banner.
    */
-  children?: ComponentChildren$1;
+  children?: any;
   /**
    * The secondary actions to display at the bottom of the Banner.
    *
    * Only Buttons with the `variant` of "secondary" or "auto" are permitted. A maximum of two `s-button` components are allowed.
    */
-  secondaryActions?: ComponentChildren$1;
+  secondaryActions?: any;
   onDismiss?: ((event: CallbackEvent<typeof tagName$U>) => void) | null;
   onAfterHide?: ((event: CallbackEvent<typeof tagName$U>) => void) | null;
 }
@@ -5128,7 +5127,7 @@ interface ReactProps$T extends Partial<BoxProps>, Pick<BoxProps$1, "id" | "child
   /**
    * The content of the Box.
    */
-  children?: ComponentChildren$1;
+  children?: any;
 }
 
 declare class BoxElement extends PolarisCustomElement implements BoxProps {
@@ -5212,7 +5211,7 @@ interface ReactProps$S
   /**
    * The content of the Button.
    */
-  children?: ComponentChildren$1;
+  children?: any;
   onClick?: ((event: CallbackEvent<typeof tagName$S>) => void) | null;
   onFocus?: ((event: CallbackEvent<typeof tagName$S>) => void) | null;
   onBlur?: ((event: CallbackEvent<typeof tagName$S>) => void) | null;
@@ -5310,18 +5309,18 @@ interface ReactProps$R
   /**
    * The content of the ButtonGroup.
    */
-  children?: ComponentChildren$1;
+  children?: any;
   /**
    * The primary action button for the group.
    * Accepts a single Button element with a `variant` of `primary`.
    * Cannot be used when gap="none".
    */
-  primaryAction?: ComponentChildren$1;
+  primaryAction?: any;
   /**
    * Secondary action buttons for the group.
    * Accepts Button or PressButton elements with a `variant` of `secondary` or `auto`.
    */
-  secondaryActions?: ComponentChildren$1;
+  secondaryActions?: any;
 }
 
 declare abstract class ButtonGroupBase
@@ -5469,13 +5468,13 @@ interface ReactProps$P extends Partial<ChipProps>, Pick<ChipProps$1, "id" | "chi
   /**
    * The content of the Chip.
    */
-  children?: ComponentChildren$1;
+  children?: any;
   /**
    * The graphic to display in the chip.
    *
    * Only accepts `Icon` components.
    */
-  graphic?: ComponentChildren$1;
+  graphic?: any;
   onRemove?: ((event: CallbackEvent<typeof tagName$P>) => void) | null;
 }
 
@@ -5517,7 +5516,7 @@ interface ReactProps$O
    * concatenating the text nodes from the provided content;
    * any markup or element structure is ignored.
    */
-  children?: ComponentChildren$1;
+  children?: any;
   /**
    * Additional text to provide context or guidance for the input.
    *
@@ -5526,13 +5525,13 @@ interface ReactProps$O
    *
    * @implementation this content should be linked to the input with an `aria-describedby` attribute.
    */
-  details?: ComponentChildren$1;
+  details?: any;
   /**
    * Additional content to display below the choice label.
    * Can include rich content like TextFields, Buttons, or other interactive components.
    * Event handlers on React components are preserved.
    */
-  secondaryContent?: ComponentChildren$1;
+  secondaryContent?: any;
 }
 
 declare class Choice extends PolarisCustomElement implements ChoiceProps {
@@ -5584,7 +5583,7 @@ interface ReactProps$N
    *
    * Accepts `Choice` components.
    */
-  children?: ComponentChildren$1;
+  children?: any;
   onChange?: ((event: CallbackEvent<typeof tagName$N>) => void) | null;
   onInput?: ((event: CallbackEvent<typeof tagName$N>) => void) | null;
 }
@@ -5674,7 +5673,7 @@ interface ReactProps$M
   /**
    * The content of the Clickable.
    */
-  children?: ComponentChildren$1;
+  children?: any;
   onClick?: ((event: CallbackEvent<typeof tagName$M>) => void) | null;
   onFocus?: ((event: CallbackEvent<typeof tagName$M>) => void) | null;
   onBlur?: ((event: CallbackEvent<typeof tagName$M>) => void) | null;
@@ -5730,13 +5729,13 @@ interface ReactProps$L
   /**
    * The content of the clickable chip.
    */
-  children?: ComponentChildren$1;
+  children?: any;
   /**
    * The graphic to display in the clickable chip.
    *
    * Only accepts `Icon` components.
    */
-  graphic?: ComponentChildren$1;
+  graphic?: any;
   onClick?: ((event: CallbackEvent<typeof tagName$L>) => void) | null;
   onRemove?: ((event: CallbackEvent<typeof tagName$L>) => void) | null;
   onAfterHide?: ((event: CallbackEvent<typeof tagName$L>) => void) | null;
@@ -6141,7 +6140,7 @@ interface ReactProps$F extends Partial<DropZoneProps>, Pick<DropZoneProps$1, "id
    * Content to display inside the drop zone, such as upload instructions, file type icons,
    * or previews of selected files. When provided, replaces the default upload prompt.
    */
-  children?: ComponentChildren$1;
+  children?: any;
   /**
    * A callback fired when the user selects files through the file picker or drops valid
    * files onto the drop zone. Access the selected files through `event.currentTarget.files`.
@@ -6367,7 +6366,7 @@ interface ReactProps$D extends Partial<GridProps>, Pick<GridProps$1, "id" | "chi
   /**
    * The content of the Grid.
    */
-  children?: ComponentChildren$1;
+  children?: any;
 }
 
 declare class Grid extends BoxElement implements GridProps {
@@ -6410,7 +6409,7 @@ interface ReactProps$C
   /**
    * The content of the GridItem.
    */
-  children?: ComponentChildren$1;
+  children?: any;
 }
 
 declare class GridItem extends BoxElement implements GridItemProps {
@@ -6441,7 +6440,7 @@ interface ReactProps$B
   /**
    * The content of the Heading.
    */
-  children?: ComponentChildren$1;
+  children?: any;
 }
 
 declare abstract class HeadingBase
@@ -6590,7 +6589,7 @@ interface ReactProps$y
   /**
    * The content of the Link.
    */
-  children?: ComponentChildren$1;
+  children?: any;
   onClick?: ((event: CallbackEvent<typeof tagName$y>) => void) | null;
 }
 
@@ -6640,7 +6639,7 @@ interface ReactProps$x
   /**
    * The content of the ListItem.
    */
-  children?: ComponentChildren$1;
+  children?: any;
 }
 
 declare class ListItem extends PolarisCustomElement implements ListItemProps {
@@ -6668,7 +6667,7 @@ interface ReactProps$w extends Partial<MenuProps>, Pick<MenuProps$1, "id" | "chi
    *
    * Only accepts `Button` and `Section` components.
    */
-  children?: ComponentChildren$1;
+  children?: any;
 }
 
 /**
@@ -6767,20 +6766,20 @@ interface ReactProps$v
    * The content displayed within the modal, typically including form fields, informational
    * text, or interactive elements that require focused user attention.
    */
-  children?: ComponentChildren$1;
+  children?: any;
   /**
    * The main action button displayed in the modal footer, representing the primary action
    * users should take. Only accepts a button component with a `variant` of `primary`. This action
    * should align with the modal's main purpose, such as "Save", "Confirm", or "Submit".
    */
-  primaryAction?: ComponentChildren$1;
+  primaryAction?: any;
   /**
    * Additional action buttons displayed in the modal footer, providing alternative or
    * supporting actions such as "Cancel" or "Learn more". Only accepts button components
    * with a `variant` of `secondary` or `auto`. These are visually de-emphasized compared
    * to the primary action to establish clear hierarchy.
    */
-  secondaryActions?: ComponentChildren$1;
+  secondaryActions?: any;
   /**
    * A callback fired when the modal closes.
    * Use to perform cleanup or trigger side effects when the modal is dismissed.
@@ -7031,7 +7030,7 @@ interface ReactProps$s
   /**
    * The content to use as the label.
    */
-  children?: ComponentChildren$1;
+  children?: any;
 }
 
 declare class Option extends PolarisCustomElement implements OptionProps {
@@ -7066,7 +7065,7 @@ interface ReactProps$r
    *
    * Accepts `Option` components.
    */
-  children?: ComponentChildren$1;
+  children?: any;
 }
 
 declare class OptionGroup extends PolarisCustomElement implements OptionGroupProps {
@@ -7096,7 +7095,7 @@ interface ReactProps$q extends Partial<OrderedListProps>, Pick<OrderedListProps$
    *
    * Only ListItems are accepted.
    */
-  children?: ComponentChildren$1;
+  children?: any;
 }
 
 declare class OrderedList extends PolarisCustomElement implements OrderedListProps {
@@ -7125,31 +7124,31 @@ interface ReactProps$p extends Partial<PageProps>, Pick<PageProps$1, "id" | "chi
    * The main content of the page, typically containing the primary information, forms,
    * or interactive elements that fulfill the page's purpose.
    */
-  children?: ComponentChildren$1;
+  children?: any;
   /**
    * Supplementary content displayed in a sidebar alongside the main content. Use for
    * related information, navigation aids, or contextual actions that support the main content.
    * This slot is only rendered when `inlineSize` is set to `base`.
    */
-  aside?: ComponentChildren$1;
+  aside?: any;
   /**
    * The main action button displayed in the page header, representing the primary action
    * users can take on this page. Only accepts a single button component with a `variant` of `primary`.
    * Common examples include "Create", "Save", or "Add".
    */
-  primaryAction?: ComponentChildren$1;
+  primaryAction?: any;
   /**
    * Additional action buttons displayed in the page header, providing alternative or supporting
    * actions. Only accepts button group and button components with a `variant` of `secondary`
    * or `auto`. These are visually de-emphasized compared to the primary action.
    */
-  secondaryActions?: ComponentChildren$1;
+  secondaryActions?: any;
   /**
    * Navigation links that help users understand their location within the app and navigate
    * back to parent pages. Only accepts link components. Typically displays as a back arrow
    * or breadcrumb trail in the page header.
    */
-  breadcrumbActions?: ComponentChildren$1;
+  breadcrumbActions?: any;
 }
 
 declare abstract class PageBase extends PolarisCustomElement implements PageProps {
@@ -7206,7 +7205,7 @@ interface ReactProps$o
   /**
    * The content of the Paragraph.
    */
-  children?: ComponentChildren$1;
+  children?: any;
 }
 
 declare abstract class ParagraphBase
@@ -7319,7 +7318,7 @@ interface ReactProps$m
    * The content displayed within the popover, which appears in an overlay positioned relative
    * to its trigger element. Typically contains menus, action lists, or supplementary information.
    */
-  children?: ComponentChildren$1;
+  children?: any;
   /**
    * A callback fired immediately when the popover starts to hide, before any exit animation.
    * Use to perform cleanup or save state before the popover dismisses.
@@ -7411,7 +7410,7 @@ interface ReactProps$l
   /**
    * The content of the PressButton.
    */
-  children?: ComponentChildren$1;
+  children?: any;
   onClick?: ((event: CallbackEvent<typeof tagName$l>) => void) | null;
   onFocus?: ((event: CallbackEvent<typeof tagName$l>) => void) | null;
   onBlur?: ((event: CallbackEvent<typeof tagName$l>) => void) | null;
@@ -7452,7 +7451,7 @@ interface ReactProps$k
   /**
    * The content of the container.
    */
-  children?: ComponentChildren$1;
+  children?: any;
 }
 
 interface QueryContainerProps extends Required<
@@ -7528,7 +7527,7 @@ interface ReactProps$j
   /**
    * The content of the ScrollBox.
    */
-  children?: ComponentChildren$1;
+  children?: any;
   /**
    * Callback fired when the scroll container is scrolled.
    */
@@ -7671,7 +7670,7 @@ interface ReactProps$h
   /**
    * The content of the Section.
    */
-  children?: ComponentChildren$1;
+  children?: any;
 }
 
 declare abstract class SectionBase extends PolarisCustomElement implements SectionProps {
@@ -7733,7 +7732,7 @@ interface ReactProps$g
    *
    * Accepts `Option` and `OptionGroup` components.
    */
-  children?: ComponentChildren$1;
+  children?: any;
   onChange?: (event: CallbackEvent<typeof tagName$g>) => void;
   onInput?: (event: CallbackEvent<typeof tagName$g>) => void;
   onBlur?: (event: CallbackEvent<typeof tagName$g>) => void;
@@ -7911,7 +7910,7 @@ interface ReactProps$e
   /**
    * The content of the Stack.
    */
-  children?: ComponentChildren$1;
+  children?: any;
 }
 
 declare class Stack extends BoxElement implements StackProps {
@@ -7990,11 +7989,11 @@ interface ReactProps$c
   /**
    * The content of the Table.
    */
-  children?: ComponentChildren$1;
+  children?: any;
   /**
    * Additional filters to display in the table. For example, the `s-search-field` component can be used to filter the table data.
    */
-  filters?: ComponentChildren$1;
+  filters?: any;
 }
 
 type HeaderFormat = Extract<
@@ -8061,7 +8060,7 @@ interface ReactProps$b
   /**
    * The body of the table. May not have any semantic meaning in the Table's `list` variant.
    */
-  children?: ComponentChildren$1;
+  children?: any;
 }
 
 declare class TableBody extends PolarisCustomElement implements TableBodyProps {
@@ -8090,7 +8089,7 @@ interface ReactProps$a
   /**
    * The content of the table cell.
    */
-  children?: ComponentChildren$1;
+  children?: any;
 }
 
 declare const headerFormatSymbol: unique symbol;
@@ -8123,7 +8122,7 @@ interface ReactProps$9
   /**
    * The heading of the column in the `table` variant, and the label of its data in `list` variant.
    */
-  children?: ComponentChildren$1;
+  children?: any;
 }
 
 declare class TableHeader extends PolarisCustomElement implements TableHeaderProps {
@@ -8154,7 +8153,7 @@ interface ReactProps$8
   /**
    * Contents of the table heading row; children should be `TableHeading` components.
    */
-  children?: ComponentChildren$1;
+  children?: any;
 }
 
 declare class TableHeaderRow extends PolarisCustomElement implements TableHeaderRowProps {
@@ -8187,7 +8186,7 @@ interface ReactProps$7
   /**
    * The content of a TableRow, which should be `TableCell` components.
    */
-  children?: ComponentChildren$1;
+  children?: any;
 }
 
 declare class TableRow extends PolarisCustomElement implements TableRowProps {
@@ -8238,7 +8237,7 @@ interface ReactProps$6 extends Partial<TextProps>, Pick<TextProps$1, "id" | "chi
   /**
    * The content of the Text.
    */
-  children?: ComponentChildren$1;
+  children?: any;
 }
 
 declare abstract class TextBase
@@ -8338,7 +8337,7 @@ interface ReactProps$4
   /**
    * The accessory to display in the text field.
    */
-  accessory?: ComponentChildren$1;
+  accessory?: any;
 }
 
 declare abstract class TextFieldBase
@@ -8418,7 +8417,7 @@ interface ReactProps$2
    *
    * Only accepts `Text`, `Paragraph` components, and raw `textContent`.
    */
-  children?: ComponentChildren$1;
+  children?: any;
 }
 
 declare class Tooltip extends PreactOverlayElement implements TooltipProps {
@@ -8486,7 +8485,7 @@ interface ReactProps
    *
    * Only ListItems are accepted.
    */
-  children?: ComponentChildren$1;
+  children?: any;
 }
 
 declare class UnorderedList extends PolarisCustomElement implements UnorderedListProps {

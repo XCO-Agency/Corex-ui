@@ -1,6 +1,6 @@
 {
   "name": "@xco-agency/corex-ui",
-  "version": "2.1.6",
+  "version": "2.1.7",
   "description": "Legacy-Polaris-React-compatible React components, backed by Shopify's Polaris web components.",
   "license": "MIT",
   "type": "module",
@@ -23,7 +23,7 @@
     "dist"
   ],
   "scripts": {
-    "build": "tsup",
+    "build": "tsup && node ./scripts/declare-children-alias.mjs",
     "dev": "tsup --watch",
     "test": "vitest run",
     "test:watch": "vitest",

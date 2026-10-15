@@ -53,9 +53,11 @@ const HOVERABLE_CSS = `
   transform: var(--cx-hv-from);
   transition-delay: 0s, 0s, var(--cx-hv-duration);
 }
-.cx-hoverable-slot[data-mode="children"][data-visible="false"][data-keep-space="false"] > *,
-.cx-hoverable-slot[data-mode="self"][data-visible="false"][data-keep-space="false"] {
-  display: none;
+/* On the slot, not its children: an inline display (Icon's display: contents)
+   would beat a stylesheet rule on the child and the hidden icon would keep its gap.
+   !important wins over that inline display and over the self-mode display. */
+.cx-hoverable-slot[data-visible="false"][data-keep-space="false"] {
+  display: none !important;
 }
 @media (prefers-reduced-motion: reduce) {
   .cx-hoverable-slot[data-ready="true"][data-mode="children"] > *,
@@ -255,7 +257,7 @@ function createSlot(showOnHover: boolean, displayName: string) {
         data-mode={layout.mode}
         data-ready={ready}
         data-visible={visible}
-        data-keep-space={keepSpace}
+        data-keep-space={keepSpace ? "true" : "false"}
         aria-hidden={visible ? undefined : true}
         style={style}
       >

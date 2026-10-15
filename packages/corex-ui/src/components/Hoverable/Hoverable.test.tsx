@@ -57,6 +57,26 @@ describe("Hoverable", () => {
     expect(slotOf("Edit")).toHaveAttribute("data-visible", "true");
   });
 
+  it("removes layout space when keepSpace is false, even if the child sets display", () => {
+    render(
+      <Hoverable>
+        <Hoverable.Show keepSpace={false}>
+          <span style={{ display: "contents" }}>
+            <i style={{ display: "inline-flex", width: 16, height: 16 }}>chevron</i>
+          </span>
+        </Hoverable.Show>
+      </Hoverable>,
+    );
+
+    const slot = document.querySelector(".cx-hoverable-slot") as HTMLElement;
+    expect(slot).toHaveAttribute("data-keep-space", "false");
+    expect(getComputedStyle(slot).display).toBe("none");
+
+    fireEvent.mouseOver(screen.getByText("chevron"));
+    expect(slot).toHaveAttribute("data-visible", "true");
+    expect(getComputedStyle(slot).display).not.toBe("none");
+  });
+
   it("supports render-function children without slots", () => {
     render(<Hoverable>{({ hovered }) => <p>{hovered ? "on" : "off"}</p>}</Hoverable>);
     fireEvent.mouseOver(screen.getByText("off"));
@@ -73,6 +93,7 @@ describe("Hoverable", () => {
       </Hoverable>,
     );
     expect(slotOf("X")).toHaveAttribute("data-keep-space", "false");
+    expect(getComputedStyle(slotOf("X")).display).toBe("none");
     fireEvent.mouseOver(screen.getByText("X"));
     expect(slotOf("X")).toHaveAttribute("data-visible", "false");
     act(() => vi.advanceTimersByTime(200));
