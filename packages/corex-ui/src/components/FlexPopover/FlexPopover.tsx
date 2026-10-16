@@ -542,6 +542,13 @@ function FlexPopoverBase({
 
     const onPointerMove = (event: PointerEvent) => {
       remember(event);
+      // Re-read where the pointer is from what it is over, so a missed enter/leave
+      // event cannot leave a popover believing it is still hovered.
+      const target = event.target as Node | null;
+      if (target && typeof target.nodeType === "number") {
+        inside.anchor = hitAnchor(target);
+        inside.popover = !!popoverRef.current?.contains(target);
+      }
       if (!isOpenRef.current) return;
       if (stillHovering()) clearClose();
       else scheduleClose();
@@ -652,7 +659,11 @@ function FlexPopoverBase({
                 <Divider />
               </>
             )}
-            <BlockStack maxBlockSize="320px" padding={padding} overflow="auto">
+            <BlockStack
+              maxBlockSize={maxHeight ?? "320px"}
+              padding={padding}
+              overflow="auto"
+            >
               <FlexPopoverNestContext.Provider value={nest}>
                 {children}
               </FlexPopoverNestContext.Provider>

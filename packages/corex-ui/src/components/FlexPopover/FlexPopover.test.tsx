@@ -448,9 +448,10 @@ describe("FlexPopover padding", () => {
     return value;
   };
 
-  it("pads the content with `small` by default and honours each size", () => {
-    expect(bodyPadding()).toContain("--p-space-300");
-    expect(bodyPadding("small")).toBe(bodyPadding());
+  it("pads the content with `small-200` by default and honours each size", () => {
+    expect(bodyPadding()).toContain("--p-space-200");
+    expect(bodyPadding("small-200")).toBe(bodyPadding());
+    expect(bodyPadding("small")).toContain("--p-space-300");
     expect(bodyPadding("none")).toBe("0px");
     expect(bodyPadding("base")).toContain("--p-space-400");
     expect(bodyPadding("large")).toContain("--p-space-500");
@@ -547,5 +548,40 @@ describe("FlexPopover nested popovers", () => {
     });
     fireEvent.pointerDown(screen.getByText("Child body"));
     expect(onClose).not.toHaveBeenCalled();
+  });
+});
+
+describe("FlexPopover hover recovery", () => {
+  beforeEach(() => {
+    vi.useFakeTimers({ toFake: ["setTimeout", "clearTimeout"] });
+    window.matchMedia = vi.fn().mockImplementation((query: string) => ({
+      matches: query === "(hover: hover)",
+      media: query,
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+    })) as unknown as typeof window.matchMedia;
+  });
+  afterEach(() => vi.useRealTimers());
+
+  it("closes when the pointer is over something else, even if the leave event never fired", () => {
+    const onClose = vi.fn();
+    render(
+      <div>
+        <button id="row">Row</button>
+        <button id="other">Other</button>
+        <FlexPopover isOpen anchorId="row" openOnHover closeDelay={100} onClose={onClose}>
+          <Text>Submenu</Text>
+        </FlexPopover>
+      </div>,
+    );
+
+    // Entered the row, then moved away with no pointerleave (a missed event).
+    dispatchPointer(document.getElementById("row")!, "pointerenter", 10, 10);
+    dispatchPointer(document.getElementById("other")!, "pointermove", 10, 200);
+    act(() => {
+      vi.advanceTimersByTime(300);
+    });
+
+    expect(onClose).toHaveBeenCalled();
   });
 });
