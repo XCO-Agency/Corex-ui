@@ -1,4 +1,10 @@
-import type { CSSProperties, MouseEvent, ReactElement, ReactNode, RefObject } from "react";
+import type {
+  CSSProperties,
+  MouseEvent,
+  ReactElement,
+  ReactNode,
+  RefObject,
+} from "react";
 
 /**
  * Side of the anchor the popover prefers.
@@ -19,6 +25,18 @@ export type FlexPopoverPositionType =
   | "right-start"
   | "right-end";
 
+/** Space between the panel edge and its content. `small` is 12px, `base` 16px, `large` 20px. */
+export type FlexPopoverPaddingType =
+  | "none"
+  | "small-500"
+  | "small-400"
+  | "small-300"
+  | "small-200"
+  | "small-100"
+  | "small"
+  | "base"
+  | "large";
+
 export type FlexPopoverPropsType = {
   /** ID of the element the popover is positioned against (resolved in the owner document). */
   anchorId?: string;
@@ -32,7 +50,10 @@ export type FlexPopoverPropsType = {
    * The popover stays controlled: set `isOpen` from this.
    */
   onOpen?: () => void;
-  /** Optional heading displayed in the popover header. Defaults to "Filters". */
+  /**
+   * Heading shown in the popover header. The header (heading and close button)
+   * renders only when this is passed and `noHeader` is not set.
+   */
   heading?: ReactNode;
   /** Optional accessibility label for the header close button. */
   closeAccessibilityLabel?: string;
@@ -69,7 +90,10 @@ export type FlexPopoverPropsType = {
   className?: string;
   style?: CSSProperties;
   zIndex?: number;
+  /** Hides the header even when `heading` is passed. */
   noHeader?: boolean;
+  /** Space between the panel edge and its content. @default "small-200" */
+  padding?: FlexPopoverPaddingType;
   children: ReactNode;
 };
 
@@ -106,6 +130,7 @@ export type FlexPopoverContentPropsType = Pick<
   | "heading"
   | "closeAccessibilityLabel"
   | "noHeader"
+  | "padding"
   | "width"
   | "minWidth"
   | "maxHeight"
@@ -124,7 +149,8 @@ export type FlexPopoverContentPropsType = Pick<
   onClose?: () => void;
 };
 
-export type FlexPopoverRootPropsType = FlexPopoverPropsType | FlexPopoverCompoundPropsType;
+export type FlexPopoverRootPropsType =
+  FlexPopoverPropsType | FlexPopoverCompoundPropsType;
 
 export type FlexPopoverComponentType = {
   (props: FlexPopoverRootPropsType): ReactElement;

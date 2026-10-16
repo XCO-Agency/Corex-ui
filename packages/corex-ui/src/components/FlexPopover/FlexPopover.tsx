@@ -6,6 +6,7 @@ import {
   useCallback,
   useContext,
   useEffect,
+  useMemo,
   useRef,
   useState,
   type CSSProperties,
@@ -78,6 +79,19 @@ const POPOVER_CSS = `
 }
 `;
 
+/**
+ * A popover rendered inside another one's content, such as a submenu. It is portalled
+ * out of the parent's DOM, so the parent registers it to treat the pointer and clicks
+ * inside it as still inside the parent, and stays open while the child is in use.
+ */
+type FlexPopoverChild = {
+  contains: (node: Node) => boolean;
+  hovered: () => boolean;
+};
+const FlexPopoverNestContext = createContext<{
+  register: (child: FlexPopoverChild) => () => void;
+} | null>(null);
+
 /** Frames to keep retrying placement while the anchor has no layout yet (~1s). */
 const MAX_POSITION_FRAMES = 60;
 
@@ -96,9 +110,10 @@ function FlexPopoverBase({
   isOpen,
   onClose,
   onOpen,
-  heading = "Filters",
+  heading,
   closeAccessibilityLabel,
   noHeader,
+  padding = "small-200",
   width,
   minWidth,
   maxHeight,
@@ -336,6 +351,37 @@ function FlexPopoverBase({
   onOpenRef.current = onOpen;
   const isOpenRef = useRef(isOpen);
   isOpenRef.current = isOpen;
+  const parentNest = useContext(FlexPopoverNestContext);
+  const nestedRef = useRef(new Set<FlexPopoverChild>());
+  const nest = useMemo(
+    () => ({
+      register: (child: FlexPopoverChild) => {
+        nestedRef.current.add(child);
+        return () => {
+          nestedRef.current.delete(child);
+        };
+      },
+    }),
+    [],
+  );
+  const nestedContains = (node: Node) =>
+    [...nestedRef.current].some((child) => child.contains(node));
+  const nestedHovered = () => [...nestedRef.current].some((child) => child.hovered());
+  /** Set while hover is bound: whether the pointer is on this popover, its anchor or the gap between. */
+  const hoverProbeRef = useRef<() => boolean>(() => false);
+  useEffect(
+    () =>
+      parentNest?.register({
+        contains: (node) => !!popoverRef.current?.contains(node) || nestedContains(node),
+        hovered: () =>
+          isOpenRef.current &&
+          (!!popoverRef.current?.matches(":hover") ||
+            hoverProbeRef.current() ||
+            nestedHovered()),
+      }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [parentNest],
+  );
   /** Kept across the effect re-run when hover sets `isOpen`, so a leave into the gap is not dropped. */
   const hoverPointRef = useRef({ x: Number.NaN, y: Number.NaN });
   const hoverInsideRef = useRef({ anchor: false, popover: false });
@@ -357,6 +403,7 @@ function FlexPopoverBase({
       if (
         !target ||
         popoverRef.current?.contains(target) ||
+        nestedContains(target) ||
         getAnchorRef.current()?.contains(target) ||
         boundaryRef?.current?.contains(target) ||
         (boundarySelector &&
@@ -434,7 +481,9 @@ function FlexPopoverBase({
       );
     };
 
-    const stillHovering = () => inside.anchor || inside.popover || gapContainsPointer();
+    const stillHovering = () =>
+      inside.anchor || inside.popover || gapContainsPointer() || nestedHovered();
+    hoverProbeRef.current = () => inside.anchor || inside.popover || gapContainsPointer();
 
     const scheduleClose = () => {
       if (!isOpenRef.current || closeTimer !== null) return;
@@ -527,6 +576,7 @@ function FlexPopoverBase({
     bind();
 
     return () => {
+      hoverProbeRef.current = () => false;
       if (frameId !== null) cancelAnimationFrame(frameId);
       clearClose();
       for (const node of hoverTargets) {
@@ -571,7 +621,7 @@ function FlexPopoverBase({
       <Card padding="none" gap="none">
         {isOpen ? (
           <>
-            {!noHeader && (
+            {!noHeader && heading != null && heading !== false && (
               <>
                 <InlineStack
                   alignItems="center"
@@ -602,13 +652,10 @@ function FlexPopoverBase({
                 <Divider />
               </>
             )}
-            <BlockStack
-              maxBlockSize="320px"
-              paddingInline="small-200"
-              paddingBlock="small-300"
-              overflow="auto"
-            >
-              {children}
+            <BlockStack maxBlockSize="320px" padding={padding} overflow="auto">
+              <FlexPopoverNestContext.Provider value={nest}>
+                {children}
+              </FlexPopoverNestContext.Provider>
             </BlockStack>
           </>
         ) : null}

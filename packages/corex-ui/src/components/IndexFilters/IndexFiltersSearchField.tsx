@@ -906,6 +906,7 @@ export function IndexFiltersSearchField({
             }}
             width="260px"
             maxHeight="360px"
+            heading="Filters"
           >
             <BlockStack gap="small-300">
               {renderValueControls(filterDef, applied, fieldLabel, currentOperator)}
@@ -1142,6 +1143,7 @@ export function IndexFiltersSearchField({
           }}
           width="260px"
           maxHeight="360px"
+          heading="Filters"
         >
           {availableFilters.length > 0 ? (
             availableFilters.map((filter) => (

@@ -31,20 +31,28 @@ function box(top: number, left: number, width: number, height: number): DOMRect 
 }
 
 describe("FlexPopover", () => {
-  it("renders default heading 'Filters' and default close button accessibility label", () => {
+  it("renders no header when no heading is passed", () => {
+    render(
+      <FlexPopover isOpen onClose={vi.fn()}>
+        <Text>Content</Text>
+      </FlexPopover>,
+    );
+
+    expect(screen.getByText("Content")).toBeInTheDocument();
+    expect(screen.queryByText("Filters")).toBeNull();
+    expect(document.querySelector("[accessibilitylabel]")).toBeNull();
+  });
+
+  it("renders the heading and its close button when a heading is passed", () => {
     const onClose = vi.fn();
     render(
-      <FlexPopover isOpen onClose={onClose}>
+      <FlexPopover isOpen onClose={onClose} heading="Filters">
         <Text>Content</Text>
       </FlexPopover>,
     );
 
     expect(screen.getByText("Filters")).toBeInTheDocument();
-    expect(screen.getByText("Content")).toBeInTheDocument();
-
-    const closeBtn = document.querySelector(
-      '[accessibilitylabel="Close filters popup"]',
-    );
+    const closeBtn = document.querySelector('[accessibilitylabel="Close filters popup"]');
     expect(closeBtn).toBeInTheDocument();
 
     fireEvent.click(closeBtn!);
@@ -343,7 +351,7 @@ describe("FlexPopover compound API", () => {
         <FlexPopover.Trigger>
           <Button>Open</Button>
         </FlexPopover.Trigger>
-        <FlexPopover.Content>
+        <FlexPopover.Content heading="Filters">
           <Text>Body</Text>
         </FlexPopover.Content>
       </FlexPopover>,
@@ -424,5 +432,120 @@ describe("FlexPopover compound API", () => {
       /inside <FlexPopover>/,
     );
     spy.mockRestore();
+  });
+});
+
+describe("FlexPopover padding", () => {
+  const bodyPadding = (padding?: string) => {
+    const { unmount } = render(
+      <FlexPopover isOpen onClose={vi.fn()} {...(padding ? { padding: padding as never } : {})}>
+        <Text>Padded</Text>
+      </FlexPopover>,
+    );
+    const body = screen.getByText("Padded").closest("[style*='padding']") as HTMLElement | null;
+    const value = body?.style.padding ?? null;
+    unmount();
+    return value;
+  };
+
+  it("pads the content with `small` by default and honours each size", () => {
+    expect(bodyPadding()).toContain("--p-space-300");
+    expect(bodyPadding("small")).toBe(bodyPadding());
+    expect(bodyPadding("none")).toBe("0px");
+    expect(bodyPadding("base")).toContain("--p-space-400");
+    expect(bodyPadding("large")).toContain("--p-space-500");
+    expect(bodyPadding("small-200")).toContain("--p-space-200");
+  });
+});
+
+describe("FlexPopover nested popovers", () => {
+  beforeEach(() => {
+    vi.useFakeTimers({ toFake: ["setTimeout", "clearTimeout"] });
+    window.matchMedia = vi.fn().mockImplementation((query: string) => ({
+      matches: query === "(hover: hover)",
+      media: query,
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+    })) as unknown as typeof window.matchMedia;
+  });
+  afterEach(() => vi.useRealTimers());
+
+  const renderNested = () =>
+    render(
+      <FlexPopover openOnHover defaultOpen closeDelay={150}>
+        <FlexPopover.Trigger>
+          <Button>Root</Button>
+        </FlexPopover.Trigger>
+        <FlexPopover.Content>
+          <Text>Parent body</Text>
+          <FlexPopover openOnHover defaultOpen closeDelay={150}>
+            <FlexPopover.Trigger>
+              <Button>Row</Button>
+            </FlexPopover.Trigger>
+            <FlexPopover.Content>
+              <Text>Child body</Text>
+            </FlexPopover.Content>
+          </FlexPopover>
+        </FlexPopover.Content>
+      </FlexPopover>,
+    );
+  const dialogOf = (text: string) => screen.getByText(text).closest('[role="dialog"]')!;
+
+  it("keeps the parent open while the pointer is in the child popover", () => {
+    renderNested();
+    const child = dialogOf("Child body");
+
+    // The pointer moves from the parent popover into the child, which is portalled outside it.
+    dispatchPointer(child, "pointerenter", 500, 200);
+    dispatchPointer(dialogOf("Parent body"), "pointerleave", 500, 200);
+    act(() => {
+      vi.advanceTimersByTime(500);
+    });
+
+    expect(screen.getByText("Parent body")).toBeInTheDocument();
+    expect(screen.getByText("Child body")).toBeInTheDocument();
+  });
+
+  it("closes the parent once the pointer has left both popovers", () => {
+    renderNested();
+    dispatchPointer(dialogOf("Child body"), "pointerenter", 500, 200);
+    dispatchPointer(dialogOf("Parent body"), "pointerleave", 500, 200);
+    act(() => {
+      vi.advanceTimersByTime(500);
+    });
+
+    dispatchPointer(dialogOf("Child body"), "pointerleave", 900, 900);
+    dispatchPointer(window as unknown as EventTarget, "pointermove", 900, 900);
+    act(() => {
+      vi.advanceTimersByTime(500);
+    });
+
+    expect(screen.queryByText("Parent body")).not.toBeInTheDocument();
+  });
+
+  it("does not dismiss the parent when the child is clicked", () => {
+    const onClose = vi.fn();
+    render(
+      <FlexPopover defaultOpen onClose={onClose}>
+        <FlexPopover.Trigger>
+          <Button>Root</Button>
+        </FlexPopover.Trigger>
+        <FlexPopover.Content>
+          <FlexPopover defaultOpen>
+            <FlexPopover.Trigger>
+              <Button>Row</Button>
+            </FlexPopover.Trigger>
+            <FlexPopover.Content>
+              <Text>Child body</Text>
+            </FlexPopover.Content>
+          </FlexPopover>
+        </FlexPopover.Content>
+      </FlexPopover>,
+    );
+    act(() => {
+      vi.advanceTimersByTime(20);
+    });
+    fireEvent.pointerDown(screen.getByText("Child body"));
+    expect(onClose).not.toHaveBeenCalled();
   });
 });

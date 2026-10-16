@@ -4,6 +4,7 @@ export type {
   FlexPopoverCompoundPropsType,
   FlexPopoverContentPropsType,
   FlexPopoverPositionType,
+  FlexPopoverPaddingType,
   FlexPopoverPropsType,
   FlexPopoverRootPropsType,
   FlexPopoverTriggerPropsType,
