@@ -200,7 +200,7 @@ When specifying `gap`, `padding`, `rowGap`, or `columnGap`, use **exclusively** 
 | [**Pagination**](#pagination)   | Pagination navigation buttons for traversing records.                                                              | —                                                                                                     |
 | [**Modal**](#modal)             | Dialog modal overlay wrapping `<s-modal>` or `<ui-modal>`.                                                         | —                                                                                                     |
 | [**Popover**](#popover)         | Contextual popover overlay anchored to a trigger element.                                                          | `Popover.Trigger`, `Popover.Content`                                                                  |
-| [**FlexPopover**](#flexpopover) | Custom floating popover with explicit positioning, anchor refs, and boundary management.                           | —                                                                                                     |
+| [**FlexPopover**](#flexpopover) | Custom floating popover composed of `FlexPopover.Trigger` and `FlexPopover.Content` with automatic positioning and boundary management. | `FlexPopover.Trigger`, `FlexPopover.Content`                                                         |
 | [**Floating**](#floating)       | Floating portal layer with collapse and expanding capabilities.                                                    | —                                                                                                     |
 | [**Tooltip**](#tooltip)         | Lightweight popup tooltip wrapping `<s-tooltip>`.                                                                  | —                                                                                                     |
 | [**Menu**](#menu)               | Menu overlay wrapping `<s-menu>` containing action list items.                                                     | —                                                                                                     |
@@ -1623,46 +1623,62 @@ import { EmptyState } from "@xco-agency/corex-ui";
 
 ### FlexPopover
 
-Custom floating popover with explicit positioning, anchor refs, and boundary management.
+Custom floating popover composed of `FlexPopover.Trigger` and `FlexPopover.Content` with automatic viewport boundary clamping, light-dismiss, and hover bridging without requiring manual element refs.
 
 ```tsx
 import { FlexPopover } from "@xco-agency/corex-ui";
 ```
 
-#### Modern Props
+#### Subcomponents
 
-| Prop                      | Type                                                        | Description                                                                           |
-| :------------------------ | :---------------------------------------------------------- | :------------------------------------------------------------------------------------ |
-| `anchorId`                | `string &#124; undefined`                                   | ID of the element the popover is positioned against (resolved in the owner document). |
-| `anchorRef`               | `RefObject&lt;HTMLElement &#124; null&gt; &#124; undefined` | Direct ref to the anchor element.                                                     |
-| `isOpen` **(required)**   | `boolean`                                                   | —                                                                                     |
-| `onClose` **(required)**  | `() =&gt; void`                                             | Fired on Escape, on pointer-down outside, or after a hover leave once `closeDelay` elapses. |
-| `heading`                 | `ReactNode`                                                 | Optional heading displayed in the popover header. Defaults to "Filters".              |
-| `closeAccessibilityLabel` | `string &#124; undefined`                                   | Optional accessibility label for the header close button.                             |
-| `width`                   | `string &#124; undefined`                                   | —                                                                                     |
-| `minWidth`                | `string &#124; undefined`                                   | —                                                                                     |
-| `maxHeight`               | `string &#124; undefined`                                   | —                                                                                     |
-| `offset`                  | `number &#124; undefined`                                   | Gap in pixels between the anchor and the popover. Defaults to 8.                     |
-| `position`                | `FlexPopoverPositionType &#124; undefined`                  | Preferred side: `top`, `bottom`, `left`, `right`, plus `-start` / `-end`. Defaults to `bottom-start`. Flips when it does not fit. |
-| `openOnHover`             | `boolean &#124; undefined`                                  | Opens when the pointer enters the anchor. Closing waits so the offset gap is not a leave. |
-| `onOpen`                  | `(() =&gt; void) &#124; undefined`                          | Fired when hover should open. Set `isOpen` from this; the popover stays controlled.  |
-| `closeDelay`              | `number &#124; undefined`                                   | Milliseconds to wait after the pointer leaves before closing. Defaults to 150. The offset gap still counts as inside. |
-| `matchAnchorWidth`        | `boolean &#124; undefined`                                  | Whether the popover should match the width of the anchor element.                     |
-| `boundaryRef`             | `RefObject&lt;HTMLElement &#124; null&gt; &#124; undefined` | Element whose clicks never dismiss the popover.                                       |
-| `boundarySelector`        | `string &#124; undefined`                             | Clicks inside a matching element never dismiss the popover (for a portalled submenu). |
-| `className`               | `string &#124; undefined`                                   | —                                                                                     |
-| `style`                   | `CSSProperties &#124; undefined`                            | —                                                                                     |
-| `zIndex`                  | `number &#124; undefined`                                   | —                                                                                     |
-| `noHeader`                | `boolean &#124; undefined`                                  | —                                                                                     |
-| `children` **(required)** | `ReactNode`                                                 | —                                                                                     |
+| Subcomponent          | Description                                                                                     | Key Props                                                                                                                      |
+| :-------------------- | :---------------------------------------------------------------------------------------------- | :----------------------------------------------------------------------------------------------------------------------------- |
+| `FlexPopover.Trigger` | The anchor element wrapper (`display: contents`) that toggles the popover on click or on hover. | `children: ReactNode`                                                                                                          |
+| `FlexPopover.Content` | The floating dialog panel positioned relative to the trigger.                                   | `heading?: ReactNode, noHeader?: boolean, closeAccessibilityLabel?: string, width?: string, minWidth?: string, maxHeight?: string, position?: FlexPopoverPositionType, offset?: number, matchAnchorWidth?: boolean, onClose?: () => void, children: ReactNode` |
+
+#### Modern Props (`<FlexPopover>`)
+
+| Prop                      | Type                                                        | Description                                                                                                                           |
+| :------------------------ | :---------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------ |
+| `children` **(required)** | `ReactNode`                                                 | Must contain `FlexPopover.Trigger` and `FlexPopover.Content`.                                                                         |
+| `position`                | `FlexPopoverPositionType &#124; undefined`                  | Preferred side: `top`, `bottom`, `left`, `right`, plus `-start` / `-end`. Defaults to `bottom-start`. Flips when it does not fit.    |
+| `offset`                  | `number &#124; undefined`                                   | Gap in pixels between the trigger and the popover panel. Defaults to `8`.                                                             |
+| `matchAnchorWidth`        | `boolean &#124; undefined`                                  | Whether the popover panel matches the width of the trigger element. Defaults to `false`.                                              |
+| `openOnHover`             | `boolean &#124; undefined`                                  | Opens when the pointer enters the trigger. Closing is delayed so crossing the offset gap does not dismiss.                          |
+| `closeDelay`              | `number &#124; undefined`                                   | Milliseconds to wait after the pointer leaves before closing when `openOnHover` is enabled. Defaults to `150`.                         |
+| `defaultOpen`             | `boolean &#124; undefined`                                  | Initial open state when uncontrolled. Defaults to `false`.                                                                            |
+| `isOpen`                  | `boolean &#124; undefined`                                  | Controlled open state. When omitted, state is managed automatically on trigger click.                                                 |
+| `onOpen`                  | `(() =&gt; void) &#124; undefined`                          | Fired when the popover opens (e.g. trigger click or hover enter).                                                                     |
+| `onClose`                 | `(() =&gt; void) &#124; undefined`                          | Fired when the popover closes (Escape key, outside click, close button, or hover leave).                                             |
+| `boundaryRef`             | `RefObject&lt;HTMLElement &#124; null&gt; &#124; undefined` | Element whose clicks never dismiss the popover.                                                                                       |
+| `boundarySelector`        | `string &#124; undefined`                                   | Clicks inside an element matching this selector never dismiss the popover (e.g. for submenus).                                        |
 
 #### Example
 
 ```tsx
-<FlexPopover isOpen={isOpen} onClose={() => setIsOpen(false)} heading="Filter Details">
-  <Box padding="base">
-    <Text>Filter options</Text>
-  </Box>
+<FlexPopover position="bottom-start">
+  <FlexPopover.Trigger>
+    <Button>Open Filter Panel</Button>
+  </FlexPopover.Trigger>
+  <FlexPopover.Content heading="Quick Filters" width="280px">
+    <BlockStack gap="small-200">
+      <Text>Status: Active orders only</Text>
+      <Text>Channel: Online Store</Text>
+    </BlockStack>
+  </FlexPopover.Content>
+</FlexPopover>
+```
+
+#### Hover & Placement Example
+
+```tsx
+<FlexPopover openOnHover position="top">
+  <FlexPopover.Trigger>
+    <Button>Hover for Details</Button>
+  </FlexPopover.Trigger>
+  <FlexPopover.Content heading="Details" width="240px">
+    <Text>Opens on hover, stays open while traversing the bridge, and closes on leave.</Text>
+  </FlexPopover.Content>
 </FlexPopover>
 ```
 

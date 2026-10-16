@@ -144,10 +144,10 @@ export const overlaysComponents: ComponentEntry[] = [
     slug: "flex-popover",
     category: "Overlays",
     description:
-      "Controlled floating popover portalled into body with automatic viewport boundary clamping and light-dismiss.",
+      "Floating popover composed of FlexPopover.Trigger and FlexPopover.Content with automatic viewport boundary clamping, light-dismiss, and hover bridging.",
     examples: [
       {
-        title: "Floating Filter Panel",
+        title: "Composed Floating Popovers",
         Example: FlexPopoverExample,
         code: FlexPopoverExampleRaw,
       },

@@ -2,6 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { act, fireEvent, render, screen } from "@testing-library/react";
 import { FlexPopover } from "./FlexPopover";
 import { Text } from "../Text";
+import { Button } from "../Button";
 
 /** jsdom's PointerEvent drops clientX; a MouseEvent of the same type keeps the coordinates. */
 function dispatchPointer(
@@ -311,5 +312,117 @@ describe("FlexPopover hover", () => {
       vi.advanceTimersByTime(500);
     });
     expect(onClose).not.toHaveBeenCalled();
+  });
+});
+
+describe("FlexPopover compound API", () => {
+  it("toggles on trigger click without any ref", () => {
+    render(
+      <FlexPopover>
+        <FlexPopover.Trigger>
+          <Button>Open</Button>
+        </FlexPopover.Trigger>
+        <FlexPopover.Content heading="Details">
+          <Text>Body</Text>
+        </FlexPopover.Content>
+      </FlexPopover>,
+    );
+    expect(screen.queryByText("Body")).not.toBeInTheDocument();
+
+    fireEvent.click(screen.getByText("Open"));
+    expect(screen.getByText("Body")).toBeInTheDocument();
+    expect(screen.getByText("Details")).toBeInTheDocument();
+
+    fireEvent.click(screen.getByText("Open"));
+    expect(screen.queryByText("Body")).not.toBeInTheDocument();
+  });
+
+  it("supports defaultOpen and the close button", () => {
+    render(
+      <FlexPopover defaultOpen>
+        <FlexPopover.Trigger>
+          <Button>Open</Button>
+        </FlexPopover.Trigger>
+        <FlexPopover.Content>
+          <Text>Body</Text>
+        </FlexPopover.Content>
+      </FlexPopover>,
+    );
+    expect(screen.getByText("Body")).toBeInTheDocument();
+    fireEvent.click(document.querySelector('[accessibilitylabel="Close filters popup"]')!);
+    expect(screen.queryByText("Body")).not.toBeInTheDocument();
+  });
+
+  it("stays controlled when isOpen is passed", () => {
+    const onClose = vi.fn();
+    const onOpen = vi.fn();
+    render(
+      <FlexPopover isOpen={false} onOpen={onOpen} onClose={onClose}>
+        <FlexPopover.Trigger>
+          <Button>Open</Button>
+        </FlexPopover.Trigger>
+        <FlexPopover.Content>
+          <Text>Body</Text>
+        </FlexPopover.Content>
+      </FlexPopover>,
+    );
+    fireEvent.click(screen.getByText("Open"));
+    expect(onOpen).toHaveBeenCalledTimes(1);
+    expect(screen.queryByText("Body")).not.toBeInTheDocument();
+  });
+
+  it("opens on hover with openOnHover, no ref needed", () => {
+    vi.stubGlobal("matchMedia", () => ({ matches: true }));
+    try {
+      render(
+        <FlexPopover openOnHover>
+          <FlexPopover.Trigger>
+            <Button>Hover me</Button>
+          </FlexPopover.Trigger>
+          <FlexPopover.Content>
+            <Text>Body</Text>
+          </FlexPopover.Content>
+        </FlexPopover>,
+      );
+      const trigger = screen.getByText("Hover me").closest("span")!;
+      act(() => {
+        dispatchPointer(trigger, "pointerenter", 5, 5);
+      });
+      expect(screen.getByText("Body")).toBeInTheDocument();
+    } finally {
+      vi.unstubAllGlobals();
+    }
+  });
+
+  it("calls Content onClose and closes the popover when close button is clicked", () => {
+    const onContentClose = vi.fn();
+    const onRootClose = vi.fn();
+    render(
+      <FlexPopover defaultOpen onClose={onRootClose}>
+        <FlexPopover.Trigger>
+          <Button>Toggle</Button>
+        </FlexPopover.Trigger>
+        <FlexPopover.Content heading="Panel" onClose={onContentClose}>
+          <Text>Inner content</Text>
+        </FlexPopover.Content>
+      </FlexPopover>,
+    );
+
+    expect(screen.getByText("Inner content")).toBeInTheDocument();
+    const closeBtn = document.querySelector('[accessibilitylabel="Close popup"]');
+    expect(closeBtn).toBeInTheDocument();
+
+    fireEvent.click(closeBtn!);
+    expect(onContentClose).toHaveBeenCalledTimes(1);
+    expect(onRootClose).toHaveBeenCalledTimes(1);
+    expect(screen.queryByText("Inner content")).not.toBeInTheDocument();
+  });
+
+  it("throws a clear error when a part is used outside FlexPopover", () => {
+    const spy = vi.spyOn(console, "error").mockImplementation(() => {});
+    expect(() => render(<FlexPopover.Trigger>x</FlexPopover.Trigger>)).toThrow(
+      /inside <FlexPopover>/,
+    );
+    spy.mockRestore();
   });
 });

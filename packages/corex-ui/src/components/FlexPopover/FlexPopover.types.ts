@@ -1,4 +1,4 @@
-import type { CSSProperties, ReactNode, RefObject } from "react";
+import type { CSSProperties, MouseEvent, ReactElement, ReactNode, RefObject } from "react";
 
 /**
  * Side of the anchor the popover prefers.
@@ -71,4 +71,63 @@ export type FlexPopoverPropsType = {
   zIndex?: number;
   noHeader?: boolean;
   children: ReactNode;
+};
+
+/** Settings shared by every part of a composed `FlexPopover`. */
+export type FlexPopoverCompoundPropsType = Pick<
+  FlexPopoverPropsType,
+  | "offset"
+  | "position"
+  | "matchAnchorWidth"
+  | "openOnHover"
+  | "closeDelay"
+  | "boundaryRef"
+  | "boundarySelector"
+  | "onOpen"
+> & {
+  /** Fired when the popover closes (Escape, outside click, hover leave, close button). */
+  onClose?: () => void;
+  /** Controls the open state. Omit it and the popover manages itself. */
+  isOpen?: boolean;
+  /** Initial state when uncontrolled. @default false */
+  defaultOpen?: boolean;
+  anchorId?: undefined;
+  anchorRef?: undefined;
+  /** A `FlexPopover.Trigger` and a `FlexPopover.Content`. */
+  children: ReactNode;
+};
+
+export type FlexPopoverTriggerPropsType = {
+  children: ReactNode;
+};
+
+export type FlexPopoverContentPropsType = Pick<
+  FlexPopoverPropsType,
+  | "heading"
+  | "closeAccessibilityLabel"
+  | "noHeader"
+  | "width"
+  | "minWidth"
+  | "maxHeight"
+  | "className"
+  | "style"
+  | "zIndex"
+  | "children"
+> & {
+  /** Preferred placement relative to the anchor (overrides root position if set). */
+  position?: FlexPopoverPositionType;
+  /** Gap in pixels between anchor and popover (overrides root offset if set). */
+  offset?: number;
+  /** Whether the popover should match the width of the anchor element. */
+  matchAnchorWidth?: boolean;
+  /** Optional callback fired when the panel's close button is clicked. */
+  onClose?: () => void;
+};
+
+export type FlexPopoverRootPropsType = FlexPopoverPropsType | FlexPopoverCompoundPropsType;
+
+export type FlexPopoverComponentType = {
+  (props: FlexPopoverRootPropsType): ReactElement;
+  Trigger: (props: FlexPopoverTriggerPropsType) => ReactElement;
+  Content: (props: FlexPopoverContentPropsType) => ReactElement;
 };

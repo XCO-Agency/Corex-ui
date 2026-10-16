@@ -1,4 +1,17 @@
-import { useCallback, useEffect, useRef, useState, type CSSProperties } from "react";
+import {
+  Children,
+  createContext,
+  isValidElement,
+  type ReactNode,
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+  type CSSProperties,
+  type ReactElement,
+  type RefObject,
+} from "react";
 import { useIsomorphicLayoutEffect } from "../../core/useIsomorphicLayoutEffect";
 import { createPortal } from "react-dom";
 
@@ -16,7 +29,14 @@ import {
   pointerInFlexPopoverBridge,
   toPopoverRect,
 } from "./FlexPopover.placement";
-import type { FlexPopoverPropsType } from "./FlexPopover.types";
+import type {
+  FlexPopoverComponentType,
+  FlexPopoverCompoundPropsType,
+  FlexPopoverContentPropsType,
+  FlexPopoverPropsType,
+  FlexPopoverRootPropsType,
+  FlexPopoverTriggerPropsType,
+} from "./FlexPopover.types";
 
 /** Default gap (px) between the anchor and the popover. */
 const DEFAULT_OFFSET = 8;
@@ -70,7 +90,7 @@ const MAX_POSITION_FRAMES = 60;
  * leaving is delayed so the offset gap between the anchor and the popover does
  * not dismiss it.
  */
-export function FlexPopover({
+function FlexPopoverBase({
   anchorId,
   anchorRef,
   isOpen,
@@ -153,7 +173,9 @@ export function FlexPopover({
   const getAnchor = useCallback((): HTMLElement | null => {
     return (
       anchorRef?.current ??
-      (anchorId ? markerRef.current?.ownerDocument.getElementById(anchorId) ?? null : null)
+      (anchorId
+        ? (markerRef.current?.ownerDocument.getElementById(anchorId) ?? null)
+        : null)
     );
   }, [anchorId, anchorRef]);
 
@@ -367,7 +389,10 @@ export function FlexPopover({
     const win = doc.defaultView ?? window;
     // Touch screens have no hover gap to cross; a tap would open and then
     // schedule a close. Leave that path to click and keyboard dismissal.
-    if (typeof win.matchMedia === "function" && !win.matchMedia("(hover: hover)").matches) {
+    if (
+      typeof win.matchMedia === "function" &&
+      !win.matchMedia("(hover: hover)").matches
+    ) {
       return;
     }
 
@@ -598,3 +623,162 @@ export function FlexPopover({
     </>
   );
 }
+
+type FlexPopoverContextType = {
+  isOpen: boolean;
+  setOpen: (next: boolean) => void;
+  triggerRef: RefObject<HTMLSpanElement>;
+  settings: Pick<
+    FlexPopoverCompoundPropsType,
+    | "offset"
+    | "position"
+    | "matchAnchorWidth"
+    | "openOnHover"
+    | "closeDelay"
+    | "boundaryRef"
+    | "boundarySelector"
+  >;
+};
+
+const FlexPopoverContext = createContext<FlexPopoverContextType | null>(null);
+
+function useFlexPopoverContext(part: string): FlexPopoverContextType {
+  const context = useContext(FlexPopoverContext);
+  if (!context) throw new Error(`${part} must be rendered inside <FlexPopover>`);
+  return context;
+}
+
+function FlexPopoverCompound({
+  children,
+  isOpen: isOpenProp,
+  defaultOpen = false,
+  onOpen,
+  onClose,
+  offset,
+  position,
+  matchAnchorWidth,
+  openOnHover,
+  closeDelay,
+  boundaryRef,
+  boundarySelector,
+}: FlexPopoverCompoundPropsType): ReactElement {
+  const triggerRef = useRef<HTMLSpanElement | null>(null);
+  const [internalOpen, setInternalOpen] = useState(defaultOpen);
+  const isOpen = isOpenProp ?? internalOpen;
+
+  const callbacks = useRef({ onOpen, onClose, controlled: isOpenProp !== undefined });
+  callbacks.current = { onOpen, onClose, controlled: isOpenProp !== undefined };
+
+  const setOpen = useCallback((next: boolean) => {
+    if (!callbacks.current.controlled) setInternalOpen(next);
+    if (next) callbacks.current.onOpen?.();
+    else callbacks.current.onClose?.();
+  }, []);
+
+  return (
+    <FlexPopoverContext.Provider
+      value={{
+        isOpen,
+        setOpen,
+        triggerRef,
+        settings: {
+          offset,
+          position,
+          matchAnchorWidth,
+          openOnHover,
+          closeDelay,
+          boundaryRef,
+          boundarySelector,
+        },
+      }}
+    >
+      {children}
+    </FlexPopoverContext.Provider>
+  );
+}
+
+/**
+ * The element the popover anchors to. Adds no box (`display: contents`), so the
+ * layout of what it wraps is unchanged. Clicking it toggles the popover; with
+ * `openOnHover` on the root, hovering it opens the popover.
+ */
+function FlexPopoverTrigger({ children }: FlexPopoverTriggerPropsType): ReactElement {
+  const { isOpen, setOpen, triggerRef, settings } =
+    useFlexPopoverContext("FlexPopover.Trigger");
+  return (
+    <span
+      ref={triggerRef}
+      style={{ display: "contents" }}
+      onClick={() => setOpen(settings.openOnHover ? true : !isOpen)}
+    >
+      {children}
+    </span>
+  );
+}
+FlexPopoverTrigger.displayName = "FlexPopover.Trigger";
+
+/** The floating panel, positioned against `FlexPopover.Trigger`. */
+function FlexPopoverContent(props: FlexPopoverContentPropsType): ReactElement {
+  const { isOpen, setOpen, triggerRef, settings } =
+    useFlexPopoverContext("FlexPopover.Content");
+  const { offset, position, matchAnchorWidth, closeDelay } = settings;
+  return (
+    <FlexPopoverBase
+      {...props}
+      anchorRef={triggerRef}
+      isOpen={isOpen}
+      onOpen={() => setOpen(true)}
+      onClose={() => setOpen(false)}
+      openOnHover={settings.openOnHover}
+      boundaryRef={settings.boundaryRef}
+      boundarySelector={settings.boundarySelector}
+      {...(offset !== undefined && { offset })}
+      {...(position !== undefined && { position })}
+      {...(matchAnchorWidth !== undefined && { matchAnchorWidth })}
+      {...(closeDelay !== undefined && { closeDelay })}
+    />
+  );
+}
+FlexPopoverContent.displayName = "FlexPopover.Content";
+
+function hasPart(children: ReactNode): boolean {
+  return Children.toArray(children).some(
+    (child) =>
+      isValidElement(child) &&
+      (child.type === FlexPopoverTrigger || child.type === FlexPopoverContent),
+  );
+}
+
+function FlexPopoverRoot(props: FlexPopoverRootPropsType): ReactElement {
+  // Classic API: the caller owns the anchor and the open state.
+  const classic =
+    !!props.anchorRef ||
+    !!props.anchorId ||
+    (props.isOpen !== undefined && !hasPart(props.children));
+  return classic ? (
+    <FlexPopoverBase {...(props as FlexPopoverPropsType)} />
+  ) : (
+    <FlexPopoverCompound {...(props as FlexPopoverCompoundPropsType)} />
+  );
+}
+
+/**
+ * Floating popover composed of `FlexPopover.Trigger` and `FlexPopover.Content`.
+ *
+ * ```tsx
+ * <FlexPopover openOnHover position="top">
+ *   <FlexPopover.Trigger>
+ *     <Button>Hover me</Button>
+ *   </FlexPopover.Trigger>
+ *   <FlexPopover.Content heading="Details">
+ *     <Text>Content</Text>
+ *   </FlexPopover.Content>
+ * </FlexPopover>
+ * ```
+ *
+ * Backwards-compatible with the classic ref-based API (`anchorRef` / `anchorId` + `isOpen`).
+ */
+export const FlexPopover: FlexPopoverComponentType = Object.assign(FlexPopoverRoot, {
+  Trigger: FlexPopoverTrigger,
+  Content: FlexPopoverContent,
+});
