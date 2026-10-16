@@ -6,16 +6,73 @@ import {
   Card,
   Divider,
   FlexPopover,
+  Clickable,
+  Hoverable,
   InlineStack,
   Page,
   Text,
 } from "@xco-agency/corex-ui";
+
+function Row({ label, parent }: { label: string; parent?: boolean }) {
+  return (
+    <Hoverable openDelay={300}>
+      <Clickable inlineSize="fill" borderRadius="large" paddingInlineStart="small-200" paddingInlineEnd="small-400" minInlineSize="220px" blockSize="32px">
+        <InlineStack alignItems="center" gap="small-500" blockSize="100%">
+          <InlineStack gap="small-200" alignItems="center" flex={1}>
+            <Text>{label}</Text>
+          </InlineStack>
+          <Hoverable.Show keepSpace={false} animation="scale">
+            <Button icon="arrow-up-right" />
+          </Hoverable.Show>
+          {parent ? (
+            <Hoverable.Hide keepSpace={false} animation="scale">
+              <Button icon="chevron-right" variant="tertiary" />
+            </Hoverable.Hide>
+          ) : null}
+        </InlineStack>
+      </Clickable>
+    </Hoverable>
+  );
+}
+
+function NavRepro() {
+  const names = ["Journeys", "Campaigns", "Content", "Customers"];
+  return (
+    <div style={{ padding: 40 }}>
+      <FlexPopover openOnHover position="bottom-start">
+        <FlexPopover.Trigger>
+          <Button icon="menu" variant="tertiary" accessibilityLabel="menu" />
+        </FlexPopover.Trigger>
+        <FlexPopover.Content heading="Nav repro">
+          <BlockStack gap="small-400">
+            <Row label="Dashboard" />
+            {names.map((n) => (
+              <FlexPopover key={n} openOnHover position="right-start" offset={4} closeDelay={140} noHeader>
+                <FlexPopover.Trigger>
+                  <Row label={n} parent />
+                </FlexPopover.Trigger>
+                <FlexPopover.Content offset={14}>
+                  <BlockStack gap="none">
+                    {["One", "Two", "Three"].map((c) => (
+                      <Row key={c} label={`${n} ${c}`} />
+                    ))}
+                  </BlockStack>
+                </FlexPopover.Content>
+              </FlexPopover>
+            ))}
+          </BlockStack>
+        </FlexPopover.Content>
+      </FlexPopover>
+    </div>
+  );
+}
 
 export function FlexPopoverExample() {
   const [controlledOpen, setControlledOpen] = useState(false);
 
   return (
     <Page heading="FlexPopover">
+      <NavRepro />
       <BlockStack gap="base">
         <Card>
           <BlockStack gap="base">

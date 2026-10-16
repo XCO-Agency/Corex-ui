@@ -14,7 +14,7 @@ import { IconTile, Icon } from "@xco-agency/corex-ui";
 
 | Prop           | Type                                                                       | Default     | Description                                                                                  |
 | -------------- | -------------------------------------------------------------------------- | ----------- | -------------------------------------------------------------------------------------------- |
-| `tone`         | `"success" \| "neutral" \| "subdued" \| "caution" \| "info" \| "critical"` | `"success"` | Visual color tone for the tile background and foreground icon.                               |
+| `tone`         | `"success" \| "neutral" \| "subdued" \| "caution" \| "info" \| "critical" \| "dark"` | `"success"` | Visual color tone for the tile background and foreground icon.                               |
 | `color`        | `"base" \| "strong"`                                                       | `"base"`    | Color intensity: `"base"` for subtle pastel tint, `"strong"` for solid saturated background. |
 | `size`         | `"sm" \| "md" \| "lg"`                                                     | `"md"`      | Tile dimensions: `"sm"` (21px), `"md"` (40px), `"lg"` (44px).                                |
 | `borderRadius` | `"none" \| "small" \| "base" \| "large" \| "full"`                         | `"base"`    | Border radius of the tile container.                                                         |

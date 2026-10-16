@@ -57,4 +57,23 @@ describe("IconTile", () => {
     expect(tile.style.backgroundColor).toBe("rgb(163, 244, 94)"); // #A3F45E
     expect(tile.style.color).toBe("rgb(36, 66, 11)"); // #24420B
   });
+
+  it("applies dark tone in base and strong color intensity", () => {
+    const { rerender } = render(
+      <IconTile data-testid="tile" tone="dark" color="base">
+        Icon
+      </IconTile>,
+    );
+    const tile = screen.getByTestId("tile");
+    expect(tile.style.backgroundColor).toBe("rgb(48, 48, 48)"); // #303030
+    expect(tile.style.color).toBe("rgb(255, 255, 255)"); // #FFFFFF
+
+    rerender(
+      <IconTile data-testid="tile" tone="dark" color="strong">
+        Icon
+      </IconTile>,
+    );
+    expect(tile.style.backgroundColor).toBe("rgb(26, 26, 26)"); // #1A1A1A
+    expect(tile.style.color).toBe("rgb(255, 255, 255)"); // #FFFFFF
+  });
 });

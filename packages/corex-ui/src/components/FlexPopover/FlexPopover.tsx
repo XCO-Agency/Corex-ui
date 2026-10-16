@@ -758,7 +758,7 @@ function FlexPopoverTrigger({ children }: FlexPopoverTriggerPropsType): ReactEle
       style={{ display: "contents" }}
       onClick={() => setOpen(settings.openOnHover ? true : !isOpen)}
     >
-      {children}
+      {typeof children === "function" ? children({ open: isOpen }) : children}
     </span>
   );
 }

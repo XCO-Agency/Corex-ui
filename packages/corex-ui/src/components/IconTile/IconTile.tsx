@@ -1,7 +1,7 @@
 import { forwardRef } from "react";
 import type { CSSProperties, MouseEvent, ReactNode } from "react";
 
-type IconTileToneType =
+export type IconTileToneType =
   | "success"
   | "neutral"
   | "warning"
@@ -9,7 +9,8 @@ type IconTileToneType =
   | "caution"
   | "info"
   | "critical"
-  | "transparent";
+  | "transparent"
+  | "dark";
 export type IconTileColorType = "base" | "strong";
 type IconTileBorderRadiusType =
   "none" | "small" | "base" | "large" | "large-100" | "large-200" | "full";
@@ -86,6 +87,10 @@ const TONE_STYLES: Record<
       backgroundColor: "#F5C28A",
       color: "#6D3814",
     },
+    dark: {
+      backgroundColor: "#303030",
+      color: "#FFFFFF",
+    },
   },
 
   strong: {
@@ -127,6 +132,11 @@ const TONE_STYLES: Record<
     transparent: {
       backgroundColor: "transparent",
       color: "#64150F",
+    },
+
+    dark: {
+      backgroundColor: "#1A1A1A",
+      color: "#FFFFFF",
     },
   },
 };

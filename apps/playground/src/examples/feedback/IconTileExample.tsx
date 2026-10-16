@@ -57,6 +57,13 @@ export function IconTileExample() {
               </IconTile>
               <Text color="subdued">Subdued</Text>
             </BlockStack>
+
+            <BlockStack gap="small-100" alignItems="center">
+              <IconTile tone="dark">
+                <Icon type="star" tone="auto" />
+              </IconTile>
+              <Text color="subdued">Dark</Text>
+            </BlockStack>
           </InlineStack>
         </BlockStack>
       </Card>
@@ -117,6 +124,13 @@ export function IconTileExample() {
                   </IconTile>
                   <Text color="subdued">Subdued</Text>
                 </BlockStack>
+
+                <BlockStack gap="small-100" alignItems="center">
+                  <IconTile tone="dark" color="base">
+                    <Icon type="star" tone="auto" />
+                  </IconTile>
+                  <Text color="subdued">Dark</Text>
+                </BlockStack>
               </InlineStack>
             </BlockStack>
 
@@ -165,6 +179,13 @@ export function IconTileExample() {
                     <Icon type="settings" tone="white" />
                   </IconTile>
                   <Text color="subdued">Subdued</Text>
+                </BlockStack>
+
+                <BlockStack gap="small-100" alignItems="center">
+                  <IconTile tone="dark" color="strong">
+                    <Icon type="star" tone="white" />
+                  </IconTile>
+                  <Text color="subdued">Dark</Text>
                 </BlockStack>
               </InlineStack>
             </BlockStack>

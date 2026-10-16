@@ -122,7 +122,7 @@ export type FlexPopoverCompoundPropsType = Pick<
 };
 
 export type FlexPopoverTriggerPropsType = {
-  children: ReactNode;
+  children: ReactNode | ((props: { open: boolean }) => ReactNode);
 };
 
 export type FlexPopoverContentPropsType = Pick<
