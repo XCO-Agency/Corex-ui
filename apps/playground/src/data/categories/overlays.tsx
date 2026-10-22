@@ -15,6 +15,8 @@ import { FlexPopoverExample } from "@/examples/overlays/FlexPopoverExample";
 import FlexPopoverExampleRaw from "@/examples/overlays/FlexPopoverExample.tsx?raw";
 import { ActionListExample } from "@/examples/overlays/ActionListExample";
 import ActionListExampleRaw from "@/examples/overlays/ActionListExample.tsx?raw";
+import { DrawerExample } from "@/examples/overlays/DrawerExample";
+import DrawerExampleRaw from "@/examples/overlays/DrawerExample.tsx?raw";
 
 const PATTERN_B_IFRAME_CODE = `// Iframe Route (app.preferences.settings.tsx)
 import { useEffect, useState } from "react";
@@ -86,6 +88,20 @@ export const overlaysComponents: ComponentEntry[] = [
         title: "In-Container Absolute Floating Showcase",
         Example: FloatingAbsoluteExample,
         code: FloatingAbsoluteExampleRaw,
+      },
+    ],
+  },
+  {
+    name: "Drawer",
+    slug: "drawer",
+    category: "Overlays",
+    description:
+      "Right drawer on desktop, bottom sheet on mobile. Full-panel swipe dismiss; no desktop handle.",
+    examples: [
+      {
+        title: "Responsive drawer / sheet",
+        Example: DrawerExample,
+        code: DrawerExampleRaw,
       },
     ],
   },

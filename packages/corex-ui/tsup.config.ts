@@ -8,7 +8,13 @@ export default defineConfig([
     sourcemap: true,
     clean: true,
     splitting: false,
-    external: ["react", "react-dom"],
+    external: [
+      "react",
+      "react-dom",
+      "@base-ui/react",
+      /^@base-ui\/react\//,
+      /^@base-ui\/utils/,
+    ],
   },
   {
     entry: { cli: "src/cli/index.ts" },

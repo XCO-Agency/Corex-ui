@@ -8,7 +8,7 @@ description: >-
 
 # Corex UI Components Reference
 
-Complete reference of all **77 UI components** in `@xco-agency/corex-ui` and their **modern props**.
+Complete reference of all **78 UI components** in `@xco-agency/corex-ui` and their **modern props**.
 
 > [!IMPORTANT]
 > **Strict Corex UI Guidelines**:
@@ -198,6 +198,7 @@ When specifying `gap`, `padding`, `rowGap`, or `columnGap`, use **exclusively** 
 | [**Page**](#page)               | Top-level page layout container wrapping `<s-page>`. Houses header, breadcrumbs, actions, aside, and page content. | —                                                                                                     |
 | [**Tabs**](#tabs)               | Tabbed navigation bar supporting both standard tabs and compact index-filter view selectors.                       | —                                                                                                     |
 | [**Pagination**](#pagination)   | Pagination navigation buttons for traversing records.                                                              | —                                                                                                     |
+| [**Drawer**](#drawer)           | Responsive panel: right drawer on desktop, bottom sheet on mobile; full-surface swipe, no desktop handle.          | `Drawer.Trigger`, `Drawer.Content`, `Drawer.Header`, `Drawer.Footer`, `Drawer.Title`, `Drawer.Description`, `Drawer.Body`, `Drawer.Close`, `Drawer.Overlay`, `Drawer.SwipeHandle`, `Drawer.Portal` |
 | [**Modal**](#modal)             | Dialog modal overlay wrapping `<s-modal>` or `<ui-modal>`.                                                         | —                                                                                                     |
 | [**Popover**](#popover)         | Contextual popover overlay anchored to a trigger element.                                                          | `Popover.Trigger`, `Popover.Content`                                                                  |
 | [**FlexPopover**](#flexpopover) | Custom floating popover composed of `FlexPopover.Trigger` and `FlexPopover.Content` with automatic positioning and boundary management. | `FlexPopover.Trigger`, `FlexPopover.Content`                                                         |
@@ -2539,6 +2540,66 @@ import { MetricCard } from "@xco-agency/corex-ui";
 ```
 
 ---
+
+### Drawer
+
+Responsive swipeable panel on `@base-ui/react/drawer`. **Desktop** = right side drawer (no handle, no handle space, swipe full panel). **Mobile** = bottom sheet (side directions remap to `down`). Nested drawers stack with scale/peek.
+
+```tsx
+import { Drawer, Button } from "@xco-agency/corex-ui";
+```
+
+| Subcomponent            | Description                                                                 | Key Props                                                                 |
+| :---------------------- | :-------------------------------------------------------------------------- | :------------------------------------------------------------------------ |
+| `Drawer.Trigger`        | Opens the drawer; pass a `Button` (or other element) as `children`.         | `children`, `nativeButton?`                                               |
+| `Drawer.Content`        | Portal + overlay + viewport + popup panel.                                  | `offset?`, `width?`, `maxHeight?`, `children`                             |
+| `Drawer.Header`         | Title/description region.                                                   | `children`                                                                |
+| `Drawer.Title`          | Accessible title.                                                           | `children`                                                                |
+| `Drawer.Description`    | Accessible description.                                                     | `children`                                                                |
+| `Drawer.Body`           | Scrollable flex body.                                                       | `children`                                                                |
+| `Drawer.Footer`         | Action row pinned to the bottom.                                            | `children`                                                                |
+| `Drawer.Close`          | Dismiss control; pass a `Button` as `children`.                             | `children`                                                                |
+| `Drawer.Overlay`        | Backdrop (included automatically when `modal`).                             | —                                                                         |
+| `Drawer.SwipeHandle`    | Mobile-sheet grabber only (never on desktop).                               | —                                                                         |
+| `Drawer.Portal`         | Low-level portal.                                                           | —                                                                         |
+
+#### Modern Props (`<Drawer>`)
+
+| Prop               | Type                                                         | Description                                                                                          |
+| :----------------- | :----------------------------------------------------------- | :--------------------------------------------------------------------------------------------------- |
+| `children`         | `ReactNode`                                                  | Compound parts (`Trigger`, `Content`, …).                                                            |
+| `open`             | `boolean &#124; undefined`                                   | Controlled open state.                                                                               |
+| `defaultOpen`      | `boolean &#124; undefined`                                   | Uncontrolled initial open.                                                                           |
+| `onOpenChange`     | `((open: boolean, details) => void) &#124; undefined`        | Open/close callback (includes swipe dismiss).                                                        |
+| `swipeDirection`   | `"up" &#124; "down" &#124; "left" &#124; "right"`            | Preferred desktop side. Defaults to `"right"`.                                                       |
+| `responsive`       | `boolean`                                                    | Remap `left`/`right` → bottom sheet on mobile. Defaults to `true`.                                   |
+| `showSwipeHandle`  | `boolean`                                                    | Mobile sheet grabber only; never mounts on desktop. Defaults to `false`.                             |
+| `offset`           | `number &#124; string &#124; { top?, right?, bottom?, left?, x?, y? }` | Edge float gap. Defaults to `8` all sides. Pass `0` for flush, or per-side object. |
+| `modal`            | `boolean &#124; "trap-focus"`                                | Modal / non-modal / trap-focus. Defaults to `true`.                                                  |
+| `snapPoints`       | `Array&lt;number &#124; string&gt; &#124; undefined`         | Vertical snap heights (sheet only).                                                                  |
+| `disablePointerDismissal` | `boolean &#124; undefined`                              | Prevent outside-press dismiss.                                                                       |
+
+#### Example
+
+```tsx
+<Drawer>
+  <Drawer.Trigger>
+    <Button>Open</Button>
+  </Drawer.Trigger>
+  <Drawer.Content>
+    <Drawer.Header>
+      <Drawer.Title>Order details</Drawer.Title>
+      <Drawer.Description>Swipe anywhere on the panel to dismiss.</Drawer.Description>
+    </Drawer.Header>
+    <Drawer.Body>…</Drawer.Body>
+    <Drawer.Footer>
+      <Drawer.Close>
+        <Button>Cancel</Button>
+      </Drawer.Close>
+    </Drawer.Footer>
+  </Drawer.Content>
+</Drawer>
+```
 
 ### Modal
 

@@ -2782,6 +2782,70 @@ export function FloatingThumbnail() {
   );
 }
 
+export function DrawerThumbnail() {
+  return (
+    <Frame>
+      <rect
+        x="16"
+        y="12"
+        width="128"
+        height="76"
+        rx="6"
+        fill="#000000"
+        fillOpacity="0.22"
+      />
+      {/* Floating bottom sheet with edge inset */}
+      <rect
+        x="24"
+        y="36"
+        width="112"
+        height="48"
+        rx="12"
+        fill={cardBg}
+        stroke={cardBorder}
+        strokeWidth="1.2"
+      />
+      {/* Swipe handle */}
+      <rect
+        x="66"
+        y="42"
+        width="28"
+        height="3"
+        rx="1.5"
+        fill={textMuted}
+        fillOpacity="0.55"
+      />
+      <rect
+        x="40"
+        y="52"
+        width="48"
+        height="5"
+        rx="2.5"
+        fill={textPrimary}
+        fillOpacity="0.85"
+      />
+      <rect
+        x="40"
+        y="62"
+        width="72"
+        height="4"
+        rx="2"
+        fill={textMuted}
+        fillOpacity="0.4"
+      />
+      <rect
+        x="40"
+        y="70"
+        width="56"
+        height="4"
+        rx="2"
+        fill={textMuted}
+        fillOpacity="0.28"
+      />
+    </Frame>
+  );
+}
+
 export function ModalThumbnail() {
   return (
     <Frame>
@@ -3346,6 +3410,7 @@ export const thumbnails: Record<string, React.ComponentType> = {
 
   // Overlays
   floating: FloatingThumbnail,
+  drawer: DrawerThumbnail,
   modal: ModalThumbnail,
 
   // Typography

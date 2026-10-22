@@ -34,6 +34,7 @@ export * from "./components/IndexTable";
 export * from "./components/ResourceList";
 export * from "./components/Pagination";
 export * from "./components/Modal";
+export * from "./components/Drawer";
 export * from "./components/TextField";
 export * from "./components/SearchField";
 export * from "./components/IndexFilters";
