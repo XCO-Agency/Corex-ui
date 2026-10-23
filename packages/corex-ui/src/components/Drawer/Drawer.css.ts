@@ -1,5 +1,5 @@
 /**
- * Injected once per document. Ports the shadcn Base UI drawer visuals onto
+ * Injected once per document. Ports the shadcn drawer visuals onto
  * Polaris tokens — flexible edge offset, nested stack scale/peek, and mobile
  * sheet drag affordances — without Tailwind.
  */
@@ -139,18 +139,19 @@ body {
   filter: brightness(0.95);
 }
 
+/*
+ * Touch: a sheet owns vertical drags (swipe to dismiss) except inside the
+ * body, which keeps native scrolling. Side drawers leave vertical scroll to
+ * the browser and take horizontal drags.
+ */
 [data-slot="drawer-popup"][data-swipe-axis="y"] {
   inset-inline: 0;
-  touch-action: pan-y;
+  touch-action: none;
   --drawer-content-max-height: calc(100dvh - 6rem);
 }
 
 [data-slot="drawer-popup"][data-swipe-axis="y"][data-snap-points] {
   --drawer-content-height: 100dvh;
-}
-
-[data-slot="drawer-popup"][data-swipe-axis="y"][data-nested-drawer-open] {
-  height: var(--stack-height);
 }
 
 /*
@@ -169,8 +170,10 @@ body {
   --drawer-content-max-height: none;
   /* Column without a handle — header / body / footer stack vertically. */
   flex-direction: column;
-  touch-action: pan-x;
+  touch-action: pan-y;
   --drawer-content-width: 75%;
+  /* Presets and custom widths never overflow the viewport (minus edge offsets). */
+  max-width: calc(100% - var(--drawer-offset-left) - var(--drawer-offset-right));
 }
 
 @media (min-width: 640px) {
@@ -292,7 +295,7 @@ body {
   overflow: hidden;
   overscroll-behavior: contain;
   border-radius: inherit;
-  /* Full-panel swipe: allow Base UI to capture drag anywhere on the surface. */
+  /* Full-panel swipe: the drag can start anywhere on the surface. */
   touch-action: inherit;
   user-select: text;
   -webkit-user-select: text;
@@ -405,10 +408,14 @@ body {
   text-align: start;
 }
 
+/* Actions sit in a row at the end (Cancel · Save), wrapping when tight. */
 [data-slot="drawer-footer"] {
   display: flex;
   flex-shrink: 0;
-  flex-direction: column;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
   gap: var(--p-space-200, 8px);
   margin-block-start: auto;
   padding: var(--p-space-400, 16px);
@@ -432,6 +439,7 @@ body {
 }
 
 [data-slot="drawer-body"] {
+  touch-action: pan-y;
   flex: 1 1 auto;
   min-height: 0;
   overflow-y: auto;

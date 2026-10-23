@@ -7,6 +7,8 @@ import {
   TextField,
 } from "@xco-agency/corex-ui";
 
+const WIDTHS = ["small", "base", "large", "large-300", "large-500", "full", "420px"] as const;
+
 function NestedSecond() {
   return (
     <Drawer>
@@ -22,8 +24,8 @@ function NestedSecond() {
         </Drawer.Header>
         <Drawer.Body>
           <Text as="p" color="subdued">
-            On mobile this is a sheet; on desktop a right drawer. Swipe anywhere on the panel to
-            dismiss.
+            On mobile this is a sheet; on desktop a right drawer. Swipe anywhere on the
+            panel to dismiss.
           </Text>
         </Drawer.Body>
         <Drawer.Footer>
@@ -44,8 +46,8 @@ export function DrawerExample() {
           Default (right drawer → mobile sheet)
         </Text>
         <Text as="p" variant="small" color="subdued">
-          Desktop opens a right drawer with no handle. Mobile remaps to a bottom sheet. Swipe the
-          panel to dismiss.
+          Desktop opens a right drawer with no handle. Mobile remaps to a bottom sheet.
+          Swipe the panel to dismiss.
         </Text>
         <Drawer>
           <Drawer.Trigger>
@@ -62,16 +64,16 @@ export function DrawerExample() {
               <BlockStack gap="base">
                 <TextField label="Note" autoComplete="off" />
                 <Text as="p">
-                  Swipe from anywhere on this surface to close — the handle is omitted on desktop
-                  and takes no space.
+                  Swipe from anywhere on this surface to close the handle is omitted on
+                  desktop and takes no space.
                 </Text>
               </BlockStack>
             </Drawer.Body>
             <Drawer.Footer>
-              <Button variant="primary">Save</Button>
               <Drawer.Close>
                 <Button>Cancel</Button>
               </Drawer.Close>
+              <Button variant="primary">Save</Button>
             </Drawer.Footer>
           </Drawer.Content>
         </Drawer>
@@ -82,7 +84,8 @@ export function DrawerExample() {
           Mobile sheet with handle (optional)
         </Text>
         <Text as="p" variant="small" color="subdued">
-          `showSwipeHandle` only renders on the mobile sheet — never on the desktop side drawer.
+          `showSwipeHandle` only renders on the mobile sheet — never on the desktop side
+          drawer.
         </Text>
         <Drawer showSwipeHandle>
           <Drawer.Trigger>
@@ -118,7 +121,9 @@ export function DrawerExample() {
           <Drawer.Content>
             <Drawer.Header>
               <Drawer.Title>Parent</Drawer.Title>
-              <Drawer.Description>Open another drawer from the same direction.</Drawer.Description>
+              <Drawer.Description>
+                Open another drawer from the same direction.
+              </Drawer.Description>
             </Drawer.Header>
             <Drawer.Body>
               <NestedSecond />
@@ -130,6 +135,39 @@ export function DrawerExample() {
             </Drawer.Footer>
           </Drawer.Content>
         </Drawer>
+      </BlockStack>
+
+      <BlockStack gap="small-200">
+        <Text variant="headingMd" as="h3">
+          Widths
+        </Text>
+        <Text as="p" variant="small" color="subdued">
+          Presets `small`, `base`, `large`, `large-100`…`large-500`, `full`, or any CSS length.
+          Widths are capped to the viewport.
+        </Text>
+        <InlineStack gap="small-200">
+          {WIDTHS.map((width) => (
+            <Drawer key={width} responsive={false}>
+              <Drawer.Trigger>
+                <Button>{width}</Button>
+              </Drawer.Trigger>
+              <Drawer.Content width={width}>
+                <Drawer.Header>
+                  <Drawer.Title>width=&quot;{width}&quot;</Drawer.Title>
+                </Drawer.Header>
+                <Drawer.Body>
+                  <Text as="p">Footer actions sit in a row at the end.</Text>
+                </Drawer.Body>
+                <Drawer.Footer>
+                  <Drawer.Close>
+                    <Button>Cancel</Button>
+                  </Drawer.Close>
+                  <Button variant="primary">Save</Button>
+                </Drawer.Footer>
+              </Drawer.Content>
+            </Drawer>
+          ))}
+        </InlineStack>
       </BlockStack>
 
       <BlockStack gap="small-200">

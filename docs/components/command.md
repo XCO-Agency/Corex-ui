@@ -1,6 +1,6 @@
 # Command
 
-Self-contained custom control (pattern 4) built on [`cmdk`](https://github.com/dip/cmdk), matching the [shadcn Command](https://ui.shadcn.com/docs/components/base/command) API. The dialog palette uses Base UI `Dialog` (same peer stack as Drawer).
+Self-contained custom control (pattern 4) matching the [shadcn Command](https://ui.shadcn.com/docs/components/base/command) API, with no third-party runtime: filtering, groups, empty state and keyboard selection are built in. The dialog palette is a built-in, dependency-free dialog (focus containment, scroll lock, Escape / outside press).
 
 ```tsx
 import { Command, Icon } from "@xco-agency/corex-ui";
@@ -76,6 +76,6 @@ Set `sidebar` for a two-column layout: group nav on the left, items of the selec
 
 Optional controlled API: `sidebarGroup` + `onSidebarGroupChange`. Optional explicit nav: `sidebarGroups={[{ value, label, icon? }]}`.
 
-## Peer runtime
+## Runtime
 
-`cmdk` and `@base-ui/react` are dependencies of `@xco-agency/corex-ui` and must resolve at runtime.
+No extra dependencies (no `cmdk`, no `@base-ui/*`). Items keep their source order while filtering hides non-matches; the default filter matches substrings and in-order letters (`"stg"` → Settings) plus `keywords`.

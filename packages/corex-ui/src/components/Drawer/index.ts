@@ -11,6 +11,8 @@ export type {
   DrawerModalType,
   DrawerOffsetDetailsType,
   DrawerOffsetType,
+  DrawerOpenChangeDetailsType,
+  DrawerOpenChangeReasonType,
   DrawerOverlayPropsType,
   DrawerPortalPropsType,
   DrawerPresentationType,
@@ -21,4 +23,5 @@ export type {
   DrawerSwipeHandlePropsType,
   DrawerTitlePropsType,
   DrawerTriggerPropsType,
+  DrawerWidthType,
 } from "./Drawer.types";

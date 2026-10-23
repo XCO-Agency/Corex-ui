@@ -2,6 +2,7 @@ export { Command } from "./Command";
 export type {
   CommandComponentType,
   CommandContextType,
+  CommandDialogOpenChangeReasonType,
   CommandDialogPropsType,
   CommandEmptyPropsType,
   CommandGroupPropsType,

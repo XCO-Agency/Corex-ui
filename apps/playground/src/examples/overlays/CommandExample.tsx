@@ -37,7 +37,7 @@ export function CommandExample() {
           Inline command menu
         </Text>
         <Text as="p" variant="small" color="subdued">
-          Filterable list with groups, shortcuts, and empty state — built on cmdk like shadcn.
+          Filterable list with groups, shortcuts, and empty state — with the shadcn Command API.
         </Text>
         <Command label="Command menu">
           <Command.Input placeholder="Type a command or search..." />
@@ -161,7 +161,7 @@ export function CommandExample() {
           Command palette dialog
         </Text>
         <Text as="p" variant="small" color="subdued">
-          Open with the button or ⌘K / Ctrl+K. Uses Base UI Dialog for the overlay.
+          Open with the button or ⌘K / Ctrl+K. Uses the built-in Corex dialog for the overlay.
         </Text>
         <InlineStack gap="small-200">
           <Button variant="primary" onClick={() => setOpen(true)}>

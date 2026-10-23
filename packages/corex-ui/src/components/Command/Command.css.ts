@@ -1,5 +1,5 @@
 /**
- * Injected once per document. Ports the shadcn cmdk Command visuals onto
+ * Injected once per document. Ports the shadcn Command visuals onto
  * Polaris tokens — search field, grouped list, shortcuts — without Tailwind.
  */
 export const COMMAND_STYLE_ID = "cx-command-styles";
@@ -195,7 +195,7 @@ export const COMMAND_CSS = `
   color: var(--p-color-text, #303030);
 }
 
-[data-slot="command-group"] [cmdk-group-heading] {
+[data-slot="command-group-heading"] {
   padding: var(--p-space-150, 6px) var(--p-space-200, 8px);
   font-size: var(--p-font-size-275, 0.75rem);
   font-weight: var(--p-font-weight-medium, 500);
@@ -259,8 +259,9 @@ export const COMMAND_CSS = `
   color: var(--p-color-text, #303030);
 }
 
-/* Dialog / palette chrome (Base UI Dialog) */
+/* Dialog / palette chrome */
 [data-slot="command-dialog-overlay"] {
+  transition: opacity 150ms ease-out;
   position: fixed;
   inset: 0;
   z-index: var(--p-z-index-layer-modal, 520);
@@ -285,6 +286,7 @@ export const COMMAND_CSS = `
 }
 
 [data-slot="command-dialog-popup"] {
+  transition: opacity 150ms ease-out, transform 150ms ease-out;
   pointer-events: auto;
   box-sizing: border-box;
   width: min(100%, 32rem);

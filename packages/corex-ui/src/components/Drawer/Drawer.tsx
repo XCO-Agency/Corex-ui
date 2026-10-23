@@ -1,19 +1,33 @@
 import {
+  cloneElement,
   createContext,
   forwardRef,
   isValidElement,
   useCallback,
   useContext,
   useEffect,
+  useId,
   useLayoutEffect,
   useMemo,
+  useRef,
   useState,
   type CSSProperties,
+  type MouseEvent as ReactMouseEvent,
+  type PointerEvent as ReactPointerEvent,
   type ReactElement,
   type ReactNode,
 } from "react";
-import { Drawer as DrawerPrimitive } from "@base-ui/react/drawer";
+import { createPortal } from "react-dom";
 import { BREAKPOINT_WIDTHS } from "../../hooks/useDimension";
+import { mergeRefs } from "../../core/mergeRefs";
+import {
+  presenceAttributes,
+  useDismissableLayer,
+  useFocusContainment,
+  useOpenState,
+  usePresence,
+  useScrollLock,
+} from "../../core/overlay";
 import { DRAWER_CSS, DRAWER_STYLE_ID } from "./Drawer.css";
 import type {
   DrawerBodyPropsType,
@@ -25,15 +39,18 @@ import type {
   DrawerFooterPropsType,
   DrawerHeaderPropsType,
   DrawerOffsetType,
+  DrawerOpenChangeReasonType,
   DrawerOverlayPropsType,
   DrawerPortalPropsType,
   DrawerPresentationType,
   DrawerPropsType,
   DrawerResolvedOffsetType,
+  DrawerSnapPointType,
   DrawerSwipeDirectionType,
   DrawerSwipeHandlePropsType,
   DrawerTitlePropsType,
   DrawerTriggerPropsType,
+  DrawerWidthType,
 } from "./Drawer.types";
 
 const DRAWER_OFFSET_DEFAULT = 8;
@@ -106,6 +123,25 @@ function offsetToCssVars(offset: DrawerResolvedOffsetType): CSSProperties {
   };
 }
 
+const DRAWER_WIDTH_PRESETS: Record<string, string> = {
+  small: "20rem",
+  base: "24rem",
+  large: "32rem",
+  "large-100": "36rem",
+  "large-200": "40rem",
+  "large-300": "48rem",
+  "large-400": "56rem",
+  "large-500": "64rem",
+  full: "calc(100% - var(--drawer-offset-left) - var(--drawer-offset-right))",
+};
+
+/** Preset name, pixel number or CSS length → CSS width for `--drawer-content-width`. */
+export function resolveDrawerWidth(width: DrawerWidthType): string {
+  if (typeof width === "number") return `${width}px`;
+  const trimmed = width.trim();
+  return DRAWER_WIDTH_PRESETS[trimmed] ?? (/^\d*\.?\d+$/.test(trimmed) ? `${trimmed}px` : trimmed);
+}
+
 function isSideDirection(direction: DrawerSwipeDirectionType): boolean {
   return direction === "left" || direction === "right";
 }
@@ -124,16 +160,61 @@ function ensureDrawerStyles(node: HTMLElement | null) {
   doc.head.appendChild(style);
 }
 
-function resolveNativeButton(child: ReactNode): boolean | undefined {
-  if (!isValidElement(child)) return undefined;
-  const type = child.type;
-  if (type === "button") return true;
-  // Polaris / Corex Button renders `s-button`, not a native <button>.
-  return false;
+/**
+ * Size of the viewport of the document that hosts the Drawer (iframe-aware).
+ * `useBreakpoints` / `window.innerWidth` always read the top window, which
+ * breaks playground device previews and embedded Shopify iframes.
+ */
+function useHostViewport(hostDoc: Document | null): { isMobile: boolean; height: number } {
+  const [size, setSize] = useState(() => ({
+    isMobile: typeof window !== "undefined" && window.innerWidth < BREAKPOINT_WIDTHS.md,
+    height: typeof window !== "undefined" ? window.innerHeight : 0,
+  }));
+
+  useEffect(() => {
+    const win = hostDoc?.defaultView;
+    if (!win) return;
+    const update = () => {
+      const next = { isMobile: win.innerWidth < BREAKPOINT_WIDTHS.md, height: win.innerHeight };
+      setSize((current) =>
+        current.isMobile === next.isMobile && current.height === next.height ? current : next,
+      );
+    };
+    update();
+    win.addEventListener("resize", update, { passive: true });
+    return () => win.removeEventListener("resize", update);
+  }, [hostDoc]);
+
+  return size;
+}
+
+/** Snap point to pixels: `<= 1` is a viewport fraction, larger numbers are px, strings are CSS lengths. */
+export function resolveSnapPointHeight(
+  point: DrawerSnapPointType,
+  viewportHeight: number,
+  rootFontSize = 16,
+): number {
+  if (typeof point === "number") return point <= 1 ? point * viewportHeight : point;
+  const match = /^(-?\d*\.?\d+)\s*(px|rem|em|vh|dvh|svh|lvh|%)?$/.exec(point.trim());
+  if (!match) return viewportHeight;
+  const value = Number(match[1]);
+  switch (match[2]) {
+    case "rem":
+    case "em":
+      return value * rootFontSize;
+    case "vh":
+    case "dvh":
+    case "svh":
+    case "lvh":
+    case "%":
+      return (value / 100) * viewportHeight;
+    default:
+      return value;
+  }
 }
 
 /**
- * Responsive swipeable drawer.
+ * Responsive swipeable drawer, dependency-free.
  *
  * - **Desktop (`md+`)**: side drawer — default `swipeDirection="right"`. No
  *   swipe handle and no reserved handle space. Dismiss by swiping the panel.
@@ -154,45 +235,33 @@ function resolveNativeButton(child: ReactNode): boolean | undefined {
  * </Drawer>
  * ```
  */
-/**
- * Viewport width of the document that hosts the Drawer (iframe-aware).
- * `useBreakpoints` / `window.innerWidth` always read the top window, which
- * breaks playground device previews and embedded Shopify iframes.
- */
-function useHostViewportMobile(hostDoc: Document | null): boolean {
-  const [isMobile, setIsMobile] = useState(() => {
-    if (typeof window === "undefined") return false;
-    return window.innerWidth < BREAKPOINT_WIDTHS.md;
-  });
-
-  useEffect(() => {
-    const win = hostDoc?.defaultView;
-    if (!win) return;
-
-    const update = () => {
-      setIsMobile(win.innerWidth < BREAKPOINT_WIDTHS.md);
-    };
-    update();
-    win.addEventListener("resize", update, { passive: true });
-    return () => win.removeEventListener("resize", update);
-  }, [hostDoc]);
-
-  return isMobile;
-}
-
 function DrawerRoot({
   children,
+  open: openProp,
+  defaultOpen,
+  onOpenChange,
+  onOpenChangeComplete,
   modal = true,
   showSwipeHandle = false,
   snapPoints,
+  snapPoint,
+  defaultSnapPoint,
+  onSnapPointChange,
   swipeDirection = "right",
   responsive = true,
   offset,
-  ...props
 }: DrawerPropsType): ReactElement {
+  const parent = useContext(DrawerContext);
   const [portalContainer, setPortalContainer] = useState<HTMLElement | null>(null);
   const [hostDoc, setHostDoc] = useState<Document | null>(null);
-  const isMobile = useHostViewportMobile(hostDoc);
+  const { isMobile, height: viewportHeight } = useHostViewport(hostDoc);
+  const [open, setOpen] = useOpenState<DrawerOpenChangeReasonType>(
+    openProp,
+    defaultOpen,
+    onOpenChange,
+  );
+  const [nestedOpenCount, setNestedOpenCount] = useState(0);
+  const baseId = useId().replace(/:/g, "");
 
   const markerRef = useCallback((node: HTMLSpanElement | null) => {
     if (!node) {
@@ -202,10 +271,22 @@ function DrawerRoot({
     }
     ensureDrawerStyles(node);
     // Keep the portal in the same document as the trigger (e.g. playground
-    // preview iframes). Base UI defaults to the top-window `document.body`.
+    // preview iframes), not the top window's body.
     setPortalContainer(node.ownerDocument.body);
     setHostDoc(node.ownerDocument);
   }, []);
+
+  const onNestedOpenChange = useCallback((delta: number) => {
+    setNestedOpenCount((count) => Math.max(0, count + delta));
+  }, []);
+
+  // Tell the parent drawer a nested one is open so it can scale back.
+  const parentNestedChange = parent?.onNestedOpenChange;
+  useEffect(() => {
+    if (!open || !parentNestedChange) return undefined;
+    parentNestedChange(1);
+    return () => parentNestedChange(-1);
+  }, [open, parentNestedChange]);
 
   const requestedSwipeDirection = swipeDirection;
   const resolvedSwipeDirection: DrawerSwipeDirectionType =
@@ -222,10 +303,36 @@ function DrawerRoot({
   // side drawers (no reserved space). Swipe always works from the full panel.
   const resolvedShowSwipeHandle = presentation === "sheet" && showSwipeHandle === true;
 
-  // Match shadcn Base demos: floating panel with 8px edge gap on every side.
-  // Override with `offset` (number | string | per-side object).
+  // Match shadcn demos: floating panel with 8px edge gap on every side.
   const resolvedOffset = useMemo(() => resolveDrawerOffset(offset), [offset]);
-  const hasSnapPoints = snapPoints != null && snapPoints.length > 0;
+  const hasSnapPoints = presentation === "sheet" && snapPoints != null && snapPoints.length > 0;
+
+  const snapPointHeights = useMemo(() => {
+    if (!hasSnapPoints || !snapPoints) return [];
+    const rootFontSize = hostDoc?.defaultView
+      ? Number.parseFloat(hostDoc.defaultView.getComputedStyle(hostDoc.documentElement).fontSize) || 16
+      : 16;
+    return snapPoints.map((point) =>
+      Math.min(viewportHeight, resolveSnapPointHeight(point, viewportHeight, rootFontSize)),
+    );
+  }, [hasSnapPoints, snapPoints, viewportHeight, hostDoc]);
+
+  const [uncontrolledSnapIndex, setUncontrolledSnapIndex] = useState(() =>
+    Math.max(0, snapPoints && defaultSnapPoint != null ? snapPoints.indexOf(defaultSnapPoint) : 0),
+  );
+  const snapControlled = snapPoint !== undefined;
+  const activeSnapIndex = snapControlled
+    ? Math.max(0, snapPoints && snapPoint != null ? snapPoints.indexOf(snapPoint) : 0)
+    : uncontrolledSnapIndex;
+  const onSnapPointChangeRef = useRef(onSnapPointChange);
+  onSnapPointChangeRef.current = onSnapPointChange;
+  const setActiveSnapIndex = useCallback(
+    (index: number) => {
+      if (!snapControlled) setUncontrolledSnapIndex(index);
+      onSnapPointChangeRef.current?.(snapPoints?.[index] ?? null);
+    },
+    [snapControlled, snapPoints],
+  );
 
   const contextValue = useMemo<DrawerContextType>(
     () => ({
@@ -238,6 +345,17 @@ function DrawerRoot({
       isMobile,
       offset: resolvedOffset,
       portalContainer,
+      open,
+      setOpen,
+      titleId: `${baseId}-title`,
+      descriptionId: `${baseId}-description`,
+      popupId: `${baseId}-popup`,
+      nestedOpenCount,
+      onNestedOpenChange,
+      snapPointHeights,
+      activeSnapIndex,
+      setActiveSnapIndex,
+      onOpenChangeComplete,
     }),
     [
       hasSnapPoints,
@@ -249,6 +367,15 @@ function DrawerRoot({
       isMobile,
       resolvedOffset,
       portalContainer,
+      open,
+      setOpen,
+      baseId,
+      nestedOpenCount,
+      onNestedOpenChange,
+      snapPointHeights,
+      activeSnapIndex,
+      setActiveSnapIndex,
+      onOpenChangeComplete,
     ],
   );
 
@@ -266,92 +393,84 @@ function DrawerRoot({
         }}
         aria-hidden
       />
-      {/* Remount when presentation axis changes so Base UI swipe state stays consistent. */}
-      <DrawerPrimitive.Root
-        key={`${resolvedSwipeDirection}-${presentation}`}
-        data-slot="drawer"
-        data-presentation={presentation}
-        modal={modal}
-        snapPoints={presentation === "sheet" ? snapPoints : undefined}
-        swipeDirection={resolvedSwipeDirection}
-        {...props}
-      >
-        {children}
-      </DrawerPrimitive.Root>
+      {children}
     </DrawerContext.Provider>
   );
 }
 DrawerRoot.displayName = "Drawer";
 
-function DrawerTrigger({ children, nativeButton, ...props }: DrawerTriggerPropsType): ReactElement {
-  const resolvedNative =
-    nativeButton ?? (children !== undefined ? resolveNativeButton(children) : true);
+// `any` element: the control may be a native <button> or a web component host.
+type ClickableElementPropsType = { onClick?: (event: ReactMouseEvent<any>) => void }; // eslint-disable-line @typescript-eslint/no-explicit-any
 
-  if (isValidElement(children)) {
-    return (
-      <DrawerPrimitive.Trigger
-        data-slot="drawer-trigger"
-        nativeButton={resolvedNative}
-        render={children}
-        {...props}
-      />
-    );
+/**
+ * Renders `children` as the control: an element (e.g. a Corex `Button`) gets
+ * the attributes and a composed `onClick`; anything else sits in a `<button>`.
+ */
+function renderControl(
+  children: ReactNode,
+  props: Record<string, unknown> & ClickableElementPropsType,
+  onActivate: () => void,
+): ReactElement {
+  const { onClick, ...rest } = props;
+  if (isValidElement<ClickableElementPropsType>(children)) {
+    const childOnClick = children.props.onClick;
+    return cloneElement(children, {
+      ...rest,
+      onClick: (event: ReactMouseEvent<HTMLElement>) => {
+        childOnClick?.(event);
+        onClick?.(event);
+        if (!event.defaultPrevented) onActivate();
+      },
+    } as ClickableElementPropsType);
   }
-
   return (
-    <DrawerPrimitive.Trigger data-slot="drawer-trigger" nativeButton={resolvedNative} {...props}>
+    <button
+      type="button"
+      {...rest}
+      onClick={(event) => {
+        onClick?.(event);
+        if (!event.defaultPrevented) onActivate();
+      }}
+    >
       {children}
-    </DrawerPrimitive.Trigger>
+    </button>
+  );
+}
+
+function DrawerTrigger({ children, nativeButton: _nativeButton, ...props }: DrawerTriggerPropsType): ReactElement {
+  const { open, setOpen, popupId } = useDrawer();
+  return renderControl(
+    children,
+    {
+      "data-slot": "drawer-trigger",
+      "aria-haspopup": "dialog",
+      "aria-expanded": open,
+      "aria-controls": open ? popupId : undefined,
+      ...props,
+    },
+    () => setOpen(!open, "trigger-press"),
   );
 }
 DrawerTrigger.displayName = "Drawer.Trigger";
 
-function DrawerClose({ children, nativeButton, ...props }: DrawerClosePropsType): ReactElement {
-  const resolvedNative =
-    nativeButton ?? (children !== undefined ? resolveNativeButton(children) : true);
-
-  if (isValidElement(children)) {
-    return (
-      <DrawerPrimitive.Close
-        data-slot="drawer-close"
-        nativeButton={resolvedNative}
-        render={children}
-        {...props}
-      />
-    );
-  }
-
-  return (
-    <DrawerPrimitive.Close data-slot="drawer-close" nativeButton={resolvedNative} {...props}>
-      {children}
-    </DrawerPrimitive.Close>
+function DrawerClose({ children, nativeButton: _nativeButton, ...props }: DrawerClosePropsType): ReactElement {
+  const { setOpen } = useDrawer();
+  return renderControl(children, { "data-slot": "drawer-close", ...props }, () =>
+    setOpen(false, "close-press"),
   );
 }
 DrawerClose.displayName = "Drawer.Close";
 
-function DrawerPortal({ container, ...props }: DrawerPortalPropsType): ReactElement {
+function DrawerPortal({ container, children }: DrawerPortalPropsType): ReactElement | null {
   const { portalContainer } = useDrawer();
-  return (
-    <DrawerPrimitive.Portal
-      data-slot="drawer-portal"
-      container={container ?? portalContainer ?? undefined}
-      {...props}
-    />
-  );
+  const target = container ?? portalContainer;
+  return target ? createPortal(children, target) : null;
 }
 DrawerPortal.displayName = "Drawer.Portal";
 
 const DrawerOverlay = forwardRef<HTMLDivElement, DrawerOverlayPropsType>(
-  function DrawerOverlay({ style, className, ...props }, ref) {
-    return (
-      <DrawerPrimitive.Backdrop
-        ref={ref}
-        data-slot="drawer-overlay"
-        className={className}
-        style={style}
-        {...props}
-      />
-    );
+  function DrawerOverlay(props, ref) {
+    return <div ref={ref} data-slot="drawer-overlay" {...props} />;
   },
 );
 DrawerOverlay.displayName = "Drawer.Overlay";
@@ -369,14 +488,41 @@ function DrawerSwipeHandle({ style, className, ...props }: DrawerSwipeHandleProp
 }
 DrawerSwipeHandle.displayName = "Drawer.SwipeHandle";
 
+const FIELD_SELECTOR =
+  'input, textarea, select, [contenteditable="true"], s-text-field, s-text-area, s-select, s-search-field, s-number-field, s-email-field, s-password-field, s-url-field, s-money-field, s-date-field, s-color-field';
+
+/** True when an element between `target` and `popup` can still scroll toward the dismiss direction. */
+function canScrollTowardDismiss(
+  target: HTMLElement,
+  popup: HTMLElement,
+  axis: "x" | "y",
+  sign: 1 | -1,
+): boolean {
+  const view = popup.ownerDocument.defaultView;
+  for (let el: HTMLElement | null = target; el && el !== popup; el = el.parentElement) {
+    const overflow = view?.getComputedStyle(el)[axis === "y" ? "overflowY" : "overflowX"];
+    if (overflow !== "auto" && overflow !== "scroll") continue;
+    if (axis === "y") {
+      if (el.scrollHeight <= el.clientHeight) continue;
+      if (sign === 1 ? el.scrollTop > 0 : el.scrollTop + el.clientHeight < el.scrollHeight - 1) return true;
+    } else {
+      if (el.scrollWidth <= el.clientWidth) continue;
+      const scrollLeft = Math.abs(el.scrollLeft);
+      if (sign === 1 ? scrollLeft > 0 : scrollLeft + el.clientWidth < el.scrollWidth - 1) return true;
+    }
+  }
+  return false;
+}
+
 /**
  * High-level panel: portal + overlay + viewport + popup + inner content.
  * Swipe-to-dismiss applies to the full popup surface (not handle-only).
  */
 const DrawerContent = forwardRef<HTMLDivElement, DrawerContentPropsType>(function DrawerContent(
-  { children, className, style, offset, width, maxHeight, ...props },
+  { children, className, style, offset, width, maxHeight, onPointerDown, ...props },
   ref,
 ) {
+  const ctx = useDrawer();
   const {
     hasSnapPoints,
     modal,
@@ -385,52 +531,229 @@ const DrawerContent = forwardRef<HTMLDivElement, DrawerContentPropsType>(functio
     presentation,
     offset: rootOffset,
     portalContainer,
-  } = useDrawer();
-  const swipeAxis =
-    swipeDirection === "down" || swipeDirection === "up" ? "y" : "x";
+    open,
+    setOpen,
+    popupId,
+    nestedOpenCount,
+    snapPointHeights,
+    activeSnapIndex,
+    setActiveSnapIndex,
+    onOpenChangeComplete,
+  } = ctx;
+  const popupRef = useRef<HTMLDivElement>(null);
+  const overlayRef = useRef<HTMLDivElement>(null);
+  const mergedRef = useMemo(() => mergeRefs(ref, popupRef), [ref]);
+  const swipeAxis = swipeDirection === "down" || swipeDirection === "up" ? "y" : "x";
   const resolvedOffset =
     offset !== undefined ? resolveDrawerOffset(offset, DRAWER_OFFSET_DEFAULT) : rootOffset;
   const floated = hasNonZeroOffset(resolvedOffset);
+
+  const { mounted, phase } = usePresence(open, popupRef, {
+    onExitComplete: () => onOpenChangeComplete?.(false),
+  });
+  useEffect(() => {
+    if (phase !== "open" || !onOpenChangeComplete) return undefined;
+    const timer = window.setTimeout(() => onOpenChangeComplete(true), 450);
+    return () => window.clearTimeout(timer);
+  }, [phase, onOpenChangeComplete]);
 
   useLayoutEffect(() => {
     if (portalContainer) ensureDrawerStyles(portalContainer);
   }, [portalContainer]);
 
-  const popupStyle: CSSProperties = {
-    ...offsetToCssVars(resolvedOffset),
-    ...(width ? { ["--drawer-content-width" as string]: width } : null),
-    ...(maxHeight ? { ["--drawer-content-max-height" as string]: maxHeight } : null),
-    ...style,
+  const doc = portalContainer?.ownerDocument ?? null;
+  // Only once the panel is in the DOM: the portal target arrives one render late.
+  const active = open && mounted && Boolean(portalContainer);
+  useDismissableLayer({
+    id: popupId,
+    active,
+    doc,
+    getInside: () => [popupRef.current],
+    onEscape: () => setOpen(false, "escape-key"),
+    onOutsidePress: (event) => {
+      // The trigger toggles on its own click; closing here would reopen it.
+      const target = event.target as Element | null;
+      if (target?.closest?.(`[aria-controls="${popupId}"]`)) return;
+      setOpen(false, "outside-press");
+    },
+  });
+  useFocusContainment(popupRef, { id: popupId, active, trap: modal !== false });
+  useScrollLock(doc, active && modal === true);
+
+  const snapHeight = hasSnapPoints ? snapPointHeights[activeSnapIndex] : undefined;
+  const viewportHeight = doc?.defaultView?.innerHeight ?? 0;
+  const snapOffset =
+    snapHeight !== undefined ? Math.max(0, viewportHeight - snapHeight) * (swipeDirection === "up" ? -1 : 1) : 0;
+
+  const handlePointerDown = (event: ReactPointerEvent<HTMLDivElement>) => {
+    onPointerDown?.(event);
+    if (event.defaultPrevented || (event.pointerType === "mouse" && event.button !== 0)) return;
+    const popup = popupRef.current;
+    const view = popup?.ownerDocument.defaultView;
+    if (!popup || !view || !open) return;
+    const target = event.target as HTMLElement;
+    if (target.closest(FIELD_SELECTOR)) return;
+
+    const axis = swipeAxis;
+    const sign: 1 | -1 = swipeDirection === "down" || swipeDirection === "right" ? 1 : -1;
+    if (canScrollTowardDismiss(target, popup, axis, sign)) return;
+
+    const pointerId = event.pointerId;
+    const startX = event.clientX;
+    const startY = event.clientY;
+    const size = axis === "y" ? popup.offsetHeight : popup.offsetWidth;
+    const movementVar = axis === "y" ? "--drawer-swipe-movement-y" : "--drawer-swipe-movement-x";
+    const heights = snapPointHeights;
+    const currentHeight = hasSnapPoints ? (heights[activeSnapIndex] ?? size) : size;
+    const maxHeight = heights.length ? Math.max(...heights) : size;
+    let dragging = false;
+    let movement = 0;
+    let lastTime = event.timeStamp;
+    let lastMovement = 0;
+    let velocity = 0;
+
+    const reset = () => {
+      popup.removeAttribute("data-swiping");
+      popup.style.removeProperty(movementVar);
+      overlayRef.current?.style.removeProperty("--drawer-swipe-progress");
+    };
+
+    const handleMove = (move: PointerEvent) => {
+      if (move.pointerId !== pointerId) return;
+      const along = (axis === "y" ? move.clientY - startY : move.clientX - startX) * sign;
+      const cross = axis === "y" ? move.clientX - startX : move.clientY - startY;
+      if (!dragging) {
+        // A gesture along the other axis is a scroll or a text selection, not a swipe.
+        if (Math.abs(cross) > 8 && Math.abs(cross) > Math.abs(along)) {
+          stop();
+          return;
+        }
+        if (Math.abs(along) < 6) return;
+        dragging = true;
+        popup.setAttribute("data-swiping", "");
+        view.getSelection()?.removeAllRanges();
+      }
+      // Toward a larger snap point the sheet follows the finger; past the edge it resists.
+      movement =
+        along >= 0
+          ? along
+          : hasSnapPoints && currentHeight < maxHeight
+            ? Math.max(along, -(maxHeight - currentHeight))
+            : along * 0.2;
+      const dt = Math.max(1, move.timeStamp - lastTime);
+      velocity = (movement - lastMovement) / dt;
+      lastTime = move.timeStamp;
+      lastMovement = movement;
+      popup.style.setProperty(movementVar, `${movement * sign}px`);
+      overlayRef.current?.style.setProperty(
+        "--drawer-swipe-progress",
+        String(Math.min(1, Math.max(0, movement / Math.max(1, currentHeight)))),
+      );
+    };
+
+    const finish = (released: boolean) => {
+      stop();
+      if (!dragging) return;
+      // Swallow the click that ends the drag so buttons under the pointer don't fire.
+      popup.addEventListener("click", (click) => click.stopPropagation(), { capture: true, once: true });
+      if (!released) {
+        reset();
+        return;
+      }
+      const flick = velocity > 0.5 && movement > 16;
+      if (hasSnapPoints && heights.length > 0) {
+        const visible = currentHeight - movement;
+        const smallest = Math.min(...heights);
+        if (visible < smallest * 0.5 || (flick && currentHeight === smallest)) {
+          popup.style.setProperty("--drawer-swipe-strength", String(Math.max(0.3, 1 - velocity / 3)));
+          setOpen(false, "swipe");
+          return;
+        }
+        const target = flick
+          ? Math.max(smallest, ...heights.filter((h) => h < currentHeight))
+          : velocity < -0.5
+            ? Math.min(maxHeight, ...heights.filter((h) => h > currentHeight))
+            : heights.reduce((best, h) => (Math.abs(h - visible) < Math.abs(best - visible) ? h : best));
+        reset();
+        setActiveSnapIndex(heights.indexOf(target));
+        return;
+      }
+      if (movement > size * 0.3 || flick) {
+        popup.style.setProperty("--drawer-swipe-strength", String(Math.max(0.3, 1 - velocity / 3)));
+        setOpen(false, "swipe");
+        return;
+      }
+      reset();
+    };
+
+    const handleUp = (up: PointerEvent) => {
+      if (up.pointerId === pointerId) finish(true);
+    };
+    const handleCancel = (cancel: PointerEvent) => {
+      if (cancel.pointerId === pointerId) finish(false);
+    };
+    function stop() {
+      view!.removeEventListener("pointermove", handleMove);
+      view!.removeEventListener("pointerup", handleUp);
+      view!.removeEventListener("pointercancel", handleCancel);
+    }
+    view.addEventListener("pointermove", handleMove);
+    view.addEventListener("pointerup", handleUp);
+    view.addEventListener("pointercancel", handleCancel);
   };
 
-  return (
-    <DrawerPrimitive.Portal
-      data-slot="drawer-portal"
-      container={portalContainer ?? undefined}
-    >
-      {modal === true && <DrawerOverlay />}
-      <DrawerPrimitive.Viewport
+  if (!mounted || !portalContainer) return null;
+
+  const popupStyle = {
+    ...offsetToCssVars(resolvedOffset),
+    ...(width !== undefined && width !== ""
+      ? { ["--drawer-content-width" as string]: resolveDrawerWidth(width) }
+      : null),
+    ...(maxHeight ? { ["--drawer-content-max-height" as string]: maxHeight } : null),
+    ...(hasSnapPoints ? { ["--drawer-snap-point-offset" as string]: `${snapOffset}px` } : null),
+    ["--nested-drawers" as string]: nestedOpenCount,
+    ...style,
+  } as CSSProperties;
+
+  const presence = presenceAttributes(phase);
+
+  return createPortal(
+    <>
+      {modal === true ? <DrawerOverlay ref={overlayRef} {...presence} /> : null}
+      <div
         data-slot="drawer-viewport"
         data-modal={modal === true ? "true" : "false"}
         data-presentation={presentation}
       >
-        <DrawerPrimitive.Popup
-          ref={ref}
+        <div
+          ref={mergedRef}
+          id={popupId}
+          role="dialog"
+          aria-modal={modal === true ? true : undefined}
+          aria-labelledby={ctx.titleId}
+          aria-describedby={ctx.descriptionId}
+          tabIndex={-1}
           data-slot="drawer-popup"
           data-swipe-axis={swipeAxis}
+          data-swipe-direction={swipeDirection}
           data-presentation={presentation}
-          data-snap-points={hasSnapPoints && presentation === "sheet" ? "" : undefined}
+          data-snap-points={hasSnapPoints ? "" : undefined}
           data-has-offset={floated ? "" : undefined}
+          data-width={typeof width === "string" && width in DRAWER_WIDTH_PRESETS ? width : undefined}
+          data-nested-drawer-open={nestedOpenCount > 0 ? "" : undefined}
+          {...presence}
           className={className}
           style={popupStyle}
+          onPointerDown={handlePointerDown}
           {...props}
         >
           {/* Handle is mobile-sheet only; never mounts on desktop (no layout space). */}
           {showSwipeHandle ? <DrawerSwipeHandle /> : null}
-          <DrawerPrimitive.Content data-slot="drawer-content">{children}</DrawerPrimitive.Content>
-        </DrawerPrimitive.Popup>
-      </DrawerPrimitive.Viewport>
-    </DrawerPrimitive.Portal>
+          <div data-slot="drawer-content">{children}</div>
+        </div>
+      </div>
+    </>,
+    portalContainer,
   );
 });
 DrawerContent.displayName = "Drawer.Content";
@@ -454,9 +777,11 @@ const DrawerTitle = forwardRef<HTMLHeadingElement, DrawerTitlePropsType>(functio
   { className, style, ...props },
   ref,
 ) {
+  const { titleId } = useDrawer();
   return (
-    <DrawerPrimitive.Title
+    <h2
       ref={ref}
+      id={titleId}
       data-slot="drawer-title"
       className={className}
       style={style}
@@ -468,9 +793,11 @@ DrawerTitle.displayName = "Drawer.Title";
 
 const DrawerDescription = forwardRef<HTMLParagraphElement, DrawerDescriptionPropsType>(
   function DrawerDescription({ className, style, ...props }, ref) {
+    const { descriptionId } = useDrawer();
     return (
-      <DrawerPrimitive.Description
+      <p
         ref={ref}
+        id={descriptionId}
         data-slot="drawer-description"
         className={className}
         style={style}

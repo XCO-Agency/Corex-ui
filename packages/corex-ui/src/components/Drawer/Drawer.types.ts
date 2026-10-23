@@ -6,20 +6,44 @@ import type {
   ReactNode,
   RefAttributes,
 } from "react";
-import type {
-  DrawerRoot,
-  DrawerTrigger,
-  DrawerClose,
-  DrawerPortal,
-  DrawerBackdrop,
-  DrawerPopup,
-  DrawerTitle,
-  DrawerDescription,
-} from "@base-ui/react/drawer";
+
+/**
+ * Side drawer width. Presets: `small` 20rem, `base` 24rem (default),
+ * `large` 32rem, `large-100` 36rem, `large-200` 40rem, `large-300` 48rem,
+ * `large-400` 56rem, `large-500` 64rem, `full` (viewport minus offsets).
+ * Any CSS length (`"420px"`, `"30rem"`, `"60vw"`) or a number of pixels also works.
+ * Every width is capped to the viewport minus the edge offsets.
+ */
+export type DrawerWidthType =
+  | "full"
+  | "small"
+  | "base"
+  | "large"
+  | "large-100"
+  | "large-200"
+  | "large-300"
+  | "large-400"
+  | "large-500"
+  | number
+  | (string & {});
 
 export type DrawerSwipeDirectionType = "up" | "down" | "left" | "right";
 
+/**
+ * Sheet snap point: a number `<= 1` is a fraction of the viewport height,
+ * a larger number is pixels, a string is any CSS length (`"20rem"`).
+ */
 export type DrawerSnapPointType = number | string;
+
+/** Why the open state changed. */
+export type DrawerOpenChangeReasonType =
+  | "trigger-press"
+  | "close-press"
+  | "outside-press"
+  | "escape-key"
+  | "swipe";
+
+export type DrawerOpenChangeDetailsType = { reason: DrawerOpenChangeReasonType };
 
 export type DrawerModalType = boolean | "trap-focus";
 
@@ -55,14 +79,6 @@ export type DrawerResolvedOffsetType = {
   left: string;
 };
 
-type DrawerRootPropsType = DrawerRoot.Props;
-type DrawerTriggerBasePropsType = DrawerTrigger.Props;
-type DrawerCloseBasePropsType = DrawerClose.Props;
-type DrawerPortalBasePropsType = DrawerPortal.Props;
-type DrawerBackdropBasePropsType = DrawerBackdrop.Props;
-type DrawerPopupBasePropsType = DrawerPopup.Props;
-type DrawerTitleBasePropsType = DrawerTitle.Props;
-type DrawerDescriptionBasePropsType = DrawerDescription.Props;
 
 export type DrawerContextType = {
   hasSnapPoints: boolean;
@@ -82,13 +98,39 @@ export type DrawerContextType = {
    * stay inside iframes / shadow hosts instead of escaping to the top window.
    */
   portalContainer: HTMLElement | null;
+  open: boolean;
+  setOpen: (open: boolean, reason: DrawerOpenChangeReasonType) => void;
+  /** Ids wired to the popup's `aria-labelledby` / `aria-describedby`. */
+  titleId: string;
+  descriptionId: string;
+  popupId: string;
+  /** Number of nested drawers currently open inside this one. */
+  nestedOpenCount: number;
+  /** Called by a nested drawer when it opens (`+1`) or closes (`-1`). */
+  onNestedOpenChange: (delta: number) => void;
+  /** Resolved snap point heights in px (sheets only), smallest first. */
+  snapPointHeights: number[];
+  activeSnapIndex: number;
+  setActiveSnapIndex: (index: number) => void;
+  onOpenChangeComplete?: (open: boolean) => void;
 };
 
-export type DrawerPropsType = Omit<
-  DrawerRootPropsType,
-  "swipeDirection" | "modal" | "children"
-> & {
+export type DrawerPropsType = {
   children?: ReactNode;
+  /** Controlled open state. */
+  open?: boolean;
+  /** Initial open state when uncontrolled. */
+  defaultOpen?: boolean;
+  onOpenChange?: (open: boolean, details: DrawerOpenChangeDetailsType) => void;
+  /** Called after the open or close transition finishes. */
+  onOpenChangeComplete?: (open: boolean) => void;
+  /** Sheet snap points (vertical presentations only). */
+  snapPoints?: DrawerSnapPointType[];
+  /** Controlled active snap point (one of `snapPoints`). */
+  snapPoint?: DrawerSnapPointType | null;
+  /** Initial snap point when uncontrolled. Defaults to the first one. */
+  defaultSnapPoint?: DrawerSnapPointType | null;
+  onSnapPointChange?: (snapPoint: DrawerSnapPointType | null) => void;
   /**
    * Preferred side on desktop. With `responsive` (default), `left` / `right`
    * become a bottom sheet (`down`) below the `md` breakpoint.
@@ -126,22 +168,29 @@ export type DrawerPropsType = Omit<
   offset?: DrawerOffsetType;
 };
 
-export type DrawerTriggerPropsType = DrawerTriggerBasePropsType & {
+type DrawerButtonPropsType = Omit<ComponentPropsWithoutRef<"button">, "children"> & {
+  /**
+   * Element to make the trigger/close (e.g. a Corex `Button`); its `onClick`
+   * is composed. Plain content renders inside a native `<button>`.
+   */
   children?: ReactNode;
+  /** @deprecated No effect. Kept for compatibility with the previous API. */
+  nativeButton?: boolean;
 };
 
-export type DrawerClosePropsType = DrawerCloseBasePropsType & {
+export type DrawerTriggerPropsType = DrawerButtonPropsType;
+
+export type DrawerClosePropsType = DrawerButtonPropsType;
+
+export type DrawerPortalPropsType = {
   children?: ReactNode;
+  /** Mount target. Defaults to the body of the document hosting the Drawer. */
+  container?: HTMLElement | null;
 };
 
-export type DrawerPortalPropsType = DrawerPortalBasePropsType;
+export type DrawerOverlayPropsType = ComponentPropsWithoutRef<"div">;
 
-export type DrawerOverlayPropsType = DrawerBackdropBasePropsType & {
-  className?: string;
-  style?: CSSProperties;
-};
-
-export type DrawerContentPropsType = Omit<DrawerPopupBasePropsType, "className"> & {
+export type DrawerContentPropsType = Omit<ComponentPropsWithoutRef<"div">, "className"> & {
   children?: ReactNode;
   className?: string;
   style?: CSSProperties;
@@ -150,9 +199,11 @@ export type DrawerContentPropsType = Omit<DrawerPopupBasePropsType, "className">
    */
   offset?: DrawerOffsetType;
   /**
-   * Side drawer width (horizontal). Defaults to `min(24rem, 75vw)`.
+   * Side drawer width (horizontal): a preset (`"small"`, `"base"`, `"large"`,
+   * `"large-100"`…`"large-500"`, `"full"`) or any CSS length / pixel number.
+   * Defaults to `"base"` (24rem; 75% below 640px).
    */
-  width?: string;
+  width?: DrawerWidthType;
   /**
    * Vertical sheet max height. Defaults to `calc(100dvh - 6rem)`.
    */
@@ -163,9 +214,9 @@ export type DrawerHeaderPropsType = ComponentPropsWithoutRef<"div">;
 
 export type DrawerFooterPropsType = ComponentPropsWithoutRef<"div">;
 
-export type DrawerTitlePropsType = DrawerTitleBasePropsType;
+export type DrawerTitlePropsType = ComponentPropsWithoutRef<"h2">;
 
-export type DrawerDescriptionPropsType = DrawerDescriptionBasePropsType;
+export type DrawerDescriptionPropsType = ComponentPropsWithoutRef<"p">;
 
 export type DrawerSwipeHandlePropsType = ComponentPropsWithoutRef<"div">;
 

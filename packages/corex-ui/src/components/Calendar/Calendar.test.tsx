@@ -61,7 +61,7 @@ describe("Calendar", () => {
     fireEvent.click(action("view-week"));
     expect(onViewChange).toHaveBeenCalledWith("week");
     expect(calendarView()).toBe("week");
-    expect(action("view-week")).toHaveAttribute("variant", "secondary");
+    expect(action("view-week")).toHaveAttribute("variant", "primary");
     expect(document.querySelector('[data-slot="calendar-timegrid"]')).toBeTruthy();
     // Overlapping timed events share the column width.
     const lunch = screen.getByRole("button", { name: /^Lunch/ });

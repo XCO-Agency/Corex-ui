@@ -6,18 +6,37 @@ import {
   useEffect,
   useLayoutEffect,
   useMemo,
+  useId,
+  useRef,
   useState,
   type CSSProperties,
   type ReactElement,
   type ReactNode,
 } from "react";
-import { Command as CommandPrimitive } from "cmdk";
-import { Dialog as DialogPrimitive } from "@base-ui/react/dialog";
+import {
+  CommandPrimitiveEmpty,
+  CommandPrimitiveGroup,
+  CommandPrimitiveInput,
+  CommandPrimitiveItem,
+  CommandPrimitiveList,
+  CommandPrimitiveRoot,
+  CommandPrimitiveSeparator,
+} from "./commandPrimitive";
+import { createPortal } from "react-dom";
+import {
+  presenceAttributes,
+  useDismissableLayer,
+  useFocusContainment,
+  useOpenState,
+  usePresence,
+  useScrollLock,
+} from "../../core/overlay";
 import { Icon } from "../Icon";
 import { COMMAND_CSS, COMMAND_STYLE_ID } from "./Command.css";
 import type {
   CommandComponentType,
   CommandContextType,
+  CommandDialogOpenChangeReasonType,
   CommandDialogPropsType,
   CommandEmptyPropsType,
   CommandGroupPropsType,
@@ -61,7 +80,7 @@ function resolveGroupId(
 }
 
 /**
- * Command menu for search and quick actions (shadcn / cmdk).
+ * Command menu for search and quick actions (shadcn Command API, dependency-free).
  *
  * Set `sidebar` for a two-column layout: group nav on the left, items on the right.
  *
@@ -179,7 +198,7 @@ const CommandRoot = forwardRef<HTMLDivElement, CommandPropsType>(function Comman
 
   return (
     <CommandContext.Provider value={contextValue}>
-      <CommandPrimitive
+      <CommandPrimitiveRoot
         ref={setRefs}
         data-slot="command"
         data-sidebar={sidebar ? "" : undefined}
@@ -188,7 +207,7 @@ const CommandRoot = forwardRef<HTMLDivElement, CommandPropsType>(function Comman
         {...props}
       >
         {children}
-      </CommandPrimitive>
+      </CommandPrimitiveRoot>
     </CommandContext.Provider>
   );
 });
@@ -214,7 +233,7 @@ const CommandInput = forwardRef<HTMLInputElement, CommandInputPropsType>(functio
           <Icon source="search" size="small" />
         </span>
       )}
-      <CommandPrimitive.Input
+      <CommandPrimitiveInput
         ref={ref}
         data-slot="command-input"
         className={className}
@@ -295,7 +314,7 @@ const CommandList = forwardRef<HTMLDivElement, CommandListPropsType>(function Co
   };
 
   const list = (
-    <CommandPrimitive.List
+    <CommandPrimitiveList
       ref={ref}
       data-slot="command-list"
       className={className}
@@ -303,7 +322,7 @@ const CommandList = forwardRef<HTMLDivElement, CommandListPropsType>(function Co
       {...props}
     >
       {children}
-    </CommandPrimitive.List>
+    </CommandPrimitiveList>
   );
 
   if (!ctx?.sidebar) return list;
@@ -322,7 +341,7 @@ const CommandEmpty = forwardRef<HTMLDivElement, CommandEmptyPropsType>(function 
   ref,
 ) {
   return (
-    <CommandPrimitive.Empty
+    <CommandPrimitiveEmpty
       ref={ref}
       data-slot="command-empty"
       className={className}
@@ -371,11 +390,10 @@ const CommandGroup = forwardRef<HTMLDivElement, CommandGroupPropsType>(function 
     ctx?.activeSidebarGroup != null &&
     groupId !== ctx.activeSidebarGroup;
 
-  // Do not use cmdk `forceMount` for sidebar: it skips item registration
-  // (Empty always shows) and disables search filtering on items.
-  // Inactive groups omit children so they leave the item registry / a11y tree.
+  // Inactive sidebar groups omit their children so they leave the visible
+  // item count (Empty) and the a11y tree; `forceMount` is not used for this.
   return (
-    <CommandPrimitive.Group
+    <CommandPrimitiveGroup
       ref={ref}
       data-slot="command-group"
       data-group-value={groupId ?? undefined}
@@ -390,7 +408,7 @@ const CommandGroup = forwardRef<HTMLDivElement, CommandGroupPropsType>(function 
       {...props}
     >
       {hideForSidebar ? null : children}
-    </CommandPrimitive.Group>
+    </CommandPrimitiveGroup>
   );
 });
 CommandGroup.displayName = "Command.Group";
@@ -400,7 +418,7 @@ const CommandItem = forwardRef<HTMLDivElement, CommandItemPropsType>(function Co
   ref,
 ) {
   return (
-    <CommandPrimitive.Item
+    <CommandPrimitiveItem
       ref={ref}
       data-slot="command-item"
       className={className}
@@ -419,7 +437,7 @@ const CommandSeparator = forwardRef<HTMLDivElement, CommandSeparatorPropsType>(
     if (ctx?.sidebar && !searching) return null;
 
     return (
-      <CommandPrimitive.Separator
+      <CommandPrimitiveSeparator
         ref={ref}
         data-slot="command-separator"
         className={className}
@@ -437,7 +455,7 @@ function CommandShortcut({ className, style, ...props }: CommandShortcutPropsTyp
 CommandShortcut.displayName = "Command.Shortcut";
 
 /**
- * Command palette in a centered dialog (Base UI Dialog + cmdk Command).
+ * Command palette in a centered dialog.
  * Pass `open` / `onOpenChange` for controlled use, or `defaultOpen`.
  */
 function CommandDialog({
@@ -447,9 +465,20 @@ function CommandDialog({
   title = "Command Palette",
   description = "Search for a command to run...",
   container,
-  ...props
+  open: openProp,
+  defaultOpen,
+  onOpenChange,
+  modal = true,
 }: CommandDialogPropsType): ReactElement {
   const [portalContainer, setPortalContainer] = useState<HTMLElement | null>(null);
+  const [open, setOpen] = useOpenState<CommandDialogOpenChangeReasonType>(
+    openProp,
+    defaultOpen,
+    onOpenChange,
+  );
+  const popupRef = useRef<HTMLDivElement>(null);
+  const baseId = useId().replace(/:/g, "");
+  const layerId = `${baseId}-command-dialog`;
 
   const markerRef = useCallback((node: HTMLSpanElement | null) => {
     if (!node) {
@@ -460,9 +489,27 @@ function CommandDialog({
     setPortalContainer(node.ownerDocument.body);
   }, []);
 
+  const target = container ?? portalContainer;
   useLayoutEffect(() => {
-    if (portalContainer) ensureCommandStyles(portalContainer);
-  }, [portalContainer]);
+    if (target) ensureCommandStyles(target);
+  }, [target]);
+
+  const { mounted, phase } = usePresence(open, popupRef, { fallbackMs: 250 });
+  const doc = target?.ownerDocument ?? null;
+  // Only once the panel is in the DOM: the portal target arrives one render late.
+  const active = open && mounted && Boolean(target);
+  useDismissableLayer({
+    id: layerId,
+    active,
+    doc,
+    getInside: () => [popupRef.current],
+    onEscape: () => setOpen(false, "escape-key"),
+    onOutsidePress: () => setOpen(false, "outside-press"),
+  });
+  useFocusContainment(popupRef, { id: layerId, active, trap: modal, initialFocus: "first-field" });
+  useScrollLock(doc, active && modal);
+
+  const presence = presenceAttributes(phase);
 
   return (
     <>
@@ -478,24 +525,34 @@ function CommandDialog({
         }}
         aria-hidden
       />
-      <DialogPrimitive.Root data-slot="command-dialog" {...props}>
-        <DialogPrimitive.Portal container={container ?? portalContainer ?? undefined}>
-          <DialogPrimitive.Backdrop data-slot="command-dialog-overlay" />
-          <DialogPrimitive.Viewport data-slot="command-dialog-viewport">
-            <DialogPrimitive.Popup
-              data-slot="command-dialog-popup"
-              className={className}
-              style={style}
-            >
-              <div data-slot="command-dialog-sr">
-                <DialogPrimitive.Title>{title}</DialogPrimitive.Title>
-                <DialogPrimitive.Description>{description}</DialogPrimitive.Description>
+      {mounted && target
+        ? createPortal(
+            <>
+              {modal ? <div data-slot="command-dialog-overlay" {...presence} /> : null}
+              <div data-slot="command-dialog-viewport">
+                <div
+                  ref={popupRef}
+                  role="dialog"
+                  aria-modal={modal || undefined}
+                  aria-labelledby={`${baseId}-title`}
+                  aria-describedby={`${baseId}-description`}
+                  tabIndex={-1}
+                  data-slot="command-dialog-popup"
+                  {...presence}
+                  className={className}
+                  style={style}
+                >
+                  <div data-slot="command-dialog-sr">
+                    <h2 id={`${baseId}-title`}>{title}</h2>
+                    <p id={`${baseId}-description`}>{description}</p>
+                  </div>
+                  {children}
+                </div>
               </div>
-              {children}
-            </DialogPrimitive.Popup>
-          </DialogPrimitive.Viewport>
-        </DialogPrimitive.Portal>
-      </DialogPrimitive.Root>
+            </>,
+            target,
+          )
+        : null}
     </>
   );
 }

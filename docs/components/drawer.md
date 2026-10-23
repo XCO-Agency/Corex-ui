@@ -1,6 +1,6 @@
 # Drawer
 
-Self-contained custom control (pattern 4) built on [`@base-ui/react/drawer`](https://base-ui.com/react/components/drawer), matching the [shadcn Base UI drawer](https://ui.shadcn.com/docs/components/base/drawer) visuals and gestures.
+Self-contained custom control (pattern 4) with **no third-party runtime** — presence, focus containment, scroll lock, Escape / outside press and swipe gestures are built in. Matches the [shadcn drawer](https://ui.shadcn.com/docs/components/base/drawer) visuals and gestures.
 
 **Defaults**
 
@@ -62,6 +62,36 @@ Adjust the float gap from the viewport with `offset` on `<Drawer>` or `<Drawer.C
 <Drawer.Content offset={{ x: 12, y: 8 }}>…</Drawer.Content>
 ```
 
+## Width (`width` on `Drawer.Content`)
+
+| Value | Width |
+| :---- | :---- |
+| `"small"` | 20rem |
+| `"base"` (default) | 24rem (75% below 640px) |
+| `"large"` | 32rem |
+| `"large-100"` / `"large-200"` / `"large-300"` / `"large-400"` / `"large-500"` | 36 / 40 / 48 / 56 / 64rem |
+| `"full"` | Viewport minus the edge offsets |
+| CSS length or number | `"420px"`, `"30rem"`, `"60vw"`, `360` (px) |
+
+Every width is capped to the viewport minus the edge offsets, so large presets stay on screen on small viewports.
+
+```tsx
+<Drawer.Content width="large-200">…</Drawer.Content>
+```
+
+## Footer
+
+`Drawer.Footer` lays actions out in a row aligned to the end and wraps when space runs out. Put the dismiss action first and the primary action last:
+
+```tsx
+<Drawer.Footer>
+  <Drawer.Close>
+    <Button>Cancel</Button>
+  </Drawer.Close>
+  <Button variant="primary">Save</Button>
+</Drawer.Footer>
+```
+
 ## Responsive mapping
 
 `responsive` defaults to `true`. Side directions (`left` / `right`) become a bottom sheet (`down`) below the `md` breakpoint. Desktop never uses the sheet presentation. There is **no Modal ↔ Drawer** branch — only Drawer remaps.
@@ -82,6 +112,12 @@ Adjust the float gap from the viewport with `offset` on `<Drawer>` or `<Drawer.C
 
 Open a second `Drawer` inside `Drawer.Content`. Parents stay mounted and stack with scale/peek (`data-nested-drawer-open`).
 
-## Peer runtime
+## Open state
 
-`@base-ui/react` is a dependency of `@xco-agency/corex-ui` and must resolve at runtime.
+`open` / `defaultOpen` / `onOpenChange(open, { reason })`, where `reason` is `"trigger-press" | "close-press" | "outside-press" | "escape-key" | "swipe"`. `onOpenChangeComplete(open)` fires after the transition. Escape and outside presses close the topmost drawer first.
+
+Sheets accept `snapPoints` (a number `<= 1` is a viewport fraction, larger numbers are px, strings are CSS lengths) with `snapPoint` / `defaultSnapPoint` / `onSnapPointChange`.
+
+## Runtime
+
+No extra dependencies. The library must never depend on `@base-ui/*` (it pulls `use-sync-external-store/shim`, which breaks host storefronts); `src/dependencies.test.ts` enforces this.

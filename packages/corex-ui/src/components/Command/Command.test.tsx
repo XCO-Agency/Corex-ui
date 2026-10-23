@@ -3,7 +3,7 @@ import { fireEvent, render, screen } from "@testing-library/react";
 import { Command } from "./Command";
 
 beforeAll(() => {
-  // cmdk measures / scrolls the list; jsdom does not provide these APIs.
+  // Keyboard selection scrolls the highlighted item into view; jsdom lacks these APIs.
   class ResizeObserverStub {
     observe() {}
     unobserve() {}
@@ -105,6 +105,21 @@ describe("Command", () => {
     expect(document.querySelector('[data-slot="command-dialog-popup"]')).toBeTruthy();
     expect(screen.getByPlaceholderText("Palette search")).toBeInTheDocument();
     expect(screen.getByText("Command Palette")).toBeInTheDocument();
+    expect(screen.getByRole("dialog", { name: "Command Palette" })).toHaveAttribute("aria-modal", "true");
+    expect(document.activeElement).toBe(screen.getByPlaceholderText("Palette search"));
+  });
+
+  it("closes Command.Dialog on Escape", () => {
+    const onOpenChange = vi.fn();
+    render(
+      <Command.Dialog open onOpenChange={onOpenChange}>
+        <Command>
+          <Command.Input placeholder="Palette search" />
+        </Command>
+      </Command.Dialog>,
+    );
+    fireEvent.keyDown(document, { key: "Escape" });
+    expect(onOpenChange).toHaveBeenCalledWith(false, { reason: "escape-key" });
   });
 
   it("shows a sidebar of groups and swaps the right panel on select/hover", () => {
@@ -166,4 +181,61 @@ describe("Command", () => {
     expect(screen.queryByText("Calendar")).not.toBeInTheDocument();
     expect(screen.queryByText("Profile")).not.toBeInTheDocument();
   });
+
+  it("moves the highlight with the keyboard, skips disabled items and selects with Enter", () => {
+    const onSelect = vi.fn();
+    render(
+      <Command>
+        <Command.Input placeholder="Keys" />
+        <Command.List>
+          <Command.Item value="one" onSelect={onSelect}>One</Command.Item>
+          <Command.Item value="two" disabled onSelect={onSelect}>Two</Command.Item>
+          <Command.Item value="three" onSelect={onSelect}>Three</Command.Item>
+        </Command.List>
+      </Command>,
+    );
+    const input = screen.getByPlaceholderText("Keys");
+    const option = (name: string) => screen.getByRole("option", { name });
+    expect(option("One")).toHaveAttribute("aria-selected", "true");
+
+    fireEvent.keyDown(input, { key: "ArrowDown" });
+    expect(option("Three")).toHaveAttribute("aria-selected", "true");
+    expect(input).toHaveAttribute("aria-activedescendant", option("Three").id);
+
+    fireEvent.keyDown(input, { key: "Enter" });
+    expect(onSelect).toHaveBeenCalledWith("three");
+    expect(onSelect).not.toHaveBeenCalledWith("two");
+
+    fireEvent.keyDown(input, { key: "ArrowDown" });
+    expect(option("Three")).toHaveAttribute("aria-selected", "true");
+  });
+
+  it("matches keywords and in-order letters, hiding empty groups and separators while searching", () => {
+    render(
+      <Command>
+        <Command.Input placeholder="Find" />
+        <Command.List>
+          <Command.Group heading="Apps">
+            <Command.Item value="settings">Settings</Command.Item>
+          </Command.Group>
+          <Command.Separator data-testid="separator" />
+          <Command.Group heading="Other">
+            <Command.Item value="billing" keywords={["invoice"]}>Billing</Command.Item>
+          </Command.Group>
+        </Command.List>
+      </Command>,
+    );
+    expect(screen.getByTestId("separator")).toBeInTheDocument();
+
+    fireEvent.change(screen.getByPlaceholderText("Find"), { target: { value: "invoice" } });
+    expect(screen.getByText("Billing")).toBeInTheDocument();
+    expect(screen.queryByText("Settings")).not.toBeInTheDocument();
+    expect(screen.getByText("Apps").closest('[data-slot="command-group"]')).not.toBeVisible();
+    expect(screen.queryByTestId("separator")).not.toBeInTheDocument();
+
+    fireEvent.change(screen.getByPlaceholderText("Find"), { target: { value: "stg" } });
+    expect(screen.getByText("Settings")).toBeInTheDocument();
+    expect(screen.queryByText("Billing")).not.toBeInTheDocument();
+  });
 });
+

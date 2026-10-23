@@ -2612,7 +2612,7 @@ import { MetricCard } from "@xco-agency/corex-ui";
 
 ### Drawer
 
-Responsive swipeable panel on `@base-ui/react/drawer`. **Desktop** = right side drawer (no handle, no handle space, swipe full panel). **Mobile** = bottom sheet (side directions remap to `down`). Nested drawers stack with scale/peek.
+Responsive swipeable panel, dependency-free (no Base UI). **Desktop** = right side drawer (no handle, no handle space, swipe full panel). **Mobile** = bottom sheet (side directions remap to `down`). Nested drawers stack with scale/peek.
 
 ```tsx
 import { Drawer, Button } from "@xco-agency/corex-ui";
@@ -2621,12 +2621,12 @@ import { Drawer, Button } from "@xco-agency/corex-ui";
 | Subcomponent            | Description                                                                 | Key Props                                                                 |
 | :---------------------- | :-------------------------------------------------------------------------- | :------------------------------------------------------------------------ |
 | `Drawer.Trigger`        | Opens the drawer; pass a `Button` (or other element) as `children`.         | `children`, `nativeButton?`                                               |
-| `Drawer.Content`        | Portal + overlay + viewport + popup panel.                                  | `offset?`, `width?`, `maxHeight?`, `children`                             |
+| `Drawer.Content`        | Portal + overlay + viewport + popup panel.                                  | `offset?`, `width?` (`"small"`\|`"base"`\|`"large"`\|`"large-100"`…`"large-500"`\|`"full"`\| CSS length), `maxHeight?`, `children` |
 | `Drawer.Header`         | Title/description region.                                                   | `children`                                                                |
 | `Drawer.Title`          | Accessible title.                                                           | `children`                                                                |
 | `Drawer.Description`    | Accessible description.                                                     | `children`                                                                |
 | `Drawer.Body`           | Scrollable flex body.                                                       | `children`                                                                |
-| `Drawer.Footer`         | Action row pinned to the bottom.                                            | `children`                                                                |
+| `Drawer.Footer`         | Actions in a row at the end (wraps when tight), pinned to the bottom.      | `children`                                                                |
 | `Drawer.Close`          | Dismiss control; pass a `Button` as `children`.                             | `children`                                                                |
 | `Drawer.Overlay`        | Backdrop (included automatically when `modal`).                             | —                                                                         |
 | `Drawer.SwipeHandle`    | Mobile-sheet grabber only (never on desktop).                               | —                                                                         |
@@ -2672,7 +2672,7 @@ import { Drawer, Button } from "@xco-agency/corex-ui";
 
 ### Command
 
-Filterable command menu on `cmdk` (same primitive as [shadcn Command](https://ui.shadcn.com/docs/components/base/command)). Optional palette dialog uses Base UI `Dialog`. Optional `sidebar` layout: groups as a left nav, items of the selected/hovered group on the right.
+Filterable command menu with the [shadcn Command](https://ui.shadcn.com/docs/components/base/command) API, dependency-free (no cmdk, no Base UI). Optional palette dialog is built in. Optional `sidebar` layout: groups as a left nav, items of the selected/hovered group on the right.
 
 ```tsx
 import { Command, Icon, Button } from "@xco-agency/corex-ui";

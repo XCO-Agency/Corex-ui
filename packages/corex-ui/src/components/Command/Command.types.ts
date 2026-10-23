@@ -6,16 +6,23 @@ import type {
   ReactNode,
   RefAttributes,
 } from "react";
-import type { Dialog } from "@base-ui/react/dialog";
-import type { Command as CommandPrimitive } from "cmdk";
+import type {
+  CommandPrimitiveEmptyPropsType,
+  CommandPrimitiveGroupPropsType,
+  CommandPrimitiveInputPropsType,
+  CommandPrimitiveItemPropsType,
+  CommandPrimitiveListPropsType,
+  CommandPrimitiveRootPropsType,
+  CommandPrimitiveSeparatorPropsType,
+} from "./commandPrimitive";
 
-type CommandRootPrimitiveProps = ComponentPropsWithoutRef<typeof CommandPrimitive>;
-type CommandInputPrimitiveProps = ComponentPropsWithoutRef<typeof CommandPrimitive.Input>;
-type CommandListPrimitiveProps = ComponentPropsWithoutRef<typeof CommandPrimitive.List>;
-type CommandEmptyPrimitiveProps = ComponentPropsWithoutRef<typeof CommandPrimitive.Empty>;
-type CommandGroupPrimitiveProps = ComponentPropsWithoutRef<typeof CommandPrimitive.Group>;
-type CommandItemPrimitiveProps = ComponentPropsWithoutRef<typeof CommandPrimitive.Item>;
-type CommandSeparatorPrimitiveProps = ComponentPropsWithoutRef<typeof CommandPrimitive.Separator>;
+type CommandRootPrimitiveProps = CommandPrimitiveRootPropsType;
+type CommandInputPrimitiveProps = CommandPrimitiveInputPropsType;
+type CommandListPrimitiveProps = CommandPrimitiveListPropsType;
+type CommandEmptyPrimitiveProps = CommandPrimitiveEmptyPropsType;
+type CommandGroupPrimitiveProps = CommandPrimitiveGroupPropsType;
+type CommandItemPrimitiveProps = CommandPrimitiveItemPropsType;
+type CommandSeparatorPrimitiveProps = CommandPrimitiveSeparatorPropsType;
 
 /** Sidebar nav entry when `sidebar` layout is enabled. */
 export type CommandSidebarGroupType = {
@@ -117,7 +124,17 @@ export type CommandSidebarPropsType = ComponentPropsWithoutRef<"nav"> & {
   groups?: CommandSidebarGroupType[];
 };
 
-export type CommandDialogPropsType = Omit<Dialog.Root.Props, "children"> & {
+/** Why the palette's open state changed. */
+export type CommandDialogOpenChangeReasonType = "outside-press" | "escape-key";
+
+export type CommandDialogPropsType = {
+  /** Controlled open state. */
+  open?: boolean;
+  /** Initial open state when uncontrolled. */
+  defaultOpen?: boolean;
+  onOpenChange?: (open: boolean, details: { reason: CommandDialogOpenChangeReasonType }) => void;
+  /** Traps focus, locks page scroll and shows the backdrop. @default true */
+  modal?: boolean;
   children?: ReactNode;
   className?: string;
   style?: CSSProperties;

@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { render, screen } from "@testing-library/react";
-import { Drawer, useDrawer } from "./Drawer";
+import { act, fireEvent, render, screen } from "@testing-library/react";
+import { Drawer, resolveDrawerWidth, useDrawer } from "./Drawer";
 import { Button } from "../Button";
 import { BREAKPOINT_WIDTHS } from "../../hooks/useDimension";
 
@@ -190,5 +190,97 @@ describe("Drawer", () => {
       2,
     );
     expect(document.body.textContent).toContain("Parent drawer");
+  });
+
+  it("opens from the trigger, closes from Close, and reports reasons", () => {
+    mockViewport(false);
+    const onOpenChange = vi.fn();
+    render(
+      <Drawer onOpenChange={onOpenChange}>
+        <Drawer.Trigger>
+          <button type="button">Open</button>
+        </Drawer.Trigger>
+        <Drawer.Content>
+          <Drawer.Title>Panel</Drawer.Title>
+          <Drawer.Close>
+            <button type="button">Done</button>
+          </Drawer.Close>
+        </Drawer.Content>
+      </Drawer>,
+    );
+
+    const trigger = screen.getByRole("button", { name: "Open" });
+    expect(trigger).toHaveAttribute("aria-expanded", "false");
+    expect(document.querySelector('[data-slot="drawer-popup"]')).toBeNull();
+
+    fireEvent.click(trigger);
+    expect(onOpenChange).toHaveBeenLastCalledWith(true, { reason: "trigger-press" });
+    const dialog = screen.getByRole("dialog", { name: "Panel" });
+    expect(dialog).toHaveAttribute("aria-modal", "true");
+    expect(trigger).toHaveAttribute("aria-expanded", "true");
+    expect(trigger).toHaveAttribute("aria-controls", dialog.id);
+
+    fireEvent.click(screen.getByRole("button", { name: "Done" }));
+    expect(onOpenChange).toHaveBeenLastCalledWith(false, { reason: "close-press" });
+    expect(dialog).toHaveAttribute("data-ending-style");
+  });
+
+  it("closes on Escape and on an outside press, topmost layer first", () => {
+    mockViewport(false);
+    const onParent = vi.fn();
+    const onChild = vi.fn();
+    render(
+      <Drawer defaultOpen onOpenChange={onParent}>
+        <Drawer.Content>
+          <Drawer.Title>Parent</Drawer.Title>
+          <Drawer defaultOpen onOpenChange={onChild}>
+            <Drawer.Content>
+              <Drawer.Title>Child</Drawer.Title>
+            </Drawer.Content>
+          </Drawer>
+        </Drawer.Content>
+      </Drawer>,
+    );
+
+    const parent = screen.getByRole("dialog", { name: "Parent" });
+    expect(parent).toHaveAttribute("data-nested-drawer-open");
+
+    fireEvent.keyDown(document, { key: "Escape" });
+    expect(onChild).toHaveBeenLastCalledWith(false, { reason: "escape-key" });
+    expect(onParent).not.toHaveBeenCalled();
+
+    act(() => {
+      document.querySelector('[data-slot="drawer-overlay"]')!.dispatchEvent(
+        new Event("pointerdown", { bubbles: true }),
+      );
+    });
+    expect(onParent).toHaveBeenLastCalledWith(false, { reason: "outside-press" });
+  });
+
+  it("resolves width presets, CSS lengths and pixel numbers", () => {
+    expect(resolveDrawerWidth("small")).toBe("20rem");
+    expect(resolveDrawerWidth("base")).toBe("24rem");
+    expect(resolveDrawerWidth("large")).toBe("32rem");
+    expect(resolveDrawerWidth("large-100")).toBe("36rem");
+    expect(resolveDrawerWidth("large-500")).toBe("64rem");
+    expect(resolveDrawerWidth("full")).toContain("100%");
+    expect(resolveDrawerWidth("420px")).toBe("420px");
+    expect(resolveDrawerWidth("30rem")).toBe("30rem");
+    expect(resolveDrawerWidth(360)).toBe("360px");
+    expect(resolveDrawerWidth("360")).toBe("360px");
+  });
+
+  it("applies the width variant to the panel", () => {
+    mockViewport(false);
+    render(
+      <Drawer defaultOpen>
+        <Drawer.Content width="large-200">
+          <Drawer.Title>Wide</Drawer.Title>
+        </Drawer.Content>
+      </Drawer>,
+    );
+    const popup = document.querySelector('[data-slot="drawer-popup"]') as HTMLElement;
+    expect(popup.style.getPropertyValue("--drawer-content-width")).toBe("40rem");
+    expect(popup).toHaveAttribute("data-width", "large-200");
   });
 });

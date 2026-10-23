@@ -11,10 +11,6 @@ export default defineConfig([
     external: [
       "react",
       "react-dom",
-      "cmdk",
-      "@base-ui/react",
-      /^@base-ui\/react\//,
-      /^@base-ui\/utils/,
     ],
   },
   {
