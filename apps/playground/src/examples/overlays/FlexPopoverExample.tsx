@@ -77,13 +77,12 @@ export function FlexPopoverExample() {
               {/* 3. Controlled Open State */}
               <FlexPopover
                 isOpen={controlledOpen}
+                onOpen={() => setControlledOpen(true)}
                 onClose={() => setControlledOpen(false)}
                 position="bottom-end"
               >
                 <FlexPopover.Trigger>
-                  <Button onClick={() => setControlledOpen((prev) => !prev)}>
-                    {controlledOpen ? "Close Controlled" : "Open Controlled"}
-                  </Button>
+                  <Button>{controlledOpen ? "Close Controlled" : "Open Controlled"}</Button>
                 </FlexPopover.Trigger>
                 <FlexPopover.Content
                   heading="Controlled Panel"
