@@ -48,6 +48,7 @@ export * from "./components/Spinner";
 export * from "./components/Page";
 export * from "./components/Tabs";
 export * from "./components/Link";
+export * from "./components/Breadcrumbs";
 export * from "./components/Clickable";
 export * from "./components/Hoverable";
 export * from "./components/Selectable";
