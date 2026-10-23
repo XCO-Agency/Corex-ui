@@ -1,6 +1,8 @@
-import { afterEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeAll, describe, expect, it, vi } from "vitest";
 import { act, fireEvent, render, screen } from "@testing-library/react";
-import { Drawer, resolveDrawerWidth, useDrawer } from "./Drawer";
+import { Drawer, resolveDrawerWidth, useDrawer, useDrawerContext } from "./Drawer";
+import type { DrawerHandleType } from "./Drawer.types";
+import { closeAllDrawers, closeDrawer, isDrawerOpen, openDrawer } from "./drawerRegistry";
 import { Button } from "../Button";
 import { BREAKPOINT_WIDTHS } from "../../hooks/useDimension";
 
@@ -13,6 +15,21 @@ function mockViewport(mdDown: boolean) {
   });
   window.dispatchEvent(new Event("resize"));
 }
+
+// jsdom has no PointerEvent: fireEvent.pointer* would drop pointerId / coordinates.
+beforeAll(() => {
+  if (typeof window.PointerEvent === "function") return;
+  class PointerEventPolyfill extends MouseEvent {
+    pointerId: number;
+    pointerType: string;
+    constructor(type: string, init: PointerEventInit = {}) {
+      super(type, init);
+      this.pointerId = init.pointerId ?? 0;
+      this.pointerType = init.pointerType ?? "mouse";
+    }
+  }
+  vi.stubGlobal("PointerEvent", PointerEventPolyfill);
+});
 
 afterEach(() => {
   vi.restoreAllMocks();
@@ -38,9 +55,9 @@ describe("Drawer", () => {
     expect(Drawer.Portal).toBeTruthy();
   });
 
-  it("throws when useDrawer is called outside of Drawer", () => {
+  it("throws when useDrawerContext is called outside of Drawer", () => {
     const Probe = () => {
-      useDrawer();
+      useDrawerContext();
       return null;
     };
     expect(() => render(<Probe />)).toThrow(
@@ -282,5 +299,275 @@ describe("Drawer", () => {
     const popup = document.querySelector('[data-slot="drawer-popup"]') as HTMLElement;
     expect(popup.style.getPropertyValue("--drawer-content-width")).toBe("40rem");
     expect(popup).toHaveAttribute("data-width", "large-200");
+  });
+
+  it("renders a single overlay for a stack of nested drawers", () => {
+    mockViewport(true);
+    render(
+      <Drawer defaultOpen>
+        <Drawer.Content>
+          <Drawer.Title>Parent</Drawer.Title>
+          <Drawer defaultOpen>
+            <Drawer.Content>
+              <Drawer.Title>Child</Drawer.Title>
+              <Drawer defaultOpen>
+                <Drawer.Content>
+                  <Drawer.Title>Grandchild</Drawer.Title>
+                </Drawer.Content>
+              </Drawer>
+            </Drawer.Content>
+          </Drawer>
+        </Drawer.Content>
+      </Drawer>,
+    );
+
+    expect(document.querySelectorAll('[data-slot="drawer-overlay"]')).toHaveLength(1);
+    const parent = screen.getByRole("dialog", { name: "Parent" });
+    const child = screen.getByRole("dialog", { name: "Child" });
+    // Every open descendant counts, so each level steps further back.
+    expect(parent.style.getPropertyValue("--nested-drawers")).toBe("2");
+    expect(child.style.getPropertyValue("--nested-drawers")).toBe("1");
+    expect(child).toHaveAttribute("data-nested");
+    expect(parent).toHaveAttribute("data-presentation", "sheet");
+  });
+
+  it("gives a nested modal drawer its own overlay when the parent is not modal", () => {
+    mockViewport(false);
+    render(
+      <Drawer defaultOpen modal={false}>
+        <Drawer.Content>
+          <Drawer.Title>Parent</Drawer.Title>
+          <Drawer defaultOpen>
+            <Drawer.Content>
+              <Drawer.Title>Child</Drawer.Title>
+            </Drawer.Content>
+          </Drawer>
+        </Drawer.Content>
+      </Drawer>,
+    );
+    expect(document.querySelectorAll('[data-slot="drawer-overlay"]')).toHaveLength(1);
+  });
+
+  it("closes the nearest drawer from a deep child with useDrawer().close()", () => {
+    mockViewport(false);
+    const onOpenChange = vi.fn();
+    function SaveButton() {
+      const drawer = useDrawer();
+      return (
+        <button type="button" onClick={() => drawer.close()}>
+          Save {drawer.isOpen ? "(open)" : ""}
+        </button>
+      );
+    }
+    render(
+      <Drawer defaultOpen onOpenChange={onOpenChange}>
+        <Drawer.Content>
+          <Drawer.Title>Form</Drawer.Title>
+          <Drawer.Body>
+            <div>
+              <SaveButton />
+            </div>
+          </Drawer.Body>
+        </Drawer.Content>
+      </Drawer>,
+    );
+    fireEvent.click(screen.getByRole("button", { name: "Save (open)" }));
+    expect(onOpenChange).toHaveBeenCalledWith(false, { reason: "imperative" });
+  });
+
+  it("controls a drawer by id from outside its tree", () => {
+    mockViewport(false);
+    function Header() {
+      const cart = useDrawer("cart");
+      return (
+        <>
+          <button type="button" onClick={cart.open}>
+            Cart {cart.isOpen ? "open" : "closed"}
+          </button>
+          <button type="button" onClick={cart.close}>
+            Hide cart
+          </button>
+        </>
+      );
+    }
+    render(
+      <>
+        <Header />
+        <Drawer id="cart">
+          <Drawer.Content>
+            <Drawer.Title>Cart</Drawer.Title>
+          </Drawer.Content>
+        </Drawer>
+      </>,
+    );
+
+    expect(screen.queryByRole("dialog", { name: "Cart" })).toBeNull();
+    fireEvent.click(screen.getByRole("button", { name: "Cart closed" }));
+    expect(screen.getByRole("dialog", { name: "Cart" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Cart open" })).toBeInTheDocument();
+    expect(isDrawerOpen("cart")).toBe(true);
+
+    fireEvent.click(screen.getByRole("button", { name: "Hide cart" }));
+    expect(screen.getByRole("button", { name: "Cart closed" })).toBeInTheDocument();
+
+    act(() => {
+      expect(openDrawer("cart")).toBe(true);
+    });
+    expect(isDrawerOpen("cart")).toBe(true);
+    act(() => closeAllDrawers());
+    expect(isDrawerOpen("cart")).toBe(false);
+    expect(closeDrawer("missing")).toBe(false);
+  });
+
+  it("works outside any Drawer: close() closes the topmost open drawer", () => {
+    mockViewport(false);
+    const onCart = vi.fn();
+    const onFilters = vi.fn();
+    let controls: DrawerHandleType | null = null;
+    function Outside() {
+      const drawer = useDrawer();
+      controls = drawer;
+      return <span>{drawer.isOpen ? "something open" : "all closed"}</span>;
+    }
+    render(
+      <>
+        <Outside />
+        <Drawer defaultOpen onOpenChange={onCart}>
+          <Drawer.Content>
+            <Drawer.Title>Cart</Drawer.Title>
+          </Drawer.Content>
+        </Drawer>
+        <Drawer defaultOpen onOpenChange={onFilters}>
+          <Drawer.Content>
+            <Drawer.Title>Filters</Drawer.Title>
+          </Drawer.Content>
+        </Drawer>
+      </>,
+    );
+
+    expect(controls!.insideDrawer).toBe(false);
+    expect(screen.getByText("something open")).toBeInTheDocument();
+
+    // Topmost (most recently opened) first.
+    act(() => controls!.close());
+    expect(onFilters).toHaveBeenLastCalledWith(false, { reason: "imperative" });
+    expect(onCart).not.toHaveBeenCalled();
+
+    act(() => controls!.close());
+    expect(onCart).toHaveBeenLastCalledWith(false, { reason: "imperative" });
+    expect(screen.getByText("all closed")).toBeInTheDocument();
+    expect(closeDrawer()).toBe(false);
+  });
+
+  it("closeAll() closes every open drawer from anywhere", () => {
+    mockViewport(false);
+    let closeAll = () => {};
+    function Outside() {
+      closeAll = useDrawer().closeAll;
+      return null;
+    }
+    render(
+      <>
+        <Outside />
+        <Drawer defaultOpen>
+          <Drawer.Content>
+            <Drawer.Title>One</Drawer.Title>
+          </Drawer.Content>
+        </Drawer>
+        <Drawer defaultOpen id="two">
+          <Drawer.Content>
+            <Drawer.Title>Two</Drawer.Title>
+          </Drawer.Content>
+        </Drawer>
+      </>,
+    );
+    expect(isDrawerOpen()).toBe(true);
+    act(() => closeAll());
+    expect(isDrawerOpen()).toBe(false);
+    expect(isDrawerOpen("two")).toBe(false);
+  });
+
+  it("ignores presses on data-drawer-outside-control elements", () => {
+    mockViewport(false);
+    const onOpenChange = vi.fn();
+    render(
+      <>
+        <div data-drawer-outside-control>
+          <button type="button">External toggle</button>
+        </div>
+        <button type="button">Elsewhere</button>
+        <Drawer defaultOpen modal={false} onOpenChange={onOpenChange}>
+          <Drawer.Content>
+            <Drawer.Title>Panel</Drawer.Title>
+          </Drawer.Content>
+        </Drawer>
+      </>,
+    );
+    fireEvent.pointerDown(screen.getByRole("button", { name: "External toggle" }));
+    expect(onOpenChange).not.toHaveBeenCalled();
+    fireEvent.pointerDown(screen.getByRole("button", { name: "Elsewhere" }));
+    expect(onOpenChange).toHaveBeenCalledWith(false, { reason: "outside-press" });
+  });
+
+  it("swipes only the active drawer in a nested stack", () => {
+    mockViewport(false);
+    const onParent = vi.fn();
+    const onChild = vi.fn();
+    render(
+      <Drawer defaultOpen onOpenChange={onParent}>
+        <Drawer.Content>
+          <Drawer.Title>Parent</Drawer.Title>
+          <Drawer defaultOpen onOpenChange={onChild}>
+            <Drawer.Content>
+              <Drawer.Title>Child</Drawer.Title>
+            </Drawer.Content>
+          </Drawer>
+        </Drawer.Content>
+      </Drawer>,
+    );
+    const parent = screen.getByRole("dialog", { name: "Parent" });
+    const child = screen.getByRole("dialog", { name: "Child" });
+    for (const popup of [parent, child]) {
+      Object.defineProperty(popup, "offsetWidth", { configurable: true, value: 400 });
+    }
+
+    const swipe = (element: HTMLElement) => {
+      fireEvent.pointerDown(element, { pointerId: 1, clientX: 100, clientY: 100, button: 0, pointerType: "mouse" });
+      fireEvent.pointerMove(window, { pointerId: 1, clientX: 180, clientY: 100 });
+      return () => {
+        // Past 30% of the panel width: a dismissing swipe.
+        fireEvent.pointerMove(window, { pointerId: 1, clientX: 300, clientY: 100 });
+        fireEvent.pointerUp(window, { pointerId: 1, clientX: 300, clientY: 100 });
+      };
+    };
+
+    // Dragging the child moves only the child.
+    const release = swipe(child);
+    expect(child).toHaveAttribute("data-swiping");
+    expect(parent).not.toHaveAttribute("data-swiping");
+    release();
+    expect(onChild).toHaveBeenCalledWith(false, { reason: "swipe" });
+    expect(onParent).not.toHaveBeenCalled();
+  });
+
+  it("does not swipe a parent while a nested drawer is open on top", () => {
+    mockViewport(false);
+    render(
+      <Drawer defaultOpen>
+        <Drawer.Content>
+          <Drawer.Title>Parent</Drawer.Title>
+          <Drawer defaultOpen>
+            <Drawer.Content>
+              <Drawer.Title>Child</Drawer.Title>
+            </Drawer.Content>
+          </Drawer>
+        </Drawer.Content>
+      </Drawer>,
+    );
+    const parent = screen.getByRole("dialog", { name: "Parent" });
+    fireEvent.pointerDown(parent, { pointerId: 2, clientX: 100, clientY: 100, button: 0, pointerType: "mouse" });
+    fireEvent.pointerMove(window, { pointerId: 2, clientX: 200, clientY: 100 });
+    expect(parent).not.toHaveAttribute("data-swiping");
+    fireEvent.pointerUp(window, { pointerId: 2, clientX: 200, clientY: 100 });
   });
 });

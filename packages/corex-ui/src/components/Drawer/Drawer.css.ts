@@ -155,6 +155,16 @@ body {
 }
 
 /*
+ * Nested sheets: the parent takes the frontmost sheet's height, so after it
+ * scales back and shifts up it peeks out above the new sheet like the desktop
+ * stack (instead of hiding fully behind a sheet of equal height).
+ */
+[data-slot="drawer-popup"][data-swipe-axis="y"][data-nested-drawer-open][data-stack-measured] {
+  height: var(--stack-height);
+  max-height: none;
+}
+
+/*
  * Side drawer (desktop default): stretch top→bottom with per-side offset so the
  * panel floats (shadcn: inset-y-0 + margin + 24px radius).
  * No swipe-handle chrome; swipe works on the full panel surface.

@@ -110,13 +110,72 @@ Every width is capped to the viewport minus the edge offsets, so large presets s
 
 ## Nested drawers
 
-Open a second `Drawer` inside `Drawer.Content`. Parents stay mounted and stack with scale/peek (`data-nested-drawer-open`).
+Open a second `Drawer` inside `Drawer.Content`. Parents stay mounted and stack with scale/peek (`data-nested-drawer-open`) on desktop drawers and mobile sheets alike: a parent sheet takes the frontmost sheet's height, then scales back and peeks out above it. Each open level steps one further back. The whole stack shares a single overlay, owned by the outermost modal drawer.
 
 ## Open state
 
 `open` / `defaultOpen` / `onOpenChange(open, { reason })`, where `reason` is `"trigger-press" | "close-press" | "outside-press" | "escape-key" | "swipe"`. `onOpenChangeComplete(open)` fires after the transition. Escape and outside presses close the topmost drawer first.
 
 Sheets accept `snapPoints` (a number `<= 1` is a viewport fraction, larger numbers are px, strings are CSS lengths) with `snapPoint` / `defaultSnapPoint` / `onSnapPointChange`.
+
+## Close or open from anywhere (`useDrawer`)
+
+`useDrawer()` works everywhere — it does **not** need a `<Drawer>` ancestor. What it targets depends on where it is called:
+
+| Call | Target | `isOpen` |
+| :--- | :----- | :------- |
+| `useDrawer()` inside a Drawer's content | that (nearest) drawer | that drawer |
+| `useDrawer()` outside any Drawer | the topmost open drawer for `close()` | any drawer open |
+| `useDrawer("cart")` anywhere | `<Drawer id="cart">` | that drawer |
+
+Every result has `{ isOpen, open, close, toggle, closeAll }`. `useDrawer()` also returns `insideDrawer`, and inside a Drawer that drawer's context fields (for the context alone, `useDrawerContext()` — it throws outside a Drawer).
+
+```tsx
+// Inside the drawer: no Drawer.Close wrapper needed.
+function SaveButton() {
+  const drawer = useDrawer();
+  return <Button variant="primary" onClick={async () => { await save(); drawer.close(); }}>Save</Button>;
+}
+
+// Anywhere else (header, layout, route change handler…).
+function Header() {
+  const drawers = useDrawer();
+  const cart = useDrawer("cart");
+  return (
+    <>
+      <Button onClick={cart.toggle}>{cart.isOpen ? "Hide cart" : "Cart"}</Button>
+      {drawers.isOpen ? <Button onClick={drawers.closeAll}>Close panels</Button> : null}
+    </>
+  );
+}
+```
+
+Without React (a store, a fetch callback):
+
+```ts
+openDrawer("cart");
+closeDrawer("cart");
+closeDrawer(); // topmost open drawer
+toggleDrawer("cart");
+closeAllDrawers();
+isDrawerOpen("cart");
+isDrawerOpen(); // any drawer open
+```
+
+Changes made this way report `reason: "imperative"` to `onOpenChange`; a controlled drawer (`open` prop) still decides through `onOpenChange`. `open()` needs a target: inside a Drawer, or an `id` (outside without an id it only logs a development warning). `openDrawer` / `closeDrawer` / `toggleDrawer` return `false` when there was no matching drawer.
+
+### External buttons and outside presses
+
+Pressing outside a drawer closes it, which would make an external "toggle" button close and then reopen it. Mark external controls with `data-drawer-outside-control` (on the button or a wrapper) and presses on them are ignored by every drawer:
+
+```tsx
+<InlineStack gap="small-200" data-drawer-outside-control>
+  <Button onClick={cart.toggle}>{cart.isOpen ? "Hide cart" : "Show cart"}</Button>
+  <Button onClick={drawers.closeAll}>Close all</Button>
+</InlineStack>
+```
+
+Use `modal={false}` when the page must stay clickable while the drawer is open; a modal drawer's backdrop covers the page.
 
 ## Runtime
 

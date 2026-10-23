@@ -1,12 +1,15 @@
-export { Drawer, useDrawer } from "./Drawer";
+export { Drawer, useDrawer, useDrawerContext } from "./Drawer";
+export { openDrawer, closeDrawer, toggleDrawer, closeAllDrawers, isDrawerOpen } from "./drawerRegistry";
 export type {
   DrawerBodyPropsType,
   DrawerClosePropsType,
   DrawerComponentType,
   DrawerContentPropsType,
   DrawerContextType,
+  DrawerControlsType,
   DrawerDescriptionPropsType,
   DrawerFooterPropsType,
+  DrawerHandleType,
   DrawerHeaderPropsType,
   DrawerModalType,
   DrawerOffsetDetailsType,

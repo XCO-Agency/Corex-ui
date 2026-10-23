@@ -41,7 +41,9 @@ export type DrawerOpenChangeReasonType =
   | "close-press"
   | "outside-press"
   | "escape-key"
-  | "swipe";
+  | "swipe"
+  /** `useDrawer().close()` / `open()` / `toggle()` or `closeDrawer(id)` & co. */
+  | "imperative";
 
 export type DrawerOpenChangeDetailsType = { reason: DrawerOpenChangeReasonType };
 
@@ -106,8 +108,21 @@ export type DrawerContextType = {
   popupId: string;
   /** Number of nested drawers currently open inside this one. */
   nestedOpenCount: number;
-  /** Called by a nested drawer when it opens (`+1`) or closes (`-1`). */
+  /** Called by a nested drawer when it opens (`+1`) or closes (`-1`); forwarded to ancestors. */
   onNestedOpenChange: (delta: number) => void;
+  /** True inside another Drawer's content. */
+  isNested: boolean;
+  /**
+   * An ancestor drawer is modal and already renders the overlay, so this one
+   * must not add a second (stacked, darker) backdrop.
+   */
+  hasModalAncestor: boolean;
+  /** Height (px) of the frontmost open nested drawer, used to stack sheets. */
+  frontmostHeight: number | null;
+  /** Reports the frontmost nested drawer's height up the chain (`null` when it closes). */
+  reportFrontmostHeight: (height: number | null) => void;
+  /** The parent drawer's reporter, or `undefined` at the top level. */
+  reportToParent?: (height: number | null) => void;
   /** Resolved snap point heights in px (sheets only), smallest first. */
   snapPointHeights: number[];
   activeSnapIndex: number;
@@ -115,8 +130,36 @@ export type DrawerContextType = {
   onOpenChangeComplete?: (open: boolean) => void;
 };
 
+/** Imperative controls returned by `useDrawer()` / `useDrawer(id)`. */
+export type DrawerControlsType = {
+  /**
+   * The target drawer's open state. For `useDrawer()` outside any Drawer:
+   * whether any drawer is open.
+   */
+  isOpen: boolean;
+  /** Opens the target drawer (needs a target: inside a Drawer, or an `id`). */
+  open: () => void;
+  /** Closes the target drawer — outside any Drawer without an id, the topmost open one. */
+  close: () => void;
+  toggle: () => void;
+  /** Closes every open drawer, innermost first. */
+  closeAll: () => void;
+};
+
+/**
+ * `useDrawer()`: the controls, plus — inside a Drawer — that drawer's context
+ * fields (`insideDrawer: true`). Outside, the context fields are `undefined`.
+ */
+export type DrawerHandleType = DrawerControlsType &
+  Partial<DrawerContextType> & { insideDrawer: boolean };
+
 export type DrawerPropsType = {
   children?: ReactNode;
+  /**
+   * Registers the drawer so it can be controlled from anywhere with
+   * `useDrawer(id)`, `openDrawer(id)`, `closeDrawer(id)` or `toggleDrawer(id)`.
+   */
+  id?: string;
   /** Controlled open state. */
   open?: boolean;
   /** Initial open state when uncontrolled. */

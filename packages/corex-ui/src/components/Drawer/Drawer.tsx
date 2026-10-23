@@ -11,6 +11,7 @@ import {
   useMemo,
   useRef,
   useState,
+  useSyncExternalStore,
   type CSSProperties,
   type MouseEvent as ReactMouseEvent,
   type PointerEvent as ReactPointerEvent,
@@ -29,14 +30,27 @@ import {
   useScrollLock,
 } from "../../core/overlay";
 import { DRAWER_CSS, DRAWER_STYLE_ID } from "./Drawer.css";
+import { devWarning } from "../../utils/devWarning";
+import {
+  closeAllDrawers,
+  closeDrawer,
+  isDrawerOpen,
+  openDrawer,
+  registerDrawer,
+  setDrawerOpenState,
+  subscribeDrawers,
+  toggleDrawer,
+} from "./drawerRegistry";
 import type {
   DrawerBodyPropsType,
   DrawerClosePropsType,
   DrawerComponentType,
   DrawerContentPropsType,
   DrawerContextType,
+  DrawerControlsType,
   DrawerDescriptionPropsType,
   DrawerFooterPropsType,
+  DrawerHandleType,
   DrawerHeaderPropsType,
   DrawerOffsetType,
   DrawerOpenChangeReasonType,
@@ -58,15 +72,92 @@ const DRAWER_OFFSET_DEFAULT = 8;
 const DrawerContext = createContext<DrawerContextType | null>(null);
 
 /**
- * Reads drawer root config (resolved direction, presentation, offset, handle).
- * Must be used under `<Drawer>`.
+ * The nearest drawer's resolved config (direction, presentation, offset…).
+ * Throws outside a `<Drawer>`; use `useDrawer()` for controls that work anywhere.
  */
-export function useDrawer(): DrawerContextType {
+export function useDrawerContext(): DrawerContextType {
   const ctx = useContext(DrawerContext);
   if (!ctx) {
     throw new Error("Drawer compound components must be used within a <Drawer />");
   }
   return ctx;
+}
+
+const noopSubscribe = () => () => {};
+
+/**
+ * Drawer controls that work anywhere — no `<Drawer>` ancestor required.
+ *
+ * - `useDrawer()` inside a `<Drawer>` (its content, footer, a nested
+ *   component…): controls for that nearest drawer, plus its context fields.
+ * - `useDrawer()` outside any Drawer: `close()` closes the topmost open
+ *   drawer, `closeAll()` every drawer, `isOpen` is "any drawer open".
+ * - `useDrawer(id)` anywhere: controls for the `<Drawer id={id}>`, wherever
+ *   it is mounted. `isOpen` stays in sync with it.
+ *
+ * ```tsx
+ * function SaveButton() {
+ *   const drawer = useDrawer();
+ *   return <Button onClick={async () => { await save(); drawer.close(); }}>Save</Button>;
+ * }
+ *
+ * const cart = useDrawer("cart"); // e.g. in a header, outside the Drawer
+ * cart.open();
+ * ```
+ */
+export function useDrawer(): DrawerHandleType;
+export function useDrawer(id: string): DrawerControlsType;
+export function useDrawer(id?: string): DrawerHandleType | DrawerControlsType {
+  const ctx = useContext(DrawerContext);
+  const scope: "id" | "nearest" | "global" =
+    id !== undefined ? "id" : ctx ? "nearest" : "global";
+  const registryOpen = useSyncExternalStore(
+    scope === "nearest" ? noopSubscribe : subscribeDrawers,
+    () => (scope === "id" ? isDrawerOpen(id) : scope === "global" ? isDrawerOpen() : false),
+    () => false,
+  );
+  const setOpen = ctx?.setOpen;
+  const isOpen = scope === "nearest" ? Boolean(ctx?.open) : registryOpen;
+
+  const controls = useMemo<DrawerControlsType>(() => {
+    const closeAll = () => closeAllDrawers();
+    if (scope === "id") {
+      return {
+        isOpen,
+        open: () => void openDrawer(id!),
+        close: () => void closeDrawer(id),
+        toggle: () => void toggleDrawer(id!),
+        closeAll,
+      };
+    }
+    if (scope === "nearest") {
+      return {
+        isOpen,
+        open: () => setOpen?.(true, "imperative"),
+        close: () => setOpen?.(false, "imperative"),
+        toggle: () => setOpen?.(!isOpen, "imperative"),
+        closeAll,
+      };
+    }
+    const noTarget = () =>
+      devWarning(
+        "Drawer",
+        "useDrawer() outside a <Drawer> has no drawer to open. Pass an id: useDrawer(\"cart\") with <Drawer id=\"cart\">.",
+      );
+    return {
+      isOpen,
+      open: noTarget,
+      close: () => void closeDrawer(),
+      toggle: () => (isDrawerOpen() ? void closeDrawer() : noTarget()),
+      closeAll,
+    };
+  }, [scope, id, isOpen, setOpen]);
+
+  return useMemo(() => {
+    if (scope === "id") return controls;
+    if (scope === "nearest" && ctx) return { ...ctx, ...controls, insideDrawer: true };
+    return { ...controls, insideDrawer: false };
+  }, [scope, ctx, controls]);
 }
 
 function formatOffsetValue(value: number | string): string {
@@ -237,6 +328,7 @@ export function resolveSnapPointHeight(
  */
 function DrawerRoot({
   children,
+  id,
   open: openProp,
   defaultOpen,
   onOpenChange,
@@ -276,12 +368,46 @@ function DrawerRoot({
     setHostDoc(node.ownerDocument);
   }, []);
 
-  const onNestedOpenChange = useCallback((delta: number) => {
-    setNestedOpenCount((count) => Math.max(0, count + delta));
-  }, []);
+  // Counts every open descendant (not just children) so each level scales back
+  // one more step, like a stack of cards.
+  const parentNestedChange = parent?.onNestedOpenChange;
+  const onNestedOpenChange = useCallback(
+    (delta: number) => {
+      setNestedOpenCount((count) => Math.max(0, count + delta));
+      parentNestedChange?.(delta);
+    },
+    [parentNestedChange],
+  );
+
+  const [frontmostHeight, setFrontmostHeight] = useState<number | null>(null);
+  const parentReport = parent?.reportFrontmostHeight;
+  const reportFrontmostHeight = useCallback(
+    (height: number | null) => {
+      setFrontmostHeight(height);
+      parentReport?.(height);
+    },
+    [parentReport],
+  );
+
+  // Every drawer registers so it can be controlled from anywhere: by `id`
+  // (`useDrawer(id)`, `closeDrawer(id)`) or as the topmost open drawer
+  // (`useDrawer().close()` outside a Drawer, `closeDrawer()`).
+  const registryKey = `${baseId}-drawer`;
+  const openRef = useRef(open);
+  openRef.current = open;
+  useEffect(
+    () =>
+      registerDrawer(registryKey, id, ({ type, reason }) => {
+        const next = type === "toggle" ? !openRef.current : type === "open";
+        setOpen(next, reason);
+      }),
+    [registryKey, id, setOpen],
+  );
+  useEffect(() => {
+    setDrawerOpenState(registryKey, open);
+  }, [registryKey, open, id]);
 
   // Tell the parent drawer a nested one is open so it can scale back.
-  const parentNestedChange = parent?.onNestedOpenChange;
   useEffect(() => {
     if (!open || !parentNestedChange) return undefined;
     parentNestedChange(1);
@@ -352,6 +478,11 @@ function DrawerRoot({
       popupId: `${baseId}-popup`,
       nestedOpenCount,
       onNestedOpenChange,
+      isNested: parent != null,
+      hasModalAncestor: Boolean(parent && (parent.modal === true || parent.hasModalAncestor)),
+      frontmostHeight,
+      reportFrontmostHeight,
+      reportToParent: parentReport,
       snapPointHeights,
       activeSnapIndex,
       setActiveSnapIndex,
@@ -372,6 +503,10 @@ function DrawerRoot({
       baseId,
       nestedOpenCount,
       onNestedOpenChange,
+      parent,
+      frontmostHeight,
+      reportFrontmostHeight,
+      parentReport,
       snapPointHeights,
       activeSnapIndex,
       setActiveSnapIndex,
@@ -438,7 +573,7 @@ function renderControl(
 }
 
 function DrawerTrigger({ children, nativeButton: _nativeButton, ...props }: DrawerTriggerPropsType): ReactElement {
-  const { open, setOpen, popupId } = useDrawer();
+  const { open, setOpen, popupId } = useDrawerContext();
   return renderControl(
     children,
     {
@@ -454,7 +589,7 @@ function DrawerTrigger({ children, nativeButton: _nativeButton, ...props }: Draw
 DrawerTrigger.displayName = "Drawer.Trigger";
 
 function DrawerClose({ children, nativeButton: _nativeButton, ...props }: DrawerClosePropsType): ReactElement {
-  const { setOpen } = useDrawer();
+  const { setOpen } = useDrawerContext();
   return renderControl(children, { "data-slot": "drawer-close", ...props }, () =>
     setOpen(false, "close-press"),
   );
@@ -462,7 +597,7 @@ function DrawerClose({ children, nativeButton: _nativeButton, ...props }: Drawer
 DrawerClose.displayName = "Drawer.Close";
 
 function DrawerPortal({ container, children }: DrawerPortalPropsType): ReactElement | null {
-  const { portalContainer } = useDrawer();
+  const { portalContainer } = useDrawerContext();
   const target = container ?? portalContainer;
   return target ? createPortal(children, target) : null;
 }
@@ -522,7 +657,7 @@ const DrawerContent = forwardRef<HTMLDivElement, DrawerContentPropsType>(functio
   { children, className, style, offset, width, maxHeight, onPointerDown, ...props },
   ref,
 ) {
-  const ctx = useDrawer();
+  const ctx = useDrawerContext();
   const {
     hasSnapPoints,
     modal,
@@ -535,6 +670,9 @@ const DrawerContent = forwardRef<HTMLDivElement, DrawerContentPropsType>(functio
     setOpen,
     popupId,
     nestedOpenCount,
+    hasModalAncestor,
+    frontmostHeight,
+    reportToParent,
     snapPointHeights,
     activeSnapIndex,
     setActiveSnapIndex,
@@ -572,13 +710,34 @@ const DrawerContent = forwardRef<HTMLDivElement, DrawerContentPropsType>(functio
     onEscape: () => setOpen(false, "escape-key"),
     onOutsidePress: (event) => {
       // The trigger toggles on its own click; closing here would reopen it.
+      // Elements marked `data-drawer-outside-control` (external open/close
+      // buttons) are ignored the same way, for every drawer.
       const target = event.target as Element | null;
-      if (target?.closest?.(`[aria-controls="${popupId}"]`)) return;
+      if (target?.closest?.(`[aria-controls="${popupId}"], [data-drawer-outside-control]`)) return;
       setOpen(false, "outside-press");
     },
   });
   useFocusContainment(popupRef, { id: popupId, active, trap: modal !== false });
   useScrollLock(doc, active && modal === true);
+
+  // While this is the frontmost nested drawer, tell the ancestors its height so
+  // a parent sheet can match it and peek out above it (desktop and mobile alike).
+  const frontmost = active && nestedOpenCount === 0;
+  useEffect(() => {
+    const popup = popupRef.current;
+    if (!reportToParent || !frontmost || !popup) return undefined;
+    const report = () => {
+      const height = popup.getBoundingClientRect().height;
+      reportToParent(height > 0 ? height : null);
+    };
+    report();
+    const observer = typeof ResizeObserver !== "undefined" ? new ResizeObserver(report) : null;
+    observer?.observe(popup);
+    return () => {
+      observer?.disconnect();
+      reportToParent(null);
+    };
+  }, [reportToParent, frontmost]);
 
   const snapHeight = hasSnapPoints ? snapPointHeights[activeSnapIndex] : undefined;
   const viewportHeight = doc?.defaultView?.innerHeight ?? 0;
@@ -591,7 +750,13 @@ const DrawerContent = forwardRef<HTMLDivElement, DrawerContentPropsType>(functio
     const popup = popupRef.current;
     const view = popup?.ownerDocument.defaultView;
     if (!popup || !view || !open) return;
+    // Only the active (frontmost) drawer swipes. A nested drawer's panel is
+    // portaled out of this popup's DOM, but its React pointer events still
+    // bubble here through the component tree — ignore those, and ignore every
+    // press while a nested drawer is open on top of this one.
+    if (nestedOpenCount > 0) return;
     const target = event.target as HTMLElement;
+    if (!popup.contains(target)) return;
     if (target.closest(FIELD_SELECTOR)) return;
 
     const axis = swipeAxis;
@@ -712,6 +877,9 @@ const DrawerContent = forwardRef<HTMLDivElement, DrawerContentPropsType>(functio
     ...(maxHeight ? { ["--drawer-content-max-height" as string]: maxHeight } : null),
     ...(hasSnapPoints ? { ["--drawer-snap-point-offset" as string]: `${snapOffset}px` } : null),
     ["--nested-drawers" as string]: nestedOpenCount,
+    ...(nestedOpenCount > 0 && frontmostHeight != null
+      ? { ["--drawer-frontmost-height" as string]: `${frontmostHeight}px` }
+      : null),
     ...style,
   } as CSSProperties;
 
@@ -719,7 +887,8 @@ const DrawerContent = forwardRef<HTMLDivElement, DrawerContentPropsType>(functio
 
   return createPortal(
     <>
-      {modal === true ? <DrawerOverlay ref={overlayRef} {...presence} /> : null}
+      {/* One backdrop for the whole stack: the outermost modal drawer owns it. */}
+      {modal === true && !hasModalAncestor ? <DrawerOverlay ref={overlayRef} {...presence} /> : null}
       <div
         data-slot="drawer-viewport"
         data-modal={modal === true ? "true" : "false"}
@@ -741,6 +910,8 @@ const DrawerContent = forwardRef<HTMLDivElement, DrawerContentPropsType>(functio
           data-has-offset={floated ? "" : undefined}
           data-width={typeof width === "string" && width in DRAWER_WIDTH_PRESETS ? width : undefined}
           data-nested-drawer-open={nestedOpenCount > 0 ? "" : undefined}
+          data-nested={ctx.isNested ? "" : undefined}
+          data-stack-measured={nestedOpenCount > 0 && frontmostHeight != null ? "" : undefined}
           {...presence}
           className={className}
           style={popupStyle}
@@ -777,7 +948,7 @@ const DrawerTitle = forwardRef<HTMLHeadingElement, DrawerTitlePropsType>(functio
   { className, style, ...props },
   ref,
 ) {
-  const { titleId } = useDrawer();
+  const { titleId } = useDrawerContext();
   return (
     <h2
       ref={ref}
@@ -793,7 +964,7 @@ DrawerTitle.displayName = "Drawer.Title";
 
 const DrawerDescription = forwardRef<HTMLParagraphElement, DrawerDescriptionPropsType>(
   function DrawerDescription({ className, style, ...props }, ref) {
-    const { descriptionId } = useDrawer();
+    const { descriptionId } = useDrawerContext();
     return (
       <p
         ref={ref}

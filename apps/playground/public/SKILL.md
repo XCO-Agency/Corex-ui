@@ -2670,6 +2670,30 @@ import { Drawer, Button } from "@xco-agency/corex-ui";
 </Drawer>
 ```
 
+#### Imperative control (`useDrawer`) — works anywhere, no `<Drawer>` ancestor needed
+
+```tsx
+import { useDrawer, openDrawer, closeDrawer, toggleDrawer, closeAllDrawers } from "@xco-agency/corex-ui";
+
+// Inside Drawer content: the nearest drawer.
+const drawer = useDrawer();
+drawer.close();
+
+// Outside any Drawer: close() = topmost open drawer, closeAll() = all, isOpen = any open.
+const drawers = useDrawer();
+drawers.close();
+
+// Anywhere, by id: <Drawer id="cart">.
+const cart = useDrawer("cart");
+cart.open(); cart.toggle(); cart.isOpen;
+
+// Outside React.
+openDrawer("cart"); closeDrawer("cart"); closeDrawer(); closeAllDrawers();
+```
+
+Returns `{ isOpen, open, close, toggle, closeAll }` (`useDrawer()` adds `insideDrawer` + the drawer context inside one; `useDrawerContext()` for context only, throws outside). `onOpenChange` receives `reason: "imperative"`. Mark external toggle buttons with `data-drawer-outside-control` so pressing them is not treated as an outside press; use `modal={false}` to keep the page clickable.
+
+
 ### Command
 
 Filterable command menu with the [shadcn Command](https://ui.shadcn.com/docs/components/base/command) API, dependency-free (no cmdk, no Base UI). Optional palette dialog is built in. Optional `sidebar` layout: groups as a left nav, items of the selected/hovered group on the right.

@@ -1,13 +1,79 @@
 import {
+  Badge,
   BlockStack,
   Button,
   Drawer,
   InlineStack,
   Text,
   TextField,
+  closeDrawer,
+  openDrawer,
+  useDrawer,
 } from "@xco-agency/corex-ui";
 
-const WIDTHS = ["small", "base", "large", "large-300", "large-500", "full", "420px"] as const;
+const WIDTHS = [
+  "small",
+  "base",
+  "large",
+  "large-300",
+  "large-500",
+  "full",
+  "420px",
+] as const;
+
+/** Closes the surrounding drawer from anywhere inside it — no Drawer.Close needed. */
+function SaveAndClose() {
+  const drawer = useDrawer();
+  return (
+    <Button variant="primary" onClick={() => drawer.close()}>
+      Save
+    </Button>
+  );
+}
+
+/** Lives outside the Drawer tree and controls it by id. */
+function OpenOrderDetailsFromAnywhere() {
+  const orderDetails = useDrawer("order-details");
+  return (
+    <Button onClick={orderDetails.toggle}>
+      {orderDetails.isOpen ? "Close order details" : "Open by id (useDrawer)"}
+    </Button>
+  );
+}
+
+/**
+ * Lives outside every <Drawer>. `useDrawer("outside-cart")` targets one drawer
+ * by id; `useDrawer()` (no id) closes the topmost open drawer or all of them.
+ * `data-drawer-outside-control` keeps these buttons from counting as an
+ * outside press, so clicking them doesn't first dismiss the drawer.
+ */
+function OutsideControls() {
+  const cart = useDrawer("outside-cart");
+  const drawers = useDrawer();
+
+  const openThenAutoClose = () => {
+    openDrawer("outside-cart");
+    window.setTimeout(() => closeDrawer("outside-cart"), 3000);
+  };
+
+  return (
+    <InlineStack gap="small-200" alignItems="center" data-drawer-outside-control>
+      <Button variant="primary" onClick={cart.toggle}>
+        {cart.isOpen ? "Hide cart" : "Show cart"}
+      </Button>
+      <Button onClick={openThenAutoClose}>Open, auto-close in 3s</Button>
+      <Button disabled={!drawers.isOpen} onClick={drawers.close}>
+        Close topmost
+      </Button>
+      <Button disabled={!drawers.isOpen} onClick={drawers.closeAll}>
+        Close all
+      </Button>
+      <Badge tone={cart.isOpen ? "success" : undefined}>
+        {cart.isOpen ? "Cart open" : "Cart closed"}
+      </Badge>
+    </InlineStack>
+  );
+}
 
 function NestedSecond() {
   return (
@@ -49,7 +115,10 @@ export function DrawerExample() {
           Desktop opens a right drawer with no handle. Mobile remaps to a bottom sheet.
           Swipe the panel to dismiss.
         </Text>
-        <Drawer>
+        <InlineStack gap="small-200">
+          <OpenOrderDetailsFromAnywhere />
+        </InlineStack>
+        <Drawer id="order-details">
           <Drawer.Trigger>
             <Button variant="primary">Open drawer</Button>
           </Drawer.Trigger>
@@ -73,7 +142,7 @@ export function DrawerExample() {
               <Drawer.Close>
                 <Button>Cancel</Button>
               </Drawer.Close>
-              <Button variant="primary">Save</Button>
+              <SaveAndClose />
             </Drawer.Footer>
           </Drawer.Content>
         </Drawer>
@@ -139,11 +208,39 @@ export function DrawerExample() {
 
       <BlockStack gap="small-200">
         <Text variant="headingMd" as="h3">
+          Control from outside the Drawer
+        </Text>
+        <Text as="p" variant="small" color="subdued">
+          These buttons are not inside any `Drawer`. The cart is non-modal (`modal=&#123;false&#125;`)
+          so the page stays clickable while it is open.
+        </Text>
+        <OutsideControls />
+        <Drawer id="outside-cart" modal={false} responsive={false}>
+          <Drawer.Content width="small">
+            <Drawer.Header>
+              <Drawer.Title>Cart</Drawer.Title>
+              <Drawer.Description>Opened without a Drawer.Trigger.</Drawer.Description>
+            </Drawer.Header>
+            <Drawer.Body>
+              <Text as="p">
+                Use the buttons on the page — they control this drawer through
+                `useDrawer(&quot;outside-cart&quot;)` and `useDrawer()`.
+              </Text>
+            </Drawer.Body>
+            <Drawer.Footer>
+              <SaveAndClose />
+            </Drawer.Footer>
+          </Drawer.Content>
+        </Drawer>
+      </BlockStack>
+
+      <BlockStack gap="small-200">
+        <Text variant="headingMd" as="h3">
           Widths
         </Text>
         <Text as="p" variant="small" color="subdued">
-          Presets `small`, `base`, `large`, `large-100`…`large-500`, `full`, or any CSS length.
-          Widths are capped to the viewport.
+          Presets `small`, `base`, `large`, `large-100`…`large-500`, `full`, or any CSS
+          length. Widths are capped to the viewport.
         </Text>
         <InlineStack gap="small-200">
           {WIDTHS.map((width) => (
