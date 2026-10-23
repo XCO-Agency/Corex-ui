@@ -78,11 +78,17 @@ export function presenceAttributes(phase: PresencePhaseType) {
   };
 }
 
-// Open overlays, innermost last. Only the top layer reacts to Escape and outside presses.
-const layers: string[] = [];
+// Open overlays, innermost last. Documents are tracked separately so an overlay
+// in an iframe or another window cannot block dismissal in this document.
+const layers: Array<{ id: string; doc: Document }> = [];
 
-export function isTopLayer(id: string): boolean {
-  return layers[layers.length - 1] === id;
+export function isTopLayer(id: string, doc?: Document): boolean {
+  for (let index = layers.length - 1; index >= 0; index--) {
+    const layer = layers[index]!;
+    if (doc && layer.doc !== doc) continue;
+    return layer.id === id;
+  }
+  return false;
 }
 
 /**
@@ -104,16 +110,17 @@ export function useDismissableLayer(options: {
 
   useEffect(() => {
     if (!active || !doc) return undefined;
-    layers.push(id);
+    layers.push({ id, doc });
 
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key !== "Escape" || event.defaultPrevented || !isTopLayer(id)) return;
+      if (event.key !== "Escape" || event.defaultPrevented || !isTopLayer(id, doc))
+        return;
       event.preventDefault();
       optionsRef.current.onEscape(event);
     };
     const handlePointerDown = (event: PointerEvent) => {
       const { onOutsidePress, getInside } = optionsRef.current;
-      if (!onOutsidePress || !isTopLayer(id)) return;
+      if (!onOutsidePress || !isTopLayer(id, doc)) return;
       const target = event.target as Node | null;
       if (!target) return;
       // Composed path so presses inside web components' shadow trees count as inside.
@@ -129,7 +136,12 @@ export function useDismissableLayer(options: {
     return () => {
       doc.removeEventListener("keydown", handleKeyDown);
       doc.removeEventListener("pointerdown", handlePointerDown, true);
-      const index = layers.lastIndexOf(id);
+      let index = layers.length - 1;
+      while (index >= 0) {
+        const layer = layers[index];
+        if (layer?.id === id && layer.doc === doc) break;
+        index -= 1;
+      }
       if (index !== -1) layers.splice(index, 1);
     };
   }, [id, active, doc]);
@@ -168,7 +180,7 @@ export function useFocusContainment(
     }
 
     const handleFocusIn = (event: FocusEvent) => {
-      if (!trap || !isTopLayer(id)) return;
+      if (!trap || !isTopLayer(id, node.ownerDocument)) return;
       const target = event.target as Node | null;
       if (target && !node.contains(target)) node.focus({ preventScroll: true });
     };

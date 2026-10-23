@@ -104,7 +104,7 @@ export type FlexPopoverPropsType = {
   zIndex?: number;
   /** Hides the header even when `heading` is passed. */
   noHeader?: boolean;
-  /** Space between the panel edge and its content. @default "small-200" */
+  /** Space between the panel edge and its content. @default "none" */
   padding?: FlexPopoverPaddingType;
   children: ReactNode;
 };

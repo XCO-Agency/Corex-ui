@@ -1704,7 +1704,7 @@ import { FlexPopover } from "@xco-agency/corex-ui";
 | Subcomponent          | Description                                                                                     | Key Props                                                                                                                      |
 | :-------------------- | :---------------------------------------------------------------------------------------------- | :----------------------------------------------------------------------------------------------------------------------------- |
 | `FlexPopover.Trigger` | The anchor element wrapper (`display: contents`) that toggles the popover on click or on hover. | `children: ReactNode`                                                                                                          |
-| `FlexPopover.Content` | The floating dialog panel positioned relative to the trigger.                                   | `heading?: ReactNode (header shows only when passed), noHeader?: boolean, padding?: "none" | "small-500" | "small-400" | "small-300" | "small-200" | "small-100" | "small" | "base" | "large" (default "small-200"), closeAccessibilityLabel?: string, width?: string, minWidth?: string, maxHeight?: string, position?: FlexPopoverPositionType, offset?: number, matchAnchorWidth?: boolean, onClose?: () => void, children: ReactNode` |
+| `FlexPopover.Content` | The floating dialog panel positioned relative to the trigger.                                   | `heading?: ReactNode (header shows only when passed), noHeader?: boolean, padding?: "none" | "small-500" | "small-400" | "small-300" | "small-200" | "small-100" | "small" | "base" | "large" (default "none"), closeAccessibilityLabel?: string, width?: string, minWidth?: string, maxHeight?: string, position?: FlexPopoverPositionType, offset?: number, matchAnchorWidth?: boolean, onClose?: () => void, children: ReactNode` |
 
 #### Modern Props (`<FlexPopover>`)
 
@@ -1730,7 +1730,7 @@ import { FlexPopover } from "@xco-agency/corex-ui";
   <FlexPopover.Trigger>
     <Button>Open Filter Panel</Button>
   </FlexPopover.Trigger>
-  <FlexPopover.Content heading="Quick Filters" width="280px">
+  <FlexPopover.Content heading="Quick Filters" width="280px" padding="small-200">
     <BlockStack gap="small-200">
       <Text>Status: Active orders only</Text>
       <Text>Channel: Online Store</Text>
@@ -1746,7 +1746,7 @@ import { FlexPopover } from "@xco-agency/corex-ui";
   <FlexPopover.Trigger>
     <Button>Hover for Details</Button>
   </FlexPopover.Trigger>
-  <FlexPopover.Content heading="Details" width="240px">
+  <FlexPopover.Content heading="Details" width="240px" padding="small-200">
     <Text>Opens on hover, stays open while traversing the bridge, and closes on leave.</Text>
   </FlexPopover.Content>
 </FlexPopover>

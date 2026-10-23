@@ -21,9 +21,10 @@ export function FlexPopoverExample() {
           <BlockStack gap="base">
             <Text heading>Composed Floating Popovers</Text>
             <Text color="subdued">
-              FlexPopover is composed of FlexPopover.Trigger and FlexPopover.Content.
-              It portals directly into the document body with automatic viewport boundary clamping,
-              light-dismiss on Escape or outside clicks, and hover bridging without requiring manual element refs.
+              FlexPopover is composed of FlexPopover.Trigger and FlexPopover.Content. It
+              portals into the trigger&apos;s existing document or shadow root with
+              automatic viewport boundary clamping, light-dismiss on Escape or outside
+              clicks, and hover bridging without requiring manual element refs.
             </Text>
 
             <Divider />
@@ -34,7 +35,11 @@ export function FlexPopoverExample() {
                 <FlexPopover.Trigger>
                   <Button variant="primary">Quick Filters</Button>
                 </FlexPopover.Trigger>
-                <FlexPopover.Content heading="Quick Filters" width="280px">
+                <FlexPopover.Content
+                  heading="Quick Filters"
+                  width="280px"
+                  padding="small"
+                >
                   <BlockStack gap="small-200">
                     <InlineStack justifyContent="space-between" alignItems="center">
                       <Text>Status</Text>
@@ -54,10 +59,15 @@ export function FlexPopoverExample() {
                 <FlexPopover.Trigger>
                   <Button>Hover for Details</Button>
                 </FlexPopover.Trigger>
-                <FlexPopover.Content heading="Hover Bridge" width="260px">
+                <FlexPopover.Content
+                  heading="Hover Bridge"
+                  width="260px"
+                  padding="small-200"
+                >
                   <BlockStack gap="small-200">
                     <Text>
-                      Stays open while the pointer traverses the gap between the button and this panel.
+                      Stays open while the pointer traverses the gap between the button
+                      and this panel.
                     </Text>
                     <Badge tone="attention">Closes after 150ms</Badge>
                   </BlockStack>
@@ -70,12 +80,16 @@ export function FlexPopoverExample() {
                 onClose={() => setControlledOpen(false)}
                 position="bottom-end"
               >
-                <FlexPopover.Trigger onClick={() => setControlledOpen((prev) => !prev)}>
-                  <Button>
+                <FlexPopover.Trigger>
+                  <Button onClick={() => setControlledOpen((prev) => !prev)}>
                     {controlledOpen ? "Close Controlled" : "Open Controlled"}
                   </Button>
                 </FlexPopover.Trigger>
-                <FlexPopover.Content heading="Controlled Panel" width="280px">
+                <FlexPopover.Content
+                  heading="Controlled Panel"
+                  width="280px"
+                  padding="small-200"
+                >
                   <BlockStack gap="small-200">
                     <Text>Open state is controlled externally via React state.</Text>
                     <Button onClick={() => setControlledOpen(false)}>Done</Button>
@@ -88,9 +102,11 @@ export function FlexPopoverExample() {
                 <FlexPopover.Trigger>
                   <Button variant="tertiary">Side Popup (no header)</Button>
                 </FlexPopover.Trigger>
-                <FlexPopover.Content noHeader width="220px">
+                <FlexPopover.Content noHeader width="220px" padding="small-200">
                   <BlockStack gap="small-200">
-                    <Text variant="small" heading>Actions</Text>
+                    <Text variant="small" heading>
+                      Actions
+                    </Text>
                     <Text color="subdued">Quick contextual action list.</Text>
                   </BlockStack>
                 </FlexPopover.Content>

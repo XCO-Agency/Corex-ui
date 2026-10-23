@@ -30,31 +30,16 @@ function box(top: number, left: number, width: number, height: number): DOMRect 
   } as DOMRect;
 }
 
-/** Panel is portalled into an open shadow root — pierce it for queries. */
-function popoverHosts(): HTMLElement[] {
-  return Array.from(document.querySelectorAll<HTMLElement>("[data-corex-flex-popover-host]"));
+function popoverUi(root: HTMLElement = document.body) {
+  return within(root);
 }
 
-function popoverShadow(host?: HTMLElement | null): ShadowRoot {
-  const root = (host ?? popoverHosts()[0])?.shadowRoot;
-  if (!root) throw new Error("FlexPopover shadow root missing");
-  return root;
-}
-
-function popoverUi(host?: HTMLElement | null) {
-  return within(popoverShadow(host) as unknown as HTMLElement);
-}
-
-function popoverDialog(host?: HTMLElement | null): HTMLElement {
-  return popoverUi(host).getByRole("dialog");
+function popoverDialog(root: HTMLElement = document.body): HTMLElement {
+  return popoverUi(root).getByRole("dialog");
 }
 
 function queryInPopovers(selector: string): Element | null {
-  for (const host of popoverHosts()) {
-    const found = host.shadowRoot?.querySelector(selector);
-    if (found) return found;
-  }
-  return null;
+  return document.querySelector(`.corex-native-popover ${selector}`);
 }
 
 describe("FlexPopover", () => {
@@ -79,7 +64,7 @@ describe("FlexPopover", () => {
     );
 
     expect(popoverUi().getByText("Filters")).toBeInTheDocument();
-    const closeBtn = queryInPopovers('[accessibilitylabel="Close filters popup"]');
+    const closeBtn = queryInPopovers('[accessibilitylabel="Close Filters"]');
     expect(closeBtn).toBeInTheDocument();
 
     fireEvent.click(closeBtn!);
@@ -95,7 +80,7 @@ describe("FlexPopover", () => {
     );
 
     expect(popoverUi().getByText("Categories")).toBeInTheDocument();
-    const closeBtn = queryInPopovers('[accessibilitylabel="Close popup"]');
+    const closeBtn = queryInPopovers('[accessibilitylabel="Close Categories"]');
     expect(closeBtn).toBeInTheDocument();
   });
 
@@ -164,7 +149,12 @@ describe("FlexPopover", () => {
       render(
         <div>
           <button id="placed-anchor">Anchor</button>
-          <FlexPopover isOpen anchorId="placed-anchor" onClose={vi.fn()} position="top-start">
+          <FlexPopover
+            isOpen
+            anchorId="placed-anchor"
+            onClose={vi.fn()}
+            position="top-start"
+          >
             <Text>Placed</Text>
           </FlexPopover>
         </div>,
@@ -173,6 +163,52 @@ describe("FlexPopover", () => {
       const dialog = popoverDialog();
       expect(dialog.style.top).toBe("112px");
       expect(dialog.style.left).toBe("100px");
+      expect(dialog.style.display).toBe("block");
+    } finally {
+      HTMLElement.prototype.getBoundingClientRect = real;
+    }
+  });
+
+  it("resets a matched anchor width when matchAnchorWidth is disabled", () => {
+    const real = HTMLElement.prototype.getBoundingClientRect;
+    HTMLElement.prototype.getBoundingClientRect = function () {
+      if (this.id === "width-anchor") return box(200, 100, 80, 40);
+      if (this.classList?.contains("corex-native-popover")) return box(0, 0, 120, 80);
+      return real.call(this);
+    };
+
+    try {
+      const { rerender } = render(
+        <>
+          <button id="width-anchor">Anchor</button>
+          <FlexPopover
+            isOpen
+            anchorId="width-anchor"
+            onClose={vi.fn()}
+            matchAnchorWidth
+            width="240px"
+          >
+            <Text>Width content</Text>
+          </FlexPopover>
+        </>,
+      );
+      expect(popoverDialog().style.width).toBe("80px");
+
+      rerender(
+        <>
+          <button id="width-anchor">Anchor</button>
+          <FlexPopover
+            isOpen
+            anchorId="width-anchor"
+            onClose={vi.fn()}
+            matchAnchorWidth={false}
+            width="240px"
+          >
+            <Text>Width content</Text>
+          </FlexPopover>
+        </>,
+      );
+      expect(popoverDialog().style.width).toBe("240px");
     } finally {
       HTMLElement.prototype.getBoundingClientRect = real;
     }
@@ -210,19 +246,77 @@ describe("FlexPopover", () => {
     }
   });
 
-  it("keeps open-animation styles inside a shadow root", () => {
+  it("keeps the portal and anchor lookup inside an existing shadow root", () => {
+    const real = HTMLElement.prototype.getBoundingClientRect;
+    HTMLElement.prototype.getBoundingClientRect = function () {
+      if (this.id === "scoped-anchor") return box(200, 100, 80, 40);
+      if (this.classList?.contains("corex-native-popover")) return box(0, 0, 120, 80);
+      return real.call(this);
+    };
+
+    const host = document.createElement("div");
+    const shadow = host.attachShadow({ mode: "open" });
+    const container = document.createElement("div");
+    shadow.appendChild(container);
+    document.body.appendChild(host);
+
+    try {
+      const { unmount } = render(
+        <>
+          <button id="scoped-anchor">Anchor</button>
+          <FlexPopover
+            isOpen
+            anchorId="scoped-anchor"
+            onClose={vi.fn()}
+            position="top-start"
+          >
+            <Text>Shadow content</Text>
+          </FlexPopover>
+        </>,
+        { container },
+      );
+
+      const dialog = shadow.querySelector<HTMLElement>(".corex-native-popover");
+      expect(dialog).toBeTruthy();
+      expect(dialog?.style.top).toBe("112px");
+      expect(dialog?.style.left).toBe("100px");
+      expect(shadow.querySelector("style[data-corex-flex-popover-styles]")).toBeTruthy();
+      expect(document.querySelector("[data-corex-flex-popover-host]")).toBeNull();
+      unmount();
+    } finally {
+      HTMLElement.prototype.getBoundingClientRect = real;
+      host.remove();
+    }
+  });
+
+  it("portals into the owner document without creating a shadow root", () => {
     render(
       <FlexPopover isOpen onClose={vi.fn()}>
         <Text>Isolated</Text>
       </FlexPopover>,
     );
 
-    const host = popoverHosts()[0];
-    expect(host).toBeTruthy();
-    expect(host.shadowRoot).toBeTruthy();
-    expect(host.shadowRoot!.querySelector("style[data-corex-flex-popover]")).toBeTruthy();
-    expect(document.querySelector(".corex-native-popover")).toBeNull();
-    expect(host.shadowRoot!.querySelector(".corex-native-popover")).toBeTruthy();
+    expect(document.querySelector("[data-corex-flex-popover-host]")).toBeNull();
+    expect(document.getElementById("corex-flex-popover-styles")).toBeTruthy();
+    expect(document.querySelector(".corex-native-popover")).toBeTruthy();
+  });
+
+  it("dismisses on Escape and outside press but not on an inside press", () => {
+    const onClose = vi.fn();
+    render(
+      <FlexPopover isOpen onClose={onClose}>
+        <Text>Dismissable content</Text>
+      </FlexPopover>,
+    );
+
+    fireEvent.pointerDown(popoverDialog());
+    expect(onClose).not.toHaveBeenCalled();
+
+    fireEvent.keyDown(document, { key: "Escape" });
+    expect(onClose).toHaveBeenCalledTimes(1);
+
+    fireEvent.pointerDown(document.body);
+    expect(onClose).toHaveBeenCalledTimes(2);
   });
 });
 
@@ -240,7 +334,8 @@ describe("FlexPopover hover", () => {
 
     HTMLElement.prototype.getBoundingClientRect = function () {
       if (this.id === "hover-anchor") return box(100, 100, 80, 32);
-      if (this.classList?.contains("corex-native-popover")) return box(140, 100, 180, 160);
+      if (this.classList?.contains("corex-native-popover"))
+        return box(140, 100, 180, 160);
       return realRect.call(this);
     };
   });
@@ -399,7 +494,7 @@ describe("FlexPopover compound API", () => {
       </FlexPopover>,
     );
     expect(popoverUi().getByText("Body")).toBeInTheDocument();
-    fireEvent.click(queryInPopovers('[accessibilitylabel="Close filters popup"]')!);
+    fireEvent.click(queryInPopovers('[accessibilitylabel="Close Filters"]')!);
     expect(popoverUi().queryByText("Body")).toBeNull();
   });
 
@@ -459,7 +554,7 @@ describe("FlexPopover compound API", () => {
     );
 
     expect(popoverUi().getByText("Inner content")).toBeInTheDocument();
-    const closeBtn = queryInPopovers('[accessibilitylabel="Close popup"]');
+    const closeBtn = queryInPopovers('[accessibilitylabel="Close Panel"]');
     expect(closeBtn).toBeInTheDocument();
 
     fireEvent.click(closeBtn!);
@@ -480,7 +575,11 @@ describe("FlexPopover compound API", () => {
 describe("FlexPopover padding", () => {
   const bodyPadding = (padding?: string) => {
     const { unmount } = render(
-      <FlexPopover isOpen onClose={vi.fn()} {...(padding ? { padding: padding as never } : {})}>
+      <FlexPopover
+        isOpen
+        onClose={vi.fn()}
+        {...(padding ? { padding: padding as never } : {})}
+      >
         <Text>Padded</Text>
       </FlexPopover>,
     );
@@ -492,9 +591,8 @@ describe("FlexPopover padding", () => {
     return value;
   };
 
-  it("pads the content with `small-200` by default and honours each size", () => {
-    expect(bodyPadding()).toContain("--p-space-200");
-    expect(bodyPadding("small-200")).toBe(bodyPadding());
+  it("has no implicit content padding and honours each explicit size", () => {
+    expect(bodyPadding()).toBe("0px");
     expect(bodyPadding("small")).toContain("--p-space-300");
     expect(bodyPadding("none")).toBe("0px");
     expect(bodyPadding("base")).toContain("--p-space-400");
@@ -535,12 +633,10 @@ describe("FlexPopover nested popovers", () => {
       </FlexPopover>,
     );
   const dialogOf = (text: string) => {
-    for (const host of popoverHosts()) {
-      const match = Array.from(
-        host.shadowRoot?.querySelectorAll('[role="dialog"]') ?? [],
-      ).find((dialog) => dialog.textContent?.includes(text));
-      if (match) return match as HTMLElement;
-    }
+    const match = Array.from(
+      document.querySelectorAll<HTMLElement>('[role="dialog"]'),
+    ).find((dialog) => dialog.textContent?.includes(text));
+    if (match) return match;
     throw new Error(`dialog containing "${text}" not found`);
   };
 
@@ -600,6 +696,35 @@ describe("FlexPopover nested popovers", () => {
     });
     fireEvent.pointerDown(dialogOf("Child body"));
     expect(onClose).not.toHaveBeenCalled();
+  });
+
+  it("dismisses only the topmost nested popover on Escape", () => {
+    const onParentClose = vi.fn();
+    const onChildClose = vi.fn();
+    render(
+      <FlexPopover defaultOpen onClose={onParentClose}>
+        <FlexPopover.Trigger>
+          <Button>Root</Button>
+        </FlexPopover.Trigger>
+        <FlexPopover.Content>
+          <FlexPopover defaultOpen onClose={onChildClose}>
+            <FlexPopover.Trigger>
+              <Button>Row</Button>
+            </FlexPopover.Trigger>
+            <FlexPopover.Content>
+              <Text>Child body</Text>
+            </FlexPopover.Content>
+          </FlexPopover>
+        </FlexPopover.Content>
+      </FlexPopover>,
+    );
+
+    fireEvent.keyDown(document, { key: "Escape" });
+    expect(onChildClose).toHaveBeenCalledTimes(1);
+    expect(onParentClose).not.toHaveBeenCalled();
+
+    fireEvent.keyDown(document, { key: "Escape" });
+    expect(onParentClose).toHaveBeenCalledTimes(1);
   });
 });
 

@@ -568,9 +568,7 @@ describe("IndexFilters", () => {
     fireEvent.focus(inputEl);
     expect(document.body.textContent).toContain("Vendor");
 
-    const closeBtn = document.querySelector(
-      '[accessibilitylabel="Close filters popup"]',
-    )!;
+    const closeBtn = document.querySelector('[accessibilitylabel="Close Filters"]')!;
     expect(closeBtn).toBeInTheDocument();
     fireEvent.click(closeBtn);
 
@@ -591,7 +589,7 @@ describe("IndexFilters", () => {
     fireEvent.focus(inputEl);
     expect(document.body.textContent).toContain("Vendor");
 
-    fireEvent.keyDown(window, { key: "Escape" });
+    fireEvent.keyDown(document, { key: "Escape" });
     expect(document.body.textContent).not.toContain("Filters");
   });
 
