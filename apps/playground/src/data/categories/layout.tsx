@@ -1,4 +1,6 @@
 import type { ComponentEntry } from "../types";
+import { CalendarExample } from "@/examples/layout/CalendarExample";
+import CalendarExampleRaw from "@/examples/layout/CalendarExample.tsx?raw";
 import { BoxExample } from "@/examples/layout/BoxExample";
 import BoxExampleRaw from "@/examples/layout/BoxExample.tsx?raw";
 import { BlockStackExample } from "@/examples/layout/BlockStackExample";
@@ -182,6 +184,20 @@ export const layoutComponents: ComponentEntry[] = [
         title: "With expandable sub-rows",
         Example: TableExample,
         code: TableExampleRaw,
+      },
+    ],
+  },
+  {
+    name: "Calendar",
+    slug: "calendar",
+    category: "Layout",
+    description:
+      "FullCalendar-style event calendar: month, week, day and list views with multi-day lanes, +N more, drag, resize, range selection and keyboard navigation.",
+    examples: [
+      {
+        title: "Editable team calendar",
+        Example: CalendarExample,
+        code: CalendarExampleRaw,
       },
     ],
   },

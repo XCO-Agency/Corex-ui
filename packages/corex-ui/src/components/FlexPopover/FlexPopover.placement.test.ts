@@ -52,8 +52,39 @@ describe("placeFlexPopover", () => {
       ...viewport,
     });
 
+    expect(placed.align).toBe("center");
     expect(placed.left).toBe(80);
     expect(placed.top).toBe(248);
+  });
+
+  it("treats *-center the same as a bare side", () => {
+    const bare = placeFlexPopover({
+      anchor,
+      position: "bottom",
+      ...viewport,
+    });
+    const named = placeFlexPopover({
+      anchor,
+      position: "bottom-center",
+      ...viewport,
+    });
+
+    expect(named).toEqual(bare);
+  });
+
+  it("places top-center above the anchor", () => {
+    const placed = placeFlexPopover({
+      anchor,
+      position: "top-center",
+      ...viewport,
+    });
+
+    expect(placed.side).toBe("top");
+    expect(placed.align).toBe("center");
+    expect(placed.top).toBe(112);
+    expect(placed.left).toBe(80);
+    expect(placed.enterY).toBe("4px");
+    expect(placed.transformOrigin).toBe("center bottom");
   });
 
   it("places top-start above the anchor", () => {
@@ -72,14 +103,31 @@ describe("placeFlexPopover", () => {
   it("places right-center beside the anchor", () => {
     const placed = placeFlexPopover({
       anchor,
-      position: "right",
+      position: "right-center",
       ...viewport,
     });
 
     expect(placed.side).toBe("right");
+    expect(placed.align).toBe("center");
     expect(placed.left).toBe(188);
     expect(placed.top).toBe(180);
     expect(placed.enterX).toBe("-4px");
+    expect(placed.transformOrigin).toBe("left center");
+  });
+
+  it("places left-center beside the anchor", () => {
+    const placed = placeFlexPopover({
+      // Far enough from the left edge that the panel fits without flipping.
+      anchor: rect({ top: 200, left: 300, width: 80, height: 40 }),
+      position: "left-center",
+      ...viewport,
+    });
+
+    expect(placed.side).toBe("left");
+    expect(placed.align).toBe("center");
+    expect(placed.left).toBe(300 - 8 - 120);
+    expect(placed.top).toBe(180);
+    expect(placed.enterX).toBe("4px");
   });
 
   it("flips below the anchor when there is not enough room above", () => {

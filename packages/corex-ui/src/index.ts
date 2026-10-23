@@ -35,6 +35,8 @@ export * from "./components/ResourceList";
 export * from "./components/Pagination";
 export * from "./components/Modal";
 export * from "./components/Drawer";
+export * from "./components/Command";
+export * from "./components/Calendar";
 export * from "./components/TextField";
 export * from "./components/SearchField";
 export * from "./components/IndexFilters";

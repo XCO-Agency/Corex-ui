@@ -76,6 +76,13 @@ function alignmentClass(alignment: IndexTableAlignmentType): string | undefined 
   return undefined;
 }
 
+/** Sticky cell classes, including the pin side used for scroll-edge shadows. */
+function stickyClass(sticky?: IndexTableStickyType): string | undefined {
+  if (sticky === "left") return "cx-it__cell--sticky cx-it__cell--sticky-left";
+  if (sticky === "right") return "cx-it__cell--sticky cx-it__cell--sticky-right";
+  return undefined;
+}
+
 /**
  * Whether the header can follow the body's horizontal scroll through a CSS
  * scroll-driven animation (see `.cx-it--scroll-linked` in the styles). That
@@ -130,11 +137,30 @@ type IndexTableContextType = {
   zebra: boolean;
   registerSticky: (columnIndex: number, sticky: IndexTableStickyType) => void;
   reorderable: boolean;
+  /**
+   * True when any row declares `subRows`. First cells then reserve the expand
+   * toggle width so titles line up whether or not that row itself expands.
+   */
+  hasExpandColumn: boolean;
   /** Starts a pointer drag of the top-level row at `index`. */
   beginDrag: (index: number, event: ReactPointerEvent<HTMLElement>) => void;
   /** Keyboard reorder: moves the row at `index` by `delta` places. */
   moveBy: (index: number, delta: number) => void;
 };
+
+/** Whether a row's `subRows` prop actually contains row elements. */
+function rowHasSubRows(subRows: ReactNode): boolean {
+  return Children.toArray(subRows).some(isValidElement);
+}
+
+/** True if any top-level IndexTable.Row child declares expandable `subRows`. */
+function childrenHaveExpandableRows(nodes: ReactNode): boolean {
+  return Children.toArray(nodes).some(
+    (child) =>
+      isValidElement(child) &&
+      rowHasSubRows((child.props as IndexTableRowPropsType).subRows),
+  );
+}
 
 const IndexTableContext = createContext<IndexTableContextType | null>(null);
 
@@ -457,6 +483,12 @@ function IndexTableInner(
     [onReorder, rowCount],
   );
 
+  // Data-array `rows` cannot declare subRows; only the compound Row API can.
+  const hasExpandColumn = useMemo(
+    () => !(rows && rows.length > 0) && childrenHaveExpandableRows(children),
+    [rows, children],
+  );
+
   const contextValue = useMemo<IndexTableContextType>(
     () => ({
       selectable,
@@ -467,6 +499,7 @@ function IndexTableInner(
       zebra: hasZebraStriping,
       registerSticky,
       reorderable,
+      hasExpandColumn,
       beginDrag,
       moveBy,
     }),
@@ -479,6 +512,7 @@ function IndexTableInner(
       hasZebraStriping,
       registerSticky,
       reorderable,
+      hasExpandColumn,
       beginDrag,
       moveBy,
     ],
@@ -501,7 +535,6 @@ function IndexTableInner(
 
   // Hooks stay above the empty-state early return so the hook count never
   // changes when a search empties the table.
-  const scrollTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // The header lives outside the horizontal scroller (an `overflow` ancestor
   // would trap its `position: sticky`), so it is its own grid and has to be
@@ -517,21 +550,27 @@ function IndexTableInner(
     const body = bodyScrollRef.current;
     if (!body) return;
     const table = tableRef.current;
+    const root = table?.parentElement;
     const head = headScrollRef.current;
-    const linked = Boolean(
-      tableRef.current?.parentElement?.classList.contains("cx-it--scroll-linked"),
-    );
+    const linked = Boolean(root?.classList.contains("cx-it--scroll-linked"));
     const maxScroll = Math.max(0, body.scrollWidth - body.clientWidth);
+    const scrollLeft = body.scrollLeft;
     table?.style.setProperty("--cx-it-scroll-max", `${maxScroll}px`);
+    // Soft pin shadows + opaque header pins while content sits under them.
+    root?.classList.toggle("cx-it--scrolled-start", scrollLeft > 0.5);
+    root?.classList.toggle(
+      "cx-it--scrolled-end",
+      maxScroll > 0 && scrollLeft < maxScroll - 0.5,
+    );
     if (linked) {
       if (head && head.scrollLeft !== 0) head.scrollLeft = 0;
       table?.style.removeProperty("--cx-it-clip-start");
       table?.style.removeProperty("--cx-it-clip-end");
       return;
     }
-    if (head) head.scrollLeft = body.scrollLeft;
-    const hiddenEnd = Math.max(0, maxScroll - body.scrollLeft);
-    table?.style.setProperty("--cx-it-clip-start", `${Math.max(0, body.scrollLeft)}px`);
+    if (head) head.scrollLeft = scrollLeft;
+    const hiddenEnd = Math.max(0, maxScroll - scrollLeft);
+    table?.style.setProperty("--cx-it-clip-start", `${Math.max(0, scrollLeft)}px`);
     table?.style.setProperty("--cx-it-clip-end", `${hiddenEnd}px`);
   }, []);
 
@@ -558,20 +597,31 @@ function IndexTableInner(
   // main thread right as the scroll starts.
   const handleScroll = useCallback(() => {
     syncHeaderScroll();
-    const body = bodyScrollRef.current;
-    if (!body) return;
-    body.classList.add("cx-it__scroll--scrolling");
-    if (scrollTimerRef.current) clearTimeout(scrollTimerRef.current);
-    scrollTimerRef.current = setTimeout(() => {
-      body.classList.remove("cx-it__scroll--scrolling");
-    }, 1000);
   }, [syncHeaderScroll]);
 
+  /*
+   * Stop horizontal wheel/trackpad overscroll from becoming the browser's
+   * back/forward navigation when the table is already at an edge. CSS
+   * overscroll-behavior alone is not enough in Chrome for that gesture.
+   */
   useEffect(() => {
-    return () => {
-      if (scrollTimerRef.current) clearTimeout(scrollTimerRef.current);
+    const body = bodyScrollRef.current;
+    if (!body) return;
+
+    const onWheel = (event: WheelEvent) => {
+      if (Math.abs(event.deltaX) <= Math.abs(event.deltaY)) return;
+      const maxScroll = Math.max(0, body.scrollWidth - body.clientWidth);
+      if (maxScroll <= 0) return;
+      const atStart = body.scrollLeft <= 0;
+      const atEnd = body.scrollLeft >= maxScroll - 0.5;
+      if ((atStart && event.deltaX < 0) || (atEnd && event.deltaX > 0)) {
+        event.preventDefault();
+      }
     };
-  }, []);
+
+    body.addEventListener("wheel", onWheel, { passive: false });
+    return () => body.removeEventListener("wheel", onWheel);
+  }, [effectiveItemCount, layout]);
 
   // Every render can change cell content, and with it the column widths.
   useIsomorphicLayoutEffect(syncHeader);
@@ -742,7 +792,7 @@ function IndexTableInner(
                         aria-label="Reorder"
                         className={cx(
                           "cx-it__cell cx-it__cell--control",
-                          layout.selectionSticky && "cx-it__cell--sticky",
+                          stickyClass(layout.selectionSticky),
                         )}
                         style={pinStyle(layout.selectionSticky)}
                       />
@@ -752,7 +802,7 @@ function IndexTableInner(
                         role="columnheader"
                         className={cx(
                           "cx-it__cell cx-it__cell--control",
-                          layout.selectionSticky && "cx-it__cell--sticky",
+                          stickyClass(layout.selectionSticky),
                         )}
                         style={pinStyle(layout.selectionSticky, layout.selectionOffset)}
                       >
@@ -782,10 +832,13 @@ function IndexTableInner(
                           className={cx(
                             "cx-it__cell cx-it__cell--head",
                             alignmentClass(column.alignment),
-                            column.sticky && "cx-it__cell--sticky",
+                            stickyClass(column.sticky),
                           )}
                           style={pinStyle(column.sticky, column.offset)}
                         >
+                          {index === 0 && hasExpandColumn && (
+                            <div className="cx-it__expand" aria-hidden="true" />
+                          )}
                           {renderHeadingContent(heading, index)}
                         </div>
                       );
@@ -879,7 +932,7 @@ function IndexTableRow({
   useEffect(() => {
     hasRendered.current = true;
   }, []);
-  const hasSubRows = Children.toArray(subRows).some(isValidElement);
+  const hasSubRows = rowHasSubRows(subRows);
   const index = depth === 0 ? contextIndex : -1;
   const canDrag = table.reorderable && depth === 0 && index >= 0;
   const zebraIndex = position ?? index;
@@ -976,7 +1029,7 @@ function IndexTableRow({
             role="cell"
             className={cx(
               "cx-it__cell cx-it__cell--control",
-              controlPin && "cx-it__cell--sticky",
+              stickyClass(controlPin),
             )}
             style={pinStyle(controlPin)}
           >
@@ -1000,7 +1053,7 @@ function IndexTableRow({
             className={cx(
               "cx-it__cell cx-it__cell--control",
               showCheckbox && "cx-it__cell--select",
-              controlPin && "cx-it__cell--sticky",
+              stickyClass(controlPin),
             )}
             style={pinStyle(controlPin, table.layout.selectionOffset)}
             onClick={showCheckbox ? handleSelectCellClick : undefined}
@@ -1092,7 +1145,7 @@ function IndexTableCell({
         "cx-it__cell",
         alignmentClass(resolvedAlignment),
         flush && "cx-it__cell--flush",
-        pin && "cx-it__cell--sticky",
+        stickyClass(pin),
         column?.capContent && "cx-it__cell--flex",
         className,
       )}
@@ -1105,19 +1158,23 @@ function IndexTableCell({
           aria-hidden="true"
         />
       )}
-      {isFirst && row.expandable && (
-        <button
-          type="button"
-          aria-label={row.expanded ? "Collapse row" : "Expand row"}
-          aria-expanded={row.expanded}
-          className="cx-it__control cx-it__control--icon"
-          onClick={(event) => {
-            event.stopPropagation();
-            row.toggleExpanded();
-          }}
-        >
-          <Icon type={row.expanded ? "chevron-down" : "chevron-right"} />
-        </button>
+      {isFirst && table.hasExpandColumn && (
+        <div className="cx-it__expand">
+          {row.expandable ? (
+            <button
+              type="button"
+              aria-label={row.expanded ? "Collapse row" : "Expand row"}
+              aria-expanded={row.expanded}
+              className="cx-it__control cx-it__control--icon"
+              onClick={(event) => {
+                event.stopPropagation();
+                row.toggleExpanded();
+              }}
+            >
+              <Icon type={row.expanded ? "chevron-down" : "chevron-right"} />
+            </button>
+          ) : null}
+        </div>
       )}
       {children}
     </div>

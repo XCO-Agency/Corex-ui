@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { act, fireEvent, render, screen } from "@testing-library/react";
+import { act, fireEvent, render, screen, within } from "@testing-library/react";
 import { FlexPopover } from "./FlexPopover";
 import { Text } from "../Text";
 import { Button } from "../Button";
@@ -30,6 +30,33 @@ function box(top: number, left: number, width: number, height: number): DOMRect 
   } as DOMRect;
 }
 
+/** Panel is portalled into an open shadow root — pierce it for queries. */
+function popoverHosts(): HTMLElement[] {
+  return Array.from(document.querySelectorAll<HTMLElement>("[data-corex-flex-popover-host]"));
+}
+
+function popoverShadow(host?: HTMLElement | null): ShadowRoot {
+  const root = (host ?? popoverHosts()[0])?.shadowRoot;
+  if (!root) throw new Error("FlexPopover shadow root missing");
+  return root;
+}
+
+function popoverUi(host?: HTMLElement | null) {
+  return within(popoverShadow(host) as unknown as HTMLElement);
+}
+
+function popoverDialog(host?: HTMLElement | null): HTMLElement {
+  return popoverUi(host).getByRole("dialog");
+}
+
+function queryInPopovers(selector: string): Element | null {
+  for (const host of popoverHosts()) {
+    const found = host.shadowRoot?.querySelector(selector);
+    if (found) return found;
+  }
+  return null;
+}
+
 describe("FlexPopover", () => {
   it("renders no header when no heading is passed", () => {
     render(
@@ -38,9 +65,9 @@ describe("FlexPopover", () => {
       </FlexPopover>,
     );
 
-    expect(screen.getByText("Content")).toBeInTheDocument();
-    expect(screen.queryByText("Filters")).toBeNull();
-    expect(document.querySelector("[accessibilitylabel]")).toBeNull();
+    expect(popoverUi().getByText("Content")).toBeInTheDocument();
+    expect(popoverUi().queryByText("Filters")).toBeNull();
+    expect(queryInPopovers("[accessibilitylabel]")).toBeNull();
   });
 
   it("renders the heading and its close button when a heading is passed", () => {
@@ -51,8 +78,8 @@ describe("FlexPopover", () => {
       </FlexPopover>,
     );
 
-    expect(screen.getByText("Filters")).toBeInTheDocument();
-    const closeBtn = document.querySelector('[accessibilitylabel="Close filters popup"]');
+    expect(popoverUi().getByText("Filters")).toBeInTheDocument();
+    const closeBtn = queryInPopovers('[accessibilitylabel="Close filters popup"]');
     expect(closeBtn).toBeInTheDocument();
 
     fireEvent.click(closeBtn!);
@@ -67,8 +94,8 @@ describe("FlexPopover", () => {
       </FlexPopover>,
     );
 
-    expect(screen.getByText("Categories")).toBeInTheDocument();
-    const closeBtn = document.querySelector('[accessibilitylabel="Close popup"]');
+    expect(popoverUi().getByText("Categories")).toBeInTheDocument();
+    const closeBtn = queryInPopovers('[accessibilitylabel="Close popup"]');
     expect(closeBtn).toBeInTheDocument();
   });
 
@@ -85,8 +112,8 @@ describe("FlexPopover", () => {
       </FlexPopover>,
     );
 
-    expect(screen.getByText("Custom Node Header")).toBeInTheDocument();
-    const closeBtn = document.querySelector('[accessibilitylabel="Dismiss modal"]');
+    expect(popoverUi().getByText("Custom Node Header")).toBeInTheDocument();
+    const closeBtn = queryInPopovers('[accessibilitylabel="Dismiss modal"]');
     expect(closeBtn).toBeInTheDocument();
   });
 
@@ -97,8 +124,8 @@ describe("FlexPopover", () => {
       </FlexPopover>,
     );
 
-    expect(screen.queryByText("Ignored Header")).toBeNull();
-    expect(screen.getByText("Content Only")).toBeInTheDocument();
+    expect(popoverUi().queryByText("Ignored Header")).toBeNull();
+    expect(popoverUi().getByText("Content Only")).toBeInTheDocument();
   });
 
   it("calls showPopover on initial mount when isOpen is true and showPopover is supported", () => {
@@ -143,7 +170,7 @@ describe("FlexPopover", () => {
         </div>,
       );
 
-      const dialog = screen.getByRole("dialog");
+      const dialog = popoverDialog();
       expect(dialog.style.top).toBe("112px");
       expect(dialog.style.left).toBe("100px");
     } finally {
@@ -174,13 +201,28 @@ describe("FlexPopover", () => {
         </FlexPopover>,
       );
 
-      const dialog = screen.getByRole("dialog");
+      const dialog = popoverDialog();
       expect(dialog.style.top).toBe("112px");
       expect(dialog.style.left).toBe("100px");
     } finally {
       HTMLElement.prototype.getBoundingClientRect = real;
       host.remove();
     }
+  });
+
+  it("keeps open-animation styles inside a shadow root", () => {
+    render(
+      <FlexPopover isOpen onClose={vi.fn()}>
+        <Text>Isolated</Text>
+      </FlexPopover>,
+    );
+
+    const host = popoverHosts()[0];
+    expect(host).toBeTruthy();
+    expect(host.shadowRoot).toBeTruthy();
+    expect(host.shadowRoot!.querySelector("style[data-corex-flex-popover]")).toBeTruthy();
+    expect(document.querySelector(".corex-native-popover")).toBeNull();
+    expect(host.shadowRoot!.querySelector(".corex-native-popover")).toBeTruthy();
   });
 });
 
@@ -315,7 +357,7 @@ describe("FlexPopover hover", () => {
     );
 
     dispatchPointer(document.getElementById("hover-anchor")!, "pointerleave", 400, 400);
-    dispatchPointer(screen.getByRole("dialog"), "pointerenter", 160, 180);
+    dispatchPointer(popoverDialog(), "pointerenter", 160, 180);
     act(() => {
       vi.advanceTimersByTime(500);
     });
@@ -335,14 +377,14 @@ describe("FlexPopover compound API", () => {
         </FlexPopover.Content>
       </FlexPopover>,
     );
-    expect(screen.queryByText("Body")).not.toBeInTheDocument();
+    expect(popoverUi().queryByText("Body")).toBeNull();
 
     fireEvent.click(screen.getByText("Open"));
-    expect(screen.getByText("Body")).toBeInTheDocument();
-    expect(screen.getByText("Details")).toBeInTheDocument();
+    expect(popoverUi().getByText("Body")).toBeInTheDocument();
+    expect(popoverUi().getByText("Details")).toBeInTheDocument();
 
     fireEvent.click(screen.getByText("Open"));
-    expect(screen.queryByText("Body")).not.toBeInTheDocument();
+    expect(popoverUi().queryByText("Body")).toBeNull();
   });
 
   it("supports defaultOpen and the close button", () => {
@@ -356,9 +398,9 @@ describe("FlexPopover compound API", () => {
         </FlexPopover.Content>
       </FlexPopover>,
     );
-    expect(screen.getByText("Body")).toBeInTheDocument();
-    fireEvent.click(document.querySelector('[accessibilitylabel="Close filters popup"]')!);
-    expect(screen.queryByText("Body")).not.toBeInTheDocument();
+    expect(popoverUi().getByText("Body")).toBeInTheDocument();
+    fireEvent.click(queryInPopovers('[accessibilitylabel="Close filters popup"]')!);
+    expect(popoverUi().queryByText("Body")).toBeNull();
   });
 
   it("stays controlled when isOpen is passed", () => {
@@ -376,7 +418,7 @@ describe("FlexPopover compound API", () => {
     );
     fireEvent.click(screen.getByText("Open"));
     expect(onOpen).toHaveBeenCalledTimes(1);
-    expect(screen.queryByText("Body")).not.toBeInTheDocument();
+    expect(popoverUi().queryByText("Body")).toBeNull();
   });
 
   it("opens on hover with openOnHover, no ref needed", () => {
@@ -396,7 +438,7 @@ describe("FlexPopover compound API", () => {
       act(() => {
         dispatchPointer(trigger, "pointerenter", 5, 5);
       });
-      expect(screen.getByText("Body")).toBeInTheDocument();
+      expect(popoverUi().getByText("Body")).toBeInTheDocument();
     } finally {
       vi.unstubAllGlobals();
     }
@@ -416,14 +458,14 @@ describe("FlexPopover compound API", () => {
       </FlexPopover>,
     );
 
-    expect(screen.getByText("Inner content")).toBeInTheDocument();
-    const closeBtn = document.querySelector('[accessibilitylabel="Close popup"]');
+    expect(popoverUi().getByText("Inner content")).toBeInTheDocument();
+    const closeBtn = queryInPopovers('[accessibilitylabel="Close popup"]');
     expect(closeBtn).toBeInTheDocument();
 
     fireEvent.click(closeBtn!);
     expect(onContentClose).toHaveBeenCalledTimes(1);
     expect(onRootClose).toHaveBeenCalledTimes(1);
-    expect(screen.queryByText("Inner content")).not.toBeInTheDocument();
+    expect(popoverUi().queryByText("Inner content")).toBeNull();
   });
 
   it("throws a clear error when a part is used outside FlexPopover", () => {
@@ -442,7 +484,9 @@ describe("FlexPopover padding", () => {
         <Text>Padded</Text>
       </FlexPopover>,
     );
-    const body = screen.getByText("Padded").closest("[style*='padding']") as HTMLElement | null;
+    const body = popoverUi()
+      .getByText("Padded")
+      .closest("[style*='padding']") as HTMLElement | null;
     const value = body?.style.padding ?? null;
     unmount();
     return value;
@@ -490,7 +534,15 @@ describe("FlexPopover nested popovers", () => {
         </FlexPopover.Content>
       </FlexPopover>,
     );
-  const dialogOf = (text: string) => screen.getByText(text).closest('[role="dialog"]')!;
+  const dialogOf = (text: string) => {
+    for (const host of popoverHosts()) {
+      const match = Array.from(
+        host.shadowRoot?.querySelectorAll('[role="dialog"]') ?? [],
+      ).find((dialog) => dialog.textContent?.includes(text));
+      if (match) return match as HTMLElement;
+    }
+    throw new Error(`dialog containing "${text}" not found`);
+  };
 
   it("keeps the parent open while the pointer is in the child popover", () => {
     renderNested();
@@ -503,8 +555,8 @@ describe("FlexPopover nested popovers", () => {
       vi.advanceTimersByTime(500);
     });
 
-    expect(screen.getByText("Parent body")).toBeInTheDocument();
-    expect(screen.getByText("Child body")).toBeInTheDocument();
+    expect(popoverUi().getByText("Parent body")).toBeInTheDocument();
+    expect(dialogOf("Child body").textContent).toContain("Child body");
   });
 
   it("closes the parent once the pointer has left both popovers", () => {
@@ -521,7 +573,7 @@ describe("FlexPopover nested popovers", () => {
       vi.advanceTimersByTime(500);
     });
 
-    expect(screen.queryByText("Parent body")).not.toBeInTheDocument();
+    expect(() => dialogOf("Parent body")).toThrow(/not found/);
   });
 
   it("does not dismiss the parent when the child is clicked", () => {
@@ -546,7 +598,7 @@ describe("FlexPopover nested popovers", () => {
     act(() => {
       vi.advanceTimersByTime(20);
     });
-    fireEvent.pointerDown(screen.getByText("Child body"));
+    fireEvent.pointerDown(dialogOf("Child body"));
     expect(onClose).not.toHaveBeenCalled();
   });
 });

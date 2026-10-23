@@ -587,6 +587,50 @@ describe("IndexTable", () => {
     );
   });
 
+  it("reserves expand gutter on every first cell when any row has subRows", () => {
+    const { container } = render(
+      <IndexTable headings={[{ title: "Name" }]} itemCount={2}>
+        <IndexTable.Row
+          id="with-sub"
+          subRows={
+            <IndexTable.Row id="child">
+              <IndexTable.Cell>Child</IndexTable.Cell>
+            </IndexTable.Row>
+          }
+        >
+          <IndexTable.Cell>Expandable</IndexTable.Cell>
+        </IndexTable.Row>
+        <IndexTable.Row id="plain">
+          <IndexTable.Cell>Plain</IndexTable.Cell>
+        </IndexTable.Row>
+      </IndexTable>,
+    );
+
+    const bodyRows = Array.from(
+      container.querySelectorAll<HTMLElement>(".cx-it__row--body"),
+    );
+    const gutters = bodyRows.map(
+      (row) => row.querySelector(".cx-it__expand") as HTMLElement | null,
+    );
+    expect(gutters[0]).toBeTruthy();
+    expect(gutters[1]).toBeTruthy();
+    expect(gutters[0]!.querySelector('[aria-label="Expand row"]')).toBeTruthy();
+    expect(gutters[1]!.querySelector("button")).toBeNull();
+    expect(container.querySelector(".cx-it__row--head .cx-it__expand")).toBeTruthy();
+  });
+
+  it("does not reserve expand gutter when no row has subRows", () => {
+    const { container } = render(
+      <IndexTable headings={[{ title: "Name" }]} itemCount={1}>
+        <IndexTable.Row id="plain">
+          <IndexTable.Cell>Plain</IndexTable.Cell>
+        </IndexTable.Row>
+      </IndexTable>,
+    );
+
+    expect(container.querySelector(".cx-it__expand")).toBeNull();
+  });
+
   it("replaces the header row with the bulk bar while rows are selected", () => {
     render(
       <IndexTable

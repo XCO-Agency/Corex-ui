@@ -45,36 +45,53 @@ const DEFAULT_OFFSET = 8;
 const VIEWPORT_MARGIN = 12;
 /** Wait before hover-close so the pointer can cross `offset`. */
 const DEFAULT_CLOSE_DELAY = 150;
-const STYLE_ELEMENT_ID = "corex-flex-popover-styles";
+/** Light-DOM shell; the animated panel lives in its shadow root. */
+const HOST_ATTR = "data-corex-flex-popover-host";
+/**
+ * Open animation lives in a shadow root so host-app / Polaris / Tailwind
+ * styles cannot override opacity, transform, or transition on open (that is
+ * what made the panel "glitch" in some apps and not others).
+ *
+ * `!important` also beats inheritable outer rules that pierce `:host`.
+ * `--measure` freezes the enter transform so layout is read at full size.
+ */
 const POPOVER_CSS = `
 .corex-native-popover {
   padding: 0;
+  margin: 0;
   background: transparent !important;
-  opacity: 0;
-  border: none;
-  transform: translate(var(--corex-popover-enter-x, 0px), var(--corex-popover-enter-y, -4px)) scale(0.97);
-  transform-origin: var(--corex-popover-origin, left top);
+  border: none !important;
+  box-sizing: border-box;
+  opacity: 0 !important;
+  transform: translate(var(--corex-popover-enter-x, 0px), var(--corex-popover-enter-y, -4px)) scale(0.97) !important;
+  transform-origin: var(--corex-popover-origin, left top) !important;
   transition:
     opacity 140ms ease,
-    transform 140ms ease;
+    transform 140ms ease !important;
 }
 
 .corex-native-popover:popover-open,
 .corex-native-popover.corex-native-popover-open {
-  opacity: 1;
-  transform: translate(0) scale(1);
+  opacity: 1 !important;
+  transform: translate(0) scale(1) !important;
+}
+
+.corex-native-popover.corex-native-popover--measure {
+  transition: none !important;
+  opacity: 0 !important;
+  transform: none !important;
 }
 
 @starting-style {
   .corex-native-popover:popover-open {
-    opacity: 0;
-    transform: translate(var(--corex-popover-enter-x, 0px), var(--corex-popover-enter-y, -4px)) scale(0.97);
+    opacity: 0 !important;
+    transform: translate(var(--corex-popover-enter-x, 0px), var(--corex-popover-enter-y, -4px)) scale(0.97) !important;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .corex-native-popover {
-    transition: none;
+    transition: none !important;
   }
 }
 `;
@@ -96,13 +113,12 @@ const FlexPopoverNestContext = createContext<{
 const MAX_POSITION_FRAMES = 60;
 
 /**
- * Controlled popover portalled into the owner document's body and shown with
- * `popover="manual"` (top layer, no native light-dismiss).
+ * Controlled popover portalled into a shadow root on the owner document's body
+ * and shown with `popover="manual"` (top layer, no native light-dismiss).
  *
- * Avoids shadow DOM and iframe boundary clipping while ensuring smooth dismissal
- * on Escape or clicking outside the popover and its anchor. With `openOnHover`,
- * leaving is delayed so the offset gap between the anchor and the popover does
- * not dismiss it.
+ * The animated panel sits inside an open shadow root so page-level CSS cannot
+ * fight the open transition. Escape / outside-click dismiss, and with
+ * `openOnHover` a delayed leave so the offset gap does not dismiss it.
  */
 function FlexPopoverBase({
   anchorId,
@@ -131,6 +147,8 @@ function FlexPopoverBase({
 }: FlexPopoverPropsType) {
   const markerRef = useRef<HTMLSpanElement | null>(null);
   const popoverRef = useRef<HTMLDivElement | null>(null);
+  /** Light-DOM shell that owns the shadow root (removed on unmount). */
+  const hostNodeRef = useRef<HTMLDivElement | null>(null);
   const initialPlacement = parseFlexPopoverPosition(position);
   const placedSideRef = useRef(initialPlacement.side);
   const [motion, setMotion] = useState(() => {
@@ -151,8 +169,8 @@ function FlexPopoverBase({
     };
   });
   /**
-   * Body of the document that owns the field. Starts null so the first client render
-   * matches the server (no portal); the layout effect below resolves it before paint.
+   * Shadow mount node for the panel. Starts null so the first client render
+   * matches the server (no portal); the layout effect below creates it before paint.
    */
   const [mountTarget, setMountTarget] = useState<HTMLElement | null>(null);
   /**
@@ -165,25 +183,48 @@ function FlexPopoverBase({
     typeof HTMLElement !== "undefined" &&
     typeof HTMLElement.prototype.showPopover === "function";
 
-  // Resolve the owner document (e.g. an iframe) before the popover first renders
+  // Build (or reuse) a body-level host with an open shadow root for the panel.
   useIsomorphicLayoutEffect(() => {
     const doc = markerRef.current?.ownerDocument;
     const body = doc?.body ?? null;
-    if (body !== mountTarget) setMountTarget(body);
+    if (!doc || !body) return;
 
-    // Shared popover styles, injected once per document. Refresh when the sheet changes.
-    if (doc) {
-      const existing = doc.getElementById(STYLE_ELEMENT_ID);
-      if (existing) {
-        if (existing.textContent !== POPOVER_CSS) existing.textContent = POPOVER_CSS;
-      } else {
-        const style = doc.createElement("style");
-        style.id = STYLE_ELEMENT_ID;
-        style.textContent = POPOVER_CSS;
-        doc.head.appendChild(style);
-      }
+    let host = hostNodeRef.current;
+    if (!host || host.ownerDocument !== doc) {
+      host?.remove();
+      host = doc.createElement("div");
+      host.setAttribute(HOST_ATTR, "");
+      // Inert light-DOM shell — animation styles live only in the shadow tree.
+      host.style.cssText =
+        "position:absolute;width:0;height:0;margin:0;padding:0;border:0;overflow:visible;pointer-events:none;";
+      const shadow = host.attachShadow({ mode: "open" });
+      const style = doc.createElement("style");
+      style.setAttribute("data-corex-flex-popover", "");
+      style.textContent = POPOVER_CSS;
+      shadow.appendChild(style);
+      const mount = doc.createElement("div");
+      mount.setAttribute("data-corex-flex-popover-mount", "");
+      shadow.appendChild(mount);
+      body.appendChild(host);
+      hostNodeRef.current = host;
+      setMountTarget(mount);
+      return;
     }
+
+    const style = host.shadowRoot?.querySelector("style[data-corex-flex-popover]");
+    if (style && style.textContent !== POPOVER_CSS) style.textContent = POPOVER_CSS;
+    const mount = host.shadowRoot?.querySelector(
+      "[data-corex-flex-popover-mount]",
+    ) as HTMLElement | null;
+    if (mount && mount !== mountTarget) setMountTarget(mount);
   }, [mountTarget]);
+
+  useEffect(() => {
+    return () => {
+      hostNodeRef.current?.remove();
+      hostNodeRef.current = null;
+    };
+  }, []);
 
   const getAnchor = useCallback((): HTMLElement | null => {
     return (
@@ -248,13 +289,16 @@ function FlexPopoverBase({
 
       // `offset*` is the layout box. A closed popover is `display: none`, so force
       // a box for this read; getBoundingClientRect is only a fallback where layout
-      // is mocked. The CSS enter transform must not shrink the measured size.
+      // is mocked. Freeze the enter transform so scale(0.97) does not shrink the
+      // measured size (that mis-clamp placed wide panels off-screen on open).
       if (popover.offsetWidth === 0 || popover.offsetHeight === 0) {
         popover.style.display = "block";
       }
+      popover.classList.add("corex-native-popover--measure");
       const popoverRect = popover.getBoundingClientRect();
       const popoverWidth = popover.offsetWidth || popoverRect.width;
       const popoverHeight = popover.offsetHeight || popoverRect.height;
+      popover.classList.remove("corex-native-popover--measure");
       popover.style.display = "";
       if (popoverWidth === 0 || popoverHeight === 0) {
         if (retryFrame < MAX_POSITION_FRAMES) {
@@ -367,12 +411,32 @@ function FlexPopoverBase({
   const nestedContains = (node: Node) =>
     [...nestedRef.current].some((child) => child.contains(node));
   const nestedHovered = () => [...nestedRef.current].some((child) => child.hovered());
+  /**
+   * Panel content lives in a shadow root. Light-DOM `contains` / retargeted
+   * `event.target` miss it, so check the shadow tree (and the host) too.
+   */
+  const popoverContains = (node: Node | null | undefined) => {
+    if (!node) return false;
+    const panel = popoverRef.current;
+    const host = hostNodeRef.current;
+    if (panel?.contains(node)) return true;
+    if (host && (host === node || host.shadowRoot?.contains(node))) return true;
+    return nestedContains(node);
+  };
+  const pathHitsPopover = (event: Event) => {
+    const path = typeof event.composedPath === "function" ? event.composedPath() : [];
+    const panel = popoverRef.current;
+    const host = hostNodeRef.current;
+    if (panel && path.includes(panel)) return true;
+    if (host && path.includes(host)) return true;
+    return path.some((entry) => entry instanceof Node && nestedContains(entry));
+  };
   /** Set while hover is bound: whether the pointer is on this popover, its anchor or the gap between. */
   const hoverProbeRef = useRef<() => boolean>(() => false);
   useEffect(
     () =>
       parentNest?.register({
-        contains: (node) => !!popoverRef.current?.contains(node) || nestedContains(node),
+        contains: (node) => popoverContains(node),
         hovered: () =>
           isOpenRef.current &&
           (!!popoverRef.current?.matches(":hover") ||
@@ -402,8 +466,8 @@ function FlexPopoverBase({
       const target = event.target as Node | null;
       if (
         !target ||
-        popoverRef.current?.contains(target) ||
-        nestedContains(target) ||
+        pathHitsPopover(event) ||
+        popoverContains(target) ||
         getAnchorRef.current()?.contains(target) ||
         boundaryRef?.current?.contains(target) ||
         (boundarySelector &&
@@ -515,7 +579,7 @@ function FlexPopoverBase({
         return;
       }
       inside.anchor = false;
-      if (popoverRef.current?.contains(next)) {
+      if (popoverContains(next)) {
         inside.popover = true;
         clearClose();
         return;
@@ -547,7 +611,7 @@ function FlexPopoverBase({
       const target = event.target as Node | null;
       if (target && typeof target.nodeType === "number") {
         inside.anchor = hitAnchor(target);
-        inside.popover = !!popoverRef.current?.contains(target);
+        inside.popover = pathHitsPopover(event) || popoverContains(target);
       }
       if (!isOpenRef.current) return;
       if (stillHovering()) clearClose();
@@ -615,6 +679,8 @@ function FlexPopoverBase({
         boxSizing: "border-box",
         zIndex,
         overflow: "unset",
+        // Host shell is pointer-events:none; the panel must accept interaction.
+        pointerEvents: isOpen ? "auto" : "none",
         visibility: isOpen ? "visible" : "hidden",
         ...({
           "--corex-popover-enter-x": motion.enterX,
@@ -662,7 +728,11 @@ function FlexPopoverBase({
             <BlockStack
               maxBlockSize={maxHeight ?? "320px"}
               padding={padding}
-              overflow="auto"
+              overflow={
+                maxHeight === "none" || maxHeight === "auto"
+                  ? "visible"
+                  : "auto"
+              }
             >
               <FlexPopoverNestContext.Provider value={nest}>
                 {children}
@@ -780,13 +850,17 @@ function FlexPopoverContent(props: FlexPopoverContentPropsType): ReactElement {
   const { isOpen, setOpen, triggerRef, settings } =
     useFlexPopoverContext("FlexPopover.Content");
   const { offset, position, matchAnchorWidth, closeDelay } = settings;
+  const { onClose: onContentClose, ...panelProps } = props;
   return (
     <FlexPopoverBase
-      {...props}
+      {...panelProps}
       anchorRef={triggerRef}
       isOpen={isOpen}
       onOpen={() => setOpen(true)}
-      onClose={() => setOpen(false)}
+      onClose={() => {
+        onContentClose?.();
+        setOpen(false);
+      }}
       openOnHover={settings.openOnHover}
       boundaryRef={settings.boundaryRef}
       boundarySelector={settings.boundarySelector}

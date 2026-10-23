@@ -20,17 +20,17 @@ export const INDEX_TABLE_CSS = `
   --cx-it-text-subdued: var(--cx-it-text-subdued-color, #616161);
   --cx-it-icon: var(--cx-it-icon-color, #8a8a8a);
   --cx-it-focus: var(--cx-it-focus-color, #005bd3);
-  /* What sits behind the table; shows in the corners of pinned cells. */
-  --cx-it-backdrop: var(--cx-it-backdrop-color, var(--cx-it-surface));
-  --cx-it-scrollbar-thumb: var(--cx-it-scrollbar-thumb-color, rgba(0, 0, 0, 0.28));
-  --cx-it-scrollbar-thumb-hover: var(--cx-it-scrollbar-thumb-hover-color, rgba(0, 0, 0, 0.55));
-  --cx-it-scrollbar-track: var(--cx-it-scrollbar-track-color, rgba(0, 0, 0, 0.05));
+  /* Page behind the table — pinned header cells use this while content scrolls
+     under them (body pins use the row colour instead). */
+  --cx-it-backdrop: var(--cx-it-backdrop-color, #f1f1f1);
   /* Header and bulk bar height; dense is 4px tighter. Both fit a 24px checkbox. */
   --cx-it-head-height: var(--cx-it-header-height, 32px);
   position: relative;
   color: var(--cx-it-text);
   font-size: 0.8125rem;
   line-height: 1.25rem;
+  /* Keep trackpad overscroll from becoming the browser's back/forward swipe. */
+  overscroll-behavior-x: none;
 }
 
 .cx-it--dense { --cx-it-head-height: var(--cx-it-header-height-dense, 28px); }
@@ -56,50 +56,24 @@ export const INDEX_TABLE_CSS = `
   box-sizing: border-box;
 }
 
-@media (prefers-color-scheme: dark) {
-  .cx-it {
-    --cx-it-scrollbar-thumb: var(--cx-it-scrollbar-thumb-color, rgba(255, 255, 255, 0.35));
-    --cx-it-scrollbar-thumb-hover: var(--cx-it-scrollbar-thumb-hover-color, rgba(255, 255, 255, 0.65));
-    --cx-it-scrollbar-track: var(--cx-it-scrollbar-track-color, rgba(255, 255, 255, 0.08));
-  }
-}
-
+/*
+ * Body scroller. Rounded corners here clip the white row surface (including
+ * sticky cells) against the page backdrop — row-level border-radius alone is
+ * covered by opaque sticky pins on the left/right edges.
+ *
+ * Native scrollbar only (no custom thumb/track). Overlay scrollbars stay
+ * hidden until scroll; always-on bars use the browser default.
+ */
 .cx-it__scroll {
   overflow-x: auto;
-  overscroll-behavior-x: contain;
-  scrollbar-width: thin;
-  scrollbar-color: var(--cx-it-scrollbar-thumb) var(--cx-it-scrollbar-track);
-}
-.cx-it__scroll:hover {
-  scrollbar-color: var(--cx-it-scrollbar-thumb-hover) var(--cx-it-scrollbar-track);
+  border-radius: var(--cx-it-radius);
+  /* none (not contain): Chrome's history swipe still fires with contain
+     once scrollLeft is already 0 and the gesture continues left. */
+  overscroll-behavior-x: none;
+  scrollbar-width: none;
 }
 .cx-it__scroll::-webkit-scrollbar {
-  height: 8px;
-  width: 8px;
-}
-.cx-it__scroll::-webkit-scrollbar-track {
-  background: var(--cx-it-scrollbar-track);
-  border-radius: 9999px;
-  margin-inline: 4px;
-}
-.cx-it__scroll::-webkit-scrollbar-thumb {
-  background-color: var(--cx-it-scrollbar-thumb);
-  border-radius: 9999px;
-  border: 1.5px solid transparent;
-  background-clip: padding-box;
-  min-width: 44px;
-  transition: background-color 150ms ease;
-}
-.cx-it__scroll:hover::-webkit-scrollbar-thumb,
-.cx-it__scroll:active::-webkit-scrollbar-thumb,
-.cx-it__scroll--scrolling::-webkit-scrollbar-thumb {
-  background-color: var(--cx-it-scrollbar-thumb-hover);
-}
-.cx-it__scroll--scrolling {
-  scrollbar-color: var(--cx-it-scrollbar-thumb-hover) var(--cx-it-scrollbar-track);
-}
-.cx-it__scroll::-webkit-scrollbar-corner {
-  background: transparent;
+  display: none;
 }
 
 /*
@@ -127,7 +101,8 @@ export const INDEX_TABLE_CSS = `
   background-clip: padding-box;
 }
 
-.cx-it__row--head { --cx-it-row-bg: var(--cx-it-header); }
+/* Headings sit on the page, not on a filled pill — no surface behind them. */
+.cx-it__row--head { --cx-it-row-bg: transparent; }
 .cx-it__row--head,
 .cx-it__bulk {
   border-radius: var(--cx-it-radius);
@@ -141,12 +116,11 @@ export const INDEX_TABLE_CSS = `
 .cx-it__head {
   position: relative;
   z-index: 10;
-  background-color: var(--cx-it-surface);
+  background-color: transparent;
 }
 .cx-it__head--sticky {
   position: sticky;
   top: var(--cx-it-sticky-top, 0px);
-  box-shadow: 0px -2px 0px 0px #ffffff;
 }
 /* Mirrors the body's horizontal scroll (synced in JS); no scrollbar of its own. */
 .cx-it__head-scroll {
@@ -155,12 +129,20 @@ export const INDEX_TABLE_CSS = `
 .cx-it__bulk { background-color: var(--cx-it-header); }
 
 /* Divider between body rows. A transparent border keeps the 1px gap, which
-   is what separates rounded hovered/selected rows. */
+   is what separates rounded hovered/selected rows. The first body row (after
+   the zero-height sizer) drops the border entirely — a transparent colour
+   still left a 1px gap that read as a rule under the headings against the
+   page background.
+ *
+ * Resting rows are clipped to a rounded surface by .cx-it__scroll (sticky pins
+ * would otherwise paint square corners). Hover / selected / toned still get a
+ * full pill radius of their own. */
 .cx-it__row--body {
   --cx-it-row-bg: var(--cx-it-surface);
   border-top: 1px solid var(--cx-it-border);
 }
-.cx-it__row--body:first-child { border-top-color: transparent; }
+/* Sizer is always the first grid child, so first-child never matches a body row. */
+.cx-it__sizer + .cx-it__row--body { border-top: none; }
 .cx-it__row--zebra { --cx-it-row-bg: var(--cx-it-zebra); }
 .cx-it__row--clickable { cursor: pointer; }
 
@@ -188,10 +170,9 @@ export const INDEX_TABLE_CSS = `
 }
 
 /*
- * Pinned cells. While the table scrolls, what lies under a pinned cell is the
- * middle of its own row — same colour, square — so rounding the cell alone
- * would show nothing. Instead the cell paints the backdrop, and a ::before
- * layer repaints the row colour with the rounded corners on top of it.
+ * Pinned cells. Paint the row colour (opaque) so scrolled siblings cannot show
+ * through. ::before carries the rounded corners on highlighted rows — those
+ * need a layer that can round independently of the square pin stack.
  */
 .cx-it__row:is(.cx-it__row--head, :hover, [aria-selected="true"], .cx-it__row--toned)
   > .cx-it__cell--sticky:first-child::before {
@@ -207,7 +188,8 @@ export const INDEX_TABLE_CSS = `
 /*
  * Rows wider than the scroller are cut at its edges, so their own rounded
  * corners sit out of view. Clip highlighted rows to the visible part instead
- * (offsets set from the scroll position in JS) and round that.
+ * (offsets set from the scroll position in JS) and round that. Resting rows
+ * rely on .cx-it__scroll border-radius for the same edge clip.
  */
 .cx-it__row:is(.cx-it__row--head, .cx-it__row--body:hover, [aria-selected="true"], .cx-it__row--toned) {
   clip-path: inset(
@@ -290,8 +272,10 @@ export const INDEX_TABLE_CSS = `
 .cx-it__cell--select { cursor: default; }
 .cx-it__cell--sticky {
   position: sticky;
-  z-index: 1;
-  background-color: var(--cx-it-backdrop);
+  z-index: 3;
+  isolation: isolate;
+  /* Same fill as the row — never transparent, or scrolled cells bleed through. */
+  background-color: var(--cx-it-row-bg);
 }
 .cx-it__cell--sticky::before {
   content: "";
@@ -299,6 +283,26 @@ export const INDEX_TABLE_CSS = `
   inset: 0;
   z-index: -1;
   background-color: var(--cx-it-row-bg);
+  pointer-events: none;
+}
+/* Headings sit on the page (transparent row). Pins stay clear until content
+   scrolls under them, then match the page behind the table. */
+.cx-it__row--head > .cx-it__cell--sticky,
+.cx-it__row--head > .cx-it__cell--sticky::before {
+  background-color: transparent;
+}
+.cx-it--scrolled-start .cx-it__row--head > .cx-it__cell--sticky-left,
+.cx-it--scrolled-start .cx-it__row--head > .cx-it__cell--sticky-left::before,
+.cx-it--scrolled-end .cx-it__row--head > .cx-it__cell--sticky-right,
+.cx-it--scrolled-end .cx-it__row--head > .cx-it__cell--sticky-right::before {
+  background-color: var(--cx-it-backdrop);
+}
+/* Soft edge when content sits under a pin. Only the outer pin of each side. */
+.cx-it--scrolled-start .cx-it__cell--sticky-left:has(+ :not(.cx-it__cell--sticky-left)) {
+  box-shadow: 6px 0 10px -4px rgba(0, 0, 0, 0.1);
+}
+.cx-it--scrolled-end .cx-it__cell:not(.cx-it__cell--sticky-right) + .cx-it__cell--sticky-right {
+  box-shadow: -6px 0 10px -4px rgba(0, 0, 0, 0.1);
 }
 /* Header cells fill the fixed-height row exactly: no block padding or
    min-height to push their content (sort button, checkbox) past it. */
@@ -373,6 +377,19 @@ export const INDEX_TABLE_CSS = `
 .cx-it__sort--active { color: var(--cx-it-text); }
 
 .cx-it__indent { flex: none; }
+/*
+ * Shared gutter for the expand chevron. Sized to the icon control (20px glyph
+ * + 2px padding each side) so first-column titles align whether or not that
+ * row itself has subRows.
+ */
+.cx-it__expand {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: 24px;
+  block-size: 24px;
+}
 
 /*
  * Linked scrolling. The header is outside the body's scroller, so by default

@@ -17,6 +17,8 @@ import { ActionListExample } from "@/examples/overlays/ActionListExample";
 import ActionListExampleRaw from "@/examples/overlays/ActionListExample.tsx?raw";
 import { DrawerExample } from "@/examples/overlays/DrawerExample";
 import DrawerExampleRaw from "@/examples/overlays/DrawerExample.tsx?raw";
+import { CommandExample } from "@/examples/overlays/CommandExample";
+import CommandExampleRaw from "@/examples/overlays/CommandExample.tsx?raw";
 
 const PATTERN_B_IFRAME_CODE = `// Iframe Route (app.preferences.settings.tsx)
 import { useEffect, useState } from "react";
@@ -102,6 +104,20 @@ export const overlaysComponents: ComponentEntry[] = [
         title: "Responsive drawer / sheet",
         Example: DrawerExample,
         code: DrawerExampleRaw,
+      },
+    ],
+  },
+  {
+    name: "Command",
+    slug: "command",
+    category: "Overlays",
+    description:
+      "Command menu for search and quick actions. Filterable groups with shortcuts; optional dialog palette (⌘K).",
+    examples: [
+      {
+        title: "Inline menu and command palette",
+        Example: CommandExample,
+        code: CommandExampleRaw,
       },
     ],
   },

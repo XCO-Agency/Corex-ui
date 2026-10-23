@@ -8,7 +8,7 @@ description: >-
 
 # Corex UI Components Reference
 
-Complete reference of all **78 UI components** in `@xco-agency/corex-ui` and their **modern props**.
+Complete reference of all **81 UI components** in `@xco-agency/corex-ui` and their **modern props**.
 
 > [!IMPORTANT]
 > **Strict Corex UI Guidelines**:
@@ -198,7 +198,7 @@ When specifying `gap`, `padding`, `rowGap`, or `columnGap`, use **exclusively** 
 | [**Page**](#page)               | Top-level page layout container wrapping `<s-page>`. Houses header, breadcrumbs, actions, aside, and page content. | —                                                                                                     |
 | [**Tabs**](#tabs)               | Tabbed navigation bar supporting both standard tabs and compact index-filter view selectors.                       | —                                                                                                     |
 | [**Pagination**](#pagination)   | Pagination navigation buttons for traversing records.                                                              | —                                                                                                     |
-| [**Drawer**](#drawer)           | Swipeable bottom sheet / side drawer (Base UI) with edge inset, nested stack animation, and drag-to-dismiss.       | `Drawer.Trigger`, `Drawer.Content`, `Drawer.Header`, `Drawer.Footer`, `Drawer.Title`, `Drawer.Description`, `Drawer.Body`, `Drawer.Close`, `Drawer.Overlay`, `Drawer.SwipeHandle`, `Drawer.Portal` |
+| [**Drawer**](#drawer)           | Responsive panel: right drawer on desktop, bottom sheet on mobile; full-surface swipe, no desktop handle.          | `Drawer.Trigger`, `Drawer.Content`, `Drawer.Header`, `Drawer.Footer`, `Drawer.Title`, `Drawer.Description`, `Drawer.Body`, `Drawer.Close`, `Drawer.Overlay`, `Drawer.SwipeHandle`, `Drawer.Portal` |
 | [**Modal**](#modal)             | Dialog modal overlay wrapping `<s-modal>` or `<ui-modal>`.                                                         | —                                                                                                     |
 | [**Popover**](#popover)         | Contextual popover overlay anchored to a trigger element.                                                          | `Popover.Trigger`, `Popover.Content`                                                                  |
 | [**FlexPopover**](#flexpopover) | Custom floating popover composed of `FlexPopover.Trigger` and `FlexPopover.Content` with automatic positioning and boundary management. | `FlexPopover.Trigger`, `FlexPopover.Content`                                                         |
@@ -1109,6 +1109,75 @@ import { Clickable } from "@xco-agency/corex-ui";
 ```
 
 ---
+
+### Calendar
+
+FullCalendar-style event calendar with `month`, `week`, `day` and `list` views. Self-contained (no Polaris web component); styles are injected once and themed with `--cal-*` CSS variables that default to Polaris tokens.
+
+```tsx
+import { Calendar, type CalendarEventType } from "@xco-agency/corex-ui";
+```
+
+#### Event shape (`CalendarEventType`)
+
+| Field | Type | Description |
+| :---- | :--- | :---------- |
+| `id`, `title` | `string` | Required. |
+| `start` / `end?` | `Date \| string` | Date-only strings are local midnight. All-day `end` is **exclusive**. Default length: 1 day / 1 hour. |
+| `allDay?` | `boolean` | All-day bar instead of a timed event. |
+| `color?` / `textColor?` | `string` | Background / text color. |
+| `editable?` | `boolean` | Overrides calendar `editable`. Recurring events are never draggable. |
+| `rrule?` | `string` | `FREQ=DAILY\|WEEKLY\|MONTHLY\|YEARLY`, `INTERVAL`, `COUNT`, `UNTIL`, `BYDAY`. |
+| `extendedProps?` | `Record<string, unknown>` | Free-form data. |
+
+#### Modern Props (`<Calendar>`)
+
+| Prop | Type | Description |
+| :--- | :--- | :---------- |
+| `events` | `CalendarEventType[] \| (range) => Promise<CalendarEventType[]>` | Array, or loader called per visible range. |
+| `view` / `defaultView` / `onViewChange` | `"month" \| "week" \| "day" \| "list"` | Controlled or uncontrolled. Uncontrolled on phones defaults to `list`. |
+| `date` / `defaultDate` / `onDatesChange` | `Date` / `({ start, end, view, date }) => void` | Visible date; `onDatesChange` fires on every range change. |
+| `firstDay` | `0`–`6` | Week start. Default `0` (Sunday). |
+| `locale` | `string` | `Intl` locale for titles, weekdays and times. |
+| `weekends` / `weekNumbers` | `boolean` | Hide Sat/Sun; show ISO week numbers. |
+| `dayMaxEvents` | `number \| boolean` | Month rows before "+N more". `true` fits the cell. Default `3`. |
+| `fixedWeekCount` | `boolean` | Always 6 weeks. Default `true`. |
+| `editable` / `selectable` | `boolean` | Drag/resize events; drag across days/slots to select. |
+| `nowIndicator` | `boolean` | Red now line in week/day. Default `true`. |
+| `slotMinTime` / `slotMaxTime` / `slotDuration` | `"HH:mm"` / `number` (minutes) | Time grid range and slot size (default 30). |
+| `businessHours` | `boolean \| { daysOfWeek?, startTime?, endTime? }` | Shades non-business time. |
+| `height` | `number \| "auto"` | Fixed px (views scroll inside) or content height. |
+| `headerToolbar` | `false \| { start?, center?, end? }` | Tokens `prev,next today title month,week,day,list`. |
+| `density` | `"comfortable" \| "compact"` | Row/slot sizing. |
+| `dir` | `"ltr" \| "rtl" \| "auto"` | Mirrors the layout. |
+| `onDateClick` | `({ date, allDay }) => void` | Day cell / time slot click. |
+| `onEventClick` | `({ event, start, end, nativeEvent }) => void` | Event click / Enter. |
+| `onSelect` | `({ start, end, allDay }) => void` | Range selection (end exclusive). |
+| `onEventDrop` / `onEventResize` | `(info) => void \| boolean \| Promise` | Applied optimistically; return `false` or reject to revert. |
+| `renderEvent` / `renderDayCell` | `(info) => ReactNode` | Custom event body / day number. |
+| `classNames` | `{ root?, toolbar?, title?, grid?, dayCell?, event?, popover?, timeGrid? }` | Slot class overrides. |
+
+Keyboard (month): arrows move focus, `PageUp`/`PageDown` change month (`Shift` = year), `Home`/`End` week edges, `T` today, `Enter` activates. Week/day: `PageUp`/`PageDown`, `T`.
+
+#### Example
+
+```tsx
+const [events, setEvents] = useState<CalendarEventType[]>(initialEvents);
+
+<Calendar
+  events={events}
+  editable
+  selectable
+  firstDay={1}
+  businessHours
+  onEventDrop={({ event, newStart, newEnd }) =>
+    setEvents((list) => list.map((e) => (e.id === event.id ? { ...e, start: newStart, end: newEnd } : e)))
+  }
+  onSelect={({ start, end, allDay }) =>
+    setEvents((list) => [...list, { id: crypto.randomUUID(), title: "New event", start, end, allDay }])
+  }
+/>;
+```
 
 ### Collapsible
 
@@ -2543,7 +2612,7 @@ import { MetricCard } from "@xco-agency/corex-ui";
 
 ### Drawer
 
-Swipeable bottom sheet / side drawer built on `@base-ui/react/drawer`. Default `inset={8}` floats the sheet from the viewport edges; nested drawers stack with scale/peek; swipe dismisses on mobile.
+Responsive swipeable panel on `@base-ui/react/drawer`. **Desktop** = right side drawer (no handle, no handle space, swipe full panel). **Mobile** = bottom sheet (side directions remap to `down`). Nested drawers stack with scale/peek.
 
 ```tsx
 import { Drawer, Button } from "@xco-agency/corex-ui";
@@ -2552,7 +2621,7 @@ import { Drawer, Button } from "@xco-agency/corex-ui";
 | Subcomponent            | Description                                                                 | Key Props                                                                 |
 | :---------------------- | :-------------------------------------------------------------------------- | :------------------------------------------------------------------------ |
 | `Drawer.Trigger`        | Opens the drawer; pass a `Button` (or other element) as `children`.         | `children`, `nativeButton?`                                               |
-| `Drawer.Content`        | Portal + overlay + viewport + popup panel.                                  | `inset?`, `width?`, `maxHeight?`, `children`                              |
+| `Drawer.Content`        | Portal + overlay + viewport + popup panel.                                  | `offset?`, `width?`, `maxHeight?`, `children`                             |
 | `Drawer.Header`         | Title/description region.                                                   | `children`                                                                |
 | `Drawer.Title`          | Accessible title.                                                           | `children`                                                                |
 | `Drawer.Description`    | Accessible description.                                                     | `children`                                                                |
@@ -2560,7 +2629,7 @@ import { Drawer, Button } from "@xco-agency/corex-ui";
 | `Drawer.Footer`         | Action row pinned to the bottom.                                            | `children`                                                                |
 | `Drawer.Close`          | Dismiss control; pass a `Button` as `children`.                             | `children`                                                                |
 | `Drawer.Overlay`        | Backdrop (included automatically when `modal`).                             | —                                                                         |
-| `Drawer.SwipeHandle`    | Grabber (also via `showSwipeHandle` on root).                               | —                                                                         |
+| `Drawer.SwipeHandle`    | Mobile-sheet grabber only (never on desktop).                               | —                                                                         |
 | `Drawer.Portal`         | Low-level portal.                                                           | —                                                                         |
 
 #### Modern Props (`<Drawer>`)
@@ -2571,24 +2640,25 @@ import { Drawer, Button } from "@xco-agency/corex-ui";
 | `open`             | `boolean &#124; undefined`                                   | Controlled open state.                                                                               |
 | `defaultOpen`      | `boolean &#124; undefined`                                   | Uncontrolled initial open.                                                                           |
 | `onOpenChange`     | `((open: boolean, details) => void) &#124; undefined`        | Open/close callback (includes swipe dismiss).                                                        |
-| `swipeDirection`   | `"up" &#124; "down" &#124; "left" &#124; "right"`            | Entry / dismiss side. Defaults to `"down"` (bottom sheet).                                           |
-| `showSwipeHandle`  | `boolean`                                                    | Renders the drag grabber. Defaults to `false`.                                                       |
-| `inset`            | `number &#124; string`                                       | Edge float gap (`--drawer-inset`). Defaults to `8`. Pass `0` for flush sheets.                       |
+| `swipeDirection`   | `"up" &#124; "down" &#124; "left" &#124; "right"`            | Preferred desktop side. Defaults to `"right"`.                                                       |
+| `responsive`       | `boolean`                                                    | Remap `left`/`right` → bottom sheet on mobile. Defaults to `true`.                                   |
+| `showSwipeHandle`  | `boolean`                                                    | Mobile sheet grabber only; never mounts on desktop. Defaults to `false`.                             |
+| `offset`           | `number &#124; string &#124; { top?, right?, bottom?, left?, x?, y? }` | Edge float gap. Defaults to `8` all sides. Pass `0` for flush, or per-side object. |
 | `modal`            | `boolean &#124; "trap-focus"`                                | Modal / non-modal / trap-focus. Defaults to `true`.                                                  |
-| `snapPoints`       | `Array&lt;number &#124; string&gt; &#124; undefined`         | Vertical snap heights (fractions `0–1`, px, or rem).                                                 |
+| `snapPoints`       | `Array&lt;number &#124; string&gt; &#124; undefined`         | Vertical snap heights (sheet only).                                                                  |
 | `disablePointerDismissal` | `boolean &#124; undefined`                              | Prevent outside-press dismiss.                                                                       |
 
 #### Example
 
 ```tsx
-<Drawer showSwipeHandle>
+<Drawer>
   <Drawer.Trigger>
     <Button>Open</Button>
   </Drawer.Trigger>
   <Drawer.Content>
     <Drawer.Header>
-      <Drawer.Title>Pick a delivery time</Drawer.Title>
-      <Drawer.Description>We will prepare your order soon.</Drawer.Description>
+      <Drawer.Title>Order details</Drawer.Title>
+      <Drawer.Description>Swipe anywhere on the panel to dismiss.</Drawer.Description>
     </Drawer.Header>
     <Drawer.Body>…</Drawer.Body>
     <Drawer.Footer>
@@ -2600,7 +2670,61 @@ import { Drawer, Button } from "@xco-agency/corex-ui";
 </Drawer>
 ```
 
-For desktop dialog + mobile sheet, branch with `useBreakpoints().mdUp` between `Modal` and `Drawer`.
+### Command
+
+Filterable command menu on `cmdk` (same primitive as [shadcn Command](https://ui.shadcn.com/docs/components/base/command)). Optional palette dialog uses Base UI `Dialog`. Optional `sidebar` layout: groups as a left nav, items of the selected/hovered group on the right.
+
+```tsx
+import { Command, Icon, Button } from "@xco-agency/corex-ui";
+```
+
+| Subcomponent         | Description                                      | Key Props                                      |
+| :------------------- | :----------------------------------------------- | :--------------------------------------------- |
+| `Command.Input`      | Search field with leading search icon.           | `placeholder?`, `hideIcon?`, `onValueChange?`  |
+| `Command.List`       | Scrollable results region (wraps sidebar body).  | `maxHeight?` (default `18rem`)                 |
+| `Command.Empty`      | Shown when the filter has no matches.            | `children`                                     |
+| `Command.Group`      | Labeled group of items.                          | `heading?`, `value?`, `icon?`, `children`      |
+| `Command.Item`       | Selectable row (`onSelect` receives `value`).    | `value?`, `onSelect?`, `disabled?`, `keywords?`|
+| `Command.Separator`  | Divider between groups.                          | —                                              |
+| `Command.Shortcut`   | Trailing keyboard hint (e.g. `⌘K`).              | `children`                                     |
+| `Command.Sidebar`    | Optional custom left nav (auto-rendered by List).| `groups?`                                      |
+| `Command.Dialog`     | Centered palette overlay wrapping a `Command`.   | `open?`, `onOpenChange?`, `title?`, `description?` |
+
+#### Modern Props (`<Command>`)
+
+| Prop            | Type                                      | Description                                      |
+| :-------------- | :---------------------------------------- | :----------------------------------------------- |
+| `label`         | `string`                                  | Accessible label for the menu.                   |
+| `sidebar`       | `boolean`                                 | Two-column groups sidebar layout. Default `false`. |
+| `sidebarGroups` | `CommandSidebarGroupType[]`               | Explicit left-nav entries (else auto from Groups). |
+| `sidebarGroup` / `defaultSidebarGroup` | `string`               | Controlled / initial sticky group id.            |
+| `onSidebarGroupChange` | `(value: string) => void`            | Sticky group click callback.                     |
+| `sidebarWidth`  | `string`                                  | Left nav width. Default `"12rem"`.               |
+| `shouldFilter`  | `boolean`                                 | Auto filter/sort items. Defaults to `true`.      |
+| `filter`        | `(value, search, keywords?) => number`    | Custom score (`0` hides, `1` best match).        |
+| `value`         | `string`                                  | Controlled highlighted item value.               |
+| `onValueChange` | `(value: string) => void`                 | Highlighted item change.                         |
+| `loop`          | `boolean`                                 | Arrow-key wrap.                                  |
+
+#### Example
+
+```tsx
+<Command sidebar defaultSidebarGroup="suggestions">
+  <Command.Input placeholder="Type a command or search..." />
+  <Command.List>
+    <Command.Empty>No results found.</Command.Empty>
+    <Command.Group heading="Suggestions" value="suggestions">
+      <Command.Item value="calendar" onSelect={() => {}}>
+        <Icon source="calendar" size="small" />
+        Calendar
+      </Command.Item>
+    </Command.Group>
+    <Command.Group heading="Settings" value="settings">
+      <Command.Item value="profile" onSelect={() => {}}>Profile</Command.Item>
+    </Command.Group>
+  </Command.List>
+</Command>
+```
 
 ### Modal
 

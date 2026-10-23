@@ -2782,6 +2782,36 @@ export function FloatingThumbnail() {
   );
 }
 
+export function CalendarThumbnail() {
+  const cols = [0, 1, 2, 3, 4, 5, 6];
+  const rows = [0, 1, 2, 3];
+  return (
+    <Frame>
+      <rect x="18" y="14" width="124" height="72" rx="7" fill={cardBg} stroke={cardBorder} strokeWidth="1.2" />
+      <rect x="26" y="20" width="36" height="5" rx="2.5" fill={textPrimary} fillOpacity="0.75" />
+      <line x1="18" y1="31" x2="142" y2="31" stroke={cardBorder} strokeWidth="1" />
+      {rows.map((row) =>
+        cols.map((col) => (
+          <rect
+            key={`${row}-${col}`}
+            x={22 + col * 17}
+            y={34 + row * 12.5}
+            width="15"
+            height="10.5"
+            rx="2"
+            fill={row === 2 && col === 3 ? accentTint : mutedBg}
+            stroke={row === 2 && col === 3 ? accentBorder : "none"}
+          />
+        )),
+      )}
+      {/* Multi-day bar spanning a week row */}
+      <rect x="40" y="41" width="64" height="3.5" rx="1.75" fill={accent} />
+      <rect x="91" y="66" width="30" height="3.5" rx="1.75" fill={success} />
+      <circle cx="78" cy="55" r="1.6" fill={warning} />
+    </Frame>
+  );
+}
+
 export function DrawerThumbnail() {
   return (
     <Frame>
@@ -2841,6 +2871,70 @@ export function DrawerThumbnail() {
         rx="2"
         fill={textMuted}
         fillOpacity="0.28"
+      />
+    </Frame>
+  );
+}
+
+export function CommandThumbnail() {
+  return (
+    <Frame>
+      <rect
+        x="28"
+        y="16"
+        width="104"
+        height="68"
+        rx="10"
+        fill={cardBg}
+        stroke={cardBorder}
+        strokeWidth="1.2"
+      />
+      {/* Search row */}
+      <circle cx="42" cy="30" r="4" fill={textMuted} fillOpacity="0.45" />
+      <rect
+        x="50"
+        y="27"
+        width="64"
+        height="6"
+        rx="3"
+        fill={textMuted}
+        fillOpacity="0.35"
+      />
+      <line
+        x1="34"
+        y1="40"
+        x2="126"
+        y2="40"
+        stroke={cardBorder}
+        strokeWidth="1"
+      />
+      {/* Selected item */}
+      <rect
+        x="34"
+        y="46"
+        width="92"
+        height="14"
+        rx="4"
+        fill={textPrimary}
+        fillOpacity="0.1"
+      />
+      <rect
+        x="40"
+        y="50"
+        width="40"
+        height="5"
+        rx="2.5"
+        fill={textPrimary}
+        fillOpacity="0.8"
+      />
+      <rect
+        x="40"
+        y="66"
+        width="52"
+        height="5"
+        rx="2.5"
+        fill={textMuted}
+        fillOpacity="0.4"
       />
     </Frame>
   );
@@ -3396,6 +3490,7 @@ export const thumbnails: Record<string, React.ComponentType> = {
   divider: DividerThumbnail,
   selectable: SelectableThumbnail,
   table: TableThumbnail,
+  calendar: CalendarThumbnail,
   collapsible: CollapsibleThumbnail,
 
   // Media
@@ -3411,6 +3506,7 @@ export const thumbnails: Record<string, React.ComponentType> = {
   // Overlays
   floating: FloatingThumbnail,
   drawer: DrawerThumbnail,
+  command: CommandThumbnail,
   modal: ModalThumbnail,
 
   // Typography

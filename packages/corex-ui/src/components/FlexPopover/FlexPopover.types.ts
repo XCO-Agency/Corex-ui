@@ -8,21 +8,28 @@ import type {
 
 /**
  * Side of the anchor the popover prefers.
- * `start` / `end` align to the anchor's edges; a bare side centers on it.
+ *
+ * - `start` / `end` align to the anchor's edges
+ * - a bare side (`top`, `bottom`, `left`, `right`) or `*-center` centers on it
+ *
  * `start` is the left edge in LTR (top edge for `left` / `right`).
  */
 export type FlexPopoverPositionType =
   | "top"
   | "top-start"
+  | "top-center"
   | "top-end"
   | "bottom"
   | "bottom-start"
+  | "bottom-center"
   | "bottom-end"
   | "left"
   | "left-start"
+  | "left-center"
   | "left-end"
   | "right"
   | "right-start"
+  | "right-center"
   | "right-end";
 
 /** Space between the panel edge and its content. `small` is 12px, `base` 16px, `large` 20px. */
@@ -59,12 +66,17 @@ export type FlexPopoverPropsType = {
   closeAccessibilityLabel?: string;
   width?: string;
   minWidth?: string;
+  /**
+   * Cap on the panel body. Defaults to `320px` with scroll. Pass `"none"` or
+   * `"auto"` for an uncapped panel (no scroll).
+   */
   maxHeight?: string;
   /** Gap in pixels between the anchor and the popover. @default 8 */
   offset?: number;
   /**
-   * Preferred placement relative to the anchor. Flips to the opposite side
-   * when the preferred side cannot fit. @default "bottom-start"
+   * Preferred placement relative to the anchor (`top-center`, `left-end`, …).
+   * Flips to the opposite side when the preferred side cannot fit.
+   * @default "bottom-start"
    */
   position?: FlexPopoverPositionType;
   /** Whether the popover should match the width of the anchor element. */

@@ -8,7 +8,7 @@ description: >-
 
 # Corex UI Components Reference
 
-Complete reference of all **78 UI components** in `@xco-agency/corex-ui` and their **modern props**.
+Complete reference of all **81 UI components** in `@xco-agency/corex-ui` and their **modern props**.
 
 > [!IMPORTANT]
 > **Strict Corex UI Guidelines**:
@@ -1109,6 +1109,75 @@ import { Clickable } from "@xco-agency/corex-ui";
 ```
 
 ---
+
+### Calendar
+
+FullCalendar-style event calendar with `month`, `week`, `day` and `list` views. Self-contained (no Polaris web component); styles are injected once and themed with `--cal-*` CSS variables that default to Polaris tokens.
+
+```tsx
+import { Calendar, type CalendarEventType } from "@xco-agency/corex-ui";
+```
+
+#### Event shape (`CalendarEventType`)
+
+| Field | Type | Description |
+| :---- | :--- | :---------- |
+| `id`, `title` | `string` | Required. |
+| `start` / `end?` | `Date \| string` | Date-only strings are local midnight. All-day `end` is **exclusive**. Default length: 1 day / 1 hour. |
+| `allDay?` | `boolean` | All-day bar instead of a timed event. |
+| `color?` / `textColor?` | `string` | Background / text color. |
+| `editable?` | `boolean` | Overrides calendar `editable`. Recurring events are never draggable. |
+| `rrule?` | `string` | `FREQ=DAILY\|WEEKLY\|MONTHLY\|YEARLY`, `INTERVAL`, `COUNT`, `UNTIL`, `BYDAY`. |
+| `extendedProps?` | `Record<string, unknown>` | Free-form data. |
+
+#### Modern Props (`<Calendar>`)
+
+| Prop | Type | Description |
+| :--- | :--- | :---------- |
+| `events` | `CalendarEventType[] \| (range) => Promise<CalendarEventType[]>` | Array, or loader called per visible range. |
+| `view` / `defaultView` / `onViewChange` | `"month" \| "week" \| "day" \| "list"` | Controlled or uncontrolled. Uncontrolled on phones defaults to `list`. |
+| `date` / `defaultDate` / `onDatesChange` | `Date` / `({ start, end, view, date }) => void` | Visible date; `onDatesChange` fires on every range change. |
+| `firstDay` | `0`–`6` | Week start. Default `0` (Sunday). |
+| `locale` | `string` | `Intl` locale for titles, weekdays and times. |
+| `weekends` / `weekNumbers` | `boolean` | Hide Sat/Sun; show ISO week numbers. |
+| `dayMaxEvents` | `number \| boolean` | Month rows before "+N more". `true` fits the cell. Default `3`. |
+| `fixedWeekCount` | `boolean` | Always 6 weeks. Default `true`. |
+| `editable` / `selectable` | `boolean` | Drag/resize events; drag across days/slots to select. |
+| `nowIndicator` | `boolean` | Red now line in week/day. Default `true`. |
+| `slotMinTime` / `slotMaxTime` / `slotDuration` | `"HH:mm"` / `number` (minutes) | Time grid range and slot size (default 30). |
+| `businessHours` | `boolean \| { daysOfWeek?, startTime?, endTime? }` | Shades non-business time. |
+| `height` | `number \| "auto"` | Fixed px (views scroll inside) or content height. |
+| `headerToolbar` | `false \| { start?, center?, end? }` | Tokens `prev,next today title month,week,day,list`. |
+| `density` | `"comfortable" \| "compact"` | Row/slot sizing. |
+| `dir` | `"ltr" \| "rtl" \| "auto"` | Mirrors the layout. |
+| `onDateClick` | `({ date, allDay }) => void` | Day cell / time slot click. |
+| `onEventClick` | `({ event, start, end, nativeEvent }) => void` | Event click / Enter. |
+| `onSelect` | `({ start, end, allDay }) => void` | Range selection (end exclusive). |
+| `onEventDrop` / `onEventResize` | `(info) => void \| boolean \| Promise` | Applied optimistically; return `false` or reject to revert. |
+| `renderEvent` / `renderDayCell` | `(info) => ReactNode` | Custom event body / day number. |
+| `classNames` | `{ root?, toolbar?, title?, grid?, dayCell?, event?, popover?, timeGrid? }` | Slot class overrides. |
+
+Keyboard (month): arrows move focus, `PageUp`/`PageDown` change month (`Shift` = year), `Home`/`End` week edges, `T` today, `Enter` activates. Week/day: `PageUp`/`PageDown`, `T`.
+
+#### Example
+
+```tsx
+const [events, setEvents] = useState<CalendarEventType[]>(initialEvents);
+
+<Calendar
+  events={events}
+  editable
+  selectable
+  firstDay={1}
+  businessHours
+  onEventDrop={({ event, newStart, newEnd }) =>
+    setEvents((list) => list.map((e) => (e.id === event.id ? { ...e, start: newStart, end: newEnd } : e)))
+  }
+  onSelect={({ start, end, allDay }) =>
+    setEvents((list) => [...list, { id: crypto.randomUUID(), title: "New event", start, end, allDay }])
+  }
+/>;
+```
 
 ### Collapsible
 
@@ -2599,6 +2668,62 @@ import { Drawer, Button } from "@xco-agency/corex-ui";
     </Drawer.Footer>
   </Drawer.Content>
 </Drawer>
+```
+
+### Command
+
+Filterable command menu on `cmdk` (same primitive as [shadcn Command](https://ui.shadcn.com/docs/components/base/command)). Optional palette dialog uses Base UI `Dialog`. Optional `sidebar` layout: groups as a left nav, items of the selected/hovered group on the right.
+
+```tsx
+import { Command, Icon, Button } from "@xco-agency/corex-ui";
+```
+
+| Subcomponent         | Description                                      | Key Props                                      |
+| :------------------- | :----------------------------------------------- | :--------------------------------------------- |
+| `Command.Input`      | Search field with leading search icon.           | `placeholder?`, `hideIcon?`, `onValueChange?`  |
+| `Command.List`       | Scrollable results region (wraps sidebar body).  | `maxHeight?` (default `18rem`)                 |
+| `Command.Empty`      | Shown when the filter has no matches.            | `children`                                     |
+| `Command.Group`      | Labeled group of items.                          | `heading?`, `value?`, `icon?`, `children`      |
+| `Command.Item`       | Selectable row (`onSelect` receives `value`).    | `value?`, `onSelect?`, `disabled?`, `keywords?`|
+| `Command.Separator`  | Divider between groups.                          | —                                              |
+| `Command.Shortcut`   | Trailing keyboard hint (e.g. `⌘K`).              | `children`                                     |
+| `Command.Sidebar`    | Optional custom left nav (auto-rendered by List).| `groups?`                                      |
+| `Command.Dialog`     | Centered palette overlay wrapping a `Command`.   | `open?`, `onOpenChange?`, `title?`, `description?` |
+
+#### Modern Props (`<Command>`)
+
+| Prop            | Type                                      | Description                                      |
+| :-------------- | :---------------------------------------- | :----------------------------------------------- |
+| `label`         | `string`                                  | Accessible label for the menu.                   |
+| `sidebar`       | `boolean`                                 | Two-column groups sidebar layout. Default `false`. |
+| `sidebarGroups` | `CommandSidebarGroupType[]`               | Explicit left-nav entries (else auto from Groups). |
+| `sidebarGroup` / `defaultSidebarGroup` | `string`               | Controlled / initial sticky group id.            |
+| `onSidebarGroupChange` | `(value: string) => void`            | Sticky group click callback.                     |
+| `sidebarWidth`  | `string`                                  | Left nav width. Default `"12rem"`.               |
+| `shouldFilter`  | `boolean`                                 | Auto filter/sort items. Defaults to `true`.      |
+| `filter`        | `(value, search, keywords?) => number`    | Custom score (`0` hides, `1` best match).        |
+| `value`         | `string`                                  | Controlled highlighted item value.               |
+| `onValueChange` | `(value: string) => void`                 | Highlighted item change.                         |
+| `loop`          | `boolean`                                 | Arrow-key wrap.                                  |
+
+#### Example
+
+```tsx
+<Command sidebar defaultSidebarGroup="suggestions">
+  <Command.Input placeholder="Type a command or search..." />
+  <Command.List>
+    <Command.Empty>No results found.</Command.Empty>
+    <Command.Group heading="Suggestions" value="suggestions">
+      <Command.Item value="calendar" onSelect={() => {}}>
+        <Icon source="calendar" size="small" />
+        Calendar
+      </Command.Item>
+    </Command.Group>
+    <Command.Group heading="Settings" value="settings">
+      <Command.Item value="profile" onSelect={() => {}}>Profile</Command.Item>
+    </Command.Group>
+  </Command.List>
+</Command>
 ```
 
 ### Modal
