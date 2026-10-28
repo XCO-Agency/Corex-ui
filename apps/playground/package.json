@@ -7,9 +7,10 @@
   "scripts": {
     "dev": "vite",
     "build:registry": "node scripts/build-registry.mjs",
-    "build": "node scripts/build-registry.mjs && vite build",
+    "build": "node scripts/build-registry.mjs && node scripts/build-editor-props.mjs && vite build",
     "typecheck": "tsc --noEmit",
-    "sync:apps-icons": "node scripts/sync-apps-icons.mjs"
+    "sync:apps-icons": "node scripts/sync-apps-icons.mjs",
+    "build:editor-props": "node scripts/build-editor-props.mjs"
   },
   "dependencies": {
     "@base-ui/react": "^1.7.0",

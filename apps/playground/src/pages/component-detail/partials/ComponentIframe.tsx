@@ -264,7 +264,7 @@ export function ComponentIframe({ children, className }: ComponentIframePropsTyp
 /* Helpers                                                                    */
 /* -------------------------------------------------------------------------- */
 
-function syncStyles(doc: Document) {
+export function syncStyles(doc: Document) {
   const parentStyles = document.querySelectorAll("style, link[rel='stylesheet']");
 
   parentStyles.forEach((el) => {

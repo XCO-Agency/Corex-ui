@@ -6,6 +6,7 @@ import {
   ChevronRight,
   Code2,
   Grid2x2,
+  PencilRuler,
   Rocket,
   Search,
 } from "lucide-react";
@@ -51,6 +52,12 @@ const GUIDE_LINKS = [
     icon: BadgeCheck,
     match: (p: string) => p === "/apps-icons" || p === "/app-icons",
     count: APP_ICONS_DATA.length,
+  },
+  {
+    to: "/editor",
+    label: "Editor",
+    icon: PencilRuler,
+    match: (p: string) => p === "/editor",
   },
   {
     to: "/utils",
@@ -99,7 +106,10 @@ function SectionGroup({
           <span className="flex items-center gap-1 font-mono text-[10px] normal-case tracking-normal">
             {count}
             <ChevronRight
-              className={cn("size-3 transition-transform duration-200", open && "rotate-90")}
+              className={cn(
+                "size-3 transition-transform duration-200",
+                open && "rotate-90",
+              )}
             />
           </span>
         </SidebarGroupLabel>
