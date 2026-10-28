@@ -9,9 +9,10 @@ import {
 
 /**
  * `variant="aside"`: the nested drawer opens beside its parent instead of on
- * top. It takes the screen edge and the parent slides inward:
- * `[parent · aside]` on the right, `[aside · parent]` on the left. The parent
- * stays usable. Mobile keeps the float stack.
+ * top. By default it takes the screen edge and the parent slides inward:
+ * `[parent · aside]` on the right, `[aside · parent]` on the left. `position`
+ * set to the other side opens it on the parent's inner edge instead, and the
+ * parent stays put. The parent stays usable. Mobile keeps the float stack.
  */
 export function DrawerAsideExample() {
   return (
@@ -77,7 +78,43 @@ export function DrawerAsideExample() {
           </Drawer.Content>
         </Drawer>
 
-        {/* The aside always opens on its parent's side. */}
+        {/* `position` opposite to the parent's side: the aside opens on its inner edge. */}
+        <Drawer>
+          <Drawer.Trigger>
+            <Button>Right, position=&quot;left&quot;: [aside · parent]</Button>
+          </Drawer.Trigger>
+          <Drawer.Content>
+            <Drawer.Header>
+              <Drawer.Title>Customers</Drawer.Title>
+              <Drawer.Description>Stays at the screen edge.</Drawer.Description>
+            </Drawer.Header>
+            <Drawer.Body>
+              <Drawer variant="aside" position="left">
+                <Drawer.Trigger>
+                  <Button>View customer</Button>
+                </Drawer.Trigger>
+                <Drawer.Content width="small">
+                  <Drawer.Header>
+                    <Drawer.Title>Jane Cooper</Drawer.Title>
+                    <Drawer.Description>Opened on the parent&apos;s left.</Drawer.Description>
+                  </Drawer.Header>
+                  <Drawer.Footer>
+                    <Drawer.Close>
+                      <Button>Close</Button>
+                    </Drawer.Close>
+                  </Drawer.Footer>
+                </Drawer.Content>
+              </Drawer>
+            </Drawer.Body>
+            <Drawer.Footer>
+              <Drawer.Close>
+                <Button>Close</Button>
+              </Drawer.Close>
+            </Drawer.Footer>
+          </Drawer.Content>
+        </Drawer>
+
+        {/* By default the aside opens on its parent's side. */}
         <Drawer swipeDirection="left">
           <Drawer.Trigger>
             <Button>Left: [aside · parent]</Button>

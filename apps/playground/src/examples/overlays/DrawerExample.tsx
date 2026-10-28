@@ -123,6 +123,74 @@ export function DrawerExample() {
 
       <BlockStack gap="small-200">
         <Text variant="headingMd" as="h3">
+          Header: close button, actions, alignment
+        </Text>
+        <Text as="p" variant="small" color="subdued">
+          Every header has a close button in its end slot (`close=&#123;false&#125;` hides it,
+          an element replaces it). `actions` adds controls before it. Titles start-align
+          everywhere; `mobileAlign=&quot;center&quot;` centers them on the mobile sheet.
+        </Text>
+        <InlineStack gap="small-200">
+          <Drawer>
+            <Drawer.Trigger>
+              <Button>Header actions</Button>
+            </Drawer.Trigger>
+            <Drawer.Content>
+              <Drawer.Header
+                actions={
+                  <>
+                    <Button variant="tertiary" icon="edit" accessibilityLabel="Edit order" />
+                    <Button
+                      variant="tertiary"
+                      icon="menu-horizontal"
+                      accessibilityLabel="More actions"
+                    />
+                  </>
+                }
+              >
+                <Drawer.Title>Order #1042</Drawer.Title>
+                <Drawer.Description>Actions sit before the close button.</Drawer.Description>
+              </Drawer.Header>
+              <Drawer.Body>
+                <Text as="p">The end slot is part of the layout, not positioned on top.</Text>
+              </Drawer.Body>
+            </Drawer.Content>
+          </Drawer>
+          <Drawer>
+            <Drawer.Trigger>
+              <Button>Centered on mobile</Button>
+            </Drawer.Trigger>
+            <Drawer.Content>
+              <Drawer.Header mobileAlign="center">
+                <Drawer.Title>Order #1042</Drawer.Title>
+                <Drawer.Description>Centered below `md`, start-aligned on desktop.</Drawer.Description>
+              </Drawer.Header>
+              <Drawer.Body>
+                <Text as="p">Resize below `md` to see the centered header.</Text>
+              </Drawer.Body>
+            </Drawer.Content>
+          </Drawer>
+          <Drawer>
+            <Drawer.Trigger>
+              <Button>No close button</Button>
+            </Drawer.Trigger>
+            <Drawer.Content>
+              <Drawer.Header close={false}>
+                <Drawer.Title>Order #1042</Drawer.Title>
+                <Drawer.Description>`close=&#123;false&#125;` — dismiss from the footer.</Drawer.Description>
+              </Drawer.Header>
+              <Drawer.Footer>
+                <Drawer.Close>
+                  <Button>Done</Button>
+                </Drawer.Close>
+              </Drawer.Footer>
+            </Drawer.Content>
+          </Drawer>
+        </InlineStack>
+      </BlockStack>
+
+      <BlockStack gap="small-200">
+        <Text variant="headingMd" as="h3">
           Mobile sheet with handle (optional)
         </Text>
         <Text as="p" variant="small" color="subdued">

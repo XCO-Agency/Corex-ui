@@ -56,8 +56,25 @@ export type DrawerModalType = boolean | "trap-focus";
  * - `aside` — sits next to the parent: the nested panel takes the edge and the
  *   parent slides inward (`[parent · nested]` on the right, `[nested · parent]` on the left).
  * - `bottom` — shares the parent's column and pushes it up from the bottom.
+ * - `overlay` — a card over the parent's top or bottom (confirmation, toast):
+ *   doesn't push, scale or dim the parent. Also works on mobile sheets.
  */
-export type DrawerVariantType = "float" | "aside" | "bottom";
+export type DrawerVariantType = "float" | "aside" | "bottom" | "overlay";
+
+/**
+ * Where a nested drawer opens.
+ * - `aside`: `left` / `right`. Defaults to the parent's side — the aside takes
+ *   the screen edge and the parent slides inward. The other side opens it on
+ *   the parent's inner edge and the parent stays put.
+ * - `overlay`: `top` / `bottom` of the parent. Defaults to `bottom`.
+ */
+export type DrawerPositionType = "left" | "right" | "top" | "bottom";
+
+/**
+ * Resolved placement: `edge` / `inner` for an aside (screen edge vs. the
+ * parent's inner side), `top` / `bottom` for an overlay, `none` otherwise.
+ */
+export type DrawerResolvedPositionType = "none" | "edge" | "inner" | "top" | "bottom";
 
 /**
  * Edge treatment between a sticky `Header` / `Footer` / `PreFooter` and the
@@ -68,7 +85,7 @@ export type DrawerSeparatorType = "none" | "shadow" | "divider";
 
 /** What a nested `aside` / `bottom` drawer reports to its parent so it can make room. */
 export type DrawerChildLayoutType = {
-  variant: "aside" | "bottom";
+  variant: "aside" | "bottom" | "overlay";
   /** Pixels the parent column slides inward from its edge. */
   shift: number;
   /** Pixels the parent's bottom edge moves up (`bottom` only). */
@@ -82,6 +99,8 @@ export type DrawerPanelContextType = {
   offset: DrawerResolvedOffsetType;
   /** Pixels this panel is slid inward from its edge. */
   asideShift: number;
+  /** Pixels this panel's bottom edge is moved up by nested `bottom` drawers. */
+  bottomPush: number;
   /** This panel plus its ancestors' panels, so an `aside` / `bottom` child treats them as inside. */
   getPopups: () => Array<HTMLElement | null>;
 };
@@ -145,6 +164,8 @@ export type DrawerContextType = {
   popupId: string;
   /** Resolved nested layout (`float` at the top level, on mobile and on vertical drawers). */
   variant: DrawerVariantType;
+  /** Resolved `position` for `aside` / `overlay`. */
+  position: DrawerResolvedPositionType;
   /** Number of nested drawers currently open inside this one. */
   nestedOpenCount: number;
   /** Open `float` descendants stacked on top of this drawer (drives the scale-back). */
@@ -276,6 +297,15 @@ export type DrawerPropsType = {
    * <Drawer variant="bottom" snapPoints={[0.3, 0.6]}>…</Drawer>
    */
   variant?: DrawerVariantType;
+  /**
+   * Nested `aside`: `left` / `right` (defaults to the parent's side, e.g.
+   * `[parent · aside]` for a right drawer; the other side gives `[aside · parent]`).
+   * Nested `overlay`: `top` / `bottom` (default `bottom`). Ignored otherwise.
+   * @example
+   * <Drawer variant="aside" position="left">…</Drawer>
+   * <Drawer variant="overlay" position="top">…</Drawer>
+   */
+  position?: DrawerPositionType;
 };
 
 type DrawerButtonPropsType = Omit<ComponentPropsWithoutRef<"button">, "children"> & {
@@ -321,6 +351,25 @@ export type DrawerContentPropsType = Omit<ComponentPropsWithoutRef<"div">, "clas
 };
 
 export type DrawerHeaderPropsType = ComponentPropsWithoutRef<"div"> & {
+  /**
+   * Title / description alignment on the mobile sheet. Side drawers always
+   * start-align.
+   * @default "start"
+   */
+  mobileAlign?: "start" | "center";
+  /**
+   * Extra controls in the header's end slot (before the close button), e.g.
+   * a menu or an edit button.
+   */
+  actions?: ReactNode;
+  /**
+   * Close control in the header's end slot: `true` renders the default "x"
+   * button, an element replaces it (wrapped in `Drawer.Close`), `false` hides it.
+   * @default true
+   */
+  close?: boolean | ReactNode;
+  /** Accessible label of the default close button. @default "Close" */
+  closeLabel?: string;
   /**
    * Edge under the sticky header: `shadow` fades scrolled content into the
    * surface, `divider` draws a border.

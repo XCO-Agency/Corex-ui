@@ -16,17 +16,19 @@ export function DrawerFloatExample() {
         <Drawer.Trigger>
           <Button variant="primary">Open order</Button>
         </Drawer.Trigger>
-        <Drawer.Content>
+        <Drawer.Content width="large-500">
           <Drawer.Header>
             <Drawer.Title>Order #1042</Drawer.Title>
-            <Drawer.Description>Open a nested drawer on top of this one.</Drawer.Description>
+            <Drawer.Description>
+              Open a nested drawer on top of this one.
+            </Drawer.Description>
           </Drawer.Header>
           <Drawer.Body>
             <Drawer variant="float">
               <Drawer.Trigger>
                 <Button>Edit shipping address</Button>
               </Drawer.Trigger>
-              <Drawer.Content>
+              <Drawer.Content width="large-500">
                 <Drawer.Header>
                   <Drawer.Title>Shipping address</Drawer.Title>
                   <Drawer.Description>Floats over the order.</Drawer.Description>
@@ -36,10 +38,12 @@ export function DrawerFloatExample() {
                     <Drawer.Trigger>
                       <Button>Validate address</Button>
                     </Drawer.Trigger>
-                    <Drawer.Content>
+                    <Drawer.Content width="large-500">
                       <Drawer.Header>
                         <Drawer.Title>Validation</Drawer.Title>
-                        <Drawer.Description>A third level: both parents step back.</Drawer.Description>
+                        <Drawer.Description>
+                          A third level: both parents step back.
+                        </Drawer.Description>
                       </Drawer.Header>
                       <Drawer.Footer>
                         <Drawer.Close>

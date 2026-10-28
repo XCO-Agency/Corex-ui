@@ -73,7 +73,8 @@ body {
 
 /* Side-by-side / split layouts keep the parent panel underneath clickable. */
 [data-slot="drawer-viewport"][data-variant="aside"],
-[data-slot="drawer-viewport"][data-variant="bottom"] {
+[data-slot="drawer-viewport"][data-variant="bottom"],
+[data-slot="drawer-viewport"][data-variant="overlay"] {
   pointer-events: none;
 }
 
@@ -86,6 +87,7 @@ body {
   --drawer-content-max-height: none;
   --drawer-content-width: auto;
   --drawer-surface: var(--p-color-bg-surface, #ffffff);
+  --drawer-radius: 16px;
   --peek: 1rem;
   --stack-step: 0.05;
   --stack-height: var(--drawer-frontmost-height, var(--drawer-height, 0px));
@@ -154,6 +156,9 @@ body {
  */
 [data-slot="drawer-popup"][data-swipe-axis="y"] {
   inset-inline: 0;
+  /* Sheets span the viewport (minus offsets): a desktop \`width\` never leaves a side gap. */
+  width: auto;
+  max-width: none;
   touch-action: none;
   --drawer-content-max-height: calc(100dvh - 6rem);
 }
@@ -174,7 +179,7 @@ body {
 
 /*
  * Side drawer (desktop default): stretch top→bottom with per-side offset so the
- * panel floats (shadcn: inset-y-0 + margin + 24px radius).
+ * panel floats (shadcn: inset-y-0 + margin + rounded corners).
  * No swipe-handle chrome; swipe works on the full panel surface.
  */
 [data-slot="drawer-popup"][data-swipe-axis="x"],
@@ -204,7 +209,7 @@ body {
 [data-slot="drawer-popup"][data-swipe-direction="down"] {
   bottom: 0;
   transform-origin: bottom center;
-  border-radius: var(--p-border-radius-400, 24px) var(--p-border-radius-400, 24px) 0 0;
+  border-radius: var(--drawer-radius) var(--drawer-radius) 0 0;
   border-block-start: var(--p-border-width-025, 1px) solid
     var(--p-color-border, rgba(0, 0, 0, 0.08));
   --closed-transform: translate3d(
@@ -221,7 +226,7 @@ body {
 [data-slot="drawer-popup"][data-swipe-direction="up"] {
   top: 0;
   transform-origin: top center;
-  border-radius: 0 0 var(--p-border-radius-400, 24px) var(--p-border-radius-400, 24px);
+  border-radius: 0 0 var(--drawer-radius) var(--drawer-radius);
   border-block-end: var(--p-border-width-025, 1px) solid
     var(--p-color-border, rgba(0, 0, 0, 0.08));
   --closed-transform: translate3d(
@@ -238,7 +243,7 @@ body {
 [data-slot="drawer-popup"][data-swipe-direction="left"] {
   left: 0;
   transform-origin: left center;
-  border-radius: 0 var(--p-border-radius-400, 24px) var(--p-border-radius-400, 24px) 0;
+  border-radius: 0 var(--drawer-radius) var(--drawer-radius) 0;
   border-inline-end: var(--p-border-width-025, 1px) solid
     var(--p-color-border, rgba(0, 0, 0, 0.08));
   --closed-transform: translate3d(
@@ -255,7 +260,7 @@ body {
 [data-slot="drawer-popup"][data-swipe-direction="right"] {
   right: 0;
   transform-origin: right center;
-  border-radius: var(--p-border-radius-400, 24px) 0 0 var(--p-border-radius-400, 24px);
+  border-radius: var(--drawer-radius) 0 0 var(--drawer-radius);
   border-inline-start: var(--p-border-width-025, 1px) solid
     var(--p-color-border, rgba(0, 0, 0, 0.08));
   --closed-transform: translate3d(
@@ -292,12 +297,62 @@ body {
   );
 }
 
+/*
+ * Inner \`aside\` (opened on the parent's inner side): appears from behind the
+ * parent with a short slide + fade instead of crossing it from the screen edge.
+ */
+[data-slot="drawer-popup"][data-variant="aside"][data-position="inner"][data-swipe-direction="right"] {
+  --closed-transform: translate3d(calc(var(--translate-x) + 2rem), 0, 0);
+}
+
+[data-slot="drawer-popup"][data-variant="aside"][data-position="inner"][data-swipe-direction="left"] {
+  --closed-transform: translate3d(calc(var(--translate-x) - 2rem), 0, 0);
+}
+
+/*
+ * Nested \`overlay\`: covers the top or bottom of its parent's column
+ * (confirmation, toast) with the parent's width, offsets and corners. Never
+ * pushes or scales the parent.
+ */
+[data-slot="drawer-popup"][data-variant="overlay"] {
+  --drawer-content-height: auto;
+  --drawer-content-max-height: calc(
+    100dvh - var(--drawer-offset-top) - var(--drawer-offset-bottom) - 4rem
+  );
+  height: auto;
+  max-height: var(--drawer-content-max-height);
+  --translate-y: var(--drawer-swipe-movement-y, 0px);
+}
+
+[data-slot="drawer-popup"][data-variant="overlay"][data-position="bottom"] {
+  top: auto;
+  bottom: var(--drawer-push-bottom, 0px);
+  transform-origin: bottom center;
+  --closed-transform: translate3d(
+    var(--translate-x),
+    calc(100% + var(--drawer-offset-bottom) + var(--drawer-push-bottom, 0px) + 2px),
+    0
+  );
+}
+
+[data-slot="drawer-popup"][data-variant="overlay"][data-position="top"] {
+  /* The parent's top edge (set when the parent doesn't start at the viewport top). */
+  top: var(--drawer-overlay-top, 0px);
+  bottom: auto;
+  transform-origin: top center;
+  --closed-transform: translate3d(
+    var(--translate-x),
+    calc(-100% - var(--drawer-offset-top) - var(--drawer-overlay-top, 0px) - 2px),
+    0
+  );
+}
+
 /* When any edge offset > 0, round all corners for a floating sheet (shadcn look). */
 [data-slot="drawer-popup"][data-has-offset][data-swipe-direction="down"],
 [data-slot="drawer-popup"][data-has-offset][data-swipe-direction="up"],
 [data-slot="drawer-popup"][data-has-offset][data-swipe-direction="left"],
 [data-slot="drawer-popup"][data-has-offset][data-swipe-direction="right"] {
-  border-radius: var(--p-border-radius-400, 24px);
+  border-radius: var(--drawer-radius);
   border: var(--p-border-width-025, 1px) solid var(--p-color-border, rgba(0, 0, 0, 0.08));
 }
 
@@ -305,6 +360,11 @@ body {
 [data-slot="drawer-popup"][data-ending-style] {
   transform: var(--closed-transform);
   opacity: 0.9999;
+}
+
+[data-slot="drawer-popup"][data-variant="aside"][data-position="inner"][data-starting-style],
+[data-slot="drawer-popup"][data-variant="aside"][data-position="inner"][data-ending-style] {
+  opacity: 0;
 }
 
 [data-slot="drawer-popup"][data-ending-style] {
@@ -436,23 +496,62 @@ body {
   display: flex;
   flex-shrink: 0;
   background: var(--drawer-surface);
-  flex-direction: column;
-  gap: 2px;
+  /* [title + description · actions + close], in the flow. */
+  flex-direction: row;
+  align-items: flex-start;
+  gap: var(--p-space-200, 8px);
   padding: var(--p-space-400, 16px);
   padding-block-end: 0;
+  text-align: start;
   /* Keep swipe-to-dismiss working from the header (don't start text selection). */
   touch-action: inherit;
   user-select: none;
   -webkit-user-select: none;
 }
 
-/* Sheet (mobile): centered header. Side drawer (desktop): start-aligned. */
-[data-slot="drawer-popup"][data-presentation="sheet"] [data-slot="drawer-header"] {
+[data-slot="drawer-header-content"] {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+[data-slot="drawer-header-actions"] {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: var(--p-space-100, 4px);
+  /* Line the controls up with the title instead of the padding edge. */
+  margin-block: calc(-1 * var(--p-space-100, 4px));
+  margin-inline-end: calc(-1 * var(--p-space-100, 4px));
+}
+
+/*
+ * Opt-in centered header on the mobile sheet (\`mobileAlign="center"\`). The
+ * empty first column mirrors the end slot so the text stays truly centered.
+ */
+[data-slot="drawer-popup"][data-presentation="sheet"]
+  [data-slot="drawer-header"][data-mobile-align="center"] {
+  display: grid;
+  grid-template-columns:
+    minmax(var(--drawer-header-end-width, 0px), 1fr)
+    auto
+    minmax(max-content, 1fr);
   text-align: center;
 }
 
-[data-slot="drawer-popup"][data-presentation="drawer"] [data-slot="drawer-header"] {
-  text-align: start;
+[data-slot="drawer-popup"][data-presentation="sheet"]
+  [data-slot="drawer-header"][data-mobile-align="center"]
+  > [data-slot="drawer-header-content"] {
+  grid-column: 2;
+}
+
+[data-slot="drawer-popup"][data-presentation="sheet"]
+  [data-slot="drawer-header"][data-mobile-align="center"]
+  > [data-slot="drawer-header-actions"] {
+  grid-column: 3;
+  justify-self: end;
 }
 
 /* Actions sit in a row at the end (Cancel · Save), wrapping when tight. */

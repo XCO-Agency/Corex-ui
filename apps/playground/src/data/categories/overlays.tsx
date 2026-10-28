@@ -25,6 +25,10 @@ import { DrawerBottomExample } from "@/examples/overlays/DrawerBottomExample";
 import DrawerBottomExampleRaw from "@/examples/overlays/DrawerBottomExample.tsx?raw";
 import { DrawerAsideBottomExample } from "@/examples/overlays/DrawerAsideBottomExample";
 import DrawerAsideBottomExampleRaw from "@/examples/overlays/DrawerAsideBottomExample.tsx?raw";
+import { DrawerOverlayExample } from "@/examples/overlays/DrawerOverlayExample";
+import DrawerOverlayExampleRaw from "@/examples/overlays/DrawerOverlayExample.tsx?raw";
+import { DrawerAsideOverlayExample } from "@/examples/overlays/DrawerAsideOverlayExample";
+import DrawerAsideOverlayExampleRaw from "@/examples/overlays/DrawerAsideOverlayExample.tsx?raw";
 import { CommandExample } from "@/examples/overlays/CommandExample";
 import CommandExampleRaw from "@/examples/overlays/CommandExample.tsx?raw";
 
@@ -132,6 +136,16 @@ export const overlaysComponents: ComponentEntry[] = [
         title: "Nested: aside + bottom",
         Example: DrawerAsideBottomExample,
         code: DrawerAsideBottomExampleRaw,
+      },
+      {
+        title: "Nested: overlay (confirmation / toast)",
+        Example: DrawerOverlayExample,
+        code: DrawerOverlayExampleRaw,
+      },
+      {
+        title: "Nested: aside + overlay",
+        Example: DrawerAsideOverlayExample,
+        code: DrawerAsideOverlayExampleRaw,
       },
     ],
   },

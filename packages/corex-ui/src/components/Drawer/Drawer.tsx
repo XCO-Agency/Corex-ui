@@ -30,6 +30,7 @@ import {
   useScrollLock,
 } from "../../core/overlay";
 import { DRAWER_CSS, DRAWER_STYLE_ID } from "./Drawer.css";
+import { Button } from "../Button";
 import { devWarning } from "../../utils/devWarning";
 import {
   closeAllDrawers,
@@ -59,6 +60,7 @@ import type {
   DrawerPanelContextType,
   DrawerPortalPropsType,
   DrawerPreFooterPropsType,
+  DrawerResolvedPositionType,
   DrawerPresentationType,
   DrawerPropsType,
   DrawerResolvedOffsetType,
@@ -351,6 +353,7 @@ function DrawerRoot({
   responsive = true,
   offset,
   variant = "float",
+  position,
 }: DrawerPropsType): ReactElement {
   const parent = useContext(DrawerContext);
   const parentPanel = useContext(DrawerPanelContext);
@@ -364,16 +367,36 @@ function DrawerRoot({
   );
   const [nestedOpenCount, setNestedOpenCount] = useState(0);
 
-  // `aside` / `bottom` only make sense beside a desktop side drawer; anywhere
-  // else (top level, mobile sheets, vertical drawers) they fall back to the stack.
+  // `overlay` works on any nested drawer (mobile sheets included). `aside` /
+  // `bottom` only make sense beside a desktop side drawer; anywhere else (top
+  // level, mobile sheets, vertical drawers) they fall back to the stack.
   const resolvedVariant: DrawerVariantType =
-    variant !== "float" &&
-    parent != null &&
-    !isMobile &&
-    parent.presentation === "drawer" &&
-    isSideDirection(parent.swipeDirection)
-      ? variant
-      : "float";
+    parent == null || variant === "float"
+      ? "float"
+      : variant === "overlay"
+        ? "overlay"
+        : !isMobile && parent.presentation === "drawer" && isSideDirection(parent.swipeDirection)
+          ? variant
+          : "float";
+  const resolvedPosition: DrawerResolvedPositionType =
+    resolvedVariant === "aside"
+      ? position === "left" || position === "right"
+        ? position === parent?.swipeDirection
+          ? "edge"
+          : "inner"
+        : "edge"
+      : resolvedVariant === "overlay"
+        ? position === "top"
+          ? "top"
+          : "bottom"
+        : "none";
+  // An edge aside and a bottom drawer take room from the parent; a bottom /
+  // overlay drawer also passes on its own asides' slide, since it shares the
+  // parent's column and the whole column has to move.
+  const takesParentRoom =
+    resolvedVariant === "bottom" ||
+    resolvedVariant === "overlay" ||
+    (resolvedVariant === "aside" && resolvedPosition === "edge");
   const baseId = useId().replace(/:/g, "");
 
   const markerRef = useCallback((node: HTMLSpanElement | null) => {
@@ -403,13 +426,9 @@ function DrawerRoot({
   const [frontmostHeight, setFrontmostHeight] = useState<number | null>(null);
   // Heights only matter to a stack: an `aside` / `bottom` drawer keeps its own.
   const parentReport = resolvedVariant === "float" ? parent?.reportFrontmostHeight : undefined;
-  const reportFrontmostHeight = useCallback(
-    (height: number | null) => {
-      setFrontmostHeight(height);
-      parentReport?.(height);
-    },
-    [parentReport],
-  );
+  // Each drawer only writes to its direct parent (see Content), so a level
+  // that stops being frontmost can't clear a height reported from above it.
+  const reportFrontmostHeight = setFrontmostHeight;
 
   // Every drawer registers so it can be controlled from anywhere: by `id`
   // (`useDrawer(id)`, `closeDrawer(id)`) or as the topmost open drawer
@@ -505,7 +524,7 @@ function DrawerRoot({
   const resolvedOffset = useMemo(() => resolveDrawerOffset(offset), [offset]);
   // Sheets snap by sliding; a `bottom` drawer snaps by resizing its slice of the column.
   const hasSnapPoints =
-    (presentation === "sheet" || resolvedVariant === "bottom") &&
+    ((presentation === "sheet" && resolvedVariant !== "overlay") || resolvedVariant === "bottom") &&
     snapPoints != null &&
     snapPoints.length > 0;
 
@@ -553,6 +572,7 @@ function DrawerRoot({
       descriptionId: `${baseId}-description`,
       popupId: `${baseId}-popup`,
       variant: resolvedVariant,
+      position: resolvedPosition,
       nestedOpenCount,
       onNestedOpenChange,
       stackCount,
@@ -560,7 +580,7 @@ function DrawerRoot({
       asideShift,
       bottomPush,
       reportChildLayout,
-      reportLayoutToParent: resolvedVariant !== "float" ? parent?.reportChildLayout : undefined,
+      reportLayoutToParent: takesParentRoom ? parent?.reportChildLayout : undefined,
       layoutKey: registryKey,
       parentPanel,
       isNested: parent != null,
@@ -587,6 +607,8 @@ function DrawerRoot({
       setOpen,
       baseId,
       resolvedVariant,
+      resolvedPosition,
+      takesParentRoom,
       nestedOpenCount,
       onNestedOpenChange,
       stackCount,
@@ -773,6 +795,7 @@ const DrawerContent = forwardRef<HTMLDivElement, DrawerContentPropsType>(functio
     setActiveSnapIndex,
     onOpenChangeComplete,
     variant,
+    position,
     asideShift: ownAsideShift,
     bottomPush,
     reportLayoutToParent,
@@ -785,8 +808,10 @@ const DrawerContent = forwardRef<HTMLDivElement, DrawerContentPropsType>(functio
   const mergedRef = useMemo(() => mergeRefs(ref, popupRef), [ref]);
   const swipeAxis = swipeDirection === "down" || swipeDirection === "up" ? "y" : "x";
   const isBottom = variant === "bottom";
-  // A `bottom` drawer lives in its parent's column: same width, offsets and slide.
-  const columnPanel = isBottom ? parentPanel : null;
+  const isOverlay = variant === "overlay";
+  // `bottom` and `overlay` drawers live in their parent's column: same width,
+  // offsets and slide.
+  const columnPanel = isBottom || isOverlay ? parentPanel : null;
   const resolvedOffset = columnPanel
     ? columnPanel.offset
     : offset !== undefined
@@ -798,8 +823,57 @@ const DrawerContent = forwardRef<HTMLDivElement, DrawerContentPropsType>(functio
     : width !== undefined && width !== ""
       ? resolveDrawerWidth(width)
       : undefined;
-  const asideShift = Math.max(ownAsideShift, columnPanel?.asideShift ?? 0);
-  // `aside` / `bottom` drawers keep their parents usable: presses and focus
+  // An inner aside sits past the parent's inner edge: it slides by the
+  // parent's width + edge gap (+ the parent's own slide). Measured, since the
+  // parent's width may be a CSS default.
+  const isInnerAside = variant === "aside" && position === "inner";
+  const [innerShift, setInnerShift] = useState(0);
+  const parentAsideShift = parentPanel?.asideShift ?? 0;
+  useEffect(() => {
+    const parentPopup = parentPanel?.getPopups()[0];
+    const view = parentPopup?.ownerDocument.defaultView;
+    if (!isInnerAside || !open || !parentPopup || !view) return undefined;
+    const measure = () => {
+      const computed = view.getComputedStyle(parentPopup);
+      const edgeMargin = swipeDirection === "left" ? computed.marginLeft : computed.marginRight;
+      setInnerShift(
+        parentPopup.offsetWidth + (Number.parseFloat(edgeMargin) || 0) + parentAsideShift,
+      );
+    };
+    measure();
+    const observer = typeof ResizeObserver !== "undefined" ? new ResizeObserver(measure) : null;
+    observer?.observe(parentPopup);
+    return () => observer?.disconnect();
+  }, [isInnerAside, open, parentPanel, parentAsideShift, swipeDirection, portalContainer]);
+  const asideShift = isInnerAside
+    ? innerShift + ownAsideShift
+    : Math.max(ownAsideShift, columnPanel?.asideShift ?? 0);
+  // An overlay sits above whatever pushes its parent's bottom edge up.
+  const pushBottom = isOverlay ? (columnPanel?.bottomPush ?? 0) : bottomPush;
+  // A top overlay lines up with its parent's top edge, which is not the
+  // viewport's when the parent is a bottom drawer, a sheet or another overlay.
+  const isTopOverlay = isOverlay && position === "top";
+  const [overlayTop, setOverlayTop] = useState(0);
+  useEffect(() => {
+    const parentPopup = parentPanel?.getPopups()[0];
+    const popup = popupRef.current;
+    const view = popup?.ownerDocument.defaultView;
+    if (!isTopOverlay || !open || !parentPopup || !popup || !view) return undefined;
+    const measure = () => {
+      const marginTop = Number.parseFloat(view.getComputedStyle(popup).marginTop) || 0;
+      setOverlayTop(Math.max(0, parentPopup.offsetTop - marginTop));
+    };
+    measure();
+    const observer = typeof ResizeObserver !== "undefined" ? new ResizeObserver(measure) : null;
+    observer?.observe(parentPopup);
+    // The parent's top also moves without resizing (e.g. a pushed bottom drawer).
+    parentPopup.addEventListener("transitionend", measure);
+    return () => {
+      observer?.disconnect();
+      parentPopup.removeEventListener("transitionend", measure);
+    };
+  }, [isTopOverlay, open, parentPanel, pushBottom, portalContainer]);
+  // Nested non-float drawers keep their parents usable: presses and focus
   // there stay "inside" instead of dismissing this one.
   const getRelatedPopups = (): Array<HTMLElement | null> => [
     popupRef.current,
@@ -845,12 +919,18 @@ const DrawerContent = forwardRef<HTMLDivElement, DrawerContentPropsType>(functio
   });
   useScrollLock(doc, active && modal === true);
 
-  // While this is the frontmost nested drawer, tell the ancestors its height so
-  // a parent sheet can match it and peek out above it (desktop and mobile alike).
-  const frontmost = active && nestedOpenCount === 0;
+  // Tell the parent the frontmost stacked sheet's height so every level below
+  // takes it and peeks out by the same step (desktop and mobile alike): this
+  // panel's own height while it's frontmost, otherwise the height it got from
+  // the drawer stacked on it.
+  const forwardedHeight = stackCount > 0 ? frontmostHeight : null;
   useEffect(() => {
     const popup = popupRef.current;
-    if (!reportToParent || !frontmost || !popup) return undefined;
+    if (!reportToParent || !active || !popup) return undefined;
+    if (forwardedHeight != null) {
+      reportToParent(forwardedHeight);
+      return () => reportToParent(null);
+    }
     const report = () => {
       const height = popup.getBoundingClientRect().height;
       reportToParent(height > 0 ? height : null);
@@ -862,7 +942,7 @@ const DrawerContent = forwardRef<HTMLDivElement, DrawerContentPropsType>(functio
       observer?.disconnect();
       reportToParent(null);
     };
-  }, [reportToParent, frontmost]);
+  }, [reportToParent, active, forwardedHeight]);
 
   // `aside` / `bottom`: tell the parent how far to slide inward / move its
   // bottom edge up. Reported from the first open frame, so the parent makes
@@ -870,7 +950,13 @@ const DrawerContent = forwardRef<HTMLDivElement, DrawerContentPropsType>(functio
   useEffect(() => {
     const popup = popupRef.current;
     const view = popup?.ownerDocument.defaultView;
-    if (!reportLayoutToParent || variant === "float" || !active || !popup || !view) {
+    if (
+      !reportLayoutToParent ||
+      variant === "float" ||
+      !active ||
+      !popup ||
+      !view
+    ) {
       return undefined;
     }
     const report = () => {
@@ -887,7 +973,10 @@ const DrawerContent = forwardRef<HTMLDivElement, DrawerContentPropsType>(functio
       reportLayoutToParent(layoutKey, {
         variant,
         shift: ownAsideShift,
-        push: popup.offsetHeight + (Number.parseFloat(computed.marginBottom) || 0) + bottomPush,
+        push:
+          variant === "bottom"
+            ? popup.offsetHeight + (Number.parseFloat(computed.marginBottom) || 0) + bottomPush
+            : 0,
       });
     };
     report();
@@ -929,9 +1018,10 @@ const DrawerContent = forwardRef<HTMLDivElement, DrawerContentPropsType>(functio
       width: resolvedWidth,
       offset: resolvedOffset,
       asideShift,
+      bottomPush: pushBottom,
       getPopups: () => [popupRef.current, ...(parentPanel ? parentPanel.getPopups() : [])],
     }),
-    [resolvedWidth, resolvedOffset, asideShift, parentPanel],
+    [resolvedWidth, resolvedOffset, asideShift, pushBottom, parentPanel],
   );
 
   const snapHeight = hasSnapPoints ? snapPointHeights[activeSnapIndex] : undefined;
@@ -956,10 +1046,15 @@ const DrawerContent = forwardRef<HTMLDivElement, DrawerContentPropsType>(functio
     if (!popup.contains(target)) return;
     if (target.closest(FIELD_SELECTOR)) return;
 
-    // A `bottom` drawer dismisses downward whatever side its column is on.
-    const axis = isBottom ? "y" : swipeAxis;
-    const sign: 1 | -1 =
-      isBottom || swipeDirection === "down" || swipeDirection === "right" ? 1 : -1;
+    // `bottom` / `overlay` drawers dismiss vertically whatever side their column is on.
+    const axis = isBottom || isOverlay ? "y" : swipeAxis;
+    const sign: 1 | -1 = isOverlay
+      ? position === "top"
+        ? -1
+        : 1
+      : isBottom || swipeDirection === "down" || swipeDirection === "right"
+        ? 1
+        : -1;
     if (canScrollTowardDismiss(target, popup, axis, sign)) return;
 
     const pointerId = event.pointerId;
@@ -1095,7 +1190,10 @@ const DrawerContent = forwardRef<HTMLDivElement, DrawerContentPropsType>(functio
       ? { ["--drawer-frontmost-height" as string]: `${frontmostHeight}px` }
       : null),
     ...(asideShift > 0 ? { ["--drawer-aside-shift" as string]: `${asideShift}px` } : null),
-    ...(bottomPush > 0 ? { ["--drawer-push-bottom" as string]: `${bottomPush}px` } : null),
+    ...(pushBottom > 0 ? { ["--drawer-push-bottom" as string]: `${pushBottom}px` } : null),
+    ...(isTopOverlay && overlayTop > 0
+      ? { ["--drawer-overlay-top" as string]: `${overlayTop}px` }
+      : null),
     ...style,
   } as CSSProperties;
 
@@ -1127,6 +1225,7 @@ const DrawerContent = forwardRef<HTMLDivElement, DrawerContentPropsType>(functio
           data-has-offset={floated ? "" : undefined}
           data-width={typeof width === "string" && width in DRAWER_WIDTH_PRESETS ? width : undefined}
           data-variant={variant}
+          data-position={position !== "none" ? position : undefined}
           data-nested-drawer-open={stacked ? "" : undefined}
           data-nested-aside-open={ownAsideShift > 0 ? "" : undefined}
           data-nested-bottom-open={bottomPush > 0 ? "" : undefined}
@@ -1155,16 +1254,69 @@ function separatorAttribute(separator: DrawerSeparatorType): DrawerSeparatorType
   return separator === "none" ? undefined : separator;
 }
 
-/** Sticky to the top of the scrolling panel. */
-function DrawerHeader({ className, style, separator = "none", ...props }: DrawerHeaderPropsType): ReactElement {
+/**
+ * Sticky to the top of the scrolling panel. Title and description sit in the
+ * start column; `actions` and the close button in an end slot laid out in
+ * the flow (not absolutely positioned), so more controls fit beside it.
+ */
+function DrawerHeader({
+  className,
+  style,
+  separator = "none",
+  mobileAlign = "start",
+  actions,
+  close = true,
+  closeLabel = "Close",
+  children,
+  ...props
+}: DrawerHeaderPropsType): ReactElement {
+  const closeControl =
+    close === false || close == null ? null : (
+      <DrawerClose>
+        {close === true ? (
+          <Button variant="tertiary" icon="x" accessibilityLabel={closeLabel} />
+        ) : (
+          close
+        )}
+      </DrawerClose>
+    );
+  const hasEnd = actions != null || closeControl != null;
+  // Centered: the empty start column mirrors the end slot's width so the
+  // title stays centered even when it has to wrap.
+  const endRef = useRef<HTMLDivElement>(null);
+  const headerRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const end = endRef.current;
+    const header = headerRef.current;
+    if (mobileAlign !== "center" || !end || !header) return undefined;
+    const update = () =>
+      header.style.setProperty("--drawer-header-end-width", `${end.offsetWidth}px`);
+    update();
+    const observer = typeof ResizeObserver !== "undefined" ? new ResizeObserver(update) : null;
+    observer?.observe(end);
+    return () => {
+      observer?.disconnect();
+      header.style.removeProperty("--drawer-header-end-width");
+    };
+  }, [mobileAlign, hasEnd]);
   return (
     <div
+      ref={headerRef}
       data-slot="drawer-header"
       data-separator={separatorAttribute(separator)}
+      data-mobile-align={mobileAlign}
       className={className}
       style={style}
       {...props}
-    />
+    >
+      <div data-slot="drawer-header-content">{children}</div>
+      {hasEnd ? (
+        <div ref={endRef} data-slot="drawer-header-actions">
+          {actions}
+          {closeControl}
+        </div>
+      ) : null}
+    </div>
   );
 }
 DrawerHeader.displayName = "Drawer.Header";
