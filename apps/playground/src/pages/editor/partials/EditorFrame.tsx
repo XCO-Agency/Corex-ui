@@ -33,9 +33,13 @@ body {
 #editor-root { display: flow-root; min-height: 100%; }
 [data-cx-editing] { display: flex; flex-direction: column; min-height: 100vh; }
 [data-cx-editing] [data-cx-node="root"] { flex: 1 0 auto; display: flow-root; }
-[data-cx-editing] [data-cx-node] * { pointer-events: none; }
-[data-cx-editing] [data-cx-node] { pointer-events: auto; min-width: 0; cursor: default; }
-[data-cx-editing] [data-cx-node] > s-section { height: 100%; }
+/*
+ * Node rules key off <html data-cx-edit> rather than the canvas div, so they also
+ * reach overlay content (an open Drawer) that is portaled to <body>.
+ */
+[data-cx-edit] [data-cx-node] * { pointer-events: none; }
+[data-cx-edit] [data-cx-node] { pointer-events: auto; min-width: 0; cursor: default; }
+[data-cx-edit] [data-cx-node] > s-section { height: 100%; }
 [data-cx-dragging] [data-cx-node] { cursor: copy; }
 [data-cx-empty] {
   display: flex; align-items: center; justify-content: center;
@@ -45,7 +49,7 @@ body {
   color: rgba(48, 48, 48, 0.55); font-size: 12px;
 }
 [data-cx-empty][data-cx-root-empty] { min-height: 320px; flex-direction: column; gap: 6px; }
-[data-cx-editing] [data-cx-node]:not([data-cx-node="root"]) { position: relative; }
+[data-cx-edit] [data-cx-node]:not([data-cx-node="root"]) { position: relative; }
 [data-cx-chip] {
   display: inline-flex; align-items: center; gap: 6px;
   padding: 4px 10px; border-radius: 999px;

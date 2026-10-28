@@ -11,6 +11,7 @@ import {
   Divider,
   Icon,
   IconTile,
+  InlineCode,
   InlineStack,
   NumberField,
   RangeSlider,
@@ -23,10 +24,16 @@ import {
 } from "@xco-agency/corex-ui";
 import type { IconType } from "@xco-agency/corex-ui";
 import iconsData from "@/data/icons.json";
-import { getDefinition } from "../definitions";
-import { useEditor } from "../store";
+import { getDefinition, openSlots, slotIndex } from "../definitions";
+import { partLabel } from "../parts";
+import { createNode, useEditor } from "../store";
 import { findParent, ROOT_ID } from "../tree";
-import { FIELD_SECTIONS, type FieldSectionType, type FieldType } from "../types";
+import {
+  FIELD_SECTIONS,
+  type EditorNodeType,
+  type FieldSectionType,
+  type FieldType,
+} from "../types";
 
 const ICON_NAMES = (iconsData as { name: string }[]).map((icon) => icon.name);
 /** Suggestions shown at once in the icon picker; typing narrows the full list. */
@@ -307,28 +314,87 @@ function Section({
       }
     >
       {({ expanded, toggle }) => (
+        // Full-width headers with one fixed height and padding, so every section lines up.
         <Clickable
+          inlineSize="fill"
+          blockSize="40px"
+          paddingInline="base"
+          paddingBlock="none"
           onClick={toggle}
           accessibilityLabel={`${expanded ? "Collapse" : "Expand"} ${title}`}
         >
-          <Box paddingInline="base" paddingBlock="small-100">
-            <InlineStack justifyContent="space-between" alignItems="center">
-              <InlineStack gap="small-200" alignItems="center">
-                <Icon
-                  type={expanded ? "chevron-down" : "chevron-right"}
-                  size="small"
-                  tone="neutral"
-                />
-                <Text variant="small" fontWeight="semibold">
-                  {title}
-                </Text>
-              </InlineStack>
-              <Badge>{String(count)}</Badge>
+          <InlineStack
+            justifyContent="space-between"
+            alignItems="center"
+            blockSize="100%"
+            wrap={false}
+          >
+            <InlineStack gap="small-200" alignItems="center">
+              <Icon
+                type={expanded ? "chevron-down" : "chevron-right"}
+                size="small"
+                tone="neutral"
+              />
+              <Text variant="small" fontWeight="semibold">
+                {title}
+              </Text>
             </InlineStack>
-          </Box>
+            <Badge>{String(count)}</Badge>
+          </InlineStack>
         </Clickable>
       )}
     </Collapsible>
+  );
+}
+
+/**
+ * A Drawer opens from a trigger element (any element: a button, a card…) or from
+ * code with `useDrawer(id)`. Switching adds or removes the Drawer.Trigger slot.
+ */
+function DrawerOpener({ drawer }: { drawer: EditorNodeType }) {
+  const { dispatch } = useEditor();
+  const trigger = drawer.children?.find((child) => child.type === "Drawer.Trigger");
+  const id =
+    typeof drawer.props.id === "string" && drawer.props.id
+      ? drawer.props.id
+      : `drawer-${drawer.id.slice(-6)}`;
+
+  return (
+    <>
+      <Box padding="base" paddingBlockEnd="small">
+        <BlockStack gap="small-200">
+          <Select
+            label="Opens with"
+            value={trigger ? "trigger" : "code"}
+            options={[
+              { label: "A trigger element (button, card…)", value: "trigger" },
+              { label: "Code only — useDrawer(id)", value: "code" },
+            ]}
+            onChange={(next) => {
+              if (next === "trigger" && !trigger) {
+                const created = createNode("Drawer.Trigger");
+                if (created) {
+                  dispatch({
+                    type: "insert",
+                    target: { parentId: drawer.id, index: 0 },
+                    node: created,
+                  });
+                }
+              }
+              if (next === "code" && trigger)
+                dispatch({ type: "remove", id: trigger.id });
+            }}
+          />
+          <Text variant="small" color="subdued">
+            {trigger
+              ? "Drop any element into the Trigger in Layers. You can still open it from code:"
+              : "Open it from anywhere in your app:"}{" "}
+            <InlineCode>{`useDrawer("${id}").open()`}</InlineCode>
+          </Text>
+        </BlockStack>
+      </Box>
+      <Divider />
+    </>
   );
 }
 
@@ -362,6 +428,20 @@ export function Inspector() {
   const setCount = definition.fields.filter((field) =>
     isSet(node.props[field.name]),
   ).length;
+
+  const slots = isRoot ? [] : openSlots(state.root, node);
+  const addPart = (type: string) => {
+    const part = createNode(type);
+    if (!part) return;
+    dispatch({
+      type: "insert",
+      target: {
+        parentId: node.id,
+        index: slotIndex(node, type, node.children?.length ?? 0),
+      },
+      node: part,
+    });
+  };
 
   const update = (name: string, value: unknown) =>
     dispatch({ type: "update", id: node.id, props: { [name]: value } });
@@ -425,6 +505,34 @@ export function Inspector() {
           </InlineStack>
         </Box>
         <Divider />
+
+        {node.type === "Drawer" && <DrawerOpener drawer={node} />}
+
+        {slots.length > 0 && (
+          <>
+            <Box padding="base" paddingBlockEnd="small">
+              <BlockStack gap="small-200">
+                <Text variant="small" fontWeight="medium" color="subdued">
+                  {`Add to ${definition.partOf ? partLabel(definition) : definition.label}`}
+                </Text>
+                <InlineStack gap="small-200" wrap>
+                  {slots.map((slot) => {
+                    const part = getDefinition(slot.type);
+                    if (!part) return null;
+                    return (
+                      <Tooltip key={slot.type} content={part.description}>
+                        <Button icon="plus" onClick={() => addPart(slot.type)}>
+                          {partLabel(part)}
+                        </Button>
+                      </Tooltip>
+                    );
+                  })}
+                </InlineStack>
+              </BlockStack>
+            </Box>
+            <Divider />
+          </>
+        )}
 
         {(definition.note || definition.fields.length > 6) && (
           <Box padding="base" paddingBlockEnd="small">

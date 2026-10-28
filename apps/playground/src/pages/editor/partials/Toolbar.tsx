@@ -5,6 +5,7 @@ import {
   BlockStack,
   Box,
   Button,
+  ButtonGroup,
   Clickable,
   Grid,
   InlineStack,
@@ -91,54 +92,65 @@ export function Toolbar({
   return (
     <Box paddingInline="small" paddingBlock="small-200" background="base">
       <InlineStack alignItems="center" gap="small" wrap={false}>
-        <InlineStack grow alignItems="center" gap="small-200" wrap={false}>
+        <InlineStack grow alignItems="center" gap="small-200" wrap={false} fill>
           <IconAction
             label="Back to docs"
             icon="arrow-left"
             onClick={() => navigate("/")}
           />
           <Text fontWeight="semibold">Editor</Text>
-          <Badge>{`${nodeCount} element${nodeCount === 1 ? "" : "s"}`}</Badge>
+        </InlineStack>
+
+        <InlineStack grow alignItems="center" gap="small-200" wrap={false}>
           <IconAction
             label="Toggle left panel"
             icon="layout-sidebar-left"
             active={leftOpen}
             onClick={onToggleLeft}
           />
-          <IconAction
-            label="Undo (⌘Z)"
-            icon="undo"
-            disabled={!state.past.length}
-            onClick={() => dispatch({ type: "undo" })}
-          />
-          <IconAction
-            label="Redo (⇧⌘Z)"
-            icon="redo"
-            disabled={!state.future.length}
-            onClick={() => dispatch({ type: "redo" })}
-          />
-        </InlineStack>
 
-        {/* s-button-group only renders secondary buttons, so the active state needs a plain row. */}
-        <InlineStack gap="small-500" wrap={false}>
-          {VIEWPORTS.map(({ id, label, icon }) => (
-            <Button
-              key={id}
-              icon={icon}
-              variant={viewport === id ? "secondary" : "tertiary"}
-              accessibilityLabel={label}
-              onClick={() => onViewportChange(id)}
-            />
-          ))}
+          {/* s-button-group only renders secondary buttons, so the active state needs a plain row. */}
+          <Box background="subdued" borderRadius="large-200" padding="small-500">
+            <InlineStack gap="small-500" wrap={false}>
+              {VIEWPORTS.map(({ id, label, icon }) => (
+                <Button
+                  key={id}
+                  icon={icon}
+                  variant={viewport === id ? "primary" : "tertiary"}
+                  accessibilityLabel={label}
+                  onClick={() => onViewportChange(id)}
+                />
+              ))}
+            </InlineStack>
+          </Box>
         </InlineStack>
 
         <InlineStack
           grow
+          fill
           justifyContent="end"
           alignItems="center"
           gap="small-200"
           wrap={false}
         >
+          <ButtonGroup gap="none">
+            <Button
+              icon="undo"
+              slot="secondary-actions"
+              interestFor="undo-tooltip"
+              disabled={!state.past.length}
+              onClick={() => dispatch({ type: "undo" })}
+            />
+            <Button
+              icon="redo"
+              slot="secondary-actions"
+              interestFor="redo-tooltip"
+              disabled={!state.future.length}
+              onClick={() => dispatch({ type: "redo" })}
+            />
+          </ButtonGroup>
+          <s-tooltip id="undo-tooltip">Undo (⌘Z)</s-tooltip>
+          <s-tooltip id="redo-tooltip">Redo (⇧⌘Z)</s-tooltip>
           <Button
             variant="tertiary"
             icon="theme-template"
@@ -146,22 +158,20 @@ export function Toolbar({
           >
             Templates
           </Button>
-          <InlineStack gap="small-500" wrap={false}>
-            <Button
-              icon="edit"
-              variant={editing ? "secondary" : "tertiary"}
-              onClick={() => onEditingChange(true)}
-            >
-              Edit
-            </Button>
-            <Button
-              icon="view"
-              variant={editing ? "tertiary" : "secondary"}
-              onClick={() => onEditingChange(false)}
-            >
-              Preview
-            </Button>
-          </InlineStack>
+          <Box background="subdued" borderRadius="large-200" padding="small-500">
+            <InlineStack gap="small-500" wrap={false}>
+              <Button
+                icon="edit"
+                variant={editing ? "primary" : "tertiary"}
+                onClick={() => onEditingChange(true)}
+              ></Button>
+              <Button
+                icon="view"
+                variant={editing ? "tertiary" : "primary"}
+                onClick={() => onEditingChange(false)}
+              ></Button>
+            </InlineStack>
+          </Box>
           <Button variant="primary" icon="code" onClick={() => setCodeOpen(true)}>
             Export
           </Button>
@@ -185,7 +195,9 @@ export function Toolbar({
             Paste the component into your app, or keep the JSON to rebuild this canvas
             later.
           </Text>
+          {/* Remount on change: a Clickable's background attribute goes stale on update. */}
           <Tabs
+            key={codeTab}
             tabs={[
               { id: "react", label: "React" },
               { id: "json", label: "JSON" },

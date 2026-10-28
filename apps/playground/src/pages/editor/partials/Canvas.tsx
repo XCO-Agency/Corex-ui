@@ -1,6 +1,7 @@
 import * as React from "react";
-import { getDefinition } from "../definitions";
+import { definitions, getDefinition } from "../definitions";
 import {
+  closestNodeId,
   computeDrop,
   endDrag,
   getDragPayload,
@@ -9,7 +10,7 @@ import {
   type DropPreviewType,
 } from "../dnd";
 import { createNode, useEditor } from "../store";
-import { ROOT_ID } from "../tree";
+import { findNode, pathTo, ROOT_ID } from "../tree";
 import type { EditorNodeType } from "../types";
 import { CanvasOverlay } from "./CanvasOverlay";
 import { useFrame } from "./EditorFrame";
@@ -54,6 +55,34 @@ type CanvasNodePropsType = {
  */
 type InjectedPropsType = Record<string, unknown>;
 
+/** Types an overlay opens as its panel (Drawer.Content…), from the catalog. */
+const PANEL_TYPES = new Set(
+  definitions.flatMap((definition) =>
+    definition.overlay?.panel ? [definition.overlay.panel] : [],
+  ),
+);
+
+/** Overlays (Drawer, Modal…) forced open because their content is selected. */
+const OpenOverlaysContext = React.createContext<ReadonlySet<string>>(new Set());
+
+/**
+ * Ids of overlays on the path to the selection: a Drawer opens when its
+ * Drawer.Content (or anything inside) is selected, a Modal when it or its
+ * content is, so the user sees what they are editing.
+ */
+function openOverlayIds(root: EditorNodeType, selectedId: string | null) {
+  if (!selectedId) return "";
+  const path = pathTo(root, selectedId).map((id) => findNode(root, id)!);
+  return path
+    .filter((node, index) => {
+      const overlay = getDefinition(node.type)?.overlay;
+      if (!overlay) return false;
+      return overlay.panel ? path[index + 1]?.type === overlay.panel : true;
+    })
+    .map((node) => node.id)
+    .join(" ");
+}
+
 const CanvasNode = React.memo(
   React.forwardRef<unknown, CanvasNodePropsType>(function CanvasNode(allProps, ref) {
     const {
@@ -63,6 +92,7 @@ const CanvasNode = React.memo(
       wrapped = true,
       ...injected
     } = allProps as CanvasNodePropsType & InjectedPropsType;
+    const forcedOpen = React.useContext(OpenOverlaysContext).has(node.id);
     const definition = getDefinition(node.type);
     if (!definition) {
       return editing ? (
@@ -103,9 +133,15 @@ const CanvasNode = React.memo(
       }
     }
 
-    const props = Object.keys(injected).length
+    let props = Object.keys(injected).length
       ? { ...node.props, ...injected }
       : node.props;
+    if (forcedOpen && definition.overlay) {
+      props = { ...props, [definition.overlay.openProp]: true };
+    }
+    // Overlay panels portal out of their wrapper; the tag maps clicks and outlines back.
+    if (editing && PANEL_TYPES.has(node.type))
+      props = { ...props, "data-cx-panel": node.id };
     let element = definition.render(props, children, node);
     // Only a real ref is forwarded; React can hand the frozen legacy-context `{}` here.
     const forwarded =
@@ -121,7 +157,7 @@ const CanvasNode = React.memo(
     const rendered = <NodeBoundary label={definition.label}>{element}</NodeBoundary>;
     if (!editing || !wrapped) return rendered;
 
-    const chip = definition.canvasLabel?.(node.props);
+    const chip = forcedOpen ? null : definition.canvasLabel?.(node.props, node);
     return (
       <div
         data-cx-node={node.id}
@@ -135,14 +171,6 @@ const CanvasNode = React.memo(
     );
   }),
 );
-
-const closestNodeId = (target: EventTarget | null) => {
-  const element =
-    target && typeof (target as Element).closest === "function"
-      ? (target as Element).closest<HTMLElement>("[data-cx-node]")
-      : null;
-  return element?.dataset.cxNode ?? null;
-};
 
 const samePreview = (a: DropPreviewType | null, b: DropPreviewType | null) =>
   a === b ||
@@ -164,6 +192,17 @@ export function Canvas({ editing }: CanvasPropsType) {
   rootRef.current = state.root;
 
   React.useEffect(() => onDragEnded(() => setPreview(null)), []);
+
+  // On <html> so the edit-mode CSS also covers overlays portaled to <body>.
+  React.useEffect(() => {
+    frame?.doc.documentElement.toggleAttribute("data-cx-edit", editing);
+  }, [frame, editing]);
+
+  const openKey = editing ? openOverlayIds(state.root, state.selectedId) : "";
+  const openOverlays = React.useMemo(
+    () => new Set(openKey ? openKey.split(" ") : []),
+    [openKey],
+  );
 
   if (!frame) return null;
   const { doc } = frame;
@@ -237,7 +276,9 @@ export function Canvas({ editing }: CanvasPropsType) {
       }}
       onDrop={handleDrop}
     >
-      <CanvasNode node={state.root} parentId={null} editing />
+      <OpenOverlaysContext.Provider value={openOverlays}>
+        <CanvasNode node={state.root} parentId={null} editing />
+      </OpenOverlaysContext.Provider>
       <CanvasOverlay doc={doc} hoveredId={hoveredId} preview={preview} />
     </div>
   );

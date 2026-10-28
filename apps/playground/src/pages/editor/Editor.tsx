@@ -3,6 +3,7 @@ import { Box, Divider, Tabs } from "@xco-agency/corex-ui";
 import { cn } from "@/lib/utils";
 import { EditorProvider, useEditor } from "./store";
 import { usePolarisRuntime } from "./usePolarisRuntime";
+import { getDefinition } from "./definitions";
 import { cloneWithIds, findNode } from "./tree";
 import type { EditorNodeType, ViewportType } from "./types";
 import { AiPanel } from "./partials/AiPanel";
@@ -81,6 +82,17 @@ function EditorWorkspace() {
 
   useShortcuts([window, frameWindow], editing);
 
+  // Adding a compound component (Drawer, Table…) opens Layers, where its slots
+  // can be filled or removed, instead of leaving its structure hidden.
+  React.useEffect(() => {
+    const id = state.lastInsertedId;
+    const inserted = id ? findNode(state.root, id) : null;
+    if (inserted && getDefinition(inserted.type)?.slots) {
+      setLeftOpen(true);
+      setLeftTab("layers");
+    }
+  }, [state.lastInsertedId]); // eslint-disable-line react-hooks/exhaustive-deps
+
   // Selecting on the canvas brings the inspector forward, as in Framer or Webflow.
   const previousSelection = React.useRef(state.selectedId);
   React.useEffect(() => {
@@ -98,7 +110,7 @@ function EditorWorkspace() {
   const showLeft = leftOpen && editing;
 
   return (
-    <div className="fixed inset-0 flex flex-col bg-background text-foreground">
+    <div className="fixed inset-0 flex flex-col bg-muted/50 text-foreground">
       <Toolbar
         viewport={viewport}
         onViewportChange={setViewport}
@@ -113,13 +125,13 @@ function EditorWorkspace() {
 
       <div className="flex min-h-0 flex-1">
         {showLeft && (
-          <div className="w-68 shrink-0 border-r border-border/70">
+          <div className="w-68 shrink-0 p-0.75 pr-0 flex ">
             <LeftPanel tab={leftTab} onTabChange={setLeftTab} />
           </div>
         )}
 
         <main
-          className="relative min-w-0 flex-1 overflow-auto bg-muted/50 p-4"
+          className="relative min-w-0 flex-1 overflow-auto  p-0.75"
           style={{
             backgroundImage:
               "radial-gradient(circle, rgb(0 0 0 / 0.07) 1px, transparent 1px)",
@@ -128,7 +140,7 @@ function EditorWorkspace() {
         >
           <div
             className={cn(
-              "mx-auto h-full overflow-hidden rounded-xl border border-border/80 bg-white shadow-sm transition-[max-width] duration-300 ease-out",
+              "mx-auto h-full overflow-hidden rounded-xl border border-border bg-white shadow-xs transition-[max-width] duration-300 ease-out",
             )}
             style={{ maxWidth: width ?? "100%" }}
           >
@@ -139,34 +151,38 @@ function EditorWorkspace() {
         </main>
 
         {rightOpen && (
-          <aside className="flex w-80 shrink-0 flex-col border-l border-border/70 bg-background">
-            <Box paddingInline="small" paddingBlockStart="small-200">
-              <Tabs
-                tabs={[
-                  { id: "design", label: "Design", icon: "adjust" },
-                  { id: "ai", label: "AI agent", icon: "wand" },
-                ]}
-                value={rightTab}
-                onChange={(id) => setRightTab(id as RightTabType)}
-              />
-            </Box>
-            <Divider />
-            {/* Both stay mounted so the chat survives switching tabs. */}
-            <div
-              className={cn(
-                "min-h-0 flex-1 flex-col",
-                rightTab === "design" ? "flex" : "hidden",
-              )}
-            >
-              <Inspector />
-            </div>
-            <div
-              className={cn(
-                "min-h-0 flex-1 flex-col",
-                rightTab === "ai" ? "flex" : "hidden",
-              )}
-            >
-              <AiPanel />
+          <aside className="flex w-80 shrink-0 flex-col p-0.75 pl-0">
+            <div className="bg-background border shadow-xs border-border rounded-xl flex-1">
+              <Box padding="small-300">
+                {/* Remount on change: a Clickable's background attribute goes stale on update. */}
+                <Tabs
+                  key={rightTab}
+                  tabs={[
+                    { id: "design", label: "Design", icon: "adjust" },
+                    { id: "ai", label: "AI agent", icon: "wand" },
+                  ]}
+                  value={rightTab}
+                  onChange={(id) => setRightTab(id as RightTabType)}
+                />
+              </Box>
+              <Divider />
+              {/* Both stay mounted so the chat survives switching tabs. */}
+              <div
+                className={cn(
+                  "min-h-0 flex-1 flex-col",
+                  rightTab === "design" ? "flex" : "hidden",
+                )}
+              >
+                <Inspector />
+              </div>
+              <div
+                className={cn(
+                  "min-h-0 flex-1 flex-col",
+                  rightTab === "ai" ? "flex" : "hidden",
+                )}
+              >
+                <AiPanel />
+              </div>
             </div>
           </aside>
         )}

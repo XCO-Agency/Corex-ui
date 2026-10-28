@@ -1,5 +1,5 @@
 import * as React from "react";
-import { canPlace, getDefinition } from "./definitions";
+import { canInsert, getDefinition, slotIndex } from "./definitions";
 import { migrateNode } from "./migrate";
 import { createRoot } from "./templates";
 import {
@@ -27,6 +27,8 @@ export type EditorStateType = {
   past: EditorNodeType[];
   future: EditorNodeType[];
   lastEdit: { id: string; at: number } | null;
+  /** The node the last `insert` added, so the UI can react (e.g. show it in Layers). */
+  lastInsertedId?: string;
 };
 
 export type EditorActionType =
@@ -59,11 +61,14 @@ function commit(
 function reducer(state: EditorStateType, action: EditorActionType): EditorStateType {
   switch (action.type) {
     case "insert":
-      return commit(
-        state,
-        insertNode(state.root, action.target, action.node),
-        action.node.id,
-      );
+      return {
+        ...commit(
+          state,
+          insertNode(state.root, action.target, action.node),
+          action.node.id,
+        ),
+        lastInsertedId: action.node.id,
+      };
     case "move":
       return commit(state, moveNode(state.root, action.id, action.target), action.id);
     case "update": {
@@ -195,23 +200,26 @@ export function EditorProvider({ children }: { children: React.ReactNode }) {
 
   const insertionTarget = React.useCallback(
     (type: string): DropTargetType => {
-      const end = { parentId: ROOT_ID, index: state.root.children?.length ?? 0 };
-      let node = state.selectedId ? findNode(state.root, state.selectedId) : null;
-      // Walk up from the selection to the first container that can hold `type`.
+      const root = state.root;
+      const inside = (parent: EditorNodeType, index: number) => ({
+        parentId: parent.id,
+        index: slotIndex(parent, type, index),
+      });
+      let node = state.selectedId ? findNode(root, state.selectedId) : null;
+      // Walk up from the selection to the first container that can take `type`.
       while (node) {
-        if (canPlace(ancestryOf(state.root, node.id), type)) {
-          return { parentId: node.id, index: node.children?.length ?? 0 };
-        }
-        const parent = findParent(state.root, node.id);
-        if (parent && canPlace(ancestryOf(state.root, parent.id), type)) {
-          return {
-            parentId: parent.id,
-            index: parent.children!.findIndex((child) => child.id === node!.id) + 1,
-          };
+        if (canInsert(root, node.id, type))
+          return inside(node, node.children?.length ?? 0);
+        const parent = findParent(root, node.id);
+        if (parent && canInsert(root, parent.id, type)) {
+          return inside(
+            parent,
+            parent.children!.findIndex((child) => child.id === node!.id) + 1,
+          );
         }
         node = parent;
       }
-      return end;
+      return inside(root, root.children?.length ?? 0);
     },
     [state.root, state.selectedId],
   );

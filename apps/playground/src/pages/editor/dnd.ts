@@ -1,5 +1,5 @@
 import type * as React from "react";
-import { canPlace, getDefinition } from "./definitions";
+import { canInsert, getDefinition, slotIndex } from "./definitions";
 import { ancestryOf, findNode, findParent, isDescendant, ROOT_ID } from "./tree";
 import type { DragPayloadType, DropTargetType, EditorNodeType } from "./types";
 
@@ -57,8 +57,28 @@ const toRect = (rect: DOMRect): RectType => ({
   height: rect.height,
 });
 
-const nodeElement = (doc: Document, id: string) =>
-  doc.querySelector<HTMLElement>(`[data-cx-node="${CSS.escape(id)}"]`);
+/**
+ * The element that shows `id` on the canvas: its wrapper, or for an overlay
+ * panel (Drawer.Content) the portaled popup tagged `data-cx-panel`, since the
+ * wrapper it leaves in the page is empty.
+ */
+export function nodeElement(doc: Document, id: string) {
+  const wrapper = doc.querySelector<HTMLElement>(`[data-cx-node="${CSS.escape(id)}"]`);
+  const box = wrapper?.getBoundingClientRect();
+  if (wrapper && box && box.width * box.height > 0) return wrapper;
+  return doc.querySelector<HTMLElement>(`[data-cx-panel="${CSS.escape(id)}"]`) ?? wrapper;
+}
+
+const NODE_SELECTOR = "[data-cx-node], [data-cx-panel]";
+
+/** Id of the canvas node an event target belongs to. */
+export function closestNodeId(target: EventTarget | null) {
+  const element =
+    target && typeof (target as Element).closest === "function"
+      ? (target as Element).closest<HTMLElement>(NODE_SELECTOR)
+      : null;
+  return element ? (element.dataset.cxNode ?? element.dataset.cxPanel ?? null) : null;
+}
 
 const childElements = (doc: Document, id: string) =>
   Array.from(doc.querySelectorAll<HTMLElement>(`[data-cx-parent="${CSS.escape(id)}"]`));
@@ -102,7 +122,7 @@ function resolveTarget(
   x: number,
   y: number,
 ): DropTargetType {
-  const id = element?.dataset.cxNode ?? ROOT_ID;
+  const id = (element && (element.dataset.cxNode ?? element.dataset.cxPanel)) || ROOT_ID;
   const node = findNode(root, id) ?? root;
   const rect = (element ?? doc.body).getBoundingClientRect();
 
@@ -161,11 +181,18 @@ function indicatorFor(doc: Document, root: EditorNodeType, target: DropTargetTyp
  * outside Table.Body, a Button inside a Table), the drop moves up to just after
  * the nearest ancestor whose parent can.
  */
-function legalTarget(root: EditorNodeType, target: DropTargetType, type: string) {
+function legalTarget(
+  root: EditorNodeType,
+  target: DropTargetType,
+  type: string,
+  movingId?: string,
+) {
   let parent = findNode(root, target.parentId);
   let candidate: DropTargetType | null = target;
   while (parent && candidate) {
-    if (canPlace(ancestryOf(root, parent.id), type)) return candidate;
+    if (canInsert(root, parent.id, type, movingId)) {
+      return { ...candidate, index: slotIndex(parent, type, candidate.index, movingId) };
+    }
     const grandparent = findParent(root, parent.id);
     candidate = grandparent
       ? {
@@ -191,11 +218,16 @@ export function computeDrop(
   // `instanceof Element` fails across the iframe realm, so duck-type the hit.
   const element =
     hit && typeof (hit as Element).closest === "function"
-      ? (hit as Element).closest<HTMLElement>("[data-cx-node]")
+      ? (hit as Element).closest<HTMLElement>(NODE_SELECTOR)
       : null;
   const type = payload.kind === "new" ? payload.type : findNode(root, payload.id)?.type;
   if (!type) return null;
-  const target = legalTarget(root, resolveTarget(doc, root, element, x, y), type);
+  const target = legalTarget(
+    root,
+    resolveTarget(doc, root, element, x, y),
+    type,
+    payload.kind === "move" ? payload.id : undefined,
+  );
   if (!target) return null;
 
   if (payload.kind === "move") {

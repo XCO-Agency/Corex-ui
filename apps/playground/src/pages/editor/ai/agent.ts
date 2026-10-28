@@ -1,6 +1,15 @@
 import iconsData from "@/data/icons.json";
 import { blockDefinitions } from "../blocks";
-import { canPlace, compact, definitions, getDefinition, ROOT_TYPE } from "../definitions";
+import {
+  canInsert,
+  canPlace,
+  compact,
+  definitions,
+  getDefinition,
+  hasRoom,
+  ROOT_TYPE,
+  slotIndex,
+} from "../definitions";
 import {
   ancestryOf,
   cloneWithIds,
@@ -70,6 +79,14 @@ function describeComponent(definition: ComponentDefinitionType) {
     definition.accepts && `children only ${definition.accepts.join("/")}`,
     definition.parents && `only inside ${definition.parents.join("/")}`,
     definition.ancestors && `somewhere inside ${definition.ancestors.join("/")}`,
+    definition.maxChildren !== undefined && `holds ${definition.maxChildren} element`,
+    definition.slots &&
+      `slots in order: ${definition.slots
+        .map(
+          (slot) =>
+            `${slot.type}${slot.max ? ` (max ${slot.max}${slot.required ? ", required" : ""})` : " (many)"}`,
+        )
+        .join(", ")}`,
   ]
     .filter(Boolean)
     .join(", ");
@@ -97,6 +114,7 @@ ${blockDefinitions.map((block) => `- ${block.type} — ${block.label}: ${block.d
 - Only containers may have children, and "children only"/"only inside"/"somewhere inside" traits must be respected (e.g. Table > Table.Body > Table.Row > Table.Cell, Layout > Layout.Section, Grid > Grid.Item for spans).
 - Compose with Card for grouped content, InlineStack for rows (e.g. a heading with an action), BlockStack for vertical flow and Grid for metric/tile rows. Prefer IndexTable (headings + rows) for data tables.
 - Overlays (Modal, Command.Dialog) start with open:false unless the user wants them shown.
+- Compound components follow their slots, in order, and parts never appear outside them. A Drawer is Drawer > [Drawer.Trigger] + Drawer.Content > [Header > Title, Description] [Body] [PreFooter] [Footer > Drawer.Close]. Drawer.Trigger and Drawer.Close wrap exactly one element of any kind (a Button, a Card…). Leave out Drawer.Trigger when the drawer is opened from code, and give the Drawer an "id".
 - Write real, specific copy for the merchant's use case — never lorem ipsum.
 - Icon names must come from: ${ICON_NAMES}.
 
@@ -184,6 +202,26 @@ function cleanProps(
   };
 }
 
+/** Children that fit their slots (one Drawer.Header…), sorted into slot order. */
+function buildChildren(
+  definition: ComponentDefinitionType,
+  raw: unknown,
+  ancestry: string[],
+): EditorNodeType[] {
+  const kept: EditorNodeType[] = [];
+  for (const item of Array.isArray(raw) ? raw : []) {
+    const child = toNode(item, ancestry);
+    if (child && hasRoom(definition, kept, child.type)) kept.push(child);
+  }
+  const slots = definition.slots;
+  if (!slots || !definition.accepts) return kept;
+  const rank = (type: string) => slots.findIndex((slot) => slot.type === type);
+  return kept
+    .map((child, index) => ({ child, index }))
+    .sort((a, b) => rank(a.child.type) - rank(b.child.type) || a.index - b.index)
+    .map(({ child }) => child);
+}
+
 /** `ancestry` lists types from the canvas root down to the parent the node goes into. */
 function toNode(raw: unknown, ancestry: string[]): EditorNodeType | null {
   if (!isObject(raw)) return null;
@@ -201,9 +239,7 @@ function toNode(raw: unknown, ancestry: string[]): EditorNodeType | null {
     props: cleanProps(definition, props),
     ...(definition.isContainer
       ? {
-          children: (Array.isArray(children) ? children : [])
-            .map((child) => toNode(child, [...ancestry, definition.type]))
-            .filter((node): node is EditorNodeType => node !== null),
+          children: buildChildren(definition, children, [...ancestry, definition.type]),
         }
       : {}),
   });
@@ -260,10 +296,13 @@ export function applyAgentResponse(text: string, start: EditorNodeType): AgentRe
           typeof operation.parentId === "string" ? operation.parentId : ROOT_ID;
         const parent = findNode(root, parentId);
         const node = parent ? toNode(operation.node, ancestryOf(root, parent.id)) : null;
-        if (!parent || !node) break;
+        if (!parent || !node || !canInsert(root, parent.id, node.type)) break;
         root = insertNode(
           root,
-          { parentId, index: indexOf(operation.index, parent) },
+          {
+            parentId,
+            index: slotIndex(parent, node.type, indexOf(operation.index, parent)),
+          },
           node,
         );
         focusId = node.id;
@@ -293,9 +332,11 @@ export function applyAgentResponse(text: string, start: EditorNodeType): AgentRe
           typeof operation.parentId === "string" ? operation.parentId : ROOT_ID;
         const parent = findNode(root, parentId);
         const moving = findNode(root, id);
-        if (!parent || !moving || !canPlace(ancestryOf(root, parent.id), moving.type))
-          break;
-        root = moveNode(root, id, { parentId, index: indexOf(operation.index, parent) });
+        if (!parent || !moving || !canInsert(root, parent.id, moving.type, id)) break;
+        root = moveNode(root, id, {
+          parentId,
+          index: slotIndex(parent, moving.type, indexOf(operation.index, parent), id),
+        });
         focusId = id;
         break;
       }

@@ -97,6 +97,27 @@ export type CodeShapeType = {
   imports?: string[];
 };
 
+/**
+ * A place for a part inside a compound component, e.g. Drawer.Content's Header.
+ * Slots are listed in render order; the editor offers missing ones and keeps
+ * that order when parts are added or moved.
+ */
+export type SlotType = {
+  type: string;
+  /** At most this many; omit for repeatable parts (rows, items). */
+  max?: number;
+  /** Always present: shown as a "+ Add" row in Layers until it exists. */
+  required?: boolean;
+};
+
+/** Overlays the canvas opens while their content is being edited. */
+export type OverlayConfigType = {
+  /** Prop that opens it: Drawer/Modal `open`, Popover `active`, FlexPopover `isOpen`. */
+  openProp: string;
+  /** Opens when this part (or anything in it) is selected; without it, any descendant. */
+  panel?: string;
+};
+
 export type ComponentDefinitionType = {
   type: string;
   label: string;
@@ -115,6 +136,11 @@ export type ComponentDefinitionType = {
   accepts?: string[];
   /** This type may only be dropped inside these parents. */
   parents?: string[];
+  /** Parts this container is built from, in order (see `SlotType`). */
+  slots?: SlotType[];
+  /** Containers that hold exactly one element, like Drawer.Trigger. */
+  maxChildren?: number;
+  overlay?: OverlayConfigType;
   /** Must sit somewhere inside one of these types (parts that read the parent's context). */
   ancestors?: string[];
   /** Parent type this is a part of, so the palette lists it under that parent. */
@@ -134,7 +160,7 @@ export type ComponentDefinitionType = {
    * Label shown on the canvas in edit mode for components that render nothing
    * visible there (a closed Modal, App Bridge APIs), so they can still be selected.
    */
-  canvasLabel?: (props: NodePropsType) => string | null;
+  canvasLabel?: (props: NodePropsType, node: EditorNodeType) => string | null;
   /** Layout the canvas wrapper must carry so the node still sizes like its preview. */
   wrapperStyle?: (props: NodePropsType) => React.CSSProperties;
   toCode?: (props: NodePropsType, node: EditorNodeType) => CodeShapeType;

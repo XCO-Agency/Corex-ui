@@ -65,6 +65,19 @@ export function migrateNode(node: EditorNodeType): EditorNodeType {
     ];
     delete props.content;
   }
+  // Drawer.Close was a text leaf; it now wraps an element, like Drawer.Trigger.
+  if (type === "Drawer.Close" && !children?.length) {
+    children = [
+      {
+        id: `${node.id}-button`,
+        type: "Button",
+        props: {
+          children: typeof props.children === "string" ? props.children : "Close",
+        },
+      },
+    ];
+    delete props.children;
+  }
   if (type === "Button" && props.fill) {
     props.inlineSize = "fill";
     delete props.fill;

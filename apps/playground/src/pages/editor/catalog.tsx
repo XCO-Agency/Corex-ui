@@ -154,6 +154,9 @@ type EntryType = {
   /** Holds child nodes; `"horizontal"` when they flow in a row. */
   container?: boolean | "horizontal";
   bare?: boolean;
+  slots?: ComponentDefinitionType["slots"];
+  maxChildren?: number;
+  overlay?: ComponentDefinitionType["overlay"];
   /** Child nodes render into this prop instead of `children` (e.g. Collapsible `content`). */
   childrenProp?: string;
   accepts?: string[];
@@ -219,6 +222,9 @@ function define(entry: EntryType): ComponentDefinitionType {
     ...(entry.accepts ? { accepts: entry.accepts } : {}),
     ...(entry.parents ? { parents: entry.parents } : {}),
     ...(entry.ancestors ? { ancestors: entry.ancestors } : {}),
+    ...(entry.slots ? { slots: entry.slots } : {}),
+    ...(entry.maxChildren !== undefined ? { maxChildren: entry.maxChildren } : {}),
+    ...(entry.overlay ? { overlay: entry.overlay } : {}),
     ...(entry.partOf ? { partOf: entry.partOf } : {}),
     ...(entry.note ? { note: entry.note } : {}),
     defaultProps: entry.defaults ?? {},
@@ -310,6 +316,7 @@ const entries: EntryType[] = [
   },
   {
     type: "Grid",
+    slots: [{ type: "Grid.Item" }],
     group: "Layout",
     icon: LayoutGrid,
     container: "horizontal",
@@ -379,6 +386,7 @@ const entries: EntryType[] = [
   },
   {
     type: "Layout",
+    slots: [{ type: "Layout.Section" }],
     group: "Layout",
     icon: LayoutTemplate,
     container: "horizontal",
@@ -402,6 +410,7 @@ const entries: EntryType[] = [
   },
   {
     type: "FormLayout",
+    slots: [{ type: "FormLayout.Group" }],
     label: "Form layout",
     group: "Layout",
     icon: LayoutList,
@@ -413,6 +422,7 @@ const entries: EntryType[] = [
   },
   {
     type: "FormLayout.Group",
+    parents: ["FormLayout"],
     label: "Form layout group",
     group: "Layout",
     icon: Columns2,
@@ -460,6 +470,7 @@ const entries: EntryType[] = [
   },
   {
     type: "Hoverable",
+    slots: [{ type: "Hoverable.Show" }, { type: "Hoverable.Hide" }],
     group: "Layout",
     icon: Pointer,
     container: true,
@@ -473,6 +484,7 @@ const entries: EntryType[] = [
   },
   {
     type: "Hoverable.Show",
+    ancestors: ["Hoverable"],
     label: "Hoverable show",
     group: "Layout",
     icon: Eye,
@@ -481,6 +493,7 @@ const entries: EntryType[] = [
   },
   {
     type: "Hoverable.Hide",
+    ancestors: ["Hoverable"],
     label: "Hoverable hide",
     group: "Layout",
     icon: Eye,
@@ -497,11 +510,11 @@ const entries: EntryType[] = [
   },
   {
     type: "Selectable.Group",
+    slots: [{ type: "Selectable" }],
     label: "Selectable group",
     group: "Layout",
     icon: ListChecks,
     container: "horizontal",
-    partOf: "Selectable",
     children: () => [
       node("Selectable", { value: "basic" }, [node("Card", {}, [text("Basic")])]),
       node("Selectable", { value: "pro" }, [node("Card", {}, [text("Pro")])]),
@@ -521,6 +534,10 @@ const entries: EntryType[] = [
   },
   {
     type: "Table",
+    slots: [
+      { type: "Table.HeaderRow", max: 1, required: true },
+      { type: "Table.Body", max: 1, required: true },
+    ],
     group: "Layout",
     icon: Table,
     container: true,
@@ -550,6 +567,7 @@ const entries: EntryType[] = [
   },
   {
     type: "Table.HeaderRow",
+    slots: [{ type: "Table.Header" }],
     label: "Table header row",
     group: "Layout",
     icon: Rows3,
@@ -571,6 +589,7 @@ const entries: EntryType[] = [
   },
   {
     type: "Table.Body",
+    slots: [{ type: "Table.Row" }],
     label: "Table body",
     group: "Layout",
     icon: Rows3,
@@ -582,6 +601,7 @@ const entries: EntryType[] = [
   },
   {
     type: "Table.Row",
+    slots: [{ type: "Table.Cell" }],
     label: "Table row",
     group: "Layout",
     icon: Rows3,
@@ -594,6 +614,10 @@ const entries: EntryType[] = [
   },
   {
     type: "Table.Cell",
+    slots: [
+      { type: "Table.ExpandButton", max: 1 },
+      { type: "Table.SubRowConnector", max: 1 },
+    ],
     label: "Table cell",
     group: "Layout",
     icon: Square,
@@ -604,6 +628,7 @@ const entries: EntryType[] = [
   },
   {
     type: "Table.ExpandButton",
+    parents: ["Table.Cell"],
     label: "Table expand button",
     group: "Layout",
     icon: ChevronDown,
@@ -612,6 +637,7 @@ const entries: EntryType[] = [
   },
   {
     type: "Table.SubRowConnector",
+    parents: ["Table.Cell"],
     label: "Table sub-row connector",
     group: "Layout",
     icon: ListTree,
@@ -681,7 +707,6 @@ const entries: EntryType[] = [
     group: "Layout",
     icon: Square,
     container: true,
-    partOf: "ResourceList",
     children: () => [text("Resource name", { fontWeight: "semibold" })],
   },
   {
@@ -698,6 +723,7 @@ const entries: EntryType[] = [
   },
   {
     type: "List",
+    slots: [{ type: "List.Item" }],
     group: "Typography",
     icon: List,
     container: true,
@@ -1104,6 +1130,11 @@ const entries: EntryType[] = [
   },
   {
     type: "IndexFilters",
+    slots: [
+      { type: "IndexFilters.SearchField", max: 1 },
+      { type: "IndexFilters.Actions", max: 1 },
+      { type: "IndexFilters.ViewVisibleActiveFilter" },
+    ],
     label: "Index filters",
     group: "Forms",
     icon: Filter,
@@ -1147,6 +1178,7 @@ const entries: EntryType[] = [
   },
   {
     type: "IndexFilters.Actions",
+    slots: [{ type: "IndexFilters.ViewOptions", max: 1 }],
     label: "Index filters actions",
     group: "Forms",
     icon: Columns3,
@@ -1156,6 +1188,12 @@ const entries: EntryType[] = [
   },
   {
     type: "IndexFilters.ViewOptions",
+    parents: ["IndexFilters.Actions"],
+    slots: [
+      { type: "IndexFilters.ViewOptionsSort", max: 1 },
+      { type: "IndexFilters.ViewOptionsToggles", max: 1 },
+      { type: "IndexFilters.ViewOptionsColumns", max: 1 },
+    ],
     label: "Index filters view options",
     group: "Forms",
     icon: ArrowDownUp,
@@ -1202,6 +1240,7 @@ const entries: EntryType[] = [
   },
   {
     type: "IndexFilters.ViewVisibleActiveFilter",
+    parents: ["IndexFilters", "IndexFilters.Actions"],
     label: "Visible when filtered",
     group: "Forms",
     icon: Eye,
@@ -1315,6 +1354,13 @@ const entries: EntryType[] = [
   },
   {
     type: "Navigation",
+    slots: [
+      { type: "Navigation.Search", max: 1 },
+      { type: "Navigation.Section" },
+      { type: "Navigation.Item" },
+      { type: "Navigation.Label" },
+      { type: "Navigation.Footer", max: 1 },
+    ],
     group: "Navigation",
     icon: Navigation,
     container: true,
@@ -1351,6 +1397,8 @@ const entries: EntryType[] = [
   },
   {
     type: "Navigation.Section",
+    slots: [{ type: "Navigation.Item" }, { type: "Navigation.Label" }],
+    parents: ["Navigation"],
     label: "Navigation section",
     group: "Navigation",
     icon: Layers,
@@ -1360,6 +1408,7 @@ const entries: EntryType[] = [
   },
   {
     type: "Navigation.Item",
+    parents: ["Navigation", "Navigation.Section", "Navigation.Footer"],
     label: "Navigation item",
     group: "Navigation",
     icon: Link2,
@@ -1368,6 +1417,7 @@ const entries: EntryType[] = [
   },
   {
     type: "Navigation.Label",
+    parents: ["Navigation", "Navigation.Section", "Navigation.Footer"],
     label: "Navigation label",
     group: "Navigation",
     icon: Type,
@@ -1377,6 +1427,7 @@ const entries: EntryType[] = [
   },
   {
     type: "Navigation.Footer",
+    slots: [{ type: "Navigation.Item" }, { type: "Navigation.Label" }],
     label: "Navigation footer",
     group: "Navigation",
     icon: PanelBottom,
@@ -1388,11 +1439,12 @@ const entries: EntryType[] = [
   /* Overlays -------------------------------------------------------------- */
   {
     type: "Modal",
+    canvasLabel: (props) =>
+      props.open ? null : "Modal · select it or its content to edit",
+    overlay: { openProp: "open" },
     group: "Overlays",
     icon: AppWindow,
     container: true,
-    note: "Turn on Open to show the modal on the canvas and edit its content.",
-    canvasLabel: closedLabel("Modal"),
     defaults: {
       heading: "Edit product",
       open: false,
@@ -1403,13 +1455,43 @@ const entries: EntryType[] = [
   },
   {
     type: "Drawer",
-    group: "Overlays",
-    icon: PanelRight,
-    container: true,
+    canvasLabel: (props, current) =>
+      hasChild(current, "Drawer.Trigger")
+        ? null
+        : `Drawer · opens with useDrawer("${drawerId(props, current)}")`,
+    toCode: (props, current) => ({
+      name: "Drawer",
+      props: { ...props, id: drawerId(props, current) },
+      ...(hasChild(current, "Drawer.Trigger")
+        ? {}
+        : {
+            siblingsBefore: [
+              `{/* Open it from anywhere: useDrawer("${drawerId(props, current)}").open() */}`,
+            ],
+          }),
+    }),
+    render: (props, children, current) => (
+      <Corex.Drawer
+        {...(runtimeProps(drawerFields, props) as object)}
+        id={drawerId(props, current)}
+      >
+        {children}
+      </Corex.Drawer>
+    ),
+    fields: {
+      omit: ["open"],
+      extra: [
+        {
+          name: "id",
+          label: "Drawer ID",
+          section: "Content",
+          kind: "text",
+          description:
+            "Open it from anywhere with useDrawer(id).open() or openDrawer(id).",
+        },
+      ],
+    },
     children: () => [
-      node("Drawer.Trigger", {}, [
-        node("Button", { children: "Open drawer", variant: "primary" }),
-      ]),
       node("Drawer.Content", {}, [
         node("Drawer.Header", {}, [
           node("Drawer.Title", { children: "Order details" }),
@@ -1418,12 +1500,24 @@ const entries: EntryType[] = [
           }),
         ]),
         node("Drawer.Body", {}, [text("Drawer body content.")]),
-        node("Drawer.Footer", {}, [node("Drawer.Close", { children: "Close" })]),
+        node("Drawer.Footer", {}, [
+          node("Drawer.Close", {}, [node("Button", { children: "Close" })]),
+        ]),
       ]),
     ],
+    overlay: { openProp: "open", panel: "Drawer.Content" },
+    accepts: ["Drawer.Trigger", "Drawer.Content"],
+    slots: [
+      { type: "Drawer.Trigger", max: 1 },
+      { type: "Drawer.Content", max: 1, required: true },
+    ],
+    group: "Overlays",
+    icon: PanelRight,
+    container: true,
   },
   {
     type: "Drawer.Trigger",
+    maxChildren: 1,
     label: "Drawer trigger",
     group: "Overlays",
     icon: MousePointerClick,
@@ -1434,7 +1528,14 @@ const entries: EntryType[] = [
   },
   {
     type: "Drawer.Content",
-    ancestors: ["Drawer"],
+    children: () => [node("Drawer.Body", {}, [text("Drawer body content.")])],
+    accepts: ["Drawer.Header", "Drawer.Body", "Drawer.PreFooter", "Drawer.Footer"],
+    slots: [
+      { type: "Drawer.Header", max: 1 },
+      { type: "Drawer.Body", max: 1 },
+      { type: "Drawer.PreFooter", max: 1 },
+      { type: "Drawer.Footer", max: 1 },
+    ],
     label: "Drawer content",
     group: "Overlays",
     icon: PanelRight,
@@ -1444,6 +1545,13 @@ const entries: EntryType[] = [
   },
   {
     type: "Drawer.Header",
+    children: () => [node("Drawer.Title", { children: "Title" })],
+    accepts: ["Drawer.Title", "Drawer.Description"],
+    slots: [
+      { type: "Drawer.Title", max: 1 },
+      { type: "Drawer.Description", max: 1 },
+    ],
+    parents: ["Drawer.Content"],
     ancestors: ["Drawer"],
     label: "Drawer header",
     group: "Overlays",
@@ -1453,6 +1561,7 @@ const entries: EntryType[] = [
   },
   {
     type: "Drawer.Title",
+    parents: ["Drawer.Header"],
     ancestors: ["Drawer"],
     label: "Drawer title",
     group: "Overlays",
@@ -1463,6 +1572,7 @@ const entries: EntryType[] = [
   },
   {
     type: "Drawer.Description",
+    parents: ["Drawer.Header"],
     ancestors: ["Drawer"],
     label: "Drawer description",
     group: "Overlays",
@@ -1473,6 +1583,8 @@ const entries: EntryType[] = [
   },
   {
     type: "Drawer.Body",
+    slots: [{ type: "Drawer.Close", max: 1 }],
+    parents: ["Drawer.Content"],
     ancestors: ["Drawer"],
     label: "Drawer body",
     group: "Overlays",
@@ -1482,6 +1594,8 @@ const entries: EntryType[] = [
   },
   {
     type: "Drawer.PreFooter",
+    slots: [{ type: "Drawer.Close", max: 1 }],
+    parents: ["Drawer.Content"],
     ancestors: ["Drawer"],
     label: "Drawer pre-footer",
     group: "Overlays",
@@ -1491,6 +1605,9 @@ const entries: EntryType[] = [
   },
   {
     type: "Drawer.Footer",
+    children: () => [node("Drawer.Close", {}, [node("Button", { children: "Close" })])],
+    slots: [{ type: "Drawer.Close", max: 1 }],
+    parents: ["Drawer.Content"],
     ancestors: ["Drawer"],
     label: "Drawer footer",
     group: "Overlays",
@@ -1500,16 +1617,23 @@ const entries: EntryType[] = [
   },
   {
     type: "Drawer.Close",
+    children: () => [node("Button", { children: "Close" })],
+    parents: ["Drawer.Body", "Drawer.PreFooter", "Drawer.Footer"],
+    maxChildren: 1,
+    container: true,
     ancestors: ["Drawer"],
     label: "Drawer close",
     group: "Overlays",
     icon: MousePointerClick,
     partOf: "Drawer",
-    defaults: { children: "Close" },
-    fields: { textChildren: true },
   },
   {
     type: "Popover",
+    overlay: { openProp: "active", panel: "Popover.Content" },
+    slots: [
+      { type: "Popover.Trigger", max: 1, required: true },
+      { type: "Popover.Content", max: 1, required: true },
+    ],
     group: "Overlays",
     icon: MessageSquare,
     container: true,
@@ -1525,6 +1649,7 @@ const entries: EntryType[] = [
   },
   {
     type: "Popover.Trigger",
+    maxChildren: 1,
     label: "Popover trigger",
     group: "Overlays",
     icon: MousePointerClick,
@@ -1545,6 +1670,11 @@ const entries: EntryType[] = [
   },
   {
     type: "FlexPopover",
+    overlay: { openProp: "isOpen", panel: "FlexPopover.Content" },
+    slots: [
+      { type: "FlexPopover.Trigger", max: 1, required: true },
+      { type: "FlexPopover.Content", max: 1, required: true },
+    ],
     label: "Flex popover",
     group: "Overlays",
     icon: MessageSquare,
@@ -1561,6 +1691,7 @@ const entries: EntryType[] = [
   },
   {
     type: "FlexPopover.Trigger",
+    maxChildren: 1,
     label: "Flex popover trigger",
     group: "Overlays",
     icon: MousePointerClick,
@@ -1589,6 +1720,11 @@ const entries: EntryType[] = [
   },
   {
     type: "Command",
+    accepts: ["Command.Input", "Command.List"],
+    slots: [
+      { type: "Command.Input", max: 1 },
+      { type: "Command.List", max: 1, required: true },
+    ],
     group: "Overlays",
     icon: CommandIcon,
     container: true,
@@ -1622,7 +1758,7 @@ const entries: EntryType[] = [
   },
   {
     type: "Command.Input",
-    ancestors: ["Command", "Command.Dialog"],
+    parents: ["Command", "Command.Dialog"],
     label: "Command input",
     group: "Overlays",
     icon: Search,
@@ -1631,7 +1767,13 @@ const entries: EntryType[] = [
   },
   {
     type: "Command.List",
-    ancestors: ["Command", "Command.Dialog"],
+    slots: [
+      { type: "Command.Empty", max: 1 },
+      { type: "Command.Group" },
+      { type: "Command.Item" },
+      { type: "Command.Separator" },
+    ],
+    parents: ["Command", "Command.Dialog"],
     label: "Command list",
     group: "Overlays",
     icon: List,
@@ -1640,7 +1782,7 @@ const entries: EntryType[] = [
   },
   {
     type: "Command.Empty",
-    ancestors: ["Command", "Command.Dialog"],
+    parents: ["Command.List"],
     label: "Command empty",
     group: "Overlays",
     icon: Inbox,
@@ -1650,7 +1792,8 @@ const entries: EntryType[] = [
   },
   {
     type: "Command.Group",
-    ancestors: ["Command", "Command.Dialog"],
+    slots: [{ type: "Command.Item" }, { type: "Command.Separator" }],
+    parents: ["Command.List"],
     label: "Command group",
     group: "Overlays",
     icon: Layers,
@@ -1661,7 +1804,8 @@ const entries: EntryType[] = [
   },
   {
     type: "Command.Item",
-    ancestors: ["Command", "Command.Dialog"],
+    slots: [{ type: "Command.Shortcut", max: 1 }],
+    parents: ["Command.Group", "Command.List"],
     label: "Command item",
     group: "Overlays",
     icon: MousePointerClick,
@@ -1672,7 +1816,7 @@ const entries: EntryType[] = [
   },
   {
     type: "Command.Separator",
-    ancestors: ["Command", "Command.Dialog"],
+    parents: ["Command.List", "Command.Group"],
     label: "Command separator",
     group: "Overlays",
     icon: Minus,
@@ -1680,7 +1824,7 @@ const entries: EntryType[] = [
   },
   {
     type: "Command.Shortcut",
-    ancestors: ["Command", "Command.Dialog"],
+    parents: ["Command.Item"],
     label: "Command shortcut",
     group: "Overlays",
     icon: KeyRound,
@@ -1690,13 +1834,23 @@ const entries: EntryType[] = [
   },
   {
     type: "Command.Dialog",
+    children: () => [
+      node("Command.Input", { placeholder: "Type a command or search…" }),
+      node("Command.List", {}, [
+        node("Command.Empty", { children: "No results found." }),
+      ]),
+    ],
+    accepts: ["Command.Input", "Command.List"],
+    slots: [
+      { type: "Command.Input", max: 1 },
+      { type: "Command.List", max: 1, required: true },
+    ],
+    canvasLabel: (props) => (props.open ? null : "Command dialog · select it to edit"),
+    overlay: { openProp: "open" },
     label: "Command dialog",
     group: "Overlays",
     icon: CommandIcon,
     container: true,
-    partOf: "Command",
-    note: "Turn on Open to show the dialog on the canvas.",
-    canvasLabel: closedLabel("Command dialog"),
     defaults: { title: "Command palette", open: false },
     fields: { omit: ["container"] },
   },
@@ -1759,6 +1913,15 @@ const resourceListFields = fieldsFor("ResourceList");
 const menuFields = fieldsFor("Menu");
 const actionListFields = fieldsFor("ActionList");
 const comboboxFields = fieldsFor("Combobox");
+
+const drawerFields = fieldsFor("Drawer");
+
+/** A Drawer needs an id to be opened from code; it defaults to one derived from the node. */
+const drawerId = (props: NodePropsType, current: EditorNodeType) =>
+  typeof props.id === "string" && props.id ? props.id : `drawer-${current.id.slice(-6)}`;
+
+const hasChild = (current: EditorNodeType, type: string) =>
+  Boolean(current.children?.some((child) => child.type === type));
 
 function toNumber(value: unknown) {
   const parsed =

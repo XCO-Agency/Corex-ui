@@ -1,11 +1,46 @@
 import * as React from "react";
-import { ArrowUp, Copy, GripVertical, Trash2 } from "lucide-react";
+import {
+  ArrowUp,
+  Copy,
+  GripVertical,
+  PanelRightClose,
+  PanelRightOpen,
+  Trash2,
+} from "lucide-react";
 import { getDefinition } from "../definitions";
-import { startDrag, type DropPreviewType, type RectType } from "../dnd";
+import { nodeElement, startDrag, type DropPreviewType, type RectType } from "../dnd";
 import { useEditor } from "../store";
 import { findNode, findParent, pathTo, ROOT_ID } from "../tree";
+import type { EditorNodeType } from "../types";
 
 const ACCENT = "#2563eb";
+
+type OverlayActionType = { label: string; open: boolean; targetId: string };
+
+/**
+ * Open/close for the overlay around the selection (Drawer, Popover…). From the
+ * overlay itself or its trigger, "Open" selects its panel, which the canvas shows
+ * open; from inside the panel, "Close" selects the overlay again.
+ */
+function overlayAction(
+  root: EditorNodeType,
+  selectedId: string,
+): OverlayActionType | null {
+  const path = pathTo(root, selectedId).map((id) => findNode(root, id)!);
+  for (let index = path.length - 1; index >= 0; index -= 1) {
+    const node = path[index]!;
+    const definition = getDefinition(node.type);
+    const panelType = definition?.overlay?.panel;
+    if (!panelType) continue;
+    const name = definition.label.toLowerCase();
+    if (path[index + 1]?.type === panelType) {
+      return { label: `Close ${name}`, open: false, targetId: node.id };
+    }
+    const panel = node.children?.find((child) => child.type === panelType);
+    return panel ? { label: `Open ${name}`, open: true, targetId: panel.id } : null;
+  }
+  return null;
+}
 
 /**
  * Tracks the box of the first id in `ids` that has a canvas wrapper. Nodes under
@@ -26,9 +61,7 @@ function useElementRect(doc: Document, ids: string[]) {
     let frame = 0;
     let last = "";
     const tick = () => {
-      const element = candidates
-        .map((id) => doc.querySelector(`[data-cx-node="${CSS.escape(id)}"]`))
-        .find(Boolean);
+      const element = candidates.map((id) => nodeElement(doc, id)).find(Boolean);
       const box = element?.getBoundingClientRect();
       const next = box ? `${box.top}|${box.left}|${box.width}|${box.height}` : "";
       if (next !== last) {
@@ -76,8 +109,18 @@ export function CanvasOverlay({ doc, hoveredId, preview }: CanvasOverlayPropsTyp
   const selected = selectedId ? findNode(state.root, selectedId) : null;
   const hovered = hoveredId ? findNode(state.root, hoveredId) : null;
   const parent = selectedId ? findParent(state.root, selectedId) : null;
+  const overlay = selectedId ? overlayAction(state.root, selectedId) : null;
 
-  const toolbarBelow = selectedRect ? selectedRect.top < 30 : false;
+  // Above the box when there is room, else below it; a box that fills the frame
+  // (an open drawer panel) gets the toolbar inside its top edge.
+  const viewportHeight = doc.defaultView?.innerHeight ?? Infinity;
+  const toolbarPlacement: React.CSSProperties = !selectedRect
+    ? {}
+    : selectedRect.top >= 30
+      ? { bottom: "calc(100% + 4px)" }
+      : selectedRect.top + selectedRect.height + 34 <= viewportHeight
+        ? { top: "calc(100% + 4px)" }
+        : { top: 6, left: 6 };
   const iconButton =
     "pointer-events-auto flex size-6 cursor-pointer items-center justify-center rounded text-white/85 hover:bg-white/20 hover:text-white [&_svg]:size-3.5";
 
@@ -114,9 +157,7 @@ export function CanvasOverlay({ doc, hoveredId, preview }: CanvasOverlayPropsTyp
             className="absolute left-0 flex items-center gap-0.5 rounded-md py-0.5 pr-0.5 pl-2 text-[11px] font-medium text-white shadow-md"
             style={{
               background: ACCENT,
-              ...(toolbarBelow
-                ? { top: "calc(100% + 4px)" }
-                : { bottom: "calc(100% + 4px)" }),
+              ...toolbarPlacement,
             }}
             onClick={(event) => event.stopPropagation()}
           >
@@ -134,6 +175,17 @@ export function CanvasOverlay({ doc, hoveredId, preview }: CanvasOverlayPropsTyp
             >
               <GripVertical />
             </span>
+            {overlay && (
+              <button
+                type="button"
+                title={overlay.label}
+                aria-label={overlay.label}
+                className={iconButton}
+                onClick={() => dispatch({ type: "select", id: overlay.targetId })}
+              >
+                {overlay.open ? <PanelRightOpen /> : <PanelRightClose />}
+              </button>
+            )}
             {parent && parent.id !== ROOT_ID && (
               <button
                 type="button"
