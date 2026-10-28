@@ -82,6 +82,7 @@ const tile = (definition: ComponentDefinitionType): PaletteItemType => ({
 
 function ComponentsTab() {
   const [query, setQuery] = React.useState("");
+  const [collapsed, setCollapsed] = React.useState<ReadonlySet<string>>(() => new Set());
   const addNode = useAddNode();
   // Parts (Drawer content, Table row…) are not listed: they are added in place
   // from Layers or the inspector, where the editor knows where they fit.
@@ -114,41 +115,67 @@ function ComponentsTab() {
     <>
       <SearchInput value={query} onChange={setQuery} placeholder="Search components" />
       <div className="flex-1 overflow-y-auto px-3 pb-4">
-        {groups.map(({ group, items }) => (
-          <section key={group} className="pt-2">
-            <h3 className="flex items-center justify-between px-0.5 pb-1.5 text-[11px] font-medium tracking-wide text-muted-foreground uppercase">
-              {group}
-              <span className="font-mono text-[10px] font-normal normal-case">
-                {items.length}
-              </span>
-            </h3>
-            <div className="grid grid-cols-2 gap-1.5">
-              {items.map((item) => (
-                <button
-                  key={item.key}
-                  type="button"
-                  draggable
-                  title={`${item.description} Drag onto the canvas or click to add.`}
-                  onDragStart={(event) =>
-                    startDrag(event, {
-                      kind: "new",
-                      type: item.type,
-                      ...(item.props ? { props: item.props } : {}),
-                    })
-                  }
-                  onDragEnd={endDrag}
-                  onClick={() => addNode(item.type, item.props)}
-                  className="group flex min-w-0 cursor-grab flex-col items-start gap-2 rounded-lg border border-border/70 bg-background p-2.5 text-left transition-colors hover:border-foreground/25 hover:bg-muted/40 active:cursor-grabbing"
-                >
-                  <item.icon className="size-4 text-muted-foreground group-hover:text-foreground" />
-                  <span className="w-full truncate text-xs leading-none font-medium">
-                    {item.label}
-                  </span>
-                </button>
-              ))}
-            </div>
-          </section>
-        ))}
+        {groups.map(({ group, items }) => {
+          // Searching always shows matches, even in a collapsed group.
+          const open = Boolean(query) || !collapsed.has(group);
+          return (
+            <section key={group}>
+              <button
+                type="button"
+                aria-expanded={open}
+                onClick={() =>
+                  setCollapsed((current) => {
+                    const next = new Set(current);
+                    if (next.has(group)) next.delete(group);
+                    else next.add(group);
+                    return next;
+                  })
+                }
+                className="sticky top-0 z-10 -mx-3 flex w-[calc(100%+1.5rem)] cursor-pointer items-center gap-1.5 bg-background/95 px-3.5 pt-3 pb-2 text-[11px] font-semibold tracking-wide text-muted-foreground uppercase backdrop-blur-sm transition-colors hover:text-foreground"
+              >
+                <ChevronRight
+                  className={cn(
+                    "size-3 transition-transform duration-200",
+                    open && "rotate-90",
+                  )}
+                />
+                <span className="flex-1 text-left">{group}</span>
+                <span className="rounded-full bg-muted px-1.5 py-px font-mono text-[10px] font-medium tracking-normal normal-case">
+                  {items.length}
+                </span>
+              </button>
+              {open && (
+                <div className="grid grid-cols-3 gap-1.5 pb-1">
+                  {items.map((item) => (
+                    <button
+                      key={item.key}
+                      type="button"
+                      draggable
+                      title={`${item.label} — ${item.description} Drag onto the canvas or click to add.`}
+                      onDragStart={(event) =>
+                        startDrag(event, {
+                          kind: "new",
+                          type: item.type,
+                          ...(item.props ? { props: item.props } : {}),
+                        })
+                      }
+                      onDragEnd={endDrag}
+                      onClick={() => addNode(item.type, item.props)}
+                      className="group flex min-h-[78px] min-w-0 cursor-grab flex-col items-center justify-center gap-1.5 rounded-xl border border-border/60 bg-background px-1 py-2 text-center transition-all duration-150 hover:-translate-y-px hover:border-blue-600/30 hover:shadow-sm focus-visible:border-blue-600/50 focus-visible:ring-2 focus-visible:ring-blue-600/20 focus-visible:outline-none active:translate-y-0 active:cursor-grabbing"
+                    >
+                      <span className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-muted/70 text-foreground/65 transition-colors group-hover:bg-blue-600/10 group-hover:text-blue-700 dark:group-hover:text-blue-300">
+                        <item.icon className="size-4" strokeWidth={1.75} />
+                      </span>
+                      <span className="line-clamp-2 w-full px-0.5 text-[11px] leading-tight font-medium text-foreground/85 group-hover:text-foreground">
+                        {item.label}
+                      </span>
+                    </button>
+                  ))}
+                </div>
+              )}
+            </section>
+          );
+        })}
         {!groups.length && (
           <p className="px-1 pt-6 text-center text-xs text-muted-foreground">
             No components match “{query}”.

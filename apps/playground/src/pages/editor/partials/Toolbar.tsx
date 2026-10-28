@@ -90,7 +90,14 @@ export function Toolbar({
   const nodeCount = countNodes(state.root) - 1;
 
   return (
-    <Box paddingInline="small" paddingBlock="small-200" background="base">
+    <Box
+      paddingInline="small"
+      paddingBlock="small-200"
+      background="base"
+      border="base"
+      borderWidth="small"
+      borderStyle="none none solid none"
+    >
       <InlineStack alignItems="center" gap="small" wrap={false}>
         <InlineStack grow alignItems="center" gap="small-200" wrap={false} fill>
           <IconAction
