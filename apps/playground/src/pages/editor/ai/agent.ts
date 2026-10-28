@@ -53,6 +53,8 @@ function describeField(field: FieldType) {
       return `${field.name}:bool`;
     case "number":
       return `${field.name}:number`;
+    case "range":
+      return `${field.name}:number(${field.min}-${field.max})`;
     case "icon":
       return `${field.name}:ICON`;
     case "json":
@@ -143,6 +145,7 @@ function fits(field: FieldType, value: unknown) {
     case "boolean":
       return typeof value === "boolean";
     case "number":
+    case "range":
       return typeof value === "number" && Number.isFinite(value);
     case "select":
       return (

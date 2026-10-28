@@ -1,7 +1,8 @@
 import * as React from "react";
-import { Sparkles, SlidersHorizontal } from "lucide-react";
+import { Box, Divider, Tabs } from "@xco-agency/corex-ui";
 import { cn } from "@/lib/utils";
 import { EditorProvider, useEditor } from "./store";
+import { usePolarisRuntime } from "./usePolarisRuntime";
 import { cloneWithIds, findNode } from "./tree";
 import type { EditorNodeType, ViewportType } from "./types";
 import { AiPanel } from "./partials/AiPanel";
@@ -108,6 +109,7 @@ function EditorWorkspace() {
         rightOpen={rightOpen}
         onToggleRight={() => setRightOpen((open) => !open)}
       />
+      <Divider />
 
       <div className="flex min-h-0 flex-1">
         {showLeft && (
@@ -138,29 +140,17 @@ function EditorWorkspace() {
 
         {rightOpen && (
           <aside className="flex w-80 shrink-0 flex-col border-l border-border/70 bg-background">
-            <div className="flex h-10 shrink-0 items-center gap-1 border-b border-border/70 px-2">
-              {(
-                [
-                  { id: "design", label: "Design", icon: SlidersHorizontal },
-                  { id: "ai", label: "AI agent", icon: Sparkles },
-                ] as const
-              ).map(({ id, label, icon: Icon }) => (
-                <button
-                  key={id}
-                  type="button"
-                  onClick={() => setRightTab(id)}
-                  className={cn(
-                    "flex h-7 cursor-pointer items-center gap-1.5 rounded-md px-2.5 text-xs font-medium transition-colors [&_svg]:size-3.5",
-                    rightTab === id
-                      ? "bg-muted text-foreground"
-                      : "text-muted-foreground hover:text-foreground",
-                  )}
-                >
-                  <Icon className={cn(id === "ai" && "text-violet-600")} />
-                  {label}
-                </button>
-              ))}
-            </div>
+            <Box paddingInline="small" paddingBlockStart="small-200">
+              <Tabs
+                tabs={[
+                  { id: "design", label: "Design", icon: "adjust" },
+                  { id: "ai", label: "AI agent", icon: "wand" },
+                ]}
+                value={rightTab}
+                onChange={(id) => setRightTab(id as RightTabType)}
+              />
+            </Box>
+            <Divider />
             {/* Both stay mounted so the chat survives switching tabs. */}
             <div
               className={cn(
@@ -186,6 +176,7 @@ function EditorWorkspace() {
 }
 
 export function Editor() {
+  usePolarisRuntime();
   return (
     <EditorProvider>
       <EditorWorkspace />

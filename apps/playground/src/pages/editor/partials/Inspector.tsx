@@ -1,99 +1,100 @@
 import * as React from "react";
 import {
-  ArrowUp,
-  ChevronRight,
-  CircleHelp,
-  Copy,
-  Info,
-  MousePointer2,
-  RotateCcw,
-  Search,
-  Trash2,
-} from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+  Autocomplete,
+  Badge,
+  Banner,
+  BlockStack,
+  Box,
+  Button,
+  Clickable,
+  Collapsible,
+  Divider,
+  Icon,
+  IconTile,
+  InlineStack,
+  NumberField,
+  RangeSlider,
+  SearchField,
+  Select,
+  Switch,
+  Text,
+  TextField,
+  Tooltip,
+} from "@xco-agency/corex-ui";
+import type { IconType } from "@xco-agency/corex-ui";
 import iconsData from "@/data/icons.json";
-import { cn } from "@/lib/utils";
 import { getDefinition } from "../definitions";
 import { useEditor } from "../store";
 import { findParent, ROOT_ID } from "../tree";
 import { FIELD_SECTIONS, type FieldSectionType, type FieldType } from "../types";
 
 const ICON_NAMES = (iconsData as { name: string }[]).map((icon) => icon.name);
-const ICON_LIST_ID = "cx-editor-icons";
+/** Suggestions shown at once in the icon picker; typing narrows the full list. */
+const ICON_SUGGESTIONS = 40;
 
-const controlClass =
-  "h-8 w-full min-w-0 rounded-md border border-input bg-transparent px-2 text-xs outline-none placeholder:text-muted-foreground/70 focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/30";
+const isSet = (value: unknown) => value !== undefined && value !== "" && value !== null;
 
 const placeholderOf = (field: FieldType) =>
   field.defaultValue !== undefined && typeof field.defaultValue !== "object"
     ? String(field.defaultValue)
     : undefined;
 
+const asText = (value: unknown) =>
+  typeof value === "string" || typeof value === "number" ? String(value) : "";
+
+/** Narrows `values` to what the user typed, but shows them all once a value is chosen. */
+function suggestions(values: string[], typed: string, limit = Infinity) {
+  const query = typed.trim().toLowerCase();
+  const matching =
+    !query || values.includes(typed)
+      ? values
+      : values.filter((value) => value.includes(query));
+  return matching.slice(0, limit);
+}
+
 /** JSON props keep a local draft so half-typed JSON never reaches the canvas. */
 function JsonControl({
+  field,
   value,
-  shape,
   onChange,
 }: {
+  field: Extract<FieldType, { kind: "json" }>;
   value: unknown;
-  shape?: string;
   onChange: (value: unknown) => void;
 }) {
-  const serialized =
-    value === undefined || value === "" ? "" : JSON.stringify(value, null, 2);
+  const serialized = isSet(value) ? JSON.stringify(value, null, 2) : "";
   const [draft, setDraft] = React.useState(serialized);
-  const [error, setError] = React.useState<string | null>(null);
-  const focused = React.useRef(false);
+  const [error, setError] = React.useState<string>();
 
+  // Accept outside changes (undo, AI edits) unless the draft is mid-edit and invalid.
   React.useEffect(() => {
-    if (!focused.current) setDraft(serialized);
-  }, [serialized]);
+    if (!error) setDraft(serialized);
+  }, [serialized]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
-    <div className="flex flex-col gap-1">
-      <textarea
-        spellCheck={false}
-        rows={Math.min(10, Math.max(3, draft.split("\n").length))}
-        className={cn(
-          controlClass,
-          "h-auto resize-y py-1.5 font-mono text-[11px] leading-relaxed",
-          error && "border-destructive focus-visible:ring-destructive/30",
-        )}
-        placeholder={shape ? `e.g. ${shape}` : "JSON value"}
-        value={draft}
-        onFocus={() => (focused.current = true)}
-        onBlur={() => {
-          focused.current = false;
-          if (!error) setDraft(serialized);
-        }}
-        onChange={(event) => {
-          const next = event.target.value;
-          setDraft(next);
-          if (!next.trim()) {
-            setError(null);
-            onChange("");
-            return;
-          }
-          try {
-            onChange(JSON.parse(next));
-            setError(null);
-          } catch (parseError) {
-            setError(parseError instanceof Error ? parseError.message : "Invalid JSON");
-          }
-        }}
-      />
-      {error ? (
-        <span className="text-[10px] text-destructive">{error}</span>
-      ) : (
-        shape && (
-          <span className="line-clamp-2 font-mono text-[10px] text-muted-foreground/80">
-            {shape}
-          </span>
-        )
-      )}
-    </div>
+    <TextField
+      label={field.label}
+      labelAccessibilityVisibility="exclusive"
+      multiline={Math.min(10, Math.max(3, draft.split("\n").length))}
+      value={draft}
+      placeholder="JSON value"
+      error={error}
+      helpText={field.shape}
+      onChange={(next) => {
+        setDraft(next);
+        if (!next.trim()) {
+          setError(undefined);
+          onChange("");
+          return;
+        }
+        try {
+          onChange(JSON.parse(next));
+          setError(undefined);
+        } catch (parseError) {
+          setError(parseError instanceof Error ? parseError.message : "Invalid JSON");
+        }
+      }}
+    />
   );
 }
 
@@ -107,142 +108,114 @@ function FieldControl({
   onChange: (value: unknown) => void;
 }) {
   const placeholder = placeholderOf(field);
-  const textValue =
-    typeof value === "string" || typeof value === "number" ? String(value) : "";
+  const current = asText(value);
 
   switch (field.kind) {
     case "text":
-      return (
-        <Input
-          className="h-8 text-xs"
-          value={textValue}
-          placeholder={placeholder}
-          onChange={(event) => onChange(event.target.value)}
-        />
-      );
-    case "icon":
-      return (
-        <Input
-          className="h-8 text-xs"
-          list={ICON_LIST_ID}
-          value={textValue}
-          placeholder={placeholder ?? "e.g. star, cart, settings"}
-          onChange={(event) => onChange(event.target.value)}
-        />
-      );
     case "textarea":
       return (
-        <textarea
-          className={cn(controlClass, "h-auto min-h-16 resize-y py-1.5 leading-relaxed")}
-          value={textValue}
+        <TextField
+          label={field.label}
+          labelAccessibilityVisibility="exclusive"
+          value={current}
           placeholder={placeholder}
-          rows={3}
-          onChange={(event) => onChange(event.target.value)}
+          multiline={field.kind === "textarea" ? 3 : undefined}
+          onChange={(next) => onChange(next)}
         />
       );
+
     case "number":
       return (
-        <Input
-          type="number"
-          className="h-8 text-xs"
-          value={textValue}
+        <NumberField
+          label={field.label}
+          labelAccessibilityVisibility="exclusive"
+          value={current}
           placeholder={placeholder}
-          onChange={(event) =>
-            onChange(event.target.value === "" ? "" : Number(event.target.value))
-          }
+          onChange={(next) => onChange(next === "" ? "" : Number(next))}
         />
       );
-    case "json":
-      return <JsonControl value={value} shape={field.shape} onChange={onChange} />;
-    case "boolean": {
-      const checked = value === undefined ? field.defaultValue === true : Boolean(value);
+
+    case "range": {
+      const fallback =
+        typeof field.defaultValue === "number" ? field.defaultValue : field.min;
       return (
-        <button
-          type="button"
-          role="switch"
-          aria-checked={checked}
-          aria-label={field.label}
-          onClick={() => onChange(!checked)}
-          className={cn(
-            "relative h-5 w-9 shrink-0 cursor-pointer rounded-full transition-colors",
-            checked ? "bg-blue-600" : "bg-muted-foreground/25",
-          )}
-        >
-          <span
-            className={cn(
-              "absolute top-0.5 left-0.5 size-4 rounded-full bg-white shadow transition-transform",
-              checked && "translate-x-4",
-            )}
-          />
-        </button>
+        <RangeSlider
+          label={field.label}
+          labelHidden
+          output
+          min={field.min}
+          max={field.max}
+          step={field.step ?? 1}
+          value={typeof value === "number" ? value : Number(current) || fallback}
+          suffix={<Text variant="small">{isSet(value) ? current : "auto"}</Text>}
+          onChange={(next) => onChange(next)}
+        />
       );
     }
+
+    case "boolean":
+      return (
+        <Switch
+          label={field.label}
+          labelAccessibilityVisibility="exclusive"
+          checked={value === undefined ? field.defaultValue === true : Boolean(value)}
+          onChange={(checked) => onChange(checked)}
+        />
+      );
+
     case "select": {
-      const current = textValue;
+      // Token scales and free values (gap, padding, sizes) → Autocomplete; closed lists → Select.
       if (field.allowCustom) {
-        // Tokens plus free values (e.g. "240px"), so a datalist instead of a closed select.
-        const listId = `cx-options-${field.name}`;
+        const values = field.options.map((option) => option.value);
         return (
-          <>
-            <Input
-              className="h-8 text-xs"
-              list={listId}
-              value={current}
-              placeholder={placeholder ?? "default"}
-              onChange={(event) => onChange(event.target.value)}
-            />
-            <datalist id={listId}>
-              {field.options.map((option) => (
-                <option key={option.value} value={option.value} />
-              ))}
-            </datalist>
-          </>
-        );
-      }
-      const short =
-        field.options.length <= 4 &&
-        field.options.every((option) => option.label.length <= 8);
-      if (short) {
-        const active = current || (placeholder ?? "");
-        return (
-          <div className="flex rounded-md bg-muted p-0.5">
-            {field.options.map((option) => (
-              <button
-                key={option.value}
-                type="button"
-                onClick={() => onChange(current === option.value ? "" : option.value)}
-                className={cn(
-                  "h-7 min-w-0 flex-1 cursor-pointer truncate rounded px-1.5 text-[11px] font-medium transition-colors",
-                  active === option.value
-                    ? "bg-background text-foreground shadow-xs"
-                    : "text-muted-foreground hover:text-foreground",
-                )}
-              >
-                {option.label}
-              </button>
-            ))}
-          </div>
+          <Autocomplete
+            value={current}
+            selected={values.includes(current) ? current : undefined}
+            placeholder={placeholder ? `default (${placeholder})` : "default"}
+            options={suggestions(values, current).map((option) => ({ value: option }))}
+            onChange={(next) => onChange(next)}
+            onSelect={(next) => onChange(next)}
+          />
         );
       }
       return (
-        <select
-          className={controlClass}
+        <Select
+          label={field.label}
+          labelAccessibilityVisibility="exclusive"
           value={current}
-          onChange={(event) => onChange(event.target.value)}
-        >
-          <option value="">{placeholder ? `default (${placeholder})` : "default"}</option>
-          {field.options.map((option) => (
-            <option key={option.value} value={option.value}>
-              {option.label}
-            </option>
-          ))}
-        </select>
+          options={[
+            { label: placeholder ? `Default (${placeholder})` : "Default", value: "" },
+            ...field.options,
+          ]}
+          onChange={(next) => onChange(next)}
+        />
       );
     }
+
+    case "icon":
+      return (
+        <Autocomplete
+          value={current}
+          selected={ICON_NAMES.includes(current) ? current : undefined}
+          placeholder={placeholder ?? "Search icons"}
+          options={suggestions(ICON_NAMES, current, ICON_SUGGESTIONS).map((name) => ({
+            value: name,
+            label: (
+              <InlineStack gap="small-200" alignItems="center">
+                <Icon type={name as IconType} size="small" />
+                <Text>{name}</Text>
+              </InlineStack>
+            ),
+          }))}
+          onChange={(next) => onChange(next)}
+          onSelect={(next) => onChange(next)}
+        />
+      );
+
+    case "json":
+      return <JsonControl field={field} value={value} onChange={onChange} />;
   }
 }
-
-const isSet = (value: unknown) => value !== undefined && value !== "" && value !== null;
 
 function FieldRow({
   field,
@@ -253,45 +226,59 @@ function FieldRow({
   value: unknown;
   onChange: (value: unknown) => void;
 }) {
-  const inline = field.kind === "boolean";
-  return (
-    <div
-      className={cn(
-        "group/field flex gap-1.5",
-        inline ? "items-center justify-between" : "flex-col",
+  const header = (
+    <InlineStack gap="small-300" alignItems="center" wrap={false}>
+      <Text variant="small" fontWeight="medium" color="subdued">
+        {field.label}
+      </Text>
+      {field.description && (
+        <Tooltip content={`${field.name}: ${field.description}`}>
+          <Icon type="question-circle" size="small" tone="neutral" />
+        </Tooltip>
       )}
-    >
-      <div className="flex min-w-0 items-center gap-1">
-        <span className="truncate text-[11px] font-medium text-muted-foreground">
-          {field.label}
-        </span>
-        {field.description && (
-          <Tooltip>
-            <TooltipTrigger
-              render={
-                <span className="flex shrink-0 cursor-help text-muted-foreground/50 hover:text-muted-foreground" />
-              }
-            >
-              <CircleHelp className="size-3" />
-            </TooltipTrigger>
-            <TooltipContent side="left" className="max-w-64 text-[11px] leading-snug">
-              <span className="font-mono">{field.name}</span> — {field.description}
-            </TooltipContent>
-          </Tooltip>
-        )}
-        {isSet(value) && (
-          <button
-            type="button"
-            title="Reset to default"
-            onClick={() => onChange(undefined)}
-            className="ml-auto flex shrink-0 cursor-pointer text-muted-foreground/0 group-hover/field:text-muted-foreground/70 hover:!text-foreground"
-          >
-            <RotateCcw className="size-3" />
-          </button>
-        )}
-      </div>
+    </InlineStack>
+  );
+  const reset = isSet(value) && (
+    <Tooltip content="Reset to default">
+      <Button
+        variant="tertiary"
+        icon="undo"
+        accessibilityLabel={`Reset ${field.label}`}
+        onClick={() => onChange(undefined)}
+      />
+    </Tooltip>
+  );
+
+  if (field.kind === "boolean") {
+    return (
+      <InlineStack
+        justifyContent="space-between"
+        alignItems="center"
+        gap="small"
+        wrap={false}
+      >
+        {header}
+        <InlineStack gap="small-300" alignItems="center" wrap={false}>
+          {reset}
+          <FieldControl field={field} value={value} onChange={onChange} />
+        </InlineStack>
+      </InlineStack>
+    );
+  }
+
+  return (
+    <BlockStack gap="small-300">
+      <InlineStack
+        justifyContent="space-between"
+        alignItems="center"
+        wrap={false}
+        minBlockSize="28px"
+      >
+        {header}
+        {reset}
+      </InlineStack>
       <FieldControl field={field} value={value} onChange={onChange} />
-    </div>
+    </BlockStack>
   );
 }
 
@@ -308,25 +295,40 @@ function Section({
   forceOpen: boolean;
   children: React.ReactNode;
 }) {
-  const [open, setOpen] = React.useState(defaultOpen);
-  const expanded = open || forceOpen;
   return (
-    <section className="border-b border-border/60 last:border-b-0">
-      <button
-        type="button"
-        onClick={() => setOpen((value) => !value)}
-        className="flex h-9 w-full cursor-pointer items-center gap-1.5 px-3 text-[11px] font-semibold tracking-wide text-foreground/80 uppercase hover:text-foreground"
-      >
-        <ChevronRight
-          className={cn("size-3 transition-transform", expanded && "rotate-90")}
-        />
-        {title}
-        <span className="ml-auto font-mono text-[10px] font-normal text-muted-foreground">
-          {count}
-        </span>
-      </button>
-      {expanded && <div className="flex flex-col gap-3.5 px-3 pb-4">{children}</div>}
-    </section>
+    <Collapsible
+      // Searching forces every section open; switching keys swaps controlled/uncontrolled.
+      key={forceOpen ? "forced" : "free"}
+      {...(forceOpen ? { expanded: true } : { defaultExpanded: defaultOpen })}
+      content={
+        <Box paddingInline="base" paddingBlockEnd="base">
+          <BlockStack gap="base">{children}</BlockStack>
+        </Box>
+      }
+    >
+      {({ expanded, toggle }) => (
+        <Clickable
+          onClick={toggle}
+          accessibilityLabel={`${expanded ? "Collapse" : "Expand"} ${title}`}
+        >
+          <Box paddingInline="base" paddingBlock="small-100">
+            <InlineStack justifyContent="space-between" alignItems="center">
+              <InlineStack gap="small-200" alignItems="center">
+                <Icon
+                  type={expanded ? "chevron-down" : "chevron-right"}
+                  size="small"
+                  tone="neutral"
+                />
+                <Text variant="small" fontWeight="semibold">
+                  {title}
+                </Text>
+              </InlineStack>
+              <Badge>{String(count)}</Badge>
+            </InlineStack>
+          </Box>
+        </Clickable>
+      )}
+    </Collapsible>
   );
 }
 
@@ -340,9 +342,9 @@ export function Inspector() {
 
   if (!definition) {
     return (
-      <p className="p-4 text-xs text-muted-foreground">
-        Unknown component “{node.type}”.
-      </p>
+      <Box padding="base">
+        <Text color="subdued">Unknown component “{node.type}”.</Text>
+      </Box>
     );
   }
 
@@ -364,121 +366,134 @@ export function Inspector() {
   const update = (name: string, value: unknown) =>
     dispatch({ type: "update", id: node.id, props: { [name]: value } });
 
+  const emptyMessage = needle
+    ? `No props match “${query}”.`
+    : isRoot
+      ? "The canvas has no settings: it adds no wrapper, so the export returns your elements in a fragment. Use a Block stack or Page for spacing."
+      : definition.group === "Blocks"
+        ? "Blocks render as ready-made sections. Compose around them with stacks, cards and grids, or ask the AI agent to build alongside."
+        : "This component has no settings.";
+
   return (
-    <div className="flex min-h-0 flex-1 flex-col">
-      <datalist id={ICON_LIST_ID}>
-        {ICON_NAMES.map((name) => (
-          <option key={name} value={name} />
-        ))}
-      </datalist>
-
-      <div className="flex items-start gap-2.5 border-b border-border/70 p-3">
-        <span className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-blue-600/10 text-blue-700 dark:text-blue-300">
-          <definition.icon className="size-4" />
-        </span>
-        <div className="min-w-0 flex-1">
-          <p className="truncate text-sm font-semibold">{definition.label}</p>
-          <p className="line-clamp-2 text-[11px] leading-snug text-muted-foreground">
-            {definition.description}
-          </p>
-        </div>
-        {!isRoot && (
-          <div className="flex shrink-0 gap-0.5">
-            {parent && parent.id !== ROOT_ID && (
-              <Button
-                variant="ghost"
-                size="icon-xs"
-                title="Select parent"
-                onClick={() => dispatch({ type: "select", id: parent.id })}
-              >
-                <ArrowUp />
-              </Button>
+    <BlockStack grow minBlockSize={0}>
+      {/* Header and search keep their height; only the field list scrolls. */}
+      <BlockStack shrink={false}>
+        <Box padding="base">
+          <InlineStack gap="small" alignItems="start" wrap={false}>
+            <IconTile tone="info" color="base" size="small">
+              <definition.icon size={16} />
+            </IconTile>
+            <BlockStack gap="small-500" grow minInlineSize={0}>
+              <Text fontWeight="semibold" lineClamp={1}>
+                {definition.label}
+              </Text>
+              <Text variant="small" color="subdued" lineClamp={2}>
+                {definition.description}
+              </Text>
+            </BlockStack>
+            {!isRoot && (
+              <InlineStack gap="small-500" wrap={false}>
+                {parent && parent.id !== ROOT_ID && (
+                  <Tooltip content="Select parent">
+                    <Button
+                      variant="tertiary"
+                      icon="arrow-up"
+                      accessibilityLabel="Select parent"
+                      onClick={() => dispatch({ type: "select", id: parent.id })}
+                    />
+                  </Tooltip>
+                )}
+                <Tooltip content="Duplicate (⌘D)">
+                  <Button
+                    variant="tertiary"
+                    icon="duplicate"
+                    accessibilityLabel="Duplicate"
+                    onClick={() => dispatch({ type: "duplicate", id: node.id })}
+                  />
+                </Tooltip>
+                <Tooltip content="Delete (⌫)">
+                  <Button
+                    variant="tertiary"
+                    tone="critical"
+                    icon="delete"
+                    accessibilityLabel="Delete"
+                    onClick={() => dispatch({ type: "remove", id: node.id })}
+                  />
+                </Tooltip>
+              </InlineStack>
             )}
-            <Button
-              variant="ghost"
-              size="icon-xs"
-              title="Duplicate"
-              onClick={() => dispatch({ type: "duplicate", id: node.id })}
-            >
-              <Copy />
-            </Button>
-            <Button
-              variant="ghost"
-              size="icon-xs"
-              title="Delete"
-              className="hover:text-destructive"
-              onClick={() => dispatch({ type: "remove", id: node.id })}
-            >
-              <Trash2 />
-            </Button>
-          </div>
-        )}
-      </div>
+          </InlineStack>
+        </Box>
+        <Divider />
 
-      {definition.note && (
-        <div className="mx-3 mt-3 flex gap-2 rounded-lg bg-amber-500/10 p-2.5 text-[11px] leading-snug text-amber-800 dark:text-amber-300">
-          <Info className="mt-px size-3.5 shrink-0" />
-          {definition.note}
-        </div>
-      )}
-
-      {definition.fields.length > 6 && (
-        <div className="relative px-3 pt-3">
-          <Search className="pointer-events-none absolute top-1/2 left-5.5 mt-1.5 size-3.5 -translate-y-1/2 text-muted-foreground" />
-          <Input
-            value={query}
-            onChange={(event) => setQuery(event.target.value)}
-            placeholder={`Search ${definition.fields.length} props${setCount ? ` · ${setCount} set` : ""}`}
-            className="h-8 pl-7 text-xs"
-          />
-        </div>
-      )}
-
-      <div className="flex-1 overflow-y-auto pt-1">
-        {sections.length ? (
-          sections.map(({ section, fields }, index) => (
-            <Section
-              key={`${node.id}-${section}`}
-              title={section}
-              count={fields.length}
-              defaultOpen={
-                index === 0 ||
-                section === "Content" ||
-                fields.some((field) => isSet(node.props[field.name]))
-              }
-              forceOpen={Boolean(needle)}
-            >
-              {fields.map((field) => (
-                <FieldRow
-                  key={field.name}
-                  field={field}
-                  value={node.props[field.name]}
-                  onChange={(value) => update(field.name, value)}
+        {(definition.note || definition.fields.length > 6) && (
+          <Box padding="base" paddingBlockEnd="small">
+            <BlockStack gap="small">
+              {definition.note && <Banner tone="warning">{definition.note}</Banner>}
+              {definition.fields.length > 6 && (
+                <SearchField
+                  label="Search props"
+                  labelAccessibilityVisibility="exclusive"
+                  value={query}
+                  placeholder={`Search ${definition.fields.length} props${setCount ? ` · ${setCount} set` : ""}`}
+                  onChange={(next) => setQuery(next)}
                 />
-              ))}
-            </Section>
-          ))
-        ) : (
-          <p className="p-3 text-xs leading-relaxed text-muted-foreground">
-            {needle
-              ? `No props match “${query}”.`
-              : isRoot
-                ? "The canvas has no settings: it adds no wrapper, so the export returns your elements in a fragment. Use a Block stack or Page for spacing."
-                : definition.group === "Blocks"
-                  ? "Blocks render as ready-made sections. Compose around them with stacks, cards and grids, or ask the AI agent to build alongside."
-                  : "This component has no settings."}
-          </p>
+              )}
+            </BlockStack>
+          </Box>
         )}
+      </BlockStack>
 
-        {isRoot && (
-          <div className="m-3 flex flex-col items-center gap-2 rounded-lg border border-dashed border-border p-4 text-center">
-            <MousePointer2 className="size-4 text-muted-foreground" />
-            <p className="text-[11px] leading-snug text-muted-foreground">
-              Select an element on the canvas or in Layers to edit its props.
-            </p>
-          </div>
-        )}
-      </div>
-    </div>
+      <BlockStack grow minBlockSize={0} overflowY="auto">
+        {/* Sections clip their content (overflow: hidden), so they must not shrink in the scroller. */}
+        <BlockStack shrink={false}>
+          {sections.length ? (
+            sections.map(({ section, fields }, index) => (
+              <React.Fragment key={`${node.id}-${section}`}>
+                {index > 0 && <Divider />}
+                <Section
+                  title={section}
+                  count={fields.length}
+                  defaultOpen={
+                    index === 0 ||
+                    section === "Content" ||
+                    fields.some((field) => isSet(node.props[field.name]))
+                  }
+                  forceOpen={Boolean(needle)}
+                >
+                  {fields.map((field) => (
+                    <FieldRow
+                      key={field.name}
+                      field={field}
+                      value={node.props[field.name]}
+                      onChange={(value) => update(field.name, value)}
+                    />
+                  ))}
+                </Section>
+              </React.Fragment>
+            ))
+          ) : (
+            <Box padding="base">
+              <Text variant="small" color="subdued">
+                {emptyMessage}
+              </Text>
+            </Box>
+          )}
+
+          {isRoot && (
+            <Box padding="base">
+              <Box padding="base" border="base" borderStyle="dashed" borderRadius="base">
+                <BlockStack gap="small-200" alignItems="center">
+                  <Icon type="cursor" tone="neutral" />
+                  <Text variant="small" color="subdued">
+                    Select an element on the canvas or in Layers to edit its props.
+                  </Text>
+                </BlockStack>
+              </Box>
+            </Box>
+          )}
+        </BlockStack>
+      </BlockStack>
+    </BlockStack>
   );
 }

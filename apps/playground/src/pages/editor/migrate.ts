@@ -22,6 +22,13 @@ export function migrateNode(node: EditorNodeType): EditorNodeType {
     props = { ...props, heading: true, variant: props.variant || "headingLg" };
   }
   if (type === "GridItem") type = "Grid.Item";
+  if (
+    (type === "Grid" || type === "InlineGrid") &&
+    typeof props.columns === "string" &&
+    /^\d+$/.test(props.columns)
+  ) {
+    props.columns = Number(props.columns);
+  }
   if (type === "BlockStack" || type === "InlineStack") delete props.content;
 
   const definition = getDefinition(type);

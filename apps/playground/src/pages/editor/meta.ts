@@ -87,6 +87,22 @@ export function humanize(name: string) {
   return text.charAt(0).toUpperCase() + text.slice(1);
 }
 
+/** Numeric props with natural bounds get a slider instead of a free number input. */
+const RANGES: Record<string, { min: number; max: number; step?: number }> = {
+  columns: { min: 1, max: 12 },
+  columnSpan: { min: 1, max: 12 },
+  rowSpan: { min: 1, max: 12 },
+  lineClamp: { min: 1, max: 10 },
+  dayMaxEvents: { min: 1, max: 10 },
+  visibleMonths: { min: 1, max: 3 },
+  sparklineWidth: { min: 40, max: 400, step: 10 },
+  sparklineHeight: { min: 16, max: 120, step: 4 },
+  duration: { min: 0, max: 2000, step: 50 },
+  debounceDelay: { min: 0, max: 2000, step: 50 },
+  openDelay: { min: 0, max: 2000, step: 50 },
+  closeDelay: { min: 0, max: 2000, step: 50 },
+};
+
 const LONG_TEXT =
   /^(children|description|content|message|helpText|details|footerContent)$/;
 
@@ -112,6 +128,10 @@ export function toField(meta: PropMetaType): FieldType {
       return { ...base, kind: "json", ...(meta.shape ? { shape: meta.shape } : {}) };
     case "node":
       return { ...base, kind: LONG_TEXT.test(meta.name) ? "textarea" : "text" };
+    case "number":
+      return RANGES[meta.name]
+        ? { ...base, kind: "range", ...RANGES[meta.name]! }
+        : { ...base, kind: "number" };
     default:
       return { ...base, kind: meta.kind };
   }

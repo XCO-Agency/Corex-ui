@@ -1,6 +1,6 @@
 import * as React from "react";
-import { ChevronRight, Search } from "lucide-react";
-import { Input } from "@/components/ui/input";
+import { ChevronRight } from "lucide-react";
+import { Box, Divider, SearchField, Tabs } from "@xco-agency/corex-ui";
 import { cn } from "@/lib/utils";
 import { blockGroups } from "../blocks";
 import {
@@ -47,15 +47,15 @@ function SearchInput({
   placeholder: string;
 }) {
   return (
-    <div className="relative px-3 pt-3 pb-2">
-      <Search className="pointer-events-none absolute top-1/2 left-5.5 mt-0.5 size-3.5 -translate-y-1/2 text-muted-foreground" />
-      <Input
+    <Box paddingInline="small" paddingBlockStart="small" paddingBlockEnd="small-200">
+      <SearchField
+        label={placeholder}
+        labelAccessibilityVisibility="exclusive"
         value={value}
-        onChange={(event) => onChange(event.target.value)}
         placeholder={placeholder}
-        className="h-8 pl-7 text-xs"
+        onChange={(next) => onChange(next)}
       />
-    </div>
+    </Box>
   );
 }
 
@@ -409,23 +409,10 @@ export function LeftPanel({
 }) {
   return (
     <aside className="flex h-full min-h-0 flex-col bg-background">
-      <div className="flex h-10 shrink-0 items-center gap-1 border-b border-border/70 px-2">
-        {TABS.map(({ id, label }) => (
-          <button
-            key={id}
-            type="button"
-            onClick={() => onTabChange(id)}
-            className={cn(
-              "h-7 cursor-pointer rounded-md px-2.5 text-xs font-medium transition-colors",
-              tab === id
-                ? "bg-muted text-foreground"
-                : "text-muted-foreground hover:text-foreground",
-            )}
-          >
-            {label}
-          </button>
-        ))}
-      </div>
+      <Box paddingInline="small" paddingBlockStart="small-200">
+        <Tabs tabs={TABS} value={tab} onChange={(id) => onTabChange(id as LeftTabType)} />
+      </Box>
+      <Divider />
       {tab === "add" && <ComponentsTab />}
       {tab === "blocks" && <BlocksTab />}
       {tab === "layers" && <LayersTab />}

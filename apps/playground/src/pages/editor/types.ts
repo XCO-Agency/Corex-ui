@@ -49,6 +49,8 @@ export type FieldType = FieldBaseType &
     | { kind: "text" }
     | { kind: "textarea" }
     | { kind: "number" }
+    /** A number with known bounds (columns, spans, progress), edited with a slider. */
+    | { kind: "range"; min: number; max: number; step?: number }
     | { kind: "boolean" }
     | {
         kind: "select";

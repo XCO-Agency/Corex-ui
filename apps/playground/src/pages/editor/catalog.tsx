@@ -118,7 +118,9 @@ export function runtimeProps(fields: FieldType[], props: NodePropsType): NodePro
     const field = byName.get(name);
     if (
       field &&
-      (field.kind === "number" || (field.kind === "select" && field.numeric))
+      (field.kind === "number" ||
+        field.kind === "range" ||
+        (field.kind === "select" && field.numeric))
     ) {
       const parsed = typeof value === "number" ? value : Number(value);
       if (Number.isFinite(parsed)) result[name] = parsed;
@@ -311,8 +313,9 @@ const entries: EntryType[] = [
     group: "Layout",
     icon: LayoutGrid,
     container: "horizontal",
-    defaults: { columns: "2", gap: "base" },
-    // `columns` also takes a count; the generic text field stores "2".
+    defaults: { columns: 2, gap: "base" },
+    // `columns` also takes a track string, which `gridTemplateColumns` covers; the slider sets a count.
+    fields: { patch: { columns: { kind: "range", min: 1, max: 12 } } },
     render: (props, children) => {
       const { columns, ...rest } = props;
       const count =
@@ -372,6 +375,7 @@ const entries: EntryType[] = [
     icon: Columns2,
     container: "horizontal",
     defaults: { columns: 2, gap: "base" },
+    fields: { patch: { columns: { kind: "range", min: 1, max: 12 } } },
   },
   {
     type: "Layout",
@@ -1250,6 +1254,7 @@ const entries: EntryType[] = [
     group: "Feedback",
     icon: SlidersHorizontal,
     defaults: { value: 60, max: 100 },
+    fields: { patch: { value: { kind: "range", min: 0, max: 100 } } },
   },
   {
     type: "Spinner",
