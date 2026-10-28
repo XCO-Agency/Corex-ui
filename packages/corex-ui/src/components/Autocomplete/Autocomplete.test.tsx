@@ -18,6 +18,12 @@ describe("Autocomplete", () => {
     expect(screen.getAllByRole("option")).toHaveLength(2);
   });
 
+  it("does not render the suggestions chevron", () => {
+    render(<Autocomplete label="Tags" value="" options={options} />);
+
+    expect(document.querySelector('[accessibilitylabel="Open suggestions"]')).toBeNull();
+  });
+
   it("renders options inside FlexPopover", () => {
     render(<Autocomplete open label="Tags" value="" options={options} />);
 

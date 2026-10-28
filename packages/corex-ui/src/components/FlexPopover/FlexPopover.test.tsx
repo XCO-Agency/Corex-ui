@@ -169,6 +169,50 @@ describe("FlexPopover", () => {
     }
   });
 
+  it("repositions without hiding the open panel when layout sizes are known", () => {
+    // Real browsers report layout sizes, so placement must not toggle the
+    // measure class (it zeroes opacity and replays the fade-in, e.g. every
+    // time a selection resizes the anchor).
+    const real = HTMLElement.prototype.getBoundingClientRect;
+    HTMLElement.prototype.getBoundingClientRect = function () {
+      if (this.id === "measured-anchor") return box(200, 100, 80, 40);
+      return real.call(this);
+    };
+    vi.spyOn(HTMLElement.prototype, "offsetWidth", "get").mockReturnValue(120);
+    vi.spyOn(HTMLElement.prototype, "offsetHeight", "get").mockReturnValue(80);
+    const observer = new MutationObserver(() => {});
+    observer.observe(document.body, {
+      subtree: true,
+      attributes: true,
+      attributeOldValue: true,
+      attributeFilter: ["class"],
+    });
+
+    try {
+      render(
+        <div>
+          <button id="measured-anchor">Anchor</button>
+          <FlexPopover isOpen anchorId="measured-anchor" onClose={vi.fn()}>
+            <Text>Placed</Text>
+          </FlexPopover>
+        </div>,
+      );
+
+      expect(popoverDialog().style.top).not.toBe("auto");
+      const measured = observer
+        .takeRecords()
+        .some((record) =>
+          (record.target as HTMLElement).classList.contains("corex-native-popover--measure") ||
+          (record.oldValue ?? "").includes("corex-native-popover--measure"),
+        );
+      expect(measured).toBe(false);
+    } finally {
+      observer.disconnect();
+      HTMLElement.prototype.getBoundingClientRect = real;
+      vi.restoreAllMocks();
+    }
+  });
+
   it("resets a matched anchor width when matchAnchorWidth is disabled", () => {
     const real = HTMLElement.prototype.getBoundingClientRect;
     HTMLElement.prototype.getBoundingClientRect = function () {

@@ -164,7 +164,8 @@ export function IndexFiltersSearchField({
 
   // Let the IndexFilters root know whether filters are active (save action,
   // `ViewVisibleActiveFilter`) and what to snapshot when a view is saved.
-  const reportFieldState = useIndexFiltersContext()?.reportFieldState;
+  const indexFiltersContext = useIndexFiltersContext();
+  const reportFieldState = indexFiltersContext?.reportFieldState;
   useIsomorphicLayoutEffect(() => {
     reportFieldState?.({ query: queryValue, appliedFilters });
   }, [reportFieldState, queryValue, appliedFilters]);
@@ -215,6 +216,8 @@ export function IndexFiltersSearchField({
   /* -------------------------------------------------------- filters list */
 
   const appliedKeys = new Set(appliedFilters.map((f) => f.key));
+  // Once every filter is applied, P1 has nothing to offer: no + button, no popover.
+  const hasUnappliedFilters = filters.some((filter) => !appliedKeys.has(filter.key));
   const categorySearch = caretIndex !== null ? gapQuery.trim().toLowerCase() : "";
   const availableFilters = filters.filter(
     (filter) =>
@@ -235,15 +238,19 @@ export function IndexFiltersSearchField({
   /* ------------------------------------------------------------- scroll */
 
   const [scrollEdges, setScrollEdges] = useState({ start: false, end: false });
+  const scrollEdgesRef = useRef(scrollEdges);
 
   const updateScrollEdges = useCallback(() => {
     const region = regionRef.current;
     if (!region) return;
     const start = region.scrollLeft > 1;
     const end = region.scrollLeft + region.clientWidth < region.scrollWidth - 1;
-    setScrollEdges((prev) =>
-      prev.start === start && prev.end === end ? prev : { start, end },
-    );
+    // Compare outside setState: this runs after every commit, and even a no-op
+    // functional update schedules another render, which loops forever.
+    const prev = scrollEdgesRef.current;
+    if (prev.start === start && prev.end === end) return;
+    scrollEdgesRef.current = { start, end };
+    setScrollEdges(scrollEdgesRef.current);
   }, []);
 
   // Content (pills, text) changes the scroll width without resizing the region.
@@ -306,7 +313,7 @@ export function IndexFiltersSearchField({
   /* ------------------------------------------------------ popover helpers */
 
   const openCategories = () => {
-    if (disabled || filters.length === 0) return;
+    if (disabled || !hasUnappliedFilters) return;
     setActivePopover((prev) =>
       prev?.type === "categories" ? prev : { type: "categories" },
     );
@@ -602,33 +609,39 @@ export function IndexFiltersSearchField({
     currentOperator: IndexFilterOperatorType,
     onPicked?: () => void,
   ) => (
-    <Box background="base">
-      {(filterDef?.operators ?? DEFAULT_OPERATORS).map((op) => {
-        const isChecked =
-          normalizeOperator(op.value) === normalizeOperator(currentOperator.value);
-        return (
-          <Clickable
-            key={op.value}
-            background="transparent"
-            paddingInline="small-200"
-            blockSize="28px"
-            borderRadius="base"
-            inlineSize="fill"
-            accessibilityLabel={op.label}
-            onClick={() => {
-              selectOperator(filterDef, applied, op.value);
-              onPicked?.();
-            }}
-          >
-            <InlineStack alignItems="center" gap="small-200" blockSize="fill">
-              <Box minInlineSize="16px">{isChecked ? <Icon type="check" /> : null}</Box>
-              <Text variant="small" heading={isChecked}>
-                {op.label}
-              </Text>
-            </InlineStack>
-          </Clickable>
-        );
-      })}
+    // Inset so rows (and their focus ring) never touch the popover edge; rows
+    // line their check column up with the choice list's controls above.
+    <Box background="base" paddingBlockStart="small-400">
+      <BlockStack gap="small-500">
+        {(filterDef?.operators ?? DEFAULT_OPERATORS).map((op) => {
+          const isChecked =
+            normalizeOperator(op.value) === normalizeOperator(currentOperator.value);
+          return (
+            <Clickable
+              key={op.value}
+              background="transparent"
+              paddingInline="small-300"
+              blockSize="28px"
+              borderRadius="large"
+              inlineSize="fill"
+              accessibilityLabel={op.label}
+              onClick={() => {
+                selectOperator(filterDef, applied, op.value);
+                onPicked?.();
+              }}
+            >
+              <InlineStack alignItems="center" gap="small-400" blockSize="fill">
+                <InlineStack minInlineSize="20px">
+                  {isChecked ? <Icon type="check" /> : null}
+                </InlineStack>
+                <Text variant="small" heading={isChecked}>
+                  {op.label}
+                </Text>
+              </InlineStack>
+            </Clickable>
+          );
+        })}
+      </BlockStack>
     </Box>
   );
 
@@ -646,6 +659,8 @@ export function IndexFiltersSearchField({
         <Box paddingInline="small-200">
           <ChoiceList
             name={`filter-choice-${applied.key}`}
+            label={fieldLabel}
+            labelAccessibilityVisibility="exclusive"
             multiple={isMultiple}
             choices={filterDef.options.map((opt) => ({
               label: opt.label,
@@ -713,6 +728,8 @@ export function IndexFiltersSearchField({
           <Box paddingInline="small-200" paddingBlock="small-100">
             <ChoiceList
               name={`filter-custom-${applied.key}`}
+              label={fieldLabel}
+              labelAccessibilityVisibility="exclusive"
               multiple
               choices={values.map((value) => ({ label: value, value }))}
               selected={values}
@@ -887,12 +904,11 @@ export function IndexFiltersSearchField({
             onClose={() => closeOwnPopover("operator")}
             width="160px"
             noHeader
+            padding="small-300"
           >
-            <Box paddingBlock="small-400">
-              {renderOperatorList(filterDef, applied, currentOperator, () =>
-                closeOwnPopover("operator"),
-              )}
-            </Box>
+            {renderOperatorList(filterDef, applied, currentOperator, () =>
+              closeOwnPopover("operator"),
+            )}
           </FlexPopover>
 
           {/* P2: values (+ operator) */}
@@ -906,6 +922,7 @@ export function IndexFiltersSearchField({
             }}
             width="260px"
             maxHeight="360px"
+            padding="small-300"
             heading="Filters"
           >
             <BlockStack gap="small-300">
@@ -1003,7 +1020,11 @@ export function IndexFiltersSearchField({
       }}
     >
       {tabs ? (
-        <InlineStack alignItems="center" shrink={false}>
+        <InlineStack
+          alignItems="center"
+          style={{ background: "#f0f0f0", borderRadius: 9 }}
+          shrink={false}
+        >
           {tabs}
         </InlineStack>
       ) : null}
@@ -1041,7 +1062,7 @@ export function IndexFiltersSearchField({
       >
         {chipNodes}
 
-        {filters.length > 0 && !hideAddButton ? (
+        {hasUnappliedFilters && !hideAddButton ? (
           <InlineStack
             {...{ [CONTROL_ATTR]: "", [LEGACY_CONTROL_ATTR]: "" }}
             alignItems="center"
@@ -1119,14 +1140,17 @@ export function IndexFiltersSearchField({
               handleClear();
             }}
           />
-          <span
-            style={{
-              width: 1,
-              height: 16,
-              backgroundColor: "#E1E3E4",
-              marginInline: "4px",
-            }}
-          />
+          {indexFiltersContext?.hasTrailingActions ? (
+            <span
+              data-corex-index-filters-divider=""
+              style={{
+                width: 1,
+                height: 16,
+                backgroundColor: "#E1E3E4",
+                marginInline: "4px",
+              }}
+            />
+          ) : null}
         </InlineStack>
       ) : null}
 
@@ -1135,7 +1159,7 @@ export function IndexFiltersSearchField({
         <FlexPopover
           boundaryRef={regionRef}
           anchorId={caretIndex !== null ? gapInputId : inputId}
-          isOpen={isCategoriesOpen}
+          isOpen={isCategoriesOpen && hasUnappliedFilters}
           onClose={() => {
             setActivePopover((prev) => (prev?.type === "categories" ? null : prev));
             setCaretIndex(null);
@@ -1144,6 +1168,7 @@ export function IndexFiltersSearchField({
           width="260px"
           maxHeight="360px"
           heading="Filters"
+          padding="small-300"
         >
           {availableFilters.length > 0 ? (
             availableFilters.map((filter) => (
@@ -1169,7 +1194,7 @@ export function IndexFiltersSearchField({
           ) : (
             <Box padding="small-300">
               <Text variant="small" color="subdued">
-                {categorySearch ? "No matching filters" : "All filters applied"}
+                No matching filters
               </Text>
             </Box>
           )}

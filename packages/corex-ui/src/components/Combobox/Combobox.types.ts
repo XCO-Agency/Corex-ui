@@ -84,6 +84,8 @@ export type ComboboxInputPropsType = {
   onBlur?: (event: any) => void;
   onKeyDown?: (event: KeyboardEvent<any>) => void;
   showClear?: boolean;
+  /** Shows the chevron that toggles the suggestions. Defaults to true. */
+  showChevron?: boolean;
   onClear?: () => void;
   disabled?: boolean;
   readOnly?: boolean;

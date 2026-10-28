@@ -26,6 +26,12 @@ export type IndexFiltersContextType = {
   registerSaveAction: (id: string) => () => void;
   /** Id of the `IndexFilters.Actions` that renders the built-in save action, if any. */
   autoSaveOwnerId: string | null;
+  /**
+   * Whether anything renders after the search field (an `IndexFilters.Actions`,
+   * a placed save action or the fallback save slot). The search field only
+   * draws its trailing divider when something follows it.
+   */
+  hasTrailingActions: boolean;
 };
 
 export const IndexFiltersContext = createContext<IndexFiltersContextType | null>(null);

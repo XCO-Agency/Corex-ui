@@ -172,6 +172,10 @@ const IndexFiltersRoot = forwardRef<HTMLDivElement, IndexFiltersPropsType>(
     const autoSave = saveEnabled && explicitSaveCount === 0;
     const autoSaveOwnerId = autoSave ? (actionsIds[actionsIds.length - 1] ?? null) : null;
     const needsFallbackSlot = autoSave && actionsIds.length === 0;
+    const hasTrailingActions =
+      actionsIds.length > 0 ||
+      needsFallbackSlot ||
+      (saveEnabled && explicitSaveCount > 0);
 
     const contextValue = useMemo<IndexFiltersContextType>(
       () => ({
@@ -184,6 +188,7 @@ const IndexFiltersRoot = forwardRef<HTMLDivElement, IndexFiltersPropsType>(
         registerActions,
         registerSaveAction,
         autoSaveOwnerId,
+        hasTrailingActions,
       }),
       [
         active,
@@ -195,6 +200,7 @@ const IndexFiltersRoot = forwardRef<HTMLDivElement, IndexFiltersPropsType>(
         registerActions,
         registerSaveAction,
         autoSaveOwnerId,
+        hasTrailingActions,
       ],
     );
 
@@ -207,7 +213,6 @@ const IndexFiltersRoot = forwardRef<HTMLDivElement, IndexFiltersPropsType>(
             alignItems="center"
             justifyContent="space-between"
             paddingInlineEnd="small-300"
-            gap="small-200"
             inlineSize="100%"
           >
             {children ?? (

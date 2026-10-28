@@ -54,6 +54,7 @@ const ComboboxInput = forwardRef<HTMLElement, ComboboxInputPropsType>(
       onBlur,
       onKeyDown,
       showClear,
+      showChevron = true,
       onClear,
       disabled,
       readOnly,
@@ -322,32 +323,34 @@ const ComboboxInput = forwardRef<HTMLElement, ComboboxInputPropsType>(
               </InlineStack>
             ) : null}
 
-            <InlineStack alignItems="center" shrink={false}>
-              {shouldShowClear ? (
-                <Clickable
-                  accessibilityLabel="Clear selection"
-                  disabled={isEffectiveDisabled || isEffectiveReadOnly}
-                  onClick={(e: any) => {
-                    e.stopPropagation();
-                    handleClear();
-                  }}
-                  padding="small-500"
-                  borderRadius="base"
-                >
-                  <Icon source="x" tone="neutral" />
-                </Clickable>
-              ) : (
-                <Clickable
-                  accessibilityLabel={open ? "Close suggestions" : "Open suggestions"}
-                  disabled={isEffectiveDisabled || isEffectiveReadOnly}
-                  onClick={handleChevronClick}
-                  padding="small-500"
-                  borderRadius="base"
-                >
-                  <Icon source="chevron-down" tone="neutral" />
-                </Clickable>
-              )}
-            </InlineStack>
+            {shouldShowClear || showChevron ? (
+              <InlineStack alignItems="center" shrink={false}>
+                {shouldShowClear ? (
+                  <Clickable
+                    accessibilityLabel="Clear selection"
+                    disabled={isEffectiveDisabled || isEffectiveReadOnly}
+                    onClick={(e: any) => {
+                      e.stopPropagation();
+                      handleClear();
+                    }}
+                    padding="small-500"
+                    borderRadius="base"
+                  >
+                    <Icon source="x" tone="neutral" />
+                  </Clickable>
+                ) : showChevron ? (
+                  <Clickable
+                    accessibilityLabel={open ? "Close suggestions" : "Open suggestions"}
+                    disabled={isEffectiveDisabled || isEffectiveReadOnly}
+                    onClick={handleChevronClick}
+                    padding="small-500"
+                    borderRadius="base"
+                  >
+                    <Icon source="chevron-down" tone="neutral" />
+                  </Clickable>
+                ) : null}
+              </InlineStack>
+            ) : null}
           </InlineStack>
         </Box>
 
@@ -416,6 +419,7 @@ const ComboboxList = forwardRef<HTMLDivElement, ComboboxListPropsType>(
         ref={ref}
         id={`${comboboxId}-listbox`}
         gap="small-500"
+        padding="small-300"
         role="listbox"
         aria-label={ariaLabel ?? "Suggestions"}
         className={className}

@@ -23,6 +23,8 @@ export const INDEX_TABLE_CSS = `
   /* Page behind the table — pinned header cells use this while content scrolls
      under them (body pins use the row colour instead). */
   --cx-it-backdrop: var(--cx-it-backdrop-color, #f1f1f1);
+  /* Header row (and the bulk bar that replaces it): always the subdued grey. */
+  --cx-it-head-bg: var(--cx-it-header-background-color, var(--cx-it-backdrop));
   /* Header and bulk bar height; dense is 4px tighter. Both fit a 24px checkbox. */
   --cx-it-head-height: var(--cx-it-header-height, 32px);
   position: relative;
@@ -101,8 +103,8 @@ export const INDEX_TABLE_CSS = `
   background-clip: padding-box;
 }
 
-/* Headings sit on the page, not on a filled pill — no surface behind them. */
-.cx-it__row--head { --cx-it-row-bg: transparent; }
+/* Headings sit on a filled grey pill. */
+.cx-it__row--head { --cx-it-row-bg: var(--cx-it-head-bg); }
 .cx-it__row--head,
 .cx-it__bulk {
   border-radius: var(--cx-it-radius);
@@ -126,7 +128,7 @@ export const INDEX_TABLE_CSS = `
 .cx-it__head-scroll {
   overflow: hidden;
 }
-.cx-it__bulk { background-color: var(--cx-it-header); }
+.cx-it__bulk { background-color: var(--cx-it-head-bg); }
 
 /* Divider between body rows. A transparent border keeps the 1px gap, which
    is what separates rounded hovered/selected rows. The first body row (after
@@ -284,18 +286,6 @@ export const INDEX_TABLE_CSS = `
   z-index: -1;
   background-color: var(--cx-it-row-bg);
   pointer-events: none;
-}
-/* Headings sit on the page (transparent row). Pins stay clear until content
-   scrolls under them, then match the page behind the table. */
-.cx-it__row--head > .cx-it__cell--sticky,
-.cx-it__row--head > .cx-it__cell--sticky::before {
-  background-color: transparent;
-}
-.cx-it--scrolled-start .cx-it__row--head > .cx-it__cell--sticky-left,
-.cx-it--scrolled-start .cx-it__row--head > .cx-it__cell--sticky-left::before,
-.cx-it--scrolled-end .cx-it__row--head > .cx-it__cell--sticky-right,
-.cx-it--scrolled-end .cx-it__row--head > .cx-it__cell--sticky-right::before {
-  background-color: var(--cx-it-backdrop);
 }
 /* Soft edge when content sits under a pin. Only the outer pin of each side. */
 .cx-it--scrolled-start .cx-it__cell--sticky-left:has(+ :not(.cx-it__cell--sticky-left)) {

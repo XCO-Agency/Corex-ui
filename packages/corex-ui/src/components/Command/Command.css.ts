@@ -34,11 +34,12 @@ export const COMMAND_CSS = `
   width: var(--command-sidebar-width);
   display: flex;
   flex-direction: column;
-  gap: var(--p-space-100, 4px);
-  padding: var(--p-space-300, 12px) var(--p-space-200, 8px);
+  gap: var(--p-space-050, 2px);
+  /* Matches list + group padding so the first rows line up across columns. */
+  padding: var(--p-space-200, 8px);
   border-inline-end: var(--p-border-width-025, 1px) solid
-    var(--p-color-border, rgba(0, 0, 0, 0.08));
-  background: var(--p-color-bg-surface-secondary, #f1f1f1);
+    var(--p-color-border-secondary, rgba(0, 0, 0, 0.06));
+  background: var(--p-color-bg-surface-secondary, #f7f7f7);
   overflow-y: auto;
   overscroll-behavior: contain;
 }
@@ -49,35 +50,36 @@ export const COMMAND_CSS = `
   align-items: center;
   gap: var(--p-space-200, 8px);
   width: 100%;
-  min-height: 2.25rem;
+  min-height: 2rem;
   margin: 0;
-  padding: var(--p-space-200, 8px) var(--p-space-300, 12px);
+  padding: var(--p-space-150, 6px) var(--p-space-200, 8px);
   border: none;
   border-radius: var(--p-border-radius-200, 8px);
   background: transparent;
   color: var(--p-color-text-secondary, #616161);
   font: inherit;
-  font-size: var(--p-font-size-350, 0.875rem);
-  font-weight: var(--p-font-weight-regular, 400);
+  font-size: var(--p-font-size-325, 0.8125rem);
+  font-weight: 450;
   line-height: var(--p-font-line-height-500, 1.25);
   text-align: start;
   cursor: pointer;
   outline: none;
-  transition: background-color 80ms ease, color 80ms ease;
+  transition: background-color 80ms ease, color 80ms ease, box-shadow 80ms ease;
 }
 
-[data-slot="command-sidebar-item"]:hover,
-[data-slot="command-sidebar-item"][data-hovered] {
-  background: var(--p-color-bg-surface, #ffffff);
+/* The pinned group while another one is previewed on hover. */
+[data-slot="command-sidebar-item"][data-selected] {
+  background: rgba(0, 0, 0, 0.04);
   color: var(--p-color-text, #303030);
 }
 
-[data-slot="command-sidebar-item"][data-selected],
+/* The group whose items the panel shows. */
 [data-slot="command-sidebar-item"][data-active] {
   background: var(--p-color-bg-surface, #ffffff);
   color: var(--p-color-text, #303030);
-  font-weight: var(--p-font-weight-medium, 550);
-  box-shadow: var(--p-shadow-100, 0 1px 0 rgba(0, 0, 0, 0.05));
+  box-shadow:
+    0 0 0 1px rgba(0, 0, 0, 0.06),
+    0 1px 1px rgba(0, 0, 0, 0.04);
 }
 
 [data-slot="command-sidebar-item"]:focus-visible {
@@ -88,18 +90,19 @@ export const COMMAND_CSS = `
 [data-slot="command-sidebar-item-icon"] {
   display: inline-flex;
   flex-shrink: 0;
-  width: 1.25rem;
-  height: 1.25rem;
+  width: 1rem;
+  height: 1rem;
   align-items: center;
   justify-content: center;
-  color: inherit;
-  opacity: 0.85;
+  color: var(--p-color-icon-secondary, #8a8a8a);
 }
 
-[data-slot="command-sidebar-item-icon"] svg,
-[data-slot="command-sidebar-item-icon"] s-icon {
-  width: 1.125rem;
-  height: 1.125rem;
+[data-slot="command-sidebar-item"][data-active] [data-slot="command-sidebar-item-icon"] {
+  color: var(--p-color-icon, #4a4a4a);
+}
+
+[data-slot="command-sidebar-item-icon"] > * {
+  display: block;
 }
 
 [data-slot="command-sidebar-item-label"] {
@@ -120,6 +123,15 @@ export const COMMAND_CSS = `
 [data-slot="command"][data-sidebar] [data-slot="command-list"] {
   max-height: var(--command-list-max-height, 20rem);
   flex: 1 1 auto;
+}
+
+[data-slot="command"][data-sidebar] [data-slot="command-item"] {
+  min-height: 2rem;
+}
+
+/* Same 2px rhythm as the sidebar so rows line up across both columns. */
+[data-slot="command"][data-sidebar] [data-slot="command-item"] + [data-slot="command-item"] {
+  margin-block-start: var(--p-space-050, 2px);
 }
 
 [data-slot="command-dialog-popup"]:has([data-slot="command"][data-sidebar]) {

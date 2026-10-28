@@ -287,19 +287,26 @@ function FlexPopoverBase({
         ? `${anchorRect.width}px`
         : (width ?? "auto");
 
-      // `offset*` is the layout box. A closed popover is `display: none`, so force
-      // a box for this read; getBoundingClientRect is only a fallback where layout
-      // is mocked. Freeze the enter transform so scale(0.97) does not shrink the
-      // measured size (that mis-clamp placed wide panels off-screen on open).
+      // `offset*` is the layout box (transforms don't affect it). A closed
+      // popover is `display: none`, so force a box for this read.
       const previousDisplay = popover.style.display;
       if (popover.offsetWidth === 0 || popover.offsetHeight === 0) {
         popover.style.display = "block";
       }
-      popover.classList.add("corex-native-popover--measure");
-      const popoverRect = popover.getBoundingClientRect();
-      const popoverWidth = popover.offsetWidth || popoverRect.width;
-      const popoverHeight = popover.offsetHeight || popoverRect.height;
-      popover.classList.remove("corex-native-popover--measure");
+      let popoverWidth = popover.offsetWidth;
+      let popoverHeight = popover.offsetHeight;
+      // getBoundingClientRect is only a fallback where layout is mocked. Freeze
+      // the enter transform so scale(0.97) does not shrink the measured size
+      // (that mis-clamp placed wide panels off-screen on open). Only here: the
+      // measure class zeroes opacity, so applying it on every reposition (e.g.
+      // the anchor resizing after a selection) replayed the fade-in.
+      if (popoverWidth === 0 || popoverHeight === 0) {
+        popover.classList.add("corex-native-popover--measure");
+        const popoverRect = popover.getBoundingClientRect();
+        popoverWidth = popoverWidth || popoverRect.width;
+        popoverHeight = popoverHeight || popoverRect.height;
+        popover.classList.remove("corex-native-popover--measure");
+      }
       popover.style.display = previousDisplay;
       if (popoverWidth === 0 || popoverHeight === 0) {
         if (retryFrame < MAX_POSITION_FRAMES) {

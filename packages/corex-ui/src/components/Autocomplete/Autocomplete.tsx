@@ -146,6 +146,7 @@ export const Autocomplete = forwardRef<HTMLDivElement, AutocompletePropsType>(
           autoComplete="off"
           disabled={disabled}
           showClear
+          showChevron={false}
         />
         <Combobox.Content>
           {loading ? (

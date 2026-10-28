@@ -521,6 +521,7 @@ export function IndexFiltersExample() {
               onClick={handleRefresh}
               disabled={refreshing}
               icon="refresh"
+              accessibilityLabel="Refresh"
             />
 
             {/* Custom actions shown only while filters are active. */}

@@ -662,6 +662,30 @@ describe("IndexFilters", () => {
       );
     });
 
+    it("draws the trailing divider only when something follows the search field", () => {
+      const divider = () => document.querySelector("[data-corex-index-filters-divider]");
+
+      // Nothing on the right: no save action, no actions.
+      const { rerender } = render(
+        <IndexFilters appliedFilters={activeFilter} saveAction={false} />,
+      );
+      expect(document.querySelector('[accessibilitylabel="Clear search and filters"]')).not.toBeNull();
+      expect(divider()).toBeNull();
+
+      rerender(
+        <IndexFilters
+          appliedFilters={activeFilter}
+          saveAction={false}
+          actions={<button type="button">Export</button>}
+        />,
+      );
+      expect(divider()).not.toBeNull();
+
+      // The built-in save action counts too.
+      rerender(<IndexFilters appliedFilters={activeFilter} />);
+      expect(divider()).not.toBeNull();
+    });
+
     it("removes the save action when saveAction is false", () => {
       render(<IndexFilters appliedFilters={activeFilter} saveAction={false} />);
       expect(getActiveOnly()).toHaveLength(0);
@@ -912,6 +936,24 @@ describe("IndexFilters", () => {
       expect(
         lastChip.compareDocumentPosition(addButton) & Node.DOCUMENT_POSITION_FOLLOWING,
       ).toBeTruthy();
+    });
+
+    it("drops the + button and filters popover once every filter is applied", () => {
+      const { input } = renderWithApplied({
+        appliedFilters: ["vendor", "tag", "status"].map((key) => ({
+          key,
+          value: [] as string[],
+          onRemove: () => {},
+        })),
+      });
+      expect(
+        document.querySelector('s-clickable[accessibilitylabel="Add filter"]'),
+      ).toBeNull();
+
+      fireEvent.focus(input);
+      fireEvent.click(input);
+      expect(document.body.textContent).not.toContain("Filters");
+      expect(document.body.textContent).not.toContain("All filters applied");
     });
 
     it("reveals the remove button only while the pill is hovered", () => {
