@@ -281,7 +281,7 @@ export function IndexTableExample() {
             { title: "Catalogs", alignment: "center", minWidth: 90 },
             { title: "Product type", minWidth: 150 },
             { title: "Vendor", minWidth: 130 },
-            { title: "", hidden: true, width: "48px", sticky: "right" },
+            { title: "", hidden: true, width: "88px", sticky: "right" },
           ]}
           promotedBulkActions={[
             {
@@ -351,6 +351,28 @@ export function IndexTableExample() {
                   <IndexTable.Cell>
                     <Text color="subdued">{variant.inventory}</Text>
                   </IndexTable.Cell>
+                  <IndexTable.Cell />
+                  <IndexTable.Cell />
+                  <IndexTable.Cell />
+                  <IndexTable.Cell />
+                  <IndexTable.Cell />
+                  {/* Sub-rows keep the pinned actions column, shadow included. */}
+                  <IndexTable.Cell alignment="end">
+                    <InlineStack gap="small-400">
+                      <Button
+                        variant="tertiary"
+                        icon="edit"
+                        accessibilityLabel={`Edit ${variant.title}`}
+                        onClick={() => alert(`Edit ${variant.title}`)}
+                      />
+                      <Button
+                        variant="tertiary"
+                        icon="delete"
+                        accessibilityLabel={`Delete ${variant.title}`}
+                        onClick={() => alert(`Delete ${variant.title}`)}
+                      />
+                    </InlineStack>
+                  </IndexTable.Cell>
                 </IndexTable.Row>
               ))}
             >
@@ -393,7 +415,7 @@ export function IndexTableExample() {
                 <Text>{product.vendor}</Text>
               </IndexTable.Cell>
 
-              <IndexTable.Cell>
+              <IndexTable.Cell alignment="end">
                 {/* Clicks on controls inside a row don't open the row. */}
                 <Button
                   variant="tertiary"

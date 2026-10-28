@@ -46,7 +46,7 @@ export const productIndexBlocks: ComponentEntry[] = [
     slug: "product-index",
     category: "Layouts",
     description:
-      "Full Shopify admin product index page: IndexFilters with view tabs, saved views, filter pills, sort and column settings, wired to an IndexTable with selection, bulk actions, sortable headings, pagination and an empty state.",
+      "Full Shopify admin product index page: IndexFilters with view tabs, saved views, filter pills, sort and column settings, wired to an IndexTable with selection, bulk actions, sortable headings, highlighted out-of-stock and low-stock rows, pagination and an empty state.",
     examples: [
       {
         title: "Index Page",

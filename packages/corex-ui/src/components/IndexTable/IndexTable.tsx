@@ -55,9 +55,6 @@ import type {
   IndexTableSortDirectionType,
   IndexTableStickyType,
 } from "./IndexTable.types";
-import { Floating } from "../Floating";
-import { Card } from "../Card";
-import { Box } from "../Box";
 
 const useIsomorphicLayoutEffect =
   typeof window !== "undefined" ? useLayoutEffect : useEffect;
@@ -859,21 +856,21 @@ function IndexTableInner(
 
         {pagination ? (
           pagination.floating ? (
-            <Floating position="bottom-left" offset={{ x: 16, y: 16 }}>
-              <Card padding="none">
-                <Box padding="small-300">
-                  <Pagination
-                    hasPrevious={pagination.hasPrevious}
-                    hasNext={pagination.hasNext}
-                    onPrevious={pagination.onPrevious}
-                    onNext={pagination.onNext}
-                    label={pagination.label}
-                    previousTooltip={pagination.previousTooltip ?? "Previous page"}
-                    nextTooltip={pagination.nextTooltip ?? "Next page"}
-                  />
-                </Box>
-              </Card>
-            </Floating>
+            // Sticks to the bottom of the scrolling page column instead of the
+            // viewport, so it stays inside the Page's inline size (never over an
+            // app sidebar) and rests below the last row once it's reached.
+            <div className="cx-it__pagination cx-it__pagination--floating">
+              <Pagination
+                floating
+                hasPrevious={pagination.hasPrevious}
+                hasNext={pagination.hasNext}
+                onPrevious={pagination.onPrevious}
+                onNext={pagination.onNext}
+                label={pagination.label}
+                previousTooltip={pagination.previousTooltip ?? "Previous page"}
+                nextTooltip={pagination.nextTooltip ?? "Next page"}
+              />
+            </div>
           ) : (
             <div className="cx-it__pagination">
               <Pagination
@@ -975,7 +972,18 @@ function IndexTableRow({
   // "Show all selected" keeps a parent visible while any of its children is selected.
   if (table.showSelectedOnly && !hasAnySelected(selectionNode)) return null;
 
-  const cells = Children.toArray(children).filter(isValidElement);
+  const givenCells = Children.toArray(children).filter(isValidElement);
+  // Rows with fewer cells than headings (typically sub-rows) still fill every
+  // column, so pinned columns keep their surface and edge shadow.
+  const cells =
+    givenCells.length < table.layout.columns.length
+      ? [
+          ...givenCells,
+          ...Array.from({ length: table.layout.columns.length - givenCells.length }, (_, i) => (
+            <IndexTableCell key={`cx-it-filler-${givenCells.length + i}`} />
+          )),
+        ]
+      : givenCells;
 
   const handleClick = (event: MouseEvent<HTMLDivElement>) => {
     if (!onClick || clickPassedThrough(event, INTERACTIVE_SELECTOR)) return;

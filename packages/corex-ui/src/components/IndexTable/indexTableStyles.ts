@@ -131,10 +131,9 @@ export const INDEX_TABLE_CSS = `
 .cx-it__bulk { background-color: var(--cx-it-head-bg); }
 
 /* Divider between body rows. A transparent border keeps the 1px gap, which
-   is what separates rounded hovered/selected rows. The first body row (after
-   the zero-height sizer) drops the border entirely — a transparent colour
-   still left a 1px gap that read as a rule under the headings against the
-   page background.
+   is what separates rounded hovered/selected rows. The first body row keeps
+   it in the surface colour (see below) — transparent left a 1px gap that read
+   as a rule under the headings against the page background.
  *
  * Resting rows are clipped to a rounded surface by .cx-it__scroll (sticky pins
  * would otherwise paint square corners). Hover / selected / toned still get a
@@ -143,8 +142,6 @@ export const INDEX_TABLE_CSS = `
   --cx-it-row-bg: var(--cx-it-surface);
   border-top: 1px solid var(--cx-it-border);
 }
-/* Sizer is always the first grid child, so first-child never matches a body row. */
-.cx-it__sizer + .cx-it__row--body { border-top: none; }
 .cx-it__row--zebra { --cx-it-row-bg: var(--cx-it-zebra); }
 .cx-it__row--clickable { cursor: pointer; }
 
@@ -169,6 +166,12 @@ export const INDEX_TABLE_CSS = `
 }
 .cx-it__row--body:is(:hover, [aria-selected="true"], .cx-it__row--toned) + .cx-it__row--body {
   border-top-color: transparent;
+}
+/* The rule under the headings is always the table surface, whatever the
+   first row's state, so it never shows the page backdrop through the gap. */
+.cx-it__grid > .cx-it__row--body:first-child,
+.cx-it__grid > .cx-it__row--body:first-child:is(:hover, [aria-selected="true"], .cx-it__row--toned) {
+  border-top-color: var(--cx-it-surface);
 }
 
 /*
@@ -287,12 +290,16 @@ export const INDEX_TABLE_CSS = `
   background-color: var(--cx-it-row-bg);
   pointer-events: none;
 }
-/* Soft edge when content sits under a pin. Only the outer pin of each side. */
+/* Soft edge when content sits under a pin. Only the outer pin of each side.
+   The clip keeps the blur to the inner side, so it never bleeds above or
+   below the rows (e.g. under the last row or a sub-row group). */
 .cx-it--scrolled-start .cx-it__cell--sticky-left:has(+ :not(.cx-it__cell--sticky-left)) {
   box-shadow: 6px 0 10px -4px rgba(0, 0, 0, 0.1);
+  clip-path: inset(0 -16px 0 0);
 }
 .cx-it--scrolled-end .cx-it__cell:not(.cx-it__cell--sticky-right) + .cx-it__cell--sticky-right {
   box-shadow: -6px 0 10px -4px rgba(0, 0, 0, 0.1);
+  clip-path: inset(0 0 0 -16px);
 }
 /* Header cells fill the fixed-height row exactly: no block padding or
    min-height to push their content (sort button, checkbox) past it. */
@@ -430,6 +437,13 @@ export const INDEX_TABLE_CSS = `
 
 /* No borders around footer and pagination. */
 .cx-it__pagination { display: flex; justify-content: left; padding: 12px 8px; }
+.cx-it__pagination--floating {
+  position: sticky;
+  bottom: var(--cx-it-pagination-offset, 16px);
+  z-index: 20;
+  pointer-events: none;
+}
+.cx-it__pagination--floating > * { pointer-events: auto; }
 .cx-it__footer { display: flex; justify-content: center; padding: 12px 8px; }
 .cx-it__empty { padding: 24px 16px; }
 `;

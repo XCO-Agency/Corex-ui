@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import { Badge, IndexTable, InlineStack, Text, Thumbnail } from "@xco-agency/corex-ui";
-import type { IndexTableHeadingType } from "@xco-agency/corex-ui";
+import type { IndexTableHeadingType, IndexTableRowToneType } from "@xco-agency/corex-ui";
 import { formatDate, formatPrice } from "../utils";
 import type {
   ProductIndexColumnKeyType,
@@ -21,6 +21,16 @@ const STATUS_LABELS: Record<ProductIndexStatusType, string> = {
   draft: "Draft",
   archived: "Archived",
 };
+
+/** At or below this many units (but not zero), a product counts as low stock. */
+const LOW_STOCK_THRESHOLD = 5;
+
+/** Highlights rows that need attention: out of stock, then low stock. */
+function getRowTone(product: ProductIndexItemType): IndexTableRowToneType | undefined {
+  if (product.inventory === 0) return "critical";
+  if (product.inventory <= LOW_STOCK_THRESHOLD) return "warning";
+  return undefined;
+}
 
 /** Columns that sort the table when their heading is clicked. */
 const SORT_KEY_BY_COLUMN: Partial<
@@ -150,6 +160,7 @@ export function ProductIndexTable({
           key={product.id}
           id={product.id}
           selected={selectedIds.includes(product.id)}
+          tone={getRowTone(product)}
           onClick={() => onOpenProduct(product)}
         >
           {visibleColumns.map((column) => (

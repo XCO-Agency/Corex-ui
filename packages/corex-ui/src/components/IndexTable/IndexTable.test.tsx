@@ -190,6 +190,16 @@ describe("IndexTable", () => {
     fireEvent.click(nextBtn);
     expect(onNext).toHaveBeenCalledTimes(1);
   });
+  it("keeps floating pagination inside the table instead of the viewport", () => {
+    const { container } = renderTable({
+      pagination: { floating: true, hasNext: true, label: "1 to 15 of 441" },
+    });
+
+    const pager = container.querySelector(".cx-it__pagination--floating")!;
+    expect(pager.closest(".cx-it")).not.toBeNull();
+    expect(pager.querySelector("s-button[accessibilitylabel='Next page']")).not.toBeNull();
+  });
+
   it("renders real rows on one shared grid", () => {
     const { container } = renderTable();
 
@@ -374,6 +384,33 @@ describe("IndexTable", () => {
     expect(container.querySelector(".cx-it__row--floating")).toBeNull();
     expect(rows[0]).not.toHaveClass("cx-it__row--placeholder");
     expect(rows[0]!.style.transform).toBe("");
+  });
+
+  it("fills short sub-rows up to every column so pinned columns stay pinned", () => {
+    const { container } = render(
+      <IndexTable
+        headings={[{ title: "Product" }, { title: "Stock" }, { title: "", sticky: "right" }]}
+        itemCount={1}
+      >
+        <IndexTable.Row
+          id="p1"
+          defaultExpanded
+          subRows={
+            <IndexTable.Row id="v1">
+              <IndexTable.Cell>Small</IndexTable.Cell>
+            </IndexTable.Row>
+          }
+        >
+          <IndexTable.Cell>Shirt</IndexTable.Cell>
+          <IndexTable.Cell>3</IndexTable.Cell>
+          <IndexTable.Cell>View</IndexTable.Cell>
+        </IndexTable.Row>
+      </IndexTable>,
+    );
+
+    const subRow = container.querySelector(".cx-it__subrows > .cx-it__row")!;
+    expect(subRow.querySelectorAll(":scope > .cx-it__cell:not(.cx-it__cell--control)")).toHaveLength(3);
+    expect(subRow.lastElementChild).toHaveClass("cx-it__cell--sticky-right");
   });
 
   it("collapses a dragged row's open sub-rows to a single placeholder", () => {
