@@ -592,6 +592,47 @@ describe("Drawer", () => {
     expect(onParent).not.toHaveBeenCalled();
   });
 
+  it("ignores drags when swipeable is false", () => {
+    mockViewport(false);
+    const onOpenChange = vi.fn();
+    render(
+      <Drawer defaultOpen swipeable={false} onOpenChange={onOpenChange}>
+        <Drawer.Content>
+          <Drawer.Title>Locked</Drawer.Title>
+        </Drawer.Content>
+      </Drawer>,
+    );
+    const popup = screen.getByRole("dialog", { name: "Locked" });
+    Object.defineProperty(popup, "offsetWidth", { configurable: true, value: 400 });
+    expect(popup).toHaveAttribute("data-swipeable", "false");
+
+    // The same past-threshold drag that dismisses a swipeable drawer.
+    fireEvent.pointerDown(popup, { pointerId: 1, clientX: 100, clientY: 100, button: 0, pointerType: "mouse" });
+    fireEvent.pointerMove(window, { pointerId: 1, clientX: 180, clientY: 100 });
+    expect(popup).not.toHaveAttribute("data-swiping");
+    fireEvent.pointerMove(window, { pointerId: 1, clientX: 300, clientY: 100 });
+    fireEvent.pointerUp(window, { pointerId: 1, clientX: 300, clientY: 100 });
+
+    expect(onOpenChange).not.toHaveBeenCalled();
+    expect(screen.getByRole("dialog", { name: "Locked" })).toBeInTheDocument();
+  });
+
+  it("hides the mobile swipe handle when swipeable is false", () => {
+    mockViewport(true);
+    render(
+      <Drawer defaultOpen showSwipeHandle swipeable={false}>
+        <Drawer.Content>
+          <Drawer.Title>Sheet</Drawer.Title>
+        </Drawer.Content>
+      </Drawer>,
+    );
+    expect(document.querySelector('[data-slot="drawer-popup"]')).toHaveAttribute(
+      "data-presentation",
+      "sheet",
+    );
+    expect(document.querySelector('[data-slot="drawer-swipe-handle"]')).toBeNull();
+  });
+
   it("does not swipe a parent while a nested drawer is open on top", () => {
     mockViewport(false);
     render(

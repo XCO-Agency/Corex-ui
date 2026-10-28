@@ -106,6 +106,7 @@ export function Toolbar({
             onClick={() => navigate("/")}
           />
           <Text fontWeight="semibold">Editor</Text>
+          <Badge tone="caution">Beta</Badge>
         </InlineStack>
 
         <InlineStack grow alignItems="center" gap="small-200" wrap={false}>

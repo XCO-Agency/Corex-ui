@@ -143,6 +143,8 @@ export type DrawerContextType = {
   modal: DrawerModalType;
   /** True only when a sheet handle should render (mobile sheet + opted in). */
   showSwipeHandle: boolean;
+  /** False when dragging the panel is turned off (`swipeable={false}`). */
+  swipeable: boolean;
   /** Resolved swipe direction after responsive mapping. */
   swipeDirection: DrawerSwipeDirectionType;
   /** Requested direction before responsive remapping (e.g. `"right"`). */
@@ -271,10 +273,19 @@ export type DrawerPropsType = {
   modal?: DrawerModalType;
   /**
    * Mobile sheet grabber only. Never rendered on desktop side drawers (no
-   * reserved space). Swipe-to-dismiss always works from the full panel surface.
+   * reserved space). Swipe-to-dismiss works from the full panel surface.
    * @default false
    */
   showSwipeHandle?: boolean;
+  /**
+   * Whether dragging the panel moves it: swipe-to-dismiss in any direction and
+   * dragging between `snapPoints`. Set `false` for drawers that must only close
+   * from a control (`Drawer.Close`, Escape, the backdrop) — e.g. a form with
+   * unsaved changes. Hides the swipe handle and gives touch scrolling back to
+   * the browser.
+   * @default true
+   */
+  swipeable?: boolean;
   /**
    * Floats the panel from the viewport edges. Defaults to `8` on every side
    * (shadcn demos). Pass `0` for flush, a CSS length, or per-side object.

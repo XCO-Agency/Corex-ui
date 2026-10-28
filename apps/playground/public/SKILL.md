@@ -2643,6 +2643,7 @@ import { Drawer, Button } from "@xco-agency/corex-ui";
 | `swipeDirection`   | `"up" &#124; "down" &#124; "left" &#124; "right"`            | Preferred desktop side. Defaults to `"right"`.                                                       |
 | `responsive`       | `boolean`                                                    | Remap `left`/`right` → bottom sheet on mobile. Defaults to `true`.                                   |
 | `showSwipeHandle`  | `boolean`                                                    | Mobile sheet grabber only; never mounts on desktop. Defaults to `false`.                             |
+| `swipeable`        | `boolean`                                                    | Set `false` to turn off dragging (swipe-to-dismiss and snap dragging); close via `Drawer.Close`, Escape or the backdrop. Defaults to `true`. |
 | `offset`           | `number &#124; string &#124; { top?, right?, bottom?, left?, x?, y? }` | Edge float gap. Defaults to `8` all sides. Pass `0` for flush, or per-side object. |
 | `modal`            | `boolean &#124; "trap-focus"`                                | Modal / non-modal / trap-focus. Defaults to `true`.                                                  |
 | `snapPoints`       | `Array&lt;number &#124; string&gt; &#124; undefined`         | Vertical snap heights (sheet only).                                                                  |

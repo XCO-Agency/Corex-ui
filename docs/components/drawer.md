@@ -106,7 +106,20 @@ Every width is capped to the viewport minus the edge offsets, so large presets s
 
 ## Swipe handle
 
-`showSwipeHandle` is **mobile sheet only**. On desktop side drawers the handle is not mounted and takes **no layout space**. Swipe-to-dismiss always works from the full panel.
+`showSwipeHandle` is **mobile sheet only**. On desktop side drawers the handle is not mounted and takes **no layout space**. Swipe-to-dismiss works from the full panel.
+
+## Turning off swiping
+
+Pass `swipeable={false}` when a drawer must only close from a control — a form with unsaved changes, a confirmation step. Dragging the panel then does nothing in any direction (no swipe-to-dismiss, no dragging between `snapPoints`), the swipe handle is hidden, and touch scrolling goes back to the browser. `Drawer.Close`, the header close button, Escape and the backdrop still close it.
+
+```tsx
+<Drawer swipeable={false}>
+  <Drawer.Trigger>
+    <Button>Edit product</Button>
+  </Drawer.Trigger>
+  <Drawer.Content>…</Drawer.Content>
+</Drawer>
+```
 
 ## Nested drawers
 

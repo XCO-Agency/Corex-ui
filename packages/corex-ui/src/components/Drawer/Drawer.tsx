@@ -345,6 +345,7 @@ function DrawerRoot({
   onOpenChangeComplete,
   modal = true,
   showSwipeHandle = false,
+  swipeable = true,
   snapPoints,
   snapPoint,
   defaultSnapPoint,
@@ -518,7 +519,9 @@ function DrawerRoot({
 
   // Handle only on mobile sheets when explicitly requested — never on desktop
   // side drawers (no reserved space). Swipe always works from the full panel.
-  const resolvedShowSwipeHandle = presentation === "sheet" && showSwipeHandle === true;
+  // A handle invites dragging, so it only shows while the panel can be dragged.
+  const resolvedShowSwipeHandle =
+    presentation === "sheet" && showSwipeHandle === true && swipeable;
 
   // Match shadcn demos: floating panel with 8px edge gap on every side.
   const resolvedOffset = useMemo(() => resolveDrawerOffset(offset), [offset]);
@@ -560,6 +563,7 @@ function DrawerRoot({
       hasSnapPoints,
       modal,
       showSwipeHandle: resolvedShowSwipeHandle,
+      swipeable,
       swipeDirection: resolvedSwipeDirection,
       requestedSwipeDirection,
       presentation,
@@ -597,6 +601,7 @@ function DrawerRoot({
       hasSnapPoints,
       modal,
       resolvedShowSwipeHandle,
+      swipeable,
       resolvedSwipeDirection,
       requestedSwipeDirection,
       presentation,
@@ -778,6 +783,7 @@ const DrawerContent = forwardRef<HTMLDivElement, DrawerContentPropsType>(functio
     hasSnapPoints,
     modal,
     showSwipeHandle,
+    swipeable,
     swipeDirection,
     presentation,
     offset: rootOffset,
@@ -1033,6 +1039,7 @@ const DrawerContent = forwardRef<HTMLDivElement, DrawerContentPropsType>(functio
 
   const handlePointerDown = (event: ReactPointerEvent<HTMLDivElement>) => {
     onPointerDown?.(event);
+    if (!swipeable) return;
     if (event.defaultPrevented || (event.pointerType === "mouse" && event.button !== 0)) return;
     const popup = popupRef.current;
     const view = popup?.ownerDocument.defaultView;
@@ -1220,6 +1227,7 @@ const DrawerContent = forwardRef<HTMLDivElement, DrawerContentPropsType>(functio
           data-slot="drawer-popup"
           data-swipe-axis={swipeAxis}
           data-swipe-direction={swipeDirection}
+          data-swipeable={swipeable ? undefined : "false"}
           data-presentation={presentation}
           data-snap-points={hasSnapPoints ? "" : undefined}
           data-has-offset={floated ? "" : undefined}

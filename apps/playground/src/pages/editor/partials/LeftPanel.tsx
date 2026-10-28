@@ -145,7 +145,7 @@ function ComponentsTab() {
                 </span>
               </button>
               {open && (
-                <div className="grid grid-cols-3 gap-1.5 pb-1">
+                <div className="grid grid-cols-3 gap-1.5 py-1">
                   {items.map((item) => (
                     <button
                       key={item.key}
@@ -161,9 +161,9 @@ function ComponentsTab() {
                       }
                       onDragEnd={endDrag}
                       onClick={() => addNode(item.type, item.props)}
-                      className="group flex min-h-[78px] min-w-0 cursor-grab flex-col items-center justify-center gap-1.5 rounded-xl border border-border/60 bg-background px-1 py-2 text-center transition-all duration-150 hover:-translate-y-px hover:border-blue-600/30 hover:shadow-sm focus-visible:border-blue-600/50 focus-visible:ring-2 focus-visible:ring-blue-600/20 focus-visible:outline-none active:translate-y-0 active:cursor-grabbing"
+                      className="group flex min-h-[78px] min-w-0 cursor-grab flex-col items-center justify-center gap-1.5 rounded-xl border shadow-xs border-border bg-background px-1 py-2 text-center transition-all duration-150 hover:border-blue-600/30 hover:shadow-sm focus-visible:border-blue-600/50 focus-visible:ring-2 focus-visible:ring-blue-600/20 focus-visible:outline-none active:translate-y-0 active:cursor-grabbing"
                     >
-                      <span className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-muted/70 text-foreground/65 transition-colors group-hover:bg-blue-600/10 group-hover:text-blue-700 dark:group-hover:text-blue-300">
+                      <span className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-muted text-foreground/65 transition-colors group-hover:bg-blue-600/10 group-hover:text-blue-700 dark:group-hover:text-blue-300">
                         <item.icon className="size-4" strokeWidth={1.75} />
                       </span>
                       <span className="line-clamp-2 w-full px-0.5 text-[11px] leading-tight font-medium text-foreground/85 group-hover:text-foreground">
@@ -555,13 +555,14 @@ export function LeftPanel({
   onTabChange: (tab: LeftTabType) => void;
 }) {
   return (
-    <aside className="flex flex-1 min-h-0 flex-col bg-background rounded-xl border shadow-xs">
-      <Box padding="small-300">
+    <aside className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden rounded-xl border bg-background shadow-xs">
+      <Box padding="small-300" maxInlineSize="268px">
         {/* Remount on change: a Clickable's background attribute goes stale on update. */}
         <Tabs
           key={tab}
           tabs={TABS}
           value={tab}
+          inlineSize="fill"
           onChange={(id) => onTabChange(id as LeftTabType)}
         />
       </Box>

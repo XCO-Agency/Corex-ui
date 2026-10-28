@@ -30,7 +30,7 @@ body {
  * (100vh is the iframe's height) so empty space below the last element takes drops;
  * Preview keeps plain block flow.
  */
-#editor-root { display: flow-root; min-height: 100%; }
+#editor-root { display: flow-root; min-height: 100%; padding: 0.75rem; }
 [data-cx-editing] { display: flex; flex-direction: column; min-height: 100vh; }
 [data-cx-editing] [data-cx-node="root"] { flex: 1 0 auto; display: flow-root; }
 /*
@@ -146,7 +146,6 @@ export function EditorFrame({
       style={{
         display: "block",
         border: 0,
-        padding: 8,
         margin: 0,
         width: "100%",
         height: "100%",

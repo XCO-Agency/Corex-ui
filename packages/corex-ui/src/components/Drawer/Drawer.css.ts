@@ -163,6 +163,11 @@ body {
   --drawer-content-max-height: calc(100dvh - 6rem);
 }
 
+/* Not draggable: the browser keeps its own touch gestures (scroll, zoom). */
+[data-slot="drawer-popup"][data-swipeable="false"] {
+  touch-action: auto;
+}
+
 [data-slot="drawer-popup"][data-swipe-axis="y"][data-snap-points] {
   --drawer-content-height: 100dvh;
 }
