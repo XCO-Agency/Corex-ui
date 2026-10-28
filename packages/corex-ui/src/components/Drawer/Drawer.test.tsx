@@ -38,6 +38,7 @@ afterEach(() => {
     writable: true,
     value: 1024,
   });
+  Object.defineProperty(window, "innerHeight", { configurable: true, writable: true, value: 768 });
 });
 
 describe("Drawer", () => {
@@ -46,6 +47,7 @@ describe("Drawer", () => {
     expect(Drawer.Content).toBeTruthy();
     expect(Drawer.Header).toBeTruthy();
     expect(Drawer.Footer).toBeTruthy();
+    expect(Drawer.PreFooter).toBeTruthy();
     expect(Drawer.Title).toBeTruthy();
     expect(Drawer.Description).toBeTruthy();
     expect(Drawer.Close).toBeTruthy();
@@ -569,5 +571,250 @@ describe("Drawer", () => {
     fireEvent.pointerMove(window, { pointerId: 2, clientX: 200, clientY: 100 });
     expect(parent).not.toHaveAttribute("data-swiping");
     fireEvent.pointerUp(window, { pointerId: 2, clientX: 200, clientY: 100 });
+  });
+
+  describe("nested variants", () => {
+    it("places an aside drawer beside its parent, on the parent's side", () => {
+      mockViewport(false);
+      vi.spyOn(HTMLElement.prototype, "offsetWidth", "get").mockReturnValue(320);
+      render(
+        <Drawer defaultOpen swipeDirection="left" responsive={false}>
+          <Drawer.Content>
+            <Drawer.Title>Parent</Drawer.Title>
+            <Drawer defaultOpen variant="aside">
+              <Drawer.Content>
+                <Drawer.Title>Aside</Drawer.Title>
+              </Drawer.Content>
+            </Drawer>
+          </Drawer.Content>
+        </Drawer>,
+      );
+
+      const parent = screen.getByRole("dialog", { name: "Parent" });
+      const aside = screen.getByRole("dialog", { name: "Aside" });
+      expect(aside).toHaveAttribute("data-variant", "aside");
+      expect(aside).toHaveAttribute("data-swipe-direction", "left");
+      expect(aside.parentElement).toHaveAttribute("data-variant", "aside");
+      // Beside, not on top: no scale-back, the parent slides by the aside's width.
+      expect(parent).not.toHaveAttribute("data-nested-drawer-open");
+      expect(parent.style.getPropertyValue("--nested-drawers")).toBe("0");
+      expect(parent).toHaveAttribute("data-nested-aside-open");
+      expect(parent.style.getPropertyValue("--drawer-aside-shift")).toBe("320px");
+    });
+
+    it("chains aside shifts so every ancestor makes room", () => {
+      mockViewport(false);
+      vi.spyOn(HTMLElement.prototype, "offsetWidth", "get").mockReturnValue(300);
+      render(
+        <Drawer defaultOpen>
+          <Drawer.Content>
+            <Drawer.Title>One</Drawer.Title>
+            <Drawer defaultOpen variant="aside">
+              <Drawer.Content>
+                <Drawer.Title>Two</Drawer.Title>
+                <Drawer defaultOpen variant="aside">
+                  <Drawer.Content>
+                    <Drawer.Title>Three</Drawer.Title>
+                  </Drawer.Content>
+                </Drawer>
+              </Drawer.Content>
+            </Drawer>
+          </Drawer.Content>
+        </Drawer>,
+      );
+
+      expect(
+        screen.getByRole("dialog", { name: "Two" }).style.getPropertyValue("--drawer-aside-shift"),
+      ).toBe("300px");
+      expect(
+        screen.getByRole("dialog", { name: "One" }).style.getPropertyValue("--drawer-aside-shift"),
+      ).toBe("600px");
+    });
+
+    it("keeps the float stack on mobile", () => {
+      mockViewport(true);
+      render(
+        <Drawer defaultOpen>
+          <Drawer.Content>
+            <Drawer.Title>Parent</Drawer.Title>
+            <Drawer defaultOpen variant="aside">
+              <Drawer.Content>
+                <Drawer.Title>Aside</Drawer.Title>
+              </Drawer.Content>
+            </Drawer>
+          </Drawer.Content>
+        </Drawer>,
+      );
+
+      expect(screen.getByRole("dialog", { name: "Aside" })).toHaveAttribute("data-variant", "float");
+      expect(screen.getByRole("dialog", { name: "Parent" })).toHaveAttribute("data-nested-drawer-open");
+    });
+
+    it("splits the parent's column with a bottom drawer", () => {
+      mockViewport(false);
+      vi.spyOn(HTMLElement.prototype, "offsetHeight", "get").mockReturnValue(240);
+      render(
+        <Drawer defaultOpen offset={12}>
+          <Drawer.Content width="large">
+            <Drawer.Title>Parent</Drawer.Title>
+            <Drawer defaultOpen variant="bottom" offset={0}>
+              <Drawer.Content width="small">
+                <Drawer.Title>Bottom</Drawer.Title>
+              </Drawer.Content>
+            </Drawer>
+          </Drawer.Content>
+        </Drawer>,
+      );
+
+      const parent = screen.getByRole("dialog", { name: "Parent" });
+      const bottom = screen.getByRole("dialog", { name: "Bottom" });
+      expect(bottom).toHaveAttribute("data-variant", "bottom");
+      // Same column as the parent: its width and offsets win over the child's own.
+      expect(bottom.style.getPropertyValue("--drawer-content-width")).toBe("32rem");
+      expect(bottom.style.getPropertyValue("--drawer-offset-right")).toBe("12px");
+      expect(parent).not.toHaveAttribute("data-nested-drawer-open");
+      expect(parent).toHaveAttribute("data-nested-bottom-open");
+      expect(parent.style.getPropertyValue("--drawer-push-bottom")).toBe("240px");
+    });
+
+    it("sizes a bottom drawer from its active snap point", () => {
+      mockViewport(false);
+      Object.defineProperty(window, "innerHeight", { configurable: true, writable: true, value: 1000 });
+      render(
+        <Drawer defaultOpen>
+          <Drawer.Content>
+            <Drawer.Title>Parent</Drawer.Title>
+            <Drawer defaultOpen variant="bottom" snapPoints={[0.3, 0.6]} defaultSnapPoint={0.6}>
+              <Drawer.Content>
+                <Drawer.Title>Bottom</Drawer.Title>
+              </Drawer.Content>
+            </Drawer>
+          </Drawer.Content>
+        </Drawer>,
+      );
+
+      const bottom = screen.getByRole("dialog", { name: "Bottom" });
+      expect(bottom).toHaveAttribute("data-snap-points");
+      expect(bottom.style.getPropertyValue("--drawer-content-height")).toBe("600px");
+    });
+
+    it("lays out [parent · aside + bottom] with the bottom drawer in the aside's column", () => {
+      mockViewport(false);
+      vi.spyOn(HTMLElement.prototype, "offsetWidth", "get").mockReturnValue(300);
+      vi.spyOn(HTMLElement.prototype, "offsetHeight", "get").mockReturnValue(200);
+      render(
+        <Drawer defaultOpen>
+          <Drawer.Content>
+            <Drawer.Title>One</Drawer.Title>
+            <Drawer defaultOpen variant="aside">
+              <Drawer.Content width="small">
+                <Drawer.Title>Two</Drawer.Title>
+                <Drawer defaultOpen variant="bottom">
+                  <Drawer.Content>
+                    <Drawer.Title>Three</Drawer.Title>
+                  </Drawer.Content>
+                </Drawer>
+              </Drawer.Content>
+            </Drawer>
+          </Drawer.Content>
+        </Drawer>,
+      );
+
+      const one = screen.getByRole("dialog", { name: "One" });
+      const two = screen.getByRole("dialog", { name: "Two" });
+      const three = screen.getByRole("dialog", { name: "Three" });
+      expect(one.style.getPropertyValue("--drawer-aside-shift")).toBe("300px");
+      expect(one.style.getPropertyValue("--drawer-push-bottom")).toBe("");
+      expect(two.style.getPropertyValue("--drawer-push-bottom")).toBe("200px");
+      expect(three.style.getPropertyValue("--drawer-content-width")).toBe("20rem");
+    });
+
+    it("keeps an aside drawer open when its parent panel is pressed", () => {
+      mockViewport(false);
+      const onAside = vi.fn();
+      render(
+        <Drawer defaultOpen>
+          <Drawer.Content>
+            <Drawer.Title>Parent</Drawer.Title>
+            <Drawer defaultOpen variant="aside" onOpenChange={onAside}>
+              <Drawer.Content>
+                <Drawer.Title>Aside</Drawer.Title>
+              </Drawer.Content>
+            </Drawer>
+          </Drawer.Content>
+        </Drawer>,
+      );
+
+      act(() => {
+        screen
+          .getByRole("dialog", { name: "Parent" })
+          .dispatchEvent(new Event("pointerdown", { bubbles: true }));
+      });
+      expect(onAside).not.toHaveBeenCalled();
+
+      act(() => {
+        document.querySelector('[data-slot="drawer-overlay"]')!.dispatchEvent(
+          new Event("pointerdown", { bubbles: true }),
+        );
+      });
+      expect(onAside).toHaveBeenLastCalledWith(false, { reason: "outside-press" });
+    });
+  });
+
+  describe("header, pre-footer and footer", () => {
+    it("renders a pre-footer above the footer, scrolling unless sticky", () => {
+      mockViewport(false);
+      render(
+        <Drawer defaultOpen>
+          <Drawer.Content>
+            <Drawer.Header separator="divider">
+              <Drawer.Title>Cart</Drawer.Title>
+            </Drawer.Header>
+            <Drawer.Body>Items</Drawer.Body>
+            <Drawer.PreFooter>Subtotal</Drawer.PreFooter>
+            <Drawer.PreFooter sticky separator="shadow">
+              Total
+            </Drawer.PreFooter>
+            <Drawer.Footer separator="shadow">Checkout</Drawer.Footer>
+          </Drawer.Content>
+        </Drawer>,
+      );
+
+      const header = document.querySelector('[data-slot="drawer-header"]');
+      const [plain, sticky] = document.querySelectorAll('[data-slot="drawer-pre-footer"]');
+      const footer = document.querySelector('[data-slot="drawer-footer"]');
+      expect(header).toHaveAttribute("data-separator", "divider");
+      expect(plain).not.toHaveAttribute("data-sticky");
+      expect(plain).not.toHaveAttribute("data-separator");
+      expect(sticky).toHaveAttribute("data-sticky");
+      expect(sticky).toHaveAttribute("data-separator", "shadow");
+      expect(footer).toHaveAttribute("data-separator", "shadow");
+      expect(sticky!.nextElementSibling).toBe(footer);
+    });
+
+    it("flags scroll overflow on the panel for the shadow separators", () => {
+      mockViewport(false);
+      vi.spyOn(HTMLElement.prototype, "scrollHeight", "get").mockReturnValue(1000);
+      vi.spyOn(HTMLElement.prototype, "clientHeight", "get").mockReturnValue(400);
+      render(
+        <Drawer defaultOpen>
+          <Drawer.Content>
+            <Drawer.Header separator="shadow">
+              <Drawer.Title>Long</Drawer.Title>
+            </Drawer.Header>
+            <Drawer.Body>Content</Drawer.Body>
+          </Drawer.Content>
+        </Drawer>,
+      );
+
+      const content = document.querySelector<HTMLElement>('[data-slot="drawer-content"]')!;
+      expect(content).not.toHaveAttribute("data-overflow-top");
+      expect(content).toHaveAttribute("data-overflow-bottom");
+
+      content.scrollTop = 600;
+      fireEvent.scroll(content);
+      expect(content).toHaveAttribute("data-overflow-top");
+      expect(content).not.toHaveAttribute("data-overflow-bottom");
+    });
   });
 });

@@ -49,6 +49,43 @@ export type DrawerOpenChangeDetailsType = { reason: DrawerOpenChangeReasonType }
 
 export type DrawerModalType = boolean | "trap-focus";
 
+/**
+ * How a nested drawer lays out against its parent (desktop side drawers only —
+ * mobile sheets and vertical drawers always use `float`).
+ * - `float` — stacks on top of the parent, which scales back behind it.
+ * - `aside` — sits next to the parent: the nested panel takes the edge and the
+ *   parent slides inward (`[parent · nested]` on the right, `[nested · parent]` on the left).
+ * - `bottom` — shares the parent's column and pushes it up from the bottom.
+ */
+export type DrawerVariantType = "float" | "aside" | "bottom";
+
+/**
+ * Edge treatment between a sticky `Header` / `Footer` / `PreFooter` and the
+ * scrolling content. `shadow` fades the content into the surface color while
+ * there is more to scroll; `divider` draws a border.
+ */
+export type DrawerSeparatorType = "none" | "shadow" | "divider";
+
+/** What a nested `aside` / `bottom` drawer reports to its parent so it can make room. */
+export type DrawerChildLayoutType = {
+  variant: "aside" | "bottom";
+  /** Pixels the parent column slides inward from its edge. */
+  shift: number;
+  /** Pixels the parent's bottom edge moves up (`bottom` only). */
+  push: number;
+};
+
+/** Geometry a drawer's panel shares with nested drawers (column width, offsets, slide). */
+export type DrawerPanelContextType = {
+  /** Resolved `--drawer-content-width`, or `undefined` for the CSS default. */
+  width: string | undefined;
+  offset: DrawerResolvedOffsetType;
+  /** Pixels this panel is slid inward from its edge. */
+  asideShift: number;
+  /** This panel plus its ancestors' panels, so an `aside` / `bottom` child treats them as inside. */
+  getPopups: () => Array<HTMLElement | null>;
+};
+
 /** Visual presentation after responsive resolution. */
 export type DrawerPresentationType = "drawer" | "sheet";
 
@@ -106,8 +143,26 @@ export type DrawerContextType = {
   titleId: string;
   descriptionId: string;
   popupId: string;
+  /** Resolved nested layout (`float` at the top level, on mobile and on vertical drawers). */
+  variant: DrawerVariantType;
   /** Number of nested drawers currently open inside this one. */
   nestedOpenCount: number;
+  /** Open `float` descendants stacked on top of this drawer (drives the scale-back). */
+  stackCount: number;
+  /** Called by a nested `float` drawer when it opens (`+1`) or closes (`-1`). */
+  onStackChange: (delta: number) => void;
+  /** Pixels this drawer slides inward to make room for open `aside` (or shifted `bottom`) children. */
+  asideShift: number;
+  /** Pixels this drawer's bottom edge moves up for open `bottom` children. */
+  bottomPush: number;
+  /** Receives layout reports from nested `aside` / `bottom` drawers (`null` when one closes). */
+  reportChildLayout: (key: string, layout: DrawerChildLayoutType | null) => void;
+  /** The parent's `reportChildLayout` when this drawer is `aside` / `bottom`. */
+  reportLayoutToParent?: (key: string, layout: DrawerChildLayoutType | null) => void;
+  /** Key this drawer reports its layout under. */
+  layoutKey: string;
+  /** The parent panel's geometry (`null` at the top level or outside the parent's `Content`). */
+  parentPanel: DrawerPanelContextType | null;
   /** Called by a nested drawer when it opens (`+1`) or closes (`-1`); forwarded to ancestors. */
   onNestedOpenChange: (delta: number) => void;
   /** True inside another Drawer's content. */
@@ -209,6 +264,18 @@ export type DrawerPropsType = {
    * offset={{ top: 8, bottom: 8, left: 0, right: 16 }}
    */
   offset?: DrawerOffsetType;
+  /**
+   * Layout of this drawer when nested inside another one (desktop side
+   * drawers only; mobile keeps the `float` stack). `aside` and `bottom` take
+   * the parent's side. A `bottom` drawer's height follows its content, or
+   * `snapPoints` (fractions of the viewport height, px or CSS lengths) — drag
+   * it to move between them.
+   * @default "float"
+   * @example
+   * <Drawer variant="aside">…</Drawer>
+   * <Drawer variant="bottom" snapPoints={[0.3, 0.6]}>…</Drawer>
+   */
+  variant?: DrawerVariantType;
 };
 
 type DrawerButtonPropsType = Omit<ComponentPropsWithoutRef<"button">, "children"> & {
@@ -253,9 +320,36 @@ export type DrawerContentPropsType = Omit<ComponentPropsWithoutRef<"div">, "clas
   maxHeight?: string;
 };
 
-export type DrawerHeaderPropsType = ComponentPropsWithoutRef<"div">;
+export type DrawerHeaderPropsType = ComponentPropsWithoutRef<"div"> & {
+  /**
+   * Edge under the sticky header: `shadow` fades scrolled content into the
+   * surface, `divider` draws a border.
+   * @default "none"
+   */
+  separator?: DrawerSeparatorType;
+};
 
-export type DrawerFooterPropsType = ComponentPropsWithoutRef<"div">;
+export type DrawerFooterPropsType = ComponentPropsWithoutRef<"div"> & {
+  /**
+   * Edge above the sticky footer: `shadow` fades the content still below
+   * into the surface, `divider` draws a border.
+   * @default "none"
+   */
+  separator?: DrawerSeparatorType;
+};
+
+export type DrawerPreFooterPropsType = ComponentPropsWithoutRef<"div"> & {
+  /**
+   * Pin above the footer instead of scrolling with the content.
+   * @default false
+   */
+  sticky?: boolean;
+  /**
+   * Edge above the pre-footer. `shadow` only shows while it is `sticky`.
+   * @default "none"
+   */
+  separator?: DrawerSeparatorType;
+};
 
 export type DrawerTitlePropsType = ComponentPropsWithoutRef<"h2">;
 
@@ -270,6 +364,7 @@ export type DrawerComponentType = ((props: DrawerPropsType) => ReactElement) & {
   Content: ForwardRefExoticComponent<DrawerContentPropsType & RefAttributes<HTMLDivElement>>;
   Header: (props: DrawerHeaderPropsType) => ReactElement;
   Footer: (props: DrawerFooterPropsType) => ReactElement;
+  PreFooter: (props: DrawerPreFooterPropsType) => ReactElement;
   Title: ForwardRefExoticComponent<DrawerTitlePropsType & RefAttributes<HTMLHeadingElement>>;
   Description: ForwardRefExoticComponent<
     DrawerDescriptionPropsType & RefAttributes<HTMLParagraphElement>

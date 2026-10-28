@@ -160,9 +160,13 @@ export function useFocusContainment(
     trap: boolean;
     /** `"panel"` focuses the panel itself; `"first-field"` the first text field (e.g. a search input). */
     initialFocus?: "panel" | "first-field";
+    /** Extra nodes focus may move into without being pulled back (e.g. a parent panel shown beside it). */
+    getContainers?: () => Array<Element | null | undefined>;
   },
 ) {
   const { id, active, trap, initialFocus = "panel" } = options;
+  const getContainersRef = useRef(options.getContainers);
+  getContainersRef.current = options.getContainers;
 
   useEffect(() => {
     const node = nodeRef.current;
@@ -182,7 +186,9 @@ export function useFocusContainment(
     const handleFocusIn = (event: FocusEvent) => {
       if (!trap || !isTopLayer(id, node.ownerDocument)) return;
       const target = event.target as Node | null;
-      if (target && !node.contains(target)) node.focus({ preventScroll: true });
+      if (!target || node.contains(target)) return;
+      if (getContainersRef.current?.().some((container) => container?.contains(target))) return;
+      node.focus({ preventScroll: true });
     };
     doc.addEventListener("focusin", handleFocusIn);
 

@@ -75,34 +75,7 @@ function OutsideControls() {
   );
 }
 
-function NestedSecond() {
-  return (
-    <Drawer>
-      <Drawer.Trigger>
-        <Button>Open nested drawer</Button>
-      </Drawer.Trigger>
-      <Drawer.Content>
-        <Drawer.Header>
-          <Drawer.Title>Nested</Drawer.Title>
-          <Drawer.Description>
-            Parent stays mounted and scales behind this panel.
-          </Drawer.Description>
-        </Drawer.Header>
-        <Drawer.Body>
-          <Text as="p" color="subdued">
-            On mobile this is a sheet; on desktop a right drawer. Swipe anywhere on the
-            panel to dismiss.
-          </Text>
-        </Drawer.Body>
-        <Drawer.Footer>
-          <Drawer.Close>
-            <Button>Close</Button>
-          </Drawer.Close>
-        </Drawer.Footer>
-      </Drawer.Content>
-    </Drawer>
-  );
-}
+const CART_LINES = Array.from({ length: 30 }, (_, index) => `Line item ${index + 1}`);
 
 export function DrawerExample() {
   return (
@@ -181,29 +154,61 @@ export function DrawerExample() {
 
       <BlockStack gap="small-200">
         <Text variant="headingMd" as="h3">
-          Nested stack
+          Pre-footer & separators
         </Text>
-        <Drawer>
-          <Drawer.Trigger>
-            <Button>Open parent</Button>
-          </Drawer.Trigger>
-          <Drawer.Content>
-            <Drawer.Header>
-              <Drawer.Title>Parent</Drawer.Title>
-              <Drawer.Description>
-                Open another drawer from the same direction.
-              </Drawer.Description>
-            </Drawer.Header>
-            <Drawer.Body>
-              <NestedSecond />
-            </Drawer.Body>
-            <Drawer.Footer>
-              <Drawer.Close>
-                <Button>Close</Button>
-              </Drawer.Close>
-            </Drawer.Footer>
-          </Drawer.Content>
-        </Drawer>
+        <Text as="p" variant="small" color="subdued">
+          Header and footer stick to the panel edges. `Drawer.PreFooter` sits above the
+          footer and scrolls with the content unless `sticky`. `separator=&quot;shadow&quot;`
+          fades scrolled content into the surface; `&quot;divider&quot;` draws a border.
+        </Text>
+        <InlineStack gap="small-200">
+          {(["shadow", "divider"] as const).map((separator) => (
+            <Drawer key={separator}>
+              <Drawer.Trigger>
+                <Button>{separator === "shadow" ? "Shadow edges" : "Divider edges"}</Button>
+              </Drawer.Trigger>
+              <Drawer.Content>
+                <Drawer.Header separator={separator}>
+                  <Drawer.Title>Cart</Drawer.Title>
+                  <Drawer.Description>Scroll to see the edges.</Drawer.Description>
+                </Drawer.Header>
+                <Drawer.Body>
+                  <BlockStack gap="base">
+                    {CART_LINES.map((line) => (
+                      <InlineStack key={line} align="space-between">
+                        <Text as="span">{line}</Text>
+                        <Text as="span" color="subdued">
+                          $12.00
+                        </Text>
+                      </InlineStack>
+                    ))}
+                  </BlockStack>
+                </Drawer.Body>
+                <Drawer.PreFooter>
+                  <Text as="p" variant="small" color="subdued">
+                    Scrolls with the content (not sticky).
+                  </Text>
+                </Drawer.PreFooter>
+                <Drawer.PreFooter sticky separator={separator}>
+                  <InlineStack align="space-between">
+                    <Text as="span" fontWeight="semibold">
+                      Total
+                    </Text>
+                    <Text as="span" fontWeight="semibold">
+                      $168.00
+                    </Text>
+                  </InlineStack>
+                </Drawer.PreFooter>
+                <Drawer.Footer>
+                  <Drawer.Close>
+                    <Button>Keep shopping</Button>
+                  </Drawer.Close>
+                  <Button variant="primary">Checkout</Button>
+                </Drawer.Footer>
+              </Drawer.Content>
+            </Drawer>
+          ))}
+        </InlineStack>
       </BlockStack>
 
       <BlockStack gap="small-200">

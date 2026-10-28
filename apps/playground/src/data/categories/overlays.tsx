@@ -17,6 +17,14 @@ import { ActionListExample } from "@/examples/overlays/ActionListExample";
 import ActionListExampleRaw from "@/examples/overlays/ActionListExample.tsx?raw";
 import { DrawerExample } from "@/examples/overlays/DrawerExample";
 import DrawerExampleRaw from "@/examples/overlays/DrawerExample.tsx?raw";
+import { DrawerFloatExample } from "@/examples/overlays/DrawerFloatExample";
+import DrawerFloatExampleRaw from "@/examples/overlays/DrawerFloatExample.tsx?raw";
+import { DrawerAsideExample } from "@/examples/overlays/DrawerAsideExample";
+import DrawerAsideExampleRaw from "@/examples/overlays/DrawerAsideExample.tsx?raw";
+import { DrawerBottomExample } from "@/examples/overlays/DrawerBottomExample";
+import DrawerBottomExampleRaw from "@/examples/overlays/DrawerBottomExample.tsx?raw";
+import { DrawerAsideBottomExample } from "@/examples/overlays/DrawerAsideBottomExample";
+import DrawerAsideBottomExampleRaw from "@/examples/overlays/DrawerAsideBottomExample.tsx?raw";
 import { CommandExample } from "@/examples/overlays/CommandExample";
 import CommandExampleRaw from "@/examples/overlays/CommandExample.tsx?raw";
 
@@ -104,6 +112,26 @@ export const overlaysComponents: ComponentEntry[] = [
         title: "Responsive drawer / sheet",
         Example: DrawerExample,
         code: DrawerExampleRaw,
+      },
+      {
+        title: "Nested: float (default)",
+        Example: DrawerFloatExample,
+        code: DrawerFloatExampleRaw,
+      },
+      {
+        title: "Nested: aside",
+        Example: DrawerAsideExample,
+        code: DrawerAsideExampleRaw,
+      },
+      {
+        title: "Nested: bottom",
+        Example: DrawerBottomExample,
+        code: DrawerBottomExampleRaw,
+      },
+      {
+        title: "Nested: aside + bottom",
+        Example: DrawerAsideBottomExample,
+        code: DrawerAsideBottomExampleRaw,
       },
     ],
   },

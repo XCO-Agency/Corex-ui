@@ -2,6 +2,7 @@ export { Drawer, useDrawer, useDrawerContext } from "./Drawer";
 export { openDrawer, closeDrawer, toggleDrawer, closeAllDrawers, isDrawerOpen } from "./drawerRegistry";
 export type {
   DrawerBodyPropsType,
+  DrawerChildLayoutType,
   DrawerClosePropsType,
   DrawerComponentType,
   DrawerContentPropsType,
@@ -17,14 +18,18 @@ export type {
   DrawerOpenChangeDetailsType,
   DrawerOpenChangeReasonType,
   DrawerOverlayPropsType,
+  DrawerPanelContextType,
   DrawerPortalPropsType,
+  DrawerPreFooterPropsType,
   DrawerPresentationType,
   DrawerPropsType,
   DrawerResolvedOffsetType,
+  DrawerSeparatorType,
   DrawerSnapPointType,
   DrawerSwipeDirectionType,
   DrawerSwipeHandlePropsType,
   DrawerTitlePropsType,
   DrawerTriggerPropsType,
+  DrawerVariantType,
   DrawerWidthType,
 } from "./Drawer.types";

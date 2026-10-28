@@ -71,6 +71,12 @@ body {
   pointer-events: auto;
 }
 
+/* Side-by-side / split layouts keep the parent panel underneath clickable. */
+[data-slot="drawer-viewport"][data-variant="aside"],
+[data-slot="drawer-viewport"][data-variant="bottom"] {
+  pointer-events: none;
+}
+
 [data-slot="drawer-popup"] {
   --drawer-offset-top: 8px;
   --drawer-offset-right: 8px;
@@ -79,6 +85,7 @@ body {
   --drawer-content-height: var(--drawer-height, auto);
   --drawer-content-max-height: none;
   --drawer-content-width: auto;
+  --drawer-surface: var(--p-color-bg-surface, #ffffff);
   --peek: 1rem;
   --stack-step: 0.05;
   --stack-height: var(--drawer-frontmost-height, var(--drawer-height, 0px));
@@ -112,7 +119,7 @@ body {
   max-height: var(--drawer-content-max-height);
   min-height: 0;
   width: var(--drawer-content-width);
-  background: var(--p-color-bg-surface, #ffffff);
+  background: var(--drawer-surface);
   color: var(--p-color-text, #303030);
   font-size: var(--p-font-size-325, 0.8125rem);
   outline: none;
@@ -129,6 +136,7 @@ body {
   transition:
     transform 450ms cubic-bezier(0.22, 1, 0.36, 1),
     height 450ms cubic-bezier(0.22, 1, 0.36, 1),
+    bottom 450ms cubic-bezier(0.22, 1, 0.36, 1),
     opacity 450ms cubic-bezier(0.22, 1, 0.36, 1),
     filter 450ms cubic-bezier(0.22, 1, 0.36, 1);
   box-shadow: var(--p-shadow-600, 0 4px 16px rgba(0, 0, 0, 0.12));
@@ -172,8 +180,8 @@ body {
 [data-slot="drawer-popup"][data-swipe-axis="x"],
 [data-slot="drawer-popup"][data-presentation="drawer"] {
   top: 0;
-  bottom: 0;
-  inset-block: 0;
+  /* Moves up while a nested \`bottom\` drawer shares this column. */
+  bottom: var(--drawer-push-bottom, 0px);
   height: auto;
   max-height: none;
   --drawer-content-height: auto;
@@ -240,7 +248,7 @@ body {
   );
   --translate-x: calc(
     var(--drawer-swipe-movement-x, 0px) + var(--stack-peek-offset) +
-      (var(--stack-shrink) * 100%)
+      (var(--stack-shrink) * 100%) + var(--drawer-aside-shift, 0px)
   );
 }
 
@@ -257,7 +265,30 @@ body {
   );
   --translate-x: calc(
     var(--drawer-swipe-movement-x, 0px) - var(--stack-peek-offset) -
-      (var(--stack-shrink) * 100%)
+      (var(--stack-shrink) * 100%) - var(--drawer-aside-shift, 0px)
+  );
+}
+
+/*
+ * Nested \`bottom\` drawer: the lower slice of its parent's column (same side,
+ * width, offsets and slide). Height follows content or the active snap point
+ * (\`--drawer-resize-height\` while dragging); enters from the bottom.
+ */
+[data-slot="drawer-popup"][data-variant="bottom"] {
+  top: auto;
+  bottom: var(--drawer-push-bottom, 0px);
+  --drawer-content-height: auto;
+  --drawer-content-max-height: calc(
+    100dvh - var(--drawer-offset-top) - var(--drawer-offset-bottom) - 8rem
+  );
+  height: var(--drawer-resize-height, var(--drawer-content-height));
+  max-height: var(--drawer-content-max-height);
+  transform-origin: bottom center;
+  --translate-y: var(--drawer-swipe-movement-y, 0px);
+  --closed-transform: translate3d(
+    var(--translate-x),
+    calc(100% + var(--drawer-offset-bottom) + var(--drawer-push-bottom, 0px) + 2px),
+    0
   );
 }
 
@@ -302,7 +333,9 @@ body {
   flex-direction: column;
   min-height: 0;
   height: 100%;
-  overflow: hidden;
+  /* One scroller for the panel: header / footer stick, the pre-footer may. */
+  overflow-x: hidden;
+  overflow-y: auto;
   overscroll-behavior: contain;
   border-radius: inherit;
   /* Full-panel swipe: the drag can start anywhere on the surface. */
@@ -397,8 +430,12 @@ body {
 }
 
 [data-slot="drawer-header"] {
+  position: sticky;
+  top: 0;
+  z-index: 1;
   display: flex;
   flex-shrink: 0;
+  background: var(--drawer-surface);
   flex-direction: column;
   gap: 2px;
   padding: var(--p-space-400, 16px);
@@ -430,6 +467,78 @@ body {
   margin-block-start: auto;
   padding: var(--p-space-400, 16px);
   padding-block-start: 0;
+  position: sticky;
+  bottom: 0;
+  z-index: 1;
+  background: var(--drawer-surface);
+}
+
+/* Above the footer; scrolls with the content unless \`sticky\`. */
+[data-slot="drawer-pre-footer"] {
+  position: relative;
+  display: flex;
+  flex-shrink: 0;
+  flex-direction: column;
+  gap: var(--p-space-200, 8px);
+  margin-block-start: auto;
+  padding: var(--p-space-400, 16px);
+  padding-block-start: 0;
+  background: var(--drawer-surface);
+}
+
+[data-slot="drawer-pre-footer"] + [data-slot="drawer-footer"] {
+  margin-block-start: 0;
+}
+
+[data-slot="drawer-pre-footer"][data-sticky] {
+  position: sticky;
+  bottom: var(--drawer-footer-height, 0px);
+  z-index: 1;
+}
+
+/* Separators: \`divider\` draws a border, \`shadow\` fades scrolled content into the surface. */
+[data-slot="drawer-header"][data-separator="divider"] {
+  padding-block-end: var(--p-space-400, 16px);
+  border-block-end: var(--p-border-width-025, 1px) solid var(--p-color-border, rgba(0, 0, 0, 0.08));
+}
+
+[data-slot="drawer-footer"][data-separator="divider"],
+[data-slot="drawer-pre-footer"][data-separator="divider"] {
+  padding-block-start: var(--p-space-400, 16px);
+  border-block-start: var(--p-border-width-025, 1px) solid
+    var(--p-color-border, rgba(0, 0, 0, 0.08));
+}
+
+[data-slot="drawer-header"][data-separator="shadow"]::after,
+[data-slot="drawer-footer"][data-separator="shadow"]::before,
+[data-slot="drawer-pre-footer"][data-sticky][data-separator="shadow"]::before {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  height: var(--p-space-600, 24px);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 150ms ease;
+}
+
+[data-slot="drawer-header"][data-separator="shadow"]::after {
+  top: 100%;
+  background: linear-gradient(to bottom, var(--drawer-surface), transparent);
+}
+
+[data-slot="drawer-footer"][data-separator="shadow"]::before,
+[data-slot="drawer-pre-footer"][data-sticky][data-separator="shadow"]::before {
+  bottom: 100%;
+  background: linear-gradient(to top, var(--drawer-surface), transparent);
+}
+
+[data-slot="drawer-content"][data-overflow-top]
+  [data-slot="drawer-header"][data-separator="shadow"]::after,
+[data-slot="drawer-content"][data-overflow-bottom]
+  [data-slot="drawer-footer"][data-separator="shadow"]::before,
+[data-slot="drawer-content"][data-overflow-bottom]
+  [data-slot="drawer-pre-footer"][data-sticky][data-separator="shadow"]::before {
+  opacity: 1;
 }
 
 [data-slot="drawer-title"] {
@@ -450,10 +559,8 @@ body {
 
 [data-slot="drawer-body"] {
   touch-action: pan-y;
-  flex: 1 1 auto;
-  min-height: 0;
-  overflow-y: auto;
-  overscroll-behavior: contain;
+  /* Fills short panels; long content scrolls the whole panel under the sticky edges. */
+  flex: 1 0 auto;
   padding: var(--p-space-400, 16px);
 }
 `;
