@@ -295,12 +295,36 @@ export const Popover = forwardRef<HTMLElement, PopoverPropsType>(function Popove
       (typeof document !== "undefined" ? document.getElementById(popoverId) : null);
 
     if (el) {
-      if (typeof (el as any).hideOverlay === "function") {
-        (el as any).hideOverlay();
-      } else if (typeof (el as any).hidePopover === "function") {
-        (el as any).hidePopover();
-      } else if (typeof (el as any).hide === "function") {
-        (el as any).hide();
+      /*
+       * `typeof el.hidePopover === "function"` proves the method exists — it
+       * does on every HTMLElement in a supporting browser — not that this
+       * element currently IS a popover. Calling it on one that is not throws
+       * `NotSupportedError`, and the element stops being a popover whenever
+       * the host re-renders it without the attribute.
+       *
+       * The attribute check alone is not enough either: the platform's own
+       * message says "This might have been the result of the 'beforetoggle'
+       * event handler changing the state of this popover", so the state can
+       * change during the call. Both guards, then — the attribute to skip the
+       * common case, the catch for the race.
+       *
+       * Reported as SHOPIFY-APPS-3G from Product Maestro's
+       * `/app/schedules/products`, 11 events over two users.
+       */
+      try {
+        if (typeof (el as any).hideOverlay === "function") {
+          (el as any).hideOverlay();
+        } else if (
+          typeof (el as any).hidePopover === "function" &&
+          el.hasAttribute("popover")
+        ) {
+          (el as any).hidePopover();
+        } else if (typeof (el as any).hide === "function") {
+          (el as any).hide();
+        }
+      } catch {
+        // The element is no longer a popover, or stopped being one mid-call.
+        // The command event below still asks the host to close it.
       }
 
       try {
@@ -340,10 +364,21 @@ export const Popover = forwardRef<HTMLElement, PopoverPropsType>(function Popove
       showOverlay?: () => void;
       showPopover?: () => void;
     };
-    if (typeof overlay.showOverlay === "function") {
-      overlay.showOverlay();
-    } else if (typeof overlay.showPopover === "function") {
-      overlay.showPopover();
+    // Same asymmetry as close(): showPopover() throws NotSupportedError on an
+    // element that is not a popover, and InvalidStateError on one already
+    // open, so the method existing is not permission to call it.
+    try {
+      if (typeof overlay.showOverlay === "function") {
+        overlay.showOverlay();
+      } else if (
+        typeof overlay.showPopover === "function" &&
+        el.hasAttribute("popover")
+      ) {
+        overlay.showPopover();
+      }
+    } catch {
+      // Already open, or no longer a popover. Either way it is not ours to fix
+      // here, and throwing would take the caller's render down with it.
     }
   }, [popoverId]);
 
