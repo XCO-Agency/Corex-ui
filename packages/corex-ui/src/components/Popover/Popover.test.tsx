@@ -89,6 +89,90 @@ describe("Popover", () => {
     expect(hideOverlaySpy).toHaveBeenCalledTimes(1);
   });
 
+  /*
+   * `typeof el.hidePopover === "function"` is true on every HTMLElement in a
+   * supporting browser, so it never meant "this element is a popover".
+   * Calling it on one that is not throws NotSupportedError, which is what
+   * SHOPIFY-APPS-3G was: 11 events over two users from Product Maestro's
+   * `/app/schedules/products`.
+   */
+  it("does not call hidePopover on an element that is not a popover", () => {
+    let capturedClose: (() => void) | null = null;
+
+    const Child = () => {
+      const { close } = usePopover();
+      capturedClose = close;
+      return <button onClick={close}>Close Popover</button>;
+    };
+
+    render(
+      <Popover id="not-a-popover">
+        <Popover.Trigger>
+          <Button>Toggle</Button>
+        </Popover.Trigger>
+        <Popover.Content>
+          <Child />
+        </Popover.Content>
+      </Popover>,
+    );
+
+    const popoverEl = document.querySelector("s-popover") as HTMLElement;
+    // The stub defines hideOverlay on its PROTOTYPE, so `delete` on the
+    // instance leaves it in place and close() never reaches hidePopover.
+    // Shadowing it with undefined is what makes the fall-through happen.
+    Object.defineProperty(popoverEl, "hideOverlay", {
+      value: undefined,
+      configurable: true,
+    });
+    popoverEl.removeAttribute("popover");
+    const hidePopoverSpy = vi
+      .spyOn(popoverEl as any, "hidePopover")
+      .mockImplementation(() => {
+        throw new DOMException(
+          "Failed to execute 'hidePopover' on 'HTMLElement': Not supported on elements that are not popovers.",
+          "NotSupportedError",
+        );
+      });
+
+    expect(() => capturedClose!()).not.toThrow();
+    expect(hidePopoverSpy).not.toHaveBeenCalled();
+  });
+
+  it("swallows a hidePopover that throws mid-call, as beforetoggle can cause", () => {
+    let capturedClose: (() => void) | null = null;
+
+    const Child = () => {
+      const { close } = usePopover();
+      capturedClose = close;
+      return <button onClick={close}>Close Popover</button>;
+    };
+
+    render(
+      <Popover id="racing-popover">
+        <Popover.Trigger>
+          <Button>Toggle</Button>
+        </Popover.Trigger>
+        <Popover.Content>
+          <Child />
+        </Popover.Content>
+      </Popover>,
+    );
+
+    const popoverEl = document.querySelector("s-popover") as HTMLElement;
+    Object.defineProperty(popoverEl, "hideOverlay", {
+      value: undefined,
+      configurable: true,
+    });
+    // The attribute is present, so the guard lets the call through; the
+    // platform still throws because the state changed underneath it.
+    popoverEl.setAttribute("popover", "auto");
+    vi.spyOn(popoverEl as any, "hidePopover").mockImplementation(() => {
+      throw new DOMException("state changed", "NotSupportedError");
+    });
+
+    expect(() => capturedClose!()).not.toThrow();
+  });
+
   it("applies fitTrigger to set inlineSize matching trigger width", () => {
     // Mock getBoundingClientRect in JSDOM
     const originalGetBoundingClientRect = HTMLElement.prototype.getBoundingClientRect;
