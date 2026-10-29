@@ -78,15 +78,31 @@ function renderNode(node: EditorNodeType, depth: number, imports: ImportsType): 
 
   const pad = INDENT.repeat(depth);
   const childPad = INDENT.repeat(depth + 1);
-  const nested = (node.children ?? [])
+  // `slotProps` children (a row's sub-rows) go into a prop instead of the body.
+  const slotted = new Map<string, EditorNodeType[]>();
+  const own: EditorNodeType[] = [];
+  for (const child of node.children ?? []) {
+    const prop = Object.entries(shape.slotProps ?? {}).find(([, types]) =>
+      types.includes(child.type),
+    )?.[0];
+    if (prop) slotted.set(prop, [...(slotted.get(prop) ?? []), child]);
+    else own.push(child);
+  }
+  const nested = own
     .map((child) => renderNode(child, depth + 1, imports))
     .filter(Boolean);
 
   // Slot props such as Collapsible `content` hold the child nodes as a fragment.
   const raw = { ...shape.rawProps };
+  for (const [prop, kids] of slotted) {
+    const fragment = kids
+      .map((child) => renderNode(child, depth + 2, imports))
+      .filter(Boolean);
+    raw[prop] = `\n${childPad}<>\n${fragment.join("\n")}\n${childPad}</>\n${pad}`;
+  }
   let children = nested;
   if (shape.childrenProp && nested.length) {
-    const fragment = (node.children ?? [])
+    const fragment = own
       .map((child) => renderNode(child, depth + 2, imports))
       .filter(Boolean);
     raw[shape.childrenProp] =

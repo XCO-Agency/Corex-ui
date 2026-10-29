@@ -1,7 +1,7 @@
 {
   "name": "playground",
   "private": true,
-  "version": "2.3.0",
+  "version": "2.3.1",
   "description": "Manual dev/QA app for @xco-agency/corex-ui. Loads the real Polaris CDN script so components render exactly as they would in a Shopify embedded app.",
   "type": "module",
   "scripts": {

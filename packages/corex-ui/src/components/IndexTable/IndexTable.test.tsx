@@ -413,6 +413,77 @@ describe("IndexTable", () => {
     expect(subRow.lastElementChild).toHaveClass("cx-it__cell--sticky-right");
   });
 
+  it("spans a cell across columns with colSpan and shifts the cells after it", () => {
+    const { container } = render(
+      <IndexTable
+        headings={[{ title: "Product" }, { title: "Stock" }, { title: "Vendor" }, { title: "Price", alignment: "end" }]}
+        itemCount={1}
+        selectable={false}
+      >
+        <IndexTable.Row id="p1">
+          <IndexTable.Cell colSpan={3}>Shirt — 3 in stock from Aglini</IndexTable.Cell>
+          <IndexTable.Cell>$20</IndexTable.Cell>
+        </IndexTable.Row>
+      </IndexTable>,
+    );
+
+    const cells = container.querySelectorAll<HTMLElement>(".cx-it__row--body > .cx-it__cell");
+    // Two cells cover all four columns, so no filler is added.
+    expect(cells).toHaveLength(2);
+    expect(cells[0]!.style.gridColumn).toBe("span 3");
+    // The flexible first column's content cap would clip a cell that covers three.
+    expect(cells[0]).not.toHaveClass("cx-it__cell--flex");
+    expect(cells[1]!.style.gridColumn).toBe("");
+    // The second cell now sits in the Price column and takes its alignment.
+    expect(cells[1]).toHaveClass("cx-it__cell--end");
+  });
+
+  it("only fills the columns a spanning sub-row cell leaves uncovered", () => {
+    const { container } = render(
+      <IndexTable
+        headings={[{ title: "Product" }, { title: "Stock" }, { title: "Vendor" }, { title: "", sticky: "right" }]}
+        itemCount={1}
+      >
+        <IndexTable.Row
+          id="p1"
+          defaultExpanded
+          subRows={
+            <IndexTable.Row id="v1">
+              <IndexTable.Cell colSpan={2}>Small · Blue</IndexTable.Cell>
+            </IndexTable.Row>
+          }
+        >
+          <IndexTable.Cell>Shirt</IndexTable.Cell>
+          <IndexTable.Cell>3</IndexTable.Cell>
+          <IndexTable.Cell>Aglini</IndexTable.Cell>
+          <IndexTable.Cell>View</IndexTable.Cell>
+        </IndexTable.Row>
+      </IndexTable>,
+    );
+
+    const subRow = container.querySelector(".cx-it__subrows > .cx-it__row")!;
+    const cells = subRow.querySelectorAll<HTMLElement>(":scope > .cx-it__cell:not(.cx-it__cell--control)");
+    // One cell over two columns plus two fillers, so the pinned last column keeps its surface.
+    expect(cells).toHaveLength(3);
+    expect(cells[0]!.style.gridColumn).toBe("span 2");
+    expect(subRow.lastElementChild).toHaveClass("cx-it__cell--sticky-right");
+  });
+
+  it("caps colSpan to the columns left in the row", () => {
+    const { container } = render(
+      <IndexTable headings={[{ title: "Product" }, { title: "Stock" }, { title: "Price" }]} itemCount={1} selectable={false}>
+        <IndexTable.Row id="p1">
+          <IndexTable.Cell>Shirt</IndexTable.Cell>
+          <IndexTable.Cell colSpan={10}>Out of stock everywhere</IndexTable.Cell>
+        </IndexTable.Row>
+      </IndexTable>,
+    );
+
+    const cells = container.querySelectorAll<HTMLElement>(".cx-it__row--body > .cx-it__cell");
+    expect(cells).toHaveLength(2);
+    expect(cells[1]!.style.gridColumn).toBe("span 2");
+  });
+
   it("collapses a dragged row's open sub-rows to a single placeholder", () => {
     const onReorder = vi.fn();
     const { container } = render(

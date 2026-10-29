@@ -11,7 +11,7 @@ import {
 } from "../dnd";
 import { createNode, useEditor } from "../store";
 import { findNode, pathTo, ROOT_ID } from "../tree";
-import type { EditorNodeType } from "../types";
+import type { ComponentDefinitionType, EditorNodeType } from "../types";
 import { CanvasOverlay } from "./CanvasOverlay";
 import { useFrame } from "./EditorFrame";
 
@@ -45,8 +45,6 @@ type CanvasNodePropsType = {
   node: EditorNodeType;
   parentId: string | null;
   editing: boolean;
-  /** False under parents that inspect their direct children (see `bareChildren`). */
-  wrapped?: boolean;
 };
 
 /**
@@ -85,13 +83,8 @@ function openOverlayIds(root: EditorNodeType, selectedId: string | null) {
 
 const CanvasNode = React.memo(
   React.forwardRef<unknown, CanvasNodePropsType>(function CanvasNode(allProps, ref) {
-    const {
-      node,
-      parentId,
-      editing,
-      wrapped = true,
-      ...injected
-    } = allProps as CanvasNodePropsType & InjectedPropsType;
+    const { node, parentId, editing, ...injected } = allProps as CanvasNodePropsType &
+      InjectedPropsType;
     const forcedOpen = React.useContext(OpenOverlaysContext).has(node.id);
     const definition = getDefinition(node.type);
     if (!definition) {
@@ -103,35 +96,7 @@ const CanvasNode = React.memo(
     }
 
     const isRoot = node.id === ROOT_ID;
-    let children: React.ReactNode = null;
-    if (definition.isContainer) {
-      const nested = (node.children ?? []).map((child) => (
-        <CanvasNode
-          key={child.id}
-          node={child}
-          parentId={node.id}
-          editing={editing}
-          wrapped={!definition.bareChildren}
-        />
-      ));
-      if (nested.length) {
-        // A lone child stays an element: triggers check `isValidElement(children)`.
-        children = nested.length === 1 ? nested[0] : nested;
-      } else if (editing && !definition.bareChildren) {
-        children = (
-          <div data-cx-empty data-cx-root-empty={isRoot ? "" : undefined}>
-            {isRoot ? (
-              <>
-                <strong>Drag components or blocks here</strong>
-                <span>…or describe a page to the AI agent</span>
-              </>
-            ) : (
-              "Drop components here"
-            )}
-          </div>
-        );
-      }
-    }
+    const children = nodeChildren(node, definition, editing, isRoot);
 
     let props = Object.keys(injected).length
       ? { ...node.props, ...injected }
@@ -155,7 +120,7 @@ const CanvasNode = React.memo(
       });
     }
     const rendered = <NodeBoundary label={definition.label}>{element}</NodeBoundary>;
-    if (!editing || !wrapped) return rendered;
+    if (!editing) return rendered;
 
     const chip = forcedOpen ? null : definition.canvasLabel?.(node.props, node);
     return (
@@ -171,6 +136,62 @@ const CanvasNode = React.memo(
     );
   }),
 );
+
+/**
+ * What a container renders as its children. Under a `bareChildren` parent
+ * (IndexTable, Layout, Table…) the children are the real component elements,
+ * not canvas nodes: those parents read their children's type and props
+ * (`colSpan`, a row's `id`), so a wrapper element in between would hide them.
+ */
+function nodeChildren(
+  node: EditorNodeType,
+  definition: ComponentDefinitionType,
+  editing: boolean,
+  isRoot = false,
+): React.ReactNode {
+  if (!definition.isContainer) return null;
+  const kids = node.children ?? [];
+  if (kids.length) {
+    const nested = kids.map((child) =>
+      definition.bareChildren ? (
+        renderBare(child, editing)
+      ) : (
+        <CanvasNode key={child.id} node={child} parentId={node.id} editing={editing} />
+      ),
+    );
+    // A lone child stays an element: triggers check `isValidElement(children)`.
+    return nested.length === 1 ? nested[0] : nested;
+  }
+  if (!editing || definition.bareChildren) return null;
+  return (
+    <div data-cx-empty data-cx-root-empty={isRoot ? "" : undefined}>
+      {isRoot ? (
+        <>
+          <strong>Drag components or blocks here</strong>
+          <span>…or describe a page to the AI agent</span>
+        </>
+      ) : (
+        "Drop components here"
+      )}
+    </div>
+  );
+}
+
+/** A bare child rendered in place: no wrapper, keyed by its node, selected from Layers. */
+function renderBare(node: EditorNodeType, editing: boolean): React.ReactNode {
+  const definition = getDefinition(node.type);
+  if (!definition) return null;
+  const props =
+    editing && PANEL_TYPES.has(node.type)
+      ? { ...node.props, "data-cx-panel": node.id }
+      : node.props;
+  const element = definition.render(props, nodeChildren(node, definition, editing), node);
+  return React.isValidElement(element) ? (
+    React.cloneElement(element, { key: node.id })
+  ) : (
+    <React.Fragment key={node.id}>{element}</React.Fragment>
+  );
+}
 
 const samePreview = (a: DropPreviewType | null, b: DropPreviewType | null) =>
   a === b ||

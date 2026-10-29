@@ -87,6 +87,8 @@ export type CodeShapeType = {
   childLines?: string[];
   /** Child nodes are emitted into this prop (`content={<>…</>}`) instead of as children. */
   childrenProp?: string;
+  /** Child nodes of these types go into the named prop as a fragment (IndexTable.Row `subRows`). */
+  slotProps?: Record<string, string[]>;
   /** Props written as raw JS expressions, e.g. a `renderItem` function. */
   rawProps?: Record<string, string>;
   /** Raw JSX lines rendered just before the element (e.g. a menu's trigger). */

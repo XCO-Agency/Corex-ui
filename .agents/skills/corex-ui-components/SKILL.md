@@ -2180,7 +2180,7 @@ import { IndexTable } from "@xco-agency/corex-ui";
 | Subcomponent      | Description                                                   | Key Props                                                                                               |
 | :---------------- | :------------------------------------------------------------ | :------------------------------------------------------------------------------------------------------ |
 | `IndexTable.Row`  | Table row in `IndexTable` with integrated selection checkbox. | `id: string, selected?: boolean, position?: number, onClick?: () => void, disabled?: boolean, children` |
-| `IndexTable.Cell` | Data cell within an `IndexTable.Row`.                         | `children, flush?: boolean, format?: 'base'                                                             | 'currency' | 'numeric' | string, alignment?: 'start' | 'center' | 'end'` |
+| `IndexTable.Cell` | Data cell within an `IndexTable.Row`.                         | `children, flush?: boolean, format?: 'base'                                                             | 'currency' | 'numeric' | string, alignment?: 'start' | 'center' | 'end', colSpan?: number` |
 
 #### Modern Props
 

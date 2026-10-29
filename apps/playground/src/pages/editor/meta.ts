@@ -51,7 +51,7 @@ const SPACING = /^(padding|gap$|rowGap|columnGap|spacing)/;
 const SIZE =
   /(inlineSize|blockSize|InlineSize|BlockSize)$|^(width|height|maxHeight|minWidth|overflow|sidebarWidth)/;
 const LAYOUT =
-  /^(justify|align|place|wrap$|fill$|grow$|shrink$|flex|order$|inline$|direction|position|display|columns$|rows$|areas$|gridTemplate|gridColumn|gridRow|column$|row$|area$|columnSpan|rowSpan|sticky|strategy|offset|zIndex|mobileAlign|verticalAlign|snapPoint|visibleMonths|firstDay)/;
+  /^(justify|align|place|wrap$|fill$|grow$|shrink$|flex|order$|inline$|direction|position|display|columns$|rows$|areas$|gridTemplate|gridColumn|gridRow|column$|row$|area$|columnSpan|colSpan|rowSpan|sticky|strategy|offset|zIndex|mobileAlign|verticalAlign|snapPoint|visibleMonths|firstDay)/;
 const APPEARANCE =
   /^(tone|color|variant|size$|background|border|shadow|fontWeight|fontVariantNumeric|shape|format|density|underline|numeric|breakWord|lineClamp|compact|framed|separator|transparent|condensed|outline|indicator|iconTone|sparkline|hasZebraStriping|increasedTableDensity|truncate|weekends|weekNumbers|nowIndicator|showBadge|showSwipeHandle|animation|animate|easing|duration|delay|reverse|imageContained|sectionned|noHeader|hideIcon|hideScrollbar)/;
 
@@ -91,6 +91,7 @@ export function humanize(name: string) {
 const RANGES: Record<string, { min: number; max: number; step?: number }> = {
   columns: { min: 1, max: 12 },
   columnSpan: { min: 1, max: 12 },
+  colSpan: { min: 1, max: 12 },
   rowSpan: { min: 1, max: 12 },
   lineClamp: { min: 1, max: 10 },
   dayMaxEvents: { min: 1, max: 10 },

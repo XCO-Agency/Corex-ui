@@ -648,6 +648,11 @@ const entries: EntryType[] = [
     label: "Index table",
     group: "Layout",
     icon: Table,
+    container: true,
+    // IndexTable reads its rows' `id`s and cells' `colSpan`, so they render as the real elements.
+    bare: true,
+    accepts: ["IndexTable.Row"],
+    slots: [{ type: "IndexTable.Row" }],
     defaults: {
       resourceName: { singular: "product", plural: "products" },
       headings: [
@@ -656,14 +661,69 @@ const entries: EntryType[] = [
         { title: "Inventory" },
         { title: "Price", alignment: "end" },
       ],
-      rows: [
-        ["The Collection Snowboard", "Active", "50 in stock", "$749.95"],
-        ["Ski Wax", "Draft", "120 in stock", "$12.00"],
-        ["Gift Card", "Active", "—", "$25.00"],
-      ],
       itemCount: 3,
       selectable: true,
     },
+    // Rows are built from IndexTable.Row nodes, which carry `colSpan` and sub-rows.
+    fields: { omit: ["rows"] },
+    children: () => [
+      indexRow(
+        ["The Collection Snowboard", "Active", "50 in stock", "$749.95"],
+        [
+          node("IndexTable.Row", {}, [
+            node("IndexTable.Cell", { colSpan: 3 }, [
+              text("Ships from two warehouses: Paris and Lyon.", { color: "subdued" }),
+            ]),
+            node("IndexTable.Cell", {}, [text("—")]),
+          ]),
+        ],
+      ),
+      indexRow(["Ski Wax", "Draft", "120 in stock", "$12.00"]),
+      indexRow(["Gift Card", "Active", "—", "$25.00"]),
+    ],
+  },
+  {
+    type: "IndexTable.Row",
+    label: "Index table row",
+    group: "Layout",
+    icon: Rows3,
+    container: "horizontal",
+    bare: true,
+    partOf: "IndexTable",
+    parents: ["IndexTable", "IndexTable.Row"],
+    accepts: ["IndexTable.Cell", "IndexTable.Row"],
+    // Cells first; nested rows become this row's `subRows`.
+    slots: [{ type: "IndexTable.Cell" }, { type: "IndexTable.Row" }],
+    fields: { omit: ["subRows"] },
+    children: () => [node("IndexTable.Cell", {}, [text("Cell")])],
+    render: (props, children, current) => {
+      const items = React.Children.toArray(children).filter(React.isValidElement);
+      const subRows = items.filter((item) => item.type === Corex.IndexTable.Row);
+      return (
+        <Corex.IndexTable.Row
+          {...(runtimeProps(indexRowFields, props) as object)}
+          id={indexRowId(current)}
+          subRows={subRows.length ? subRows : undefined}
+        >
+          {items.filter((item) => item.type !== Corex.IndexTable.Row)}
+        </Corex.IndexTable.Row>
+      );
+    },
+    toCode: (props, current) => ({
+      name: "IndexTable.Row",
+      props: { id: indexRowId(current), ...props },
+      slotProps: { subRows: ["IndexTable.Row"] },
+    }),
+  },
+  {
+    type: "IndexTable.Cell",
+    label: "Index table cell",
+    group: "Layout",
+    icon: Square,
+    container: true,
+    partOf: "IndexTable",
+    parents: ["IndexTable.Row"],
+    children: () => [text("Cell")],
   },
   {
     type: "ResourceList",
@@ -1915,6 +1975,21 @@ const actionListFields = fieldsFor("ActionList");
 const comboboxFields = fieldsFor("Combobox");
 
 const drawerFields = fieldsFor("Drawer");
+const indexRowFields = fieldsFor("IndexTable.Row");
+
+/** IndexTable selects rows by `id`; it defaults to one derived from the node. */
+const indexRowId = (current: EditorNodeType) =>
+  typeof current.props.id === "string" && current.props.id
+    ? current.props.id
+    : `row-${current.id.slice(-6)}`;
+
+/** An IndexTable.Row of plain text cells, with optional nested rows. */
+function indexRow(cells: string[], subRows: DraftNodeType[] = []): DraftNodeType {
+  return node("IndexTable.Row", subRows.length ? { defaultExpanded: true } : {}, [
+    ...cells.map((value) => node("IndexTable.Cell", {}, [text(value)])),
+    ...subRows,
+  ]);
+}
 
 /** A Drawer needs an id to be opened from code; it defaults to one derived from the node. */
 const drawerId = (props: NodePropsType, current: EditorNodeType) =>

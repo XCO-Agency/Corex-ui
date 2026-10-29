@@ -244,6 +244,8 @@ function useSubRowsHeight(expanded: boolean) {
 const SelectionAncestorsContext = createContext<SelectionNodeType[]>([]);
 /** Index of the data column a cell renders in, set by the row for each child. */
 const ColumnIndexContext = createContext(-1);
+/** Columns the current cell covers, after `colSpan` is capped to the row. */
+const ColumnSpanContext = createContext(1);
 
 type RowContextType = {
   depth: number;
@@ -973,17 +975,26 @@ function IndexTableRow({
   if (table.showSelectedOnly && !hasAnySelected(selectionNode)) return null;
 
   const givenCells = Children.toArray(children).filter(isValidElement);
-  // Rows with fewer cells than headings (typically sub-rows) still fill every
-  // column, so pinned columns keep their surface and edge shadow.
-  const cells =
-    givenCells.length < table.layout.columns.length
-      ? [
-          ...givenCells,
-          ...Array.from({ length: table.layout.columns.length - givenCells.length }, (_, i) => (
-            <IndexTableCell key={`cx-it-filler-${givenCells.length + i}`} />
-          )),
-        ]
-      : givenCells;
+  // `colSpan` makes a cell cover several columns, so each cell starts where
+  // the previous ones end. Rows that cover fewer columns than headings
+  // (typically sub-rows) still fill every column, so pinned columns keep their
+  // surface and edge shadow.
+  const columnCount = table.layout.columns.length;
+  let nextColumn = 0;
+  const placed = givenCells.map((cell) => {
+    const start = nextColumn;
+    const span = cellSpan(cell, columnCount - start);
+    nextColumn += span;
+    return { cell, start, span };
+  });
+  const cells = [
+    ...placed,
+    ...Array.from({ length: Math.max(0, columnCount - nextColumn) }, (_, i) => ({
+      cell: <IndexTableCell key={`cx-it-filler-${givenCells.length + i}`} />,
+      start: nextColumn + i,
+      span: 1,
+    })),
+  ];
 
   const handleClick = (event: MouseEvent<HTMLDivElement>) => {
     if (!onClick || clickPassedThrough(event, INTERACTIVE_SELECTOR)) return;
@@ -1080,9 +1091,9 @@ function IndexTableRow({
         )}
 
         <RowContext.Provider value={rowContext}>
-          {cells.map((cell, cellIndex) => (
-            <ColumnIndexContext.Provider key={cell.key ?? cellIndex} value={cellIndex}>
-              {cell}
+          {cells.map(({ cell, start, span }, cellIndex) => (
+            <ColumnIndexContext.Provider key={cell.key ?? cellIndex} value={start}>
+              <ColumnSpanContext.Provider value={span}>{cell}</ColumnSpanContext.Provider>
             </ColumnIndexContext.Provider>
           ))}
         </RowContext.Provider>
@@ -1121,6 +1132,13 @@ function IndexTableRow({
 /** Indent per nesting level for `subRows`, in px. */
 const NESTED_INDENT = 24;
 
+/** A cell's `colSpan` as a whole number of columns, at least 1 and at most `available`. */
+function cellSpan(cell: ReactElement, available: number): number {
+  const requested = (cell.props as IndexTableCellPropsType).colSpan;
+  const span = typeof requested === "number" && Number.isFinite(requested) ? Math.floor(requested) : 1;
+  return Math.max(1, Math.min(span, Math.max(1, available)));
+}
+
 function IndexTableCell({
   children,
   sticky,
@@ -1133,6 +1151,8 @@ function IndexTableCell({
   const table = useIndexTable();
   const row = useContext(RowContext);
   const columnIndex = useContext(ColumnIndexContext);
+  // The row resolves `colSpan` (capped to the columns left), so read it from there.
+  const span = useContext(ColumnSpanContext);
   const { registerSticky } = table;
 
   // A pinned cell pins its whole column, header and checkbox included.
@@ -1154,10 +1174,15 @@ function IndexTableCell({
         alignmentClass(resolvedAlignment),
         flush && "cx-it__cell--flush",
         stickyClass(pin),
-        column?.capContent && "cx-it__cell--flex",
+        // The content cap keeps one flexible column from stretching; a spanning cell covers several.
+        column?.capContent && span === 1 && "cx-it__cell--flex",
         className,
       )}
-      style={{ ...pinStyle(pin, column?.offset), ...style }}
+      style={{
+        ...pinStyle(pin, column?.offset),
+        ...(span > 1 ? { gridColumn: `span ${span}` } : {}),
+        ...style,
+      }}
     >
       {isFirst && row.depth > 0 && (
         <div

@@ -78,6 +78,27 @@ export function migrateNode(node: EditorNodeType): EditorNodeType {
     ];
     delete props.children;
   }
+  // IndexTable was a data-only leaf (`rows`); rows are now IndexTable.Row nodes with cells.
+  if (type === "IndexTable" && Array.isArray(props.rows) && !children?.length) {
+    children = (props.rows as unknown[][]).map((row, rowIndex) => ({
+      id: `${node.id}-r${rowIndex}`,
+      type: "IndexTable.Row",
+      props: {},
+      children: (Array.isArray(row) ? row : []).map((cell, cellIndex) => ({
+        id: `${node.id}-r${rowIndex}c${cellIndex}`,
+        type: "IndexTable.Cell",
+        props: {},
+        children: [
+          {
+            id: `${node.id}-r${rowIndex}c${cellIndex}t`,
+            type: "Text",
+            props: { children: String(cell ?? "") },
+          },
+        ],
+      })),
+    }));
+    delete props.rows;
+  }
   if (type === "Button" && props.fill) {
     props.inlineSize = "fill";
     delete props.fill;

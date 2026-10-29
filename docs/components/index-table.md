@@ -134,6 +134,31 @@ product's variants.
   `selectable={false}` on a row that can't be selected, and its checkbox is
   hidden while the columns stay aligned.
 
+## Spanning columns
+
+Give a cell `colSpan` to make it cover several columns, like a native
+`<td colSpan>`. It works on rows and sub-rows alike: the next cell starts after
+the covered columns, and a row only gets filler cells for the columns its cells
+leave uncovered, so pinned columns keep their surface. A span that runs past the
+last column is capped to the columns left. Alignment and pinning follow the
+first column the cell covers.
+
+```tsx
+<IndexTable.Row
+  id={product.id}
+  subRows={
+    <IndexTable.Row id={`${product.id}-note`} selectable={false}>
+      <IndexTable.Cell colSpan={3}>Ships from two warehouses: Paris and Lyon.</IndexTable.Cell>
+    </IndexTable.Row>
+  }
+>
+  <IndexTable.Cell>{product.title}</IndexTable.Cell>
+  <IndexTable.Cell>{product.stock}</IndexTable.Cell>
+  <IndexTable.Cell>{product.vendor}</IndexTable.Cell>
+  <IndexTable.Cell>{product.price}</IndexTable.Cell>
+</IndexTable.Row>
+```
+
 ### Parent and child selection
 
 When a row has selectable sub-rows, selection works as a tree:
@@ -234,7 +259,8 @@ retheme, set any of these on an ancestor:
 `IndexTable.Row` takes `id`, `selected`, `selectable`, `disabled`, `onClick`, `position`, and
 `subRows` / `expanded` / `defaultExpanded` / `onExpandedChange`.
 
-`IndexTable.Cell` takes `sticky`, `alignment`, `format` and `flush` (no padding).
+`IndexTable.Cell` takes `sticky`, `alignment`, `format`, `flush` (no padding) and
+`colSpan` (columns to cover, default `1`).
 
 Not reproduced: v12's shift-click range selection and its sticky header.
 

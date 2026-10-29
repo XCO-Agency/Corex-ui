@@ -191,6 +191,14 @@ export type IndexTableCellPropsType = {
   flush?: boolean;
   format?: "base" | "currency" | "numeric" | string;
   alignment?: "start" | "center" | "end";
+  /**
+   * Columns this cell covers, like a native `<td colSpan>`. The next cell
+   * starts after them, and a row (or sub-row) only gets filler cells for the
+   * columns its cells leave uncovered. Capped at the columns left in the row.
+   * Alignment and pinning follow the first column it covers.
+   * @default 1
+   */
+  colSpan?: number;
   className?: string;
   style?: CSSProperties;
 };
