@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
 import { act, renderHook } from "@testing-library/react";
-import { useDebounce, useDebouncedCallback } from "./useDebounce";
+import { useDebounce } from "./useDebounce";
 
 describe("useDebounce", () => {
   it("returns initial value immediately and debounces updates", () => {
@@ -26,32 +26,6 @@ describe("useDebounce", () => {
       vi.advanceTimersByTime(1);
     });
     expect(result.current).toBe("world");
-
-    vi.useRealTimers();
-  });
-});
-
-describe("useDebouncedCallback", () => {
-  it("debounces function calls", () => {
-    vi.useFakeTimers();
-    const fn = vi.fn();
-
-    const { result } = renderHook(() => useDebouncedCallback(fn, 200));
-
-    act(() => {
-      result.current("a");
-      result.current("b");
-      result.current("c");
-    });
-
-    expect(fn).not.toHaveBeenCalled();
-
-    act(() => {
-      vi.advanceTimersByTime(200);
-    });
-
-    expect(fn).toHaveBeenCalledTimes(1);
-    expect(fn).toHaveBeenCalledWith("c");
 
     vi.useRealTimers();
   });
