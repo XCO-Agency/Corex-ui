@@ -40,9 +40,16 @@ jobs:
       - name: Resolve publish mode
         id: mode
         run: |
+          # A called workflow inherits the caller's github.event_name (push for
+          # Release), never workflow_call. inputs.tag is set only on that call,
+          # so a non-empty tag must win before any event-name branch. Otherwise
+          # the push path reads an empty github.event.release.tag_name and
+          # refuses to publish. workflow_dispatch has no tag input and still
+          # publishes the selected ref. release: published still uses the
+          # release payload.
           event="${{ github.event_name }}"
-          if [ "$event" = "workflow_call" ]; then
-            tag="${{ inputs.tag }}"
+          tag="${{ inputs.tag }}"
+          if [ -n "$tag" ]; then
             dry="${{ inputs.dry_run }}"
           elif [ "$event" = "workflow_dispatch" ]; then
             tag="${GITHUB_REF_NAME}"
