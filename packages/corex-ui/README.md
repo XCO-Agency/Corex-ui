@@ -81,6 +81,10 @@ See the [Agent Skills guide](../../docs/agent-skills.md) for tool-specific setup
 - [Component coverage](../../docs/component-coverage.md) — full audit against Polaris's web component catalog.
 - [App Bridge](../../docs/app-bridge.md) — `AppWindow`, `AppNav`, `SaveBar`, `useToast`, `useSaveBar`.
 
+## Contributing
+
+The library is published to public npm from the pnpm workspace. Add a changeset in the repo root (`pnpm changeset`) for user-facing changes. Maintainers release by merging the **Version Packages** pull request, which tags `vX.Y.Z` and publishes. See the repository [CONTRIBUTING.md](../../CONTRIBUTING.md) and [release notes](./CHANGELOG.md).
+
 ## Development
 
 This package lives in a pnpm workspace alongside `apps/playground`, a Vite app used to manually

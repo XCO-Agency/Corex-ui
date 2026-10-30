@@ -44,17 +44,17 @@ pnpm add @xco-agency/corex-ui
 
 No `.npmrc` configuration or authentication tokens are required.
 
-### For maintainers: publishing a release
+### Contributing and releases
 
-1. Bump the version in [`packages/corex-ui/package.json`](./packages/corex-ui/package.json).
+Add a changeset (`pnpm changeset`) when a pull request changes the published library. CI runs `pnpm install`, typecheck, test, and build on pull requests and on `main`.
 
-2. Publish:
-   ```sh
-   cd packages/corex-ui
-   npm publish --access public
-   ```
+Maintainers merge the **Version Packages** pull request. That merge creates an annotated tag `vX.Y.Z` matching `packages/corex-ui/package.json` (and the root `package.json`), opens the GitHub Release, and publishes to npm. Do not bump the version or run `npm publish` by hand. Tags already on GitHub for `0.0.1` and `0.0.2` are not backfilled.
 
-Or automatically via GitHub Actions release workflow (`.github/workflows/publish.yml`).
+- [CONTRIBUTING.md](./CONTRIBUTING.md) — setup, changesets, and the maintainer release steps
+- [docs/releasing.md](./docs/releasing.md) — workflows, the tag check, dry run, and secrets
+- [CHANGELOG.md](./CHANGELOG.md) — where release notes live
+- [CODE_OF_CONDUCT.md](./CODE_OF_CONDUCT.md)
+- [SECURITY.md](./SECURITY.md)
 
 ## AI Coding Assistant Skill
 
@@ -68,6 +68,7 @@ npx skills add XCO-Agency/Corex-ui
 
 ## Documentation
 
+- [`CONTRIBUTING.md`](./CONTRIBUTING.md) — local setup, changesets, and how a release is cut.
 - [`packages/corex-ui/README.md`](./packages/corex-ui/README.md) — install & usage for the library itself.
 - [`docs/agent-skills.md`](./docs/agent-skills.md) — setup guide for AI coding assistants (skills.sh, Cursor, Claude Code, Antigravity).
 - [`docs/architecture.md`](./docs/architecture.md) — how the wrapper layer works, and how to add new components.
