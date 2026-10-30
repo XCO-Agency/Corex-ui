@@ -166,21 +166,48 @@ describe("Tabs", () => {
     expect(container.querySelector('[data-slot="tabs-thumb"]')).toBeInTheDocument();
   });
 
+  describe("card variant", () => {
+    it("renders folder-style tabs with connected content panels", () => {
+      const { container, rerender } = render(
+        <Tabs variant="card" tabs={tabs} value="all" onChange={() => {}}>
+          <Tabs.Content value="all">All panel</Tabs.Content>
+          <Tabs.Content value="drafts">Drafts panel</Tabs.Content>
+        </Tabs>,
+      );
+
+      expect(container.querySelector('[data-slot="tabs"]')).toHaveAttribute(
+        "data-variant",
+        "card",
+      );
+      expect(container.querySelector('[data-slot="tabs-thumb"]')).not.toBeInTheDocument();
+      expect(screen.getByText("All panel")).toBeInTheDocument();
+      expect(screen.queryByText("Drafts panel")).not.toBeInTheDocument();
+
+      rerender(
+        <Tabs variant="card" tabs={tabs} value="drafts" onChange={() => {}}>
+          <Tabs.Content value="all">All panel</Tabs.Content>
+          <Tabs.Content value="drafts">Drafts panel</Tabs.Content>
+        </Tabs>,
+      );
+
+      expect(screen.queryByText("All panel")).not.toBeInTheDocument();
+      expect(screen.getByText("Drafts panel")).toBeInTheDocument();
+    });
+  });
+
   describe("compact mode", () => {
-    it("renders a fully rounded compact trigger with selected tab label", () => {
-      const { container } = render(<Tabs tabs={tabs} value="all" compact />);
+    it("renders compact trigger with selected tab label and select icon", () => {
+      render(<Tabs tabs={tabs} value="all" compact />);
 
       const popoverEl = document.querySelector("s-popover");
       expect(popoverEl).toBeInTheDocument();
-
-      expect(container.querySelector('[data-slot="tabs-compact"]')).toBeInTheDocument();
 
       const trigger = document.querySelector(
         's-clickable[commandfor^="corex-tabs-popover"]',
       );
       expect(trigger).toBeInTheDocument();
       expect(trigger).toHaveAttribute("accessibilitylabel", "All");
-      expect(trigger).toHaveAttribute("borderradius", "max");
+      expect(trigger).toHaveAttribute("borderradius", "base");
 
       const selectIcon = document.querySelector('s-icon[type="select"]');
       expect(selectIcon).toBeInTheDocument();

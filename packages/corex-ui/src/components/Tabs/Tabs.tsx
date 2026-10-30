@@ -1,17 +1,31 @@
 import {
+  Children,
+  createContext,
   forwardRef,
+  isValidElement,
   useCallback,
+  useContext,
   useId,
+  useMemo,
   useRef,
   useState,
   type CSSProperties,
   type ForwardedRef,
   type KeyboardEvent,
+  type ReactElement,
+  type ReactNode,
 } from "react";
 import { mergeRefs } from "../../core/mergeRefs";
 import { useIsomorphicLayoutEffect } from "../../core/useIsomorphicLayoutEffect";
 import { Tooltip } from "../Tooltip";
-import type { TabItemType, TabsComponentType, TabsPropsType } from "./Tabs.types";
+import type {
+  TabItemType,
+  TabsComponentType,
+  TabsContentPropsType,
+  TabsContextType,
+  TabsPropsType,
+  TabsVariantType,
+} from "./Tabs.types";
 import { Clickable } from "../Clickable";
 import { Icon } from "../Icon";
 import { Badge } from "../Badge";
@@ -22,14 +36,78 @@ import { Box } from "../Box";
 import { Popover, usePopover } from "../Popover";
 import { TABS_CSS, TABS_STYLE_ID } from "./Tabs.css";
 
+const TabsContext = createContext<TabsContextType | null>(null);
+
 function ensureStyles(node: HTMLElement | null) {
-  const doc = node?.ownerDocument;
+  const doc = node?.ownerDocument ?? (typeof document !== "undefined" ? document : null);
   if (!doc) return;
-  if (doc.getElementById(TABS_STYLE_ID)) return;
+  const existing = doc.getElementById(TABS_STYLE_ID);
+  if (existing) {
+    if (existing.textContent !== TABS_CSS) {
+      existing.textContent = TABS_CSS;
+    }
+    return;
+  }
   const style = doc.createElement("style");
   style.id = TABS_STYLE_ID;
   style.textContent = TABS_CSS;
   doc.head.appendChild(style);
+}
+
+/**
+ * Panel rendered under card-variant tabs. Only the panel whose `value`
+ * matches the selected tab is shown.
+ */
+export const TabsContent = forwardRef<HTMLDivElement, TabsContentPropsType>(
+  function TabsContent({ value, children, className, id }, ref) {
+    const ctx = useContext(TabsContext);
+    const selected = ctx?.selectedValue;
+    const isActive =
+      selected != null && (selected === value || String(selected) === String(value));
+
+    return (
+      <div
+        ref={ref}
+        id={id}
+        className={className}
+        data-slot="tabs-content"
+        data-active={isActive ? "true" : "false"}
+        role="tabpanel"
+        hidden={!isActive}
+      >
+        {isActive ? children : null}
+      </div>
+    );
+  },
+);
+TabsContent.displayName = "Tabs.Content";
+
+function isTabsContentElement(
+  child: ReactNode,
+): child is ReactElement<TabsContentPropsType> {
+  return (
+    isValidElement(child) &&
+    (child.type === TabsContent ||
+      (child.type as { displayName?: string }).displayName === "Tabs.Content")
+  );
+}
+
+function partitionChildren(children: ReactNode): {
+  panels: ReactElement<TabsContentPropsType>[];
+  extras: ReactNode[];
+} {
+  const panels: ReactElement<TabsContentPropsType>[] = [];
+  const extras: ReactNode[] = [];
+
+  Children.forEach(children, (child) => {
+    if (isTabsContentElement(child)) {
+      panels.push(child);
+    } else if (child != null && child !== false) {
+      extras.push(child);
+    }
+  });
+
+  return { panels, extras };
 }
 
 function CompactTabsMenu<TId extends string | number = string>({
@@ -55,10 +133,10 @@ function CompactTabsMenu<TId extends string | number = string>({
             <Clickable
               key={tab.id ?? index}
               disabled={tab.disabled}
-              background="transparent"
+              background={isSelected ? "subdued" : "transparent"}
               paddingInline="small-200"
               blockSize="28px"
-              borderRadius="full"
+              borderRadius="large-200"
               inlineSize="fill"
               commandFor={popoverId}
               command="--hide"
@@ -141,6 +219,7 @@ function TabsInner<TId extends string | number = string>(
     onSelect,
     value,
     onChange,
+    variant: variantProp = "segment",
     showBadge = true,
     rightSide,
     compact = false,
@@ -160,7 +239,9 @@ function TabsInner<TId extends string | number = string>(
     ? `${id}-popover`
     : `corex-tabs-popover-${generatedId.replace(/:/g, "")}`;
 
-  const isFullWidth = !compact && inlineSize === "fill";
+  const variant: TabsVariantType = compact ? "segment" : variantProp;
+  const isCard = variant === "card" && !compact;
+  const isFullWidth = isCard || (!compact && inlineSize === "fill");
 
   useIsomorphicLayoutEffect(() => ensureStyles(rootRef.current), []);
 
@@ -193,9 +274,26 @@ function TabsInner<TId extends string | number = string>(
   const currentTab =
     selectedIndex >= 0 ? tabs[selectedIndex] : value === null ? undefined : tabs[0];
 
+  const selectedValue: string | number | null | undefined =
+    value !== undefined
+      ? value
+      : selectedIndex >= 0
+        ? tabs[selectedIndex]?.id
+        : selected === null
+          ? null
+          : currentTab?.id;
+
+  const { panels, extras } = useMemo(() => partitionChildren(children), [children]);
+
+  const contextValue = useMemo<TabsContextType>(
+    () => ({ selectedValue, variant }),
+    [selectedValue, variant],
+  );
+
   const [thumb, setThumb] = useState({ x: 0, width: 0, ready: false });
 
   const updateThumb = useCallback(() => {
+    if (isCard) return;
     const track = trackRef.current;
     if (!track || selectedIndex < 0) {
       setThumb((prev) => ({ ...prev, ready: false }));
@@ -213,10 +311,10 @@ function TabsInner<TId extends string | number = string>(
       width: optionRect.width,
       ready: true,
     });
-  }, [selectedIndex]);
+  }, [isCard, selectedIndex]);
 
   useIsomorphicLayoutEffect(() => {
-    if (compact) return;
+    if (compact || isCard) return;
     updateThumb();
 
     const track = trackRef.current;
@@ -228,7 +326,7 @@ function TabsInner<TId extends string | number = string>(
       if (option) observer.observe(option);
     }
     return () => observer.disconnect();
-  }, [compact, updateThumb, tabs, isFullWidth, showBadge]);
+  }, [compact, isCard, updateThumb, tabs, isFullWidth, showBadge]);
 
   const focusOption = (index: number) => {
     optionRefs.current[index]?.focus();
@@ -295,150 +393,149 @@ function TabsInner<TId extends string | number = string>(
     "--cx-tabs-thumb-opacity": thumb.ready ? 1 : 0,
   } as CSSProperties;
 
-  return (
+  const tabList = compact ? (
+    <Popover id={popoverId}>
+      <Popover.Trigger>
+        <Clickable
+          background="transparent"
+          disabled={tabs.length === 0}
+          paddingInlineStart="small-200"
+          paddingInlineEnd="small-400"
+          blockSize="28px"
+          borderRadius="large-200"
+          accessibilityLabel={
+            currentTab?.accessibilityLabel ?? currentTab?.label ?? "Select tab"
+          }
+        >
+          <InlineStack
+            alignItems="center"
+            gap="small-400"
+            inlineSize="fill"
+            blockSize="fill"
+          >
+            {currentTab?.icon && <Icon type={currentTab.icon} />}
+            {currentTab?.label && (
+              <Text variant="small" fontWeight="medium" lineClamp={1}>
+                {currentTab.label}
+              </Text>
+            )}
+            {showBadge && currentTab?.badge !== undefined && (
+              <Badge
+                color="strong"
+                tone={currentTab.disabled ? "neutral" : currentTab.badgeTone}
+              >
+                {currentTab.badge}
+              </Badge>
+            )}
+            <Icon type="select" color="subdued" />
+          </InlineStack>
+        </Clickable>
+      </Popover.Trigger>
+      <Popover.Content>
+        <CompactTabsMenu
+          tabs={tabs}
+          isTabSelected={isTabSelected}
+          onSelectTab={handleSelect}
+          showBadge={showBadge}
+        />
+      </Popover.Content>
+    </Popover>
+  ) : (
     <div
-      ref={mergeRefs(rootRef, ref)}
-      className={className}
-      id={id}
-      data-slot="tabs"
-      data-compact={compact ? "true" : undefined}
-      data-inline-size={isFullWidth ? "fill" : "auto"}
-      style={{
-        width: compact ? "auto" : "100%",
-      }}
-      {...rest}
+      ref={trackRef}
+      data-slot="tabs-track"
+      role="tablist"
+      style={isCard ? undefined : thumbStyle}
+      onKeyDown={handleKeyDown}
     >
-      <div data-slot="tabs-bar" style={{ width: isFullWidth ? "100%" : undefined }}>
-        {compact ? (
-          <div data-slot="tabs-compact">
-            <Popover id={popoverId}>
-              <Popover.Trigger>
-                <Clickable
-                  background="transparent"
-                  disabled={tabs.length === 0}
-                  paddingInlineStart="small-200"
-                  paddingInlineEnd="small-300"
-                  blockSize="28px"
-                  borderRadius="full"
-                  accessibilityLabel={
-                    currentTab?.accessibilityLabel ?? currentTab?.label ?? "Select tab"
-                  }
-                >
-                  <InlineStack
-                    alignItems="center"
-                    gap="small-400"
-                    inlineSize="fill"
-                    blockSize="fill"
-                  >
-                    {currentTab?.icon && <Icon type={currentTab.icon} />}
-                    {currentTab?.label && (
-                      <Text
-                        variant="small"
-                        heading
-                        color="base"
-                        tone="neutral"
-                        lineClamp={1}
-                      >
-                        {currentTab.label}
-                      </Text>
-                    )}
-                    {showBadge && currentTab?.badge !== undefined && (
-                      <Badge
-                        color="strong"
-                        tone={currentTab.disabled ? "neutral" : currentTab.badgeTone}
-                      >
-                        {currentTab.badge}
-                      </Badge>
-                    )}
-                    <Icon type="select" color="subdued" />
-                  </InlineStack>
-                </Clickable>
-              </Popover.Trigger>
-              <Popover.Content>
-                <CompactTabsMenu
-                  tabs={tabs}
-                  isTabSelected={isTabSelected}
-                  onSelectTab={handleSelect}
-                  showBadge={showBadge}
-                />
-              </Popover.Content>
-            </Popover>
+      {!isCard && <div data-slot="tabs-thumb" aria-hidden="true" />}
+
+      {tabs.map((tab, index) => {
+        const isSelected = isTabSelected(tab, index);
+
+        const button = (
+          <button
+            type="button"
+            role="tab"
+            data-slot="tabs-option"
+            ref={(node) => {
+              optionRefs.current[index] = node;
+            }}
+            aria-selected={isSelected}
+            aria-label={tab.accessibilityLabel}
+            disabled={tab.disabled}
+            tabIndex={
+              tab.disabled ? -1 : isSelected || (!hasSelection && index === 0) ? 0 : -1
+            }
+            onClick={() => handleSelect(tab, index)}
+          >
+            {tab.icon && <Icon type={tab.icon} />}
+            {tab.label && <span data-slot="tabs-option-label">{tab.label}</span>}
+            {showBadge && tab.badge !== undefined && (
+              <Badge color="strong" tone={tab.disabled ? "neutral" : tab.badgeTone}>
+                {tab.badge}
+              </Badge>
+            )}
+          </button>
+        );
+
+        return (
+          <div key={tab.id ?? index} data-slot="tabs-option-wrap">
+            {tab.tooltip ? <Tooltip content={tab.tooltip}>{button}</Tooltip> : button}
+          </div>
+        );
+      })}
+    </div>
+  );
+
+  const bar = (
+    <div
+      data-slot="tabs-bar"
+      style={{ width: isFullWidth || isCard ? "100%" : undefined }}
+    >
+      {tabList}
+
+      {extras.length > 0 &&
+        (isCard ? <div data-slot="tabs-bar-extra">{extras}</div> : extras)}
+
+      {rightSide && <InlineStack gap="small-200">{rightSide}</InlineStack>}
+    </div>
+  );
+
+  return (
+    <TabsContext.Provider value={contextValue}>
+      <div
+        ref={mergeRefs(rootRef, ref)}
+        className={className}
+        id={id}
+        data-slot="tabs"
+        data-variant={variant}
+        data-compact={compact ? "true" : undefined}
+        data-inline-size={isFullWidth ? "fill" : "auto"}
+        style={{
+          width: compact && !isCard ? "auto" : "100%",
+        }}
+        {...rest}
+      >
+        {isCard ? (
+          <div data-slot="tabs-shell">
+            {bar}
+            {panels.length > 0 && <div data-slot="tabs-panels">{panels}</div>}
           </div>
         ) : (
-          <div
-            ref={trackRef}
-            data-slot="tabs-track"
-            role="tablist"
-            style={thumbStyle}
-            onKeyDown={handleKeyDown}
-          >
-            <div data-slot="tabs-thumb" aria-hidden="true" />
-
-            {tabs.map((tab, index) => {
-              const isSelected = isTabSelected(tab, index);
-
-              const button = (
-                <button
-                  type="button"
-                  role="tab"
-                  data-slot="tabs-option"
-                  ref={(node) => {
-                    optionRefs.current[index] = node;
-                  }}
-                  aria-selected={isSelected}
-                  aria-label={tab.accessibilityLabel}
-                  disabled={tab.disabled}
-                  tabIndex={
-                    tab.disabled
-                      ? -1
-                      : isSelected || (!hasSelection && index === 0)
-                        ? 0
-                        : -1
-                  }
-                  onClick={() => handleSelect(tab, index)}
-                >
-                  {tab.icon && <Icon type={tab.icon} />}
-                  {tab.label && (
-                    <span data-slot="tabs-option-label">{tab.label}</span>
-                  )}
-                  {showBadge && tab.badge !== undefined && (
-                    <Badge
-                      color="strong"
-                      tone={tab.disabled ? "neutral" : tab.badgeTone}
-                    >
-                      {tab.badge}
-                    </Badge>
-                  )}
-                </button>
-              );
-
-              return (
-                <div key={tab.id ?? index} data-slot="tabs-option-wrap">
-                  {tab.tooltip ? (
-                    <Tooltip content={tab.tooltip}>{button}</Tooltip>
-                  ) : (
-                    button
-                  )}
-                </div>
-              );
-            })}
-          </div>
+          bar
         )}
-
-        {children}
-
-        {rightSide && <InlineStack gap="small-200">{rightSide}</InlineStack>}
       </div>
-    </div>
+    </TabsContext.Provider>
   );
 }
 
 /**
- * Tabs component supporting both legacy Polaris index-based selection (`selected`, `onSelect`)
- * and id-based selection (`value`, `onChange`). Non-compact mode uses a Segment-style
- * pill track; compact mode renders a fully rounded dropdown trigger.
+ * Tabs with segment (pill) and card (folder) variants.
+ * Use `Tabs.Content` with `variant="card"` for connected panel content.
  */
 export const Tabs = forwardRef(TabsInner) as unknown as TabsComponentType;
 Tabs.displayName = "Tabs";
+Tabs.Content = TabsContent;
 
 export default Tabs;

@@ -198,7 +198,7 @@ When specifying `gap`, `padding`, `rowGap`, or `columnGap`, use **exclusively** 
 | Component                       | Description                                                                                                        | Subcomponents                                                                                         |
 | :------------------------------ | :----------------------------------------------------------------------------------------------------------------- | :---------------------------------------------------------------------------------------------------- |
 | [**Page**](#page)               | Top-level page layout container wrapping `<s-page>`. Houses header, breadcrumbs, actions, aside, and page content. | —                                                                                                     |
-| [**Tabs**](#tabs)               | Segment-style pill tablist with sliding thumb, plus a fully rounded compact dropdown mode.                         | —                                                                                                     |
+| [**Tabs**](#tabs)               | Segment pill tabs, compact dropdown mode, and card/folder tabs with `Tabs.Content`.                                | `Tabs.Content`                                                                                        |
 | [**Pagination**](#pagination)   | Pagination navigation buttons for traversing records.                                                              | —                                                                                                     |
 | [**Drawer**](#drawer)           | Responsive panel: right drawer on desktop, bottom sheet on mobile; full-surface swipe, no desktop handle.          | `Drawer.Trigger`, `Drawer.Content`, `Drawer.Header`, `Drawer.Footer`, `Drawer.Title`, `Drawer.Description`, `Drawer.Body`, `Drawer.Close`, `Drawer.Overlay`, `Drawer.SwipeHandle`, `Drawer.Portal` |
 | [**Modal**](#modal)             | Dialog modal overlay wrapping `<s-modal>` or `<ui-modal>`.                                                         | —                                                                                                     |
@@ -3747,11 +3747,17 @@ import { Table } from "@xco-agency/corex-ui";
 
 ### Tabs
 
-Segment-style pill tablist with a sliding white thumb. Compact mode renders a fully rounded dropdown trigger on a light track.
+Segment pill tabs (default), compact dropdown selector, or card/folder tabs that connect into `Tabs.Content`.
 
 ```tsx
 import { Tabs } from "@xco-agency/corex-ui";
 ```
+
+#### Subcomponents
+
+| Subcomponent   | Description                                              | Key Props                          |
+| :------------- | :------------------------------------------------------- | :--------------------------------- |
+| `Tabs.Content` | Panel shown when its `value` matches the selected tab id | `value` **(required)**, `children` |
 
 #### Modern Props
 
@@ -3762,11 +3768,12 @@ import { Tabs } from "@xco-agency/corex-ui";
 | `onSelect`            | `((selected: TId) =&gt; void) &#124; ((index: number) =&gt; void) &#124; undefined` | Callback when a tab is selected. Receives tab ID (`TId`) or index (`number`).                                                  |
 | `value`               | `TId &#124; null &#124; undefined`                                                  | ID of the currently selected tab.                                                                                              |
 | `onChange`            | `((id: TId) =&gt; void) &#124; undefined`                                           | Callback when a tab is selected, passing the tab ID.                                                                           |
+| `variant`             | `"segment" &#124; "card" &#124; undefined`                                          | `segment` (default) pill track; `card` folder tabs connected to content.                                                       |
 | `showBadge`           | `boolean &#124; undefined`                                                          | —                                                                                                                              |
 | `rightSide`           | `ReactNode`                                                                         | —                                                                                                                              |
 | `inlineSize`          | `"fill" &#124; "auto" &#124; "fit" &#124; undefined`                                | —                                                                                                                              |
 | `compact`             | `boolean &#124; undefined`                                                          | Minimalist compact dropdown mode, rendering a dropdown selector button inspired by Shopify Polaris IndexFilters view switcher. |
-| `children`            | `ReactNode`                                                                         | Content of the currently selected tab's panel.                                                                                 |
+| `children`            | `ReactNode`                                                                         | Bar extras and/or `Tabs.Content` panels.                                                                                       |
 | `className`           | `string &#124; undefined`                                                           | —                                                                                                                              |
 | `id`                  | `string &#124; undefined`                                                           | —                                                                                                                              |
 
@@ -3774,14 +3781,17 @@ import { Tabs } from "@xco-agency/corex-ui";
 
 ```tsx
 <Tabs
+  variant="card"
   tabs={[
-    { id: "all", label: "All" },
-    { id: "active", label: "Active" },
-    { id: "archived", label: "Archived" },
+    { id: "freeform", label: "Freeform", icon: "chart-vertical" },
+    { id: "cohorts", label: "Cohorts", icon: "chart-cohort" },
   ]}
-  selected={currentTab}
-  onSelect={(id) => setCurrentTab(id)}
-/>
+  value={tab}
+  onChange={setTab}
+>
+  <Tabs.Content value="freeform">Freeform panel</Tabs.Content>
+  <Tabs.Content value="cohorts">Cohorts panel</Tabs.Content>
+</Tabs>
 ```
 
 ---

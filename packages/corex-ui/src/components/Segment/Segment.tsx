@@ -15,10 +15,15 @@ import { SEGMENT_CSS, SEGMENT_STYLE_ID } from "./Segment.css";
 import type { SegmentComponentType, SegmentPropsType } from "./Segment.types";
 
 function ensureStyles(node: HTMLElement | null) {
-  const doc = node?.ownerDocument;
+  const doc = node?.ownerDocument ?? (typeof document !== "undefined" ? document : null);
   if (!doc) return;
   const existing = doc.getElementById(SEGMENT_STYLE_ID);
-  if (existing) return;
+  if (existing) {
+    if (existing.textContent !== SEGMENT_CSS) {
+      existing.textContent = SEGMENT_CSS;
+    }
+    return;
+  }
   const style = doc.createElement("style");
   style.id = SEGMENT_STYLE_ID;
   style.textContent = SEGMENT_CSS;

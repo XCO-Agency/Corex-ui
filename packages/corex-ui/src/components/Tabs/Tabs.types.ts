@@ -12,6 +12,9 @@ export type TabItemType<TId extends string | number = string> = {
   accessibilityLabel?: string;
 };
 
+/** `segment` = pill track (default). `card` = folder tabs connected to a panel. */
+export type TabsVariantType = "segment" | "card";
+
 export type TabsPropsType<TId extends string | number = string> = {
   tabs: TabItemType<TId>[];
   /**
@@ -27,6 +30,12 @@ export type TabsPropsType<TId extends string | number = string> = {
   value?: TId | null;
   /** Callback when a tab is selected, passing the tab ID. */
   onChange?: (id: TId) => void;
+  /**
+   * Visual style.
+   * - `segment`: pill track with sliding thumb (default)
+   * - `card`: folder-style tabs that connect into `Tabs.Content`
+   */
+  variant?: TabsVariantType;
   showBadge?: boolean;
   rightSide?: ReactNode;
   inlineSize?: "auto" | "fill" | "fit";
@@ -35,10 +44,25 @@ export type TabsPropsType<TId extends string | number = string> = {
    * inspired by Shopify Polaris IndexFilters view switcher.
    */
   compact?: boolean;
-  /** Content of the currently selected tab's panel. */
+  /**
+   * Bar extras (segment/compact) and/or `Tabs.Content` panels (card variant).
+   */
   children?: ReactNode;
   className?: string;
   id?: string;
+};
+
+export type TabsContentPropsType = {
+  /** Tab id this panel belongs to. */
+  value: string | number;
+  children?: ReactNode;
+  className?: string;
+  id?: string;
+};
+
+export type TabsContextType = {
+  selectedValue: string | number | null | undefined;
+  variant: TabsVariantType;
 };
 
 export type TabsComponentType = {
@@ -46,4 +70,7 @@ export type TabsComponentType = {
     props: TabsPropsType<TId> & { ref?: React.Ref<HTMLDivElement> },
   ): React.ReactElement | null;
   displayName?: string;
+  Content: React.ForwardRefExoticComponent<
+    TabsContentPropsType & React.RefAttributes<HTMLDivElement>
+  >;
 };
