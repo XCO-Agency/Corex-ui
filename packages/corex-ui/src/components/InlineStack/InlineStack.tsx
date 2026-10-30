@@ -99,7 +99,7 @@ export const InlineStack: ForwardRefExoticComponent<
     computedStyles.flexGrow = typeof grow === "boolean" ? (grow ? 1 : 0) : grow;
   }
   if (shrink !== undefined) {
-    computedStyles.flexShrink = shrink ? 0 : "unset";
+    computedStyles.flexShrink = typeof shrink === "boolean" ? (shrink ? 1 : 0) : shrink;
   }
   if (flex !== undefined) computedStyles.flex = flex;
   if (order !== undefined) computedStyles.order = order;

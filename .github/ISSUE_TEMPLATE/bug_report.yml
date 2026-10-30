@@ -1,0 +1,38 @@
+name: Bug report
+description: Report a problem with @xco-agency/corex-ui
+title: "bug: "
+labels:
+  - bug
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to write this up. Security issues belong in a private advisory, not here.
+  - type: input
+    id: version
+    attributes:
+      label: Package version
+      description: The version of @xco-agency/corex-ui you installed.
+      placeholder: 2.3.2
+    validations:
+      required: true
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened
+      description: What did you expect, and what happened instead?
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: Reproduction
+      description: A minimal snippet or repository that shows the bug.
+      render: tsx
+    validations:
+      required: true
+  - type: textarea
+    id: context
+    attributes:
+      label: Environment
+      description: React version, Shopify app surface, and browser if it matters.

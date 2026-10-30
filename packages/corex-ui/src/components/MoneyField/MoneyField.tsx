@@ -2,8 +2,8 @@ import { forwardRef } from "react";
 import { createWebComponent } from "../../core/createWebComponent";
 import type { MoneyFieldPropsType } from "./MoneyField.types";
 
-type FieldEvents = { onChange: "change"; onBlur: "blur"; onFocus: "focus" };
-const fieldEvents: FieldEvents = { onChange: "change", onBlur: "blur", onFocus: "focus" };
+type FieldEvents = { onInput: "input"; onBlur: "blur"; onFocus: "focus" };
+const fieldEvents: FieldEvents = { onInput: "input", onBlur: "blur", onFocus: "focus" };
 
 const SMoneyField = createWebComponent<HTMLElement, FieldEvents>("s-money-field", {
   events: fieldEvents,
@@ -22,7 +22,7 @@ export const MoneyField = forwardRef<HTMLElement, MoneyFieldPropsType>(
       <SMoneyField
         ref={ref}
         details={details ?? helpText}
-        onChange={handleInput}
+        onInput={handleInput}
         {...rest}
       />
     );
