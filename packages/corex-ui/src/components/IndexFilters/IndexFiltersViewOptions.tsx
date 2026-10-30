@@ -253,23 +253,24 @@ export function IndexFiltersViewOptionsColumns<C extends IndexFilterColumnItemTy
         inlineSize={isVertical ? "100%" : undefined}
       >
         <InlineStack alignItems="center" gap="small-200" wrap={false}>
-          <InlineStack
-            alignItems="center"
-            shrink={false}
-            style={{ cursor: "grab", touchAction: "none" }}
-            onPointerDown={(event) => beginDrag(index, event)}
-            onKeyDown={(event) => handleHandleKeyDown(index, event)}
-          >
-            <Clickable
-              background="transparent"
-              padding="none"
-              disabled={!canMove}
-              borderRadius="base"
-              accessibilityLabel={`Reorder ${column.label} column. Use the arrow keys to move it.`}
+          {canMove ? (
+            <InlineStack
+              alignItems="center"
+              shrink={false}
+              style={{ cursor: "grab", touchAction: "none" }}
+              onPointerDown={(event) => beginDrag(index, event)}
+              onKeyDown={(event) => handleHandleKeyDown(index, event)}
             >
-              <Icon type="drag-handle" tone="neutral" />
-            </Clickable>
-          </InlineStack>
+              <Clickable
+                background="transparent"
+                padding="none"
+                borderRadius="base"
+                accessibilityLabel={`Reorder ${column.label} column. Use the arrow keys to move it.`}
+              >
+                <Icon type="drag-handle" tone="neutral" />
+              </Clickable>
+            </InlineStack>
+          ) : null}
 
           <Text variant="small" color={isVisible ? undefined : "subdued"}>
             {column.label}
