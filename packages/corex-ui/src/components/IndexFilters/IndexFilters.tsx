@@ -57,7 +57,7 @@ function IndexFiltersActionsContainer({
   withSaveAction: boolean;
 }) {
   return (
-    <InlineStack alignItems="center" blockSize="fill" shrink gap="small-400">
+    <InlineStack alignItems="center" blockSize="fill" shrink={false} gap="small-400">
       {children}
       {withSaveAction ? <IndexFiltersSaveButton /> : null}
     </InlineStack>

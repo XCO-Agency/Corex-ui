@@ -99,7 +99,11 @@ export const InlineStack: ForwardRefExoticComponent<
     computedStyles.flexGrow = typeof grow === "boolean" ? (grow ? 1 : 0) : grow;
   }
   if (shrink !== undefined) {
-    computedStyles.flexShrink = shrink ? 0 : "unset";
+    // `shrink={false}` is the one that prevents shrinking, as both the prop's
+    // own doc comment and both components' tests say. It was inverted: `true`
+    // pinned flex-shrink to 0 and `false` left it unset, so the only way to
+    // stop an item shrinking did nothing at all.
+    computedStyles.flexShrink = shrink ? 1 : 0;
   }
   if (flex !== undefined) computedStyles.flex = flex;
   if (order !== undefined) computedStyles.order = order;

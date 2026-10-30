@@ -379,6 +379,13 @@ export const Modal = forwardRef<ModalElement, ModalPropsType>(function Modal(
             ))}
           </TitleBar>
         )}
+        {/*
+          The App Bridge branch rendered no save bar at all, while the unmount
+          and dismiss handlers above both called `shopify.saveBar.hide()` for
+          one - so `saveBar` on a `max` modal (the usual place for a contextual
+          save bar) silently did nothing.
+        */}
+        {automatedSaveBar}
         {children}
       </UiModal>
     );

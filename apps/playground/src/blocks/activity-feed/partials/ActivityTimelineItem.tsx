@@ -21,7 +21,7 @@ export function ActivityTimelineItem({
   return (
     <InlineStack gap="small" alignItems="stretch" position="relative">
       {/* Left Timeline Node & Connecting Line */}
-      <BlockStack shrink inlineSize="28px" alignItems="center">
+      <BlockStack shrink={false} inlineSize="28px" alignItems="center">
         <Box
           blockSize="28px"
           inlineSize="28px"
