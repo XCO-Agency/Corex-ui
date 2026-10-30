@@ -106,11 +106,9 @@ export const BlockStack: ForwardRefExoticComponent<
     computedStyles.flexGrow = typeof grow === "boolean" ? (grow ? 1 : 0) : grow;
   }
   if (shrink !== undefined) {
-    // `shrink={false}` is the one that prevents shrinking, as both the prop's
-    // own doc comment and both components' tests say. It was inverted: `true`
-    // pinned flex-shrink to 0 and `false` left it unset, so the only way to
-    // stop an item shrinking did nothing at all.
-    computedStyles.flexShrink = shrink ? 1 : 0;
+    // `false` prevents shrinking. The old map had this backwards (`true` → 0,
+    // `false` → unset). A number is the flex-shrink factor, same as `grow`.
+    computedStyles.flexShrink = typeof shrink === "boolean" ? (shrink ? 1 : 0) : shrink;
   }
   if (flex !== undefined) computedStyles.flex = flex;
   if (order !== undefined) computedStyles.order = order;

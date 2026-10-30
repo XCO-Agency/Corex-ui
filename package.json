@@ -1,5 +1,6 @@
 {
   "name": "corex-ui-workspace",
+  "private": true,
   "version": "2.3.3",
   "packageManager": "pnpm@10.30.3",
   "description": "Workspace root for @xco-agency/corex-ui, a Polaris-web-component-backed, legacy-Polaris-React-compatible UI library for Shopify apps.",
@@ -10,12 +11,17 @@
     "build:registry": "pnpm --filter playground run build:registry",
     "build:playground": "pnpm --filter playground run build",
     "dev": "pnpm --filter playground run dev",
-    "test": "pnpm --filter @xco-agency/corex-ui run test",
+    "test": "pnpm --filter @xco-agency/corex-ui run test && node --test scripts/release-version.test.mjs",
     "typecheck": "pnpm --filter @xco-agency/corex-ui run typecheck",
+    "changeset": "changeset",
+    "version-packages": "changeset version && node scripts/sync-root-version.mjs && pnpm --filter @xco-agency/corex-ui run sync:version",
+    "release": "node scripts/release.mjs",
     "format": "prettier --write .",
     "format:check": "prettier --check ."
   },
   "devDependencies": {
+    "@changesets/changelog-github": "^1.0.1",
+    "@changesets/cli": "^3.0.3",
     "prettier": "^3.9.6",
     "typescript": "^5.6.3"
   },

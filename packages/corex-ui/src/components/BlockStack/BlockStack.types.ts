@@ -57,9 +57,10 @@ export type BlockStackPropsType = Omit<
    */
   grow?: boolean | number | CSSProperties["flexGrow"];
   /**
-   * Flex shrink factor. When `false`, prevents shrinking (`flex-shrink: 0`).
+   * Flex shrink factor. `true` is `1`, `false` is `0` (prevents shrinking).
+   * A number is used as the `flex-shrink` value.
    */
-  shrink?: boolean;
+  shrink?: boolean | number | CSSProperties["flexShrink"];
   /** Flex shorthand property. */
   flex?: CSSProperties["flex"] | number;
   /** Flex order. */

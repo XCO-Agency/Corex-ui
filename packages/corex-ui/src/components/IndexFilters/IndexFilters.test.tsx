@@ -628,7 +628,13 @@ describe("IndexFilters", () => {
 
   describe("save action and ViewVisibleActiveFilter", () => {
     const activeFilter = [
-      { key: "vendor", field: "Vendor", operator: "is", value: "apple", onRemove: () => {} },
+      {
+        key: "vendor",
+        field: "Vendor",
+        operator: "is",
+        value: "apple",
+        onRemove: () => {},
+      },
     ];
     const getActiveOnly = () =>
       Array.from(document.querySelectorAll("[data-corex-index-filters-active-only]"));
@@ -665,7 +671,9 @@ describe("IndexFilters", () => {
 
     it("ignores filter pills without a value and counts a non-blank query", () => {
       const { rerender } = render(
-        <IndexFilters appliedFilters={[{ key: "vendor", value: [], onRemove: () => {} }]} />,
+        <IndexFilters
+          appliedFilters={[{ key: "vendor", value: [], onRemove: () => {} }]}
+        />,
       );
       expect(getActiveOnly()[0]).toHaveAttribute(
         "data-corex-index-filters-active-only",
@@ -686,7 +694,9 @@ describe("IndexFilters", () => {
       const { rerender } = render(
         <IndexFilters appliedFilters={activeFilter} saveAction={false} />,
       );
-      expect(document.querySelector('[accessibilitylabel="Clear search and filters"]')).not.toBeNull();
+      expect(
+        document.querySelector('[accessibilitylabel="Clear search and filters"]'),
+      ).not.toBeNull();
       expect(divider()).toBeNull();
 
       rerender(
@@ -802,7 +812,9 @@ describe("IndexFilters", () => {
         <IndexFilters
           appliedFilters={activeFilter}
           onSaveView={onSaveView}
-          saveAction={{ validateName: (name) => (name === "All" ? "Name taken" : undefined) }}
+          saveAction={{
+            validateName: (name) => (name === "All" ? "Name taken" : undefined),
+          }}
         />,
       );
 
@@ -814,7 +826,9 @@ describe("IndexFilters", () => {
         field.value = "All";
         field.dispatchEvent(new Event("input", { bubbles: true }));
       });
-      const modalSave = document.querySelector('s-modal s-button[slot="primary-action"]')!;
+      const modalSave = document.querySelector(
+        's-modal s-button[slot="primary-action"]',
+      )!;
       await act(async () => {
         modalSave.dispatchEvent(new MouseEvent("click", { bubbles: true }));
       });

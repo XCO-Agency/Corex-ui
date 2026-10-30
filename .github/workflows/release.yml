@@ -1,0 +1,87 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - main
+
+concurrency:
+  group: release-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  release:
+    name: Version Packages or tag
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: write
+      pull-requests: write
+    outputs:
+      tag: ${{ steps.tag.outputs.tag }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      # Version Packages pull request when changesets exist. When they do not,
+      # `pnpm release` creates an annotated vX.Y.Z tag and GitHub Release only
+      # if this commit bumped the library and npm does not already have it.
+      # Git tags and GitHub Releases are created by that script. The action's
+      # own tags would be `@xco-agency/corex-ui@x.y.z`, so they stay off.
+      # npm publish is the next job: a release created with the default
+      # GITHUB_TOKEN does not start the `release: published` workflow.
+      - name: Version Packages pull request or release check
+        uses: changesets/action@v2.1.2
+        with:
+          version-script: pnpm version-packages
+          publish-script: pnpm release
+          commit-message: Version Packages
+          pr-title: Version Packages
+          create-github-releases: false
+          push-git-tags: false
+
+      - name: Read release tag
+        id: tag
+        run: |
+          if [ ! -f release-tag.txt ]; then
+            echo "tag=" >> "$GITHUB_OUTPUT"
+            echo "No release tag to publish."
+            exit 0
+          fi
+          tag="$(tr -d '[:space:]' < release-tag.txt)"
+          if ! printf '%s\n' "$tag" | grep -Eq '^v[0-9]+\.[0-9]+\.[0-9]+([-+][0-9A-Za-z.-]+)?$'; then
+            echo "Refusing unexpected tag: $tag"
+            exit 1
+          fi
+          echo "tag=${tag}" >> "$GITHUB_OUTPUT"
+          echo "Will publish ${tag}"
+
+  publish:
+    name: Publish to npm
+    needs: release
+    if: needs.release.result == 'success' && needs.release.outputs.tag != ''
+    permissions:
+      contents: read
+      id-token: write
+    uses: ./.github/workflows/publish.yml
+    secrets: inherit
+    with:
+      tag: ${{ needs.release.outputs.tag }}
+      dry_run: false

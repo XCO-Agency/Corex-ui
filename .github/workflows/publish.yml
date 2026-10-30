@@ -1,26 +1,96 @@
 name: Publish Package
 
+# `release: created` is intentionally not a trigger. The old workflow listened
+# to both created and published, so one GitHub Release published the package twice.
 on:
   release:
-    types: [published, created]
+    types: [published]
   workflow_dispatch:
     inputs:
       dry_run:
-        description: "Dry run (do not publish)"
+        description: Dry run (pack and verify, do not publish to npm)
+        type: boolean
+        required: false
+        default: true
+  workflow_call:
+    inputs:
+      tag:
+        description: Annotated tag vX.Y.Z to publish
+        type: string
+        required: true
+      dry_run:
+        description: Pack only; do not publish to npm
         type: boolean
         required: false
         default: false
 
+permissions:
+  contents: read
+  id-token: write
+
 jobs:
   publish:
+    name: Publish @xco-agency/corex-ui
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
-
+    timeout-minutes: 30
+    concurrency:
+      group: npm-publish-corex-ui-${{ inputs.tag || github.event.release.tag_name || github.ref }}
+      cancel-in-progress: false
     steps:
+      - name: Resolve publish mode
+        id: mode
+        run: |
+          event="${{ github.event_name }}"
+          if [ "$event" = "workflow_call" ]; then
+            tag="${{ inputs.tag }}"
+            dry="${{ inputs.dry_run }}"
+          elif [ "$event" = "workflow_dispatch" ]; then
+            tag="${GITHUB_REF_NAME}"
+            dry="${{ inputs.dry_run }}"
+            if [ -z "$dry" ]; then
+              dry="true"
+            fi
+          else
+            tag="${{ github.event.release.tag_name }}"
+            dry="false"
+          fi
+          if [ "$dry" != "true" ]; then
+            dry="false"
+          fi
+          echo "tag=${tag}" >> "$GITHUB_OUTPUT"
+          echo "dry_run=${dry}" >> "$GITHUB_OUTPUT"
+          if printf '%s\n' "$tag" | grep -Eq '^v[0-9]+\.[0-9]+\.[0-9]+([-+][0-9A-Za-z.-]+)?$'; then
+            echo "fetch_tag=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "fetch_tag=false" >> "$GITHUB_OUTPUT"
+            if [ "$dry" != "true" ]; then
+              echo "Refusing to publish from ref: ${tag}"
+              exit 1
+            fi
+          fi
+          echo "tag=${tag} dry_run=${dry}"
+
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Fetch release tag
+        if: steps.mode.outputs.fetch_tag == 'true'
+        env:
+          RELEASE_TAG: ${{ steps.mode.outputs.tag }}
+        run: git fetch --force origin "refs/tags/${RELEASE_TAG}:refs/tags/${RELEASE_TAG}"
+
+      - name: Assert tag matches package.json
+        env:
+          RELEASE_TAG: ${{ steps.mode.outputs.tag }}
+          DRY_RUN: ${{ steps.mode.outputs.dry_run }}
+        run: |
+          if [ "$DRY_RUN" = "true" ]; then
+            node scripts/assert-release-version.mjs --tag "$RELEASE_TAG" --allow-non-release-ref
+          else
+            node scripts/assert-release-version.mjs --tag "$RELEASE_TAG" --require-tag
+          fi
 
       - name: Install pnpm
         uses: pnpm/action-setup@v4
@@ -29,29 +99,37 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: "pnpm"
-          registry-url: "https://registry.npmjs.org"
+          cache: pnpm
+          registry-url: https://registry.npmjs.org
+
+      - name: Skip when this version is already on npm
+        id: preflight
+        env:
+          RELEASE_TAG: ${{ steps.mode.outputs.tag }}
+          DRY_RUN: ${{ steps.mode.outputs.dry_run }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: node scripts/publish-npm.mjs --preflight
 
       - name: Install dependencies
+        if: steps.preflight.outputs.skip != 'true'
         run: pnpm install --frozen-lockfile
 
-      - name: Type check
+      - name: Typecheck
+        if: steps.preflight.outputs.skip != 'true'
         run: pnpm --filter @xco-agency/corex-ui run typecheck
 
-      - name: Run tests
+      - name: Test
+        if: steps.preflight.outputs.skip != 'true'
         run: pnpm --filter @xco-agency/corex-ui run test
 
       - name: Build package
+        if: steps.preflight.outputs.skip != 'true'
         run: pnpm --filter @xco-agency/corex-ui run build
 
       - name: Publish to npm
-        working-directory: packages/corex-ui
+        if: steps.preflight.outputs.skip != 'true'
         env:
+          RELEASE_TAG: ${{ steps.mode.outputs.tag }}
+          DRY_RUN: ${{ steps.mode.outputs.dry_run }}
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: |
-          if [ "${{ github.event.inputs.dry_run }}" = "true" ]; then
-            echo "Running publish in dry-run mode..."
-            npm publish --access public --dry-run
-          else
-            npm publish --access public
-          fi
+        run: node scripts/publish-npm.mjs
