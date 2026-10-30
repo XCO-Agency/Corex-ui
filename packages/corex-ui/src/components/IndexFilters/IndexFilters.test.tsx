@@ -448,14 +448,29 @@ describe("IndexFilters", () => {
       expect(productToggle.disabled).toBe(true);
     });
 
-    it("renders no drag handle for fixed columns", () => {
+    /*
+     * The handle used to be left out for a fixed column. The accessibility pass
+     * in 498c1f3 renders it disabled instead, the same way the row's visibility
+     * toggle is rendered disabled for a column that cannot be hidden (asserted
+     * above) - the row keeps its alignment and the control says why it cannot
+     * be used, rather than vanishing. This test still asserts a fixed column
+     * cannot be reordered; it just reads it off `disabled`.
+     */
+    it("disables the drag handle for fixed columns", () => {
       render(
         <IndexFilters.ViewOptionsColumns columns={baseColumns} onChange={() => {}} />,
       );
-      expect(
-        document.querySelector('[accessibilitylabel^="Reorder Product column"]'),
-      ).toBeNull();
-      expect(getHandle("Status")).toBeInTheDocument();
+      const productHandle = getHandle("Product") as HTMLElement & {
+        disabled?: boolean;
+      };
+      expect(productHandle).toBeInTheDocument();
+      expect(productHandle.disabled).toBe(true);
+
+      const statusHandle = getHandle("Status") as HTMLElement & {
+        disabled?: boolean;
+      };
+      expect(statusHandle).toBeInTheDocument();
+      expect(statusHandle.disabled).toBe(false);
     });
 
     it("reorders with the arrow keys and keeps fixed columns in place", () => {
@@ -545,8 +560,10 @@ describe("IndexFilters", () => {
       />,
     );
 
+    // Tag-agnostic: the control became an icon `Button` (`s-button`) in 4fec6d8,
+    // and the assertion further down this file already queries it this way.
     const clearButton = document.querySelector(
-      's-button[accessibilitylabel="Clear search and filters"]',
+      '[accessibilitylabel="Clear search and filters"]',
     );
     expect(clearButton).toBeInTheDocument();
 

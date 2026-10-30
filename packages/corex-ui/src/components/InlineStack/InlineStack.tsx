@@ -99,6 +99,8 @@ export const InlineStack: ForwardRefExoticComponent<
     computedStyles.flexGrow = typeof grow === "boolean" ? (grow ? 1 : 0) : grow;
   }
   if (shrink !== undefined) {
+    // `false` prevents shrinking. The old map had this backwards (`true` → 0,
+    // `false` → unset). A number is the flex-shrink factor, same as `grow`.
     computedStyles.flexShrink = typeof shrink === "boolean" ? (shrink ? 1 : 0) : shrink;
   }
   if (flex !== undefined) computedStyles.flex = flex;

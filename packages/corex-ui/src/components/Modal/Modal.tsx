@@ -354,36 +354,41 @@ export const Modal = forwardRef<ModalElement, ModalPropsType>(function Modal(
 
   if (isAppBridgeModal) {
     return (
-      <>
-        <UiModal ref={mergedRef} variant={variant} id={modalId} src={src}>
-          {typeof title === "string" && (
-            <TitleBar title={title}>
-              {primaryAction && (
-                <button
-                  variant="primary"
-                  disabled={primaryAction.disabled}
-                  loading={primaryAction.loading}
-                  onClick={primaryAction.onAction}
-                >
-                  {primaryAction.content}
-                </button>
-              )}
-              {secondaryActions?.map((action, i) => (
-                <button
-                  key={i}
-                  disabled={action.disabled}
-                  loading={action.loading}
-                  onClick={action.onAction}
-                >
-                  {action.content}
-                </button>
-              ))}
-            </TitleBar>
-          )}
-          {children}
-        </UiModal>
+      <UiModal ref={mergedRef} variant={variant} id={modalId} src={src}>
+        {typeof title === "string" && (
+          <TitleBar title={title}>
+            {primaryAction && (
+              <button
+                variant="primary"
+                disabled={primaryAction.disabled}
+                loading={primaryAction.loading}
+                onClick={primaryAction.onAction}
+              >
+                {primaryAction.content}
+              </button>
+            )}
+            {secondaryActions?.map((action, i) => (
+              <button
+                key={i}
+                disabled={action.disabled}
+                loading={action.loading}
+                onClick={action.onAction}
+              >
+                {action.content}
+              </button>
+            ))}
+          </TitleBar>
+        )}
+        {/*
+          The App Bridge branch rendered no save bar at all, while the unmount
+          and dismiss handlers above both called `shopify.saveBar.hide()` for
+          one - so `saveBar` on a `max` modal (the usual place for a contextual
+          save bar) silently did nothing. `ui-save-bar` has to be a direct
+          child of the host modal, not a sibling beside it.
+        */}
         {automatedSaveBar}
-      </>
+        {children}
+      </UiModal>
     );
   }
 
