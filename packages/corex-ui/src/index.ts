@@ -26,6 +26,7 @@ export * from "./components/MetricCard";
 export * from "./components/Skeleton";
 export * from "./components/ProgressBar";
 export * from "./components/RangeSlider";
+export * from "./components/RichTextEditor";
 export * from "./components/IconTile";
 
 export * from "./components/Card";
@@ -43,6 +44,7 @@ export * from "./components/IndexFilters";
 export * from "./components/Select";
 export * from "./components/Checkbox";
 export * from "./components/Switch";
+export * from "./components/Segment";
 export * from "./components/Spinner";
 
 export * from "./components/Page";

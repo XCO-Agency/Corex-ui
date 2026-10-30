@@ -7,6 +7,10 @@ const tabs = [
   { id: "drafts", label: "Drafts" },
 ];
 
+function getTab(label: string) {
+  return screen.getByRole("tab", { name: label });
+}
+
 describe("Tabs", () => {
   it("renders tabs and panel content", () => {
     render(
@@ -19,20 +23,18 @@ describe("Tabs", () => {
     expect(screen.getByText("Panel content")).toBeInTheDocument();
   });
 
-  it("applies strong background to the selected tab", () => {
+  it("marks the selected tab with aria-selected", () => {
     render(<Tabs tabs={tabs} selected={0} />);
-    const allTab = screen.getByText("All").closest("s-clickable");
-    const draftsTab = screen.getByText("Drafts").closest("s-clickable");
 
-    expect(allTab).toHaveAttribute("background", "strong");
-    expect(draftsTab).toHaveAttribute("background", "transparent");
+    expect(getTab("All")).toHaveAttribute("aria-selected", "true");
+    expect(getTab("Drafts")).toHaveAttribute("aria-selected", "false");
   });
 
   it("calls onSelect with the clicked tab's index", () => {
     const onSelect = vi.fn();
     render(<Tabs tabs={tabs} selected={0} onSelect={onSelect} />);
 
-    screen.getByText("Drafts").dispatchEvent(new MouseEvent("click", { bubbles: true }));
+    getTab("Drafts").dispatchEvent(new MouseEvent("click", { bubbles: true }));
 
     expect(onSelect).toHaveBeenCalledWith(1);
   });
@@ -45,9 +47,7 @@ describe("Tabs", () => {
     ];
     render(<Tabs tabs={disabledTabs} selected={0} onSelect={onSelect} />);
 
-    screen
-      .getByText("Archived")
-      .dispatchEvent(new MouseEvent("click", { bubbles: true }));
+    getTab("Archived").dispatchEvent(new MouseEvent("click", { bubbles: true }));
 
     expect(onSelect).not.toHaveBeenCalled();
   });
@@ -71,20 +71,18 @@ describe("Tabs", () => {
     expect(screen.getByText("Action")).toBeInTheDocument();
   });
 
-  it("applies strong background to the selected tab when using value prop by id", () => {
+  it("marks the selected tab when using value prop by id", () => {
     render(<Tabs tabs={tabs} value="drafts" />);
-    const allTab = screen.getByText("All").closest("s-clickable");
-    const draftsTab = screen.getByText("Drafts").closest("s-clickable");
 
-    expect(allTab).toHaveAttribute("background", "transparent");
-    expect(draftsTab).toHaveAttribute("background", "strong");
+    expect(getTab("All")).toHaveAttribute("aria-selected", "false");
+    expect(getTab("Drafts")).toHaveAttribute("aria-selected", "true");
   });
 
   it("calls onChange with the clicked tab id", () => {
     const onChange = vi.fn();
     render(<Tabs tabs={tabs} value="all" onChange={onChange} />);
 
-    screen.getByText("Drafts").dispatchEvent(new MouseEvent("click", { bubbles: true }));
+    getTab("Drafts").dispatchEvent(new MouseEvent("click", { bubbles: true }));
 
     expect(onChange).toHaveBeenCalledWith("drafts");
   });
@@ -97,12 +95,10 @@ describe("Tabs", () => {
     const onChange = vi.fn();
     render(<Tabs tabs={numericTabs} value={10} onChange={onChange} />);
 
-    const tab10 = screen.getByText("Tab 10").closest("s-clickable");
-    const tab20 = screen.getByText("Tab 20").closest("s-clickable");
-    expect(tab10).toHaveAttribute("background", "strong");
-    expect(tab20).toHaveAttribute("background", "transparent");
+    expect(getTab("Tab 10")).toHaveAttribute("aria-selected", "true");
+    expect(getTab("Tab 20")).toHaveAttribute("aria-selected", "false");
 
-    screen.getByText("Tab 20").dispatchEvent(new MouseEvent("click", { bubbles: true }));
+    getTab("Tab 20").dispatchEvent(new MouseEvent("click", { bubbles: true }));
     expect(onChange).toHaveBeenCalledWith(20);
   });
 
@@ -119,7 +115,7 @@ describe("Tabs", () => {
       />,
     );
 
-    screen.getByText("Drafts").dispatchEvent(new MouseEvent("click", { bubbles: true }));
+    getTab("Drafts").dispatchEvent(new MouseEvent("click", { bubbles: true }));
 
     expect(onSelect).toHaveBeenCalledWith(1);
     expect(onChange).toHaveBeenCalledWith("drafts");
@@ -133,20 +129,16 @@ describe("Tabs", () => {
     ];
     render(<Tabs tabs={disabledTabs} value="all" onChange={onChange} />);
 
-    screen
-      .getByText("Archived")
-      .dispatchEvent(new MouseEvent("click", { bubbles: true }));
+    getTab("Archived").dispatchEvent(new MouseEvent("click", { bubbles: true }));
 
     expect(onChange).not.toHaveBeenCalled();
   });
 
   it("renders no selected tab when value is null", () => {
     render(<Tabs tabs={tabs} value={null} />);
-    const allTab = screen.getByText("All").closest("s-clickable");
-    const draftsTab = screen.getByText("Drafts").closest("s-clickable");
 
-    expect(allTab).toHaveAttribute("background", "transparent");
-    expect(draftsTab).toHaveAttribute("background", "transparent");
+    expect(getTab("All")).toHaveAttribute("aria-selected", "false");
+    expect(getTab("Drafts")).toHaveAttribute("aria-selected", "false");
   });
 
   it("supports union literal id types with selected and onSelect passing tab ID", () => {
@@ -163,23 +155,32 @@ describe("Tabs", () => {
       <Tabs tabs={drawerTabs} selected="cart" onSelect={onSelect} onChange={onChange} />,
     );
 
-    screen.getByText("Saved").dispatchEvent(new MouseEvent("click", { bubbles: true }));
+    getTab("Saved").dispatchEvent(new MouseEvent("click", { bubbles: true }));
     expect(onSelect).toHaveBeenCalledWith("saved", 1);
     expect(onChange).toHaveBeenCalledWith("saved");
   });
 
+  it("renders a segment-style track", () => {
+    const { container } = render(<Tabs tabs={tabs} value="all" />);
+    expect(container.querySelector('[data-slot="tabs-track"]')).toBeInTheDocument();
+    expect(container.querySelector('[data-slot="tabs-thumb"]')).toBeInTheDocument();
+  });
+
   describe("compact mode", () => {
-    it("renders compact trigger with selected tab label and select icon", () => {
-      render(<Tabs tabs={tabs} value="all" compact />);
+    it("renders a fully rounded compact trigger with selected tab label", () => {
+      const { container } = render(<Tabs tabs={tabs} value="all" compact />);
 
       const popoverEl = document.querySelector("s-popover");
       expect(popoverEl).toBeInTheDocument();
+
+      expect(container.querySelector('[data-slot="tabs-compact"]')).toBeInTheDocument();
 
       const trigger = document.querySelector(
         's-clickable[commandfor^="corex-tabs-popover"]',
       );
       expect(trigger).toBeInTheDocument();
       expect(trigger).toHaveAttribute("accessibilitylabel", "All");
+      expect(trigger).toHaveAttribute("borderradius", "max");
 
       const selectIcon = document.querySelector('s-icon[type="select"]');
       expect(selectIcon).toBeInTheDocument();
@@ -191,11 +192,9 @@ describe("Tabs", () => {
       const popoverEl = document.querySelector("s-popover");
       expect(popoverEl).toBeInTheDocument();
 
-      // Checkmark is rendered for selected tab
       const checkIcon = popoverEl?.querySelector('s-icon[type="check"]');
       expect(checkIcon).toBeInTheDocument();
 
-      // Both tabs are rendered in dropdown
       expect(screen.getAllByText("All").length).toBeGreaterThanOrEqual(1);
       expect(screen.getAllByText("Drafts").length).toBeGreaterThanOrEqual(1);
     });

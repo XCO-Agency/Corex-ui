@@ -8,7 +8,7 @@ description: >-
 
 # Corex UI Components Reference
 
-Complete reference of all **81 UI components** in `@xco-agency/corex-ui` and their **modern props**.
+Complete reference of all **82 UI components** in `@xco-agency/corex-ui` and their **modern props**.
 
 > [!IMPORTANT]
 > **Strict Corex UI Guidelines**:
@@ -157,6 +157,7 @@ When specifying `gap`, `padding`, `rowGap`, or `columnGap`, use **exclusively** 
 | [**Switch**](#switch)               | Toggle switch control wrapping `<s-switch>`.                                              | —                                                                                        |
 | [**ChoiceList**](#choicelist)       | Radio button or checkbox list group allowing single or multiple selections.               | —                                                                                        |
 | [**RangeSlider**](#rangeslider)     | Slider input for selecting values within a range.                                         | —                                                                                        |
+| [**RichTextEditor**](#richtexteditor) | Shopify-admin-style rich text editor with toolbar, media inserts, and HTML source view. | —                                                                                        |
 | [**DropZone**](#dropzone)           | File drag-and-drop zone wrapping `<s-drop-zone>`.                                         | —                                                                                        |
 | [**Combobox**](#combobox)           | Accessible autocomplete and combobox popover control.                                     | `Combobox.Input`, `Combobox.Content`, `Combobox.List`, `Combobox.Item`, `Combobox.Empty` |
 | [**Autocomplete**](#autocomplete)   | High-level single-selection autocomplete input with debounced querying.                   | —                                                                                        |
@@ -3290,6 +3291,45 @@ import { RangeSlider } from "@xco-agency/corex-ui";
   max={100}
   output
   onChange={(val) => setDiscount(val)}
+/>
+```
+
+---
+
+### RichTextEditor
+
+Shopify-admin-style rich text editor with a subdued toolbar, bordered shell, media insert modals, and HTML source view. Self-contained `contentEditable` control — no TipTap/Quill dependency.
+
+```tsx
+import { RichTextEditor } from "@xco-agency/corex-ui";
+```
+
+#### Modern Props
+
+| Prop          | Type                                 | Description                                                      |
+| :------------ | :----------------------------------- | :--------------------------------------------------------------- |
+| `label`       | `ReactNode`                          | Visible label above the editor.                                  |
+| `labelHidden` | `boolean &#124; undefined`           | Visually hide the label.                                         |
+| `value`       | `string &#124; undefined`            | Controlled HTML value.                                           |
+| `defaultValue`| `string &#124; undefined`            | Uncontrolled initial HTML.                                       |
+| `onChange`    | `((value: string) =&gt; void) &#124; undefined` | Called with current HTML on content change.             |
+| `placeholder` | `string &#124; undefined`            | Shown when the surface is empty.                                 |
+| `disabled`    | `boolean &#124; undefined`           | Disables editing and toolbar actions.                            |
+| `minHeight`   | `string &#124; undefined`            | Minimum height of the editing surface. Default `"160px"`.        |
+| `id`          | `string &#124; undefined`            | Element id for the editable surface.                             |
+| `name`        | `string &#124; undefined`            | Optional form field name.                                        |
+| `className`   | `string &#124; undefined`            | —                                                                |
+| `style`       | `CSSProperties &#124; undefined`     | —                                                                |
+
+#### Example
+
+```tsx
+<RichTextEditor
+  label="Description"
+  value={html}
+  onChange={setHtml}
+  placeholder="Start typing…"
+  minHeight="220px"
 />
 ```
 

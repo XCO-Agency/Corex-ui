@@ -947,6 +947,33 @@ export function TextFieldThumbnail() {
   );
 }
 
+export function RichTextEditorThumbnail() {
+  return (
+    <Frame>
+      <rect
+        x="22"
+        y="18"
+        width="116"
+        height="64"
+        rx="8"
+        fill={cardBg}
+        stroke={cardBorder}
+        strokeWidth="1.2"
+      />
+      <rect x="22" y="18" width="116" height="18" rx="8" fill={mutedBg} />
+      <rect x="22" y="28" width="116" height="8" fill={mutedBg} />
+      <rect x="30" y="24" width="28" height="6" rx="2" fill={textMuted} fillOpacity="0.55" />
+      <rect x="64" y="24" width="8" height="6" rx="1.5" fill={textPrimary} fillOpacity="0.7" />
+      <rect x="74" y="24" width="8" height="6" rx="1.5" fill={textPrimary} fillOpacity="0.55" />
+      <rect x="84" y="24" width="8" height="6" rx="1.5" fill={textPrimary} fillOpacity="0.45" />
+      <line x1="22" y1="36" x2="138" y2="36" stroke={cardBorder} strokeWidth="1" />
+      <rect x="30" y="46" width="72" height="5" rx="2.5" fill={textMuted} fillOpacity="0.35" />
+      <rect x="30" y="56" width="54" height="5" rx="2.5" fill={textMuted} fillOpacity="0.25" />
+      <rect x="30" y="66" width="40" height="5" rx="2.5" fill={accentTint} stroke={accentBorder} />
+    </Frame>
+  );
+}
+
 export function SearchFieldThumbnail() {
   return (
     <Frame>
@@ -3464,6 +3491,7 @@ export const thumbnails: Record<string, React.ComponentType> = {
 
   // Forms
   "text-field": TextFieldThumbnail,
+  "rich-text-editor": RichTextEditorThumbnail,
   "search-field": SearchFieldThumbnail,
   "money-field": MoneyFieldThumbnail,
   "color-field": ColorFieldThumbnail,

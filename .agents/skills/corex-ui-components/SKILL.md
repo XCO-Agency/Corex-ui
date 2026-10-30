@@ -8,7 +8,7 @@ description: >-
 
 # Corex UI Components Reference
 
-Complete reference of all **81 UI components** in `@xco-agency/corex-ui` and their **modern props**.
+Complete reference of all **83 UI components** in `@xco-agency/corex-ui` and their **modern props**.
 
 > [!IMPORTANT]
 > **Strict Corex UI Guidelines**:
@@ -155,8 +155,10 @@ When specifying `gap`, `padding`, `rowGap`, or `columnGap`, use **exclusively** 
 | [**Select**](#select)               | Dropdown select control wrapping `<s-select>`.                                            | —                                                                                        |
 | [**Checkbox**](#checkbox)           | Binary or indeterminate checkbox wrapping `<s-checkbox>`.                                 | —                                                                                        |
 | [**Switch**](#switch)               | Toggle switch control wrapping `<s-switch>`.                                              | —                                                                                        |
+| [**Segment**](#segment)             | Pill segmented control for mutually exclusive options with optional label and variants.   | —                                                                                        |
 | [**ChoiceList**](#choicelist)       | Radio button or checkbox list group allowing single or multiple selections.               | —                                                                                        |
 | [**RangeSlider**](#rangeslider)     | Slider input for selecting values within a range.                                         | —                                                                                        |
+| [**RichTextEditor**](#richtexteditor) | Shopify-admin-style rich text editor with toolbar, media inserts, and HTML source view. | —                                                                                        |
 | [**DropZone**](#dropzone)           | File drag-and-drop zone wrapping `<s-drop-zone>`.                                         | —                                                                                        |
 | [**Combobox**](#combobox)           | Accessible autocomplete and combobox popover control.                                     | `Combobox.Input`, `Combobox.Content`, `Combobox.List`, `Combobox.Item`, `Combobox.Empty` |
 | [**Autocomplete**](#autocomplete)   | High-level single-selection autocomplete input with debounced querying.                   | —                                                                                        |
@@ -196,7 +198,7 @@ When specifying `gap`, `padding`, `rowGap`, or `columnGap`, use **exclusively** 
 | Component                       | Description                                                                                                        | Subcomponents                                                                                         |
 | :------------------------------ | :----------------------------------------------------------------------------------------------------------------- | :---------------------------------------------------------------------------------------------------- |
 | [**Page**](#page)               | Top-level page layout container wrapping `<s-page>`. Houses header, breadcrumbs, actions, aside, and page content. | —                                                                                                     |
-| [**Tabs**](#tabs)               | Tabbed navigation bar supporting both standard tabs and compact index-filter view selectors.                       | —                                                                                                     |
+| [**Tabs**](#tabs)               | Segment-style pill tablist with sliding thumb, plus a fully rounded compact dropdown mode.                         | —                                                                                                     |
 | [**Pagination**](#pagination)   | Pagination navigation buttons for traversing records.                                                              | —                                                                                                     |
 | [**Drawer**](#drawer)           | Responsive panel: right drawer on desktop, bottom sheet on mobile; full-surface swipe, no desktop handle.          | `Drawer.Trigger`, `Drawer.Content`, `Drawer.Header`, `Drawer.Footer`, `Drawer.Title`, `Drawer.Description`, `Drawer.Body`, `Drawer.Close`, `Drawer.Overlay`, `Drawer.SwipeHandle`, `Drawer.Portal` |
 | [**Modal**](#modal)             | Dialog modal overlay wrapping `<s-modal>` or `<ui-modal>`.                                                         | —                                                                                                     |
@@ -3295,6 +3297,45 @@ import { RangeSlider } from "@xco-agency/corex-ui";
 
 ---
 
+### RichTextEditor
+
+Shopify-admin-style rich text editor with a subdued toolbar, bordered shell, media insert modals, and HTML source view. Self-contained `contentEditable` control — no TipTap/Quill dependency.
+
+```tsx
+import { RichTextEditor } from "@xco-agency/corex-ui";
+```
+
+#### Modern Props
+
+| Prop          | Type                                 | Description                                                      |
+| :------------ | :----------------------------------- | :--------------------------------------------------------------- |
+| `label`       | `ReactNode`                          | Visible label above the editor.                                  |
+| `labelHidden` | `boolean &#124; undefined`           | Visually hide the label.                                         |
+| `value`       | `string &#124; undefined`            | Controlled HTML value.                                           |
+| `defaultValue`| `string &#124; undefined`            | Uncontrolled initial HTML.                                       |
+| `onChange`    | `((value: string) =&gt; void) &#124; undefined` | Called with current HTML on content change.             |
+| `placeholder` | `string &#124; undefined`            | Shown when the surface is empty.                                 |
+| `disabled`    | `boolean &#124; undefined`           | Disables editing and toolbar actions.                            |
+| `minHeight`   | `string &#124; undefined`            | Minimum height of the editing surface. Default `"160px"`.        |
+| `id`          | `string &#124; undefined`            | Element id for the editable surface.                             |
+| `name`        | `string &#124; undefined`            | Optional form field name.                                        |
+| `className`   | `string &#124; undefined`            | —                                                                |
+| `style`       | `CSSProperties &#124; undefined`     | —                                                                |
+
+#### Example
+
+```tsx
+<RichTextEditor
+  label="Description"
+  value={html}
+  onChange={setHtml}
+  placeholder="Start typing…"
+  minHeight="220px"
+/>
+```
+
+---
+
 ### ResourceList
 
 Vertical list of merchant domain objects/resources with consistent layout and empty states.
@@ -3588,6 +3629,63 @@ import { Switch } from "@xco-agency/corex-ui";
 
 ---
 
+### Segment
+
+Pill segmented control for mutually exclusive options. Matches a light track with either a white elevated thumb (`default`) or a dark filled thumb (`primary`). Label is optional and hidden unless provided.
+
+```tsx
+import { Segment } from "@xco-agency/corex-ui";
+```
+
+#### Modern Props
+
+| Prop                 | Type                                                               | Description                                                                                          |
+| :------------------- | :----------------------------------------------------------------- | :--------------------------------------------------------------------------------------------------- |
+| `options` **(required)** | `SegmentOptionType&lt;TValue&gt;[]`                            | Options rendered as mutually exclusive segments (`{ label, value, disabled?, accessibilityLabel? }`). |
+| `value`              | `TValue &#124; undefined`                                          | Controlled selected value.                                                                           |
+| `defaultValue`       | `TValue &#124; undefined`                                          | Uncontrolled initial selected value.                                                                 |
+| `onChange`           | `((value: TValue) =&gt; void) &#124; undefined`                    | Fires when the selected value changes.                                                               |
+| `label`              | `ReactNode &#124; undefined`                                       | Optional visible label above the control. Hidden by default.                                         |
+| `variant`            | `"default" &#124; "primary" &#124; undefined`                      | Active pill style. Default: white elevated. Primary: dark filled with light text.                    |
+| `size`               | `"small" &#124; "base" &#124; "large" &#124; undefined`            | Control height and type scale.                                                                       |
+| `inlineSize`         | `"auto" &#124; "fill" &#124; undefined`                            | Stretch the track to fill available width.                                                           |
+| `disabled`           | `boolean &#124; undefined`                                         | Disables the entire control.                                                                         |
+| `name`               | `string &#124; undefined`                                          | Native form field name.                                                                              |
+| `id`                 | `string &#124; undefined`                                          | Element id for the root.                                                                             |
+| `accessibilityLabel` | `string &#124; undefined`                                          | Accessible name for the radiogroup when no visible label is set.                                     |
+| `className`          | `string &#124; undefined`                                          | —                                                                                                    |
+| `style`              | `CSSProperties &#124; undefined`                                   | —                                                                                                    |
+
+#### Example
+
+```tsx
+<Segment
+  label="Qty style"
+  options={[
+    { label: "Stepper", value: "stepper" },
+    { label: "Dropdown", value: "dropdown" },
+    { label: "Input", value: "input" },
+  ]}
+  value={qtyStyle}
+  onChange={setQtyStyle}
+  inlineSize="fill"
+/>
+
+<Segment
+  label="Variant"
+  variant="primary"
+  options={[
+    { label: "Primary", value: "primary" },
+    { label: "Secondary", value: "secondary" },
+    { label: "Plain", value: "plain" },
+  ]}
+  value={variant}
+  onChange={setVariant}
+/>
+```
+
+---
+
 ### Table
 
 Native data table wrapping `<s-table>`. Composed using subcomponents `Table.HeaderRow`, `Table.HeaderCell`, `Table.Body`, `Table.Row`, and `Table.Cell`.
@@ -3649,7 +3747,7 @@ import { Table } from "@xco-agency/corex-ui";
 
 ### Tabs
 
-Tabbed navigation bar supporting both standard tabs and compact index-filter view selectors.
+Segment-style pill tablist with a sliding white thumb. Compact mode renders a fully rounded dropdown trigger on a light track.
 
 ```tsx
 import { Tabs } from "@xco-agency/corex-ui";

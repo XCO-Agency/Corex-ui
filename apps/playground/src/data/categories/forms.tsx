@@ -25,6 +25,8 @@ import { CheckboxExample } from "@/examples/forms/CheckboxExample";
 import CheckboxExampleRaw from "@/examples/forms/CheckboxExample.tsx?raw";
 import { SwitchExample } from "@/examples/forms/SwitchExample";
 import SwitchExampleRaw from "@/examples/forms/SwitchExample.tsx?raw";
+import { SegmentExample } from "@/examples/forms/SegmentExample";
+import SegmentExampleRaw from "@/examples/forms/SegmentExample.tsx?raw";
 import { ChoiceListExample } from "@/examples/forms/ChoiceListExample";
 import ChoiceListExampleRaw from "@/examples/forms/ChoiceListExample.tsx?raw";
 import { DateFieldExample } from "@/examples/forms/DateFieldExample";
@@ -37,6 +39,8 @@ import { ComboboxExample } from "@/examples/forms/ComboboxExample";
 import ComboboxExampleRaw from "@/examples/forms/ComboboxExample.tsx?raw";
 import { AutocompleteExample } from "@/examples/forms/AutocompleteExample";
 import AutocompleteExampleRaw from "@/examples/forms/AutocompleteExample.tsx?raw";
+import { RichTextEditorExample } from "@/examples/forms/RichTextEditorExample";
+import RichTextEditorExampleRaw from "@/examples/forms/RichTextEditorExample.tsx?raw";
 
 export const formsComponents: ComponentEntry[] = [
   {
@@ -49,6 +53,20 @@ export const formsComponents: ComponentEntry[] = [
         title: "Controlled input",
         Example: TextFieldExample,
         code: TextFieldExampleRaw,
+      },
+    ],
+  },
+  {
+    name: "RichTextEditor",
+    slug: "rich-text-editor",
+    category: "Forms",
+    description:
+      "Shopify-admin-style rich text editor with formatting toolbar, media inserts, and HTML source view.",
+    examples: [
+      {
+        title: "Controlled rich text",
+        Example: RichTextEditorExample,
+        code: RichTextEditorExampleRaw,
       },
     ],
   },
@@ -215,6 +233,20 @@ export const formsComponents: ComponentEntry[] = [
         title: "Controlled toggle switch",
         Example: SwitchExample,
         code: SwitchExampleRaw,
+      },
+    ],
+  },
+  {
+    name: "Segment",
+    slug: "segment",
+    category: "Forms",
+    description:
+      "Pill segmented control for mutually exclusive options, with optional label and default/primary variants.",
+    examples: [
+      {
+        title: "Variants, labels, and sizes",
+        Example: SegmentExample,
+        code: SegmentExampleRaw,
       },
     ],
   },
