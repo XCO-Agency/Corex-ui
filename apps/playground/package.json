@@ -10,7 +10,8 @@
     "build": "node scripts/build-registry.mjs && node scripts/build-editor-props.mjs && vite build",
     "typecheck": "tsc --noEmit",
     "sync:apps-icons": "node scripts/sync-apps-icons.mjs",
-    "build:editor-props": "node scripts/build-editor-props.mjs"
+    "build:editor-props": "node scripts/build-editor-props.mjs",
+    "capture:thumbnails": "node scripts/capture-thumbnails.mjs"
   },
   "dependencies": {
     "@base-ui/react": "^1.7.0",
@@ -35,6 +36,7 @@
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
     "@vitejs/plugin-react": "^4.3.4",
+    "playwright": "^1.64.1",
     "typescript": "^5.6.3",
     "vite": "^6.4.3",
     "wrangler": "^4.128.0"

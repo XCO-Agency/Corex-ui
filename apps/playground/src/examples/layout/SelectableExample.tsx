@@ -2,6 +2,7 @@ import { useState } from "react";
 import {
   Badge,
   BlockStack,
+  Box,
   Card,
   Grid,
   InlineStack,
@@ -21,12 +22,14 @@ const tones: SelectableToneType[] = ["info", "success", "warning", "critical", "
 export function SelectableExample() {
   const [plan, setPlan] = useState<string[]>(["growth"]);
   const [channels, setChannels] = useState<string[]>(["online-store"]);
+  const [media, setMedia] = useState<string[]>(["daily_olive"]);
+  const [singleMedia, setSingleMedia] = useState<string[]>(["studio_shot"]);
 
   return (
     <BlockStack gap="large-100">
-      {/* Radio-like group of cards, with a check badge */}
+      {/* Default corner badge */}
       <BlockStack gap="small-200">
-        <Text heading>Choose a plan</Text>
+        <Text heading>Choose a plan (default indicator)</Text>
         <Selectable.Group value={plan} onChange={setPlan} accessibilityLabel="Plan">
           <Grid columns={{ xs: 1, md: 3 }} gap="base">
             {plans.map((item) => (
@@ -52,9 +55,9 @@ export function SelectableExample() {
         </Selectable.Group>
       </BlockStack>
 
-      {/* Multiple selection with a success tone */}
+      {/* Multiple selection with default badge */}
       <BlockStack gap="small-200">
-        <Text heading>Multiple select (width offset)</Text>
+        <Text heading>Multiple select (default indicator)</Text>
         <Selectable.Group
           multiple
           tone="neutral"
@@ -76,12 +79,85 @@ export function SelectableExample() {
                 indicator
                 interactive
                 shadow
-
                 borderRadius="large"
                 accessibilityLabel={item.label}
               >
                 <Card>
                   <Text>{item.label}</Text>
+                </Card>
+              </Selectable>
+            ))}
+          </InlineStack>
+        </Selectable.Group>
+      </BlockStack>
+
+      {/* Media-style cards with checkbox indicator */}
+      <BlockStack gap="small-200">
+        <Text heading>Media multi-select (checkbox)</Text>
+        <Selectable.Group
+          multiple
+          tone="neutral"
+          value={media}
+          onChange={setMedia}
+          accessibilityLabel="Media files"
+        >
+          <InlineStack gap="base" wrap>
+            {[
+              { value: "daily_olive", label: "daily_olive", meta: "JPG" },
+              { value: "studio_shot", label: "studio_shot", meta: "PNG" },
+              { value: "packaging", label: "packaging", meta: "JPG" },
+            ].map((item) => (
+              <Selectable
+                key={item.value}
+                value={item.value}
+                indicator="checkbox"
+                tone="neutral"
+                borderRadius="large"
+                inlineSize="auto"
+                accessibilityLabel={item.label}
+              >
+                <Card>
+                  <BlockStack gap="small-100">
+                    <BoxPreview />
+                    <Text>{item.label}</Text>
+                    <Text color="subdued">{item.meta}</Text>
+                  </BlockStack>
+                </Card>
+              </Selectable>
+            ))}
+          </InlineStack>
+        </Selectable.Group>
+      </BlockStack>
+
+      {/* Single-select media with radio indicator */}
+      <BlockStack gap="small-200">
+        <Text heading>Media single-select (radio)</Text>
+        <Selectable.Group
+          tone="neutral"
+          value={singleMedia}
+          onChange={setSingleMedia}
+          accessibilityLabel="Featured media"
+        >
+          <InlineStack gap="base" wrap>
+            {[
+              { value: "daily_olive", label: "daily_olive", meta: "JPG" },
+              { value: "studio_shot", label: "studio_shot", meta: "PNG" },
+            ].map((item) => (
+              <Selectable
+                key={item.value}
+                value={item.value}
+                indicator="radio"
+                tone="neutral"
+                borderRadius="large"
+                inlineSize="auto"
+                accessibilityLabel={item.label}
+              >
+                <Card>
+                  <BlockStack gap="small-100">
+                    <BoxPreview />
+                    <Text>{item.label}</Text>
+                    <Text color="subdued">{item.meta}</Text>
+                  </BlockStack>
                 </Card>
               </Selectable>
             ))}
@@ -124,5 +200,21 @@ export function SelectableExample() {
         </Selectable>
       </InlineStack>
     </BlockStack>
+  );
+}
+
+/** Compact preview tile so inset indicators read like a media card. */
+function BoxPreview() {
+  return (
+    <Box
+      background="subdued"
+      borderRadius="base"
+      padding="large-200"
+      minBlockSize="80px"
+    >
+      <BlockStack alignItems="center" justifyContent="center">
+        <Text color="subdued">Preview</Text>
+      </BlockStack>
+    </Box>
   );
 }

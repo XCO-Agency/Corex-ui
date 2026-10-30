@@ -212,7 +212,7 @@ const ComboboxInput = forwardRef<HTMLElement, ComboboxInputPropsType>(
     const shouldShowClear = Boolean(showClear && (displayValue || tags.length > 0));
 
     return (
-      <BlockStack gap="small-100" inlineSize="100%">
+      <BlockStack gap="small-300" inlineSize="100%">
         {label ? (
           <Text variant="small" fontWeight="medium">
             {label}

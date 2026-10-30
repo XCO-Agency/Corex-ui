@@ -14,9 +14,9 @@ import {
 } from "react";
 import { useIsomorphicLayoutEffect } from "../../core/useIsomorphicLayoutEffect";
 import { mergeRefs } from "../../core/mergeRefs";
-import { Icon } from "../Icon";
 import type {
   SelectableGroupPropsType,
+  SelectableIndicatorType,
   SelectablePropsType,
   SelectableRadiusType,
   SelectableToneType,
@@ -89,16 +89,65 @@ const SELECTABLE_CSS = `
   align-items: center;
   justify-content: center;
   background: var(--cx-sel-color);
+  color: #fff;
   transform: scale(0.4);
   opacity: 0;
   pointer-events: none;
   transition: opacity 150ms ease, transform 150ms ease;
 }
+.cx-selectable__badge--checkbox,
+.cx-selectable__badge--radio {
+  inset-block-start: 8px;
+  inset-inline-start: 8px;
+  inset-inline-end: auto;
+  box-shadow: 0 0 0 1.5px color-mix(in srgb, #fff 85%, transparent);
+}
+.cx-selectable__badge--checkbox { border-radius: 5px; }
+.cx-selectable__badge--radio { border-radius: 9999px; }
 .cx-selectable--selected > .cx-selectable__badge { transform: scale(1); opacity: 1; }
 @media (prefers-reduced-motion: reduce) {
   .cx-selectable__ring, .cx-selectable__badge { transition: none; }
 }
 `;
+
+type GroupContextType = {
+  selectedValues: string[];
+  multiple: boolean;
+  disabled: boolean;
+  tone?: SelectableToneType;
+  toggle: (value: string) => void;
+};
+
+type ResolvedIndicatorType = "default" | "checkbox" | "radio";
+
+function resolveIndicator(
+  indicator: SelectableIndicatorType,
+): ResolvedIndicatorType | false {
+  if (!indicator) return false;
+  if (indicator === "checkbox" || indicator === "radio") return indicator;
+  return "default";
+}
+
+function CheckMarkIcon({ size = 16 }: { size?: 12 | 16 }) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={size}
+      height={size}
+      viewBox="0 0 16 16"
+      fill="none"
+      aria-hidden="true"
+    >
+      <path
+        d="M3.75 9.5L6.5 12.25L12.248 4.75"
+        stroke="currentColor"
+        strokeWidth={size === 12 ? 2 : 1.5}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
 
 /**
  * Adds the shared stylesheet to the document the element actually lives in
@@ -112,14 +161,6 @@ function ensureStyles(node: HTMLElement | null) {
   style.textContent = SELECTABLE_CSS;
   doc.head.appendChild(style);
 }
-
-type GroupContextType = {
-  selectedValues: string[];
-  multiple: boolean;
-  disabled: boolean;
-  tone?: SelectableToneType;
-  toggle: (value: string) => void;
-};
 
 const SelectableGroupContext = createContext<GroupContextType | null>(null);
 
@@ -165,6 +206,7 @@ const SelectableRoot: ForwardRefExoticComponent<
   const isDisabled = Boolean(disabled || group?.disabled);
   const isInteractive = interactive && !isDisabled;
   const resolvedTone = tone ?? group?.tone ?? "neutral";
+  const resolvedIndicator = resolveIndicator(indicator);
 
   const toggle = () => {
     if (!isInteractive) return;
@@ -227,24 +269,19 @@ const SelectableRoot: ForwardRefExoticComponent<
     >
       {children}
       <span className="cx-selectable__ring" aria-hidden="true" />
-      {indicator ? (
-        <span className="cx-selectable__badge" aria-hidden="true">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="16"
-            height="16"
-            viewBox="0 0 16 16"
-            fill="none"
-            aria-hidden="true"
-          >
-            <path
-              d="M3.75 9.5L6.5 12.25L12.248 4.75"
-              stroke="#fff"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
+      {resolvedIndicator ? (
+        <span
+          className={[
+            "cx-selectable__badge",
+            resolvedIndicator !== "default" &&
+              `cx-selectable__badge--${resolvedIndicator}`,
+          ]
+            .filter(Boolean)
+            .join(" ")}
+          aria-hidden="true"
+          data-indicator={resolvedIndicator}
+        >
+          <CheckMarkIcon size={resolvedIndicator === "default" ? 16 : 12} />
         </span>
       ) : null}
     </div>

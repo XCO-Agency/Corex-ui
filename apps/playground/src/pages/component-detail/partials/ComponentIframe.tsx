@@ -5,9 +5,21 @@ import { createPortal } from "react-dom";
 export type ComponentIframePropsType = {
   children: React.ReactNode;
   className?: string;
+  /** Optional inline styles merged onto the iframe element. */
+  style?: React.CSSProperties;
+  /**
+   * Compact padding + no min-height — used by Overview thumbnail capture
+   * so the example fills the frame instead of floating in empty space.
+   */
+  compact?: boolean;
 };
 
-export function ComponentIframe({ children, className }: ComponentIframePropsType) {
+export function ComponentIframe({
+  children,
+  className,
+  style,
+  compact = false,
+}: ComponentIframePropsType) {
   const iframeRef = React.useRef<HTMLIFrameElement>(null);
   const [mountNode, setMountNode] = React.useState<HTMLElement | null>(null);
 
@@ -86,7 +98,7 @@ export function ComponentIframe({ children, className }: ComponentIframePropsTyp
                 }
       
                 #preview-root:not(:has(> s-page)) {
-                  padding: 24px;
+                  padding: ${compact ? "12px" : "24px"};
                 }
                 #preview-root:empty {
                   display: flex;
@@ -250,9 +262,11 @@ export function ComponentIframe({ children, className }: ComponentIframePropsTyp
       title="Component Preview"
       className={cn("w-full border-0 bg-transparent", className)}
       style={{
-        minHeight: "260px",
+        minHeight: compact ? "0px" : "260px",
         maxHeight: "100vh",
         display: "block",
+        backgroundColor: "transparent",
+        ...style,
       }}
     >
       {mountNode ? createPortal(children, mountNode) : null}

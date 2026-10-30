@@ -1,2 +1,6 @@
 export { DropZone } from "./DropZone";
-export type { DropZonePropsType } from "./DropZone.types";
+export type {
+  DropZoneInlineSizeType,
+  DropZonePropsType,
+  DropZoneSizeType,
+} from "./DropZone.types";

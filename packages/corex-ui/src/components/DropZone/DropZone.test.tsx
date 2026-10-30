@@ -48,4 +48,48 @@ describe("DropZone", () => {
 
     expect(onChange).toHaveBeenCalledTimes(1);
   });
+
+  it("renders a square icon-only surface when size is small", () => {
+    const { container } = render(
+      <DropZone
+        size="small"
+        label="Media"
+        accessibilityLabel="Upload image"
+        accept="image/*"
+      />,
+    );
+
+    const wrapper = container.querySelector('[data-slot="drop-zone"]');
+    expect(wrapper).not.toBeNull();
+    expect(wrapper?.getAttribute("data-size")).toBe("small");
+
+    const el = container.querySelector("s-drop-zone");
+    expect(el?.getAttribute("label-accessibility-visibility")).toBe("exclusive");
+    expect(container.querySelector('[data-slot="drop-zone-content"]')).not.toBeNull();
+    expect(container.querySelector("s-icon")).not.toBeNull();
+  });
+
+  it("supports fill inlineSize and custom icon for small size", () => {
+    const { container } = render(
+      <DropZone size="small" inlineSize="fill" icon="plus" label="Add" />,
+    );
+
+    const wrapper = container.querySelector('[data-slot="drop-zone"]');
+    expect(wrapper?.getAttribute("data-inline-size")).toBe("fill");
+    expect(container.querySelector("s-icon")?.getAttribute("type")).toBe("plus");
+  });
+
+  it("keeps a custom labelAccessibilityVisibility on small size", () => {
+    const { container } = render(
+      <DropZone
+        size="small"
+        label="Visible label"
+        labelAccessibilityVisibility="visible"
+      />,
+    );
+
+    expect(
+      container.querySelector("s-drop-zone")?.getAttribute("label-accessibility-visibility"),
+    ).toBe("visible");
+  });
 });

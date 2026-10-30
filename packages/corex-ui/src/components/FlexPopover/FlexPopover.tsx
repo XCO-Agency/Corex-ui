@@ -49,6 +49,8 @@ const VIEWPORT_MARGIN = 12;
 const DEFAULT_CLOSE_DELAY = 150;
 const STYLE_ELEMENT_ID = "corex-flex-popover-styles";
 const SHADOW_STYLE_ATTR = "data-corex-flex-popover-styles";
+/** Fixed inset layer inside an open `<dialog>` so panels stack above modal content. */
+const DIALOG_OVERLAY_ATTR = "data-corex-flex-popover-layer";
 /**
  * Critical resets use `!important` so host-site popover rules cannot add a
  * second border or padding layer. The sheet is installed in the same document
@@ -74,6 +76,13 @@ const POPOVER_CSS = `
 .corex-native-popover.corex-native-popover-open {
   opacity: 1 !important;
   transform: translate(0) scale(1) !important;
+  /* Opaque surface so modal form content cannot show through (s-section may be
+     transparent inside s-modal's shadow tree). */
+  background: var(--p-color-bg-surface, #ffffff) !important;
+  border-radius: var(--p-border-radius-200, 16px) !important;
+  box-shadow:
+    var(--p-shadow-bevel-100, 0 0 0 1px rgba(26, 26, 26, 0.07)),
+    var(--p-shadow-300, 0 4px 12px rgba(26, 26, 26, 0.12)) !important;
 }
 
 .corex-native-popover.corex-native-popover--measure {
@@ -103,10 +112,150 @@ function isShadowRoot(node: Node, doc: Document): node is ShadowRoot {
   return Boolean(ShadowRootConstructor && node instanceof ShadowRootConstructor);
 }
 
+/** Duck-type elements so iframe-hosted nodes pass (parent-realm `instanceof Element` fails). */
+function isElementNode(node: Node | null | undefined): node is Element {
+  return Boolean(node && node.nodeType === 1);
+}
+
+function isHtmlDialogElement(
+  node: Node | null | undefined,
+  doc: Document,
+): node is HTMLDialogElement {
+  if (!isElementNode(node) || node.tagName !== "DIALOG") return false;
+  const DialogConstructor = doc.defaultView?.HTMLDialogElement;
+  if (DialogConstructor) return node instanceof DialogConstructor;
+  return "open" in node;
+}
+
+/**
+ * Walks light DOM, slot assignment, and open shadow hosts to find an open
+ * `<dialog>` that hosts `from` (e.g. Polaris `<s-modal>` → shadow `dialog`).
+ *
+ * Combobox/FlexPopover panels portaled to `document.body` lose to that dialog's
+ * top layer, so the panel must mount *inside* the open dialog instead.
+ */
+function findOpenHostingDialog(from: Element): HTMLDialogElement | null {
+  const doc = from.ownerDocument;
+  let node: Node | null = from;
+
+  while (node) {
+    if (isHtmlDialogElement(node, doc)) {
+      return node.open ? node : null;
+    }
+
+    if (isElementNode(node)) {
+      const nested = node.shadowRoot?.querySelector("dialog");
+      if (isHtmlDialogElement(nested, doc) && nested.open) return nested;
+
+      if (node.assignedSlot) {
+        node = node.assignedSlot;
+        continue;
+      }
+    }
+
+    const parent = isElementNode(node) ? node.parentElement : null;
+    if (parent) {
+      node = parent;
+      continue;
+    }
+
+    const root = node.getRootNode();
+    if (isShadowRoot(root, doc)) {
+      node = root.host;
+      continue;
+    }
+
+    break;
+  }
+
+  return null;
+}
+
+/**
+ * Host for the overlay layer. Prefer the shadow host (e.g. `s-modal`) so the
+ * layer and portaled panels stay in *light DOM* — Polaris `s-clickable` /
+ * `s-box` attributes are dropped when React portals into `s-modal`'s shadow
+ * tree, which is what made Combobox items look unpadded inside modals.
+ */
+function resolveDialogOverlayParent(
+  dialog: HTMLDialogElement,
+  doc: Document,
+): HTMLElement {
+  const root = dialog.getRootNode();
+  if (isShadowRoot(root, doc) && isElementNode(root.host)) return root.host;
+  return dialog;
+}
+
+/**
+ * Fixed, flow-less layer covering an open dialog. Panels portal here so they
+ * stack above modal content without mutating the dialog's `overflow`.
+ */
+function ensureDialogOverlayLayer(dialog: HTMLDialogElement): HTMLElement {
+  const doc = dialog.ownerDocument;
+  const parent = resolveDialogOverlayParent(dialog, doc);
+  const existing = parent.querySelector<HTMLElement>(`:scope > [${DIALOG_OVERLAY_ATTR}]`);
+  if (existing) return existing;
+
+  const layer = doc.createElement("div");
+  layer.setAttribute(DIALOG_OVERLAY_ATTR, "");
+  layer.setAttribute("aria-hidden", "true");
+  Object.assign(layer.style, {
+    position: "fixed",
+    inset: "0px",
+    zIndex: "2147483646",
+    pointerEvents: "none",
+    overflow: "visible",
+    margin: "0px",
+    padding: "0px",
+    border: "none",
+    background: "transparent",
+  });
+  parent.appendChild(layer);
+  return layer;
+}
+
+function resolveFlexPopoverMountTarget(
+  marker: Element,
+  doc: Document,
+): FlexPopoverMountTargetType {
+  const dialog = findOpenHostingDialog(marker);
+  if (dialog) return ensureDialogOverlayLayer(dialog);
+
+  const root = marker.getRootNode();
+  return isShadowRoot(root, doc) ? root : doc.body;
+}
+
+function isDialogOverlayLayer(node: Node | null | undefined): node is HTMLElement {
+  return isElementNode(node) && node.hasAttribute(DIALOG_OVERLAY_ATTR);
+}
+
+function dialogFromOverlayLayer(
+  layer: HTMLElement,
+  doc: Document,
+): HTMLDialogElement | null {
+  const parent = layer.parentElement;
+  if (isHtmlDialogElement(parent, doc)) return parent;
+  const nested = parent?.shadowRoot?.querySelector("dialog");
+  return isHtmlDialogElement(nested, doc) && nested.open ? nested : null;
+}
+
+function styleParentForMount(
+  target: FlexPopoverMountTargetType,
+  doc: Document,
+): ParentNode {
+  if (isShadowRoot(target, doc)) return target;
+  const root = target.getRootNode();
+  if (isShadowRoot(root, doc)) return root;
+  return doc.head;
+}
+
 function ensureFlexPopoverStyles(target: FlexPopoverMountTargetType, doc: Document) {
-  const styleParent = isShadowRoot(target, doc) ? target : doc.head;
-  const existing = isShadowRoot(target, doc)
-    ? target.querySelector<HTMLStyleElement>(`style[${SHADOW_STYLE_ATTR}]`)
+  const styleParent = styleParentForMount(target, doc);
+  const inShadow = styleParent !== doc.head;
+  const existing = inShadow
+    ? (styleParent as ShadowRoot | Element).querySelector?.<HTMLStyleElement>(
+        `style[${SHADOW_STYLE_ATTR}]`,
+      )
     : doc.getElementById(STYLE_ELEMENT_ID);
 
   if (existing) {
@@ -115,7 +264,7 @@ function ensureFlexPopoverStyles(target: FlexPopoverMountTargetType, doc: Docume
   }
 
   const style = doc.createElement("style");
-  if (isShadowRoot(target, doc)) style.setAttribute(SHADOW_STYLE_ATTR, "");
+  if (inShadow) style.setAttribute(SHADOW_STYLE_ATTR, "");
   else style.id = STYLE_ELEMENT_ID;
   style.textContent = POPOVER_CSS;
   styleParent.appendChild(style);
@@ -141,9 +290,14 @@ const MAX_POSITION_FRAMES = 60;
  * Controlled popover portalled into the trigger's existing root and shown with
  * `popover="manual"` (top layer, no native light-dismiss).
  *
- * A document-root trigger uses its owner document's body. A trigger already in
- * a shadow root keeps the panel in that root so CSS variables and ARIA ID
- * references remain scoped correctly. No extra shadow root is introduced.
+ * Mount priority:
+ * 1. Overlay layer inside an open hosting `<dialog>` (incl. Polaris `s-modal`)
+ *    so the panel stacks above modal content without fighting the top layer.
+ * 2. Existing shadow root for the trigger (scoped CSS / ARIA ids).
+ * 3. Owner document `body`.
+ *
+ * Inside a dialog the native Popover API is skipped (it loses hit-testing to
+ * `:modal`); placement is clamped to the dialog box instead.
  */
 function FlexPopoverBase({
   anchorId,
@@ -204,20 +358,33 @@ function FlexPopoverBase({
    */
   const [coords, setCoords] = useState<{ top: number; left: number } | null>(null);
 
-  // Reuse the trigger's current root; do not create a second shadow boundary.
+  /**
+   * Prefer an overlay layer inside an open hosting `<dialog>` (e.g. s-modal).
+   * Body-portalled native popovers lose hit-testing to modal dialogs.
+   */
   useIsomorphicLayoutEffect(() => {
     const marker = markerRef.current;
     const doc = marker?.ownerDocument;
     if (!marker || !doc?.body) return;
 
-    const root = marker.getRootNode();
-    const target = isShadowRoot(root, doc) ? root : doc.body;
+    const target = resolveFlexPopoverMountTarget(marker, doc);
     ensureFlexPopoverStyles(target, doc);
-    if (target !== mountTarget) setMountTarget(target);
+    setMountTarget((current) => (current === target ? current : target));
     setIsPopoverSupported(
       typeof doc.defaultView?.HTMLElement.prototype.showPopover === "function",
     );
-  }, [mountTarget]);
+  }, [isOpen]);
+
+  const hostedInDialog = isDialogOverlayLayer(mountTarget);
+  const hostingDialog =
+    hostedInDialog && markerRef.current?.ownerDocument
+      ? dialogFromOverlayLayer(mountTarget, markerRef.current.ownerDocument)
+      : null;
+  /**
+   * Inside a modal dialog, skip `popover` top-layer — it still loses to `:modal`
+   * for hit-testing in Chromium. Stack inside the dialog overlay layer instead.
+   */
+  const useNativePopover = isPopoverSupported && !hostedInDialog;
 
   const getAnchor = useCallback((): HTMLElement | null => {
     if (anchorRef?.current) return anchorRef.current;
@@ -261,7 +428,7 @@ function FlexPopoverBase({
 
       // A closed popover is `display: none` until it is shown, so its box is
       // empty. Show it before measuring or the panel is placed with height 0.
-      if (typeof popover.showPopover === "function") {
+      if (useNativePopover && typeof popover.showPopover === "function") {
         try {
           if (!popover.matches(":popover-open")) popover.showPopover();
         } catch {
@@ -280,8 +447,25 @@ function FlexPopoverBase({
 
       const doc = anchor.ownerDocument;
       const win = doc.defaultView ?? ownerWindow;
-      const viewportWidth = win.innerWidth;
-      const viewportHeight = win.innerHeight;
+      /**
+       * Open modal dialogs often apply a transform, which makes them the
+       * containing block for `position: fixed` descendants. Place in that
+       * dialog's local coordinates and clamp to its box so the panel stays
+       * interactive inside the modal.
+       */
+      const dialogRect = hostingDialog?.getBoundingClientRect() ?? null;
+      const originLeft = dialogRect?.left ?? 0;
+      const originTop = dialogRect?.top ?? 0;
+      const viewportWidth = dialogRect?.width ?? win.innerWidth;
+      const viewportHeight = dialogRect?.height ?? win.innerHeight;
+      const localAnchor = dialogRect
+        ? new DOMRect(
+            anchorRect.left - originLeft,
+            anchorRect.top - originTop,
+            anchorRect.width,
+            anchorRect.height,
+          )
+        : anchorRect;
 
       popover.style.width = matchAnchorWidth
         ? `${anchorRect.width}px`
@@ -319,13 +503,13 @@ function FlexPopoverBase({
       const rtl = win.getComputedStyle(anchor).direction === "rtl";
       const placement = placeFlexPopover({
         position,
-        anchor: toPopoverRect(anchorRect),
+        anchor: toPopoverRect(localAnchor),
         popoverWidth,
         popoverHeight,
         offset,
         viewportWidth,
         viewportHeight,
-        margin: VIEWPORT_MARGIN,
+        margin: hostingDialog ? 8 : VIEWPORT_MARGIN,
         rtl,
       });
 
@@ -384,12 +568,14 @@ function FlexPopoverBase({
     anchorId,
     anchorRef,
     mountTarget,
+    hostingDialog,
+    useNativePopover,
   ]);
 
-  // Sync with browser's native Popover API (manual mode = top layer, no light dismiss)
+  // Sync with browser's native Popover API (manual mode = top layer, no light dismiss).
   useIsomorphicLayoutEffect(() => {
     const popover = popoverRef.current;
-    if (!popover || !isPopoverSupported) return;
+    if (!popover || !useNativePopover) return;
 
     if (isOpen) {
       try {
@@ -404,7 +590,7 @@ function FlexPopoverBase({
         // Ignored if already hidden
       }
     }
-  }, [isOpen, isPopoverSupported, mountTarget]);
+  }, [isOpen, useNativePopover, mountTarget]);
 
   // Dismissal: Escape, or pointer-down outside popover, anchor and boundary.
   // The shared layer primitive ensures a nested popover closes before its parent.
@@ -660,15 +846,18 @@ function FlexPopoverBase({
     };
   }, [openOnHover, closeDelay, isOpen, mountTarget, anchorId]);
 
+  // In a dialog overlay, hide until placed so the panel doesn't flash at 0,0.
+  const showPanel = isOpen && (!hostedInDialog || Boolean(coords));
   const popoverElement = (
     <div
       ref={popoverRef}
-      {...({ popover: "manual" } as Record<string, string>)}
+      {...(useNativePopover ? ({ popover: "manual" } as Record<string, string>) : {})}
       role="dialog"
       className={`corex-native-popover ${isOpen ? "corex-native-popover-open" : ""} ${className}`}
       style={{
         ...customStyle,
-        position: "fixed",
+        // Absolute inside the dialog overlay layer; fixed on document/shadow mounts.
+        position: hostedInDialog ? "absolute" : "fixed",
         margin: 0,
         padding: 0,
         border: 0,
@@ -679,18 +868,21 @@ function FlexPopoverBase({
         bottom: "auto",
         width: width ?? "auto",
         minWidth: minWidth ?? undefined,
-        maxWidth: `calc(100vw - ${VIEWPORT_MARGIN * 2}px)`,
+        maxWidth: hostedInDialog
+          ? "calc(100% - 16px)"
+          : `calc(100vw - ${VIEWPORT_MARGIN * 2}px)`,
         boxSizing: "border-box",
         zIndex,
         overflow: "unset",
-        pointerEvents: isOpen ? "auto" : "none",
-        visibility: isOpen ? "visible" : "hidden",
+        // Overlay layer is pointer-events:none; re-enable on the panel itself.
+        pointerEvents: showPanel ? "auto" : "none",
+        visibility: showPanel ? "visible" : "hidden",
         ...({
           "--corex-popover-enter-x": motion.enterX,
           "--corex-popover-enter-y": motion.enterY,
           "--corex-popover-origin": motion.transformOrigin,
         } as CSSProperties),
-        ...(!isPopoverSupported ? { display: isOpen ? "block" : "none" } : {}),
+        ...(!useNativePopover ? { display: isOpen ? "block" : "none" } : {}),
       }}
     >
       <Card padding="none" gap="none">
@@ -747,7 +939,7 @@ function FlexPopoverBase({
   return (
     <>
       <span ref={markerRef} hidden aria-hidden="true" />
-      {mountTarget ? createPortal(popoverElement, mountTarget) : null}
+      {mountTarget && isOpen ? createPortal(popoverElement, mountTarget) : null}
     </>
   );
 }

@@ -345,6 +345,70 @@ describe("FlexPopover", () => {
     expect(document.querySelector(".corex-native-popover")).toBeTruthy();
   });
 
+  it("portals into a dialog overlay layer instead of document.body", () => {
+    const dialog = document.createElement("dialog");
+    dialog.id = "host-dialog";
+    // jsdom has no showModal(); `open` is what findOpenHostingDialog checks.
+    dialog.setAttribute("open", "");
+    document.body.appendChild(dialog);
+
+    try {
+      const { unmount } = render(
+        <FlexPopover isOpen onClose={vi.fn()}>
+          <Text>Inside dialog</Text>
+        </FlexPopover>,
+        { container: dialog },
+      );
+
+      const layer = dialog.querySelector<HTMLElement>("[data-corex-flex-popover-layer]");
+      const panel = layer?.querySelector<HTMLElement>(".corex-native-popover");
+      expect(layer).toBeTruthy();
+      expect(panel).toBeTruthy();
+      expect(panel?.parentElement).toBe(layer);
+      expect(document.body.querySelector(":scope > .corex-native-popover")).toBeNull();
+      unmount();
+    } finally {
+      dialog.remove();
+    }
+  });
+
+  it("portals into a light-DOM overlay on the shadow host of a modal-like element", () => {
+    const host = document.createElement("div");
+    host.id = "s-modal-like";
+    const shadow = host.attachShadow({ mode: "open" });
+    const dialog = document.createElement("dialog");
+    const slot = document.createElement("slot");
+    dialog.appendChild(slot);
+    dialog.setAttribute("open", "");
+    shadow.appendChild(dialog);
+    document.body.appendChild(host);
+
+    const light = document.createElement("div");
+    host.appendChild(light);
+
+    try {
+      const { unmount } = render(
+        <FlexPopover isOpen onClose={vi.fn()}>
+          <Text>Inside shadow dialog</Text>
+        </FlexPopover>,
+        { container: light },
+      );
+
+      // Layer must be a light-DOM child of the host (not inside the shadow dialog),
+      // so Polaris s-* attribute props keep working on portaled panels.
+      const layer = host.querySelector<HTMLElement>(`:scope > [data-corex-flex-popover-layer]`);
+      const panel = layer?.querySelector<HTMLElement>(".corex-native-popover");
+      expect(layer).toBeTruthy();
+      expect(panel).toBeTruthy();
+      expect(panel?.parentElement).toBe(layer);
+      expect(dialog.querySelector("[data-corex-flex-popover-layer]")).toBeNull();
+      expect(document.getElementById("corex-flex-popover-styles")).toBeTruthy();
+      unmount();
+    } finally {
+      host.remove();
+    }
+  });
+
   it("dismisses on Escape and outside press but not on an inside press", () => {
     const onClose = vi.fn();
     render(

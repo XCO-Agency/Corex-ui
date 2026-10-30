@@ -1487,6 +1487,9 @@ import { Selectable, Card, Text } from "@xco-agency/corex-ui";
 </Selectable>;
 ```
 
+`indicator={true}` keeps the default corner check badge. Pass `indicator="checkbox"` or
+`indicator="radio"` for the inset top-start control styles (rounded square vs circle).
+
 #### Props
 
 | Prop                 | Type                                                          | Default  | Description                                              |
@@ -1498,7 +1501,7 @@ import { Selectable, Card, Text } from "@xco-agency/corex-ui";
 | `tone`               | `"info" \| "success" \| "warning" \| "critical" \| "neutral"` | `"info"` | Outline colour (`auto` = info, `caution` = warning).     |
 | `interactive`        | `boolean`                                                     | `true`   | `false` makes it a highlight only, driven by `selected`. |
 | `disabled`           | `boolean`                                                     | —        | Dims the item and blocks interaction.                    |
-| `indicator`          | `boolean`                                                     | `false`  | Check badge in the corner while selected.                |
+| `indicator`          | `boolean \| "checkbox" \| "radio"`                            | `false`  | Selection mark while selected. `true` = default corner badge; `"checkbox"` / `"radio"` = inset top-start styles. |
 | `outlineWidth`       | `1 \| 2 \| 3`                                                 | `2`      | Outline thickness in px.                                 |
 | `outlineOffset`      | `number`                                                      | `0`      | Gap between content and outline in px.                   |
 | `borderRadius`       | `"none" \| "small" \| "base" \| "large" \| "large-100"`       | `"base"` | Match the wrapped element's corners.                     |

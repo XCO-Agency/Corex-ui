@@ -3,12 +3,14 @@ import { Link, useLocation } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import { categories, registry, blocks, type ComponentEntry } from "../data/registry";
 import { thumbnails } from "../components/icons/ComponentThumbnails";
+import { thumbnailImages } from "../data/thumbnail-images";
 import { Button } from "@/components/ui/button";
 import { CommandSnippet } from "@/components/CommandSnippet";
 import { COREX_UI_VERSION } from "@/lib/version";
 import { cn } from "@/lib/utils";
 
 function Tile({ item, href, wide }: { item: ComponentEntry; href: string; wide?: boolean }) {
+  const screenshot = thumbnailImages[item.slug];
   const Thumbnail = thumbnails[item.slug];
   return (
     <Link
@@ -17,11 +19,22 @@ function Tile({ item, href, wide }: { item: ComponentEntry; href: string; wide?:
     >
       <div
         className={cn(
-          "flex items-center justify-center overflow-hidden bg-muted/30 p-3 transition-colors group-hover:bg-muted/50",
+          "flex items-center justify-center overflow-hidden transition-colors",
           wide ? "aspect-5/2" : "aspect-2/1",
+          screenshot
+            ? "bg-white p-0 group-hover:bg-white"
+            : "bg-muted/30 p-3 group-hover:bg-muted/50",
         )}
       >
-        {Thumbnail ? (
+        {screenshot ? (
+          <img
+            src={screenshot}
+            alt=""
+            loading="lazy"
+            decoding="async"
+            className="size-full object-contain object-center"
+          />
+        ) : Thumbnail ? (
           <div className="flex size-full items-center justify-center [&>svg]:max-h-full">
             <Thumbnail />
           </div>

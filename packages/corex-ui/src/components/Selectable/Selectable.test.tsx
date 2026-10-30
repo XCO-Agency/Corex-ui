@@ -67,11 +67,28 @@ describe("Selectable", () => {
     expect(root).toHaveClass("cx-selectable--selected");
   });
 
-  it("renders the check badge only when asked", () => {
+  it("renders the default corner badge when indicator is true", () => {
     const { container, rerender } = render(<Selectable>content</Selectable>);
     expect(container.querySelector(".cx-selectable__badge")).toBeNull();
     rerender(<Selectable indicator>content</Selectable>);
-    expect(container.querySelector(".cx-selectable__badge")).not.toBeNull();
+    const badge = container.querySelector(".cx-selectable__badge");
+    expect(badge).not.toBeNull();
+    expect(badge).toHaveAttribute("data-indicator", "default");
+    expect(container.querySelector(".cx-selectable__badge--checkbox")).toBeNull();
+    expect(container.querySelector(".cx-selectable__badge--radio")).toBeNull();
+  });
+
+  it("renders checkbox and radio indicator variants", () => {
+    const { container, rerender } = render(
+      <Selectable indicator="checkbox">content</Selectable>,
+    );
+    expect(container.querySelector("[data-indicator='checkbox']")).not.toBeNull();
+    expect(container.querySelector(".cx-selectable__badge--checkbox")).not.toBeNull();
+    expect(container.querySelector(".cx-selectable__badge--radio")).toBeNull();
+
+    rerender(<Selectable indicator="radio">content</Selectable>);
+    expect(container.querySelector("[data-indicator='radio']")).not.toBeNull();
+    expect(container.querySelector(".cx-selectable__badge--radio")).not.toBeNull();
   });
 
   it("injects the stylesheet once", () => {

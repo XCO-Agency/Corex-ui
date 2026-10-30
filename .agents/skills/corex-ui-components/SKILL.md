@@ -159,7 +159,7 @@ When specifying `gap`, `padding`, `rowGap`, or `columnGap`, use **exclusively** 
 | [**ChoiceList**](#choicelist)       | Radio button or checkbox list group allowing single or multiple selections.               | —                                                                                        |
 | [**RangeSlider**](#rangeslider)     | Slider input for selecting values within a range.                                         | —                                                                                        |
 | [**RichTextEditor**](#richtexteditor) | Shopify-admin-style rich text editor with toolbar, media inserts, and HTML source view. | —                                                                                        |
-| [**DropZone**](#dropzone)           | File drag-and-drop zone wrapping `<s-drop-zone>`.                                         | —                                                                                        |
+| [**DropZone**](#dropzone)           | File drag-and-drop zone wrapping `<s-drop-zone>`, with square icon-only `size="small"`.   | —                                                                                        |
 | [**Combobox**](#combobox)           | Accessible autocomplete and combobox popover control.                                     | `Combobox.Input`, `Combobox.Content`, `Combobox.List`, `Combobox.Item`, `Combobox.Empty` |
 | [**Autocomplete**](#autocomplete)   | High-level single-selection autocomplete input with debounced querying.                   | —                                                                                        |
 
@@ -1488,6 +1488,9 @@ import { Selectable, Card, Text } from "@xco-agency/corex-ui";
 </Selectable>;
 ```
 
+`indicator={true}` keeps the default corner check badge. Pass `indicator="checkbox"` or
+`indicator="radio"` for the inset top-start control styles (rounded square vs circle).
+
 #### Props
 
 | Prop                 | Type                                                          | Default  | Description                                              |
@@ -1499,7 +1502,7 @@ import { Selectable, Card, Text } from "@xco-agency/corex-ui";
 | `tone`               | `"info" \| "success" \| "warning" \| "critical" \| "neutral"` | `"info"` | Outline colour (`auto` = info, `caution` = warning).     |
 | `interactive`        | `boolean`                                                     | `true`   | `false` makes it a highlight only, driven by `selected`. |
 | `disabled`           | `boolean`                                                     | —        | Dims the item and blocks interaction.                    |
-| `indicator`          | `boolean`                                                     | `false`  | Check badge in the corner while selected.                |
+| `indicator`          | `boolean \| "checkbox" \| "radio"`                            | `false`  | Selection mark while selected. `true` = default corner badge; `"checkbox"` / `"radio"` = inset top-start styles. |
 | `outlineWidth`       | `1 \| 2 \| 3`                                                 | `2`      | Outline thickness in px.                                 |
 | `outlineOffset`      | `number`                                                      | `0`      | Gap between content and outline in px.                   |
 | `borderRadius`       | `"none" \| "small" \| "base" \| "large" \| "large-100"`       | `"base"` | Match the wrapped element's corners.                     |
@@ -1560,7 +1563,7 @@ import { Divider } from "@xco-agency/corex-ui";
 
 ### DropZone
 
-File drag-and-drop zone wrapping `<s-drop-zone>`.
+File drag-and-drop zone wrapping `<s-drop-zone>`. Supports a square icon-only `size="small"` surface.
 
 ```tsx
 import { DropZone } from "@xco-agency/corex-ui";
@@ -1575,7 +1578,7 @@ import { DropZone } from "@xco-agency/corex-ui";
 | `multiple`                     | `boolean &#124; undefined`                      | —                                                                                                                                                                                                                                                                                               |
 | `allowMultiple`                | `boolean &#124; undefined`                      | Alias for `multiple` for backwards-compatibility.                                                                                                                                                                                                                                               |
 | `accessibilityLabel`           | `string &#124; undefined`                       | —                                                                                                                                                                                                                                                                                               |
-| `labelAccessibilityVisibility` | `"visible" &#124; "exclusive" &#124; undefined` | —                                                                                                                                                                                                                                                                                               |
+| `labelAccessibilityVisibility` | `"visible" &#124; "exclusive" &#124; undefined` | Defaults to `"exclusive"` when `size="small"`.                                                                                                                                                                                                                                                  |
 | `disabled`                     | `boolean &#124; undefined`                      | —                                                                                                                                                                                                                                                                                               |
 | `error`                        | `ReactNode`                                     | —                                                                                                                                                                                                                                                                                               |
 | `helpText`                     | `ReactNode`                                     | —                                                                                                                                                                                                                                                                                               |
@@ -1586,13 +1589,16 @@ import { DropZone } from "@xco-agency/corex-ui";
 | `name`                         | `string &#124; undefined`                       | —                                                                                                                                                                                                                                                                                               |
 | `value`                        | `string &#124; undefined`                       | —                                                                                                                                                                                                                                                                                               |
 | `files`                        | `File[] &#124; undefined`                       | —                                                                                                                                                                                                                                                                                               |
+| `size`                         | `"small" &#124; "base" &#124; undefined`        | `base` (default) keeps the full Polaris prompts. `small` renders a square surface with a centered icon.                                                                                                                                                                                         |
+| `inlineSize`                   | `"fill" &#124; string &#124; undefined`         | Width when `size="small"`. CSS length (default `"5rem"`) or `"fill"` to stretch inside a grid cell.                                                                                                                                                                                              |
+| `icon`                         | `IconType &#124; undefined`                     | Center icon when `size="small"` and no `children` are provided. Defaults to `"upload"`.                                                                                                                                                                                                         |
 | `onChange`                     | `((event: Event) =&gt; void) &#124; undefined`  | —                                                                                                                                                                                                                                                                                               |
 | `onDrop`                       | `((files: File[]) =&gt; void) &#124; undefined` | v12's callback, called with the files the element accepted. v12 also passed the rejected ones as a third argument; `s-drop-zone` reports only what it accepted, so that argument is not offered rather than filled with a guess — `onDropRejected` is the element's own signal for a rejection. |
 | `onInput`                      | `((event: Event) =&gt; void) &#124; undefined`  | —                                                                                                                                                                                                                                                                                               |
 | `onDropRejected`               | `((event: Event) =&gt; void) &#124; undefined`  | —                                                                                                                                                                                                                                                                                               |
 | `onBlur`                       | `((event: Event) =&gt; void) &#124; undefined`  | —                                                                                                                                                                                                                                                                                               |
 | `onFocus`                      | `((event: Event) =&gt; void) &#124; undefined`  | —                                                                                                                                                                                                                                                                                               |
-| `children`                     | `ReactNode`                                     | —                                                                                                                                                                                                                                                                                               |
+| `children`                     | `ReactNode`                                     | Custom content inside the drop zone. Replaces the default icon when `size="small"`.                                                                                                                                                                                                             |
 | `className`                    | `string &#124; undefined`                       | —                                                                                                                                                                                                                                                                                               |
 
 #### Example
@@ -1602,6 +1608,14 @@ import { DropZone } from "@xco-agency/corex-ui";
   label="Upload images"
   accept="image/*"
   multiple
+  onDrop={(files) => handleFiles(files)}
+/>
+
+<DropZone
+  size="small"
+  label="Media"
+  accessibilityLabel="Upload image"
+  accept="image/*"
   onDrop={(files) => handleFiles(files)}
 />
 ```

@@ -1109,6 +1109,21 @@ const entries: EntryType[] = [
     group: "Forms",
     icon: Upload,
     defaults: { label: "Product images", accept: "image/*" },
+    fields: {
+      extra: [
+        {
+          name: "size",
+          label: "Size",
+          section: "Appearance",
+          kind: "select",
+          options: [
+            { label: "Base", value: "base" },
+            { label: "Small", value: "small" },
+          ],
+          description: "Small is a square icon-only surface.",
+        },
+      ],
+    },
   },
   {
     type: "Combobox",

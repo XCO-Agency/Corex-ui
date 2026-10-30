@@ -6,6 +6,14 @@ Form control for drag-and-drop or browse uploads, over `s-drop-zone`.
 import { DropZone } from "@xco-agency/corex-ui";
 
 <DropZone label="Attachments" accept="application/pdf" multiple onDrop={upload} />;
+
+<DropZone
+  size="small"
+  label="Media"
+  accessibilityLabel="Upload image"
+  accept="image/*"
+  onDrop={upload}
+/>;
 ```
 
 | Prop                             | Behavior                                                                                                                                    |
@@ -16,9 +24,14 @@ import { DropZone } from "@xco-agency/corex-ui";
 | `multiple` / `allowMultiple`     | Either name works.                                                                                                                          |
 | `required` / `requiredIndicator` | Either name works.                                                                                                                          |
 | `helpText`                       | Rendered as the element's `details`.                                                                                                        |
+| `size`                           | `base` (default) keeps the full Polaris prompts. `small` is a square icon-only surface.                                                     |
+| `inlineSize`                     | Width for `size="small"` — CSS length (default `"5rem"`) or `"fill"` inside a grid cell.                                                    |
+| `icon`                           | Center icon for `size="small"` when no `children` are passed. Defaults to `"upload"`.                                                       |
 
 v12's `onDrop` had a third argument, the rejected files. `s-drop-zone` reports only
 what it accepted, so that argument is not offered rather than filled with a guess —
 `onDropRejected` is the element's own signal for a rejection.
 
-v12's `DropZone.FileUpload` placeholder has no equivalent: the element renders its own.
+`size="small"` covers the compact icon-only layout that v12's measured small
+`DropZone.FileUpload` used to provide. Pass `children` to replace the default icon
+(for example an uploaded thumbnail).

@@ -5,6 +5,14 @@ export type SelectableToneType = Exclude<ToneType, undefined>;
 
 export type SelectableRadiusType = "none" | "small" | "base" | "large" | "large-100";
 
+/**
+ * Selection indicator shown while selected.
+ * - `true` — default corner check badge (top-end, outside)
+ * - `"checkbox"` — inset rounded-square check (top-start)
+ * - `"radio"` — inset circular check (top-start)
+ */
+export type SelectableIndicatorType = boolean | "checkbox" | "radio";
+
 export type SelectablePropsType = {
   /** The element or card to highlight. */
   children?: ReactNode;
@@ -27,8 +35,12 @@ export type SelectablePropsType = {
    */
   interactive?: boolean;
   disabled?: boolean;
-  /** Shows a check badge in the corner while selected. @default false */
-  indicator?: boolean;
+  /**
+   * Shows a selection mark while selected. `true` keeps the default corner
+   * badge; pass `"checkbox"` or `"radio"` for the inset control styles.
+   * @default false
+   */
+  indicator?: SelectableIndicatorType;
   /** Shows a shadow around the element. @default false */
   shadow?: boolean;
   /** Outline thickness in px. @default 2 */

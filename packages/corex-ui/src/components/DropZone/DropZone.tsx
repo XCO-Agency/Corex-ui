@@ -1,5 +1,8 @@
-import { forwardRef } from "react";
+import { forwardRef, useRef, type CSSProperties } from "react";
 import { createWebComponent } from "../../core/createWebComponent";
+import { useIsomorphicLayoutEffect } from "../../core/useIsomorphicLayoutEffect";
+import { Icon } from "../Icon";
+import { DROP_ZONE_CSS, DROP_ZONE_STYLE_ID } from "./DropZone.css";
 import type { DropZonePropsType } from "./DropZone.types";
 
 type DropZoneEvents = {
@@ -23,6 +26,22 @@ const SDropZone = createWebComponent<HTMLElement, DropZoneEvents>("s-drop-zone",
   domProps: ["value"],
 });
 
+function ensureDropZoneStyles(node: HTMLElement | null) {
+  const doc = node?.ownerDocument ?? (typeof document !== "undefined" ? document : null);
+  if (!doc) return;
+  const existing = doc.getElementById(DROP_ZONE_STYLE_ID);
+  if (existing) {
+    if (existing.textContent !== DROP_ZONE_CSS) {
+      existing.textContent = DROP_ZONE_CSS;
+    }
+    return;
+  }
+  const style = doc.createElement("style");
+  style.id = DROP_ZONE_STYLE_ID;
+  style.textContent = DROP_ZONE_CSS;
+  doc.head.appendChild(style);
+}
+
 /** Form control component for drag-and-drop or browsing file uploads wrapping `s-drop-zone`. */
 export const DropZone = forwardRef<HTMLElement, DropZonePropsType>(function DropZone(
   {
@@ -42,6 +61,9 @@ export const DropZone = forwardRef<HTMLElement, DropZonePropsType>(function Drop
     name,
     value,
     files,
+    size = "base",
+    inlineSize = "5rem",
+    icon = "upload",
     onChange,
     onDrop,
     onInput,
@@ -49,12 +71,23 @@ export const DropZone = forwardRef<HTMLElement, DropZonePropsType>(function Drop
     onBlur,
     onFocus,
     children,
+    className,
     ...rest
   },
   ref,
 ) {
+  const wrapperRef = useRef<HTMLDivElement | null>(null);
   const isMultiple = multiple ?? allowMultiple;
   const isRequired = required ?? requiredIndicator;
+  const isSmall = size === "small";
+  const resolvedLabelVisibility =
+    labelAccessibilityVisibility ?? (isSmall ? "exclusive" : undefined);
+  const isFill = isSmall && inlineSize === "fill";
+
+  useIsomorphicLayoutEffect(() => {
+    if (!isSmall) return;
+    ensureDropZoneStyles(wrapperRef.current);
+  }, [isSmall]);
 
   // `s-drop-zone` reports through `change` with a DOM event, where the files sit on
   // the element the way a native file input reports them. v12 handed them straight
@@ -67,7 +100,15 @@ export const DropZone = forwardRef<HTMLElement, DropZonePropsType>(function Drop
     onDrop(Array.from(target?.files ?? []));
   };
 
-  return (
+  const resolvedChildren =
+    children ??
+    (isSmall ? (
+      <span data-slot="drop-zone-content">
+        <Icon type={icon} />
+      </span>
+    ) : undefined);
+
+  const dropZone = (
     <SDropZone
       ref={ref}
       id={id}
@@ -76,12 +117,13 @@ export const DropZone = forwardRef<HTMLElement, DropZonePropsType>(function Drop
       accept={accept}
       multiple={isMultiple}
       accessibility-label={accessibilityLabel}
-      label-accessibility-visibility={labelAccessibilityVisibility}
+      label-accessibility-visibility={resolvedLabelVisibility}
       disabled={disabled}
       error={error}
       details={details ?? helpText}
       required={isRequired}
       value={value}
+      className={isSmall ? undefined : className}
       onChange={onChange || onDrop ? handleChange : undefined}
       onInput={onInput}
       onDropRejected={onDropRejected}
@@ -89,7 +131,30 @@ export const DropZone = forwardRef<HTMLElement, DropZonePropsType>(function Drop
       onFocus={onFocus}
       {...rest}
     >
-      {children}
+      {resolvedChildren}
     </SDropZone>
+  );
+
+  if (!isSmall) {
+    return dropZone;
+  }
+
+  const wrapperStyle: CSSProperties | undefined = isFill
+    ? undefined
+    : ({
+        ["--cx-drop-zone-inline-size" as string]: inlineSize,
+      } as CSSProperties);
+
+  return (
+    <div
+      ref={wrapperRef}
+      data-slot="drop-zone"
+      data-size="small"
+      data-inline-size={isFill ? "fill" : undefined}
+      className={className}
+      style={wrapperStyle}
+    >
+      {dropZone}
+    </div>
   );
 });
