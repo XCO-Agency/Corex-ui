@@ -97,6 +97,8 @@ function main() {
 
   const args = ["publish", "--access", "public", "--tag", npmDistTag(versions.package)];
   if (dryRun) args.push("--dry-run");
+  // Trusted Publishing (OIDC) authenticates this command. Do not set
+  // NODE_AUTH_TOKEN. OIDC also generates provenance; the flag keeps it explicit.
   else args.push("--provenance");
 
   console.log(`npm ${args.join(" ")}`);

@@ -9,8 +9,11 @@ concurrency:
   group: release-${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: false
 
+# id-token: write is required on the workflow that npm records. workflow_call
+# publishes are attributed to this file (release.yml), not publish.yml.
 permissions:
   contents: read
+  id-token: write
 
 jobs:
   release:
@@ -73,6 +76,8 @@ jobs:
           echo "tag=${tag}" >> "$GITHUB_OUTPUT"
           echo "Will publish ${tag}"
 
+  # Trusted Publishing checks this caller filename (release.yml) and
+  # requires id-token: write here as well as in publish.yml.
   publish:
     name: Publish to npm
     needs: release

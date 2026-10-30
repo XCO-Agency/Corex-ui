@@ -59,4 +59,4 @@ A push that does not change the version does not tag or publish. Versions alread
 
 The workflow contract, secrets, dry run, and how to recover a failed publish are in [docs/releasing.md](docs/releasing.md).
 
-GitHub Actions must be allowed to open pull requests (repository setting **Allow GitHub Actions to create and approve pull requests**). `NPM_TOKEN` must be a granular or automation token that can publish `@xco-agency/corex-ui`.
+GitHub Actions must be allowed to open pull requests (repository setting **Allow GitHub Actions to create and approve pull requests**). npm publish uses Trusted Publishing (GitHub OIDC) for `@xco-agency/corex-ui`, configured on npmjs.com for both `publish.yml` and `release.yml`.

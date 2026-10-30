@@ -24,6 +24,10 @@ on:
         required: false
         default: false
 
+# id-token: write lets npm Trusted Publishing exchange a GitHub OIDC token.
+# No npm access token is used. Direct release:published and workflow_dispatch
+# runs are attributed to this file (publish.yml). A workflow_call from Release
+# is attributed to release.yml instead; that caller job also has id-token: write.
 permissions:
   contents: read
   id-token: write
@@ -102,24 +106,52 @@ jobs:
       - name: Install pnpm
         uses: pnpm/action-setup@v4
 
+      # Node 24 and npm >= 11.5.1 are required for npm Trusted Publishing.
+      # package-manager-cache stays off for the release build. registry-url
+      # points npm at the public registry; the placeholder token setup-node
+      # writes for that URL is removed in the next step so publish uses OIDC.
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
-          node-version: 22
-          cache: pnpm
+          node-version: "24"
           registry-url: https://registry.npmjs.org
+          package-manager-cache: false
+
+      - name: Use OIDC instead of an npm token
+        run: |
+          set -euo pipefail
+          if [ -n "${NPM_CONFIG_USERCONFIG:-}" ] && [ -f "$NPM_CONFIG_USERCONFIG" ]; then
+            grep -v '_authToken' "$NPM_CONFIG_USERCONFIG" > "${NPM_CONFIG_USERCONFIG}.tmp"
+            mv "${NPM_CONFIG_USERCONFIG}.tmp" "$NPM_CONFIG_USERCONFIG"
+          fi
+          # Later steps must not inherit setup-node's placeholder token.
+          echo "NODE_AUTH_TOKEN=" >> "$GITHUB_ENV"
+
+      - name: Ensure npm CLI supports trusted publishing
+        run: |
+          set -euo pipefail
+          unset NODE_AUTH_TOKEN
+          node --version
+          echo "bundled npm $(npm --version)"
+          npm install -g npm@11
+          version="$(npm --version)"
+          echo "npm ${version}"
+          node -e 'const [major, minor, patch] = process.argv[1].split(".").map((part) => Number(part)); const ok = major > 11 || (major === 11 && (minor > 5 || (minor === 5 && patch >= 1))); if (!ok) { console.error("npm " + process.argv[1] + " is older than 11.5.1"); process.exit(1); }' "$version"
 
       - name: Skip when this version is already on npm
         id: preflight
         env:
           RELEASE_TAG: ${{ steps.mode.outputs.tag }}
           DRY_RUN: ${{ steps.mode.outputs.dry_run }}
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: node scripts/publish-npm.mjs --preflight
+        run: |
+          unset NODE_AUTH_TOKEN
+          node scripts/publish-npm.mjs --preflight
 
       - name: Install dependencies
         if: steps.preflight.outputs.skip != 'true'
-        run: pnpm install --frozen-lockfile
+        run: |
+          unset NODE_AUTH_TOKEN
+          pnpm install --frozen-lockfile
 
       - name: Typecheck
         if: steps.preflight.outputs.skip != 'true'
@@ -138,5 +170,6 @@ jobs:
         env:
           RELEASE_TAG: ${{ steps.mode.outputs.tag }}
           DRY_RUN: ${{ steps.mode.outputs.dry_run }}
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: node scripts/publish-npm.mjs
+        run: |
+          unset NODE_AUTH_TOKEN
+          node scripts/publish-npm.mjs

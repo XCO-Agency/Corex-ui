@@ -56,7 +56,9 @@ Triggers:
 - `workflow_dispatch` with `dry_run` (default **true**)
 - `workflow_call` from Release after a new tag
 
-A real publish checks the tag, skips the upload if npm already has that version, then typechecks, tests, builds, and runs `npm publish --access public --provenance` from `packages/corex-ui`. Prerelease versions get their prerelease identifier as the dist-tag instead of `latest`.
+A real publish checks the tag, skips the upload if npm already has that version, then typechecks, tests, builds, and runs `npm publish --access public --provenance` from `packages/corex-ui`. Authentication is npm Trusted Publishing (GitHub OIDC), not an npm token. The job uses Node 24 and npm 11.5.1 or newer. Prerelease versions get their prerelease identifier as the dist-tag instead of `latest` (`npm publish --tag`).
+
+npm records the workflow that started the publish. `release: published` and `workflow_dispatch` run `publish.yml`, so that filename is the trusted publisher. Release on `main` calls the same workflow with `workflow_call`, and npm then records `release.yml` instead. Both filenames need a trusted publisher on the package, and both workflows grant `id-token: write`. No GitHub environment is set.
 
 A dry run from a branch such as `main` only checks that the two package.json versions match, then packs with `npm publish --dry-run`. It does not require a tag and it does not upload. A dry run checked out on a `v*` tag still requires that tag to match `package.json`.
 
@@ -66,10 +68,11 @@ A dry run from a branch such as `main` only checks that the two package.json ver
 
 | Secret         | Used for                                                                                                                                                                                                                   |
 | -------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `NPM_TOKEN`    | `NODE_AUTH_TOKEN` for the npm registry. Use an automation or granular token that can publish `@xco-agency/corex-ui` and bypass publish 2FA.                                                                                |
 | `GITHUB_TOKEN` | Provided by Actions. Opens the Version Packages pull request, pushes the annotated tag, and creates the GitHub Release. Do not put a second copy in the Release job's environment; `changesets/action` rejects a mismatch. |
 
-Provenance uses the job's `id-token: write` permission. The repository has to be public for npm provenance.
+Publish does not use `NPM_TOKEN` or `NODE_AUTH_TOKEN`. The library and its dependencies are on the public registry, so install does not need a read token. Provenance is generated from the job's `id-token: write` permission. The repository has to be public for npm provenance.
+
+Trusted publisher configuration lives on npmjs.com for `@xco-agency/corex-ui` (GitHub Actions, organization `XCO-Agency`, repository `Corex-ui`). Add one publisher for workflow filename `publish.yml` and one for `release.yml`. Allow `npm publish` and dist-tag changes. Leave the environment empty. A new trusted publisher must publish successfully within two days of being saved.
 
 ## When a publish fails
 
