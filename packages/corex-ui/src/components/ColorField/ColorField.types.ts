@@ -1,12 +1,18 @@
 import type { ReactNode } from "react";
+import type { PolarisPropsType } from "../../types/common";
 
-export type ColorFieldPropsType = {
+type NativeColorFieldProps = PolarisPropsType<"s-color-field">;
+
+export type ColorFieldPropsType = Omit<
+  NativeColorFieldProps,
+  "label" | "value" | "onChange" | "onBlur" | "onFocus" | "details" | "prefix" | "suffix"
+> & {
   label: ReactNode;
   value?: string;
   defaultValue?: string;
-  /** Allow selecting an alpha (transparency) value in the picker. */
+  /** Allow selecting an alpha (transparency) value. Defaults to `true`. */
   alpha?: boolean;
-  /** Fires on every text or picker change with the current color string. */
+  /** Legacy signature: fires on every change, mirroring `s-color-field`'s `onInput`. */
   onChange?: (value: string, id: string) => void;
   onBlur?: (event: Event) => void;
   onFocus?: (event: Event) => void;
@@ -16,7 +22,6 @@ export type ColorFieldPropsType = {
   error?: ReactNode;
   helpText?: ReactNode;
   details?: ReactNode;
-  /** Replaces the default color swatch prefix when provided. */
   prefix?: ReactNode;
   suffix?: ReactNode;
   autoComplete?: string;

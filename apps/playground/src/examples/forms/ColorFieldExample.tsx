@@ -18,9 +18,8 @@ export function ColorFieldExample() {
 
       <Grid.Item>
         <ColorField
-          label="Accent color (with alpha)"
+          label="Accent color"
           value={accentColor}
-          alpha
           details="Supports opacity and transparency controls"
           onChange={(val: string) => setAccentColor(val)}
         />

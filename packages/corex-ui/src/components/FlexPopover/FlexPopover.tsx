@@ -153,7 +153,9 @@ function findOpenHostingDialog(from: Element): HTMLDialogElement | null {
       }
     }
 
-    const parent = isElementNode(node) ? node.parentElement : null;
+    const parent: HTMLElement | null = isElementNode(node)
+      ? node.parentElement
+      : null;
     if (parent) {
       node = parent;
       continue;
@@ -182,7 +184,10 @@ function resolveDialogOverlayParent(
   doc: Document,
 ): HTMLElement {
   const root = dialog.getRootNode();
-  if (isShadowRoot(root, doc) && isElementNode(root.host)) return root.host;
+  if (isShadowRoot(root, doc) && isElementNode(root.host)) {
+    // ShadowHost is typed as Element; overlay host APIs need HTMLElement.
+    return root.host as HTMLElement;
+  }
   return dialog;
 }
 
