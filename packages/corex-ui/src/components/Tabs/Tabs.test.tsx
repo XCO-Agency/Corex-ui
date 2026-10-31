@@ -207,7 +207,7 @@ describe("Tabs", () => {
       );
       expect(trigger).toBeInTheDocument();
       expect(trigger).toHaveAttribute("accessibilitylabel", "All");
-      expect(trigger).toHaveAttribute("borderradius", "base");
+      expect(trigger).toHaveAttribute("borderradius", "large-200");
 
       const selectIcon = document.querySelector('s-icon[type="select"]');
       expect(selectIcon).toBeInTheDocument();

@@ -1,5 +1,11 @@
 # @xco-agency/corex-ui
 
+## 2.4.1
+
+### Patch Changes
+
+- Republish 2.4.0 contents with a fresh build. npm `2.4.0` was published from a stale `dist` (embedded `COREX_UI_VERSION` `2.3.1`) and omitted `RichTextEditor`, `Segment`, and `Media`.
+
 ## 2.4.0
 
 ### Minor Changes
