@@ -137,7 +137,8 @@ export const Icon = forwardRef<HTMLElement, IconPropsType>(function Icon(
         // `s-icon` has no "white" tone; the colour is set via `setIconRef`.
         tone={isWhite ? "auto" : tone}
         size={size}
-        aria-label={accessibilityLabel ?? source}
+        aria-label={accessibilityLabel}
+        aria-hidden={accessibilityLabel ? undefined : true}
         {...rest}
       />
     </div>

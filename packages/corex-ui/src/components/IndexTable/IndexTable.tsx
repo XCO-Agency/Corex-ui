@@ -643,7 +643,7 @@ function IndexTableInner(
   if (effectiveItemCount === 0 && emptyState) {
     return (
       <div ref={rootRef} id={id} className={rootClassName} style={style}>
-        <style>{INDEX_TABLE_CSS}</style>
+        <style dangerouslySetInnerHTML={{ __html: INDEX_TABLE_CSS }} />
         <div className="cx-it__empty">{emptyState}</div>
       </div>
     );
@@ -748,7 +748,7 @@ function IndexTableInner(
   return (
     <IndexTableContext.Provider value={contextValue}>
       <div ref={rootRef} id={id} className={rootClassName} style={rootStyle}>
-        <style>{INDEX_TABLE_CSS}</style>
+        <style dangerouslySetInnerHTML={{ __html: INDEX_TABLE_CSS }} />
 
         <div
           ref={tableRef}

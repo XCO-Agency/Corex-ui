@@ -39,6 +39,21 @@ describe("Modal", () => {
     expect(onClose).toHaveBeenCalledTimes(1);
   });
 
+  it("ignores hide events that bubble from nested overlays", () => {
+    const onClose = vi.fn();
+    render(
+      <Modal open onClose={onClose} title="Request info">
+        <select aria-label="Reason">
+          <option>One</option>
+        </select>
+      </Modal>,
+    );
+
+    const nested = screen.getByLabelText("Reason");
+    nested.dispatchEvent(new Event("hide", { bubbles: true }));
+    expect(onClose).not.toHaveBeenCalled();
+  });
+
   it("calls onClose when the element dispatches an afterhide event", () => {
     const onClose = vi.fn();
     render(

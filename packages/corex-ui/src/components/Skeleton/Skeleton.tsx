@@ -79,11 +79,16 @@ export const Skeleton: ForwardRefExoticComponent<
 
   const resolvedWidth = inlineSize ?? width ?? "100%";
   const resolvedHeight = blockSize ?? height ?? 16;
+  const widthIsPercentage =
+    typeof resolvedWidth === "string" && resolvedWidth.trim().endsWith("%");
 
   const baseStyle: CSSProperties = {
     display: "block",
     width: typeof resolvedWidth === "number" ? `${resolvedWidth}px` : resolvedWidth,
     height: typeof resolvedHeight === "number" ? `${resolvedHeight}px` : resolvedHeight,
+    // Percentage widths have no intrinsic size in shrink-to-fit containers
+    // (table cells, auto grid tracks). A floor keeps the bar measurable.
+    ...(widthIsPercentage ? { minInlineSize: "4rem" } : {}),
     borderRadius: resolveRadius(borderRadius),
     backgroundImage:
       "linear-gradient(90deg, var(--p-color-bg-fill-tertiary, #e4e5e7) 0%, var(--p-color-bg-surface-secondary-hover, #f6f6f7) 50%, var(--p-color-bg-fill-tertiary, #e4e5e7) 100%)",

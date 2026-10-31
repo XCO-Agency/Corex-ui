@@ -196,7 +196,9 @@ export function RangeSliderSingleThumb(props: RangeSliderSingleThumbPropsType) {
 
         {suffix ? <div style={{ flex: "0 0 auto", marginLeft: 8 }}>{suffix}</div> : null}
 
-        <style>{`
+        <style
+          dangerouslySetInnerHTML={{
+            __html: `
           .corex-range-slider-wrapper .corex-range-slider-output {
             opacity: 0;
             transform: translateX(-50%) translateY(2px);
@@ -255,7 +257,9 @@ export function RangeSliderSingleThumb(props: RangeSliderSingleThumbPropsType) {
           input[id="${id}"]::-moz-range-thumb:active {
             transform: scale(1.25);
           }
-        `}</style>
+        `,
+          }}
+        />
       </div>
     </RangeSliderLabelled>
   );

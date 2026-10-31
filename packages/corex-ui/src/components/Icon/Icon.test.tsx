@@ -80,4 +80,18 @@ describe("Icon", () => {
     render(<Icon type="save" size="small" />);
     expect(document.querySelector("s-icon")).toHaveAttribute("size", "small");
   });
+
+  it("hides an unlabeled string-source icon from assistive tech", () => {
+    render(<Icon type="alert-triangle" />);
+    const el = document.querySelector("s-icon");
+    expect(el).toHaveAttribute("aria-hidden", "true");
+    expect(el).not.toHaveAttribute("aria-label");
+  });
+
+  it("exposes a labelled string-source icon with the given label", () => {
+    render(<Icon type="alert-triangle" accessibilityLabel="Warning" />);
+    const el = document.querySelector("s-icon");
+    expect(el).toHaveAttribute("aria-label", "Warning");
+    expect(el).not.toHaveAttribute("aria-hidden");
+  });
 });

@@ -170,17 +170,23 @@ export const Modal = forwardRef<ModalElement, ModalPropsType>(function Modal(
     };
   }, [modalId, saveBar, saveBarId]);
 
-  const handleDismiss = useCallback(() => {
-    if (isOpenRef.current) {
-      onHide?.();
-      onClose?.();
-    }
-    if (saveBar) {
-      setChildState((prev) => (prev.open ? { ...prev, open: false } : prev));
-      const shopify = typeof window !== "undefined" ? (window as any).shopify : undefined;
-      shopify?.saveBar?.hide(saveBarId);
-    }
-  }, [onHide, onClose, saveBar, saveBarId]);
+  const handleDismiss = useCallback(
+    (event?: Event) => {
+      // Ignore dismissals that bubbled from nested overlays (Select, Popover, Menu).
+      if (event && event.target !== innerRef.current) return;
+      if (isOpenRef.current) {
+        onHide?.();
+        onClose?.();
+      }
+      if (saveBar) {
+        setChildState((prev) => (prev.open ? { ...prev, open: false } : prev));
+        const shopify =
+          typeof window !== "undefined" ? (window as any).shopify : undefined;
+        shopify?.saveBar?.hide(saveBarId);
+      }
+    },
+    [onHide, onClose, saveBar, saveBarId],
+  );
 
   useDomEvent(innerRef, "hide", handleDismiss);
   useDomEvent(innerRef, "afterhide", handleDismiss);

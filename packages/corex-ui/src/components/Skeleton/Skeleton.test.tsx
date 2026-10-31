@@ -47,4 +47,16 @@ describe("Skeleton", () => {
     expect(el?.getAttribute("style")).toContain("height: 32px");
     expect(el?.getAttribute("style")).toContain("border-radius: 6px");
   });
+
+  it("keeps a non-zero floor width when using a percentage in a shrink-to-fit parent", () => {
+    const { container } = render(
+      <div style={{ display: "inline-block" }}>
+        <Skeleton />
+      </div>,
+    );
+    const el = container.querySelector("[data-corex-skeleton]") as HTMLElement;
+    expect(el).not.toBeNull();
+    expect(el.style.minInlineSize).toBe("4rem");
+    expect(el.style.width).toBe("100%");
+  });
 });

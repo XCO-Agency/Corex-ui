@@ -1201,7 +1201,12 @@ export function IndexFiltersSearchField({
         </FlexPopover>
       ) : null}
 
-      <style>{`.corex-index-filters-scroll::-webkit-scrollbar, .corex-filters-scroll::-webkit-scrollbar { display: none; }`}</style>
+      <style
+        dangerouslySetInnerHTML={{
+          __html:
+            ".corex-index-filters-scroll::-webkit-scrollbar, .corex-filters-scroll::-webkit-scrollbar { display: none; }",
+        }}
+      />
     </InlineStack>
   );
 }

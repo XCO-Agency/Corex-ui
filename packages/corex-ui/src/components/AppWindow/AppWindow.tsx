@@ -44,16 +44,21 @@ export const AppWindow = forwardRef<AppWindowElement, AppWindowPropsType>(
 
     const saveBarId = id ? `${id}-save-bar` : "corex-app-window-save-bar";
 
-    const handleDismiss = useCallback(() => {
-      setChildState((prev) => (prev.open ? { ...prev, open: false } : prev));
-      if (saveBar) {
-        const shopify =
-          typeof window !== "undefined" ? (window as any).shopify : undefined;
-        shopify?.saveBar?.hide(saveBarId);
-      }
-      onHide?.();
-      onClose?.();
-    }, [saveBar, saveBarId, onHide, onClose]);
+    const handleDismiss = useCallback(
+      (event?: Event) => {
+        // Ignore dismissals that bubbled from nested overlays (Select, Popover, Menu).
+        if (event && event.target !== innerRef.current) return;
+        setChildState((prev) => (prev.open ? { ...prev, open: false } : prev));
+        if (saveBar) {
+          const shopify =
+            typeof window !== "undefined" ? (window as any).shopify : undefined;
+          shopify?.saveBar?.hide(saveBarId);
+        }
+        onHide?.();
+        onClose?.();
+      },
+      [saveBar, saveBarId, onHide, onClose],
+    );
 
     useDomEvent(innerRef, "hide", handleDismiss);
     useDomEvent(innerRef, "afterhide", handleDismiss);

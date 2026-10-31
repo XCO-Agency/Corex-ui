@@ -261,6 +261,27 @@ describe("Popover", () => {
     }
   });
 
+  it("warns in development when the trigger child is not a button", () => {
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+    render(
+      <Popover>
+        <Popover.Trigger>
+          <div>
+            <Button>Wrapped</Button>
+          </div>
+        </Popover.Trigger>
+        <Popover.Content>
+          <div>Body</div>
+        </Popover.Content>
+      </Popover>,
+    );
+
+    expect(warn).toHaveBeenCalledWith(
+      expect.stringContaining("Popover.Trigger"),
+    );
+    warn.mockRestore();
+  });
+
   describe("controlled mode", () => {
     function ControlledPopover({
       active,

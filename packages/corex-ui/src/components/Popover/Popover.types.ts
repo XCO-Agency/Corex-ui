@@ -24,6 +24,11 @@ export type PopoverPropsType = {
 };
 
 export type PopoverTriggerPropsType = {
+  /**
+   * Must be a direct `Button` (or `<button>` / `<s-button>`). The browser
+   * invoker API only activates on buttons — wrapped children (Tooltip, div,
+   * etc.) will not open the popover. Use `FlexPopover` for arbitrary anchors.
+   */
   children: ReactNode;
 };
 

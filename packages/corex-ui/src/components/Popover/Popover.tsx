@@ -14,6 +14,9 @@ import {
 } from "react";
 import { createWebComponent } from "../../core/createWebComponent";
 import { mergeRefs } from "../../core/mergeRefs";
+import { devWarning } from "../../utils/devWarning";
+import { Button } from "../Button";
+import { Clickable } from "../Clickable";
 import type {
   PopoverComponentType,
   PopoverContentPropsType,
@@ -74,9 +77,19 @@ export function usePopover(): PopoverContextType {
 
 export const usePopoverContext = usePopover;
 
+function isInvokerCapableChild(child: ReactElement): boolean {
+  const type = child.type;
+  if (type === Button || type === Clickable) return true;
+  return type === "button" || type === "s-button";
+}
+
 /**
- * Trigger component for Popover. Injects `commandFor` onto child activator (e.g. Button)
- * and captures the trigger DOM element for dimension measurements.
+ * Trigger component for Popover. Injects `commandFor` onto a direct Button
+ * (or `<button>` / `<s-button>`) activator and captures the trigger DOM
+ * element for dimension measurements.
+ *
+ * The browser invoker API only works on buttons. For wrapped or non-button
+ * activators, use `FlexPopover` instead.
  */
 export const PopoverTrigger = forwardRef<HTMLElement, PopoverTriggerPropsType>(
   function PopoverTrigger({ children, ...props }, forwardedRef) {
@@ -85,6 +98,14 @@ export const PopoverTrigger = forwardRef<HTMLElement, PopoverTriggerPropsType>(
     const setTriggerRef = ctx?.setTriggerRef;
 
     if (isValidElement(children)) {
+      if (!isInvokerCapableChild(children)) {
+        devWarning(
+          "Popover.Trigger",
+          "expects a Button (or <button>/<s-button>) as its direct child so `commandFor` can open the popover. " +
+            "Wrapped or non-button activators will not open. Use FlexPopover for arbitrary anchors.",
+        );
+      }
+
       const childRef = (children as any).props?.ref ?? (children as any).ref;
       const mergedRef = mergeRefs(setTriggerRef, childRef, forwardedRef);
 
