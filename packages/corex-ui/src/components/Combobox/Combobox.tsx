@@ -336,7 +336,7 @@ const ComboboxInput = forwardRef<HTMLElement, ComboboxInputPropsType>(
                     padding="small-500"
                     borderRadius="base"
                   >
-                    <Icon source="x" tone="neutral" />
+                    <Icon source="x" color="subdued" />
                   </Clickable>
                 ) : showChevron ? (
                   <Clickable
@@ -346,7 +346,7 @@ const ComboboxInput = forwardRef<HTMLElement, ComboboxInputPropsType>(
                     padding="small-500"
                     borderRadius="base"
                   >
-                    <Icon source="chevron-down" tone="neutral" />
+                    <Icon source="chevron-down" color="subdued" />
                   </Clickable>
                 ) : null}
               </InlineStack>

@@ -136,6 +136,7 @@ const STUB_TAGS = [
   "s-date-field",
   "s-money-field",
   "s-color-field",
+  "s-color-picker",
   "s-drop-zone",
   "s-email-field",
   "s-number-field",

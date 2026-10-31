@@ -58,6 +58,7 @@ export * from "./components/Divider";
 export * from "./components/Avatar";
 export * from "./components/Thumbnail";
 export * from "./components/Image";
+export * from "./components/Media";
 export * from "./components/Tooltip";
 export * from "./components/ChoiceList";
 export * from "./components/DateField";

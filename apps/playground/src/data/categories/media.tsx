@@ -7,6 +7,8 @@ import { ThumbnailExample } from "@/examples/media/ThumbnailExample";
 import ThumbnailExampleRaw from "@/examples/media/ThumbnailExample.tsx?raw";
 import { ImageExample } from "@/examples/media/ImageExample";
 import ImageExampleRaw from "@/examples/media/ImageExample.tsx?raw";
+import { MediaExample } from "@/examples/media/MediaExample";
+import MediaExampleRaw from "@/examples/media/MediaExample.tsx?raw";
 
 export const mediaComponents: ComponentEntry[] = [
   {
@@ -59,6 +61,20 @@ export const mediaComponents: ComponentEntry[] = [
         title: "Responsive images",
         Example: ImageExample,
         code: ImageExampleRaw,
+      },
+    ],
+  },
+  {
+    name: "Media",
+    slug: "media",
+    category: "Media",
+    description:
+      "Composable media library for browsing, selecting, and previewing files — with toolbar, upload, grid/list, and detail slots.",
+    examples: [
+      {
+        title: "Media library",
+        Example: MediaExample,
+        code: MediaExampleRaw,
       },
     ],
   },
