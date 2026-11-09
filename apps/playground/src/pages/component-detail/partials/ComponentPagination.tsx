@@ -1,5 +1,5 @@
-import { Link } from "react-router-dom";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { BlockStack, Box, Clickable, Divider, Icon, InlineStack, Text } from "@xco-agency/corex-ui";
 import type { ComponentNavigationItemType } from "../types";
 
 export type ComponentPaginationPropsType = {
@@ -9,42 +9,47 @@ export type ComponentPaginationPropsType = {
   basePath?: string;
 };
 
-const linkClass =
-  "group flex min-w-0 flex-col gap-0.5 rounded-md py-1 text-[13px] transition-colors";
-
 export function ComponentPagination({
   prev,
   next,
   basePath = "/components",
 }: ComponentPaginationPropsType) {
+  const navigate = useNavigate();
   if (!prev && !next) return null;
 
   return (
-    <nav
-      aria-label="Component navigation"
-      className="flex items-start justify-between gap-4 border-t border-border/60 pt-5"
-    >
-      {prev ? (
-        <Link to={`${basePath}/${prev.slug}`} className={linkClass}>
-          <span className="text-[11px] text-muted-foreground">Previous</span>
-          <span className="flex items-center gap-1 truncate font-medium text-foreground/80 group-hover:text-foreground">
-            <ChevronLeft className="size-3.5 shrink-0 transition-transform group-hover:-translate-x-0.5" />
-            {prev.name}
-          </span>
-        </Link>
-      ) : (
-        <span />
-      )}
-
-      {next ? (
-        <Link to={`${basePath}/${next.slug}`} className={`${linkClass} items-end text-right`}>
-          <span className="text-[11px] text-muted-foreground">Next</span>
-          <span className="flex items-center gap-1 truncate font-medium text-foreground/80 group-hover:text-foreground">
-            {next.name}
-            <ChevronRight className="size-3.5 shrink-0 transition-transform group-hover:translate-x-0.5" />
-          </span>
-        </Link>
-      ) : null}
-    </nav>
+    <BlockStack gap="small">
+      <Divider />
+      <InlineStack alignItems="start" justifyContent="space-between" gap="base">
+        {prev ? (
+          <Clickable onClick={() => navigate(`${basePath}/${prev.slug}`)} padding="small-200">
+            <BlockStack gap="small-500">
+              <Text color="subdued" variant="small">
+                Previous
+              </Text>
+              <InlineStack alignItems="center" gap="small-300">
+                <Icon source="arrow-left" />
+                <Text fontWeight="medium">{prev.name}</Text>
+              </InlineStack>
+            </BlockStack>
+          </Clickable>
+        ) : (
+          <Box />
+        )}
+        {next ? (
+          <Clickable onClick={() => navigate(`${basePath}/${next.slug}`)} padding="small-200">
+            <BlockStack gap="small-500" alignItems="end">
+              <Text color="subdued" variant="small">
+                Next
+              </Text>
+              <InlineStack alignItems="center" gap="small-300">
+                <Text fontWeight="medium">{next.name}</Text>
+                <Icon source="arrow-right" />
+              </InlineStack>
+            </BlockStack>
+          </Clickable>
+        ) : null}
+      </InlineStack>
+    </BlockStack>
   );
 }

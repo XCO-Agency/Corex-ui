@@ -1,41 +1,24 @@
-import {
-  MousePointerClick,
-  CheckSquare,
-  LayoutGrid,
-  MessageSquare,
-  Image,
-  SquareStack,
-  Type,
-  Compass,
-  ShoppingBag,
-  Layers,
-  SlidersHorizontal,
-  TrendingUp,
-  Rocket,
-  Code2,
-  Sparkles,
-  type LucideIcon,
-} from "lucide-react";
-import type { CategoryType } from "@/data/types";
+import type { IconType } from "@xco-agency/corex-ui";
 
-export const CATEGORY_ICONS: Record<string, LucideIcon> = {
-  Actions: MousePointerClick,
-  Forms: CheckSquare,
-  Layout: LayoutGrid,
-  Feedback: MessageSquare,
-  Media: Image,
-  Overlays: SquareStack,
-  Typography: Type,
-  Navigation: Compass,
-  "App Bridge": ShoppingBag,
-  Layouts: SlidersHorizontal,
-  Settings: SlidersHorizontal,
-  Metrics: TrendingUp,
-  Onboarding: Rocket,
-  Utilities: Code2,
-  "Growth & Ecosystem": Sparkles,
+export const CATEGORY_ICONS: Record<string, IconType> = {
+  Actions: "button",
+  Forms: "forms",
+  Layout: "layout-block",
+  Feedback: "chat",
+  Media: "image",
+  Overlays: "layout-popup",
+  Typography: "text",
+  Navigation: "compass",
+  "App Bridge": "store",
+  Layouts: "layout-columns-2",
+  Settings: "settings",
+  Metrics: "chart-vertical",
+  Onboarding: "rocket",
+  Utilities: "code",
+  "Growth & Ecosystem": "star",
+  Analytics: "chart-vertical",
 };
 
-export function getCategoryIcon(category: string): LucideIcon {
-  return CATEGORY_ICONS[category] ?? Layers;
+export function getCategoryIcon(category: string): IconType {
+  return CATEGORY_ICONS[category] ?? "categories";
 }

@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
-import { ArrowRight, Check, Copy, Download, Info } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { ArrowRight, Check, Info } from "lucide-react";
+import { Button } from "@xco-agency/corex-ui";
 import { CommandSnippet } from "@/components/CommandSnippet";
 import { registry } from "@/data/registry";
 import { COREX_UI_VERSION } from "@/lib/version";
@@ -265,18 +265,10 @@ export function Installation() {
           ) : (
             <>
               <div className="flex flex-wrap gap-2">
-                <Button size="xs" className="h-7 px-2.5" onClick={handleCopySkill}>
-                  {copiedSkill ? <Check /> : <Copy />}
+                <Button icon={copiedSkill ? "check" : "clipboard"} onClick={handleCopySkill}>
                   {copiedSkill ? "Copied" : "Copy SKILL.md"}
                 </Button>
-                <Button
-                  size="xs"
-                  variant="outline"
-                  nativeButton={false}
-                  className="h-7 px-2.5"
-                  render={<a href="/SKILL.md" download="corex-ui-skill.md" />}
-                >
-                  <Download />
+                <Button icon="download" variant="secondary" href="/SKILL.md" target="_blank">
                   Download
                 </Button>
               </div>

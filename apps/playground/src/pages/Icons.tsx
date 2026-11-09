@@ -1,15 +1,6 @@
 import * as React from "react";
 import { Search, X, Copy, Check, Sparkles, Code2, Info } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-} from "@/components/ui/dialog";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
-import { Icon, IconType } from "@xco-agency/corex-ui";
+import { Badge, Icon, Modal, Text, type IconType } from "@xco-agency/corex-ui";
 import { cn } from "@/lib/utils";
 import iconsDataRaw from "@/data/icons.json";
 
@@ -339,30 +330,20 @@ export function Icons() {
       )}
 
       {/* Inspect Icon Detail Dialog */}
-      <Dialog
+      <Modal
         open={Boolean(inspectIcon)}
-        onOpenChange={(open) => {
-          if (!open) {
-            setInspectIcon(null);
-            setCopiedModalSnippet(null);
-          }
+        title={inspectIcon?.title ?? "Icon"}
+        onClose={() => {
+          setInspectIcon(null);
+          setCopiedModalSnippet(null);
         }}
       >
         {inspectIcon && (
-          <DialogContent className="max-w-xl rounded-2xl border border-border bg-card p-6 shadow-2xl">
-            <DialogHeader className="gap-1">
-              <div className="flex items-center gap-2">
-                <Badge variant="secondary" className="font-mono text-xs">
-                  {inspectIcon.category}
-                </Badge>
-                <DialogTitle className="text-xl font-bold tracking-tight text-foreground">
-                  {inspectIcon.title}
-                </DialogTitle>
-              </div>
-              <DialogDescription className="font-mono text-xs text-muted-foreground">
-                type=&quot;{inspectIcon.name}&quot;
-              </DialogDescription>
-            </DialogHeader>
+          <>
+            <Badge>{inspectIcon.category}</Badge>
+            <Text color="subdued" variant="small">
+              type=&quot;{inspectIcon.name}&quot;
+            </Text>
 
             {/* Icon Multi-Tone Previews */}
             <div className="space-y-4 pt-2">
@@ -513,9 +494,9 @@ export function Icons() {
                 </button>
               </div>
             </div>
-          </DialogContent>
+          </>
         )}
-      </Dialog>
+      </Modal>
     </div>
   );
 }

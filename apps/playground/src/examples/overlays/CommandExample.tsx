@@ -37,7 +37,7 @@ export function CommandExample() {
           Inline command menu
         </Text>
         <Text as="p" variant="small" color="subdued">
-          Filterable list with groups, shortcuts, and empty state — with the shadcn Command API.
+          Filterable list with groups, shortcuts, and empty state.
         </Text>
         <Command label="Command menu">
           <Command.Input placeholder="Type a command or search..." />

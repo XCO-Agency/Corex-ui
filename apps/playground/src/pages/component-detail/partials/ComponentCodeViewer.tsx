@@ -1,9 +1,14 @@
 import * as React from "react";
 import { Highlight, themes } from "prism-react-renderer";
-import { Check, Copy } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
-import { cn } from "@/lib/utils";
+import {
+  Badge,
+  BlockStack,
+  Box,
+  Button,
+  InlineStack,
+  Text,
+  Tooltip,
+} from "@xco-agency/corex-ui";
 import type { FileItemType } from "@/data/types";
 import { FileTree } from "./FileTree";
 
@@ -26,9 +31,8 @@ export function ComponentCodeViewer({
   const [activeFilePath, setActiveFilePath] = React.useState<string>(
     files && files.length > 0 ? files[0]!.path : filename,
   );
-
-  // Theme detection for light (themes.github) and dark (themes.vsDark)
   const [isDark, setIsDark] = React.useState(false);
+
   React.useEffect(() => {
     setIsDark(document.documentElement.classList.contains("dark"));
     const observer = new MutationObserver(() => {
@@ -43,7 +47,7 @@ export function ComponentCodeViewer({
 
   const activeFile = React.useMemo(() => {
     if (files && files.length > 0) {
-      return files.find((f) => f.path === activeFilePath) ?? files[0]!;
+      return files.find((file) => file.path === activeFilePath) ?? files[0]!;
     }
     return { name: filename, path: filename, code };
   }, [files, activeFilePath, filename, code]);
@@ -61,7 +65,6 @@ export function ComponentCodeViewer({
   };
 
   const hasMultipleFiles = Boolean(files && files.length > 0);
-
   const languageLabel =
     {
       tsx: "TS",
@@ -76,94 +79,56 @@ export function ComponentCodeViewer({
     }[language] ?? language.slice(0, 4).toUpperCase();
 
   return (
-    <div
-      className={cn(
-        "relative flex flex-col md:flex-row overflow-hidden rounded-xl border border-border/80 bg-card shadow-xs",
-        className,
-      )}
-    >
-      {/* File Tree for multi-file blocks */}
-      {hasMultipleFiles && (
-        <FileTree
-          files={files!}
-          activeFilePath={activeFilePath}
-          onSelectFile={setActiveFilePath}
-        />
-      )}
-
-      {/* Main Code Editor Panel */}
-      <div className="flex-1 min-w-0 flex flex-col">
-        {/* Top Header Bar */}
-        <div className="flex h-10 items-center justify-between border-b border-border/70 bg-muted/30 px-4">
-          <div className="flex items-center gap-2">
-            <span className="inline-flex items-center justify-center rounded bg-zinc-800 dark:bg-zinc-700 px-1.5 py-0.5 font-mono text-[10px] font-bold text-white tracking-wide">
-              {languageLabel}
-            </span>
-            <span className="font-mono text-xs text-foreground/80 font-medium">
-              {activeFile.path}
-            </span>
-          </div>
-
-          <Tooltip>
-            <TooltipTrigger
-              render={
+    <Box className={className} background="base" overflow="hidden">
+      <InlineStack alignItems="stretch" wrap>
+        {hasMultipleFiles && (
+          <FileTree
+            files={files!}
+            activeFilePath={activeFilePath}
+            onSelectFile={setActiveFilePath}
+          />
+        )}
+        <BlockStack gap="none" grow minInlineSize="0">
+          <Box paddingInline="small" paddingBlock="small-200" background="subdued">
+            <InlineStack alignItems="center" justifyContent="space-between" gap="small">
+              <InlineStack alignItems="center" gap="small-200">
+                <Badge>{languageLabel}</Badge>
+                <Text variant="small">{activeFile.path}</Text>
+              </InlineStack>
+              <Tooltip content={copied ? "Copied code" : "Copy code"}>
                 <Button
-                  type="button"
-                  variant="ghost"
-                  size="icon-xs"
-                  className="size-7 rounded-md text-muted-foreground hover:bg-muted hover:text-foreground"
+                  icon={copied ? "check" : "clipboard"}
+                  variant="tertiary"
+                  accessibilityLabel={copied ? "Copied code" : "Copy code"}
                   onClick={handleCopy}
                 />
-              }
+              </Tooltip>
+            </InlineStack>
+          </Box>
+          <Box padding="small" overflow="hidden">
+            <Highlight
+              theme={isDark ? themes.vsDark : themes.github}
+              code={activeCode}
+              language={language}
             >
-              {copied ? (
-                <Check className="size-3.5 text-emerald-600 dark:text-emerald-400" />
-              ) : (
-                <Copy className="size-3.5" />
-              )}
-            </TooltipTrigger>
-            <TooltipContent>{copied ? "Copied code!" : "Copy code"}</TooltipContent>
-          </Tooltip>
-        </div>
-
-        {/* Code Content with Line Numbers */}
-        <div className="overflow-x-auto p-4 select-text">
-          <Highlight
-            theme={isDark ? themes.vsDark : themes.github}
-            code={activeCode}
-            language={language}
-          >
-            {({
-              className: highlightClass,
-              style,
-              tokens,
-              getLineProps,
-              getTokenProps,
-            }) => (
-              <pre
-                className={cn(
-                  highlightClass,
-                  "m-0 font-mono text-[13px] leading-relaxed",
-                )}
-                style={{ ...style, background: "transparent" }}
-              >
-                {tokens.map((line, lineIndex) => (
-                  <div key={lineIndex} {...getLineProps({ line })} className="table-row">
-                    <span className="table-cell select-none pr-5 text-right font-mono text-xs text-muted-foreground/45 min-w-[2rem]">
-                      {lineIndex + 1}
-                    </span>
-                    <span className="table-cell">
+              {({ className: highlightClass, style, tokens, getLineProps, getTokenProps }) => (
+                <pre className={highlightClass} style={{ ...style, background: "transparent", margin: 0 }}>
+                  {tokens.map((line, lineIndex) => (
+                    <div key={lineIndex} {...getLineProps({ line })}>
+                      <Text color="subdued" variant="small">
+                        {lineIndex + 1}{" "}
+                      </Text>
                       {line.map((token, tokenIndex) => (
                         <span key={tokenIndex} {...getTokenProps({ token })} />
                       ))}
-                    </span>
-                  </div>
-                ))}
-              </pre>
-            )}
-          </Highlight>
-        </div>
-      </div>
-    </div>
+                    </div>
+                  ))}
+                </pre>
+              )}
+            </Highlight>
+          </Box>
+        </BlockStack>
+      </InlineStack>
+    </Box>
   );
 }

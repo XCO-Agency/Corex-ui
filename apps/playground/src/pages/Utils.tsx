@@ -1,15 +1,5 @@
 import * as React from "react";
-import {
-  Code2,
-  Sparkles,
-  Layers,
-  ArrowUpRight,
-  ExternalLink,
-  Copy,
-  Check,
-} from "lucide-react";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { Badge, Button, type BadgePropsType } from "@xco-agency/corex-ui";
 import { ComponentCodeViewer } from "./component-detail/partials/ComponentCodeViewer";
 
 import { UseSaveBarDemo } from "@/examples/utils/UseSaveBarDemo";
@@ -34,8 +24,7 @@ type HookDocItemType = {
   id: string;
   name: string;
   badge: string;
-  badgeVariant?:
-    "default" | "secondary" | "outline" | "destructive" | "success" | "warning";
+  badgeTone?: BadgePropsType["tone"];
   description: string;
   importCode: string;
   DemoComponent: React.ComponentType;
@@ -50,7 +39,7 @@ const HOOKS_DATA: HookDocItemType[] = [
     id: "use-save-bar",
     name: "useSaveBar",
     badge: "App Bridge",
-    badgeVariant: "default",
+    badgeTone: "info",
     description:
       "Controls the Shopify Admin top SaveBar imperatively, allowing apps to show, hide, toggle, and trigger discard confirmation dialogs.",
     importCode: `import { useSaveBar } from "@xco-agency/corex-ui";`,
@@ -85,7 +74,7 @@ const HOOKS_DATA: HookDocItemType[] = [
     id: "use-app-window-save-bar",
     name: "useAppWindowSaveBar",
     badge: "App Bridge & Iframe",
-    badgeVariant: "success",
+    badgeTone: "success",
     description:
       "Connects an iframe page opened via <AppWindow saveBar /> with the host SaveBar, bidirectional syncing form dirty state, loading, and save/discard actions.",
     importCode: `import { useAppWindowSaveBar } from "@xco-agency/corex-ui";`,
@@ -144,7 +133,7 @@ const HOOKS_DATA: HookDocItemType[] = [
     id: "use-toast",
     name: "useToast",
     badge: "App Bridge",
-    badgeVariant: "default",
+    badgeTone: "info",
     description:
       "Dispatches native Shopify App Bridge non-blocking toast notifications across the merchant's admin window.",
     importCode: `import { useToast } from "@xco-agency/corex-ui";`,
@@ -165,7 +154,7 @@ const HOOKS_DATA: HookDocItemType[] = [
     id: "use-dimension",
     name: "useDimension",
     badge: "Responsive Layout",
-    badgeVariant: "secondary",
+    badgeTone: "info",
     description:
       "Tracks container or window dimensions with modern Polaris responsive breakpoints (xs < 490, sm < 768, md < 1040, lg >= 1040) using ResizeObserver.",
     importCode: `import { useDimension } from "@xco-agency/corex-ui";`,
@@ -214,7 +203,7 @@ const HOOKS_DATA: HookDocItemType[] = [
     id: "use-params",
     name: "useParams",
     badge: "Routing & Embed",
-    badgeVariant: "secondary",
+    badgeTone: "info",
     description:
       "Safely parses Shopify embedded app URL parameters (shop, host, locale) and provides helpers to update or clear query parameters without triggering full page reloads.",
     importCode: `import { useParams } from "@xco-agency/corex-ui";`,
@@ -254,7 +243,7 @@ const HOOKS_DATA: HookDocItemType[] = [
     id: "use-storage",
     name: "useStorage",
     badge: "State Persistence",
-    badgeVariant: "outline",
+    badgeTone: undefined,
     description:
       "Reactive localStorage and sessionStorage hook with automatic JSON serialization, TTL expiration duration, and multi-tab synchronization.",
     importCode: `import { useStorage } from "@xco-agency/corex-ui";`,
@@ -318,14 +307,8 @@ export function Utils() {
       {/* Page Header */}
       <header className="space-y-4 pb-8 border-b border-border/80">
         <div className="flex flex-wrap items-center gap-2">
-          <Badge variant="outline" className="gap-1.5 px-2.5 py-1 text-xs font-medium">
-            <Code2 className="size-3.5 text-muted-foreground" />
-            <span>Corex UI Utilities</span>
-          </Badge>
-          <Badge variant="secondary" className="gap-1.5 px-2.5 py-1 text-xs font-medium">
-            <Sparkles className="size-3 text-emerald-500" />
-            <span>6 Production Hooks</span>
-          </Badge>
+          <Badge>Corex UI Utilities</Badge>
+          <Badge tone="success">6 Production Hooks</Badge>
         </div>
 
         <div className="space-y-2">
@@ -370,29 +353,16 @@ export function Utils() {
                     <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground font-mono">
                       {hook.name}()
                     </h2>
-                    <Badge variant={hook.badgeVariant ?? "secondary"} className="text-xs">
-                      {hook.badge}
-                    </Badge>
+                    <Badge tone={hook.badgeTone}>{hook.badge}</Badge>
                   </div>
 
                   {/* Copy Import Button */}
                   <Button
-                    variant="outline"
-                    size="sm"
-                    className="h-8 gap-2 text-xs font-mono"
+                    icon={copiedId === hook.id ? "check" : "clipboard"}
+                    variant="secondary"
                     onClick={() => handleCopy(hook.id, hook.importCode)}
                   >
-                    {copiedId === hook.id ? (
-                      <>
-                        <Check className="size-3.5 text-emerald-500" />
-                        <span>Copied!</span>
-                      </>
-                    ) : (
-                      <>
-                        <Copy className="size-3.5" />
-                        <span>Copy Import</span>
-                      </>
-                    )}
+                    {copiedId === hook.id ? "Copied" : "Copy import"}
                   </Button>
                 </div>
 

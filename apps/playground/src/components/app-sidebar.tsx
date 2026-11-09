@@ -1,74 +1,62 @@
 import * as React from "react";
-import { Link, useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import {
-  BadgeCheck,
-  BookOpen,
-  ChevronRight,
-  Code2,
-  Grid2x2,
-  PencilRuler,
-  Rocket,
-  Search,
-} from "lucide-react";
-import {
-  Sidebar,
-  SidebarContent,
-  SidebarGroup,
-  SidebarGroupContent,
-  SidebarGroupLabel,
-  SidebarHeader,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
-  SidebarRail,
-} from "@/components/ui/sidebar";
-import {
+  Badge,
+  BlockStack,
+  Button,
+  Clickable,
   Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible";
+  Icon,
+  InlineStack,
+  Navigation,
+  Text,
+  type IconType,
+} from "@xco-agency/corex-ui";
 import { SidebarCategoryItem } from "@/components/SidebarCategoryItem";
 import { type ComponentEntry, blocks, registry } from "@/data/registry";
 import { APP_ICONS_DATA } from "@/data/apps-icons";
 import { COREX_UI_VERSION } from "@/lib/version";
-import { cn } from "@/lib/utils";
 
-export type AppSidebarPropsType = React.ComponentProps<typeof Sidebar> & {
+export type AppSidebarPropsType = {
   onOpenSearch?: () => void;
+  onNavigate?: () => void;
 };
 
-const GUIDE_LINKS = [
-  { to: "/", label: "Overview", icon: BookOpen, match: (p: string) => p === "/" },
+const GUIDE_LINKS: {
+  to: string;
+  label: string;
+  icon: IconType;
+  match: (pathname: string) => boolean;
+  count?: number;
+}[] = [
+  { to: "/", label: "Overview", icon: "home", match: (pathname) => pathname === "/" },
   {
     to: "/installation",
     label: "Installation",
-    icon: Rocket,
-    match: (p: string) => p === "/installation",
+    icon: "import",
+    match: (pathname) => pathname === "/installation",
   },
-  { to: "/icons", label: "Icons", icon: Grid2x2, match: (p: string) => p === "/icons" },
+  { to: "/icons", label: "Icons", icon: "grid", match: (pathname) => pathname === "/icons" },
   {
     to: "/apps-icons",
     label: "Apps Icons",
-    icon: BadgeCheck,
-    match: (p: string) => p === "/apps-icons" || p === "/app-icons",
+    icon: "apps",
+    match: (pathname) => pathname === "/apps-icons" || pathname === "/app-icons",
     count: APP_ICONS_DATA.length,
   },
   {
     to: "/editor",
     label: "Editor",
-    icon: PencilRuler,
-    match: (p: string) => p === "/editor",
+    icon: "edit",
+    match: (pathname) => pathname === "/editor",
   },
   {
     to: "/utils",
     label: "Utils & Hooks",
-    icon: Code2,
-    match: (p: string) => p.startsWith("/utils"),
+    icon: "code",
+    match: (pathname) => pathname.startsWith("/utils"),
   },
 ];
-
-const navButtonClass =
-  "h-7 gap-2.5 px-2 text-[13px] text-muted-foreground hover:bg-foreground/5 hover:text-foreground data-active:bg-foreground/[0.06] data-active:text-foreground [&_svg]:size-3.5";
 
 const groupByCategory = (entries: ComponentEntry[]) =>
   Object.entries(
@@ -90,131 +78,121 @@ function SectionGroup({
   children: React.ReactNode;
 }) {
   const [open, setOpen] = React.useState(defaultOpen);
+
   React.useEffect(() => {
     if (defaultOpen) setOpen(true);
   }, [defaultOpen]);
 
   return (
-    <Collapsible open={open} onOpenChange={setOpen}>
-      <SidebarGroup className="py-1">
-        <SidebarGroupLabel
-          render={
-            <CollapsibleTrigger className="group/label flex h-7 w-full cursor-pointer items-center justify-between px-2 text-[11px] font-medium tracking-wide text-muted-foreground/80 uppercase hover:text-foreground" />
-          }
+    <Collapsible
+      framed={false}
+      expanded={open}
+      onExpandedChange={setOpen}
+      accessibilityLabel={label}
+      content={<BlockStack gap="none">{children}</BlockStack>}
+    >
+      {({ expanded, toggle }) => (
+        <Clickable
+          inlineSize="fill"
+          paddingInline="small-200"
+          paddingBlock="small-200"
+          onClick={toggle}
+          aria-expanded={expanded}
         >
-          <span>{label}</span>
-          <span className="flex items-center gap-1 font-mono text-[10px] normal-case tracking-normal">
-            {count}
-            <ChevronRight
-              className={cn(
-                "size-3 transition-transform duration-200",
-                open && "rotate-90",
-              )}
-            />
-          </span>
-        </SidebarGroupLabel>
-        <CollapsibleContent>
-          <SidebarGroupContent>
-            <SidebarMenu className="gap-px">{children}</SidebarMenu>
-          </SidebarGroupContent>
-        </CollapsibleContent>
-      </SidebarGroup>
+          <InlineStack alignItems="center" justifyContent="space-between">
+            <Text variant="xs" color="subdued" fontWeight="medium">
+              {label}
+            </Text>
+            <InlineStack alignItems="center" gap="small-300">
+              <Text variant="xs" color="subdued">
+                {count}
+              </Text>
+              <Icon source={expanded ? "chevron-up" : "chevron-down"} />
+            </InlineStack>
+          </InlineStack>
+        </Clickable>
+      )}
     </Collapsible>
   );
 }
 
-export function AppSidebar({ onOpenSearch, ...props }: AppSidebarPropsType) {
+export function AppSidebar({ onOpenSearch, onNavigate }: AppSidebarPropsType) {
+  const navigate = useNavigate();
   const { pathname } = useLocation();
   const componentGroups = React.useMemo(() => groupByCategory(registry), []);
   const blockCount = blocks.reduce((acc, group) => acc + group.components.length, 0);
 
+  const go = (to: string) => {
+    navigate(to);
+    onNavigate?.();
+  };
+
   return (
-    <Sidebar {...props}>
-      <SidebarHeader className="gap-2.5 px-3 pt-3 pb-2">
-        <Link to="/" className="flex h-7 items-center gap-2 px-1">
-          <span className="flex size-5 items-center justify-center rounded-[5px] bg-foreground font-mono text-[10px] font-bold text-background">
-            cx
-          </span>
-          <span className="text-sm font-semibold tracking-tight">Corex UI</span>
-          <span className="ml-auto rounded border border-sidebar-border px-1.5 py-px font-mono text-[10px] text-muted-foreground">
-            v{COREX_UI_VERSION}
-          </span>
-        </Link>
+    <Navigation>
+      <BlockStack gap="small">
+        <InlineStack alignItems="center" justifyContent="space-between" gap="small-200">
+          <Clickable onClick={() => go("/")} paddingInline="small-200" paddingBlock="small-300">
+            <InlineStack alignItems="center" gap="small-200">
+              <Text fontWeight="bold">cx</Text>
+              <Text fontWeight="semibold">Corex UI</Text>
+            </InlineStack>
+          </Clickable>
+          <Badge>v{COREX_UI_VERSION}</Badge>
+        </InlineStack>
+        <Button icon="search" variant="secondary" onClick={onOpenSearch} inlineSize="fill">
+          Search
+        </Button>
+      </BlockStack>
 
-        <button
-          type="button"
-          onClick={onOpenSearch}
-          className="flex h-7 w-full cursor-pointer items-center gap-2 rounded-md border border-sidebar-border bg-background px-2 text-xs text-muted-foreground transition-colors hover:border-foreground/20 hover:text-foreground"
-        >
-          <Search className="size-3.5" />
-          <span className="flex-1 text-left">Search</span>
-          <kbd className="pointer-events-none font-mono text-[10px] text-muted-foreground/80">
-            ⌘K
-          </kbd>
-        </button>
-      </SidebarHeader>
+      <Navigation.Section>
+        {GUIDE_LINKS.map(({ to, label, icon, match, count }) => (
+          <Navigation.Item
+            key={to}
+            id={to}
+            label={label}
+            icon={icon}
+            selected={match(pathname)}
+            badge={count !== undefined ? <Badge>{count}</Badge> : undefined}
+            onClick={() => go(to)}
+          />
+        ))}
+      </Navigation.Section>
 
-      <SidebarContent className="gap-0 px-1 pb-4">
-        <SidebarGroup className="py-1">
-          <SidebarGroupContent>
-            <SidebarMenu className="gap-px">
-              {GUIDE_LINKS.map(({ to, label, icon: Icon, match, count }) => (
-                <SidebarMenuItem key={to}>
-                  <SidebarMenuButton
-                    render={<Link to={to} />}
-                    isActive={match(pathname)}
-                    className={navButtonClass}
-                  >
-                    <Icon />
-                    <span className="flex-1">{label}</span>
-                    {count !== undefined && (
-                      <span className="font-mono text-[10px] text-muted-foreground/70">
-                        {count}
-                      </span>
-                    )}
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
+      <SectionGroup
+        label="Components"
+        count={registry.length}
+        defaultOpen={!pathname.startsWith("/blocks")}
+      >
+        {componentGroups.map(({ category, components }) => (
+          <SidebarCategoryItem
+            key={category}
+            category={category}
+            components={components}
+            basePath="components"
+            currentPath={pathname}
+            onNavigate={onNavigate}
+          />
+        ))}
+      </SectionGroup>
 
+      {blocks.length > 0 && (
         <SectionGroup
-          label="Components"
-          count={registry.length}
-          defaultOpen={!pathname.startsWith("/blocks")}
+          label="Blocks"
+          count={blockCount}
+          defaultOpen={pathname.startsWith("/blocks")}
         >
-          {componentGroups.map(({ category, components }) => (
+          {blocks.map(({ category, components }) => (
             <SidebarCategoryItem
               key={category}
               category={category}
               components={components}
-              basePath="components"
+              basePath="blocks"
               currentPath={pathname}
+              onNavigate={onNavigate}
             />
           ))}
         </SectionGroup>
-
-        {blocks.length > 0 && (
-          <SectionGroup
-            label="Blocks"
-            count={blockCount}
-            defaultOpen={pathname.startsWith("/blocks")}
-          >
-            {blocks.map(({ category, components }) => (
-              <SidebarCategoryItem
-                key={category}
-                category={category}
-                components={components}
-                basePath="blocks"
-                currentPath={pathname}
-              />
-            ))}
-          </SectionGroup>
-        )}
-      </SidebarContent>
-
-      <SidebarRail />
-    </Sidebar>
+      )}
+    </Navigation>
   );
 }

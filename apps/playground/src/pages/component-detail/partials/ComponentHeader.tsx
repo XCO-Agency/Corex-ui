@@ -1,7 +1,13 @@
 import * as React from "react";
-import { Check, Copy, FileCode2, ShoppingBag, Sparkles } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import {
+  Badge,
+  BlockStack,
+  Button,
+  Icon,
+  InlineCode,
+  InlineStack,
+  Text,
+} from "@xco-agency/corex-ui";
 import { COREX_UI_VERSION } from "@/lib/version";
 import { getCategoryIcon } from "@/lib/category-icons";
 
@@ -33,24 +39,15 @@ function ImportSnippet({ importName }: { importName: string }) {
   };
 
   return (
-    <div className="flex h-7 min-w-0 max-w-full items-center gap-2 rounded-md border border-border/80 bg-muted/30 pr-0.5 pl-2.5">
-      <code className="min-w-0 truncate font-mono text-xs text-foreground/90">
-        <span className="text-violet-600 dark:text-violet-400">import</span> {"{ "}
-        <span className="font-semibold">{importName}</span>
-        {" }"} <span className="text-violet-600 dark:text-violet-400">from</span>{" "}
-        <span className="text-emerald-700 dark:text-emerald-400">"@xco-agency/corex-ui"</span>
-      </code>
+    <InlineStack alignItems="center" gap="small-200">
+      <InlineCode>{code}</InlineCode>
       <Button
-        type="button"
-        variant="ghost"
-        size="icon-xs"
+        icon={copied ? "check" : "clipboard"}
+        variant="tertiary"
+        accessibilityLabel={copied ? "Copied import" : "Copy import"}
         onClick={handleCopy}
-        aria-label={copied ? "Copied import" : "Copy import"}
-        className="size-6 shrink-0 text-muted-foreground"
-      >
-        {copied ? <Check className="text-emerald-600" /> : <Copy />}
-      </Button>
-    </div>
+      />
+    </InlineStack>
   );
 }
 
@@ -62,74 +59,48 @@ export function ComponentHeader({
   isBlock,
   importName = name,
 }: ComponentHeaderPropsType) {
-  const CategoryIcon = getCategoryIcon(category);
-
   return (
-    <header id="overview" className="scroll-mt-20 space-y-4">
-      <div className="flex flex-wrap items-center gap-2 text-[11px]">
-        <span className="inline-flex items-center gap-1.5 font-medium text-muted-foreground">
-          <CategoryIcon className="size-3.5" />
-          {isBlock ? `Blocks · ${category}` : category}
-        </span>
-        <span className="text-border">/</span>
-        <span className="font-mono text-muted-foreground">v{COREX_UI_VERSION}</span>
-        {requiresEmbeddedContext && (
-          <Badge
-            variant="secondary"
-            className="gap-1.5 border border-amber-500/30 bg-amber-500/10 px-2 py-0.5 text-amber-900 dark:text-amber-200"
-          >
-            <ShoppingBag className="text-amber-600 dark:text-amber-400" />
-            App Bridge session
-          </Badge>
-        )}
-      </div>
+    <BlockStack gap="small" id="overview">
+      <InlineStack gap="small-200" alignItems="center" wrap>
+        <InlineStack gap="small-300" alignItems="center">
+          <Icon source={getCategoryIcon(category)} />
+          <Text color="subdued">{isBlock ? `Blocks · ${category}` : category}</Text>
+        </InlineStack>
+        <Text color="subdued">/</Text>
+        <Text color="subdued">v{COREX_UI_VERSION}</Text>
+        {requiresEmbeddedContext && <Badge tone="warning">App Bridge session</Badge>}
+      </InlineStack>
 
-      <div className="space-y-2">
-        <h1 className="text-2xl font-semibold tracking-tight text-foreground sm:text-[28px]">
+      <BlockStack gap="small-200">
+        <Text as="h1" variant="headingXl" heading>
           {name}
-        </h1>
-        <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
+        </Text>
+        <Text as="p" color="subdued">
           {description}
-        </p>
-      </div>
+        </Text>
+      </BlockStack>
 
       {!isBlock && (
-        <div className="flex flex-wrap items-center gap-2">
+        <InlineStack gap="small-200" alignItems="center" wrap>
           <ImportSnippet importName={importName} />
           <Button
-            variant="ghost"
-            nativeButton={false}
-            size="xs"
-            className="h-7 px-2 text-xs text-muted-foreground"
-            render={
-              <a
-                href={`${REPO_URL}/packages/corex-ui/src/components/${importName}/${importName}.tsx`}
-                target="_blank"
-                rel="noopener noreferrer"
-              />
-            }
+            icon="file"
+            variant="tertiary"
+            href={`${REPO_URL}/packages/corex-ui/src/components/${importName}/${importName}.tsx`}
+            target="_blank"
           >
-            <FileCode2 />
             Source
           </Button>
           <Button
-            variant="ghost"
-            nativeButton={false}
-            size="xs"
-            className="h-7 px-2 text-xs text-muted-foreground"
-            render={
-              <a
-                href={`${REPO_URL}/.agents/skills/corex-ui-components/SKILL.md#${importName.toLowerCase()}`}
-                target="_blank"
-                rel="noopener noreferrer"
-              />
-            }
+            icon="wand"
+            variant="tertiary"
+            href={`${REPO_URL}/.agents/skills/corex-ui-components/SKILL.md#${importName.toLowerCase()}`}
+            target="_blank"
           >
-            <Sparkles />
             AI skill
           </Button>
-        </div>
+        </InlineStack>
       )}
-    </header>
+    </BlockStack>
   );
 }

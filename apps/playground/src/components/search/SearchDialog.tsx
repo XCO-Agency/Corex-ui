@@ -1,15 +1,8 @@
 import * as React from "react";
 import { useNavigate } from "react-router-dom";
-import { Search, X, ArrowRight, CornerDownLeft } from "lucide-react";
-import {
-  Dialog,
-  DialogContent,
-  DialogTitle,
-  DialogDescription,
-} from "@/components/ui/dialog";
-import { allEntries, blocks, type ComponentEntry } from "@/data/registry";
+import { Command, Icon } from "@xco-agency/corex-ui";
+import { blocks, registry, type ComponentEntry } from "@/data/registry";
 import { getCategoryIcon } from "@/lib/category-icons";
-import { cn } from "@/lib/utils";
 
 const UTILS_ENTRIES: ComponentEntry[] = [
   {
@@ -61,30 +54,57 @@ const UTILS_ENTRIES: ComponentEntry[] = [
   },
 ];
 
-const ICONS_ENTRY: ComponentEntry = {
-  name: "Icons Library",
-  slug: "icons",
-  category: "Media",
-  description:
-    "Browse, search, preview, and copy all 517 official Shopify Polaris icons with tones and keywords.",
-  examples: [],
+type SearchItemType = {
+  value: string;
+  entry: ComponentEntry;
+  href: string;
 };
 
-const APPS_ICONS_ENTRY: ComponentEntry = {
-  name: "Apps Icons & Trust Badges",
-  slug: "apps-icons",
-  category: "Media",
-  description:
-    "High-converting store trust badges, free shipping, easy returns, secure checkout, 24/7 support, and payment vector SVGs.",
-  examples: [],
-};
-
-const searchableEntries = [
-  ...allEntries,
-  ...UTILS_ENTRIES,
-  ICONS_ENTRY,
-  APPS_ICONS_ENTRY,
+const searchItems: SearchItemType[] = [
+  ...registry.map((entry) => ({
+    value: `component:${entry.slug}`,
+    entry,
+    href: `/components/${entry.slug}`,
+  })),
+  ...blocks.flatMap((group) =>
+    group.components.map((entry) => ({
+      value: `block:${entry.slug}`,
+      entry,
+      href: `/blocks/${entry.slug}`,
+    })),
+  ),
+  ...UTILS_ENTRIES.map((entry) => ({
+    value: `util:${entry.slug}`,
+    entry,
+    href: `/${entry.slug}`,
+  })),
+  {
+    value: "page:icons",
+    entry: {
+      name: "Icons Library",
+      slug: "icons",
+      category: "Media",
+      description:
+        "Browse, search, preview, and copy all official Shopify Polaris icons with tones and keywords.",
+      examples: [],
+    },
+    href: "/icons",
+  },
+  {
+    value: "page:apps-icons",
+    entry: {
+      name: "Apps Icons & Trust Badges",
+      slug: "apps-icons",
+      category: "Media",
+      description:
+        "Store trust badges, free shipping, easy returns, secure checkout, and payment vector SVGs.",
+      examples: [],
+    },
+    href: "/apps-icons",
+  },
 ];
+
+const itemByValue = new Map(searchItems.map((item) => [item.value, item]));
 
 function getSearchScore(entry: ComponentEntry, query: string): number {
   const name = entry.name.toLowerCase();
@@ -92,53 +112,36 @@ function getSearchScore(entry: ComponentEntry, query: string): number {
   const category = entry.category.toLowerCase();
   const desc = entry.description.toLowerCase();
 
-  // 1. Exact match on component name or slug (top priority)
   if (name === query || slug === query) return 1000;
-
-  // 2. Name starts with search query
   if (name.startsWith(query)) return 500;
-
-  // 3. Slug starts with search query
   if (slug.startsWith(query)) return 400;
-
-  // 4. Name contains a word starting with query (e.g. "Settings Layout" matching "layout")
-  const words = name.split(/[\s-_]+/);
-  if (words.some((w) => w.startsWith(query))) return 300;
-
-  // 5. Name contains query substring (e.g. "FormLayout" matching "layout")
+  if (name.split(/[\s-_]+/).some((word) => word.startsWith(query))) return 300;
   if (name.includes(query)) return 200;
-
-  // 6. Slug contains query substring
   if (slug.includes(query)) return 150;
-
-  // 7. Description exact word match or starts with query
-  const descWords = desc.split(/[\s-_]+/);
-  if (descWords.some((w) => w === query)) return 80;
+  if (desc.split(/[\s-_]+/).some((word) => word === query)) return 80;
   if (desc.includes(query)) return 50;
-
-  // 8. Category exact match
   if (category === query) return 30;
-
-  // 9. Category contains query
   if (category.includes(query)) return 10;
-
   return 0;
 }
+
+const groupedItems = (() => {
+  const groups = new Map<string, SearchItemType[]>();
+  for (const item of searchItems) {
+    const list = groups.get(item.entry.category) ?? [];
+    list.push(item);
+    groups.set(item.entry.category, list);
+  }
+  return [...groups.entries()];
+})();
 
 export type SearchDialogPropsType = {
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
 };
 
-export function SearchDialog({
-  open: controlledOpen,
-  onOpenChange,
-}: SearchDialogPropsType) {
+export function SearchDialog({ open: controlledOpen, onOpenChange }: SearchDialogPropsType) {
   const [internalOpen, setInternalOpen] = React.useState(false);
-  const [query, setQuery] = React.useState("");
-  const [activeIndex, setActiveIndex] = React.useState(0);
-  const inputRef = React.useRef<HTMLInputElement>(null);
-  const listRef = React.useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
 
   const isControlled = controlledOpen !== undefined;
@@ -146,31 +149,25 @@ export function SearchDialog({
 
   const setOpen = React.useCallback(
     (nextOpen: boolean) => {
-      if (isControlled) {
-        onOpenChange?.(nextOpen);
-      } else {
-        setInternalOpen(nextOpen);
-      }
-      if (!nextOpen) {
-        setQuery("");
-        setActiveIndex(0);
-      }
+      if (isControlled) onOpenChange?.(nextOpen);
+      else setInternalOpen(nextOpen);
     },
     [isControlled, onOpenChange],
   );
 
-  // Global keyboard shortcut: Cmd+K / Ctrl+K or /
   React.useEffect(() => {
-    function handleKeyDown(e: KeyboardEvent) {
-      if ((e.metaKey || e.ctrlKey) && e.key === "k") {
-        e.preventDefault();
+    function handleKeyDown(event: KeyboardEvent) {
+      const target = event.target;
+      const typing =
+        target instanceof HTMLInputElement ||
+        target instanceof HTMLTextAreaElement ||
+        (target instanceof HTMLElement && target.isContentEditable);
+
+      if ((event.metaKey || event.ctrlKey) && event.key === "k") {
+        event.preventDefault();
         setOpen(!isOpen);
-      } else if (
-        e.key === "/" &&
-        !isOpen &&
-        !(e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement)
-      ) {
-        e.preventDefault();
+      } else if (event.key === "/" && !isOpen && !typing) {
+        event.preventDefault();
         setOpen(true);
       }
     }
@@ -179,220 +176,46 @@ export function SearchDialog({
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [isOpen, setOpen]);
 
-  // Filter components, blocks, and utils with intelligent scoring & ranking
-  const results = React.useMemo(() => {
-    const trimmed = query.trim().toLowerCase();
-    if (!trimmed) {
-      return searchableEntries;
-    }
-    return searchableEntries
-      .map((entry) => ({ entry, score: getSearchScore(entry, trimmed) }))
-      .filter((item) => item.score > 0)
-      .sort((a, b) => b.score - a.score || a.entry.name.localeCompare(b.entry.name))
-      .map((item) => item.entry);
-  }, [query]);
-
-  // Reset active index when query changes
-  React.useEffect(() => {
-    setActiveIndex(0);
-  }, [query]);
-
-  // Ensure active element is scrolled into view
-  React.useEffect(() => {
-    if (listRef.current) {
-      const activeEl = listRef.current.querySelector<HTMLElement>(
-        `[data-result-index="${activeIndex}"]`,
-      );
-      activeEl?.scrollIntoView({ block: "nearest" });
-    }
-  }, [activeIndex]);
-
-  const handleSelect = React.useCallback(
-    (component: ComponentEntry) => {
-      setOpen(false);
-      if (component.slug === "icons") {
-        navigate("/icons");
-        return;
-      }
-      if (component.slug === "apps-icons") {
-        navigate("/apps-icons");
-        return;
-      }
-      if (component.slug.startsWith("utils")) {
-        navigate(`/${component.slug}`);
-        return;
-      }
-      const isBlock = blocks.some((b) =>
-        b.components.some((c) => c.slug === component.slug),
-      );
-      navigate(isBlock ? `/blocks/${component.slug}` : `/components/${component.slug}`);
-    },
-    [navigate, setOpen],
-  );
-
-  const handleInputKeyDown = (e: React.KeyboardEvent) => {
-    if (results.length === 0) return;
-
-    if (e.key === "ArrowDown") {
-      e.preventDefault();
-      setActiveIndex((prev) => (prev + 1) % results.length);
-    } else if (e.key === "ArrowUp") {
-      e.preventDefault();
-      setActiveIndex((prev) => (prev - 1 + results.length) % results.length);
-    } else if (e.key === "Enter") {
-      e.preventDefault();
-      const selected = results[activeIndex];
-      if (selected) {
-        handleSelect(selected);
-      }
-    }
+  const select = (value: string) => {
+    const item = itemByValue.get(value);
+    if (!item) return;
+    setOpen(false);
+    navigate(item.href);
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={setOpen}>
-      <DialogContent
-        showCloseButton={false}
-        className="max-w-2xl gap-0 overflow-hidden p-0 border border-border bg-card shadow-2xl rounded-2xl"
+    <Command.Dialog
+      open={isOpen}
+      onOpenChange={(next) => setOpen(next)}
+      title="Search components"
+      description="Search for components, blocks, and utilities."
+    >
+      <Command
+        label="Search components"
+        loop
+        filter={(value, search) => {
+          const query = search.trim().toLowerCase();
+          if (!query) return 1;
+          const item = itemByValue.get(value);
+          return item ? getSearchScore(item.entry, query) : 0;
+        }}
       >
-        <DialogTitle className="sr-only">Search components</DialogTitle>
-        <DialogDescription className="sr-only">
-          Search for components by name, category, or description.
-        </DialogDescription>
-
-        {/* Search Input Bar */}
-        <div className="flex items-center gap-3 border-b border-border px-4 py-3.5">
-          <Search className="size-5 text-muted-foreground shrink-0" />
-          <input
-            ref={inputRef}
-            type="text"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            onKeyDown={handleInputKeyDown}
-            placeholder="Search components, categories, or keywords..."
-            className="flex-1 bg-transparent text-base text-foreground placeholder:text-muted-foreground outline-none"
-            autoFocus
-          />
-          {query && (
-            <button
-              type="button"
-              onClick={() => {
-                setQuery("");
-                inputRef.current?.focus();
-              }}
-              className="rounded p-1 text-muted-foreground hover:text-foreground transition-colors"
-              title="Clear search"
-            >
-              <X className="size-4" />
-            </button>
-          )}
-          <kbd className="hidden sm:inline-flex select-none items-center gap-1 rounded border border-border bg-muted/60 px-1.5 py-0.5 font-mono text-[10px] font-medium text-muted-foreground">
-            ESC
-          </kbd>
-        </div>
-
-        {/* Results List */}
-        <div ref={listRef} className="max-h-[380px] overflow-y-auto p-2 scroll-py-2">
-          {results.length === 0 ? (
-            <div className="py-12 text-center">
-              <Search className="mx-auto size-8 text-muted-foreground/60 mb-2" />
-              <p className="text-sm font-medium text-foreground">No components found</p>
-              <p className="text-xs text-muted-foreground mt-1">
-                No matching results for &ldquo;{query}&rdquo;. Try another search term.
-              </p>
-            </div>
-          ) : (
-            <div className="space-y-1">
-              {results.map((component, idx) => {
-                const Icon = getCategoryIcon(component.category);
-                const isActive = idx === activeIndex;
-
-                return (
-                  <button
-                    key={component.slug}
-                    type="button"
-                    data-result-index={idx}
-                    onClick={() => handleSelect(component)}
-                    onMouseEnter={() => setActiveIndex(idx)}
-                    className={cn(
-                      "flex w-full items-center justify-between gap-3 rounded-xl px-3.5 py-2.5 text-left transition-colors",
-                      isActive
-                        ? "bg-accent text-accent-foreground"
-                        : "text-foreground hover:bg-accent/50",
-                    )}
-                  >
-                    <div className="flex items-center gap-3 min-w-0">
-                      <div
-                        className={cn(
-                          "flex size-8 shrink-0 items-center justify-center rounded-lg border",
-                          isActive
-                            ? "border-accent-foreground/20 bg-background text-foreground"
-                            : "border-border bg-muted/40 text-muted-foreground",
-                        )}
-                      >
-                        <Icon className="size-4" />
-                      </div>
-                      <div className="min-w-0 flex-1">
-                        <div className="flex items-center gap-2">
-                          <span className="font-medium text-sm text-foreground truncate">
-                            {component.name}
-                          </span>
-                          <span className="text-[10px] uppercase font-semibold tracking-wider text-muted-foreground bg-muted px-1.5 py-0.5 rounded">
-                            {component.category}
-                          </span>
-                        </div>
-                        <p className="text-xs text-muted-foreground line-clamp-1 mt-0.5">
-                          {component.description}
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="shrink-0 flex items-center text-muted-foreground">
-                      {isActive ? (
-                        <span className="flex items-center gap-1 text-[11px] font-medium text-foreground">
-                          Open <CornerDownLeft className="size-3" />
-                        </span>
-                      ) : (
-                        <ArrowRight className="size-3.5 opacity-40" />
-                      )}
-                    </div>
-                  </button>
-                );
-              })}
-            </div>
-          )}
-        </div>
-
-        {/* Footer shortcuts hint */}
-        <div className="flex items-center justify-between border-t border-border bg-muted/20 px-4 py-2.5 text-[11px] text-muted-foreground">
-          <div className="flex items-center gap-3">
-            <span className="flex items-center gap-1">
-              <kbd className="rounded border border-border bg-background px-1 py-0.5 font-mono text-[10px]">
-                ↑
-              </kbd>
-              <kbd className="rounded border border-border bg-background px-1 py-0.5 font-mono text-[10px]">
-                ↓
-              </kbd>
-              <span>navigate</span>
-            </span>
-            <span className="flex items-center gap-1">
-              <kbd className="rounded border border-border bg-background px-1 py-0.5 font-mono text-[10px]">
-                ↵
-              </kbd>
-              <span>select</span>
-            </span>
-            <span className="flex items-center gap-1">
-              <kbd className="rounded border border-border bg-background px-1 py-0.5 font-mono text-[10px]">
-                esc
-              </kbd>
-              <span>close</span>
-            </span>
-          </div>
-
-          <span className="font-mono text-[10px]">
-            {results.length} {results.length === 1 ? "component" : "components"}
-          </span>
-        </div>
-      </DialogContent>
-    </Dialog>
+        <Command.Input placeholder="Search components, categories, or keywords..." />
+        <Command.List maxHeight="380px">
+          <Command.Empty>No components found.</Command.Empty>
+          {groupedItems.map(([category, items]) => (
+            <Command.Group key={category} heading={category} value={category}>
+              {items.map((item) => (
+                <Command.Item key={item.value} value={item.value} onSelect={select}>
+                  <Icon source={getCategoryIcon(item.entry.category)} />
+                  {item.entry.name}
+                  <Command.Shortcut>{item.entry.category}</Command.Shortcut>
+                </Command.Item>
+              ))}
+            </Command.Group>
+          ))}
+        </Command.List>
+      </Command>
+    </Command.Dialog>
   );
 }

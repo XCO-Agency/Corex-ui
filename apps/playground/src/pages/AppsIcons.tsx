@@ -10,20 +10,11 @@ import {
   Sparkles,
   SlidersHorizontal,
   Code2,
-  BadgeCheck,
   CheckCircle2,
   Paintbrush,
   Maximize2,
 } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-} from "@/components/ui/dialog";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { Badge, Button, Modal, Text } from "@xco-agency/corex-ui";
 import { cn } from "@/lib/utils";
 import {
   APP_ICONS_DATA,
@@ -116,8 +107,8 @@ export function AppsIcons() {
 
   // Quick download helper
   const handleDownloadSvg = React.useCallback(
-    (e: React.MouseEvent, icon: AppIconItemType) => {
-      e.stopPropagation();
+    (event: { stopPropagation: () => void }, icon: AppIconItemType) => {
+      event.stopPropagation();
       const svgCode = getRawSvg(icon, {
         color: selectedColor === "currentColor" ? "#111827" : selectedColor,
         strokeWidth,
@@ -174,16 +165,8 @@ export function AppsIcons() {
       {/* Hero Header */}
       <header className="relative space-y-4 pt-4 pb-6 text-center sm:pt-6">
         <div className="flex items-center justify-center gap-2">
-          <Badge
-            variant="secondary"
-            className="gap-1.5 px-3 py-1 font-mono text-xs text-amber-600 dark:text-amber-400 bg-amber-500/10 border-amber-500/20"
-          >
-            <BadgeCheck className="size-3.5" />
-            Shopify Storefront &amp; Apps
-          </Badge>
-          <Badge variant="outline" className="text-xs font-mono text-muted-foreground">
-            51 Vector SVGs
-          </Badge>
+          <Badge tone="warning">Shopify Storefront & Apps</Badge>
+          <Badge>51 Vector SVGs</Badge>
         </div>
 
         <div className="space-y-2">
@@ -528,44 +511,26 @@ export function AppsIcons() {
       )}
 
       {/* Inspect Icon Detail Modal Dialog */}
-      <Dialog
+      <Modal
         open={Boolean(inspectIcon)}
-        onOpenChange={(open) => {
-          if (!open) {
-            setInspectIcon(null);
-            setCopiedModalSnippet(null);
-          }
+        title={inspectIcon?.title ?? "App icon"}
+        onClose={() => {
+          setInspectIcon(null);
+          setCopiedModalSnippet(null);
         }}
       >
         {inspectIcon && (
-          <DialogContent className="max-w-2xl rounded-2xl border border-border bg-card p-6 shadow-2xl sm:max-w-2xl">
-            <DialogHeader className="gap-1.5 pb-2">
-              <div className="flex items-center justify-between gap-2">
-                <div className="flex items-center gap-2">
-                  <Badge variant="secondary" className="font-mono text-xs">
-                    {inspectIcon.category}
-                  </Badge>
-                  <span className="font-mono text-xs text-muted-foreground">
-                    {inspectIcon.id}.svg
-                  </span>
-                </div>
-                <button
-                  type="button"
-                  onClick={(e) => handleDownloadSvg(e, inspectIcon)}
-                  className="inline-flex items-center gap-1.5 rounded-lg border border-border bg-background px-2.5 py-1 text-xs font-medium hover:bg-muted transition-colors cursor-pointer"
-                >
-                  <Download className="size-3" />
-                  <span>Download SVG</span>
-                </button>
-              </div>
-
-              <DialogTitle className="text-xl font-bold tracking-tight text-foreground">
-                {inspectIcon.title}
-              </DialogTitle>
-              <DialogDescription className="text-xs text-muted-foreground">
-                {inspectIcon.description}
-              </DialogDescription>
-            </DialogHeader>
+          <>
+            <Badge>{inspectIcon.category}</Badge>
+            <Text color="subdued" variant="small">
+              {inspectIcon.id}.svg
+            </Text>
+            <Button icon="download" variant="secondary" onClick={(event) => handleDownloadSvg(event, inspectIcon)}>
+              Download SVG
+            </Button>
+            <Text as="p" color="subdued">
+              {inspectIcon.description}
+            </Text>
 
             {/* Modal Body */}
             <div className="space-y-4 pt-1">
@@ -775,9 +740,9 @@ export function AppsIcons() {
                 </div>
               </div>
             </div>
-          </DialogContent>
+          </>
         )}
-      </Dialog>
+      </Modal>
     </div>
   );
 }

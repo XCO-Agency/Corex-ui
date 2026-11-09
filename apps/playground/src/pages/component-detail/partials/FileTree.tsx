@@ -1,6 +1,12 @@
 import * as React from "react";
-import { ChevronRight, Folder, FolderOpen, FileCode } from "lucide-react";
-import { cn } from "@/lib/utils";
+import {
+  BlockStack,
+  Box,
+  Clickable,
+  Icon,
+  InlineStack,
+  Text,
+} from "@xco-agency/corex-ui";
 import type { FileItemType } from "@/data/types";
 
 export type FileTreeNodeType = {
@@ -55,7 +61,6 @@ export function buildFileTree(files: FileItemType[]): FileTreeNodeType[] {
     }
   }
 
-  // Preserve folder order, then file order
   const sortNodes = (nodes: FileTreeNodeType[]) => {
     nodes.sort((a, b) => {
       if (a.isFolder && !b.isFolder) return -1;
@@ -63,9 +68,7 @@ export function buildFileTree(files: FileItemType[]): FileTreeNodeType[] {
       return 0;
     });
     for (const node of nodes) {
-      if (node.isFolder) {
-        sortNodes(node.children);
-      }
+      if (node.isFolder) sortNodes(node.children);
     }
   };
 
@@ -73,101 +76,84 @@ export function buildFileTree(files: FileItemType[]): FileTreeNodeType[] {
   return root;
 }
 
-type FileTreeNodeItemPropsType = {
-  node: FileTreeNodeType;
-  depth: number;
-  activeFilePath: string;
-  onSelectFile: (path: string) => void;
-  openFolders: Record<string, boolean>;
-  onToggleFolder: (path: string) => void;
-  hasParentFolder?: boolean;
-};
-
 function FileTreeNodeItem({
   node,
-  depth,
   activeFilePath,
   onSelectFile,
   openFolders,
   onToggleFolder,
-  hasParentFolder = false,
-}: FileTreeNodeItemPropsType) {
+}: {
+  node: FileTreeNodeType;
+  activeFilePath: string;
+  onSelectFile: (path: string) => void;
+  openFolders: Record<string, boolean>;
+  onToggleFolder: (path: string) => void;
+}) {
   if (node.isFolder) {
-    const isOpen = openFolders[node.path] !== false; // open by default
-
+    const isOpen = openFolders[node.path] !== false;
     return (
-      <div className="flex flex-col">
-        <button
-          type="button"
+      <BlockStack gap="none">
+        <Clickable
+          inlineSize="fill"
+          paddingInline="small-200"
+          paddingBlock="small-300"
           onClick={() => onToggleFolder(node.path)}
-          className="group/folder flex w-full items-center gap-1.5 rounded-md px-2 py-1.5 text-left font-mono text-xs transition-colors hover:bg-muted/60 cursor-pointer"
-          style={{ paddingLeft: `${depth * 14 + 6}px` }}
         >
-          <ChevronRight
-            className={cn(
-              "size-3 text-muted-foreground/60 transition-transform duration-150 shrink-0",
-              isOpen && "rotate-90",
-            )}
-          />
-          {isOpen ? (
-            <FolderOpen className="size-3.5 text-blue-500 dark:text-blue-400 shrink-0" />
-          ) : (
-            <Folder className="size-3.5 text-blue-500 dark:text-blue-400 shrink-0" />
-          )}
-          <span className="truncate font-medium text-foreground/90 group-hover/folder:text-foreground">
-            {node.name}
-          </span>
-        </button>
-
+          <InlineStack alignItems="center" gap="small-300">
+            <Icon source={isOpen ? "chevron-down" : "chevron-right"} />
+            <Icon source="folder" tone="info" />
+            <Text variant="small" fontWeight="medium" lineClamp={1}>
+              {node.name}
+            </Text>
+          </InlineStack>
+        </Clickable>
         {isOpen && (
-          <div className="flex flex-col">
-            {node.children.map((child) => (
-              <FileTreeNodeItem
-                key={child.path}
-                node={child}
-                depth={depth + 1}
-                activeFilePath={activeFilePath}
-                onSelectFile={onSelectFile}
-                openFolders={openFolders}
-                onToggleFolder={onToggleFolder}
-                hasParentFolder={true}
-              />
-            ))}
-          </div>
+          <Box paddingInlineStart="small">
+            <BlockStack gap="none">
+              {node.children.map((child) => (
+                <FileTreeNodeItem
+                  key={child.path}
+                  node={child}
+                  activeFilePath={activeFilePath}
+                  onSelectFile={onSelectFile}
+                  openFolders={openFolders}
+                  onToggleFolder={onToggleFolder}
+                />
+              ))}
+            </BlockStack>
+          </Box>
         )}
-      </div>
+      </BlockStack>
     );
   }
 
   const isSelected = node.path === activeFilePath;
-
   return (
-    <button
-      type="button"
+    <Clickable
+      inlineSize="fill"
+      paddingInline="small-200"
+      paddingBlock="small-300"
+      background={isSelected ? "strong" : undefined}
+      borderRadius="base"
       onClick={() => onSelectFile(node.path)}
-      className={cn(
-        "flex w-full items-center gap-1.5 rounded-md px-2 py-1.5 text-left font-mono text-xs transition-colors cursor-pointer",
-        isSelected
-          ? "bg-muted font-semibold text-foreground shadow-2xs"
-          : "text-muted-foreground hover:bg-muted/50 hover:text-foreground",
-      )}
-      style={{ paddingLeft: `${depth * 14 + (hasParentFolder ? 18 : 6)}px` }}
     >
-      <FileCode className="size-3.5 text-zinc-400 dark:text-zinc-500 shrink-0" />
-      <span className="truncate">{node.name}</span>
-    </button>
+      <InlineStack alignItems="center" gap="small-300">
+        <Icon source="file" />
+        <Text
+          variant="small"
+          fontWeight={isSelected ? "semibold" : "regular"}
+          color={isSelected ? "base" : "subdued"}
+          lineClamp={1}
+        >
+          {node.name}
+        </Text>
+      </InlineStack>
+    </Clickable>
   );
 }
 
-export function FileTree({
-  files,
-  activeFilePath,
-  onSelectFile,
-  className,
-}: FileTreePropsType) {
+export function FileTree({ files, activeFilePath, onSelectFile, className }: FileTreePropsType) {
   const tree = React.useMemo(() => buildFileTree(files), [files]);
-
-  // All folders open by default
   const [openFolders, setOpenFolders] = React.useState<Record<string, boolean>>({});
 
   const handleToggleFolder = (folderPath: string) => {
@@ -177,44 +163,38 @@ export function FileTree({
     }));
   };
 
-  // Auto-expand parent folders of active file
   React.useEffect(() => {
     if (!activeFilePath) return;
     const parts = activeFilePath.split("/");
-    if (parts.length > 1) {
-      let currentPath = "";
-      const newOpenState: Record<string, boolean> = {};
-      for (let i = 0; i < parts.length - 1; i++) {
-        currentPath = currentPath ? `${currentPath}/${parts[i]}` : parts[i]!;
-        newOpenState[currentPath] = true;
-      }
-      setOpenFolders((prev) => ({ ...prev, ...newOpenState }));
+    if (parts.length <= 1) return;
+    let currentPath = "";
+    const nextOpen: Record<string, boolean> = {};
+    for (let i = 0; i < parts.length - 1; i++) {
+      currentPath = currentPath ? `${currentPath}/${parts[i]}` : parts[i]!;
+      nextOpen[currentPath] = true;
     }
+    setOpenFolders((prev) => ({ ...prev, ...nextOpen }));
   }, [activeFilePath]);
 
   return (
-    <aside
-      className={cn(
-        "w-full md:w-60 shrink-0 border-b md:border-b-0 md:border-r border-border/70 bg-muted/20 flex flex-col",
-        className,
-      )}
-    >
-      <div className="flex h-10 shrink-0 items-center border-b border-border/70 px-4 text-xs font-semibold tracking-wide text-muted-foreground uppercase">
-        Files
-      </div>
-      <div className="p-2 space-y-0.5 overflow-y-auto max-h-[400px]">
-        {tree.map((node) => (
-          <FileTreeNodeItem
-            key={node.path}
-            node={node}
-            depth={0}
-            activeFilePath={activeFilePath}
-            onSelectFile={onSelectFile}
-            openFolders={openFolders}
-            onToggleFolder={handleToggleFolder}
-          />
-        ))}
-      </div>
-    </aside>
+    <Box className={className} background="subdued" inlineSize="240px" padding="small-200">
+      <BlockStack gap="small-200">
+        <Text variant="small" color="subdued" fontWeight="semibold">
+          Files
+        </Text>
+        <BlockStack gap="none">
+          {tree.map((node) => (
+            <FileTreeNodeItem
+              key={node.path}
+              node={node}
+              activeFilePath={activeFilePath}
+              onSelectFile={onSelectFile}
+              openFolders={openFolders}
+              onToggleFolder={handleToggleFolder}
+            />
+          ))}
+        </BlockStack>
+      </BlockStack>
+    </Box>
   );
 }

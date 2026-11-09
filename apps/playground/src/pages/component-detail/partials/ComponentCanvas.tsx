@@ -1,11 +1,6 @@
 import * as React from "react";
-import {
-  ResizablePanelGroup,
-  ResizablePanel,
-  ResizableHandle,
-  usePanelRef,
-} from "@/components/ui/resizable";
-import { cn } from "@/lib/utils";
+import { Group, Panel, Separator, usePanelRef } from "react-resizable-panels";
+import { BlockStack, Box } from "@xco-agency/corex-ui";
 import type { CanvasViewportType } from "../types";
 import { ComponentIframe } from "./ComponentIframe";
 
@@ -28,7 +23,6 @@ export function ComponentCanvas({
   const panelRef = usePanelRef();
   const [isDragging, setIsDragging] = React.useState(false);
 
-  // Synchronize viewport state with resizable panel
   React.useEffect(() => {
     if (!panelRef.current) return;
     switch (viewport) {
@@ -45,7 +39,6 @@ export function ComponentCanvas({
     }
   }, [viewport, panelRef]);
 
-  // Handle pointer cleanup for drag state
   React.useEffect(() => {
     if (!isDragging) return;
     const handlePointerUp = () => setIsDragging(false);
@@ -54,43 +47,28 @@ export function ComponentCanvas({
   }, [isDragging]);
 
   return (
-    <div className={cn(className)}>
-      <ResizablePanelGroup
-        orientation="horizontal"
-        className={cn(isFullscreen ? "min-h-[calc(100vh-9rem)]" : "min-h-40", "w-full")}
-      >
-        {/* Resizable Preview Canvas Panel */}
-        <ResizablePanel
+    <BlockStack className={className} inlineSize="100%" minBlockSize={isFullscreen ? "70vh" : "160px"}>
+      <Group orientation="horizontal">
+        <Panel
           panelRef={panelRef}
           defaultSize="100%"
           minSize="300px"
-          className={cn(
-            "relative flex justify-center bg-muted/30 overflow-clip  bg-[radial-gradient(oklch(0.7_0_0/0.2)_1px,transparent_1px)] dark:bg-[radial-gradient(oklch(1_0_0/0.15)_1px,transparent_1px)] bg-size-[16px_16px]",
-            isFullscreen ? "items-start" : embedded ? "items-center" : "items-center rounded-xl border",
-          )}
+          className={embedded || isFullscreen ? undefined : "rounded-xl"}
         >
-          {/* Prevent iframe from capturing pointer events during drag resizing */}
           {isDragging && (
-            <div className="absolute inset-0 z-50 cursor-col-resize select-none" />
+            <Box
+              position="absolute"
+              insetBlockStart="0"
+              insetInlineStart="0"
+              insetInlineEnd="0"
+              insetBlockEnd="0"
+            />
           )}
-
-          {/* Isolated iframe for Tailwind CSS isolation & authentic viewport simulation */}
-          <ComponentIframe className={isFullscreen ? "h-full!" : ""}>
-            {children}
-          </ComponentIframe>
-        </ResizablePanel>
-
-        {/* Resizable drag handle */}
-        <ResizableHandle
-          withHandle
-
-          onPointerDown={() => setIsDragging(true)}
-          className=" bg-transparent after:transition-colors [&>div]:transition-all hover:[&>div]:w-2 hover:[&>div]:bg-amber-500"
-        />
-
-        {/* Secondary empty spacer panel (skipped content) */}
-        <ResizablePanel defaultSize="0%" minSize="0px" className="bg-muted/15" />
-      </ResizablePanelGroup>
-    </div>
+          <ComponentIframe className={isFullscreen ? "h-full" : ""}>{children}</ComponentIframe>
+        </Panel>
+        <Separator onPointerDown={() => setIsDragging(true)} />
+        <Panel defaultSize="0%" minSize="0px" />
+      </Group>
+    </BlockStack>
   );
 }

@@ -8,7 +8,7 @@ description: >-
 
 # Corex UI Components Reference
 
-Complete reference of all **82 UI components** in `@xco-agency/corex-ui` and their **modern props**.
+Complete reference of all **83 UI components** in `@xco-agency/corex-ui` and their **modern props**.
 
 > [!IMPORTANT]
 > **Strict Corex UI Guidelines**:
@@ -155,10 +155,11 @@ When specifying `gap`, `padding`, `rowGap`, or `columnGap`, use **exclusively** 
 | [**Select**](#select)               | Dropdown select control wrapping `<s-select>`.                                            | —                                                                                        |
 | [**Checkbox**](#checkbox)           | Binary or indeterminate checkbox wrapping `<s-checkbox>`.                                 | —                                                                                        |
 | [**Switch**](#switch)               | Toggle switch control wrapping `<s-switch>`.                                              | —                                                                                        |
+| [**Segment**](#segment)             | Pill segmented control for mutually exclusive options with optional label and variants.   | —                                                                                        |
 | [**ChoiceList**](#choicelist)       | Radio button or checkbox list group allowing single or multiple selections.               | —                                                                                        |
 | [**RangeSlider**](#rangeslider)     | Slider input for selecting values within a range.                                         | —                                                                                        |
 | [**RichTextEditor**](#richtexteditor) | Shopify-admin-style rich text editor with toolbar, media inserts, and HTML source view. | —                                                                                        |
-| [**DropZone**](#dropzone)           | File drag-and-drop zone wrapping `<s-drop-zone>`.                                         | —                                                                                        |
+| [**DropZone**](#dropzone)           | File drag-and-drop zone wrapping `<s-drop-zone>`, with square icon-only `size="small"`.   | —                                                                                        |
 | [**Combobox**](#combobox)           | Accessible autocomplete and combobox popover control.                                     | `Combobox.Input`, `Combobox.Content`, `Combobox.List`, `Combobox.Item`, `Combobox.Empty` |
 | [**Autocomplete**](#autocomplete)   | High-level single-selection autocomplete input with debounced querying.                   | —                                                                                        |
 
@@ -197,7 +198,7 @@ When specifying `gap`, `padding`, `rowGap`, or `columnGap`, use **exclusively** 
 | Component                       | Description                                                                                                        | Subcomponents                                                                                         |
 | :------------------------------ | :----------------------------------------------------------------------------------------------------------------- | :---------------------------------------------------------------------------------------------------- |
 | [**Page**](#page)               | Top-level page layout container wrapping `<s-page>`. Houses header, breadcrumbs, actions, aside, and page content. | —                                                                                                     |
-| [**Tabs**](#tabs)               | Tabbed navigation bar supporting both standard tabs and compact index-filter view selectors.                       | —                                                                                                     |
+| [**Tabs**](#tabs)               | Segment pill tabs, compact dropdown mode, and card/folder tabs with `Tabs.Content`.                                | `Tabs.Content`                                                                                        |
 | [**Pagination**](#pagination)   | Pagination navigation buttons for traversing records.                                                              | —                                                                                                     |
 | [**Drawer**](#drawer)           | Responsive panel: right drawer on desktop, bottom sheet on mobile; full-surface swipe, no desktop handle.          | `Drawer.Trigger`, `Drawer.Content`, `Drawer.Header`, `Drawer.Footer`, `Drawer.Title`, `Drawer.Description`, `Drawer.Body`, `Drawer.Close`, `Drawer.Overlay`, `Drawer.SwipeHandle`, `Drawer.Portal` |
 | [**Modal**](#modal)             | Dialog modal overlay wrapping `<s-modal>` or `<ui-modal>`.                                                         | —                                                                                                     |
@@ -1562,7 +1563,7 @@ import { Divider } from "@xco-agency/corex-ui";
 
 ### DropZone
 
-File drag-and-drop zone wrapping `<s-drop-zone>`.
+File drag-and-drop zone wrapping `<s-drop-zone>`. Supports a square icon-only `size="small"` surface.
 
 ```tsx
 import { DropZone } from "@xco-agency/corex-ui";
@@ -1577,7 +1578,7 @@ import { DropZone } from "@xco-agency/corex-ui";
 | `multiple`                     | `boolean &#124; undefined`                      | —                                                                                                                                                                                                                                                                                               |
 | `allowMultiple`                | `boolean &#124; undefined`                      | Alias for `multiple` for backwards-compatibility.                                                                                                                                                                                                                                               |
 | `accessibilityLabel`           | `string &#124; undefined`                       | —                                                                                                                                                                                                                                                                                               |
-| `labelAccessibilityVisibility` | `"visible" &#124; "exclusive" &#124; undefined` | —                                                                                                                                                                                                                                                                                               |
+| `labelAccessibilityVisibility` | `"visible" &#124; "exclusive" &#124; undefined` | Defaults to `"exclusive"` when `size="small"`.                                                                                                                                                                                                                                                  |
 | `disabled`                     | `boolean &#124; undefined`                      | —                                                                                                                                                                                                                                                                                               |
 | `error`                        | `ReactNode`                                     | —                                                                                                                                                                                                                                                                                               |
 | `helpText`                     | `ReactNode`                                     | —                                                                                                                                                                                                                                                                                               |
@@ -1588,13 +1589,16 @@ import { DropZone } from "@xco-agency/corex-ui";
 | `name`                         | `string &#124; undefined`                       | —                                                                                                                                                                                                                                                                                               |
 | `value`                        | `string &#124; undefined`                       | —                                                                                                                                                                                                                                                                                               |
 | `files`                        | `File[] &#124; undefined`                       | —                                                                                                                                                                                                                                                                                               |
+| `size`                         | `"small" &#124; "base" &#124; undefined`        | `base` (default) keeps the full Polaris prompts. `small` renders a square surface with a centered icon.                                                                                                                                                                                         |
+| `inlineSize`                   | `"fill" &#124; string &#124; undefined`         | Width when `size="small"`. CSS length (default `"5rem"`) or `"fill"` to stretch inside a grid cell.                                                                                                                                                                                              |
+| `icon`                         | `IconType &#124; undefined`                     | Center icon when `size="small"` and no `children` are provided. Defaults to `"upload"`.                                                                                                                                                                                                         |
 | `onChange`                     | `((event: Event) =&gt; void) &#124; undefined`  | —                                                                                                                                                                                                                                                                                               |
 | `onDrop`                       | `((files: File[]) =&gt; void) &#124; undefined` | v12's callback, called with the files the element accepted. v12 also passed the rejected ones as a third argument; `s-drop-zone` reports only what it accepted, so that argument is not offered rather than filled with a guess — `onDropRejected` is the element's own signal for a rejection. |
 | `onInput`                      | `((event: Event) =&gt; void) &#124; undefined`  | —                                                                                                                                                                                                                                                                                               |
 | `onDropRejected`               | `((event: Event) =&gt; void) &#124; undefined`  | —                                                                                                                                                                                                                                                                                               |
 | `onBlur`                       | `((event: Event) =&gt; void) &#124; undefined`  | —                                                                                                                                                                                                                                                                                               |
 | `onFocus`                      | `((event: Event) =&gt; void) &#124; undefined`  | —                                                                                                                                                                                                                                                                                               |
-| `children`                     | `ReactNode`                                     | —                                                                                                                                                                                                                                                                                               |
+| `children`                     | `ReactNode`                                     | Custom content inside the drop zone. Replaces the default icon when `size="small"`.                                                                                                                                                                                                             |
 | `className`                    | `string &#124; undefined`                       | —                                                                                                                                                                                                                                                                                               |
 
 #### Example
@@ -1604,6 +1608,14 @@ import { DropZone } from "@xco-agency/corex-ui";
   label="Upload images"
   accept="image/*"
   multiple
+  onDrop={(files) => handleFiles(files)}
+/>
+
+<DropZone
+  size="small"
+  label="Media"
+  accessibilityLabel="Upload image"
+  accept="image/*"
   onDrop={(files) => handleFiles(files)}
 />
 ```
@@ -3631,6 +3643,63 @@ import { Switch } from "@xco-agency/corex-ui";
 
 ---
 
+### Segment
+
+Pill segmented control for mutually exclusive options. Matches a light track with either a white elevated thumb (`default`) or a dark filled thumb (`primary`). Label is optional and hidden unless provided.
+
+```tsx
+import { Segment } from "@xco-agency/corex-ui";
+```
+
+#### Modern Props
+
+| Prop                 | Type                                                               | Description                                                                                          |
+| :------------------- | :----------------------------------------------------------------- | :--------------------------------------------------------------------------------------------------- |
+| `options` **(required)** | `SegmentOptionType&lt;TValue&gt;[]`                            | Options rendered as mutually exclusive segments (`{ label, value, disabled?, accessibilityLabel? }`). |
+| `value`              | `TValue &#124; undefined`                                          | Controlled selected value.                                                                           |
+| `defaultValue`       | `TValue &#124; undefined`                                          | Uncontrolled initial selected value.                                                                 |
+| `onChange`           | `((value: TValue) =&gt; void) &#124; undefined`                    | Fires when the selected value changes.                                                               |
+| `label`              | `ReactNode &#124; undefined`                                       | Optional visible label above the control. Hidden by default.                                         |
+| `variant`            | `"default" &#124; "primary" &#124; undefined`                      | Active pill style. Default: white elevated. Primary: dark filled with light text.                    |
+| `size`               | `"small" &#124; "base" &#124; "large" &#124; undefined`            | Control height and type scale.                                                                       |
+| `inlineSize`         | `"auto" &#124; "fill" &#124; undefined`                            | Stretch the track to fill available width.                                                           |
+| `disabled`           | `boolean &#124; undefined`                                         | Disables the entire control.                                                                         |
+| `name`               | `string &#124; undefined`                                          | Native form field name.                                                                              |
+| `id`                 | `string &#124; undefined`                                          | Element id for the root.                                                                             |
+| `accessibilityLabel` | `string &#124; undefined`                                          | Accessible name for the radiogroup when no visible label is set.                                     |
+| `className`          | `string &#124; undefined`                                          | —                                                                                                    |
+| `style`              | `CSSProperties &#124; undefined`                                   | —                                                                                                    |
+
+#### Example
+
+```tsx
+<Segment
+  label="Qty style"
+  options={[
+    { label: "Stepper", value: "stepper" },
+    { label: "Dropdown", value: "dropdown" },
+    { label: "Input", value: "input" },
+  ]}
+  value={qtyStyle}
+  onChange={setQtyStyle}
+  inlineSize="fill"
+/>
+
+<Segment
+  label="Variant"
+  variant="primary"
+  options={[
+    { label: "Primary", value: "primary" },
+    { label: "Secondary", value: "secondary" },
+    { label: "Plain", value: "plain" },
+  ]}
+  value={variant}
+  onChange={setVariant}
+/>
+```
+
+---
+
 ### Table
 
 Native data table wrapping `<s-table>`. Composed using subcomponents `Table.HeaderRow`, `Table.HeaderCell`, `Table.Body`, `Table.Row`, and `Table.Cell`.
@@ -3692,11 +3761,17 @@ import { Table } from "@xco-agency/corex-ui";
 
 ### Tabs
 
-Tabbed navigation bar supporting both standard tabs and compact index-filter view selectors.
+Segment pill tabs (default), compact dropdown selector, or card/folder tabs that connect into `Tabs.Content`.
 
 ```tsx
 import { Tabs } from "@xco-agency/corex-ui";
 ```
+
+#### Subcomponents
+
+| Subcomponent   | Description                                              | Key Props                          |
+| :------------- | :------------------------------------------------------- | :--------------------------------- |
+| `Tabs.Content` | Panel shown when its `value` matches the selected tab id | `value` **(required)**, `children` |
 
 #### Modern Props
 
@@ -3707,11 +3782,12 @@ import { Tabs } from "@xco-agency/corex-ui";
 | `onSelect`            | `((selected: TId) =&gt; void) &#124; ((index: number) =&gt; void) &#124; undefined` | Callback when a tab is selected. Receives tab ID (`TId`) or index (`number`).                                                  |
 | `value`               | `TId &#124; null &#124; undefined`                                                  | ID of the currently selected tab.                                                                                              |
 | `onChange`            | `((id: TId) =&gt; void) &#124; undefined`                                           | Callback when a tab is selected, passing the tab ID.                                                                           |
+| `variant`             | `"segment" &#124; "card" &#124; undefined`                                          | `segment` (default) pill track; `card` folder tabs connected to content.                                                       |
 | `showBadge`           | `boolean &#124; undefined`                                                          | —                                                                                                                              |
 | `rightSide`           | `ReactNode`                                                                         | —                                                                                                                              |
 | `inlineSize`          | `"fill" &#124; "auto" &#124; "fit" &#124; undefined`                                | —                                                                                                                              |
 | `compact`             | `boolean &#124; undefined`                                                          | Minimalist compact dropdown mode, rendering a dropdown selector button inspired by Shopify Polaris IndexFilters view switcher. |
-| `children`            | `ReactNode`                                                                         | Content of the currently selected tab's panel.                                                                                 |
+| `children`            | `ReactNode`                                                                         | Bar extras and/or `Tabs.Content` panels.                                                                                       |
 | `className`           | `string &#124; undefined`                                                           | —                                                                                                                              |
 | `id`                  | `string &#124; undefined`                                                           | —                                                                                                                              |
 
@@ -3719,14 +3795,17 @@ import { Tabs } from "@xco-agency/corex-ui";
 
 ```tsx
 <Tabs
+  variant="card"
   tabs={[
-    { id: "all", label: "All" },
-    { id: "active", label: "Active" },
-    { id: "archived", label: "Archived" },
+    { id: "freeform", label: "Freeform", icon: "chart-vertical" },
+    { id: "cohorts", label: "Cohorts", icon: "chart-cohort" },
   ]}
-  selected={currentTab}
-  onSelect={(id) => setCurrentTab(id)}
-/>
+  value={tab}
+  onChange={setTab}
+>
+  <Tabs.Content value="freeform">Freeform panel</Tabs.Content>
+  <Tabs.Content value="cohorts">Cohorts panel</Tabs.Content>
+</Tabs>
 ```
 
 ---

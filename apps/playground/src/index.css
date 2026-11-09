@@ -1,6 +1,5 @@
 @import "tailwindcss";
 @import "tw-animate-css";
-@import "shadcn/tailwind.css";
 @import "@fontsource-variable/inter";
 
 @custom-variant dark (&:is(.dark *));
@@ -20,6 +19,29 @@ body {
 .app-shell {
   display: flex;
   min-height: 100vh;
+}
+
+.playground-frame,
+.playground-nav {
+  background: #f1f1f1;
+  color: #1a1a1a;
+}
+
+.playground-canvas,
+.playground-topbar {
+  background: #fff;
+  color: #1a1a1a;
+}
+
+.playground-canvas {
+  border-radius: var(--p-border-radius-400-f4125, 1rem);
+  min-width: 0;
+  min-height: 0;
+}
+
+.playground-topbar {
+  border-bottom: 1px solid #e3e3e3;
+  flex-shrink: 0;
 }
 
 .thumbnail-svg {

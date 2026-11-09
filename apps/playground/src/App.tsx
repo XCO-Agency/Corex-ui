@@ -8,19 +8,16 @@ import { ComponentDetail } from "./pages/component-detail/ComponentDetail";
 import { ThumbnailCapture } from "./pages/ThumbnailCapture";
 import { Editor } from "./pages/editor";
 import Layout from "./layout";
-import { TooltipProvider } from "./components/ui/tooltip";
 
 export function App() {
   return (
-    <TooltipProvider>
-      <Routes>
+    <Routes>
         {/* The editor is a full-screen workspace, outside the docs shell. */}
         <Route path="/editor" element={<Editor />} />
         {/* Chrome-free capture surface for Overview thumbnail screenshots. */}
         <Route path="/_capture/:slug" element={<ThumbnailCapture />} />
         <Route path="*" element={<DocsRoutes />} />
-      </Routes>
-    </TooltipProvider>
+    </Routes>
   );
 }
 

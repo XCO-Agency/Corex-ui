@@ -1,5 +1,6 @@
 import * as React from "react";
 import { Navigate, useLocation, useParams } from "react-router-dom";
+import { BlockStack, Grid, InlineStack } from "@xco-agency/corex-ui";
 import { blocks, registry } from "@/data/registry";
 import { toReferenceName } from "@/lib/skill-reference";
 import { ComponentHeader } from "./partials/ComponentHeader";
@@ -24,7 +25,6 @@ export function ComponentDetail() {
   const { slug } = useParams<{ slug: string }>();
   const isBlock = useLocation().pathname.startsWith("/blocks/");
 
-  // Prev/next stay within the section being browsed.
   const entries = isBlock ? blockEntries : registry;
   const currentIndex = entries.findIndex((item) => item.slug === slug);
   const entry = entries[currentIndex];
@@ -34,8 +34,8 @@ export function ComponentDetail() {
   const tocItems = React.useMemo<TocItemType[]>(() => {
     if (!entry) return [];
     const items: TocItemType[] = [{ id: "overview", title: "Overview" }];
-    entry.examples.forEach((ex, index) =>
-      items.push({ id: exampleAnchor(index, ex.title), title: ex.title }),
+    entry.examples.forEach((example, index) =>
+      items.push({ id: exampleAnchor(index, example.title), title: example.title }),
     );
     if (reference) {
       items.push({ id: "api-reference", title: "API reference" });
@@ -65,38 +65,41 @@ export function ComponentDetail() {
   const next = currentIndex < entries.length - 1 ? entries[currentIndex + 1] : null;
 
   return (
-    <div className="mx-auto w-full max-w-6xl pb-12">
-      <div className="grid grid-cols-1 gap-8 lg:grid-cols-[minmax(0,1fr)_180px] xl:gap-14">
-        <div className="min-w-0 space-y-8">
-          <ComponentHeader
-            name={entry.name}
-            category={entry.category}
-            description={entry.description}
-            requiresEmbeddedContext={entry.requiresEmbeddedContext}
-            isBlock={isBlock}
-            importName={toReferenceName(entry.name)}
-          />
-
-          {entry.requiresEmbeddedContext && <ComponentSandboxAlert />}
-
-          <div className="space-y-8">
-            {entry.examples.map((example, index) => (
-              <ComponentExampleCard
-                key={example.title}
-                example={example}
-                index={index}
-                componentName={toReferenceName(entry.name)}
+    <InlineStack justifyContent="center">
+      <BlockStack inlineSize="100%" maxInlineSize="72rem" gap="large-200">
+        <Grid columns={{ xs: 1, lg: "minmax(0, 1fr) 180px" }} gap="large-200">
+          <Grid.Item>
+            <BlockStack gap="large-200">
+              <ComponentHeader
+                name={entry.name}
+                category={entry.category}
+                description={entry.description}
+                requiresEmbeddedContext={entry.requiresEmbeddedContext}
+                isBlock={isBlock}
+                importName={toReferenceName(entry.name)}
               />
-            ))}
-          </div>
 
-          {!isBlock && <ComponentApiReference reference={reference} />}
+              {entry.requiresEmbeddedContext && <ComponentSandboxAlert />}
 
-          <ComponentPagination prev={prev} next={next} basePath={basePath} />
-        </div>
+              {entry.examples.map((example, index) => (
+                <ComponentExampleCard
+                  key={example.title}
+                  example={example}
+                  index={index}
+                  componentName={toReferenceName(entry.name)}
+                />
+              ))}
 
-        <ComponentTableOfContents items={tocItems} />
-      </div>
-    </div>
+              {!isBlock && <ComponentApiReference reference={reference} />}
+
+              <ComponentPagination prev={prev} next={next} basePath={basePath} />
+            </BlockStack>
+          </Grid.Item>
+          <Grid.Item>
+            <ComponentTableOfContents items={tocItems} />
+          </Grid.Item>
+        </Grid>
+      </BlockStack>
+    </InlineStack>
   );
 }

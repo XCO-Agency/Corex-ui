@@ -1,14 +1,22 @@
 import * as React from "react";
-import { Ban, Search } from "lucide-react";
-import { Input } from "@/components/ui/input";
-import { Skeleton } from "@/components/ui/skeleton";
+import {
+  Badge,
+  Banner,
+  BlockStack,
+  Box,
+  Button,
+  InlineStack,
+  SearchField,
+  Skeleton,
+  Table,
+  Text,
+} from "@xco-agency/corex-ui";
 import { InlineMarkdown } from "@/components/InlineMarkdown";
 import type {
   ComponentReferenceType,
   ReferencePropType,
   ReferenceTableType,
 } from "@/lib/skill-reference";
-import { cn } from "@/lib/utils";
 
 export const API_SECTION_IDS = {
   props: "api-props",
@@ -19,32 +27,18 @@ export const API_SECTION_IDS = {
 export const extraTableId = (title: string) =>
   `api-${title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "")}`;
 
-/** Large native prop dumps (event handlers, slots) are collapsed by default. */
 const COLLAPSED_PROP_COUNT = 14;
 
 function SectionHeading({ id, title, count }: { id: string; title: string; count?: number }) {
   return (
-    <h3
-      id={id}
-      className="flex scroll-mt-20 items-center gap-2 text-sm font-semibold tracking-tight text-foreground"
-    >
-      <InlineMarkdown>{title}</InlineMarkdown>
-      {count !== undefined && (
-        <span className="rounded-full bg-muted px-2 py-0.5 text-[11px] font-medium text-muted-foreground tabular-nums">
-          {count}
-        </span>
-      )}
-    </h3>
-  );
-}
-
-function TypeCell({ value }: { value: string }) {
-  // Drop the noise every optional prop carries.
-  const cleaned = value.replace(/\s*\|\s*undefined$/, "");
-  return (
-    <code className="break-words font-mono text-[12px] leading-relaxed text-sky-700 dark:text-sky-300">
-      {cleaned}
-    </code>
+    <Box id={id}>
+      <InlineStack gap="small-200" alignItems="center">
+        <Text as="h3" variant="headingSm" heading>
+          <InlineMarkdown>{title}</InlineMarkdown>
+        </Text>
+        {count !== undefined && <Badge>{count}</Badge>}
+      </InlineStack>
+    </Box>
   );
 }
 
@@ -52,7 +46,6 @@ function PropsTable({ props }: { props: ReferencePropType[] }) {
   const [query, setQuery] = React.useState("");
   const [expanded, setExpanded] = React.useState(false);
 
-  // Required first, then documented props, then undocumented pass-throughs.
   const sorted = React.useMemo(
     () =>
       [...props].sort(
@@ -66,160 +59,115 @@ function PropsTable({ props }: { props: ReferencePropType[] }) {
   const normalized = query.trim().toLowerCase();
   const filtered = normalized
     ? sorted.filter(
-        (p) =>
-          p.name.toLowerCase().includes(normalized) ||
-          p.description.toLowerCase().includes(normalized),
+        (prop) =>
+          prop.name.toLowerCase().includes(normalized) ||
+          prop.description.toLowerCase().includes(normalized),
       )
     : sorted;
   const canCollapse = !normalized && filtered.length > COLLAPSED_PROP_COUNT;
   const visible = canCollapse && !expanded ? filtered.slice(0, COLLAPSED_PROP_COUNT) : filtered;
 
   return (
-    <div className="space-y-3">
+    <BlockStack gap="small">
       {props.length > 6 && (
-        <div className="relative max-w-xs">
-          <Search className="pointer-events-none absolute left-2.5 top-1/2 size-3.5 -translate-y-1/2 text-muted-foreground" />
-          <Input
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
+        <Box maxInlineSize="320px">
+          <SearchField
+            label="Filter props"
+            labelAccessibilityVisibility="exclusive"
             placeholder={`Filter ${props.length} props…`}
-            className="h-8 pl-8 text-xs"
-            aria-label="Filter props"
+            value={query}
+            onChange={setQuery}
           />
-        </div>
+        </Box>
       )}
 
-      <div className="overflow-hidden rounded-lg border border-border/80">
-        <table className="w-full table-fixed border-collapse text-left text-sm">
-          <colgroup>
-            <col className="w-[30%] sm:w-[24%]" />
-            <col className="w-[30%] sm:w-[28%]" />
-            <col />
-          </colgroup>
-          <thead className="bg-muted/40 text-xs text-muted-foreground">
-            <tr>
-              <th className="px-3 py-2 font-medium">Prop</th>
-              <th className="px-3 py-2 font-medium">Type</th>
-              <th className="px-3 py-2 font-medium">Description</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-border/70">
-            {visible.map((prop) => (
-              <tr key={prop.name} className="align-top transition-colors hover:bg-muted/20">
-                <td className="px-3 py-2">
-                  <div className="flex flex-wrap items-center gap-1.5">
-                    <code className="break-all font-mono text-[12.5px] font-semibold text-foreground">
-                      {prop.name}
-                    </code>
-                    {prop.required && (
-                      <span className="rounded bg-rose-500/10 px-1.5 py-px text-[10px] font-semibold uppercase tracking-wide text-rose-700 dark:text-rose-300">
-                        Required
-                      </span>
-                    )}
-                  </div>
-                </td>
-                <td className="px-3 py-2">
-                  <TypeCell value={prop.type} />
-                </td>
-                <td className="px-3 py-2 text-[13px] leading-relaxed text-muted-foreground">
-                  {prop.description ? (
-                    <InlineMarkdown>{prop.description}</InlineMarkdown>
-                  ) : (
-                    <span className="text-muted-foreground/50">—</span>
-                  )}
-                </td>
-              </tr>
-            ))}
-            {visible.length === 0 && (
-              <tr>
-                <td colSpan={3} className="px-4 py-8 text-center text-xs text-muted-foreground">
-                  No props match “{query}”.
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
-        {canCollapse && (
-          <button
-            type="button"
-            onClick={() => setExpanded((v) => !v)}
-            className="w-full cursor-pointer border-t border-border/70 bg-muted/20 py-2 text-xs font-medium text-muted-foreground transition-colors hover:bg-muted/40 hover:text-foreground"
-          >
-            {expanded ? "Show fewer props" : `Show all ${filtered.length} props`}
-          </button>
-        )}
-      </div>
-    </div>
+      <Table>
+        <Table.HeaderRow>
+          <Table.HeaderCell>Prop</Table.HeaderCell>
+          <Table.HeaderCell>Type</Table.HeaderCell>
+          <Table.HeaderCell>Description</Table.HeaderCell>
+        </Table.HeaderRow>
+        <Table.Body>
+          {visible.map((prop) => (
+            <Table.Row key={prop.name}>
+              <Table.Cell>
+                <InlineStack gap="small-200" alignItems="center" wrap>
+                  <Text fontWeight="semibold">{prop.name}</Text>
+                  {prop.required && <Badge tone="critical">Required</Badge>}
+                </InlineStack>
+              </Table.Cell>
+              <Table.Cell>
+                <Text variant="small">{prop.type.replace(/\s*\|\s*undefined$/, "")}</Text>
+              </Table.Cell>
+              <Table.Cell>
+                {prop.description ? (
+                  <InlineMarkdown>{prop.description}</InlineMarkdown>
+                ) : (
+                  <Text color="subdued">—</Text>
+                )}
+              </Table.Cell>
+            </Table.Row>
+          ))}
+          {visible.length === 0 && (
+            <Table.Row>
+              <Table.Cell>
+                <Text color="subdued">No props match “{query}”.</Text>
+              </Table.Cell>
+            </Table.Row>
+          )}
+        </Table.Body>
+      </Table>
+      {canCollapse && (
+        <Button variant="tertiary" inlineSize="fill" onClick={() => setExpanded((value) => !value)}>
+          {expanded ? "Show fewer props" : `Show all ${filtered.length} props`}
+        </Button>
+      )}
+    </BlockStack>
   );
 }
 
 function GenericTable({ table }: { table: ReferenceTableType }) {
   return (
-    <div className="overflow-x-auto rounded-lg border border-border/80">
-      <table className="w-full border-collapse text-left text-sm">
-        <thead className="bg-muted/40 text-xs text-muted-foreground">
-          <tr>
-            {table.headers.map((header) => (
-              <th key={header} className="px-3 py-2 font-medium whitespace-nowrap">
-                {header}
-              </th>
+    <Table>
+      <Table.HeaderRow>
+        {table.headers.map((header) => (
+          <Table.HeaderCell key={header}>{header}</Table.HeaderCell>
+        ))}
+      </Table.HeaderRow>
+      <Table.Body>
+        {table.rows.map((row, rowIndex) => (
+          <Table.Row key={rowIndex}>
+            {row.map((cell, cellIndex) => (
+              <Table.Cell key={cellIndex}>
+                {cell === "—" ? (
+                  <Text color="subdued">—</Text>
+                ) : (
+                  <InlineMarkdown>{cell}</InlineMarkdown>
+                )}
+              </Table.Cell>
             ))}
-          </tr>
-        </thead>
-        <tbody className="divide-y divide-border/70">
-          {table.rows.map((row, rowIndex) => (
-            <tr key={rowIndex} className="align-top">
-              {row.map((cell, cellIndex) => (
-                <td
-                  key={cellIndex}
-                  className={cn(
-                    "px-3 py-2 text-[13px] leading-relaxed",
-                    cellIndex === 0 ? "text-foreground" : "text-muted-foreground",
-                  )}
-                >
-                  {cell === "—" ? (
-                    <span className="text-muted-foreground/50">—</span>
-                  ) : (
-                    <InlineMarkdown>{cell}</InlineMarkdown>
-                  )}
-                </td>
-              ))}
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+          </Table.Row>
+        ))}
+      </Table.Body>
+    </Table>
   );
 }
 
 function DeprecationList({ items }: { items: ComponentReferenceType["deprecations"] }) {
   return (
-    <div className="space-y-3">
-      <p className="flex items-center gap-2 text-xs text-muted-foreground">
-        <Ban className="size-3.5 shrink-0" />
-        Accepted for legacy compatibility only. Don't use these in new code.
-      </p>
-      <ul className="divide-y divide-border/60 rounded-lg border border-border/80">
+    <Banner tone="warning" heading="Deprecated props">
+      <Text as="p" color="subdued">
+        Accepted for legacy compatibility only. Don&apos;t use these in new code.
+      </Text>
+      <BlockStack gap="small-200">
         {items.map((item) => (
-          <li
-            key={item.prop}
-            className="flex flex-col gap-0.5 px-3 py-2 text-[13px] leading-relaxed sm:flex-row sm:items-baseline sm:gap-4"
-          >
-            <InlineMarkdown
-              className="shrink-0 font-mono text-[12.5px] text-muted-foreground line-through decoration-muted-foreground/50 sm:w-1/3"
-              codeClassName="bg-transparent p-0 text-[1em]"
-            >
-              {item.prop.includes("`") ? item.prop : `\`${item.prop}\``}
-            </InlineMarkdown>
-            {item.note && (
-              <InlineMarkdown className="text-muted-foreground">
-                {item.note}
-              </InlineMarkdown>
-            )}
-          </li>
+          <InlineStack key={item.prop} gap="small" alignItems="start" wrap>
+            <Text color="subdued">{item.prop}</Text>
+            {item.note && <InlineMarkdown>{item.note}</InlineMarkdown>}
+          </InlineStack>
         ))}
-      </ul>
-    </div>
+      </BlockStack>
+    </Banner>
   );
 }
 
@@ -231,58 +179,64 @@ export function ComponentApiReference({ reference }: ComponentApiReferencePropsT
   if (reference === null) return null;
 
   return (
-    <section id="api-reference" className="scroll-mt-20 space-y-6 border-t border-border/60 pt-8">
-      <div className="space-y-1.5">
-        <h2 className="text-lg font-semibold tracking-tight text-foreground">API reference</h2>
-        <p className="text-[13px] text-muted-foreground">
+    <BlockStack gap="large-200" id="api-reference">
+      <BlockStack gap="small-200">
+        <Text as="h2" variant="headingMd" heading>
+          API reference
+        </Text>
+        <Text as="p" color="subdued">
           Modern props only, generated from the Corex UI agent skill.
-        </p>
-      </div>
+        </Text>
+      </BlockStack>
 
       {reference === undefined ? (
-        <div className="space-y-3">
-          <Skeleton className="h-8 w-56" />
-          <Skeleton className="h-48 w-full rounded-xl" />
-        </div>
+        <BlockStack gap="small">
+          <Skeleton inlineSize={224} blockSize={32} />
+          <Skeleton blockSize={192} />
+        </BlockStack>
       ) : (
         <>
           {reference.props.length > 0 && (
-            <div className="space-y-3">
-              <SectionHeading id={API_SECTION_IDS.props} title="Props" count={reference.props.length} />
+            <BlockStack gap="small">
+              <SectionHeading
+                id={API_SECTION_IDS.props}
+                title="Props"
+                count={reference.props.length}
+              />
               <PropsTable props={reference.props} />
-            </div>
+            </BlockStack>
           )}
 
           {reference.subcomponents && (
-            <div className="space-y-3">
+            <BlockStack gap="small">
               <SectionHeading
                 id={API_SECTION_IDS.subcomponents}
                 title="Subcomponents"
                 count={reference.subcomponents.rows.length}
               />
               <GenericTable table={reference.subcomponents} />
-            </div>
+            </BlockStack>
           )}
 
           {reference.extraTables.map((table) => (
-            <div key={table.title} className="space-y-3">
+            <BlockStack key={table.title} gap="small">
               <SectionHeading id={extraTableId(table.title)} title={table.title} />
               <GenericTable table={table} />
-            </div>
+            </BlockStack>
           ))}
 
           {reference.deprecations.length > 0 && (
-            <div className="space-y-3">
+            <BlockStack gap="small">
               <SectionHeading
                 id={API_SECTION_IDS.deprecated}
                 title="Deprecated props"
                 count={reference.deprecations.length}
               />
               <DeprecationList items={reference.deprecations} />
-            </div>
+            </BlockStack>
           )}
         </>
       )}
-    </section>
+    </BlockStack>
   );
 }
