@@ -109,7 +109,6 @@ export function ActivityTimelineItem({
               <Button
                 key={idx}
                 variant={act.variant ?? "secondary"}
-                size="small"
                 onClick={() => {
                   if (act.onClick) act.onClick();
                   if (onActionClick) onActionClick(act.label, item);
@@ -120,7 +119,7 @@ export function ActivityTimelineItem({
             ))}
 
             {item.payload && onViewPayload && (
-              <Button variant="tertiary" size="small" onClick={() => onViewPayload(item)}>
+              <Button variant="tertiary" onClick={() => onViewPayload(item)}>
                 JSON Payload
               </Button>
             )}

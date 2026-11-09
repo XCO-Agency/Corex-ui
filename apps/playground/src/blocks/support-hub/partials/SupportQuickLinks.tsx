@@ -28,7 +28,7 @@ export function SupportQuickLinks({ links }: SupportQuickLinksPropsType) {
               <Text variant="bodyMd" fontWeight="semibold" tone="info">
                 {link.title}
               </Text>
-              <Text variant="bodySm" tone="subdued" as="p">
+              <Text variant="bodySm" color="subdued" as="p">
                 {link.description}
               </Text>
             </BlockStack>

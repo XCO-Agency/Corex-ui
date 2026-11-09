@@ -49,7 +49,6 @@ export function ActivityFilters({
         <div ref={dropdownRef} style={{ position: "relative" }}>
           <Button
             variant="secondary"
-            size="small"
             onClick={() => setFilterOpen((prev) => !prev)}
           >
             <span
@@ -138,7 +137,6 @@ export function ActivityFilters({
         {/* Refresh Button */}
         <Button
           variant="secondary"
-          size="small"
           onClick={onRefresh}
           accessibilityLabel="Refresh activities"
         >

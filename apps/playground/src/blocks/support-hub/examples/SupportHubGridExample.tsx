@@ -38,19 +38,17 @@ export function SupportHubGridExample() {
                   <Text variant="headingSm" as="h3" fontWeight="bold">
                     Live Customer Care
                   </Text>
-                  <Badge tone="success" size="small">
-                    Active
-                  </Badge>
+                  <Badge tone="success">Active</Badge>
                 </InlineStack>
 
                 <SupportTeamAvatars members={DEFAULT_TEAM_MEMBERS} />
 
-                <Text variant="bodySm" tone="subdued" as="p">
+                <Text variant="bodySm" color="subdued" as="p">
                   Chat with Ihar, Marina, or Andrii for instant troubleshooting and setup
                   assistance.
                 </Text>
 
-                <Text variant="xs" tone="subdued">
+                <Text variant="xs" color="subdued">
                   {DEFAULT_SUPPORT_HOURS.days} &bull; {DEFAULT_SUPPORT_HOURS.time}
                 </Text>
               </BlockStack>
@@ -74,19 +72,17 @@ export function SupportHubGridExample() {
                   <Text variant="headingSm" as="h3" fontWeight="bold">
                     1-on-1 Setup Call
                   </Text>
-                  <Badge tone="info" size="small">
-                    Free
-                  </Badge>
+                  <Badge tone="info">Free</Badge>
                 </InlineStack>
 
                 <Icon type="calendar" tone="info" />
 
-                <Text variant="bodySm" tone="subdued" as="p">
+                <Text variant="bodySm" color="subdued" as="p">
                   Schedule a 15-minute video screenshare to customize your cart drawer and
                   configure upsell rules.
                 </Text>
 
-                <Text variant="xs" tone="subdued">
+                <Text variant="xs" color="subdued">
                   Google Meet link generated automatically
                 </Text>
               </BlockStack>
@@ -109,19 +105,17 @@ export function SupportHubGridExample() {
                   <Text variant="headingSm" as="h3" fontWeight="bold">
                     Email Desk
                   </Text>
-                  <Badge tone="neutral" size="small">
-                    24/7
-                  </Badge>
+                  <Badge tone="neutral">24/7</Badge>
                 </InlineStack>
 
                 <Icon type="email" tone="info" />
 
-                <Text variant="bodySm" tone="subdued" as="p">
+                <Text variant="bodySm" color="subdued" as="p">
                   Send technical inquiries or custom CSS styling requests directly to our
                   developer team.
                 </Text>
 
-                <Text variant="xs" tone="subdued">
+                <Text variant="xs" color="subdued">
                   {DEFAULT_SUPPORT_EMAIL}
                 </Text>
               </BlockStack>

@@ -6,23 +6,20 @@ import {
   Text,
   IconTile,
   Banner,
+  Button,
 } from "@xco-agency/corex-ui";
 
 export function IconExample() {
   return (
     <BlockStack gap="base">
-      <Banner
-        tone="info"
-        title="517 Polaris Icons Available"
-        action={{
-          content: "Explore All 517 Icons",
-          url: "/icons",
-        }}
-      >
+      <Banner tone="info" heading="517 Polaris Icons Available">
         <Text as="p" variant="small">
           Looking for a specific symbol? Browse our full interactive Icon Library with
           advanced search, keywords, and ready-to-copy JSX code.
         </Text>
+        <Button slot="secondary-actions" href="/icons" variant="secondary">
+          Explore All 517 Icons
+        </Button>
       </Banner>
 
       <BlockStack gap="small-200">
