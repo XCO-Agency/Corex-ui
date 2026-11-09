@@ -187,7 +187,11 @@ export function ComboboxExample() {
                 value={modalFramework}
                 onValueChange={setModalFramework}
               >
-                <Combobox.Input label="Primary framework" placeholder="Select a framework" showClear />
+                <Combobox.Input
+                  label="Primary framework"
+                  placeholder="Select a framework"
+                  showClear
+                />
                 <Combobox.Content>
                   <Combobox.Empty>No frameworks found.</Combobox.Empty>
                   <Combobox.List>
@@ -206,7 +210,11 @@ export function ComboboxExample() {
                 value={modalCategory}
                 onValueChange={setModalCategory}
               >
-                <Combobox.Input label="Category" placeholder="Choose category..." showClear />
+                <Combobox.Input
+                  label="Category"
+                  placeholder="Choose category..."
+                  showClear
+                />
                 <Combobox.Content>
                   <Combobox.Empty>No categories found.</Combobox.Empty>
                   <Combobox.List>
@@ -225,7 +233,11 @@ export function ComboboxExample() {
                 value={modalTags}
                 onValueChange={setModalTags}
               >
-                <Combobox.Input label="Additional frameworks" placeholder="Add frameworks..." showClear />
+                <Combobox.Input
+                  label="Additional frameworks"
+                  placeholder="Add frameworks..."
+                  showClear
+                />
                 <Combobox.Content>
                   <Combobox.Empty>No frameworks found.</Combobox.Empty>
                   <Combobox.List>

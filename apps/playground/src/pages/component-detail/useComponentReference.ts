@@ -7,9 +7,9 @@ import {
 
 /** `undefined` while loading, `null` when the skill has no section for the entry. */
 export function useComponentReference(entryName: string | undefined, enabled = true) {
-  const [reference, setReference] = React.useState<ComponentReferenceType | null | undefined>(
-    enabled ? undefined : null,
-  );
+  const [reference, setReference] = React.useState<
+    ComponentReferenceType | null | undefined
+  >(enabled ? undefined : null);
 
   React.useEffect(() => {
     if (!enabled || !entryName) {

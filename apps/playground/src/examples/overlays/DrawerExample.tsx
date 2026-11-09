@@ -126,9 +126,10 @@ export function DrawerExample() {
           Header: close button, actions, alignment
         </Text>
         <Text as="p" variant="small" color="subdued">
-          Every header has a close button in its end slot (`close=&#123;false&#125;` hides it,
-          an element replaces it). `actions` adds controls before it. Titles start-align
-          everywhere; `mobileAlign=&quot;center&quot;` centers them on the mobile sheet.
+          Every header has a close button in its end slot (`close=&#123;false&#125;` hides
+          it, an element replaces it). `actions` adds controls before it. Titles
+          start-align everywhere; `mobileAlign=&quot;center&quot;` centers them on the
+          mobile sheet.
         </Text>
         <InlineStack gap="small-200">
           <Drawer>
@@ -139,7 +140,11 @@ export function DrawerExample() {
               <Drawer.Header
                 actions={
                   <>
-                    <Button variant="tertiary" icon="edit" accessibilityLabel="Edit order" />
+                    <Button
+                      variant="tertiary"
+                      icon="edit"
+                      accessibilityLabel="Edit order"
+                    />
                     <Button
                       variant="tertiary"
                       icon="menu-horizontal"
@@ -149,10 +154,14 @@ export function DrawerExample() {
                 }
               >
                 <Drawer.Title>Order #1042</Drawer.Title>
-                <Drawer.Description>Actions sit before the close button.</Drawer.Description>
+                <Drawer.Description>
+                  Actions sit before the close button.
+                </Drawer.Description>
               </Drawer.Header>
               <Drawer.Body>
-                <Text as="p">The end slot is part of the layout, not positioned on top.</Text>
+                <Text as="p">
+                  The end slot is part of the layout, not positioned on top.
+                </Text>
               </Drawer.Body>
             </Drawer.Content>
           </Drawer>
@@ -163,7 +172,9 @@ export function DrawerExample() {
             <Drawer.Content>
               <Drawer.Header mobileAlign="center">
                 <Drawer.Title>Order #1042</Drawer.Title>
-                <Drawer.Description>Centered below `md`, start-aligned on desktop.</Drawer.Description>
+                <Drawer.Description>
+                  Centered below `md`, start-aligned on desktop.
+                </Drawer.Description>
               </Drawer.Header>
               <Drawer.Body>
                 <Text as="p">Resize below `md` to see the centered header.</Text>
@@ -177,7 +188,9 @@ export function DrawerExample() {
             <Drawer.Content>
               <Drawer.Header close={false}>
                 <Drawer.Title>Order #1042</Drawer.Title>
-                <Drawer.Description>`close=&#123;false&#125;` — dismiss from the footer.</Drawer.Description>
+                <Drawer.Description>
+                  `close=&#123;false&#125;` — dismiss from the footer.
+                </Drawer.Description>
               </Drawer.Header>
               <Drawer.Footer>
                 <Drawer.Close>
@@ -226,14 +239,17 @@ export function DrawerExample() {
         </Text>
         <Text as="p" variant="small" color="subdued">
           Header and footer stick to the panel edges. `Drawer.PreFooter` sits above the
-          footer and scrolls with the content unless `sticky`. `separator=&quot;shadow&quot;`
-          fades scrolled content into the surface; `&quot;divider&quot;` draws a border.
+          footer and scrolls with the content unless `sticky`.
+          `separator=&quot;shadow&quot;` fades scrolled content into the surface;
+          `&quot;divider&quot;` draws a border.
         </Text>
         <InlineStack gap="small-200">
           {(["shadow", "divider"] as const).map((separator) => (
             <Drawer key={separator}>
               <Drawer.Trigger>
-                <Button>{separator === "shadow" ? "Shadow edges" : "Divider edges"}</Button>
+                <Button>
+                  {separator === "shadow" ? "Shadow edges" : "Divider edges"}
+                </Button>
               </Drawer.Trigger>
               <Drawer.Content>
                 <Drawer.Header separator={separator}>
@@ -284,8 +300,8 @@ export function DrawerExample() {
           Control from outside the Drawer
         </Text>
         <Text as="p" variant="small" color="subdued">
-          These buttons are not inside any `Drawer`. The cart is non-modal (`modal=&#123;false&#125;`)
-          so the page stays clickable while it is open.
+          These buttons are not inside any `Drawer`. The cart is non-modal
+          (`modal=&#123;false&#125;`) so the page stays clickable while it is open.
         </Text>
         <OutsideControls />
         <Drawer id="outside-cart" modal={false} responsive={false}>

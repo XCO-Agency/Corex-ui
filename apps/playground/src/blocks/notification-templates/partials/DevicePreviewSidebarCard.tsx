@@ -71,9 +71,11 @@ export function DevicePreviewSidebarCard({
 
             {template.channel === "sms" ? (
               <BlockStack gap="small-200">
-                <Text alignment="center" color="subdued" variant="bodySm">
-                  Today 10:42 AM
-                </Text>
+                <InlineStack justifyContent="center">
+                  <Text color="subdued" variant="bodySm">
+                    Today 10:42 AM
+                  </Text>
+                </InlineStack>
 
                 {/* SMS Bubble */}
                 <div

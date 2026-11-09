@@ -12,6 +12,7 @@ export type ButtonPropsType = Omit<NativeButtonProps, "variant" | "tone"> & {
    * override it, so these are accepted and ignored, with a development warning.
    * For dense rows, `variant="tertiary"` is the quiet control.
    */
+  /** @deprecated no size exist */
   size?: ButtonSizeType;
   /**
    * `s-button`'s tones, plus v12's `success` and `magic`, which fall back to

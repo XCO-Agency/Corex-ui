@@ -112,7 +112,10 @@ export type CommandItemPropsType = Omit<CommandItemPrimitiveProps, "className"> 
   style?: CSSProperties;
 };
 
-export type CommandSeparatorPropsType = Omit<CommandSeparatorPrimitiveProps, "className"> & {
+export type CommandSeparatorPropsType = Omit<
+  CommandSeparatorPrimitiveProps,
+  "className"
+> & {
   className?: string;
   style?: CSSProperties;
 };
@@ -132,7 +135,10 @@ export type CommandDialogPropsType = {
   open?: boolean;
   /** Initial open state when uncontrolled. */
   defaultOpen?: boolean;
-  onOpenChange?: (open: boolean, details: { reason: CommandDialogOpenChangeReasonType }) => void;
+  onOpenChange?: (
+    open: boolean,
+    details: { reason: CommandDialogOpenChangeReasonType },
+  ) => void;
   /** Traps focus, locks page scroll and shows the backdrop. @default true */
   modal?: boolean;
   children?: ReactNode;
@@ -149,12 +155,16 @@ export type CommandDialogPropsType = {
 export type CommandComponentType = ForwardRefExoticComponent<
   CommandPropsType & RefAttributes<HTMLDivElement>
 > & {
-  Input: ForwardRefExoticComponent<CommandInputPropsType & RefAttributes<HTMLInputElement>>;
+  Input: ForwardRefExoticComponent<
+    CommandInputPropsType & RefAttributes<HTMLInputElement>
+  >;
   List: ForwardRefExoticComponent<CommandListPropsType & RefAttributes<HTMLDivElement>>;
   Empty: ForwardRefExoticComponent<CommandEmptyPropsType & RefAttributes<HTMLDivElement>>;
   Group: ForwardRefExoticComponent<CommandGroupPropsType & RefAttributes<HTMLDivElement>>;
   Item: ForwardRefExoticComponent<CommandItemPropsType & RefAttributes<HTMLDivElement>>;
-  Separator: ForwardRefExoticComponent<CommandSeparatorPropsType & RefAttributes<HTMLDivElement>>;
+  Separator: ForwardRefExoticComponent<
+    CommandSeparatorPropsType & RefAttributes<HTMLDivElement>
+  >;
   Shortcut: (props: CommandShortcutPropsType) => ReactElement;
   Sidebar: (props: CommandSidebarPropsType) => ReactElement;
   Dialog: (props: CommandDialogPropsType) => ReactElement;

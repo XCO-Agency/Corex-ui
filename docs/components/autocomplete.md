@@ -27,7 +27,6 @@ import { Autocomplete } from "@xco-agency/corex-ui";
 | `onSelect`     | Callback fired when an option is selected (`(value: string) => void`). |
 | `label`        | Label displayed above the field.                                       |
 | `placeholder`  | Placeholder text inside the input.                                     |
-| `autoComplete` | Browser autocomplete attribute (`default: "off"`).                     |
 | `disabled`     | Disables the input field.                                              |
 | `loading`      | Shows a spinner in place of options while fetching.                    |
 | `emptyState`   | Content shown when no options match the query.                         |

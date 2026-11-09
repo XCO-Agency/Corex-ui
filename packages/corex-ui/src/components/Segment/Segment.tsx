@@ -70,8 +70,7 @@ function SegmentInner<TValue extends string = string>(
     defaultValue,
   );
   const selectedValue = (isControlled ? controlledValue : uncontrolledValue) as
-    | TValue
-    | undefined;
+    TValue | undefined;
 
   const selectedIndex = options.findIndex((option) => option.value === selectedValue);
   const hasSelection = selectedIndex >= 0;
@@ -95,8 +94,7 @@ function SegmentInner<TValue extends string = string>(
     if (disabled || options.length === 0) return;
     const start = hasSelection ? selectedIndex : direction === 1 ? -1 : options.length;
     for (let step = 1; step <= options.length; step += 1) {
-      const nextIndex =
-        (start + direction * step + options.length * 2) % options.length;
+      const nextIndex = (start + direction * step + options.length * 2) % options.length;
       const option = options[nextIndex];
       if (option && !option.disabled) {
         selectValue(option.value);

@@ -221,8 +221,7 @@ export const RichTextEditor = forwardRef<HTMLDivElement, RichTextEditorPropsType
         (node) => node.getAttribute("heading") === heading,
       );
       const field = modal?.querySelector("s-text-field, s-text-area, input, textarea") as
-        | (HTMLElement & { value?: string })
-        | null;
+        (HTMLElement & { value?: string }) | null;
       const live = field?.value?.trim();
       return live || fallback;
     }, []);
@@ -233,8 +232,7 @@ export const RichTextEditor = forwardRef<HTMLDivElement, RichTextEditorPropsType
       if (!editor || codeMode) return;
       if (seededRef.current) return;
       const initial =
-        lastEmittedRef.current ||
-        (isControlled ? (value ?? "") : defaultValue);
+        lastEmittedRef.current || (isControlled ? (value ?? "") : defaultValue);
       editor.innerHTML = initial;
       lastEmittedRef.current = initial;
       seededRef.current = true;
@@ -358,7 +356,10 @@ export const RichTextEditor = forwardRef<HTMLDivElement, RichTextEditorPropsType
             <div data-slot="rich-text-toolbar-divider" aria-hidden="true" />
 
             <div data-slot="rich-text-toolbar-group">
-              <span data-slot="rich-text-tool" data-active={activeMarks.bold ? "true" : undefined}>
+              <span
+                data-slot="rich-text-tool"
+                data-active={activeMarks.bold ? "true" : undefined}
+              >
                 <Button
                   variant="tertiary"
                   icon="text-bold"
@@ -367,7 +368,10 @@ export const RichTextEditor = forwardRef<HTMLDivElement, RichTextEditorPropsType
                   onClick={() => withEditor((editor) => runCommand(editor, "bold"))}
                 />
               </span>
-              <span data-slot="rich-text-tool" data-active={activeMarks.italic ? "true" : undefined}>
+              <span
+                data-slot="rich-text-tool"
+                data-active={activeMarks.italic ? "true" : undefined}
+              >
                 <Button
                   variant="tertiary"
                   icon="text-italic"
@@ -410,7 +414,9 @@ export const RichTextEditor = forwardRef<HTMLDivElement, RichTextEditorPropsType
                           captureSelection();
                           event.preventDefault();
                         }}
-                        onClick={() => withEditor((editor) => setTextColor(editor, color))}
+                        onClick={() =>
+                          withEditor((editor) => setTextColor(editor, color))
+                        }
                       />
                     ))}
                   </div>

@@ -6,8 +6,19 @@ import type { CalendarEventType } from "./Calendar.types";
 const OCT = new Date(2026, 9, 21);
 
 const events: CalendarEventType[] = [
-  { id: "conf", title: "Conference", start: "2026-10-19", end: "2026-10-22", allDay: true },
-  { id: "lunch", title: "Lunch", start: "2026-10-21T12:00:00", end: "2026-10-21T13:00:00" },
+  {
+    id: "conf",
+    title: "Conference",
+    start: "2026-10-19",
+    end: "2026-10-22",
+    allDay: true,
+  },
+  {
+    id: "lunch",
+    title: "Lunch",
+    start: "2026-10-21T12:00:00",
+    end: "2026-10-21T13:00:00",
+  },
   { id: "sync", title: "Sync", start: "2026-10-21T12:30:00", end: "2026-10-21T13:30:00" },
 ];
 
@@ -77,10 +88,18 @@ describe("Calendar", () => {
     const onDateClick = vi.fn();
     const onEventClick = vi.fn();
     render(
-      <Calendar events={events} defaultDate={OCT} onDateClick={onDateClick} onEventClick={onEventClick} />,
+      <Calendar
+        events={events}
+        defaultDate={OCT}
+        onDateClick={onDateClick}
+        onEventClick={onEventClick}
+      />,
     );
     fireEvent.click(cell("2026-10-08"));
-    expect(onDateClick).toHaveBeenCalledWith({ date: new Date(2026, 9, 8), allDay: true });
+    expect(onDateClick).toHaveBeenCalledWith({
+      date: new Date(2026, 9, 8),
+      allDay: true,
+    });
 
     fireEvent.click(screen.getByRole("button", { name: /^Lunch/ }));
     expect(onEventClick).toHaveBeenCalledWith(
@@ -90,7 +109,15 @@ describe("Calendar", () => {
 
   it("uses Corex buttons for every toolbar action", () => {
     render(<Calendar events={[]} defaultDate={OCT} />);
-    for (const name of ["prev", "next", "today", "view-month", "view-week", "view-day", "view-list"]) {
+    for (const name of [
+      "prev",
+      "next",
+      "today",
+      "view-month",
+      "view-week",
+      "view-day",
+      "view-list",
+    ]) {
       expect(action(name).tagName.toLowerCase()).toBe("s-button");
     }
   });
@@ -134,7 +161,15 @@ describe("Calendar", () => {
   });
 
   it("hides weekends and shows week numbers", () => {
-    render(<Calendar events={[]} defaultDate={OCT} weekends={false} weekNumbers firstDay={1} />);
+    render(
+      <Calendar
+        events={[]}
+        defaultDate={OCT}
+        weekends={false}
+        weekNumbers
+        firstDay={1}
+      />,
+    );
     expect(within(grid()).getAllByRole("gridcell")).toHaveLength(30);
     expect(screen.getByRole("rowheader", { name: "Week 43" })).toBeTruthy();
   });
@@ -144,20 +179,36 @@ describe("Calendar", () => {
       { id: "x", title: "Loaded", start: "2026-10-10", allDay: true },
     ]);
     render(<Calendar events={loader} defaultDate={OCT} />);
-    expect(loader).toHaveBeenCalledWith({ start: new Date(2026, 8, 27), end: new Date(2026, 10, 8) });
+    expect(loader).toHaveBeenCalledWith({
+      start: new Date(2026, 8, 27),
+      end: new Date(2026, 10, 8),
+    });
     expect(await screen.findByText("Loaded")).toBeInTheDocument();
   });
 
   it("makes events draggable only when editable and not recurring", () => {
     const { container } = render(
       <Calendar
-        events={[...events, { id: "r", title: "Weekly", start: "2026-10-06", allDay: true, rrule: "FREQ=WEEKLY" }]}
+        events={[
+          ...events,
+          {
+            id: "r",
+            title: "Weekly",
+            start: "2026-10-06",
+            allDay: true,
+            rrule: "FREQ=WEEKLY",
+          },
+        ]}
         defaultDate={OCT}
         editable
       />,
     );
-    expect(screen.getByRole("button", { name: /^Lunch/ })).toHaveAttribute("data-editable");
-    expect(screen.getAllByRole("button", { name: /^Weekly/ })[0]).not.toHaveAttribute("data-editable");
+    expect(screen.getByRole("button", { name: /^Lunch/ })).toHaveAttribute(
+      "data-editable",
+    );
+    expect(screen.getAllByRole("button", { name: /^Weekly/ })[0]).not.toHaveAttribute(
+      "data-editable",
+    );
     expect(container.querySelector('[data-slot="calendar-resize"]')).toBeTruthy();
   });
 
@@ -174,7 +225,10 @@ describe("Calendar", () => {
 
   it("mirrors the layout in RTL", () => {
     render(<Calendar events={[]} defaultDate={OCT} dir="rtl" />);
-    expect(screen.getByRole("region", { name: "Calendar" })).toHaveAttribute("dir", "rtl");
+    expect(screen.getByRole("region", { name: "Calendar" })).toHaveAttribute(
+      "dir",
+      "rtl",
+    );
     const start = cell("2026-10-21");
     start.focus();
     fireEvent.keyDown(start, { key: "ArrowLeft" });
@@ -223,7 +277,9 @@ describe("Calendar drop handling", () => {
     const { useDragDrop } = await import("./hooks/useDragDrop");
     const { renderHook } = await import("@testing-library/react");
     const source = [events[0]!];
-    const { result } = renderHook(() => useDragDrop(source, { onEventDrop: () => undefined }));
+    const { result } = renderHook(() =>
+      useDragDrop(source, { onEventDrop: () => undefined }),
+    );
     await act(async () => {
       await result.current.commitMove({
         event: events[0]!,

@@ -260,17 +260,29 @@ export type MediaViewTogglePropsType = {
 export type MediaComponentType = ForwardRefExoticComponent<
   MediaPropsType & RefAttributes<HTMLDivElement>
 > & {
-  Toolbar: ForwardRefExoticComponent<MediaToolbarPropsType & RefAttributes<HTMLDivElement>>;
-  Filters: ForwardRefExoticComponent<MediaFiltersPropsType & RefAttributes<HTMLDivElement>>;
+  Toolbar: ForwardRefExoticComponent<
+    MediaToolbarPropsType & RefAttributes<HTMLDivElement>
+  >;
+  Filters: ForwardRefExoticComponent<
+    MediaFiltersPropsType & RefAttributes<HTMLDivElement>
+  >;
   Body: ForwardRefExoticComponent<MediaBodyPropsType & RefAttributes<HTMLDivElement>>;
-  Content: ForwardRefExoticComponent<MediaContentPropsType & RefAttributes<HTMLDivElement>>;
+  Content: ForwardRefExoticComponent<
+    MediaContentPropsType & RefAttributes<HTMLDivElement>
+  >;
   Item: ForwardRefExoticComponent<MediaItemPropsType & RefAttributes<HTMLDivElement>>;
-  Preview: ForwardRefExoticComponent<MediaPreviewPropsType & RefAttributes<HTMLDivElement>>;
+  Preview: ForwardRefExoticComponent<
+    MediaPreviewPropsType & RefAttributes<HTMLDivElement>
+  >;
   Meta: ForwardRefExoticComponent<MediaMetaPropsType & RefAttributes<HTMLDivElement>>;
-  Actions: ForwardRefExoticComponent<MediaActionsPropsType & RefAttributes<HTMLDivElement>>;
+  Actions: ForwardRefExoticComponent<
+    MediaActionsPropsType & RefAttributes<HTMLDivElement>
+  >;
   Upload: ForwardRefExoticComponent<MediaUploadPropsType & RefAttributes<HTMLDivElement>>;
   Detail: ForwardRefExoticComponent<MediaDetailPropsType & RefAttributes<HTMLDivElement>>;
   Empty: ForwardRefExoticComponent<MediaEmptyPropsType & RefAttributes<HTMLDivElement>>;
   Trigger: ForwardRefExoticComponent<MediaTriggerPropsType & RefAttributes<HTMLElement>>;
-  ViewToggle: ForwardRefExoticComponent<MediaViewTogglePropsType & RefAttributes<HTMLButtonElement>>;
+  ViewToggle: ForwardRefExoticComponent<
+    MediaViewTogglePropsType & RefAttributes<HTMLButtonElement>
+  >;
 };

@@ -24,16 +24,16 @@ const [html, setHtml] = useState("<p>Hello</p>");
 
 ## Props
 
-| Prop           | Behavior                                                                 |
-| -------------- | ------------------------------------------------------------------------ |
-| `value`        | Controlled HTML string.                                                  |
-| `defaultValue` | Uncontrolled initial HTML.                                               |
-| `onChange`     | Called with the current HTML on every content change.                    |
-| `label`        | Visible label above the editor; also used as the accessible name.        |
-| `labelHidden`  | Hides the visible label while keeping `aria-labelledby` when `label` set.|
-| `placeholder`  | Shown when the surface is empty.                                         |
-| `disabled`     | Disables editing and toolbar actions.                                    |
-| `minHeight`    | Minimum height of the editing surface. Default `"160px"`.                |
+| Prop           | Behavior                                                                      |
+| -------------- | ----------------------------------------------------------------------------- |
+| `value`        | Controlled HTML string.                                                       |
+| `defaultValue` | Uncontrolled initial HTML.                                                    |
+| `onChange`     | Called with the current HTML on every content change.                         |
+| `label`        | Visible label above the editor; also used as the accessible name.             |
+| `labelHidden`  | Hides the visible label while keeping `aria-labelledby` when `label` set.     |
+| `placeholder`  | Shown when the surface is empty.                                              |
+| `disabled`     | Disables editing and toolbar actions.                                         |
+| `minHeight`    | Minimum height of the editing surface. Default `"160px"`.                     |
 | `id` / `name`  | Surface id and optional form field name (hidden input when not in code view). |
 
 ## Toolbar

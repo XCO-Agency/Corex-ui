@@ -7,9 +7,17 @@ import type { DrawerOpenChangeReasonType } from "./Drawer.types";
  * events: it works the same inside iframes and on the server.
  */
 
-type CommandType = { type: "open" | "close" | "toggle"; reason: DrawerOpenChangeReasonType };
+type CommandType = {
+  type: "open" | "close" | "toggle";
+  reason: DrawerOpenChangeReasonType;
+};
 type HandlerType = (command: CommandType) => void;
-type EntryType = { key: string; id: string | undefined; handler: HandlerType; open: boolean };
+type EntryType = {
+  key: string;
+  id: string | undefined;
+  handler: HandlerType;
+  open: boolean;
+};
 
 const entries = new Map<string, EntryType>();
 // Keys of open drawers, oldest first: the last one is the topmost.
@@ -31,7 +39,11 @@ function removeFromStack(key: string) {
  * Called by every mounted `<Drawer>` with a unique `key`; `id` is the public
  * one from props, if any. Returns the unregister function.
  */
-export function registerDrawer(key: string, id: string | undefined, handler: HandlerType): () => void {
+export function registerDrawer(
+  key: string,
+  id: string | undefined,
+  handler: HandlerType,
+): () => void {
   entries.set(key, { key, id, handler, open: entries.get(key)?.open ?? false });
   notify();
   return () => {

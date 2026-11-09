@@ -89,7 +89,9 @@ describe("DropZone", () => {
     );
 
     expect(
-      container.querySelector("s-drop-zone")?.getAttribute("label-accessibility-visibility"),
+      container
+        .querySelector("s-drop-zone")
+        ?.getAttribute("label-accessibility-visibility"),
     ).toBe("visible");
   });
 });

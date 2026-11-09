@@ -14,11 +14,25 @@ export type DayEventsModalPropsType = {
 };
 
 /** Every event on one day, opened from "+N more" or a tapped day on narrow screens. */
-export function DayEventsModal({ open, date, occurrences, direction, onClose }: DayEventsModalPropsType) {
+export function DayEventsModal({
+  open,
+  date,
+  occurrences,
+  direction,
+  onClose,
+}: DayEventsModalPropsType) {
   const ctx = useCalendarContext();
   return (
-    <Modal open={open} onClose={onClose} title={date ? formatFullDate(date, ctx.locale) : ""}>
-      <div data-slot="calendar-modal-list" dir={direction} className={ctx.classNames.popover}>
+    <Modal
+      open={open}
+      onClose={onClose}
+      title={date ? formatFullDate(date, ctx.locale) : ""}
+    >
+      <div
+        data-slot="calendar-modal-list"
+        dir={direction}
+        className={ctx.classNames.popover}
+      >
         {occurrences.map((occurrence, index) => (
           <EventChip
             key={occurrence.key}

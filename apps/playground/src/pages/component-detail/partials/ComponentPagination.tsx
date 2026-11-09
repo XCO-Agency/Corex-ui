@@ -1,5 +1,13 @@
 import { useNavigate } from "react-router-dom";
-import { BlockStack, Box, Clickable, Divider, Icon, InlineStack, Text } from "@xco-agency/corex-ui";
+import {
+  BlockStack,
+  Box,
+  Clickable,
+  Divider,
+  Icon,
+  InlineStack,
+  Text,
+} from "@xco-agency/corex-ui";
 import type { ComponentNavigationItemType } from "../types";
 
 export type ComponentPaginationPropsType = {
@@ -22,7 +30,10 @@ export function ComponentPagination({
       <Divider />
       <InlineStack alignItems="start" justifyContent="space-between" gap="base">
         {prev ? (
-          <Clickable onClick={() => navigate(`${basePath}/${prev.slug}`)} padding="small-200">
+          <Clickable
+            onClick={() => navigate(`${basePath}/${prev.slug}`)}
+            padding="small-200"
+          >
             <BlockStack gap="small-500">
               <Text color="subdued" variant="small">
                 Previous
@@ -37,7 +48,10 @@ export function ComponentPagination({
           <Box />
         )}
         {next ? (
-          <Clickable onClick={() => navigate(`${basePath}/${next.slug}`)} padding="small-200">
+          <Clickable
+            onClick={() => navigate(`${basePath}/${next.slug}`)}
+            padding="small-200"
+          >
             <BlockStack gap="small-500" alignItems="end">
               <Text color="subdued" variant="small">
                 Next

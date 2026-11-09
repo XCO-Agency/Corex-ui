@@ -17,11 +17,9 @@ function registryWatcherPlugin(): Plugin {
     name: "corex-registry-watcher",
     configureServer(server) {
       // Rebuild on dev server startup to ensure public/r is up-to-date
-      try {
-        buildRegistry({ silent: true });
-      } catch (err) {
+      void buildRegistry({ silent: true }).catch((err) => {
         console.error("[registry-watcher] Initial build failed:", err);
-      }
+      });
 
       const blocksDir = fileURLToPath(new URL("./src/blocks", import.meta.url));
       server.watcher.add(blocksDir);
@@ -31,11 +29,9 @@ function registryWatcherPlugin(): Plugin {
         if (filePath.includes("/src/blocks/") || filePath.includes("\\src\\blocks\\")) {
           clearTimeout(debounceTimer);
           debounceTimer = setTimeout(() => {
-            try {
-              buildRegistry({ silent: true });
-            } catch (err) {
+            void buildRegistry({ silent: true }).catch((err) => {
               console.error("[registry-watcher] Auto-sync failed:", err);
-            }
+            });
           }, 150);
         }
       };

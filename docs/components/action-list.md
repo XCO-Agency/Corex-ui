@@ -56,7 +56,12 @@ import { ActionList, Button } from "@xco-agency/corex-ui";
     {
       title: "Danger zone",
       items: [
-        { content: "Delete file", icon: "delete", destructive: true, onAction: () => remove() },
+        {
+          content: "Delete file",
+          icon: "delete",
+          destructive: true,
+          onAction: () => remove(),
+        },
       ],
     },
   ]}
@@ -67,31 +72,30 @@ import { ActionList, Button } from "@xco-agency/corex-ui";
 
 ## Props
 
-| Prop | Type | Description |
-| --- | --- | --- |
-| `children` | `ReactNode` | The trigger element for the Popover. Defaults to `<Button variant="tertiary" icon="menu-horizontal" />`. |
-| `items` | `ActionListItemType[]` | List of action items to render. |
-| `sections` | `ActionListSectionType[]` | List of action sections, each with an optional `title` and array of `items`. |
-| `id` | `string` | The ID of the list. |
-| `activator` | `ReactNode` | *(Deprecated)* Prefer using `children`. |
+| Prop        | Type                      | Description                                                                                              |
+| ----------- | ------------------------- | -------------------------------------------------------------------------------------------------------- |
+| `children`  | `ReactNode`               | The trigger element for the Popover. Defaults to `<Button variant="tertiary" icon="menu-horizontal" />`. |
+| `items`     | `ActionListItemType[]`    | List of action items to render.                                                                          |
+| `sections`  | `ActionListSectionType[]` | List of action sections, each with an optional `title` and array of `items`.                             |
+| `id`        | `string`                  | The ID of the list.                                                                                      |
+| `activator` | `ReactNode`               | _(Deprecated)_ Prefer using `children`.                                                                  |
 
 ## Item Fields (`ActionListItemType`)
 
-| Field | Type | Description |
-| --- | --- | --- |
-| `content` | `ReactNode` | The label text or React node. |
-| `onAction` | `() => void` | Callback fired when the item is clicked. Automatically dismisses the popover. |
-| `href` | `string` | Renders the item as a real link (`Clickable` with `href`). |
-| `icon` | `IconType \| IconSourceType` | Icon name string (e.g., `"edit"`, `"delete"`) or Polaris SVG icon component. |
-| `destructive` | `boolean` | Critical tone applied to both the label and the icon. |
-| `helpText` | `ReactNode` | A subdued second line of text under the label. |
-| `active` | `boolean` | Marks the item with a subdued background (e.g., current sort selection). |
-| `disabled` | `boolean` | Disables the item. |
-| `prefix` | `ReactNode` | Element placed before the icon/content. |
-| `suffix` | `ReactNode` | Element placed at the end of the row. |
-| `url` | `string` | *(Deprecated)* Prefer using `href`. |
+| Field         | Type                         | Description                                                                   |
+| ------------- | ---------------------------- | ----------------------------------------------------------------------------- |
+| `content`     | `ReactNode`                  | The label text or React node.                                                 |
+| `onAction`    | `() => void`                 | Callback fired when the item is clicked. Automatically dismisses the popover. |
+| `href`        | `string`                     | Renders the item as a real link (`Clickable` with `href`).                    |
+| `icon`        | `IconType \| IconSourceType` | Icon name string (e.g., `"edit"`, `"delete"`) or Polaris SVG icon component.  |
+| `destructive` | `boolean`                    | Critical tone applied to both the label and the icon.                         |
+| `helpText`    | `ReactNode`                  | A subdued second line of text under the label.                                |
+| `active`      | `boolean`                    | Marks the item with a subdued background (e.g., current sort selection).      |
+| `disabled`    | `boolean`                    | Disables the item.                                                            |
+| `prefix`      | `ReactNode`                  | Element placed before the icon/content.                                       |
+| `suffix`      | `ReactNode`                  | Element placed at the end of the row.                                         |
+| `url`         | `string`                     | _(Deprecated)_ Prefer using `href`.                                           |
 
 `sections` keeps v12's grouping, each with an optional `title`. `actionRole` is
 accepted and ignored: v12 used it to switch the items between `button` and
 `menuitem`, and `s-clickable` already renders the right control.
-

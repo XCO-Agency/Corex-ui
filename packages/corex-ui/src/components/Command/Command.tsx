@@ -213,41 +213,43 @@ const CommandRoot = forwardRef<HTMLDivElement, CommandPropsType>(function Comman
 });
 CommandRoot.displayName = "Command";
 
-const CommandInput = forwardRef<HTMLInputElement, CommandInputPropsType>(function CommandInput(
-  { className, style, hideIcon = false, value, onValueChange, ...props },
-  ref,
-) {
-  const ctx = useCommandContext();
-  const controlled = value !== undefined;
-  const resolvedValue = controlled ? value : (ctx?.search ?? "");
+const CommandInput = forwardRef<HTMLInputElement, CommandInputPropsType>(
+  function CommandInput(
+    { className, style, hideIcon = false, value, onValueChange, ...props },
+    ref,
+  ) {
+    const ctx = useCommandContext();
+    const controlled = value !== undefined;
+    const resolvedValue = controlled ? value : (ctx?.search ?? "");
 
-  const setSearch = ctx?.setSearch;
-  useEffect(() => {
-    if (controlled && typeof value === "string") setSearch?.(value);
-  }, [controlled, value, setSearch]);
+    const setSearch = ctx?.setSearch;
+    useEffect(() => {
+      if (controlled && typeof value === "string") setSearch?.(value);
+    }, [controlled, value, setSearch]);
 
-  return (
-    <div data-slot="command-input-wrapper">
-      {hideIcon ? null : (
-        <span data-slot="command-input-icon" aria-hidden>
-          <Icon source="search" size="small" />
-        </span>
-      )}
-      <CommandPrimitiveInput
-        ref={ref}
-        data-slot="command-input"
-        className={className}
-        style={style}
-        value={resolvedValue}
-        onValueChange={(next) => {
-          ctx?.setSearch(next);
-          onValueChange?.(next);
-        }}
-        {...props}
-      />
-    </div>
-  );
-});
+    return (
+      <div data-slot="command-input-wrapper">
+        {hideIcon ? null : (
+          <span data-slot="command-input-icon" aria-hidden>
+            <Icon source="search" size="small" />
+          </span>
+        )}
+        <CommandPrimitiveInput
+          ref={ref}
+          data-slot="command-input"
+          className={className}
+          style={style}
+          value={resolvedValue}
+          onValueChange={(next) => {
+            ctx?.setSearch(next);
+            onValueChange?.(next);
+          }}
+          {...props}
+        />
+      </div>
+    );
+  },
+);
 CommandInput.displayName = "Command.Input";
 
 function CommandSidebar({
@@ -336,81 +338,85 @@ const CommandList = forwardRef<HTMLDivElement, CommandListPropsType>(function Co
 });
 CommandList.displayName = "Command.List";
 
-const CommandEmpty = forwardRef<HTMLDivElement, CommandEmptyPropsType>(function CommandEmpty(
-  { className, style, ...props },
-  ref,
-) {
-  return (
-    <CommandPrimitiveEmpty
-      ref={ref}
-      data-slot="command-empty"
-      className={className}
-      style={style}
-      {...props}
-    />
-  );
-});
+const CommandEmpty = forwardRef<HTMLDivElement, CommandEmptyPropsType>(
+  function CommandEmpty({ className, style, ...props }, ref) {
+    return (
+      <CommandPrimitiveEmpty
+        ref={ref}
+        data-slot="command-empty"
+        className={className}
+        style={style}
+        {...props}
+      />
+    );
+  },
+);
 CommandEmpty.displayName = "Command.Empty";
 
-const CommandGroup = forwardRef<HTMLDivElement, CommandGroupPropsType>(function CommandGroup(
-  { className, style, value, heading, icon, forceMount, children, ...props },
-  ref,
-) {
-  const ctx = useCommandContext();
-  const groupId = resolveGroupId(value, heading);
+const CommandGroup = forwardRef<HTMLDivElement, CommandGroupPropsType>(
+  function CommandGroup(
+    { className, style, value, heading, icon, forceMount, children, ...props },
+    ref,
+  ) {
+    const ctx = useCommandContext();
+    const groupId = resolveGroupId(value, heading);
 
-  const registerSidebarGroup = ctx?.registerSidebarGroup;
-  const unregisterSidebarGroup = ctx?.unregisterSidebarGroup;
-  const sidebarEnabled = Boolean(ctx?.sidebar);
-  const skipRegister = Boolean(ctx?.hasExplicitSidebarGroups);
+    const registerSidebarGroup = ctx?.registerSidebarGroup;
+    const unregisterSidebarGroup = ctx?.unregisterSidebarGroup;
+    const sidebarEnabled = Boolean(ctx?.sidebar);
+    const skipRegister = Boolean(ctx?.hasExplicitSidebarGroups);
 
-  useEffect(() => {
-    if (!sidebarEnabled || !groupId || skipRegister || !registerSidebarGroup) return;
-    registerSidebarGroup({
-      value: groupId,
-      label: typeof heading === "string" || typeof heading === "number" ? String(heading) : groupId,
+    useEffect(() => {
+      if (!sidebarEnabled || !groupId || skipRegister || !registerSidebarGroup) return;
+      registerSidebarGroup({
+        value: groupId,
+        label:
+          typeof heading === "string" || typeof heading === "number"
+            ? String(heading)
+            : groupId,
+        icon,
+      });
+      return () => unregisterSidebarGroup?.(groupId);
+    }, [
+      sidebarEnabled,
+      skipRegister,
+      groupId,
+      heading,
       icon,
-    });
-    return () => unregisterSidebarGroup?.(groupId);
-  }, [
-    sidebarEnabled,
-    skipRegister,
-    groupId,
-    heading,
-    icon,
-    registerSidebarGroup,
-    unregisterSidebarGroup,
-  ]);
+      registerSidebarGroup,
+      unregisterSidebarGroup,
+    ]);
 
-  const searching = (ctx?.search.trim().length ?? 0) > 0;
-  const hideForSidebar =
-    Boolean(ctx?.sidebar) &&
-    !searching &&
-    groupId != null &&
-    ctx?.activeSidebarGroup != null &&
-    groupId !== ctx.activeSidebarGroup;
+    const searching = (ctx?.search.trim().length ?? 0) > 0;
+    const hideForSidebar =
+      Boolean(ctx?.sidebar) &&
+      !searching &&
+      groupId != null &&
+      ctx?.activeSidebarGroup != null &&
+      groupId !== ctx.activeSidebarGroup;
 
-  // Inactive sidebar groups omit their children so they leave the visible
-  // item count (Empty) and the a11y tree; `forceMount` is not used for this.
-  return (
-    <CommandPrimitiveGroup
-      ref={ref}
-      data-slot="command-group"
-      data-group-value={groupId ?? undefined}
-      data-sidebar-hidden={hideForSidebar ? "" : undefined}
-      forceMount={forceMount}
-      heading={ctx?.sidebar && !searching ? undefined : heading}
-      className={className}
-      style={{
-        ...(hideForSidebar ? { display: "none" } : null),
-        ...style,
-      }}
-      {...props}
-    >
-      {hideForSidebar ? null : children}
-    </CommandPrimitiveGroup>
-  );
-});
+    // Inactive sidebar groups omit their children so they leave the visible
+    // item count (Empty) and the a11y tree; `forceMount` is not used for this.
+    return (
+      <CommandPrimitiveGroup
+        ref={ref}
+        data-slot="command-group"
+        data-group-value={groupId ?? undefined}
+        data-sidebar-hidden={hideForSidebar ? "" : undefined}
+        forceMount={forceMount}
+        heading={ctx?.sidebar && !searching ? undefined : heading}
+        className={className}
+        style={{
+          ...(hideForSidebar ? { display: "none" } : null),
+          ...style,
+        }}
+        {...props}
+      >
+        {hideForSidebar ? null : children}
+      </CommandPrimitiveGroup>
+    );
+  },
+);
 CommandGroup.displayName = "Command.Group";
 
 const CommandItem = forwardRef<HTMLDivElement, CommandItemPropsType>(function CommandItem(
@@ -449,8 +455,14 @@ const CommandSeparator = forwardRef<HTMLDivElement, CommandSeparatorPropsType>(
 );
 CommandSeparator.displayName = "Command.Separator";
 
-function CommandShortcut({ className, style, ...props }: CommandShortcutPropsType): ReactElement {
-  return <span data-slot="command-shortcut" className={className} style={style} {...props} />;
+function CommandShortcut({
+  className,
+  style,
+  ...props
+}: CommandShortcutPropsType): ReactElement {
+  return (
+    <span data-slot="command-shortcut" className={className} style={style} {...props} />
+  );
 }
 CommandShortcut.displayName = "Command.Shortcut";
 
@@ -506,7 +518,12 @@ function CommandDialog({
     onEscape: () => setOpen(false, "escape-key"),
     onOutsidePress: () => setOpen(false, "outside-press"),
   });
-  useFocusContainment(popupRef, { id: layerId, active, trap: modal, initialFocus: "first-field" });
+  useFocusContainment(popupRef, {
+    id: layerId,
+    active,
+    trap: modal,
+    initialFocus: "first-field",
+  });
   useScrollLock(doc, active && modal);
 
   const presence = presenceAttributes(phase);

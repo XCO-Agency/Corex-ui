@@ -15,8 +15,8 @@ export function SegmentExample() {
             Default variant
           </Text>
           <Text color="subdued">
-            White elevated pill on a light track. Label is optional and hidden
-            unless provided.
+            White elevated pill on a light track. Label is optional and hidden unless
+            provided.
           </Text>
           <Segment
             label="Default quantity"

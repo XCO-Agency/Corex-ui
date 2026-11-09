@@ -28,9 +28,7 @@ describe("RichTextEditor", () => {
   });
 
   it("toggles HTML source view via the code button", () => {
-    render(
-      <RichTextEditor label="Body" defaultValue="<p>Source</p>" id="rte-test" />,
-    );
+    render(<RichTextEditor label="Body" defaultValue="<p>Source</p>" id="rte-test" />);
 
     const codeBtn = byA11yLabel("Show HTML");
     expect(codeBtn).not.toBeNull();

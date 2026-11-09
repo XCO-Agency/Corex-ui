@@ -20,7 +20,9 @@ export function DrawerBottomExample() {
           <Drawer.Content>
             <Drawer.Header>
               <Drawer.Title>Product</Drawer.Title>
-              <Drawer.Description>The bottom drawer pushes this panel up.</Drawer.Description>
+              <Drawer.Description>
+                The bottom drawer pushes this panel up.
+              </Drawer.Description>
             </Drawer.Header>
             <Drawer.Body>
               <Drawer variant="bottom">
@@ -55,7 +57,9 @@ export function DrawerBottomExample() {
           <Drawer.Content>
             <Drawer.Header>
               <Drawer.Title>Product</Drawer.Title>
-              <Drawer.Description>Drag the bottom drawer to resize the split.</Drawer.Description>
+              <Drawer.Description>
+                Drag the bottom drawer to resize the split.
+              </Drawer.Description>
             </Drawer.Header>
             <Drawer.Body>
               <Drawer variant="bottom" snapPoints={[0.3, 0.6]} defaultSnapPoint={0.3}>

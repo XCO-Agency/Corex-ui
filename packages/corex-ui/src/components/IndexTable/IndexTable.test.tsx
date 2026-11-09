@@ -46,7 +46,11 @@ function renderTable(props: Partial<Parameters<typeof IndexTable>[0]> = {}) {
 describe("IndexTable", () => {
   it("switches to the empty state and back without breaking hook order", () => {
     const table = (count: number) => (
-      <IndexTable itemCount={count} headings={["Name"]} emptyState={<span>Nothing here</span>}>
+      <IndexTable
+        itemCount={count}
+        headings={["Name"]}
+        emptyState={<span>Nothing here</span>}
+      >
         {count > 0 ? (
           <IndexTable.Row id="a">
             <IndexTable.Cell>Row A</IndexTable.Cell>
@@ -197,7 +201,9 @@ describe("IndexTable", () => {
 
     const pager = container.querySelector(".cx-it__pagination--floating")!;
     expect(pager.closest(".cx-it")).not.toBeNull();
-    expect(pager.querySelector("s-button[accessibilitylabel='Next page']")).not.toBeNull();
+    expect(
+      pager.querySelector("s-button[accessibilitylabel='Next page']"),
+    ).not.toBeNull();
   });
 
   it("renders real rows on one shared grid", () => {
@@ -307,9 +313,9 @@ describe("IndexTable", () => {
 
   it("accepts a plain badge on a heading", () => {
     renderTable({ headings: [{ title: "Order", badge: 3 }, { title: "Total" }] });
-    expect(screen.getAllByRole("columnheader")[1]!.querySelector("s-badge")).toHaveTextContent(
-      "3",
-    );
+    expect(
+      screen.getAllByRole("columnheader")[1]!.querySelector("s-badge"),
+    ).toHaveTextContent("3");
   });
 
   it("toggles sorting from a sortable heading", () => {
@@ -389,7 +395,11 @@ describe("IndexTable", () => {
   it("fills short sub-rows up to every column so pinned columns stay pinned", () => {
     const { container } = render(
       <IndexTable
-        headings={[{ title: "Product" }, { title: "Stock" }, { title: "", sticky: "right" }]}
+        headings={[
+          { title: "Product" },
+          { title: "Stock" },
+          { title: "", sticky: "right" },
+        ]}
         itemCount={1}
       >
         <IndexTable.Row
@@ -409,14 +419,21 @@ describe("IndexTable", () => {
     );
 
     const subRow = container.querySelector(".cx-it__subrows > .cx-it__row")!;
-    expect(subRow.querySelectorAll(":scope > .cx-it__cell:not(.cx-it__cell--control)")).toHaveLength(3);
+    expect(
+      subRow.querySelectorAll(":scope > .cx-it__cell:not(.cx-it__cell--control)"),
+    ).toHaveLength(3);
     expect(subRow.lastElementChild).toHaveClass("cx-it__cell--sticky-right");
   });
 
   it("spans a cell across columns with colSpan and shifts the cells after it", () => {
     const { container } = render(
       <IndexTable
-        headings={[{ title: "Product" }, { title: "Stock" }, { title: "Vendor" }, { title: "Price", alignment: "end" }]}
+        headings={[
+          { title: "Product" },
+          { title: "Stock" },
+          { title: "Vendor" },
+          { title: "Price", alignment: "end" },
+        ]}
         itemCount={1}
         selectable={false}
       >
@@ -427,7 +444,9 @@ describe("IndexTable", () => {
       </IndexTable>,
     );
 
-    const cells = container.querySelectorAll<HTMLElement>(".cx-it__row--body > .cx-it__cell");
+    const cells = container.querySelectorAll<HTMLElement>(
+      ".cx-it__row--body > .cx-it__cell",
+    );
     // Two cells cover all four columns, so no filler is added.
     expect(cells).toHaveLength(2);
     expect(cells[0]!.style.gridColumn).toBe("span 3");
@@ -441,7 +460,12 @@ describe("IndexTable", () => {
   it("only fills the columns a spanning sub-row cell leaves uncovered", () => {
     const { container } = render(
       <IndexTable
-        headings={[{ title: "Product" }, { title: "Stock" }, { title: "Vendor" }, { title: "", sticky: "right" }]}
+        headings={[
+          { title: "Product" },
+          { title: "Stock" },
+          { title: "Vendor" },
+          { title: "", sticky: "right" },
+        ]}
         itemCount={1}
       >
         <IndexTable.Row
@@ -462,7 +486,9 @@ describe("IndexTable", () => {
     );
 
     const subRow = container.querySelector(".cx-it__subrows > .cx-it__row")!;
-    const cells = subRow.querySelectorAll<HTMLElement>(":scope > .cx-it__cell:not(.cx-it__cell--control)");
+    const cells = subRow.querySelectorAll<HTMLElement>(
+      ":scope > .cx-it__cell:not(.cx-it__cell--control)",
+    );
     // One cell over two columns plus two fillers, so the pinned last column keeps its surface.
     expect(cells).toHaveLength(3);
     expect(cells[0]!.style.gridColumn).toBe("span 2");
@@ -471,7 +497,11 @@ describe("IndexTable", () => {
 
   it("caps colSpan to the columns left in the row", () => {
     const { container } = render(
-      <IndexTable headings={[{ title: "Product" }, { title: "Stock" }, { title: "Price" }]} itemCount={1} selectable={false}>
+      <IndexTable
+        headings={[{ title: "Product" }, { title: "Stock" }, { title: "Price" }]}
+        itemCount={1}
+        selectable={false}
+      >
         <IndexTable.Row id="p1">
           <IndexTable.Cell>Shirt</IndexTable.Cell>
           <IndexTable.Cell colSpan={10}>Out of stock everywhere</IndexTable.Cell>
@@ -479,7 +509,9 @@ describe("IndexTable", () => {
       </IndexTable>,
     );
 
-    const cells = container.querySelectorAll<HTMLElement>(".cx-it__row--body > .cx-it__cell");
+    const cells = container.querySelectorAll<HTMLElement>(
+      ".cx-it__row--body > .cx-it__cell",
+    );
     expect(cells).toHaveLength(2);
     expect(cells[1]!.style.gridColumn).toBe("span 2");
   });

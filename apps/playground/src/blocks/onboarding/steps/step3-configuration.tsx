@@ -88,7 +88,7 @@ export function Step3Configuration({ state, dispatch }: Step3ConfigurationPropsT
                     label="Free shipping threshold"
                     value={String(threshold)}
                     onChange={handleAmountChange}
-                    autoComplete="off"
+                    autocomplete="off"
                   />
                 </Box>
               </InlineStack>

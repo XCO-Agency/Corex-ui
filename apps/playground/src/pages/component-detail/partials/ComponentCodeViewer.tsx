@@ -111,8 +111,17 @@ export function ComponentCodeViewer({
               code={activeCode}
               language={language}
             >
-              {({ className: highlightClass, style, tokens, getLineProps, getTokenProps }) => (
-                <pre className={highlightClass} style={{ ...style, background: "transparent", margin: 0 }}>
+              {({
+                className: highlightClass,
+                style,
+                tokens,
+                getLineProps,
+                getTokenProps,
+              }) => (
+                <pre
+                  className={highlightClass}
+                  style={{ ...style, background: "transparent", margin: 0 }}
+                >
                   {tokens.map((line, lineIndex) => (
                     <div key={lineIndex} {...getLineProps({ line })}>
                       <Text color="subdued" variant="small">

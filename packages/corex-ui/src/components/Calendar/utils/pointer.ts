@@ -41,7 +41,12 @@ export type PointerSessionOptionsType = {
  * path. Esc cancels. Returns a function that tears the session down.
  */
 export function beginPointerSession(
-  origin: { clientX: number; clientY: number; pointerId: number; target: EventTarget | null },
+  origin: {
+    clientX: number;
+    clientY: number;
+    pointerId: number;
+    target: EventTarget | null;
+  },
   options: PointerSessionOptionsType,
 ): () => void {
   const doc = ownerDocumentOf(origin.target);
@@ -63,7 +68,10 @@ export function beginPointerSession(
   function handleMove(event: PointerEvent) {
     if (finished || event.pointerId !== origin.pointerId) return;
     if (!dragging) {
-      const distance = Math.hypot(event.clientX - origin.clientX, event.clientY - origin.clientY);
+      const distance = Math.hypot(
+        event.clientX - origin.clientX,
+        event.clientY - origin.clientY,
+      );
       if (distance < options.threshold) return;
       dragging = true;
       root.setAttribute("data-cx-calendar-dragging", "");

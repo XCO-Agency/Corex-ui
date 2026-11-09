@@ -25,11 +25,22 @@ export const API_SECTION_IDS = {
 } as const;
 
 export const extraTableId = (title: string) =>
-  `api-${title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "")}`;
+  `api-${title
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)/g, "")}`;
 
 const COLLAPSED_PROP_COUNT = 14;
 
-function SectionHeading({ id, title, count }: { id: string; title: string; count?: number }) {
+function SectionHeading({
+  id,
+  title,
+  count,
+}: {
+  id: string;
+  title: string;
+  count?: number;
+}) {
   return (
     <Box id={id}>
       <InlineStack gap="small-200" alignItems="center">
@@ -65,7 +76,8 @@ function PropsTable({ props }: { props: ReferencePropType[] }) {
       )
     : sorted;
   const canCollapse = !normalized && filtered.length > COLLAPSED_PROP_COUNT;
-  const visible = canCollapse && !expanded ? filtered.slice(0, COLLAPSED_PROP_COUNT) : filtered;
+  const visible =
+    canCollapse && !expanded ? filtered.slice(0, COLLAPSED_PROP_COUNT) : filtered;
 
   return (
     <BlockStack gap="small">
@@ -118,7 +130,11 @@ function PropsTable({ props }: { props: ReferencePropType[] }) {
         </Table.Body>
       </Table>
       {canCollapse && (
-        <Button variant="tertiary" inlineSize="fill" onClick={() => setExpanded((value) => !value)}>
+        <Button
+          variant="tertiary"
+          inlineSize="fill"
+          onClick={() => setExpanded((value) => !value)}
+        >
           {expanded ? "Show fewer props" : `Show all ${filtered.length} props`}
         </Button>
       )}

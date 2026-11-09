@@ -13,7 +13,9 @@ export function ListView() {
     const result: Array<{ day: Date; items: typeof ctx.occurrences }> = [];
     const last = endOfMonth(ctx.date);
     for (let day = startOfMonth(ctx.date); day <= last; day = addDays(day, 1)) {
-      const items = ctx.occurrences.filter((occurrence) => occurrenceTouchesDay(occurrence, day));
+      const items = ctx.occurrences.filter((occurrence) =>
+        occurrenceTouchesDay(occurrence, day),
+      );
       if (items.length > 0) result.push({ day, items });
     }
     return result;
@@ -30,7 +32,12 @@ export function ListView() {
   }
 
   return (
-    <div data-slot="calendar-list" data-view="list" role="list" aria-labelledby={ctx.titleId}>
+    <div
+      data-slot="calendar-list"
+      data-view="list"
+      role="list"
+      aria-labelledby={ctx.titleId}
+    >
       {groups.map(({ day, items }) => (
         <section key={toDateKey(day)} role="listitem" data-slot="calendar-list-day">
           <h3

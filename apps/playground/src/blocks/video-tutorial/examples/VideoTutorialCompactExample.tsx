@@ -42,7 +42,7 @@ export function VideoTutorialCompactExample() {
                   accessibilityLabel="More options"
                 />
               </InlineStack>
-              <Text as="p" tone="subdued" variant="bodySm">
+              <Text as="p" color="subdued" variant="bodySm">
                 {DEFAULT_VIDEO_TUTORIAL_DATA.description}
               </Text>
             </BlockStack>

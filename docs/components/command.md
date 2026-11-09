@@ -53,7 +53,7 @@ const [open, setOpen] = useState(false);
     <Command.Input placeholder="Search for a command to run..." />
     <Command.List>…</Command.List>
   </Command>
-</Command.Dialog>
+</Command.Dialog>;
 ```
 
 ## Sidebar groups
@@ -64,7 +64,11 @@ Set `sidebar` for a two-column layout: group nav on the left, items of the selec
 <Command sidebar defaultSidebarGroup="suggestions" sidebarWidth="12rem">
   <Command.Input placeholder="Filter commands..." />
   <Command.List>
-    <Command.Group heading="Suggestions" value="suggestions" icon={<Icon source="search" />}>
+    <Command.Group
+      heading="Suggestions"
+      value="suggestions"
+      icon={<Icon source="search" />}
+    >
       <Command.Item value="calendar">Calendar</Command.Item>
     </Command.Group>
     <Command.Group heading="Settings" value="settings">

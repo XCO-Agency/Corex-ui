@@ -21,7 +21,8 @@ function parseArgs(argv) {
     const arg = argv[i];
     if (arg === "--") continue;
     if (arg === "--base") args.base = argv[++i];
-    else if (arg === "--only") args.only = new Set(argv[++i].split(",").map((s) => s.trim()));
+    else if (arg === "--only")
+      args.only = new Set(argv[++i].split(",").map((s) => s.trim()));
   }
   return args;
 }
@@ -119,7 +120,9 @@ async function main() {
     .join("\n")}\n};\n`;
   if (existing !== body) await writeFile(mapPath, body);
 
-  console.log(`\nDone. ${manifest.length} captured this run, ${all.length} on disk, ${failed} failed → ${outDir}`);
+  console.log(
+    `\nDone. ${manifest.length} captured this run, ${all.length} on disk, ${failed} failed → ${outDir}`,
+  );
   if (failed > 0) process.exitCode = 1;
 }
 

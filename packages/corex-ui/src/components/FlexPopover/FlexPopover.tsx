@@ -153,9 +153,7 @@ function findOpenHostingDialog(from: Element): HTMLDialogElement | null {
       }
     }
 
-    const parent: HTMLElement | null = isElementNode(node)
-      ? node.parentElement
-      : null;
+    const parent: HTMLElement | null = isElementNode(node) ? node.parentElement : null;
     if (parent) {
       node = parent;
       continue;

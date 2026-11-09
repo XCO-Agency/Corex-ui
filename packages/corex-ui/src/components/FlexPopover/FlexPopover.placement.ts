@@ -128,8 +128,10 @@ function enterMotion(
             : "top";
   return {
     transformOrigin: `${x} ${y}`,
-    enterX: side === "left" ? `${ENTER_PX}px` : side === "right" ? `-${ENTER_PX}px` : "0px",
-    enterY: side === "top" ? `${ENTER_PX}px` : side === "bottom" ? `-${ENTER_PX}px` : "0px",
+    enterX:
+      side === "left" ? `${ENTER_PX}px` : side === "right" ? `-${ENTER_PX}px` : "0px",
+    enterY:
+      side === "top" ? `${ENTER_PX}px` : side === "bottom" ? `-${ENTER_PX}px` : "0px",
   };
 }
 

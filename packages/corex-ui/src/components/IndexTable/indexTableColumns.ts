@@ -120,7 +120,9 @@ export function resolveLayout({
 
   const canGrow = (index: number) => {
     const heading = headings[index] ?? {};
-    return !(stickyOverrides[index] ?? heading.sticky) && !heading.width && !heading.hidden;
+    return (
+      !(stickyOverrides[index] ?? heading.sticky) && !heading.width && !heading.hidden
+    );
   };
   let flexibleIndex = canGrow(primaryIndex) ? primaryIndex : -1;
   for (let index = count - 1; flexibleIndex < 0 && index >= 0; index--) {

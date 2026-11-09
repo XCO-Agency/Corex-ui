@@ -201,9 +201,11 @@ describe("FlexPopover", () => {
       expect(popoverDialog().style.top).not.toBe("auto");
       const measured = observer
         .takeRecords()
-        .some((record) =>
-          (record.target as HTMLElement).classList.contains("corex-native-popover--measure") ||
-          (record.oldValue ?? "").includes("corex-native-popover--measure"),
+        .some(
+          (record) =>
+            (record.target as HTMLElement).classList.contains(
+              "corex-native-popover--measure",
+            ) || (record.oldValue ?? "").includes("corex-native-popover--measure"),
         );
       expect(measured).toBe(false);
     } finally {
@@ -396,7 +398,9 @@ describe("FlexPopover", () => {
 
       // Layer must be a light-DOM child of the host (not inside the shadow dialog),
       // so Polaris s-* attribute props keep working on portaled panels.
-      const layer = host.querySelector<HTMLElement>(`:scope > [data-corex-flex-popover-layer]`);
+      const layer = host.querySelector<HTMLElement>(
+        `:scope > [data-corex-flex-popover-layer]`,
+      );
       const panel = layer?.querySelector<HTMLElement>(".corex-native-popover");
       expect(layer).toBeTruthy();
       expect(panel).toBeTruthy();

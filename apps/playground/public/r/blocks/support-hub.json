@@ -3,9 +3,7 @@
   "type": "registry:block",
   "title": "Support",
   "description": "Knowledge base FAQ accordion, diagnostic system health, and priority support.",
-  "dependencies": [
-    "@xco-agency/corex-ui"
-  ],
+  "dependencies": ["@xco-agency/corex-ui"],
   "files": [
     {
       "path": "SupportHub.tsx",

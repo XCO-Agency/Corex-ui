@@ -3,9 +3,7 @@
   "type": "registry:block",
   "title": "Plans & Billing",
   "description": "Subscription plan selection with billing interval toggle and Shopify confirmation modal.",
-  "dependencies": [
-    "@xco-agency/corex-ui"
-  ],
+  "dependencies": ["@xco-agency/corex-ui"],
   "files": [
     {
       "path": "constants.ts",

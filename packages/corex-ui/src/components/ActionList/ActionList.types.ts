@@ -1,4 +1,4 @@
-import type {  ReactNode } from "react";
+import type { ReactNode } from "react";
 import type { IconType } from "../../types/common";
 import type { IconSourceType } from "../Icon/Icon.types";
 

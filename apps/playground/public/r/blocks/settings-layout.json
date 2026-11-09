@@ -3,9 +3,7 @@
   "type": "registry:block",
   "title": "Settings",
   "description": "Two-column annotated configuration layout matching Shopify Admin conventions.",
-  "dependencies": [
-    "@xco-agency/corex-ui"
-  ],
+  "dependencies": ["@xco-agency/corex-ui"],
   "files": [
     {
       "path": "examples/AnnotatedSettingsExample.tsx",

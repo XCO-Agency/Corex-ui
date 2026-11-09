@@ -24,7 +24,12 @@ export function useDaySelection(options: {
       const doc = event.currentTarget.ownerDocument;
 
       beginPointerSession(
-        { clientX: event.clientX, clientY: event.clientY, pointerId: event.pointerId, target: event.currentTarget },
+        {
+          clientX: event.clientX,
+          clientY: event.clientY,
+          pointerId: event.pointerId,
+          target: event.currentTarget,
+        },
         {
           threshold: 4,
           onMove: (move) => {
@@ -34,7 +39,11 @@ export function useDaySelection(options: {
             const first = day < anchorDay ? day : anchorDay;
             const last = day < anchorDay ? anchorDay : day;
             const next = { start: first, end: addDays(last, 1), allDay: true };
-            if (!current || current.start.getTime() !== next.start.getTime() || current.end.getTime() !== next.end.getTime()) {
+            if (
+              !current ||
+              current.start.getTime() !== next.start.getTime() ||
+              current.end.getTime() !== next.end.getTime()
+            ) {
               current = next;
               setSelection(next);
             }

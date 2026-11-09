@@ -57,7 +57,9 @@ export function useDragDrop(
       );
 
       const handler =
-        kind === "drop" ? handlersRef.current.onEventDrop : handlersRef.current.onEventResize;
+        kind === "drop"
+          ? handlersRef.current.onEventDrop
+          : handlersRef.current.onEventResize;
       let accepted = true;
       try {
         accepted = (await handler?.(info)) !== false;

@@ -118,7 +118,10 @@ export function TimeGrid({ days }: TimeGridPropsType) {
     const scroller = scrollRef.current;
     const root = rootRef.current;
     if (!scroller || !root) return;
-    root.style.setProperty(GUTTER_STYLE_VAR, `${scroller.offsetWidth - scroller.clientWidth}px`);
+    root.style.setProperty(
+      GUTTER_STYLE_VAR,
+      `${scroller.offsetWidth - scroller.clientWidth}px`,
+    );
   }, [scrollSize]);
 
   const rangeKey = `${ctx.view}:${toDateKey(days[0]!)}`;
@@ -131,7 +134,10 @@ export function TimeGrid({ days }: TimeGridPropsType) {
       showsToday && nowMinutes >= slotMin && nowMinutes <= slotMax
         ? nowMinutes
         : (ctx.businessHours?.startMinutes ?? 8 * 60);
-    scroller.scrollTop = Math.max(0, (clampNumber(target, slotMin, slotMax) - slotMin) * pxPerMinute - slotHeight * 2);
+    scroller.scrollTop = Math.max(
+      0,
+      (clampNumber(target, slotMin, slotMax) - slotMin) * pxPerMinute - slotHeight * 2,
+    );
     // Only when the visible range or view changes, not on each clock tick.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [rangeKey]);
@@ -140,22 +146,41 @@ export function TimeGrid({ days }: TimeGridPropsType) {
     const rect = colsRef.current?.getBoundingClientRect();
     if (!rect || rect.width === 0) return { dayIndex: 0, minutes: slotMin };
     const x = rtl ? rect.right - clientX : clientX - rect.left;
-    const dayIndex = clampNumber(Math.floor(x / (rect.width / days.length)), 0, days.length - 1);
-    const minutes = clampNumber(slotMin + (clientY - rect.top) / pxPerMinute, slotMin, slotMax);
+    const dayIndex = clampNumber(
+      Math.floor(x / (rect.width / days.length)),
+      0,
+      days.length - 1,
+    );
+    const minutes = clampNumber(
+      slotMin + (clientY - rect.top) / pxPerMinute,
+      slotMin,
+      slotMax,
+    );
     return { dayIndex, minutes };
   };
-  const snap = (minutes: number) => slotMin + Math.round((minutes - slotMin) / slot) * slot;
-  const floorSlot = (minutes: number) => slotMin + Math.floor((minutes - slotMin) / slot) * slot;
+  const snap = (minutes: number) =>
+    slotMin + Math.round((minutes - slotMin) / slot) * slot;
+  const floorSlot = (minutes: number) =>
+    slotMin + Math.floor((minutes - slotMin) / slot) * slot;
 
-  const beginMove = (event: PointerEvent<HTMLElement>, occurrence: CalendarOccurrenceType) => {
+  const beginMove = (
+    event: PointerEvent<HTMLElement>,
+    occurrence: CalendarOccurrenceType,
+  ) => {
     if (event.button !== 0) return;
     const pressed = pointToSlot(event.clientX, event.clientY);
     const pressedSnap = snap(pressed.minutes);
-    const durationMinutes = (occurrence.end.getTime() - occurrence.start.getTime()) / 60_000;
+    const durationMinutes =
+      (occurrence.end.getTime() - occurrence.start.getTime()) / 60_000;
     let latest: GhostType | null = null;
 
     beginPointerSession(
-      { clientX: event.clientX, clientY: event.clientY, pointerId: event.pointerId, target: event.currentTarget },
+      {
+        clientX: event.clientX,
+        clientY: event.clientY,
+        pointerId: event.pointerId,
+        target: event.currentTarget,
+      },
       {
         threshold: 4,
         onStart: () => setDraggingKey(occurrence.key),
@@ -173,7 +198,12 @@ export function TimeGrid({ days }: TimeGridPropsType) {
         onEnd: (_up, dragging) => {
           setDraggingKey(null);
           setGhost(null);
-          if (!dragging || !latest || latest.start.getTime() === occurrence.start.getTime()) return;
+          if (
+            !dragging ||
+            !latest ||
+            latest.start.getTime() === occurrence.start.getTime()
+          )
+            return;
           ctx.commitMove({
             event: occurrence.event,
             oldStart: occurrence.start,
@@ -191,7 +221,10 @@ export function TimeGrid({ days }: TimeGridPropsType) {
     );
   };
 
-  const beginResize = (event: PointerEvent<HTMLElement>, occurrence: CalendarOccurrenceType) => {
+  const beginResize = (
+    event: PointerEvent<HTMLElement>,
+    occurrence: CalendarOccurrenceType,
+  ) => {
     if (event.button !== 0) return;
     event.stopPropagation();
     event.preventDefault();
@@ -200,7 +233,12 @@ export function TimeGrid({ days }: TimeGridPropsType) {
     let latest: GhostType | null = null;
 
     beginPointerSession(
-      { clientX: event.clientX, clientY: event.clientY, pointerId: event.pointerId, target: event.currentTarget },
+      {
+        clientX: event.clientX,
+        clientY: event.clientY,
+        pointerId: event.pointerId,
+        target: event.currentTarget,
+      },
       {
         threshold: 3,
         onStart: () => setDraggingKey(occurrence.key),
@@ -216,7 +254,8 @@ export function TimeGrid({ days }: TimeGridPropsType) {
         onEnd: (_up, dragging) => {
           setDraggingKey(null);
           setGhost(null);
-          if (!dragging || !latest || latest.end.getTime() === occurrence.end.getTime()) return;
+          if (!dragging || !latest || latest.end.getTime() === occurrence.end.getTime())
+            return;
           ctx.commitResize({
             event: occurrence.event,
             oldStart: occurrence.start,
@@ -243,7 +282,12 @@ export function TimeGrid({ days }: TimeGridPropsType) {
     let latest: { start: Date; end: Date } | null = null;
 
     beginPointerSession(
-      { clientX: event.clientX, clientY: event.clientY, pointerId: event.pointerId, target: event.currentTarget },
+      {
+        clientX: event.clientX,
+        clientY: event.clientY,
+        pointerId: event.pointerId,
+        target: event.currentTarget,
+      },
       {
         threshold: 4,
         onMove: (move) => {
@@ -354,8 +398,14 @@ export function TimeGrid({ days }: TimeGridPropsType) {
             const today = isSameDay(day, ctx.today);
             const content = (
               <>
-                <span data-slot="calendar-tg-weekday">{formatWeekday(day, ctx.locale)}</span>
-                <span data-slot="calendar-tg-date" data-today={today ? "" : undefined} data-pulse={today && ctx.pulseToday ? "" : undefined}>
+                <span data-slot="calendar-tg-weekday">
+                  {formatWeekday(day, ctx.locale)}
+                </span>
+                <span
+                  data-slot="calendar-tg-date"
+                  data-today={today ? "" : undefined}
+                  data-pulse={today && ctx.pulseToday ? "" : undefined}
+                >
                   {day.getDate()}
                 </span>
               </>
@@ -385,7 +435,10 @@ export function TimeGrid({ days }: TimeGridPropsType) {
       <div data-slot="calendar-tg-allday">
         <div data-slot="calendar-gutter">all-day</div>
         <div data-slot="calendar-allday-body">
-          <div data-slot="calendar-allday-cells" style={{ gridTemplateColumns: columnTemplate }}>
+          <div
+            data-slot="calendar-allday-cells"
+            style={{ gridTemplateColumns: columnTemplate }}
+          >
             {days.map((day) => {
               const selection = ctx.selection;
               const inSelection = Boolean(
@@ -408,7 +461,10 @@ export function TimeGrid({ days }: TimeGridPropsType) {
               );
             })}
           </div>
-          <div data-slot="calendar-week-events" style={{ gridTemplateColumns: columnTemplate }}>
+          <div
+            data-slot="calendar-week-events"
+            style={{ gridTemplateColumns: columnTemplate }}
+          >
             {allDayLayout.segments.map((segment, index) => (
               <EventChip
                 key={`${segment.occurrence.key}`}
@@ -452,13 +508,17 @@ export function TimeGrid({ days }: TimeGridPropsType) {
               const hours = ctx.businessHours;
               const selection = ctx.selection;
               const selectionPiece =
-                selection && !selection.allDay ? clipToDay(selection, day, slotMin, slotMax) : null;
+                selection && !selection.allDay
+                  ? clipToDay(selection, day, slotMin, slotMax)
+                  : null;
               const ghostPiece = ghost ? clipToDay(ghost, day, slotMin, slotMax) : null;
               const closed: Array<[number, number]> = [];
               if (hours) {
                 if (hours.daysOfWeek.includes(day.getDay())) {
-                  if (hours.startMinutes > slotMin) closed.push([slotMin, Math.min(hours.startMinutes, slotMax)]);
-                  if (hours.endMinutes < slotMax) closed.push([Math.max(hours.endMinutes, slotMin), slotMax]);
+                  if (hours.startMinutes > slotMin)
+                    closed.push([slotMin, Math.min(hours.startMinutes, slotMax)]);
+                  if (hours.endMinutes < slotMax)
+                    closed.push([Math.max(hours.endMinutes, slotMin), slotMax]);
                 } else {
                   closed.push([slotMin, slotMax]);
                 }
@@ -475,7 +535,10 @@ export function TimeGrid({ days }: TimeGridPropsType) {
                       key={from}
                       data-slot="calendar-closed"
                       aria-hidden="true"
-                      style={{ top: (from - slotMin) * pxPerMinute, height: (to - from) * pxPerMinute }}
+                      style={{
+                        top: (from - slotMin) * pxPerMinute,
+                        height: (to - from) * pxPerMinute,
+                      }}
                     />
                   ))}
                   {selectionPiece ? (
@@ -489,12 +552,26 @@ export function TimeGrid({ days }: TimeGridPropsType) {
                     />
                   ) : null}
                   {columns[dayIndex]!.map((positioned, index) =>
-                    renderBlock(positioned.item, positioned.column, positioned.columns, index),
+                    renderBlock(
+                      positioned.item,
+                      positioned.column,
+                      positioned.columns,
+                      index,
+                    ),
                   )}
                   {ghost && ghostPiece
-                    ? renderBlock({ occurrence: ghost.occurrence, ...ghostPiece }, 0, 1, 0, { ghost: true })
+                    ? renderBlock(
+                        { occurrence: ghost.occurrence, ...ghostPiece },
+                        0,
+                        1,
+                        0,
+                        { ghost: true },
+                      )
                     : null}
-                  {ctx.nowIndicator && today && nowMinutes >= slotMin && nowMinutes <= slotMax ? (
+                  {ctx.nowIndicator &&
+                  today &&
+                  nowMinutes >= slotMin &&
+                  nowMinutes <= slotMax ? (
                     <NowIndicator top={(nowMinutes - slotMin) * pxPerMinute} />
                   ) : null}
                 </div>

@@ -89,8 +89,8 @@ export function CommandExample() {
           Sidebar groups
         </Text>
         <Text as="p" variant="small" color="subdued">
-          Enable with `sidebar`. Groups appear as a left nav; hover or click a group to show its
-          items on the right. Typing in search shows matches across all groups.
+          Enable with `sidebar`. Groups appear as a left nav; hover or click a group to
+          show its items on the right. Typing in search shows matches across all groups.
         </Text>
         <Command
           label="Sidebar command menu"
@@ -161,7 +161,8 @@ export function CommandExample() {
           Command palette dialog
         </Text>
         <Text as="p" variant="small" color="subdued">
-          Open with the button or ⌘K / Ctrl+K. Uses the built-in Corex dialog for the overlay.
+          Open with the button or ⌘K / Ctrl+K. Uses the built-in Corex dialog for the
+          overlay.
         </Text>
         <InlineStack gap="small-200">
           <Button variant="primary" onClick={() => setOpen(true)}>

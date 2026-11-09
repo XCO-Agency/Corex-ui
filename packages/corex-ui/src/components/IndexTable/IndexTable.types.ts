@@ -11,8 +11,7 @@ export type IndexTableSortDirectionType = "ascending" | "descending";
 
 /** A badge next to a heading's title: its content alone, or content and tone. */
 export type IndexTableHeadingBadgeType =
-  | ReactNode
-  | { content: ReactNode; tone?: BadgePropsType["tone"] };
+  ReactNode | { content: ReactNode; tone?: BadgePropsType["tone"] };
 
 export type IndexTableHeadingType = {
   id?: string;
@@ -140,13 +139,7 @@ export type IndexTablePropsType = {
 
 /** Background tone used to highlight a row; matches IconTile's tones. */
 export type IndexTableRowToneType =
-  | "info"
-  | "success"
-  | "warning"
-  | "caution"
-  | "critical"
-  | "neutral"
-  | "subdued";
+  "info" | "success" | "warning" | "caution" | "critical" | "neutral" | "subdued";
 
 export type IndexTableRowPropsType = {
   children?: ReactNode;

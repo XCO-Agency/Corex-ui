@@ -185,14 +185,15 @@ export function Installation() {
 
         <Step n={2} title="Polaris web components">
           <p>
-            The library wraps Shopify's <Code>s-*</Code> custom elements. Inside the Shopify
-            admin they are already registered globally, so embedded apps need nothing extra.
+            The library wraps Shopify's <Code>s-*</Code> custom elements. Inside the
+            Shopify admin they are already registered globally, so embedded apps need
+            nothing extra.
           </p>
           <div className="flex gap-2 rounded-md bg-muted/40 px-3 py-2 text-xs">
             <Info className="mt-0.5 size-3.5 shrink-0" />
             <span>
-              Rendering outside the admin (a standalone preview, Storybook, tests)? Load the
-              script in your HTML shell:
+              Rendering outside the admin (a standalone preview, Storybook, tests)? Load
+              the script in your HTML shell:
             </span>
           </div>
           <CommandSnippet command={CDN_SCRIPT_CODE} prompt={null} />
@@ -201,8 +202,8 @@ export function Installation() {
         <Step n={3} title="Start building">
           <p>
             Import from <Code>@xco-agency/corex-ui</Code> instead of{" "}
-            <Code>@shopify/polaris</Code>. Prefer the modern props shown in each component's API
-            reference.
+            <Code>@shopify/polaris</Code>. Prefer the modern props shown in each
+            component's API reference.
           </p>
           <ComponentCodeViewer
             code={USAGE_CODE}
@@ -258,17 +259,26 @@ export function Installation() {
               </div>
               <CommandSnippet command={skillCommand} />
               <p className="text-xs">
-                Writes the skill to <Code>.cursor/rules/</Code>, <Code>.claude/skills/</Code> or{" "}
-                <Code>.agents/skills/</Code> depending on the assistant.
+                Writes the skill to <Code>.cursor/rules/</Code>,{" "}
+                <Code>.claude/skills/</Code> or <Code>.agents/skills/</Code> depending on
+                the assistant.
               </p>
             </>
           ) : (
             <>
               <div className="flex flex-wrap gap-2">
-                <Button icon={copiedSkill ? "check" : "clipboard"} onClick={handleCopySkill}>
+                <Button
+                  icon={copiedSkill ? "check" : "clipboard"}
+                  onClick={handleCopySkill}
+                >
                   {copiedSkill ? "Copied" : "Copy SKILL.md"}
                 </Button>
-                <Button icon="download" variant="secondary" href="/SKILL.md" target="_blank">
+                <Button
+                  icon="download"
+                  variant="secondary"
+                  href="/SKILL.md"
+                  target="_blank"
+                >
                   Download
                 </Button>
               </div>

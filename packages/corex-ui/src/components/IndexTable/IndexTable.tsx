@@ -1046,10 +1046,7 @@ function IndexTableRow({
         {table.reorderable && (
           <div
             role="cell"
-            className={cx(
-              "cx-it__cell cx-it__cell--control",
-              stickyClass(controlPin),
-            )}
+            className={cx("cx-it__cell cx-it__cell--control", stickyClass(controlPin))}
             style={pinStyle(controlPin)}
           >
             {canDrag && (
@@ -1135,7 +1132,10 @@ const NESTED_INDENT = 24;
 /** A cell's `colSpan` as a whole number of columns, at least 1 and at most `available`. */
 function cellSpan(cell: ReactElement, available: number): number {
   const requested = (cell.props as IndexTableCellPropsType).colSpan;
-  const span = typeof requested === "number" && Number.isFinite(requested) ? Math.floor(requested) : 1;
+  const span =
+    typeof requested === "number" && Number.isFinite(requested)
+      ? Math.floor(requested)
+      : 1;
   return Math.max(1, Math.min(span, Math.max(1, available)));
 }
 

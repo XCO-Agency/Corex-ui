@@ -23,7 +23,11 @@ const REACT_RESERVED_PROPS = new Set([
  * Attributes whose `"false"` value is meaningful (enumerated, not boolean),
  * so a `false` prop must be written out rather than dropped.
  */
-const ENUMERATED_FALSE_ATTRIBUTES = new Set(["spellcheck", "draggable", "contenteditable"]);
+const ENUMERATED_FALSE_ATTRIBUTES = new Set([
+  "spellcheck",
+  "draggable",
+  "contenteditable",
+]);
 
 /** `onClick`, `onKeyDown`, ...: left for React's own event system. */
 const REACT_EVENT_PROP = /^on[A-Z]/;

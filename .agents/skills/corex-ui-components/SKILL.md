@@ -140,28 +140,28 @@ When specifying `gap`, `padding`, `rowGap`, or `columnGap`, use **exclusively** 
 
 ### Forms & Inputs
 
-| Component                           | Description                                                                               | Subcomponents                                                                            |
-| :---------------------------------- | :---------------------------------------------------------------------------------------- | :--------------------------------------------------------------------------------------- |
-| [**TextField**](#textfield)         | Single-line or multiline text input wrapping `<s-text-field>` and `<s-text-area>`.        | —                                                                                        |
-| [**SearchField**](#searchfield)     | Specialized search field input wrapping `<s-search-field>` with built-in clear button.    | —                                                                                        |
-| [**NumberField**](#numberfield)     | Numeric input wrapping `<s-number-field>` with min/max, step, and decimal handling.       | —                                                                                        |
-| [**EmailField**](#emailfield)       | Email input wrapping `<s-email-field>` with built-in email keyboard and validation.       | —                                                                                        |
-| [**PasswordField**](#passwordfield) | Password input wrapping `<s-password-field>` with toggleable visibility.                  | —                                                                                        |
-| [**UrlField**](#urlfield)           | URL input wrapping `<s-url-field>` with URL-specific keyboard and validation.             | —                                                                                        |
-| [**DateField**](#datefield)         | Single date field input wrapping `<s-date-field>`.                                        | —                                                                                        |
-| [**DatePicker**](#datepicker)       | Calendar date picker supporting preset ranges, single dates, and date ranges.             | —                                                                                        |
-| [**MoneyField**](#moneyfield)       | Currency and monetary amount input wrapping `<s-money-field>` with currency code support. | —                                                                                        |
-| [**ColorField**](#colorfield)       | Color picker input wrapping `<s-color-field>` with optional alpha channel.                | —                                                                                        |
-| [**Select**](#select)               | Dropdown select control wrapping `<s-select>`.                                            | —                                                                                        |
-| [**Checkbox**](#checkbox)           | Binary or indeterminate checkbox wrapping `<s-checkbox>`.                                 | —                                                                                        |
-| [**Switch**](#switch)               | Toggle switch control wrapping `<s-switch>`.                                              | —                                                                                        |
-| [**Segment**](#segment)             | Pill segmented control for mutually exclusive options with optional label and variants.   | —                                                                                        |
-| [**ChoiceList**](#choicelist)       | Radio button or checkbox list group allowing single or multiple selections.               | —                                                                                        |
-| [**RangeSlider**](#rangeslider)     | Slider input for selecting values within a range.                                         | —                                                                                        |
-| [**RichTextEditor**](#richtexteditor) | Shopify-admin-style rich text editor with toolbar, media inserts, and HTML source view. | —                                                                                        |
-| [**DropZone**](#dropzone)           | File drag-and-drop zone wrapping `<s-drop-zone>`, with square icon-only `size="small"`.   | —                                                                                        |
-| [**Combobox**](#combobox)           | Accessible autocomplete and combobox popover control.                                     | `Combobox.Input`, `Combobox.Content`, `Combobox.List`, `Combobox.Item`, `Combobox.Empty` |
-| [**Autocomplete**](#autocomplete)   | High-level single-selection autocomplete input with debounced querying.                   | —                                                                                        |
+| Component                             | Description                                                                               | Subcomponents                                                                            |
+| :------------------------------------ | :---------------------------------------------------------------------------------------- | :--------------------------------------------------------------------------------------- |
+| [**TextField**](#textfield)           | Single-line or multiline text input wrapping `<s-text-field>` and `<s-text-area>`.        | —                                                                                        |
+| [**SearchField**](#searchfield)       | Specialized search field input wrapping `<s-search-field>` with built-in clear button.    | —                                                                                        |
+| [**NumberField**](#numberfield)       | Numeric input wrapping `<s-number-field>` with min/max, step, and decimal handling.       | —                                                                                        |
+| [**EmailField**](#emailfield)         | Email input wrapping `<s-email-field>` with built-in email keyboard and validation.       | —                                                                                        |
+| [**PasswordField**](#passwordfield)   | Password input wrapping `<s-password-field>` with toggleable visibility.                  | —                                                                                        |
+| [**UrlField**](#urlfield)             | URL input wrapping `<s-url-field>` with URL-specific keyboard and validation.             | —                                                                                        |
+| [**DateField**](#datefield)           | Single date field input wrapping `<s-date-field>`.                                        | —                                                                                        |
+| [**DatePicker**](#datepicker)         | Calendar date picker supporting preset ranges, single dates, and date ranges.             | —                                                                                        |
+| [**MoneyField**](#moneyfield)         | Currency and monetary amount input wrapping `<s-money-field>` with currency code support. | —                                                                                        |
+| [**ColorField**](#colorfield)         | Color picker input wrapping `<s-color-field>` with optional alpha channel.                | —                                                                                        |
+| [**Select**](#select)                 | Dropdown select control wrapping `<s-select>`.                                            | —                                                                                        |
+| [**Checkbox**](#checkbox)             | Binary or indeterminate checkbox wrapping `<s-checkbox>`.                                 | —                                                                                        |
+| [**Switch**](#switch)                 | Toggle switch control wrapping `<s-switch>`.                                              | —                                                                                        |
+| [**Segment**](#segment)               | Pill segmented control for mutually exclusive options with optional label and variants.   | —                                                                                        |
+| [**ChoiceList**](#choicelist)         | Radio button or checkbox list group allowing single or multiple selections.               | —                                                                                        |
+| [**RangeSlider**](#rangeslider)       | Slider input for selecting values within a range.                                         | —                                                                                        |
+| [**RichTextEditor**](#richtexteditor) | Shopify-admin-style rich text editor with toolbar, media inserts, and HTML source view.   | —                                                                                        |
+| [**DropZone**](#dropzone)             | File drag-and-drop zone wrapping `<s-drop-zone>`, with square icon-only `size="small"`.   | —                                                                                        |
+| [**Combobox**](#combobox)             | Accessible autocomplete and combobox popover control.                                     | `Combobox.Input`, `Combobox.Content`, `Combobox.List`, `Combobox.Item`, `Combobox.Empty` |
+| [**Autocomplete**](#autocomplete)     | High-level single-selection autocomplete input with debounced querying.                   | —                                                                                        |
 
 ### Filtering & Search
 
@@ -195,23 +195,23 @@ When specifying `gap`, `padding`, `rowGap`, or `columnGap`, use **exclusively** 
 
 ### Overlays & Navigation
 
-| Component                       | Description                                                                                                        | Subcomponents                                                                                         |
-| :------------------------------ | :----------------------------------------------------------------------------------------------------------------- | :---------------------------------------------------------------------------------------------------- |
-| [**Page**](#page)               | Top-level page layout container wrapping `<s-page>`. Houses header, breadcrumbs, actions, aside, and page content. | —                                                                                                     |
-| [**Tabs**](#tabs)               | Segment pill tabs, compact dropdown mode, and card/folder tabs with `Tabs.Content`.                                | `Tabs.Content`                                                                                        |
-| [**Pagination**](#pagination)   | Pagination navigation buttons for traversing records.                                                              | —                                                                                                     |
-| [**Drawer**](#drawer)           | Responsive panel: right drawer on desktop, bottom sheet on mobile; full-surface swipe, no desktop handle.          | `Drawer.Trigger`, `Drawer.Content`, `Drawer.Header`, `Drawer.Footer`, `Drawer.Title`, `Drawer.Description`, `Drawer.Body`, `Drawer.Close`, `Drawer.Overlay`, `Drawer.SwipeHandle`, `Drawer.Portal` |
-| [**Modal**](#modal)             | Dialog modal overlay wrapping `<s-modal>` or `<ui-modal>`.                                                         | —                                                                                                     |
-| [**Popover**](#popover)         | Contextual popover overlay anchored to a trigger element.                                                          | `Popover.Trigger`, `Popover.Content`                                                                  |
-| [**FlexPopover**](#flexpopover) | Custom floating popover composed of `FlexPopover.Trigger` and `FlexPopover.Content` with automatic positioning and boundary management. | `FlexPopover.Trigger`, `FlexPopover.Content`                                                         |
-| [**Floating**](#floating)       | Floating portal layer with collapse and expanding capabilities.                                                    | —                                                                                                     |
-| [**Tooltip**](#tooltip)         | Lightweight popup tooltip wrapping `<s-tooltip>`.                                                                  | —                                                                                                     |
-| [**Menu**](#menu)               | Menu overlay wrapping `<s-menu>` containing action list items.                                                     | —                                                                                                     |
-| [**Navigation**](#navigation)   | Sidebar navigation component with hierarchical sections, items, and search.                                        | `Navigation.Section`, `Navigation.Item`, `Navigation.Label`, `Navigation.Search`, `Navigation.Footer` |
-| [**Collapsible**](#collapsible) | Smoothly animated expand/collapse container.                                                                       | —                                                                                                     |
-| [**Transition**](#transition)   | Animated transition wrapper for enter/exit animations.                                                             | —                                                                                                     |
-| [**EmptyState**](#emptystate)   | Prominent placeholder UI for empty screens or zero search results.                                                 | —                                                                                                     |
-| [**ActionList**](#actionlist)   | Action menu list of actions and choices with integrated Popover overlay.                                           | —                                                                                                     |
+| Component                       | Description                                                                                                                             | Subcomponents                                                                                                                                                                                      |
+| :------------------------------ | :-------------------------------------------------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [**Page**](#page)               | Top-level page layout container wrapping `<s-page>`. Houses header, breadcrumbs, actions, aside, and page content.                      | —                                                                                                                                                                                                  |
+| [**Tabs**](#tabs)               | Segment pill tabs, compact dropdown mode, and card/folder tabs with `Tabs.Content`.                                                     | `Tabs.Content`                                                                                                                                                                                     |
+| [**Pagination**](#pagination)   | Pagination navigation buttons for traversing records.                                                                                   | —                                                                                                                                                                                                  |
+| [**Drawer**](#drawer)           | Responsive panel: right drawer on desktop, bottom sheet on mobile; full-surface swipe, no desktop handle.                               | `Drawer.Trigger`, `Drawer.Content`, `Drawer.Header`, `Drawer.Footer`, `Drawer.Title`, `Drawer.Description`, `Drawer.Body`, `Drawer.Close`, `Drawer.Overlay`, `Drawer.SwipeHandle`, `Drawer.Portal` |
+| [**Modal**](#modal)             | Dialog modal overlay wrapping `<s-modal>` or `<ui-modal>`.                                                                              | —                                                                                                                                                                                                  |
+| [**Popover**](#popover)         | Contextual popover overlay anchored to a trigger element.                                                                               | `Popover.Trigger`, `Popover.Content`                                                                                                                                                               |
+| [**FlexPopover**](#flexpopover) | Custom floating popover composed of `FlexPopover.Trigger` and `FlexPopover.Content` with automatic positioning and boundary management. | `FlexPopover.Trigger`, `FlexPopover.Content`                                                                                                                                                       |
+| [**Floating**](#floating)       | Floating portal layer with collapse and expanding capabilities.                                                                         | —                                                                                                                                                                                                  |
+| [**Tooltip**](#tooltip)         | Lightweight popup tooltip wrapping `<s-tooltip>`.                                                                                       | —                                                                                                                                                                                                  |
+| [**Menu**](#menu)               | Menu overlay wrapping `<s-menu>` containing action list items.                                                                          | —                                                                                                                                                                                                  |
+| [**Navigation**](#navigation)   | Sidebar navigation component with hierarchical sections, items, and search.                                                             | `Navigation.Section`, `Navigation.Item`, `Navigation.Label`, `Navigation.Search`, `Navigation.Footer`                                                                                              |
+| [**Collapsible**](#collapsible) | Smoothly animated expand/collapse container.                                                                                            | —                                                                                                                                                                                                  |
+| [**Transition**](#transition)   | Animated transition wrapper for enter/exit animations.                                                                                  | —                                                                                                                                                                                                  |
+| [**EmptyState**](#emptystate)   | Prominent placeholder UI for empty screens or zero search results.                                                                      | —                                                                                                                                                                                                  |
+| [**ActionList**](#actionlist)   | Action menu list of actions and choices with integrated Popover overlay.                                                                | —                                                                                                                                                                                                  |
 
 ### App Bridge Chrome
 
@@ -1122,42 +1122,42 @@ import { Calendar, type CalendarEventType } from "@xco-agency/corex-ui";
 
 #### Event shape (`CalendarEventType`)
 
-| Field | Type | Description |
-| :---- | :--- | :---------- |
-| `id`, `title` | `string` | Required. |
-| `start` / `end?` | `Date \| string` | Date-only strings are local midnight. All-day `end` is **exclusive**. Default length: 1 day / 1 hour. |
-| `allDay?` | `boolean` | All-day bar instead of a timed event. |
-| `color?` / `textColor?` | `string` | Background / text color. |
-| `editable?` | `boolean` | Overrides calendar `editable`. Recurring events are never draggable. |
-| `rrule?` | `string` | `FREQ=DAILY\|WEEKLY\|MONTHLY\|YEARLY`, `INTERVAL`, `COUNT`, `UNTIL`, `BYDAY`. |
-| `extendedProps?` | `Record<string, unknown>` | Free-form data. |
+| Field                   | Type                      | Description                                                                                           |
+| :---------------------- | :------------------------ | :---------------------------------------------------------------------------------------------------- |
+| `id`, `title`           | `string`                  | Required.                                                                                             |
+| `start` / `end?`        | `Date \| string`          | Date-only strings are local midnight. All-day `end` is **exclusive**. Default length: 1 day / 1 hour. |
+| `allDay?`               | `boolean`                 | All-day bar instead of a timed event.                                                                 |
+| `color?` / `textColor?` | `string`                  | Background / text color.                                                                              |
+| `editable?`             | `boolean`                 | Overrides calendar `editable`. Recurring events are never draggable.                                  |
+| `rrule?`                | `string`                  | `FREQ=DAILY\|WEEKLY\|MONTHLY\|YEARLY`, `INTERVAL`, `COUNT`, `UNTIL`, `BYDAY`.                         |
+| `extendedProps?`        | `Record<string, unknown>` | Free-form data.                                                                                       |
 
 #### Modern Props (`<Calendar>`)
 
-| Prop | Type | Description |
-| :--- | :--- | :---------- |
-| `events` | `CalendarEventType[] \| (range) => Promise<CalendarEventType[]>` | Array, or loader called per visible range. |
-| `view` / `defaultView` / `onViewChange` | `"month" \| "week" \| "day" \| "list"` | Controlled or uncontrolled. Uncontrolled on phones defaults to `list`. |
-| `date` / `defaultDate` / `onDatesChange` | `Date` / `({ start, end, view, date }) => void` | Visible date; `onDatesChange` fires on every range change. |
-| `firstDay` | `0`–`6` | Week start. Default `0` (Sunday). |
-| `locale` | `string` | `Intl` locale for titles, weekdays and times. |
-| `weekends` / `weekNumbers` | `boolean` | Hide Sat/Sun; show ISO week numbers. |
-| `dayMaxEvents` | `number \| boolean` | Month rows before "+N more". `true` fits the cell. Default `3`. |
-| `fixedWeekCount` | `boolean` | Always 6 weeks. Default `true`. |
-| `editable` / `selectable` | `boolean` | Drag/resize events; drag across days/slots to select. |
-| `nowIndicator` | `boolean` | Red now line in week/day. Default `true`. |
-| `slotMinTime` / `slotMaxTime` / `slotDuration` | `"HH:mm"` / `number` (minutes) | Time grid range and slot size (default 30). |
-| `businessHours` | `boolean \| { daysOfWeek?, startTime?, endTime? }` | Shades non-business time. |
-| `height` | `number \| "auto"` | Fixed px (views scroll inside) or content height. |
-| `headerToolbar` | `false \| { start?, center?, end? }` | Tokens `prev,next today title month,week,day,list`. |
-| `density` | `"comfortable" \| "compact"` | Row/slot sizing. |
-| `dir` | `"ltr" \| "rtl" \| "auto"` | Mirrors the layout. |
-| `onDateClick` | `({ date, allDay }) => void` | Day cell / time slot click. |
-| `onEventClick` | `({ event, start, end, nativeEvent }) => void` | Event click / Enter. |
-| `onSelect` | `({ start, end, allDay }) => void` | Range selection (end exclusive). |
-| `onEventDrop` / `onEventResize` | `(info) => void \| boolean \| Promise` | Applied optimistically; return `false` or reject to revert. |
-| `renderEvent` / `renderDayCell` | `(info) => ReactNode` | Custom event body / day number. |
-| `classNames` | `{ root?, toolbar?, title?, grid?, dayCell?, event?, popover?, timeGrid? }` | Slot class overrides. |
+| Prop                                           | Type                                                                        | Description                                                            |
+| :--------------------------------------------- | :-------------------------------------------------------------------------- | :--------------------------------------------------------------------- |
+| `events`                                       | `CalendarEventType[] \| (range) => Promise<CalendarEventType[]>`            | Array, or loader called per visible range.                             |
+| `view` / `defaultView` / `onViewChange`        | `"month" \| "week" \| "day" \| "list"`                                      | Controlled or uncontrolled. Uncontrolled on phones defaults to `list`. |
+| `date` / `defaultDate` / `onDatesChange`       | `Date` / `({ start, end, view, date }) => void`                             | Visible date; `onDatesChange` fires on every range change.             |
+| `firstDay`                                     | `0`–`6`                                                                     | Week start. Default `0` (Sunday).                                      |
+| `locale`                                       | `string`                                                                    | `Intl` locale for titles, weekdays and times.                          |
+| `weekends` / `weekNumbers`                     | `boolean`                                                                   | Hide Sat/Sun; show ISO week numbers.                                   |
+| `dayMaxEvents`                                 | `number \| boolean`                                                         | Month rows before "+N more". `true` fits the cell. Default `3`.        |
+| `fixedWeekCount`                               | `boolean`                                                                   | Always 6 weeks. Default `true`.                                        |
+| `editable` / `selectable`                      | `boolean`                                                                   | Drag/resize events; drag across days/slots to select.                  |
+| `nowIndicator`                                 | `boolean`                                                                   | Red now line in week/day. Default `true`.                              |
+| `slotMinTime` / `slotMaxTime` / `slotDuration` | `"HH:mm"` / `number` (minutes)                                              | Time grid range and slot size (default 30).                            |
+| `businessHours`                                | `boolean \| { daysOfWeek?, startTime?, endTime? }`                          | Shades non-business time.                                              |
+| `height`                                       | `number \| "auto"`                                                          | Fixed px (views scroll inside) or content height.                      |
+| `headerToolbar`                                | `false \| { start?, center?, end? }`                                        | Tokens `prev,next today title month,week,day,list`.                    |
+| `density`                                      | `"comfortable" \| "compact"`                                                | Row/slot sizing.                                                       |
+| `dir`                                          | `"ltr" \| "rtl" \| "auto"`                                                  | Mirrors the layout.                                                    |
+| `onDateClick`                                  | `({ date, allDay }) => void`                                                | Day cell / time slot click.                                            |
+| `onEventClick`                                 | `({ event, start, end, nativeEvent }) => void`                              | Event click / Enter.                                                   |
+| `onSelect`                                     | `({ start, end, allDay }) => void`                                          | Range selection (end exclusive).                                       |
+| `onEventDrop` / `onEventResize`                | `(info) => void \| boolean \| Promise`                                      | Applied optimistically; return `false` or reject to revert.            |
+| `renderEvent` / `renderDayCell`                | `(info) => ReactNode`                                                       | Custom event body / day number.                                        |
+| `classNames`                                   | `{ root?, toolbar?, title?, grid?, dayCell?, event?, popover?, timeGrid? }` | Slot class overrides.                                                  |
 
 Keyboard (month): arrows move focus, `PageUp`/`PageDown` change month (`Shift` = year), `Home`/`End` week edges, `T` today, `Enter` activates. Week/day: `PageUp`/`PageDown`, `T`.
 
@@ -1173,10 +1173,15 @@ const [events, setEvents] = useState<CalendarEventType[]>(initialEvents);
   firstDay={1}
   businessHours
   onEventDrop={({ event, newStart, newEnd }) =>
-    setEvents((list) => list.map((e) => (e.id === event.id ? { ...e, start: newStart, end: newEnd } : e)))
+    setEvents((list) =>
+      list.map((e) => (e.id === event.id ? { ...e, start: newStart, end: newEnd } : e)),
+    )
   }
   onSelect={({ start, end, allDay }) =>
-    setEvents((list) => [...list, { id: crypto.randomUUID(), title: "New event", start, end, allDay }])
+    setEvents((list) => [
+      ...list,
+      { id: crypto.randomUUID(), title: "New event", start, end, allDay },
+    ])
   }
 />;
 ```
@@ -1493,21 +1498,21 @@ import { Selectable, Card, Text } from "@xco-agency/corex-ui";
 
 #### Props
 
-| Prop                 | Type                                                          | Default  | Description                                              |
-| -------------------- | ------------------------------------------------------------- | -------- | -------------------------------------------------------- |
-| `selected`           | `boolean`                                                     | —        | Controlled state.                                        |
-| `defaultSelected`    | `boolean`                                                     | `false`  | Initial state when uncontrolled.                         |
-| `onSelectedChange`   | `(selected: boolean) => void`                                 | —        | Click, Space or Enter toggles it.                        |
-| `value`              | `string`                                                      | —        | Identifies the item inside a `Selectable.Group`.         |
-| `tone`               | `"info" \| "success" \| "warning" \| "critical" \| "neutral"` | `"info"` | Outline colour (`auto` = info, `caution` = warning).     |
-| `interactive`        | `boolean`                                                     | `true`   | `false` makes it a highlight only, driven by `selected`. |
-| `disabled`           | `boolean`                                                     | —        | Dims the item and blocks interaction.                    |
+| Prop                 | Type                                                          | Default  | Description                                                                                                      |
+| -------------------- | ------------------------------------------------------------- | -------- | ---------------------------------------------------------------------------------------------------------------- |
+| `selected`           | `boolean`                                                     | —        | Controlled state.                                                                                                |
+| `defaultSelected`    | `boolean`                                                     | `false`  | Initial state when uncontrolled.                                                                                 |
+| `onSelectedChange`   | `(selected: boolean) => void`                                 | —        | Click, Space or Enter toggles it.                                                                                |
+| `value`              | `string`                                                      | —        | Identifies the item inside a `Selectable.Group`.                                                                 |
+| `tone`               | `"info" \| "success" \| "warning" \| "critical" \| "neutral"` | `"info"` | Outline colour (`auto` = info, `caution` = warning).                                                             |
+| `interactive`        | `boolean`                                                     | `true`   | `false` makes it a highlight only, driven by `selected`.                                                         |
+| `disabled`           | `boolean`                                                     | —        | Dims the item and blocks interaction.                                                                            |
 | `indicator`          | `boolean \| "checkbox" \| "radio"`                            | `false`  | Selection mark while selected. `true` = default corner badge; `"checkbox"` / `"radio"` = inset top-start styles. |
-| `outlineWidth`       | `1 \| 2 \| 3`                                                 | `2`      | Outline thickness in px.                                 |
-| `outlineOffset`      | `number`                                                      | `0`      | Gap between content and outline in px.                   |
-| `borderRadius`       | `"none" \| "small" \| "base" \| "large" \| "large-100"`       | `"base"` | Match the wrapped element's corners.                     |
-| `inlineSize`         | `"fill" \| "auto"`                                            | `"fill"` | Width of the wrapper.                                    |
-| `accessibilityLabel` | `string`                                                      | —        | Accessible name.                                         |
+| `outlineWidth`       | `1 \| 2 \| 3`                                                 | `2`      | Outline thickness in px.                                                                                         |
+| `outlineOffset`      | `number`                                                      | `0`      | Gap between content and outline in px.                                                                           |
+| `borderRadius`       | `"none" \| "small" \| "base" \| "large" \| "large-100"`       | `"base"` | Match the wrapped element's corners.                                                                             |
+| `inlineSize`         | `"fill" \| "auto"`                                            | `"fill"` | Width of the wrapper.                                                                                            |
+| `accessibilityLabel` | `string`                                                      | —        | Accessible name.                                                                                                 |
 
 #### `Selectable.Group`
 
@@ -1590,7 +1595,7 @@ import { DropZone } from "@xco-agency/corex-ui";
 | `value`                        | `string &#124; undefined`                       | —                                                                                                                                                                                                                                                                                               |
 | `files`                        | `File[] &#124; undefined`                       | —                                                                                                                                                                                                                                                                                               |
 | `size`                         | `"small" &#124; "base" &#124; undefined`        | `base` (default) keeps the full Polaris prompts. `small` renders a square surface with a centered icon.                                                                                                                                                                                         |
-| `inlineSize`                   | `"fill" &#124; string &#124; undefined`         | Width when `size="small"`. CSS length (default `"5rem"`) or `"fill"` to stretch inside a grid cell.                                                                                                                                                                                              |
+| `inlineSize`                   | `"fill" &#124; string &#124; undefined`         | Width when `size="small"`. CSS length (default `"5rem"`) or `"fill"` to stretch inside a grid cell.                                                                                                                                                                                             |
 | `icon`                         | `IconType &#124; undefined`                     | Center icon when `size="small"` and no `children` are provided. Defaults to `"upload"`.                                                                                                                                                                                                         |
 | `onChange`                     | `((event: Event) =&gt; void) &#124; undefined`  | —                                                                                                                                                                                                                                                                                               |
 | `onDrop`                       | `((files: File[]) =&gt; void) &#124; undefined` | v12's callback, called with the files the element accepted. v12 also passed the rejected ones as a third argument; `s-drop-zone` reports only what it accepted, so that argument is not offered rather than filled with a guess — `onDropRejected` is the element's own signal for a rejection. |
@@ -1717,27 +1722,27 @@ import { FlexPopover } from "@xco-agency/corex-ui";
 
 #### Subcomponents
 
-| Subcomponent          | Description                                                                                     | Key Props                                                                                                                      |
-| :-------------------- | :---------------------------------------------------------------------------------------------- | :----------------------------------------------------------------------------------------------------------------------------- |
-| `FlexPopover.Trigger` | The anchor element wrapper (`display: contents`) that toggles the popover on click or on hover. | `children: ReactNode`                                                                                                          |
+| Subcomponent          | Description                                                                                     | Key Props                                                                                  |
+| :-------------------- | :---------------------------------------------------------------------------------------------- | :----------------------------------------------------------------------------------------- |
+| `FlexPopover.Trigger` | The anchor element wrapper (`display: contents`) that toggles the popover on click or on hover. | `children: ReactNode`                                                                      |
 | `FlexPopover.Content` | The floating dialog panel positioned relative to the trigger.                                   | `heading?: ReactNode (header shows only when passed), noHeader?: boolean, padding?: "none" | "small-500" | "small-400" | "small-300" | "small-200" | "small-100" | "small" | "base" | "large" (default "none"), closeAccessibilityLabel?: string, width?: string, minWidth?: string, maxHeight?: string, position?: FlexPopoverPositionType, offset?: number, matchAnchorWidth?: boolean, onClose?: () => void, children: ReactNode` |
 
 #### Modern Props (`<FlexPopover>`)
 
-| Prop                      | Type                                                        | Description                                                                                                                           |
-| :------------------------ | :---------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------ |
-| `children` **(required)** | `ReactNode`                                                 | Must contain `FlexPopover.Trigger` and `FlexPopover.Content`.                                                                         |
-| `position`                | `FlexPopoverPositionType &#124; undefined`                  | Preferred side: `top`, `bottom`, `left`, `right`, plus `-start` / `-end`. Defaults to `bottom-start`. Flips when it does not fit.    |
-| `offset`                  | `number &#124; undefined`                                   | Gap in pixels between the trigger and the popover panel. Defaults to `8`.                                                             |
-| `matchAnchorWidth`        | `boolean &#124; undefined`                                  | Whether the popover panel matches the width of the trigger element. Defaults to `false`.                                              |
-| `openOnHover`             | `boolean &#124; undefined`                                  | Opens when the pointer enters the trigger. Closing is delayed so crossing the offset gap does not dismiss.                          |
-| `closeDelay`              | `number &#124; undefined`                                   | Milliseconds to wait after the pointer leaves before closing when `openOnHover` is enabled. Defaults to `150`.                         |
-| `defaultOpen`             | `boolean &#124; undefined`                                  | Initial open state when uncontrolled. Defaults to `false`.                                                                            |
-| `isOpen`                  | `boolean &#124; undefined`                                  | Controlled open state. When omitted, state is managed automatically on trigger click.                                                 |
-| `onOpen`                  | `(() =&gt; void) &#124; undefined`                          | Fired when the popover opens (e.g. trigger click or hover enter).                                                                     |
-| `onClose`                 | `(() =&gt; void) &#124; undefined`                          | Fired when the popover closes (Escape key, outside click, close button, or hover leave).                                             |
-| `boundaryRef`             | `RefObject&lt;HTMLElement &#124; null&gt; &#124; undefined` | Element whose clicks never dismiss the popover.                                                                                       |
-| `boundarySelector`        | `string &#124; undefined`                                   | Clicks inside an element matching this selector never dismiss the popover (e.g. for submenus).                                        |
+| Prop                      | Type                                                        | Description                                                                                                                       |
+| :------------------------ | :---------------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------- |
+| `children` **(required)** | `ReactNode`                                                 | Must contain `FlexPopover.Trigger` and `FlexPopover.Content`.                                                                     |
+| `position`                | `FlexPopoverPositionType &#124; undefined`                  | Preferred side: `top`, `bottom`, `left`, `right`, plus `-start` / `-end`. Defaults to `bottom-start`. Flips when it does not fit. |
+| `offset`                  | `number &#124; undefined`                                   | Gap in pixels between the trigger and the popover panel. Defaults to `8`.                                                         |
+| `matchAnchorWidth`        | `boolean &#124; undefined`                                  | Whether the popover panel matches the width of the trigger element. Defaults to `false`.                                          |
+| `openOnHover`             | `boolean &#124; undefined`                                  | Opens when the pointer enters the trigger. Closing is delayed so crossing the offset gap does not dismiss.                        |
+| `closeDelay`              | `number &#124; undefined`                                   | Milliseconds to wait after the pointer leaves before closing when `openOnHover` is enabled. Defaults to `150`.                    |
+| `defaultOpen`             | `boolean &#124; undefined`                                  | Initial open state when uncontrolled. Defaults to `false`.                                                                        |
+| `isOpen`                  | `boolean &#124; undefined`                                  | Controlled open state. When omitted, state is managed automatically on trigger click.                                             |
+| `onOpen`                  | `(() =&gt; void) &#124; undefined`                          | Fired when the popover opens (e.g. trigger click or hover enter).                                                                 |
+| `onClose`                 | `(() =&gt; void) &#124; undefined`                          | Fired when the popover closes (Escape key, outside click, close button, or hover leave).                                          |
+| `boundaryRef`             | `RefObject&lt;HTMLElement &#124; null&gt; &#124; undefined` | Element whose clicks never dismiss the popover.                                                                                   |
+| `boundarySelector`        | `string &#124; undefined`                                   | Clicks inside an element matching this selector never dismiss the popover (e.g. for submenus).                                    |
 
 #### Example
 
@@ -1763,7 +1768,9 @@ import { FlexPopover } from "@xco-agency/corex-ui";
     <Button>Hover for Details</Button>
   </FlexPopover.Trigger>
   <FlexPopover.Content heading="Details" width="240px" padding="small-200">
-    <Text>Opens on hover, stays open while traversing the bridge, and closes on leave.</Text>
+    <Text>
+      Opens on hover, stays open while traversing the bridge, and closes on leave.
+    </Text>
   </FlexPopover.Content>
 </FlexPopover>
 ```
@@ -2116,13 +2123,13 @@ import { IndexFilters } from "@xco-agency/corex-ui";
 
 The root also accepts all search field props above (declarative mode).
 
-| Prop               | Type                                                                                         | Description                                                                                                                                                                         |
-| :----------------- | :------------------------------------------------------------------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `children`         | `ReactNode`                                                                                  | Composable toolbar (`IndexFilters.SearchField`, `IndexFilters.Actions`, ...).                                                                                                       |
-| `actions`          | `ReactNode`                                                                                  | Right-side content in declarative mode (no `children`).                                                                                                                             |
-| `saveAction`       | `boolean &#124; IndexFiltersSaveActionType`                                                  | Built-in "Save" action, shown only while filters are active; opens a modal asking for the view name. **Enabled by default.** `false` removes it; an object configures it.           |
+| Prop               | Type                                                                                         | Description                                                                                                                                                                                                                                                                                                   |
+| :----------------- | :------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `children`         | `ReactNode`                                                                                  | Composable toolbar (`IndexFilters.SearchField`, `IndexFilters.Actions`, ...).                                                                                                                                                                                                                                 |
+| `actions`          | `ReactNode`                                                                                  | Right-side content in declarative mode (no `children`).                                                                                                                                                                                                                                                       |
+| `saveAction`       | `boolean &#124; IndexFiltersSaveActionType`                                                  | Built-in "Save" action, shown only while filters are active; opens a modal asking for the view name. **Enabled by default.** `false` removes it; an object configures it.                                                                                                                                     |
 | `onSaveView`       | `((view: IndexFiltersSavedViewType) =&gt; void &#124; Promise&lt;void&gt;) &#124; undefined` | Called with `{ name, query, filters }` (filters without `onRemove`). Store it and render it as a tab with `actions: { onEdit, onRemove }` so the compact list can edit or remove that saved view. Built-in tabs omit `actions`. A thrown error / rejected promise keeps the modal open and shows the message. |
-| `hasActiveFilters` | `boolean &#124; undefined`                                                                   | Overrides active detection. By default active = non-blank `queryValue` or any applied filter with a non-empty `value`.                                                              |
+| `hasActiveFilters` | `boolean &#124; undefined`                                                                   | Overrides active detection. By default active = non-blank `queryValue` or any applied filter with a non-empty `value`.                                                                                                                                                                                        |
 
 `IndexFiltersSaveActionType`: `{ label?: string ("Save"), disabled?: boolean, modalTitle?: string ("Save as new view"), nameLabel?: string ("Name"), namePlaceholder?: string, saveLabel?: string ("Save"), cancelLabel?: string ("Cancel"), validateName?: (name) => string | undefined }` — return an error message from `validateName` to block the save (e.g. duplicate tab names).
 
@@ -2634,36 +2641,36 @@ Responsive swipeable panel, dependency-free (no Base UI). **Desktop** = right si
 import { Drawer, Button } from "@xco-agency/corex-ui";
 ```
 
-| Subcomponent            | Description                                                                 | Key Props                                                                 |
-| :---------------------- | :-------------------------------------------------------------------------- | :------------------------------------------------------------------------ |
-| `Drawer.Trigger`        | Opens the drawer; pass a `Button` (or other element) as `children`.         | `children`, `nativeButton?`                                               |
-| `Drawer.Content`        | Portal + overlay + viewport + popup panel.                                  | `offset?`, `width?` (`"small"`\|`"base"`\|`"large"`\|`"large-100"`…`"large-500"`\|`"full"`\| CSS length), `maxHeight?`, `children` |
-| `Drawer.Header`         | Title/description region.                                                   | `children`                                                                |
-| `Drawer.Title`          | Accessible title.                                                           | `children`                                                                |
-| `Drawer.Description`    | Accessible description.                                                     | `children`                                                                |
-| `Drawer.Body`           | Scrollable flex body.                                                       | `children`                                                                |
-| `Drawer.Footer`         | Actions in a row at the end (wraps when tight), pinned to the bottom.      | `children`                                                                |
-| `Drawer.Close`          | Dismiss control; pass a `Button` as `children`.                             | `children`                                                                |
-| `Drawer.Overlay`        | Backdrop (included automatically when `modal`).                             | —                                                                         |
-| `Drawer.SwipeHandle`    | Mobile-sheet grabber only (never on desktop).                               | —                                                                         |
-| `Drawer.Portal`         | Low-level portal.                                                           | —                                                                         |
+| Subcomponent         | Description                                                           | Key Props                                                                                                                          |
+| :------------------- | :-------------------------------------------------------------------- | :--------------------------------------------------------------------------------------------------------------------------------- |
+| `Drawer.Trigger`     | Opens the drawer; pass a `Button` (or other element) as `children`.   | `children`, `nativeButton?`                                                                                                        |
+| `Drawer.Content`     | Portal + overlay + viewport + popup panel.                            | `offset?`, `width?` (`"small"`\|`"base"`\|`"large"`\|`"large-100"`…`"large-500"`\|`"full"`\| CSS length), `maxHeight?`, `children` |
+| `Drawer.Header`      | Title/description region.                                             | `children`                                                                                                                         |
+| `Drawer.Title`       | Accessible title.                                                     | `children`                                                                                                                         |
+| `Drawer.Description` | Accessible description.                                               | `children`                                                                                                                         |
+| `Drawer.Body`        | Scrollable flex body.                                                 | `children`                                                                                                                         |
+| `Drawer.Footer`      | Actions in a row at the end (wraps when tight), pinned to the bottom. | `children`                                                                                                                         |
+| `Drawer.Close`       | Dismiss control; pass a `Button` as `children`.                       | `children`                                                                                                                         |
+| `Drawer.Overlay`     | Backdrop (included automatically when `modal`).                       | —                                                                                                                                  |
+| `Drawer.SwipeHandle` | Mobile-sheet grabber only (never on desktop).                         | —                                                                                                                                  |
+| `Drawer.Portal`      | Low-level portal.                                                     | —                                                                                                                                  |
 
 #### Modern Props (`<Drawer>`)
 
-| Prop               | Type                                                         | Description                                                                                          |
-| :----------------- | :----------------------------------------------------------- | :--------------------------------------------------------------------------------------------------- |
-| `children`         | `ReactNode`                                                  | Compound parts (`Trigger`, `Content`, …).                                                            |
-| `open`             | `boolean &#124; undefined`                                   | Controlled open state.                                                                               |
-| `defaultOpen`      | `boolean &#124; undefined`                                   | Uncontrolled initial open.                                                                           |
-| `onOpenChange`     | `((open: boolean, details) => void) &#124; undefined`        | Open/close callback (includes swipe dismiss).                                                        |
-| `swipeDirection`   | `"up" &#124; "down" &#124; "left" &#124; "right"`            | Preferred desktop side. Defaults to `"right"`.                                                       |
-| `responsive`       | `boolean`                                                    | Remap `left`/`right` → bottom sheet on mobile. Defaults to `true`.                                   |
-| `showSwipeHandle`  | `boolean`                                                    | Mobile sheet grabber only; never mounts on desktop. Defaults to `false`.                             |
-| `swipeable`        | `boolean`                                                    | Set `false` to turn off dragging (swipe-to-dismiss and snap dragging); close via `Drawer.Close`, Escape or the backdrop. Defaults to `true`. |
-| `offset`           | `number &#124; string &#124; { top?, right?, bottom?, left?, x?, y? }` | Edge float gap. Defaults to `8` all sides. Pass `0` for flush, or per-side object. |
-| `modal`            | `boolean &#124; "trap-focus"`                                | Modal / non-modal / trap-focus. Defaults to `true`.                                                  |
-| `snapPoints`       | `Array&lt;number &#124; string&gt; &#124; undefined`         | Vertical snap heights (sheet only).                                                                  |
-| `disablePointerDismissal` | `boolean &#124; undefined`                              | Prevent outside-press dismiss.                                                                       |
+| Prop                      | Type                                                                   | Description                                                                                                                                  |
+| :------------------------ | :--------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------- |
+| `children`                | `ReactNode`                                                            | Compound parts (`Trigger`, `Content`, …).                                                                                                    |
+| `open`                    | `boolean &#124; undefined`                                             | Controlled open state.                                                                                                                       |
+| `defaultOpen`             | `boolean &#124; undefined`                                             | Uncontrolled initial open.                                                                                                                   |
+| `onOpenChange`            | `((open: boolean, details) => void) &#124; undefined`                  | Open/close callback (includes swipe dismiss).                                                                                                |
+| `swipeDirection`          | `"up" &#124; "down" &#124; "left" &#124; "right"`                      | Preferred desktop side. Defaults to `"right"`.                                                                                               |
+| `responsive`              | `boolean`                                                              | Remap `left`/`right` → bottom sheet on mobile. Defaults to `true`.                                                                           |
+| `showSwipeHandle`         | `boolean`                                                              | Mobile sheet grabber only; never mounts on desktop. Defaults to `false`.                                                                     |
+| `swipeable`               | `boolean`                                                              | Set `false` to turn off dragging (swipe-to-dismiss and snap dragging); close via `Drawer.Close`, Escape or the backdrop. Defaults to `true`. |
+| `offset`                  | `number &#124; string &#124; { top?, right?, bottom?, left?, x?, y? }` | Edge float gap. Defaults to `8` all sides. Pass `0` for flush, or per-side object.                                                           |
+| `modal`                   | `boolean &#124; "trap-focus"`                                          | Modal / non-modal / trap-focus. Defaults to `true`.                                                                                          |
+| `snapPoints`              | `Array&lt;number &#124; string&gt; &#124; undefined`                   | Vertical snap heights (sheet only).                                                                                                          |
+| `disablePointerDismissal` | `boolean &#124; undefined`                                             | Prevent outside-press dismiss.                                                                                                               |
 
 #### Example
 
@@ -2690,7 +2697,13 @@ import { Drawer, Button } from "@xco-agency/corex-ui";
 #### Imperative control (`useDrawer`) — works anywhere, no `<Drawer>` ancestor needed
 
 ```tsx
-import { useDrawer, openDrawer, closeDrawer, toggleDrawer, closeAllDrawers } from "@xco-agency/corex-ui";
+import {
+  useDrawer,
+  openDrawer,
+  closeDrawer,
+  toggleDrawer,
+  closeAllDrawers,
+} from "@xco-agency/corex-ui";
 
 // Inside Drawer content: the nearest drawer.
 const drawer = useDrawer();
@@ -2702,14 +2715,18 @@ drawers.close();
 
 // Anywhere, by id: <Drawer id="cart">.
 const cart = useDrawer("cart");
-cart.open(); cart.toggle(); cart.isOpen;
+cart.open();
+cart.toggle();
+cart.isOpen;
 
 // Outside React.
-openDrawer("cart"); closeDrawer("cart"); closeDrawer(); closeAllDrawers();
+openDrawer("cart");
+closeDrawer("cart");
+closeDrawer();
+closeAllDrawers();
 ```
 
 Returns `{ isOpen, open, close, toggle, closeAll }` (`useDrawer()` adds `insideDrawer` + the drawer context inside one; `useDrawerContext()` for context only, throws outside). `onOpenChange` receives `reason: "imperative"`. Mark external toggle buttons with `data-drawer-outside-control` so pressing them is not treated as an outside press; use `modal={false}` to keep the page clickable.
-
 
 ### Command
 
@@ -2719,33 +2736,33 @@ Filterable command menu with the [shadcn Command](https://ui.shadcn.com/docs/com
 import { Command, Icon, Button } from "@xco-agency/corex-ui";
 ```
 
-| Subcomponent         | Description                                      | Key Props                                      |
-| :------------------- | :----------------------------------------------- | :--------------------------------------------- |
-| `Command.Input`      | Search field with leading search icon.           | `placeholder?`, `hideIcon?`, `onValueChange?`  |
-| `Command.List`       | Scrollable results region (wraps sidebar body).  | `maxHeight?` (default `18rem`)                 |
-| `Command.Empty`      | Shown when the filter has no matches.            | `children`                                     |
-| `Command.Group`      | Labeled group of items.                          | `heading?`, `value?`, `icon?`, `children`      |
-| `Command.Item`       | Selectable row (`onSelect` receives `value`).    | `value?`, `onSelect?`, `disabled?`, `keywords?`|
-| `Command.Separator`  | Divider between groups.                          | —                                              |
-| `Command.Shortcut`   | Trailing keyboard hint (e.g. `⌘K`).              | `children`                                     |
-| `Command.Sidebar`    | Optional custom left nav (auto-rendered by List).| `groups?`                                      |
-| `Command.Dialog`     | Centered palette overlay wrapping a `Command`.   | `open?`, `onOpenChange?`, `title?`, `description?` |
+| Subcomponent        | Description                                       | Key Props                                          |
+| :------------------ | :------------------------------------------------ | :------------------------------------------------- |
+| `Command.Input`     | Search field with leading search icon.            | `placeholder?`, `hideIcon?`, `onValueChange?`      |
+| `Command.List`      | Scrollable results region (wraps sidebar body).   | `maxHeight?` (default `18rem`)                     |
+| `Command.Empty`     | Shown when the filter has no matches.             | `children`                                         |
+| `Command.Group`     | Labeled group of items.                           | `heading?`, `value?`, `icon?`, `children`          |
+| `Command.Item`      | Selectable row (`onSelect` receives `value`).     | `value?`, `onSelect?`, `disabled?`, `keywords?`    |
+| `Command.Separator` | Divider between groups.                           | —                                                  |
+| `Command.Shortcut`  | Trailing keyboard hint (e.g. `⌘K`).               | `children`                                         |
+| `Command.Sidebar`   | Optional custom left nav (auto-rendered by List). | `groups?`                                          |
+| `Command.Dialog`    | Centered palette overlay wrapping a `Command`.    | `open?`, `onOpenChange?`, `title?`, `description?` |
 
 #### Modern Props (`<Command>`)
 
-| Prop            | Type                                      | Description                                      |
-| :-------------- | :---------------------------------------- | :----------------------------------------------- |
-| `label`         | `string`                                  | Accessible label for the menu.                   |
-| `sidebar`       | `boolean`                                 | Two-column groups sidebar layout. Default `false`. |
-| `sidebarGroups` | `CommandSidebarGroupType[]`               | Explicit left-nav entries (else auto from Groups). |
-| `sidebarGroup` / `defaultSidebarGroup` | `string`               | Controlled / initial sticky group id.            |
-| `onSidebarGroupChange` | `(value: string) => void`            | Sticky group click callback.                     |
-| `sidebarWidth`  | `string`                                  | Left nav width. Default `"12rem"`.               |
-| `shouldFilter`  | `boolean`                                 | Auto filter/sort items. Defaults to `true`.      |
-| `filter`        | `(value, search, keywords?) => number`    | Custom score (`0` hides, `1` best match).        |
-| `value`         | `string`                                  | Controlled highlighted item value.               |
-| `onValueChange` | `(value: string) => void`                 | Highlighted item change.                         |
-| `loop`          | `boolean`                                 | Arrow-key wrap.                                  |
+| Prop                                   | Type                                   | Description                                        |
+| :------------------------------------- | :------------------------------------- | :------------------------------------------------- |
+| `label`                                | `string`                               | Accessible label for the menu.                     |
+| `sidebar`                              | `boolean`                              | Two-column groups sidebar layout. Default `false`. |
+| `sidebarGroups`                        | `CommandSidebarGroupType[]`            | Explicit left-nav entries (else auto from Groups). |
+| `sidebarGroup` / `defaultSidebarGroup` | `string`                               | Controlled / initial sticky group id.              |
+| `onSidebarGroupChange`                 | `(value: string) => void`              | Sticky group click callback.                       |
+| `sidebarWidth`                         | `string`                               | Left nav width. Default `"12rem"`.                 |
+| `shouldFilter`                         | `boolean`                              | Auto filter/sort items. Defaults to `true`.        |
+| `filter`                               | `(value, search, keywords?) => number` | Custom score (`0` hides, `1` best match).          |
+| `value`                                | `string`                               | Controlled highlighted item value.                 |
+| `onValueChange`                        | `(value: string) => void`              | Highlighted item change.                           |
+| `loop`                                 | `boolean`                              | Arrow-key wrap.                                    |
 
 #### Example
 
@@ -2761,7 +2778,9 @@ import { Command, Icon, Button } from "@xco-agency/corex-ui";
       </Command.Item>
     </Command.Group>
     <Command.Group heading="Settings" value="settings">
-      <Command.Item value="profile" onSelect={() => {}}>Profile</Command.Item>
+      <Command.Item value="profile" onSelect={() => {}}>
+        Profile
+      </Command.Item>
     </Command.Group>
   </Command.List>
 </Command>
@@ -3321,20 +3340,20 @@ import { RichTextEditor } from "@xco-agency/corex-ui";
 
 #### Modern Props
 
-| Prop          | Type                                 | Description                                                      |
-| :------------ | :----------------------------------- | :--------------------------------------------------------------- |
-| `label`       | `ReactNode`                          | Visible label above the editor.                                  |
-| `labelHidden` | `boolean &#124; undefined`           | Visually hide the label.                                         |
-| `value`       | `string &#124; undefined`            | Controlled HTML value.                                           |
-| `defaultValue`| `string &#124; undefined`            | Uncontrolled initial HTML.                                       |
-| `onChange`    | `((value: string) =&gt; void) &#124; undefined` | Called with current HTML on content change.             |
-| `placeholder` | `string &#124; undefined`            | Shown when the surface is empty.                                 |
-| `disabled`    | `boolean &#124; undefined`           | Disables editing and toolbar actions.                            |
-| `minHeight`   | `string &#124; undefined`            | Minimum height of the editing surface. Default `"160px"`.        |
-| `id`          | `string &#124; undefined`            | Element id for the editable surface.                             |
-| `name`        | `string &#124; undefined`            | Optional form field name.                                        |
-| `className`   | `string &#124; undefined`            | —                                                                |
-| `style`       | `CSSProperties &#124; undefined`     | —                                                                |
+| Prop           | Type                                            | Description                                               |
+| :------------- | :---------------------------------------------- | :-------------------------------------------------------- |
+| `label`        | `ReactNode`                                     | Visible label above the editor.                           |
+| `labelHidden`  | `boolean &#124; undefined`                      | Visually hide the label.                                  |
+| `value`        | `string &#124; undefined`                       | Controlled HTML value.                                    |
+| `defaultValue` | `string &#124; undefined`                       | Uncontrolled initial HTML.                                |
+| `onChange`     | `((value: string) =&gt; void) &#124; undefined` | Called with current HTML on content change.               |
+| `placeholder`  | `string &#124; undefined`                       | Shown when the surface is empty.                          |
+| `disabled`     | `boolean &#124; undefined`                      | Disables editing and toolbar actions.                     |
+| `minHeight`    | `string &#124; undefined`                       | Minimum height of the editing surface. Default `"160px"`. |
+| `id`           | `string &#124; undefined`                       | Element id for the editable surface.                      |
+| `name`         | `string &#124; undefined`                       | Optional form field name.                                 |
+| `className`    | `string &#124; undefined`                       | —                                                         |
+| `style`        | `CSSProperties &#124; undefined`                | —                                                         |
 
 #### Example
 
@@ -3653,22 +3672,22 @@ import { Segment } from "@xco-agency/corex-ui";
 
 #### Modern Props
 
-| Prop                 | Type                                                               | Description                                                                                          |
-| :------------------- | :----------------------------------------------------------------- | :--------------------------------------------------------------------------------------------------- |
-| `options` **(required)** | `SegmentOptionType&lt;TValue&gt;[]`                            | Options rendered as mutually exclusive segments (`{ label?, icon?, value, disabled?, accessibilityLabel? }`). An option with only an `icon` is square, matching the track height. |
-| `value`              | `TValue &#124; undefined`                                          | Controlled selected value.                                                                           |
-| `defaultValue`       | `TValue &#124; undefined`                                          | Uncontrolled initial selected value.                                                                 |
-| `onChange`           | `((value: TValue) =&gt; void) &#124; undefined`                    | Fires when the selected value changes.                                                               |
-| `label`              | `ReactNode &#124; undefined`                                       | Optional visible label above the control. Hidden by default.                                         |
-| `variant`            | `"default" &#124; "primary" &#124; undefined`                      | Active pill style. Default: white elevated. Primary: dark filled with light text.                    |
-| `size`               | `"small" &#124; "base" &#124; "large" &#124; undefined`            | Control height and type scale.                                                                       |
-| `inlineSize`         | `"auto" &#124; "fill" &#124; undefined`                            | Stretch the track to fill available width.                                                           |
-| `disabled`           | `boolean &#124; undefined`                                         | Disables the entire control.                                                                         |
-| `name`               | `string &#124; undefined`                                          | Native form field name.                                                                              |
-| `id`                 | `string &#124; undefined`                                          | Element id for the root.                                                                             |
-| `accessibilityLabel` | `string &#124; undefined`                                          | Accessible name for the radiogroup when no visible label is set.                                     |
-| `className`          | `string &#124; undefined`                                          | —                                                                                                    |
-| `style`              | `CSSProperties &#124; undefined`                                   | —                                                                                                    |
+| Prop                     | Type                                                    | Description                                                                                                                                                                       |
+| :----------------------- | :------------------------------------------------------ | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `options` **(required)** | `SegmentOptionType&lt;TValue&gt;[]`                     | Options rendered as mutually exclusive segments (`{ label?, icon?, value, disabled?, accessibilityLabel? }`). An option with only an `icon` is square, matching the track height. |
+| `value`                  | `TValue &#124; undefined`                               | Controlled selected value.                                                                                                                                                        |
+| `defaultValue`           | `TValue &#124; undefined`                               | Uncontrolled initial selected value.                                                                                                                                              |
+| `onChange`               | `((value: TValue) =&gt; void) &#124; undefined`         | Fires when the selected value changes.                                                                                                                                            |
+| `label`                  | `ReactNode &#124; undefined`                            | Optional visible label above the control. Hidden by default.                                                                                                                      |
+| `variant`                | `"default" &#124; "primary" &#124; undefined`           | Active pill style. Default: white elevated. Primary: dark filled with light text.                                                                                                 |
+| `size`                   | `"small" &#124; "base" &#124; "large" &#124; undefined` | Control height and type scale.                                                                                                                                                    |
+| `inlineSize`             | `"auto" &#124; "fill" &#124; undefined`                 | Stretch the track to fill available width.                                                                                                                                        |
+| `disabled`               | `boolean &#124; undefined`                              | Disables the entire control.                                                                                                                                                      |
+| `name`                   | `string &#124; undefined`                               | Native form field name.                                                                                                                                                           |
+| `id`                     | `string &#124; undefined`                               | Element id for the root.                                                                                                                                                          |
+| `accessibilityLabel`     | `string &#124; undefined`                               | Accessible name for the radiogroup when no visible label is set.                                                                                                                  |
+| `className`              | `string &#124; undefined`                               | —                                                                                                                                                                                 |
+| `style`                  | `CSSProperties &#124; undefined`                        | —                                                                                                                                                                                 |
 
 #### Example
 
@@ -3775,21 +3794,21 @@ import { Tabs } from "@xco-agency/corex-ui";
 
 #### Modern Props
 
-| Prop                  | Type                                                                                | Description                                                                                                                    |
-| :-------------------- | :---------------------------------------------------------------------------------- | :----------------------------------------------------------------------------------------------------------------------------- |
-| `tabs` **(required)** | `TabItemType&lt;TId&gt;[]`                                                          | Tab items (`{ id, label?, icon?, tooltip?, badge?, accessibilityLabel? }`). A tab with only an `icon` is square, matching the track height. |
-| `selected`            | `number &#124; TId &#124; null &#124; undefined`                                    | Index or ID of the currently selected tab. Can be a tab index (number) for Polaris compatibility or tab ID (`TId`).            |
-| `onSelect`            | `((selected: TId) =&gt; void) &#124; ((index: number) =&gt; void) &#124; undefined` | Callback when a tab is selected. Receives tab ID (`TId`) or index (`number`).                                                  |
-| `value`               | `TId &#124; null &#124; undefined`                                                  | ID of the currently selected tab.                                                                                              |
-| `onChange`            | `((id: TId) =&gt; void) &#124; undefined`                                           | Callback when a tab is selected, passing the tab ID.                                                                           |
-| `variant`             | `"segment" &#124; "card" &#124; undefined`                                          | `segment` (default) pill track; `card` folder tabs connected to content.                                                       |
-| `showBadge`           | `boolean &#124; undefined`                                                          | —                                                                                                                              |
-| `rightSide`           | `ReactNode`                                                                         | —                                                                                                                              |
-| `inlineSize`          | `"fill" &#124; "auto" &#124; "fit" &#124; undefined`                                | —                                                                                                                              |
+| Prop                  | Type                                                                                | Description                                                                                                                                                                                        |
+| :-------------------- | :---------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `tabs` **(required)** | `TabItemType&lt;TId&gt;[]`                                                          | Tab items (`{ id, label?, icon?, tooltip?, badge?, accessibilityLabel? }`). A tab with only an `icon` is square, matching the track height.                                                        |
+| `selected`            | `number &#124; TId &#124; null &#124; undefined`                                    | Index or ID of the currently selected tab. Can be a tab index (number) for Polaris compatibility or tab ID (`TId`).                                                                                |
+| `onSelect`            | `((selected: TId) =&gt; void) &#124; ((index: number) =&gt; void) &#124; undefined` | Callback when a tab is selected. Receives tab ID (`TId`) or index (`number`).                                                                                                                      |
+| `value`               | `TId &#124; null &#124; undefined`                                                  | ID of the currently selected tab.                                                                                                                                                                  |
+| `onChange`            | `((id: TId) =&gt; void) &#124; undefined`                                           | Callback when a tab is selected, passing the tab ID.                                                                                                                                               |
+| `variant`             | `"segment" &#124; "card" &#124; undefined`                                          | `segment` (default) pill track; `card` folder tabs connected to content.                                                                                                                           |
+| `showBadge`           | `boolean &#124; undefined`                                                          | —                                                                                                                                                                                                  |
+| `rightSide`           | `ReactNode`                                                                         | —                                                                                                                                                                                                  |
+| `inlineSize`          | `"fill" &#124; "auto" &#124; "fit" &#124; undefined`                                | —                                                                                                                                                                                                  |
 | `compact`             | `boolean &#124; undefined`                                                          | Minimalist compact dropdown mode, rendering a dropdown selector button inspired by Shopify Polaris IndexFilters view switcher. A tab with `actions` shows a menu on that row with Edit and Remove. |
-| `children`            | `ReactNode`                                                                         | Bar extras and/or `Tabs.Content` panels.                                                                                       |
-| `className`           | `string &#124; undefined`                                                           | —                                                                                                                              |
-| `id`                  | `string &#124; undefined`                                                           | —                                                                                                                              |
+| `children`            | `ReactNode`                                                                         | Bar extras and/or `Tabs.Content` panels.                                                                                                                                                           |
+| `className`           | `string &#124; undefined`                                                           | —                                                                                                                                                                                                  |
+| `id`                  | `string &#124; undefined`                                                           | —                                                                                                                                                                                                  |
 
 #### Example
 

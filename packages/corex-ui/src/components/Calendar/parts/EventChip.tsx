@@ -19,7 +19,10 @@ export type EventChipPropsType = {
   ghost?: boolean;
   /** Block too short to stack time over title; lays them out on one line. */
   short?: boolean;
-  onPointerDown?: (event: PointerEvent<HTMLElement>, occurrence: CalendarOccurrenceType) => void;
+  onPointerDown?: (
+    event: PointerEvent<HTMLElement>,
+    occurrence: CalendarOccurrenceType,
+  ) => void;
   children?: ReactNode;
 };
 
@@ -108,7 +111,9 @@ function EventChipComponent({
       style={{ ...colorVars, ...style } as CSSProperties}
       onClick={ghost ? undefined : (clickEvent) => activate(clickEvent.target)}
       onKeyDown={ghost ? undefined : handleKeyDown}
-      onPointerDown={onPointerDown ? (down) => onPointerDown(down, occurrence) : undefined}
+      onPointerDown={
+        onPointerDown ? (down) => onPointerDown(down, occurrence) : undefined
+      }
     >
       {content}
       {children}

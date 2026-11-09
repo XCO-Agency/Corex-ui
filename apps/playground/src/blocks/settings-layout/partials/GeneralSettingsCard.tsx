@@ -4,6 +4,7 @@ import {
   InlineStack,
   Box,
   TextField,
+  EmailField,
   Select,
   Badge,
   Text,
@@ -34,10 +35,9 @@ export function GeneralSettingsCard({ data, onChange }: GeneralSettingsCardProps
         />
 
         <InlineStack gap="400">
-          <Box width="100%">
-            <TextField
+          <Box inlineSize="100%">
+            <EmailField
               label="Account email"
-              type="email"
               value={data.accountEmail}
               onChange={(val) => onChange("accountEmail", val)}
               helpText="Shopify will use this to contact you."
@@ -46,7 +46,6 @@ export function GeneralSettingsCard({ data, onChange }: GeneralSettingsCardProps
           <Box width="100%">
             <TextField
               label="Sender phone"
-              type="tel"
               value={data.senderPhone}
               onChange={(val) => onChange("senderPhone", val)}
               placeholder="+1 (555) 000-0000"

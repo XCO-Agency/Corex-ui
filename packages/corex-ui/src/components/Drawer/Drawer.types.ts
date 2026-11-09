@@ -137,7 +137,6 @@ export type DrawerResolvedOffsetType = {
   left: string;
 };
 
-
 export type DrawerContextType = {
   hasSnapPoints: boolean;
   modal: DrawerModalType;
@@ -341,7 +340,10 @@ export type DrawerPortalPropsType = {
 
 export type DrawerOverlayPropsType = ComponentPropsWithoutRef<"div">;
 
-export type DrawerContentPropsType = Omit<ComponentPropsWithoutRef<"div">, "className"> & {
+export type DrawerContentPropsType = Omit<
+  ComponentPropsWithoutRef<"div">,
+  "className"
+> & {
   children?: ReactNode;
   className?: string;
   style?: CSSProperties;
@@ -421,16 +423,22 @@ export type DrawerBodyPropsType = ComponentPropsWithoutRef<"div">;
 
 export type DrawerComponentType = ((props: DrawerPropsType) => ReactElement) & {
   Trigger: (props: DrawerTriggerPropsType) => ReactElement;
-  Content: ForwardRefExoticComponent<DrawerContentPropsType & RefAttributes<HTMLDivElement>>;
+  Content: ForwardRefExoticComponent<
+    DrawerContentPropsType & RefAttributes<HTMLDivElement>
+  >;
   Header: (props: DrawerHeaderPropsType) => ReactElement;
   Footer: (props: DrawerFooterPropsType) => ReactElement;
   PreFooter: (props: DrawerPreFooterPropsType) => ReactElement;
-  Title: ForwardRefExoticComponent<DrawerTitlePropsType & RefAttributes<HTMLHeadingElement>>;
+  Title: ForwardRefExoticComponent<
+    DrawerTitlePropsType & RefAttributes<HTMLHeadingElement>
+  >;
   Description: ForwardRefExoticComponent<
     DrawerDescriptionPropsType & RefAttributes<HTMLParagraphElement>
   >;
   Close: (props: DrawerClosePropsType) => ReactElement;
-  Overlay: ForwardRefExoticComponent<DrawerOverlayPropsType & RefAttributes<HTMLDivElement>>;
+  Overlay: ForwardRefExoticComponent<
+    DrawerOverlayPropsType & RefAttributes<HTMLDivElement>
+  >;
   SwipeHandle: (props: DrawerSwipeHandlePropsType) => ReactElement;
   Body: (props: DrawerBodyPropsType) => ReactElement;
   Portal: (props: DrawerPortalPropsType) => ReactElement;

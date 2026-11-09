@@ -106,7 +106,9 @@ export function getToggleChanges(
 }
 
 function hasSelectableDescendant(node: SelectionNodeType): boolean {
-  return node.children.some((child) => child.selectable || hasSelectableDescendant(child));
+  return node.children.some(
+    (child) => child.selectable || hasSelectableDescendant(child),
+  );
 }
 
 function collectSelectableIds(node: SelectionNodeType, ids: string[]): void {

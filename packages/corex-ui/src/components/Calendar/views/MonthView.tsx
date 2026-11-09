@@ -42,7 +42,8 @@ export function MonthView() {
   );
 
   const visibleWeeks = useMemo(
-    () => weeks.map((week) => (ctx.weekends ? week : week.filter((day) => !isWeekend(day)))),
+    () =>
+      weeks.map((week) => (ctx.weekends ? week : week.filter((day) => !isWeekend(day)))),
     [weeks, ctx.weekends],
   );
   const columnCount = visibleWeeks[0]?.length ?? 7;
@@ -56,7 +57,9 @@ export function MonthView() {
       ctx.fixedHeight && size
         ? (size.height - headerHeight) / weeks.length
         : ctx.metrics.minRowHeight;
-    const fit = Math.floor((rowHeight - ctx.metrics.dayNumberHeight) / ctx.metrics.laneHeight);
+    const fit = Math.floor(
+      (rowHeight - ctx.metrics.dayNumberHeight) / ctx.metrics.laneHeight,
+    );
     return Math.max(1, Number.isFinite(fit) ? fit : DEFAULT_DAY_MAX_EVENTS);
   }, [ctx.dayMaxEvents, ctx.fixedHeight, ctx.metrics, size, weeks.length]);
 
@@ -101,16 +104,26 @@ export function MonthView() {
     end: allDay ? end : addDays(startOfDay(new Date(end.getTime() - 1)), 1),
   });
 
-  const beginMove = (event: PointerEvent<HTMLElement>, occurrence: CalendarOccurrenceType) => {
+  const beginMove = (
+    event: PointerEvent<HTMLElement>,
+    occurrence: CalendarOccurrenceType,
+  ) => {
     if (event.button !== 0) return;
-    const pressKey = dateKeyFromPoint(event.currentTarget.ownerDocument, event.clientX, event.clientY) ?? toDateKey(occurrence.start);
+    const pressKey =
+      dateKeyFromPoint(event.currentTarget.ownerDocument, event.clientX, event.clientY) ??
+      toDateKey(occurrence.start);
     const pressDay = fromDateKey(pressKey);
     let targetKey: string | null = null;
     const doc = event.currentTarget.ownerDocument;
     pointerRef.current = { x: event.clientX, y: event.clientY };
 
     beginPointerSession(
-      { clientX: event.clientX, clientY: event.clientY, pointerId: event.pointerId, target: event.currentTarget },
+      {
+        clientX: event.clientX,
+        clientY: event.clientY,
+        pointerId: event.pointerId,
+        target: event.currentTarget,
+      },
       {
         threshold: 4,
         onStart: () => {
@@ -156,7 +169,10 @@ export function MonthView() {
     );
   };
 
-  const beginResize = (event: PointerEvent<HTMLElement>, occurrence: CalendarOccurrenceType) => {
+  const beginResize = (
+    event: PointerEvent<HTMLElement>,
+    occurrence: CalendarOccurrenceType,
+  ) => {
     if (event.button !== 0) return;
     event.stopPropagation();
     event.preventDefault();
@@ -164,7 +180,12 @@ export function MonthView() {
     let newEnd = occurrence.end;
 
     beginPointerSession(
-      { clientX: event.clientX, clientY: event.clientY, pointerId: event.pointerId, target: event.currentTarget },
+      {
+        clientX: event.clientX,
+        clientY: event.clientY,
+        pointerId: event.pointerId,
+        target: event.currentTarget,
+      },
       {
         threshold: 3,
         onStart: () => setDraggingKey(occurrence.key),
@@ -198,7 +219,9 @@ export function MonthView() {
   };
 
   const focusStopDate = useMemo(() => {
-    const inGrid = visibleWeeks.some((week) => week.some((day) => isSameDay(day, ctx.focusDate)));
+    const inGrid = visibleWeeks.some((week) =>
+      week.some((day) => isSameDay(day, ctx.focusDate)),
+    );
     return inGrid ? ctx.focusDate : (visibleWeeks[1]?.[0] ?? ctx.date);
   }, [visibleWeeks, ctx.focusDate, ctx.date]);
 
@@ -281,8 +304,13 @@ export function MonthView() {
       onKeyDown={handleGridKeyDown}
     >
       <div ref={headerRef} role="row" data-slot="calendar-weekdays">
-        {ctx.weekNumbers ? <div role="columnheader" data-slot="calendar-weeknum-head" /> : null}
-        <div data-slot="calendar-weekday-cells" style={{ gridTemplateColumns: `repeat(${columnCount}, minmax(0, 1fr))` }}>
+        {ctx.weekNumbers ? (
+          <div role="columnheader" data-slot="calendar-weeknum-head" />
+        ) : null}
+        <div
+          data-slot="calendar-weekday-cells"
+          style={{ gridTemplateColumns: `repeat(${columnCount}, minmax(0, 1fr))` }}
+        >
           {headerDays.map((day) => (
             <div
               key={day.getDay()}
@@ -296,25 +324,37 @@ export function MonthView() {
         </div>
       </div>
 
-      <div data-slot="calendar-weeks" style={{
+      <div
+        data-slot="calendar-weeks"
+        style={{
           gridTemplateRows: `repeat(${weeks.length}, minmax(${compact ? COMPACT_ROW_HEIGHT : ctx.metrics.minRowHeight}px, 1fr))`,
-        }}>
+        }}
+      >
         {visibleWeeks.map((days, weekIndex) => {
           const layout = layouts[weekIndex]!;
           return (
             <div key={toDateKey(days[0]!)} role="row" data-slot="calendar-week">
               {ctx.weekNumbers ? (
-                <div role="rowheader" data-slot="calendar-weeknum" aria-label={`Week ${getISOWeekNumber(days[0]!)}`}>
+                <div
+                  role="rowheader"
+                  data-slot="calendar-weeknum"
+                  aria-label={`Week ${getISOWeekNumber(days[0]!)}`}
+                >
                   {getISOWeekNumber(days[0]!)}
                 </div>
               ) : null}
-              <div data-slot="calendar-week-cells" style={{ gridTemplateColumns: `repeat(${days.length}, minmax(0, 1fr))` }}>
+              <div
+                data-slot="calendar-week-cells"
+                style={{ gridTemplateColumns: `repeat(${days.length}, minmax(0, 1fr))` }}
+              >
                 {days.map((day) => {
                   const selection = ctx.selection;
                   const inSelection = Boolean(
                     selection && day >= selection.start && day < selection.end,
                   );
-                  const dropTarget = Boolean(preview && day >= preview.start && day < preview.end);
+                  const dropTarget = Boolean(
+                    preview && day >= preview.start && day < preview.end,
+                  );
                   return (
                     <DayCell
                       key={toDateKey(day)}
@@ -332,7 +372,11 @@ export function MonthView() {
                             .filter((occurrence) => occurrenceTouchesDay(occurrence, day))
                             .slice(0, 6)
                             .map((occurrence) => (
-                              <EventChip key={occurrence.key} occurrence={occurrence} variant="pip" />
+                              <EventChip
+                                key={occurrence.key}
+                                occurrence={occurrence}
+                                variant="pip"
+                              />
                             ))}
                         </div>
                       ) : null}
@@ -352,7 +396,8 @@ export function MonthView() {
                     const { occurrence } = piece;
                     const bar = occurrence.allDay || isMultiDay(occurrence);
                     const editable = canEdit(occurrence, ctx.editable);
-                    const resizable = editable && occurrence.allDay && !piece.continuesAfter;
+                    const resizable =
+                      editable && occurrence.allDay && !piece.continuesAfter;
                     return (
                       <EventChip
                         key={`${occurrence.key}:${piece.startCol}`}

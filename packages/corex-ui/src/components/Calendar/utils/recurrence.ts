@@ -31,7 +31,14 @@ export function parseRRule(rrule: string): RuleType | null {
   if (untilRaw) {
     const compact = /^(\d{4})(\d{2})(\d{2})/.exec(untilRaw);
     until = compact
-      ? new Date(Number(compact[1]), Number(compact[2]) - 1, Number(compact[3]), 23, 59, 59)
+      ? new Date(
+          Number(compact[1]),
+          Number(compact[2]) - 1,
+          Number(compact[3]),
+          23,
+          59,
+          59,
+        )
       : parseDateInput(untilRaw);
   }
 
@@ -89,14 +96,23 @@ export function expandRecurrence(
   };
 
   if (rule.freq === "DAILY") {
-    for (let step = 0; iterations < MAX_ITERATIONS; step += rule.interval, iterations += 1) {
-      if (accept(withTimeOf(addDays(startOfDay(dtstart), step), dtstart)) === "stop") break;
+    for (
+      let step = 0;
+      iterations < MAX_ITERATIONS;
+      step += rule.interval, iterations += 1
+    ) {
+      if (accept(withTimeOf(addDays(startOfDay(dtstart), step), dtstart)) === "stop")
+        break;
     }
   } else if (rule.freq === "WEEKLY") {
     const days = [...(rule.byDay ?? [dtstart.getDay()])].sort((a, b) => a - b);
     // RFC 5545 default week start is Monday.
     const weekStart = addDays(startOfDay(dtstart), -((dtstart.getDay() + 6) % 7));
-    outer: for (let week = 0; iterations < MAX_ITERATIONS; week += rule.interval, iterations += 1) {
+    outer: for (
+      let week = 0;
+      iterations < MAX_ITERATIONS;
+      week += rule.interval, iterations += 1
+    ) {
       const base = addDays(weekStart, week * 7);
       const ordered = [...days].sort((a, b) => ((a + 6) % 7) - ((b + 6) % 7));
       for (const weekday of ordered) {
@@ -105,16 +121,32 @@ export function expandRecurrence(
       }
     }
   } else if (rule.freq === "MONTHLY") {
-    for (let step = 0; iterations < MAX_ITERATIONS; step += rule.interval, iterations += 1) {
-      const target = addMonths(new Date(dtstart.getFullYear(), dtstart.getMonth(), 1), step);
+    for (
+      let step = 0;
+      iterations < MAX_ITERATIONS;
+      step += rule.interval, iterations += 1
+    ) {
+      const target = addMonths(
+        new Date(dtstart.getFullYear(), dtstart.getMonth(), 1),
+        step,
+      );
       // Months too short for the day-of-month are skipped, per RFC 5545.
-      if (dtstart.getDate() > daysInMonth(target.getFullYear(), target.getMonth())) continue;
+      if (dtstart.getDate() > daysInMonth(target.getFullYear(), target.getMonth()))
+        continue;
       target.setDate(dtstart.getDate());
       if (accept(withTimeOf(target, dtstart)) === "stop") break;
     }
   } else {
-    for (let step = 0; iterations < MAX_ITERATIONS; step += rule.interval, iterations += 1) {
-      const target = new Date(dtstart.getFullYear() + step, dtstart.getMonth(), dtstart.getDate());
+    for (
+      let step = 0;
+      iterations < MAX_ITERATIONS;
+      step += rule.interval, iterations += 1
+    ) {
+      const target = new Date(
+        dtstart.getFullYear() + step,
+        dtstart.getMonth(),
+        dtstart.getDate(),
+      );
       if (target.getMonth() !== dtstart.getMonth()) continue; // Feb 29 on a non-leap year
       if (accept(withTimeOf(target, dtstart)) === "stop") break;
     }

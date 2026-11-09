@@ -136,7 +136,10 @@ describe("createWebComponent", () => {
 
   it("passes React-reserved props through untouched", () => {
     const { container } = render(
-      <SProbe style={{ color: "red" }} dangerouslySetInnerHTML={{ __html: "<b>hi</b>" }} />,
+      <SProbe
+        style={{ color: "red" }}
+        dangerouslySetInnerHTML={{ __html: "<b>hi</b>" }}
+      />,
     );
     const el = container.querySelector("s-probe")!;
 

@@ -8,7 +8,11 @@ export type InlineMarkdownPropsType = {
 };
 
 /** Renders the inline subset used in SKILL.md tables: `code`, **bold** and *italic*. */
-export function InlineMarkdown({ children, className, codeClassName }: InlineMarkdownPropsType) {
+export function InlineMarkdown({
+  children,
+  className,
+  codeClassName,
+}: InlineMarkdownPropsType) {
   const parts = children.split(/(`[^`]+`|\*\*[^*]+\*\*|\*[^*]+\*)/g).filter(Boolean);
 
   return (

@@ -15,7 +15,6 @@ export function MoneyFieldExample() {
             currencyCode="USD"
             min={0}
             max={10000}
-            step={0.01}
             details="Standard retail price excluding tax"
             onChange={(val) => setPrice(val)}
           />
@@ -32,7 +31,6 @@ export function MoneyFieldExample() {
             value={budget}
             currencyCode="EUR"
             min={100}
-            step={50}
             placeholder="0.00"
             details="Minimum monthly spend for ad placements"
             onChange={(val) => setBudget(val)}

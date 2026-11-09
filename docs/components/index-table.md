@@ -148,7 +148,9 @@ first column the cell covers.
   id={product.id}
   subRows={
     <IndexTable.Row id={`${product.id}-note`} selectable={false}>
-      <IndexTable.Cell colSpan={3}>Ships from two warehouses: Paris and Lyon.</IndexTable.Cell>
+      <IndexTable.Cell colSpan={3}>
+        Ships from two warehouses: Paris and Lyon.
+      </IndexTable.Cell>
     </IndexTable.Row>
   }
 >

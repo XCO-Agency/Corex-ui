@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 
-export type HoverableAnimationType = "fade" | "slide-up" | "slide-down" | "scale" | "none";
+export type HoverableAnimationType =
+  "fade" | "slide-up" | "slide-down" | "scale" | "none";
 
 export type HoverableStateType = {
   /** `true` while the pointer is over the group (or focus is inside it). */

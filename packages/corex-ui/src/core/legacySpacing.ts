@@ -25,7 +25,11 @@ export const legacySpacingMap: Record<string, SizeKeywordType | "none"> = {
 const ACCEPTED_BACKGROUNDS = ["transparent", "base", "subdued", "strong"] as const;
 const ACCEPTED_BORDER_COLORS = ["base", "subdued", "strong"] as const;
 
-function warnUnmappedLegacy(kind: string, token: string, accepted: readonly string[]): void {
+function warnUnmappedLegacy(
+  kind: string,
+  token: string,
+  accepted: readonly string[],
+): void {
   devWarning(
     "legacySpacing",
     `Unmapped legacy ${kind} token "${token}". Accepted values: ${accepted.join(", ")}.`,

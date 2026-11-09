@@ -12,11 +12,11 @@ import Layout from "./layout";
 export function App() {
   return (
     <Routes>
-        {/* The editor is a full-screen workspace, outside the docs shell. */}
-        <Route path="/editor" element={<Editor />} />
-        {/* Chrome-free capture surface for Overview thumbnail screenshots. */}
-        <Route path="/_capture/:slug" element={<ThumbnailCapture />} />
-        <Route path="*" element={<DocsRoutes />} />
+      {/* The editor is a full-screen workspace, outside the docs shell. */}
+      <Route path="/editor" element={<Editor />} />
+      {/* Chrome-free capture surface for Overview thumbnail screenshots. */}
+      <Route path="/_capture/:slug" element={<ThumbnailCapture />} />
+      <Route path="*" element={<DocsRoutes />} />
     </Routes>
   );
 }

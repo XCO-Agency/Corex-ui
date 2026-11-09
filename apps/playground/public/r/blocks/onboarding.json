@@ -3,9 +3,7 @@
   "type": "registry:block",
   "title": "Merchant Onboarding",
   "description": "Multi-step Shopify onboarding wizard with theme embed verification.",
-  "dependencies": [
-    "@xco-agency/corex-ui"
-  ],
+  "dependencies": ["@xco-agency/corex-ui"],
   "files": [
     {
       "path": "constants.ts",

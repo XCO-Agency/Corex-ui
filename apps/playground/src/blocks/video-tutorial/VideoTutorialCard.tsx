@@ -56,7 +56,7 @@ export function VideoTutorialCard({
               />
             </InlineStack>
 
-            <Text as="p" tone="subdued" variant="bodyMd">
+            <Text as="p" color="subdued" variant="bodyMd">
               {description}
             </Text>
           </BlockStack>

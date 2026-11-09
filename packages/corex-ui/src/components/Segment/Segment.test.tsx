@@ -79,9 +79,7 @@ describe("Segment", () => {
   it("supports uncontrolled selection via defaultValue", () => {
     const onChange = vi.fn();
 
-    render(
-      <Segment options={OPTIONS} defaultValue="min" onChange={onChange} />,
-    );
+    render(<Segment options={OPTIONS} defaultValue="min" onChange={onChange} />);
 
     fireEvent.click(screen.getByRole("radio", { name: "Max (purchased)" }));
     expect(onChange).toHaveBeenCalledWith("max");
@@ -112,9 +110,7 @@ describe("Segment", () => {
   it("does not change value when disabled", () => {
     const onChange = vi.fn();
 
-    render(
-      <Segment options={OPTIONS} value="min" onChange={onChange} disabled />,
-    );
+    render(<Segment options={OPTIONS} value="min" onChange={onChange} disabled />);
 
     fireEvent.click(screen.getByRole("radio", { name: "Max (purchased)" }));
     expect(onChange).not.toHaveBeenCalled();

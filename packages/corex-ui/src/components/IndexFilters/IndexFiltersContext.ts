@@ -41,7 +41,10 @@ export function useIndexFiltersContext() {
 }
 
 /** A filter with a non-empty value, or a non-blank query, makes the toolbar active. */
-export function isFieldStateActive({ query, appliedFilters }: IndexFiltersFieldStateType) {
+export function isFieldStateActive({
+  query,
+  appliedFilters,
+}: IndexFiltersFieldStateType) {
   if (query.trim().length > 0) return true;
   return appliedFilters.some(({ value }) =>
     Array.isArray(value) ? value.length > 0 : Boolean(value),

@@ -152,7 +152,12 @@ function FileTreeNodeItem({
   );
 }
 
-export function FileTree({ files, activeFilePath, onSelectFile, className }: FileTreePropsType) {
+export function FileTree({
+  files,
+  activeFilePath,
+  onSelectFile,
+  className,
+}: FileTreePropsType) {
   const tree = React.useMemo(() => buildFileTree(files), [files]);
   const [openFolders, setOpenFolders] = React.useState<Record<string, boolean>>({});
 
@@ -177,7 +182,12 @@ export function FileTree({ files, activeFilePath, onSelectFile, className }: Fil
   }, [activeFilePath]);
 
   return (
-    <Box className={className} background="subdued" inlineSize="240px" padding="small-200">
+    <Box
+      className={className}
+      background="subdued"
+      inlineSize="240px"
+      padding="small-200"
+    >
       <BlockStack gap="small-200">
         <Text variant="small" color="subdued" fontWeight="semibold">
           Files

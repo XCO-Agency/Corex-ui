@@ -143,7 +143,6 @@ export const Autocomplete = forwardRef<HTMLDivElement, AutocompletePropsType>(
           value={displayValue}
           onChange={handleInputChange}
           onClear={handleClear}
-          autoComplete="off"
           disabled={disabled}
           showClear
           showChevron={false}

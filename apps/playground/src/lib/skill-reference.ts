@@ -129,7 +129,11 @@ function parseSection(name: string, lines: string[]): ComponentReferenceType {
       } else if (heading === "Subcomponents") {
         ref.subcomponents = { title: heading, headers: table.headers, rows: table.rows };
       } else if (heading) {
-        ref.extraTables.push({ title: heading, headers: table.headers, rows: table.rows });
+        ref.extraTables.push({
+          title: heading,
+          headers: table.headers,
+          rows: table.rows,
+        });
       }
       i = table.end;
       continue;
@@ -148,7 +152,9 @@ function parseSection(name: string, lines: string[]): ComponentReferenceType {
 
 /** Rows of the skill's global "Critical Deprecation Replacements" table. */
 function parseGlobalDeprecations(lines: string[]) {
-  const start = lines.findIndex((l) => l.startsWith("## Critical Deprecation Replacements"));
+  const start = lines.findIndex((l) =>
+    l.startsWith("## Critical Deprecation Replacements"),
+  );
   const map = new Map<string, ReferenceDeprecationType[]>();
   if (start < 0) return map;
   const tableStart = lines.findIndex((l, idx) => idx > start && l.trim().startsWith("|"));

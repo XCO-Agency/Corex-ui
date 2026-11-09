@@ -3,9 +3,7 @@
   "type": "registry:block",
   "title": "Video Tutorial",
   "description": "Interactive video lesson viewer with timestamps, resources, and checklist.",
-  "dependencies": [
-    "@xco-agency/corex-ui"
-  ],
+  "dependencies": ["@xco-agency/corex-ui"],
   "files": [
     {
       "path": "VideoTutorialCard.tsx",

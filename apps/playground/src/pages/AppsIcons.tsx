@@ -525,7 +525,11 @@ export function AppsIcons() {
             <Text color="subdued" variant="small">
               {inspectIcon.id}.svg
             </Text>
-            <Button icon="download" variant="secondary" onClick={(event) => handleDownloadSvg(event, inspectIcon)}>
+            <Button
+              icon="download"
+              variant="secondary"
+              onClick={(event) => handleDownloadSvg(event, inspectIcon)}
+            >
               Download SVG
             </Button>
             <Text as="p" color="subdued">

@@ -123,7 +123,8 @@ export function useDrawer(id?: string): DrawerHandleType | DrawerControlsType {
     id !== undefined ? "id" : ctx ? "nearest" : "global";
   const registryOpen = useSyncExternalStore(
     scope === "nearest" ? noopSubscribe : subscribeDrawers,
-    () => (scope === "id" ? isDrawerOpen(id) : scope === "global" ? isDrawerOpen() : false),
+    () =>
+      scope === "id" ? isDrawerOpen(id) : scope === "global" ? isDrawerOpen() : false,
     () => false,
   );
   const setOpen = ctx?.setOpen;
@@ -152,7 +153,7 @@ export function useDrawer(id?: string): DrawerHandleType | DrawerControlsType {
     const noTarget = () =>
       devWarning(
         "Drawer",
-        "useDrawer() outside a <Drawer> has no drawer to open. Pass an id: useDrawer(\"cart\") with <Drawer id=\"cart\">.",
+        'useDrawer() outside a <Drawer> has no drawer to open. Pass an id: useDrawer("cart") with <Drawer id="cart">.',
       );
     return {
       isOpen,
@@ -240,7 +241,10 @@ const DRAWER_WIDTH_PRESETS: Record<string, string> = {
 export function resolveDrawerWidth(width: DrawerWidthType): string {
   if (typeof width === "number") return `${width}px`;
   const trimmed = width.trim();
-  return DRAWER_WIDTH_PRESETS[trimmed] ?? (/^\d*\.?\d+$/.test(trimmed) ? `${trimmed}px` : trimmed);
+  return (
+    DRAWER_WIDTH_PRESETS[trimmed] ??
+    (/^\d*\.?\d+$/.test(trimmed) ? `${trimmed}px` : trimmed)
+  );
 }
 
 function isSideDirection(direction: DrawerSwipeDirectionType): boolean {
@@ -266,7 +270,10 @@ function ensureDrawerStyles(node: HTMLElement | null) {
  * `useBreakpoints` / `window.innerWidth` always read the top window, which
  * breaks playground device previews and embedded Shopify iframes.
  */
-function useHostViewport(hostDoc: Document | null): { isMobile: boolean; height: number } {
+function useHostViewport(hostDoc: Document | null): {
+  isMobile: boolean;
+  height: number;
+} {
   const [size, setSize] = useState(() => ({
     isMobile: typeof window !== "undefined" && window.innerWidth < BREAKPOINT_WIDTHS.md,
     height: typeof window !== "undefined" ? window.innerHeight : 0,
@@ -276,9 +283,14 @@ function useHostViewport(hostDoc: Document | null): { isMobile: boolean; height:
     const win = hostDoc?.defaultView;
     if (!win) return;
     const update = () => {
-      const next = { isMobile: win.innerWidth < BREAKPOINT_WIDTHS.md, height: win.innerHeight };
+      const next = {
+        isMobile: win.innerWidth < BREAKPOINT_WIDTHS.md,
+        height: win.innerHeight,
+      };
       setSize((current) =>
-        current.isMobile === next.isMobile && current.height === next.height ? current : next,
+        current.isMobile === next.isMobile && current.height === next.height
+          ? current
+          : next,
       );
     };
     update();
@@ -376,7 +388,9 @@ function DrawerRoot({
       ? "float"
       : variant === "overlay"
         ? "overlay"
-        : !isMobile && parent.presentation === "drawer" && isSideDirection(parent.swipeDirection)
+        : !isMobile &&
+            parent.presentation === "drawer" &&
+            isSideDirection(parent.swipeDirection)
           ? variant
           : "float";
   const resolvedPosition: DrawerResolvedPositionType =
@@ -426,7 +440,8 @@ function DrawerRoot({
 
   const [frontmostHeight, setFrontmostHeight] = useState<number | null>(null);
   // Heights only matter to a stack: an `aside` / `bottom` drawer keeps its own.
-  const parentReport = resolvedVariant === "float" ? parent?.reportFrontmostHeight : undefined;
+  const parentReport =
+    resolvedVariant === "float" ? parent?.reportFrontmostHeight : undefined;
   // Each drawer only writes to its direct parent (see Content), so a level
   // that stops being frontmost can't clear a height reported from above it.
   const reportFrontmostHeight = setFrontmostHeight;
@@ -482,26 +497,31 @@ function DrawerRoot({
   }, [open, parentStackChange, resolvedVariant]);
 
   // Open `aside` / `bottom` children report their size so this panel makes room.
-  const [childLayouts, setChildLayouts] = useState<Record<string, DrawerChildLayoutType>>({});
-  const reportChildLayout = useCallback((key: string, layout: DrawerChildLayoutType | null) => {
-    setChildLayouts((current) => {
-      const previous = current[key];
-      if (!layout) {
-        if (!previous) return current;
-        const { [key]: _removed, ...rest } = current;
-        return rest;
-      }
-      if (
-        previous &&
-        previous.variant === layout.variant &&
-        previous.shift === layout.shift &&
-        previous.push === layout.push
-      ) {
-        return current;
-      }
-      return { ...current, [key]: layout };
-    });
-  }, []);
+  const [childLayouts, setChildLayouts] = useState<Record<string, DrawerChildLayoutType>>(
+    {},
+  );
+  const reportChildLayout = useCallback(
+    (key: string, layout: DrawerChildLayoutType | null) => {
+      setChildLayouts((current) => {
+        const previous = current[key];
+        if (!layout) {
+          if (!previous) return current;
+          const { [key]: _removed, ...rest } = current;
+          return rest;
+        }
+        if (
+          previous &&
+          previous.variant === layout.variant &&
+          previous.shift === layout.shift &&
+          previous.push === layout.push
+        ) {
+          return current;
+        }
+        return { ...current, [key]: layout };
+      });
+    },
+    [],
+  );
   const { asideShift, bottomPush } = useMemo(() => {
     let shift = 0;
     let push = 0;
@@ -527,22 +547,31 @@ function DrawerRoot({
   const resolvedOffset = useMemo(() => resolveDrawerOffset(offset), [offset]);
   // Sheets snap by sliding; a `bottom` drawer snaps by resizing its slice of the column.
   const hasSnapPoints =
-    ((presentation === "sheet" && resolvedVariant !== "overlay") || resolvedVariant === "bottom") &&
+    ((presentation === "sheet" && resolvedVariant !== "overlay") ||
+      resolvedVariant === "bottom") &&
     snapPoints != null &&
     snapPoints.length > 0;
 
   const snapPointHeights = useMemo(() => {
     if (!hasSnapPoints || !snapPoints) return [];
     const rootFontSize = hostDoc?.defaultView
-      ? Number.parseFloat(hostDoc.defaultView.getComputedStyle(hostDoc.documentElement).fontSize) || 16
+      ? Number.parseFloat(
+          hostDoc.defaultView.getComputedStyle(hostDoc.documentElement).fontSize,
+        ) || 16
       : 16;
     return snapPoints.map((point) =>
-      Math.min(viewportHeight, resolveSnapPointHeight(point, viewportHeight, rootFontSize)),
+      Math.min(
+        viewportHeight,
+        resolveSnapPointHeight(point, viewportHeight, rootFontSize),
+      ),
     );
   }, [hasSnapPoints, snapPoints, viewportHeight, hostDoc]);
 
   const [uncontrolledSnapIndex, setUncontrolledSnapIndex] = useState(() =>
-    Math.max(0, snapPoints && defaultSnapPoint != null ? snapPoints.indexOf(defaultSnapPoint) : 0),
+    Math.max(
+      0,
+      snapPoints && defaultSnapPoint != null ? snapPoints.indexOf(defaultSnapPoint) : 0,
+    ),
   );
   const snapControlled = snapPoint !== undefined;
   const activeSnapIndex = snapControlled
@@ -588,7 +617,9 @@ function DrawerRoot({
       layoutKey: registryKey,
       parentPanel,
       isNested: parent != null,
-      hasModalAncestor: Boolean(parent && (parent.modal === true || parent.hasModalAncestor)),
+      hasModalAncestor: Boolean(
+        parent && (parent.modal === true || parent.hasModalAncestor),
+      ),
       frontmostHeight,
       reportFrontmostHeight,
       reportToParent: parentReport,
@@ -693,7 +724,11 @@ function renderControl(
   );
 }
 
-function DrawerTrigger({ children, nativeButton: _nativeButton, ...props }: DrawerTriggerPropsType): ReactElement {
+function DrawerTrigger({
+  children,
+  nativeButton: _nativeButton,
+  ...props
+}: DrawerTriggerPropsType): ReactElement {
   const { open, setOpen, popupId } = useDrawerContext();
   return renderControl(
     children,
@@ -709,7 +744,11 @@ function DrawerTrigger({ children, nativeButton: _nativeButton, ...props }: Draw
 }
 DrawerTrigger.displayName = "Drawer.Trigger";
 
-function DrawerClose({ children, nativeButton: _nativeButton, ...props }: DrawerClosePropsType): ReactElement {
+function DrawerClose({
+  children,
+  nativeButton: _nativeButton,
+  ...props
+}: DrawerClosePropsType): ReactElement {
   const { setOpen } = useDrawerContext();
   return renderControl(children, { "data-slot": "drawer-close", ...props }, () =>
     setOpen(false, "close-press"),
@@ -717,7 +756,10 @@ function DrawerClose({ children, nativeButton: _nativeButton, ...props }: Drawer
 }
 DrawerClose.displayName = "Drawer.Close";
 
-function DrawerPortal({ container, children }: DrawerPortalPropsType): ReactElement | null {
+function DrawerPortal({
+  container,
+  children,
+}: DrawerPortalPropsType): ReactElement | null {
   const { portalContainer } = useDrawerContext();
   const target = container ?? portalContainer;
   return target ? createPortal(children, target) : null;
@@ -731,7 +773,11 @@ const DrawerOverlay = forwardRef<HTMLDivElement, DrawerOverlayPropsType>(
 );
 DrawerOverlay.displayName = "Drawer.Overlay";
 
-function DrawerSwipeHandle({ style, className, ...props }: DrawerSwipeHandlePropsType): ReactElement {
+function DrawerSwipeHandle({
+  style,
+  className,
+  ...props
+}: DrawerSwipeHandlePropsType): ReactElement {
   return (
     <div
       data-slot="drawer-swipe-handle"
@@ -760,11 +806,17 @@ function canScrollTowardDismiss(
     if (overflow !== "auto" && overflow !== "scroll") continue;
     if (axis === "y") {
       if (el.scrollHeight <= el.clientHeight) continue;
-      if (sign === 1 ? el.scrollTop > 0 : el.scrollTop + el.clientHeight < el.scrollHeight - 1) return true;
+      if (
+        sign === 1
+          ? el.scrollTop > 0
+          : el.scrollTop + el.clientHeight < el.scrollHeight - 1
+      )
+        return true;
     } else {
       if (el.scrollWidth <= el.clientWidth) continue;
       const scrollLeft = Math.abs(el.scrollLeft);
-      if (sign === 1 ? scrollLeft > 0 : scrollLeft + el.clientWidth < el.scrollWidth - 1) return true;
+      if (sign === 1 ? scrollLeft > 0 : scrollLeft + el.clientWidth < el.scrollWidth - 1)
+        return true;
     }
   }
   return false;
@@ -774,491 +826,556 @@ function canScrollTowardDismiss(
  * High-level panel: portal + overlay + viewport + popup + inner content.
  * Swipe-to-dismiss applies to the full popup surface (not handle-only).
  */
-const DrawerContent = forwardRef<HTMLDivElement, DrawerContentPropsType>(function DrawerContent(
-  { children, className, style, offset, width, maxHeight, onPointerDown, ...props },
-  ref,
-) {
-  const ctx = useDrawerContext();
-  const {
-    hasSnapPoints,
-    modal,
-    showSwipeHandle,
-    swipeable,
-    swipeDirection,
-    presentation,
-    offset: rootOffset,
-    portalContainer,
-    open,
-    setOpen,
-    popupId,
-    nestedOpenCount,
-    stackCount,
-    hasModalAncestor,
-    frontmostHeight,
-    reportToParent,
-    snapPointHeights,
-    activeSnapIndex,
-    setActiveSnapIndex,
-    onOpenChangeComplete,
-    variant,
-    position,
-    asideShift: ownAsideShift,
-    bottomPush,
-    reportLayoutToParent,
-    layoutKey,
-    parentPanel,
-  } = ctx;
-  const popupRef = useRef<HTMLDivElement>(null);
-  const contentRef = useRef<HTMLDivElement>(null);
-  const overlayRef = useRef<HTMLDivElement>(null);
-  const mergedRef = useMemo(() => mergeRefs(ref, popupRef), [ref]);
-  const swipeAxis = swipeDirection === "down" || swipeDirection === "up" ? "y" : "x";
-  const isBottom = variant === "bottom";
-  const isOverlay = variant === "overlay";
-  // `bottom` and `overlay` drawers live in their parent's column: same width,
-  // offsets and slide.
-  const columnPanel = isBottom || isOverlay ? parentPanel : null;
-  const resolvedOffset = columnPanel
-    ? columnPanel.offset
-    : offset !== undefined
-      ? resolveDrawerOffset(offset, DRAWER_OFFSET_DEFAULT)
-      : rootOffset;
-  const floated = hasNonZeroOffset(resolvedOffset);
-  const resolvedWidth = columnPanel
-    ? columnPanel.width
-    : width !== undefined && width !== ""
-      ? resolveDrawerWidth(width)
-      : undefined;
-  // An inner aside sits past the parent's inner edge: it slides by the
-  // parent's width + edge gap (+ the parent's own slide). Measured, since the
-  // parent's width may be a CSS default.
-  const isInnerAside = variant === "aside" && position === "inner";
-  const [innerShift, setInnerShift] = useState(0);
-  const parentAsideShift = parentPanel?.asideShift ?? 0;
-  useEffect(() => {
-    const parentPopup = parentPanel?.getPopups()[0];
-    const view = parentPopup?.ownerDocument.defaultView;
-    if (!isInnerAside || !open || !parentPopup || !view) return undefined;
-    const measure = () => {
-      const computed = view.getComputedStyle(parentPopup);
-      const edgeMargin = swipeDirection === "left" ? computed.marginLeft : computed.marginRight;
-      setInnerShift(
-        parentPopup.offsetWidth + (Number.parseFloat(edgeMargin) || 0) + parentAsideShift,
-      );
-    };
-    measure();
-    const observer = typeof ResizeObserver !== "undefined" ? new ResizeObserver(measure) : null;
-    observer?.observe(parentPopup);
-    return () => observer?.disconnect();
-  }, [isInnerAside, open, parentPanel, parentAsideShift, swipeDirection, portalContainer]);
-  const asideShift = isInnerAside
-    ? innerShift + ownAsideShift
-    : Math.max(ownAsideShift, columnPanel?.asideShift ?? 0);
-  // An overlay sits above whatever pushes its parent's bottom edge up.
-  const pushBottom = isOverlay ? (columnPanel?.bottomPush ?? 0) : bottomPush;
-  // A top overlay lines up with its parent's top edge, which is not the
-  // viewport's when the parent is a bottom drawer, a sheet or another overlay.
-  const isTopOverlay = isOverlay && position === "top";
-  const [overlayTop, setOverlayTop] = useState(0);
-  useEffect(() => {
-    const parentPopup = parentPanel?.getPopups()[0];
-    const popup = popupRef.current;
-    const view = popup?.ownerDocument.defaultView;
-    if (!isTopOverlay || !open || !parentPopup || !popup || !view) return undefined;
-    const measure = () => {
-      const marginTop = Number.parseFloat(view.getComputedStyle(popup).marginTop) || 0;
-      setOverlayTop(Math.max(0, parentPopup.offsetTop - marginTop));
-    };
-    measure();
-    const observer = typeof ResizeObserver !== "undefined" ? new ResizeObserver(measure) : null;
-    observer?.observe(parentPopup);
-    // The parent's top also moves without resizing (e.g. a pushed bottom drawer).
-    parentPopup.addEventListener("transitionend", measure);
-    return () => {
-      observer?.disconnect();
-      parentPopup.removeEventListener("transitionend", measure);
-    };
-  }, [isTopOverlay, open, parentPanel, pushBottom, portalContainer]);
-  // Nested non-float drawers keep their parents usable: presses and focus
-  // there stay "inside" instead of dismissing this one.
-  const getRelatedPopups = (): Array<HTMLElement | null> => [
-    popupRef.current,
-    ...(variant !== "float" && parentPanel ? parentPanel.getPopups() : []),
-  ];
+const DrawerContent = forwardRef<HTMLDivElement, DrawerContentPropsType>(
+  function DrawerContent(
+    { children, className, style, offset, width, maxHeight, onPointerDown, ...props },
+    ref,
+  ) {
+    const ctx = useDrawerContext();
+    const {
+      hasSnapPoints,
+      modal,
+      showSwipeHandle,
+      swipeable,
+      swipeDirection,
+      presentation,
+      offset: rootOffset,
+      portalContainer,
+      open,
+      setOpen,
+      popupId,
+      nestedOpenCount,
+      stackCount,
+      hasModalAncestor,
+      frontmostHeight,
+      reportToParent,
+      snapPointHeights,
+      activeSnapIndex,
+      setActiveSnapIndex,
+      onOpenChangeComplete,
+      variant,
+      position,
+      asideShift: ownAsideShift,
+      bottomPush,
+      reportLayoutToParent,
+      layoutKey,
+      parentPanel,
+    } = ctx;
+    const popupRef = useRef<HTMLDivElement>(null);
+    const contentRef = useRef<HTMLDivElement>(null);
+    const overlayRef = useRef<HTMLDivElement>(null);
+    const mergedRef = useMemo(() => mergeRefs(ref, popupRef), [ref]);
+    const swipeAxis = swipeDirection === "down" || swipeDirection === "up" ? "y" : "x";
+    const isBottom = variant === "bottom";
+    const isOverlay = variant === "overlay";
+    // `bottom` and `overlay` drawers live in their parent's column: same width,
+    // offsets and slide.
+    const columnPanel = isBottom || isOverlay ? parentPanel : null;
+    const resolvedOffset = columnPanel
+      ? columnPanel.offset
+      : offset !== undefined
+        ? resolveDrawerOffset(offset, DRAWER_OFFSET_DEFAULT)
+        : rootOffset;
+    const floated = hasNonZeroOffset(resolvedOffset);
+    const resolvedWidth = columnPanel
+      ? columnPanel.width
+      : width !== undefined && width !== ""
+        ? resolveDrawerWidth(width)
+        : undefined;
+    // An inner aside sits past the parent's inner edge: it slides by the
+    // parent's width + edge gap (+ the parent's own slide). Measured, since the
+    // parent's width may be a CSS default.
+    const isInnerAside = variant === "aside" && position === "inner";
+    const [innerShift, setInnerShift] = useState(0);
+    const parentAsideShift = parentPanel?.asideShift ?? 0;
+    useEffect(() => {
+      const parentPopup = parentPanel?.getPopups()[0];
+      const view = parentPopup?.ownerDocument.defaultView;
+      if (!isInnerAside || !open || !parentPopup || !view) return undefined;
+      const measure = () => {
+        const computed = view.getComputedStyle(parentPopup);
+        const edgeMargin =
+          swipeDirection === "left" ? computed.marginLeft : computed.marginRight;
+        setInnerShift(
+          parentPopup.offsetWidth +
+            (Number.parseFloat(edgeMargin) || 0) +
+            parentAsideShift,
+        );
+      };
+      measure();
+      const observer =
+        typeof ResizeObserver !== "undefined" ? new ResizeObserver(measure) : null;
+      observer?.observe(parentPopup);
+      return () => observer?.disconnect();
+    }, [
+      isInnerAside,
+      open,
+      parentPanel,
+      parentAsideShift,
+      swipeDirection,
+      portalContainer,
+    ]);
+    const asideShift = isInnerAside
+      ? innerShift + ownAsideShift
+      : Math.max(ownAsideShift, columnPanel?.asideShift ?? 0);
+    // An overlay sits above whatever pushes its parent's bottom edge up.
+    const pushBottom = isOverlay ? (columnPanel?.bottomPush ?? 0) : bottomPush;
+    // A top overlay lines up with its parent's top edge, which is not the
+    // viewport's when the parent is a bottom drawer, a sheet or another overlay.
+    const isTopOverlay = isOverlay && position === "top";
+    const [overlayTop, setOverlayTop] = useState(0);
+    useEffect(() => {
+      const parentPopup = parentPanel?.getPopups()[0];
+      const popup = popupRef.current;
+      const view = popup?.ownerDocument.defaultView;
+      if (!isTopOverlay || !open || !parentPopup || !popup || !view) return undefined;
+      const measure = () => {
+        const marginTop = Number.parseFloat(view.getComputedStyle(popup).marginTop) || 0;
+        setOverlayTop(Math.max(0, parentPopup.offsetTop - marginTop));
+      };
+      measure();
+      const observer =
+        typeof ResizeObserver !== "undefined" ? new ResizeObserver(measure) : null;
+      observer?.observe(parentPopup);
+      // The parent's top also moves without resizing (e.g. a pushed bottom drawer).
+      parentPopup.addEventListener("transitionend", measure);
+      return () => {
+        observer?.disconnect();
+        parentPopup.removeEventListener("transitionend", measure);
+      };
+    }, [isTopOverlay, open, parentPanel, pushBottom, portalContainer]);
+    // Nested non-float drawers keep their parents usable: presses and focus
+    // there stay "inside" instead of dismissing this one.
+    const getRelatedPopups = (): Array<HTMLElement | null> => [
+      popupRef.current,
+      ...(variant !== "float" && parentPanel ? parentPanel.getPopups() : []),
+    ];
 
-  const { mounted, phase } = usePresence(open, popupRef, {
-    onExitComplete: () => onOpenChangeComplete?.(false),
-  });
-  useEffect(() => {
-    if (phase !== "open" || !onOpenChangeComplete) return undefined;
-    const timer = window.setTimeout(() => onOpenChangeComplete(true), 450);
-    return () => window.clearTimeout(timer);
-  }, [phase, onOpenChangeComplete]);
+    const { mounted, phase } = usePresence(open, popupRef, {
+      onExitComplete: () => onOpenChangeComplete?.(false),
+    });
+    useEffect(() => {
+      if (phase !== "open" || !onOpenChangeComplete) return undefined;
+      const timer = window.setTimeout(() => onOpenChangeComplete(true), 450);
+      return () => window.clearTimeout(timer);
+    }, [phase, onOpenChangeComplete]);
 
-  useLayoutEffect(() => {
-    if (portalContainer) ensureDrawerStyles(portalContainer);
-  }, [portalContainer]);
+    useLayoutEffect(() => {
+      if (portalContainer) ensureDrawerStyles(portalContainer);
+    }, [portalContainer]);
 
-  const doc = portalContainer?.ownerDocument ?? null;
-  // Only once the panel is in the DOM: the portal target arrives one render late.
-  const active = open && mounted && Boolean(portalContainer);
-  useDismissableLayer({
-    id: popupId,
-    active,
-    doc,
-    getInside: getRelatedPopups,
-    onEscape: () => setOpen(false, "escape-key"),
-    onOutsidePress: (event) => {
-      // The trigger toggles on its own click; closing here would reopen it.
-      // Elements marked `data-drawer-outside-control` (external open/close
-      // buttons) are ignored the same way, for every drawer.
-      const target = event.target as Element | null;
-      if (target?.closest?.(`[aria-controls="${popupId}"], [data-drawer-outside-control]`)) return;
-      setOpen(false, "outside-press");
-    },
-  });
-  useFocusContainment(popupRef, {
-    id: popupId,
-    active,
-    trap: modal !== false,
-    getContainers: getRelatedPopups,
-  });
-  useScrollLock(doc, active && modal === true);
+    const doc = portalContainer?.ownerDocument ?? null;
+    // Only once the panel is in the DOM: the portal target arrives one render late.
+    const active = open && mounted && Boolean(portalContainer);
+    useDismissableLayer({
+      id: popupId,
+      active,
+      doc,
+      getInside: getRelatedPopups,
+      onEscape: () => setOpen(false, "escape-key"),
+      onOutsidePress: (event) => {
+        // The trigger toggles on its own click; closing here would reopen it.
+        // Elements marked `data-drawer-outside-control` (external open/close
+        // buttons) are ignored the same way, for every drawer.
+        const target = event.target as Element | null;
+        if (
+          target?.closest?.(`[aria-controls="${popupId}"], [data-drawer-outside-control]`)
+        )
+          return;
+        setOpen(false, "outside-press");
+      },
+    });
+    useFocusContainment(popupRef, {
+      id: popupId,
+      active,
+      trap: modal !== false,
+      getContainers: getRelatedPopups,
+    });
+    useScrollLock(doc, active && modal === true);
 
-  // Tell the parent the frontmost stacked sheet's height so every level below
-  // takes it and peeks out by the same step (desktop and mobile alike): this
-  // panel's own height while it's frontmost, otherwise the height it got from
-  // the drawer stacked on it.
-  const forwardedHeight = stackCount > 0 ? frontmostHeight : null;
-  useEffect(() => {
-    const popup = popupRef.current;
-    if (!reportToParent || !active || !popup) return undefined;
-    if (forwardedHeight != null) {
-      reportToParent(forwardedHeight);
-      return () => reportToParent(null);
-    }
-    const report = () => {
-      const height = popup.getBoundingClientRect().height;
-      reportToParent(height > 0 ? height : null);
-    };
-    report();
-    const observer = typeof ResizeObserver !== "undefined" ? new ResizeObserver(report) : null;
-    observer?.observe(popup);
-    return () => {
-      observer?.disconnect();
-      reportToParent(null);
-    };
-  }, [reportToParent, active, forwardedHeight]);
-
-  // `aside` / `bottom`: tell the parent how far to slide inward / move its
-  // bottom edge up. Reported from the first open frame, so the parent makes
-  // room while this panel slides in (and gives it back as soon as it closes).
-  useEffect(() => {
-    const popup = popupRef.current;
-    const view = popup?.ownerDocument.defaultView;
-    if (
-      !reportLayoutToParent ||
-      variant === "float" ||
-      !active ||
-      !popup ||
-      !view
-    ) {
-      return undefined;
-    }
-    const report = () => {
-      const computed = view.getComputedStyle(popup);
-      if (variant === "aside") {
-        const edgeMargin = swipeDirection === "left" ? computed.marginLeft : computed.marginRight;
-        reportLayoutToParent(layoutKey, {
-          variant,
-          shift: popup.offsetWidth + (Number.parseFloat(edgeMargin) || 0) + ownAsideShift,
-          push: 0,
-        });
-        return;
+    // Tell the parent the frontmost stacked sheet's height so every level below
+    // takes it and peeks out by the same step (desktop and mobile alike): this
+    // panel's own height while it's frontmost, otherwise the height it got from
+    // the drawer stacked on it.
+    const forwardedHeight = stackCount > 0 ? frontmostHeight : null;
+    useEffect(() => {
+      const popup = popupRef.current;
+      if (!reportToParent || !active || !popup) return undefined;
+      if (forwardedHeight != null) {
+        reportToParent(forwardedHeight);
+        return () => reportToParent(null);
       }
-      reportLayoutToParent(layoutKey, {
-        variant,
-        shift: ownAsideShift,
-        push:
-          variant === "bottom"
-            ? popup.offsetHeight + (Number.parseFloat(computed.marginBottom) || 0) + bottomPush
-            : 0,
-      });
-    };
-    report();
-    const observer = typeof ResizeObserver !== "undefined" ? new ResizeObserver(report) : null;
-    observer?.observe(popup);
-    return () => {
-      observer?.disconnect();
-      reportLayoutToParent(layoutKey, null);
-    };
-  }, [reportLayoutToParent, variant, active, swipeDirection, layoutKey, ownAsideShift, bottomPush]);
+      const report = () => {
+        const height = popup.getBoundingClientRect().height;
+        reportToParent(height > 0 ? height : null);
+      };
+      report();
+      const observer =
+        typeof ResizeObserver !== "undefined" ? new ResizeObserver(report) : null;
+      observer?.observe(popup);
+      return () => {
+        observer?.disconnect();
+        reportToParent(null);
+      };
+    }, [reportToParent, active, forwardedHeight]);
 
-  // Scroll state for the sticky header / footer separators, plus the footer
-  // height a sticky pre-footer pins above. Written to the DOM, not state.
-  useEffect(() => {
-    const content = contentRef.current;
-    if (!mounted || !content) return undefined;
-    const update = () => {
-      const { scrollTop, scrollHeight, clientHeight } = content;
-      content.toggleAttribute("data-overflow-top", scrollTop > 0);
-      content.toggleAttribute("data-overflow-bottom", scrollTop + clientHeight < scrollHeight - 1);
-      const footer = content.querySelector<HTMLElement>('[data-slot="drawer-footer"]');
-      content.style.setProperty("--drawer-footer-height", `${footer?.offsetHeight ?? 0}px`);
-    };
-    update();
-    content.addEventListener("scroll", update, { passive: true });
-    const observer = typeof ResizeObserver !== "undefined" ? new ResizeObserver(update) : null;
-    if (observer) {
-      observer.observe(content);
-      for (const child of Array.from(content.children)) observer.observe(child);
-    }
-    return () => {
-      content.removeEventListener("scroll", update);
-      observer?.disconnect();
-    };
-  }, [mounted, portalContainer]);
-
-  const panelValue = useMemo<DrawerPanelContextType>(
-    () => ({
-      width: resolvedWidth,
-      offset: resolvedOffset,
-      asideShift,
-      bottomPush: pushBottom,
-      getPopups: () => [popupRef.current, ...(parentPanel ? parentPanel.getPopups() : [])],
-    }),
-    [resolvedWidth, resolvedOffset, asideShift, pushBottom, parentPanel],
-  );
-
-  const snapHeight = hasSnapPoints ? snapPointHeights[activeSnapIndex] : undefined;
-  const viewportHeight = doc?.defaultView?.innerHeight ?? 0;
-  const snapOffset =
-    snapHeight !== undefined && !isBottom
-      ? Math.max(0, viewportHeight - snapHeight) * (swipeDirection === "up" ? -1 : 1)
-      : 0;
-
-  const handlePointerDown = (event: ReactPointerEvent<HTMLDivElement>) => {
-    onPointerDown?.(event);
-    if (!swipeable) return;
-    if (event.defaultPrevented || (event.pointerType === "mouse" && event.button !== 0)) return;
-    const popup = popupRef.current;
-    const view = popup?.ownerDocument.defaultView;
-    if (!popup || !view || !open) return;
-    // Only the active (frontmost) drawer swipes. A nested drawer's panel is
-    // portaled out of this popup's DOM, but its React pointer events still
-    // bubble here through the component tree — ignore those, and ignore every
-    // press while a nested drawer is open on top of this one.
-    if (nestedOpenCount > 0) return;
-    const target = event.target as HTMLElement;
-    if (!popup.contains(target)) return;
-    if (target.closest(FIELD_SELECTOR)) return;
-
-    // `bottom` / `overlay` drawers dismiss vertically whatever side their column is on.
-    const axis = isBottom || isOverlay ? "y" : swipeAxis;
-    const sign: 1 | -1 = isOverlay
-      ? position === "top"
-        ? -1
-        : 1
-      : isBottom || swipeDirection === "down" || swipeDirection === "right"
-        ? 1
-        : -1;
-    if (canScrollTowardDismiss(target, popup, axis, sign)) return;
-
-    const pointerId = event.pointerId;
-    const startX = event.clientX;
-    const startY = event.clientY;
-    const size = axis === "y" ? popup.offsetHeight : popup.offsetWidth;
-    const movementVar = axis === "y" ? "--drawer-swipe-movement-y" : "--drawer-swipe-movement-x";
-    const heights = snapPointHeights;
-    const currentHeight = hasSnapPoints ? (heights[activeSnapIndex] ?? size) : size;
-    const maxHeight = heights.length ? Math.max(...heights) : size;
-    // Anchored to the bottom of the column, a snapping `bottom` drawer resizes
-    // with the finger (and the parent follows) instead of sliding.
-    const resizing = isBottom && hasSnapPoints;
-    let dragging = false;
-    let movement = 0;
-    let lastTime = event.timeStamp;
-    let lastMovement = 0;
-    let velocity = 0;
-
-    const reset = () => {
-      popup.removeAttribute("data-swiping");
-      popup.style.removeProperty(movementVar);
-      popup.style.removeProperty("--drawer-resize-height");
-      overlayRef.current?.style.removeProperty("--drawer-swipe-progress");
-    };
-
-    const handleMove = (move: PointerEvent) => {
-      if (move.pointerId !== pointerId) return;
-      const along = (axis === "y" ? move.clientY - startY : move.clientX - startX) * sign;
-      const cross = axis === "y" ? move.clientX - startX : move.clientY - startY;
-      if (!dragging) {
-        // A gesture along the other axis is a scroll or a text selection, not a swipe.
-        if (Math.abs(cross) > 8 && Math.abs(cross) > Math.abs(along)) {
-          stop();
+    // `aside` / `bottom`: tell the parent how far to slide inward / move its
+    // bottom edge up. Reported from the first open frame, so the parent makes
+    // room while this panel slides in (and gives it back as soon as it closes).
+    useEffect(() => {
+      const popup = popupRef.current;
+      const view = popup?.ownerDocument.defaultView;
+      if (!reportLayoutToParent || variant === "float" || !active || !popup || !view) {
+        return undefined;
+      }
+      const report = () => {
+        const computed = view.getComputedStyle(popup);
+        if (variant === "aside") {
+          const edgeMargin =
+            swipeDirection === "left" ? computed.marginLeft : computed.marginRight;
+          reportLayoutToParent(layoutKey, {
+            variant,
+            shift:
+              popup.offsetWidth + (Number.parseFloat(edgeMargin) || 0) + ownAsideShift,
+            push: 0,
+          });
           return;
         }
-        if (Math.abs(along) < 6) return;
-        dragging = true;
-        popup.setAttribute("data-swiping", "");
-        view.getSelection()?.removeAllRanges();
-      }
-      // Toward a larger snap point the sheet follows the finger; past the edge it resists.
-      movement =
-        along >= 0
-          ? along
-          : hasSnapPoints && currentHeight < maxHeight
-            ? Math.max(along, -(maxHeight - currentHeight))
-            : along * 0.2;
-      const dt = Math.max(1, move.timeStamp - lastTime);
-      velocity = (movement - lastMovement) / dt;
-      lastTime = move.timeStamp;
-      lastMovement = movement;
-      if (resizing) {
-        popup.style.setProperty(
-          "--drawer-resize-height",
-          `${Math.max(0, currentHeight - movement)}px`,
-        );
-      } else {
-        popup.style.setProperty(movementVar, `${movement * sign}px`);
-      }
-      overlayRef.current?.style.setProperty(
-        "--drawer-swipe-progress",
-        String(Math.min(1, Math.max(0, movement / Math.max(1, currentHeight)))),
-      );
-    };
+        reportLayoutToParent(layoutKey, {
+          variant,
+          shift: ownAsideShift,
+          push:
+            variant === "bottom"
+              ? popup.offsetHeight +
+                (Number.parseFloat(computed.marginBottom) || 0) +
+                bottomPush
+              : 0,
+        });
+      };
+      report();
+      const observer =
+        typeof ResizeObserver !== "undefined" ? new ResizeObserver(report) : null;
+      observer?.observe(popup);
+      return () => {
+        observer?.disconnect();
+        reportLayoutToParent(layoutKey, null);
+      };
+    }, [
+      reportLayoutToParent,
+      variant,
+      active,
+      swipeDirection,
+      layoutKey,
+      ownAsideShift,
+      bottomPush,
+    ]);
 
-    const finish = (released: boolean) => {
-      stop();
-      if (!dragging) return;
-      // Swallow the click that ends the drag so buttons under the pointer don't fire.
-      popup.addEventListener("click", (click) => click.stopPropagation(), { capture: true, once: true });
-      if (!released) {
-        reset();
-        return;
+    // Scroll state for the sticky header / footer separators, plus the footer
+    // height a sticky pre-footer pins above. Written to the DOM, not state.
+    useEffect(() => {
+      const content = contentRef.current;
+      if (!mounted || !content) return undefined;
+      const update = () => {
+        const { scrollTop, scrollHeight, clientHeight } = content;
+        content.toggleAttribute("data-overflow-top", scrollTop > 0);
+        content.toggleAttribute(
+          "data-overflow-bottom",
+          scrollTop + clientHeight < scrollHeight - 1,
+        );
+        const footer = content.querySelector<HTMLElement>('[data-slot="drawer-footer"]');
+        content.style.setProperty(
+          "--drawer-footer-height",
+          `${footer?.offsetHeight ?? 0}px`,
+        );
+      };
+      update();
+      content.addEventListener("scroll", update, { passive: true });
+      const observer =
+        typeof ResizeObserver !== "undefined" ? new ResizeObserver(update) : null;
+      if (observer) {
+        observer.observe(content);
+        for (const child of Array.from(content.children)) observer.observe(child);
       }
-      const flick = velocity > 0.5 && movement > 16;
-      if (hasSnapPoints && heights.length > 0) {
-        const visible = currentHeight - movement;
-        const smallest = Math.min(...heights);
-        if (visible < smallest * 0.5 || (flick && currentHeight === smallest)) {
-          popup.style.setProperty("--drawer-swipe-strength", String(Math.max(0.3, 1 - velocity / 3)));
+      return () => {
+        content.removeEventListener("scroll", update);
+        observer?.disconnect();
+      };
+    }, [mounted, portalContainer]);
+
+    const panelValue = useMemo<DrawerPanelContextType>(
+      () => ({
+        width: resolvedWidth,
+        offset: resolvedOffset,
+        asideShift,
+        bottomPush: pushBottom,
+        getPopups: () => [
+          popupRef.current,
+          ...(parentPanel ? parentPanel.getPopups() : []),
+        ],
+      }),
+      [resolvedWidth, resolvedOffset, asideShift, pushBottom, parentPanel],
+    );
+
+    const snapHeight = hasSnapPoints ? snapPointHeights[activeSnapIndex] : undefined;
+    const viewportHeight = doc?.defaultView?.innerHeight ?? 0;
+    const snapOffset =
+      snapHeight !== undefined && !isBottom
+        ? Math.max(0, viewportHeight - snapHeight) * (swipeDirection === "up" ? -1 : 1)
+        : 0;
+
+    const handlePointerDown = (event: ReactPointerEvent<HTMLDivElement>) => {
+      onPointerDown?.(event);
+      if (!swipeable) return;
+      if (event.defaultPrevented || (event.pointerType === "mouse" && event.button !== 0))
+        return;
+      const popup = popupRef.current;
+      const view = popup?.ownerDocument.defaultView;
+      if (!popup || !view || !open) return;
+      // Only the active (frontmost) drawer swipes. A nested drawer's panel is
+      // portaled out of this popup's DOM, but its React pointer events still
+      // bubble here through the component tree — ignore those, and ignore every
+      // press while a nested drawer is open on top of this one.
+      if (nestedOpenCount > 0) return;
+      const target = event.target as HTMLElement;
+      if (!popup.contains(target)) return;
+      if (target.closest(FIELD_SELECTOR)) return;
+
+      // `bottom` / `overlay` drawers dismiss vertically whatever side their column is on.
+      const axis = isBottom || isOverlay ? "y" : swipeAxis;
+      const sign: 1 | -1 = isOverlay
+        ? position === "top"
+          ? -1
+          : 1
+        : isBottom || swipeDirection === "down" || swipeDirection === "right"
+          ? 1
+          : -1;
+      if (canScrollTowardDismiss(target, popup, axis, sign)) return;
+
+      const pointerId = event.pointerId;
+      const startX = event.clientX;
+      const startY = event.clientY;
+      const size = axis === "y" ? popup.offsetHeight : popup.offsetWidth;
+      const movementVar =
+        axis === "y" ? "--drawer-swipe-movement-y" : "--drawer-swipe-movement-x";
+      const heights = snapPointHeights;
+      const currentHeight = hasSnapPoints ? (heights[activeSnapIndex] ?? size) : size;
+      const maxHeight = heights.length ? Math.max(...heights) : size;
+      // Anchored to the bottom of the column, a snapping `bottom` drawer resizes
+      // with the finger (and the parent follows) instead of sliding.
+      const resizing = isBottom && hasSnapPoints;
+      let dragging = false;
+      let movement = 0;
+      let lastTime = event.timeStamp;
+      let lastMovement = 0;
+      let velocity = 0;
+
+      const reset = () => {
+        popup.removeAttribute("data-swiping");
+        popup.style.removeProperty(movementVar);
+        popup.style.removeProperty("--drawer-resize-height");
+        overlayRef.current?.style.removeProperty("--drawer-swipe-progress");
+      };
+
+      const handleMove = (move: PointerEvent) => {
+        if (move.pointerId !== pointerId) return;
+        const along =
+          (axis === "y" ? move.clientY - startY : move.clientX - startX) * sign;
+        const cross = axis === "y" ? move.clientX - startX : move.clientY - startY;
+        if (!dragging) {
+          // A gesture along the other axis is a scroll or a text selection, not a swipe.
+          if (Math.abs(cross) > 8 && Math.abs(cross) > Math.abs(along)) {
+            stop();
+            return;
+          }
+          if (Math.abs(along) < 6) return;
+          dragging = true;
+          popup.setAttribute("data-swiping", "");
+          view.getSelection()?.removeAllRanges();
+        }
+        // Toward a larger snap point the sheet follows the finger; past the edge it resists.
+        movement =
+          along >= 0
+            ? along
+            : hasSnapPoints && currentHeight < maxHeight
+              ? Math.max(along, -(maxHeight - currentHeight))
+              : along * 0.2;
+        const dt = Math.max(1, move.timeStamp - lastTime);
+        velocity = (movement - lastMovement) / dt;
+        lastTime = move.timeStamp;
+        lastMovement = movement;
+        if (resizing) {
+          popup.style.setProperty(
+            "--drawer-resize-height",
+            `${Math.max(0, currentHeight - movement)}px`,
+          );
+        } else {
+          popup.style.setProperty(movementVar, `${movement * sign}px`);
+        }
+        overlayRef.current?.style.setProperty(
+          "--drawer-swipe-progress",
+          String(Math.min(1, Math.max(0, movement / Math.max(1, currentHeight)))),
+        );
+      };
+
+      const finish = (released: boolean) => {
+        stop();
+        if (!dragging) return;
+        // Swallow the click that ends the drag so buttons under the pointer don't fire.
+        popup.addEventListener("click", (click) => click.stopPropagation(), {
+          capture: true,
+          once: true,
+        });
+        if (!released) {
+          reset();
+          return;
+        }
+        const flick = velocity > 0.5 && movement > 16;
+        if (hasSnapPoints && heights.length > 0) {
+          const visible = currentHeight - movement;
+          const smallest = Math.min(...heights);
+          if (visible < smallest * 0.5 || (flick && currentHeight === smallest)) {
+            popup.style.setProperty(
+              "--drawer-swipe-strength",
+              String(Math.max(0.3, 1 - velocity / 3)),
+            );
+            setOpen(false, "swipe");
+            return;
+          }
+          const target = flick
+            ? Math.max(smallest, ...heights.filter((h) => h < currentHeight))
+            : velocity < -0.5
+              ? Math.min(maxHeight, ...heights.filter((h) => h > currentHeight))
+              : heights.reduce((best, h) =>
+                  Math.abs(h - visible) < Math.abs(best - visible) ? h : best,
+                );
+          reset();
+          setActiveSnapIndex(heights.indexOf(target));
+          return;
+        }
+        if (movement > size * 0.3 || flick) {
+          popup.style.setProperty(
+            "--drawer-swipe-strength",
+            String(Math.max(0.3, 1 - velocity / 3)),
+          );
           setOpen(false, "swipe");
           return;
         }
-        const target = flick
-          ? Math.max(smallest, ...heights.filter((h) => h < currentHeight))
-          : velocity < -0.5
-            ? Math.min(maxHeight, ...heights.filter((h) => h > currentHeight))
-            : heights.reduce((best, h) => (Math.abs(h - visible) < Math.abs(best - visible) ? h : best));
         reset();
-        setActiveSnapIndex(heights.indexOf(target));
-        return;
+      };
+
+      const handleUp = (up: PointerEvent) => {
+        if (up.pointerId === pointerId) finish(true);
+      };
+      const handleCancel = (cancel: PointerEvent) => {
+        if (cancel.pointerId === pointerId) finish(false);
+      };
+      function stop() {
+        view!.removeEventListener("pointermove", handleMove);
+        view!.removeEventListener("pointerup", handleUp);
+        view!.removeEventListener("pointercancel", handleCancel);
       }
-      if (movement > size * 0.3 || flick) {
-        popup.style.setProperty("--drawer-swipe-strength", String(Math.max(0.3, 1 - velocity / 3)));
-        setOpen(false, "swipe");
-        return;
-      }
-      reset();
+      view.addEventListener("pointermove", handleMove);
+      view.addEventListener("pointerup", handleUp);
+      view.addEventListener("pointercancel", handleCancel);
     };
 
-    const handleUp = (up: PointerEvent) => {
-      if (up.pointerId === pointerId) finish(true);
-    };
-    const handleCancel = (cancel: PointerEvent) => {
-      if (cancel.pointerId === pointerId) finish(false);
-    };
-    function stop() {
-      view!.removeEventListener("pointermove", handleMove);
-      view!.removeEventListener("pointerup", handleUp);
-      view!.removeEventListener("pointercancel", handleCancel);
-    }
-    view.addEventListener("pointermove", handleMove);
-    view.addEventListener("pointerup", handleUp);
-    view.addEventListener("pointercancel", handleCancel);
-  };
+    if (!mounted || !portalContainer) return null;
 
-  if (!mounted || !portalContainer) return null;
+    const stacked = stackCount > 0;
+    const popupStyle = {
+      ...offsetToCssVars(resolvedOffset),
+      ...(resolvedWidth !== undefined
+        ? { ["--drawer-content-width" as string]: resolvedWidth }
+        : null),
+      ...(maxHeight ? { ["--drawer-content-max-height" as string]: maxHeight } : null),
+      ...(hasSnapPoints && !isBottom
+        ? { ["--drawer-snap-point-offset" as string]: `${snapOffset}px` }
+        : null),
+      ...(isBottom && snapHeight !== undefined
+        ? { ["--drawer-content-height" as string]: `${snapHeight}px` }
+        : null),
+      ["--nested-drawers" as string]: stackCount,
+      ...(stacked && frontmostHeight != null
+        ? { ["--drawer-frontmost-height" as string]: `${frontmostHeight}px` }
+        : null),
+      ...(asideShift > 0
+        ? { ["--drawer-aside-shift" as string]: `${asideShift}px` }
+        : null),
+      ...(pushBottom > 0
+        ? { ["--drawer-push-bottom" as string]: `${pushBottom}px` }
+        : null),
+      ...(isTopOverlay && overlayTop > 0
+        ? { ["--drawer-overlay-top" as string]: `${overlayTop}px` }
+        : null),
+      ...style,
+    } as CSSProperties;
 
-  const stacked = stackCount > 0;
-  const popupStyle = {
-    ...offsetToCssVars(resolvedOffset),
-    ...(resolvedWidth !== undefined ? { ["--drawer-content-width" as string]: resolvedWidth } : null),
-    ...(maxHeight ? { ["--drawer-content-max-height" as string]: maxHeight } : null),
-    ...(hasSnapPoints && !isBottom
-      ? { ["--drawer-snap-point-offset" as string]: `${snapOffset}px` }
-      : null),
-    ...(isBottom && snapHeight !== undefined
-      ? { ["--drawer-content-height" as string]: `${snapHeight}px` }
-      : null),
-    ["--nested-drawers" as string]: stackCount,
-    ...(stacked && frontmostHeight != null
-      ? { ["--drawer-frontmost-height" as string]: `${frontmostHeight}px` }
-      : null),
-    ...(asideShift > 0 ? { ["--drawer-aside-shift" as string]: `${asideShift}px` } : null),
-    ...(pushBottom > 0 ? { ["--drawer-push-bottom" as string]: `${pushBottom}px` } : null),
-    ...(isTopOverlay && overlayTop > 0
-      ? { ["--drawer-overlay-top" as string]: `${overlayTop}px` }
-      : null),
-    ...style,
-  } as CSSProperties;
+    const presence = presenceAttributes(phase);
 
-  const presence = presenceAttributes(phase);
-
-  return createPortal(
-    <>
-      {/* One backdrop for the whole stack: the outermost modal drawer owns it. */}
-      {modal === true && !hasModalAncestor ? <DrawerOverlay ref={overlayRef} {...presence} /> : null}
-      <div
-        data-slot="drawer-viewport"
-        data-modal={modal === true ? "true" : "false"}
-        data-presentation={presentation}
-        data-variant={variant}
-      >
+    return createPortal(
+      <>
+        {/* One backdrop for the whole stack: the outermost modal drawer owns it. */}
+        {modal === true && !hasModalAncestor ? (
+          <DrawerOverlay ref={overlayRef} {...presence} />
+        ) : null}
         <div
-          ref={mergedRef}
-          id={popupId}
-          role="dialog"
-          aria-modal={modal === true ? true : undefined}
-          aria-labelledby={ctx.titleId}
-          aria-describedby={ctx.descriptionId}
-          tabIndex={-1}
-          data-slot="drawer-popup"
-          data-swipe-axis={swipeAxis}
-          data-swipe-direction={swipeDirection}
-          data-swipeable={swipeable ? undefined : "false"}
+          data-slot="drawer-viewport"
+          data-modal={modal === true ? "true" : "false"}
           data-presentation={presentation}
-          data-snap-points={hasSnapPoints ? "" : undefined}
-          data-has-offset={floated ? "" : undefined}
-          data-width={typeof width === "string" && width in DRAWER_WIDTH_PRESETS ? width : undefined}
           data-variant={variant}
-          data-position={position !== "none" ? position : undefined}
-          data-nested-drawer-open={stacked ? "" : undefined}
-          data-nested-aside-open={ownAsideShift > 0 ? "" : undefined}
-          data-nested-bottom-open={bottomPush > 0 ? "" : undefined}
-          data-nested={ctx.isNested ? "" : undefined}
-          data-stack-measured={stacked && frontmostHeight != null ? "" : undefined}
-          {...presence}
-          className={className}
-          style={popupStyle}
-          onPointerDown={handlePointerDown}
-          {...props}
         >
-          {/* Handle is mobile-sheet only; never mounts on desktop (no layout space). */}
-          {showSwipeHandle ? <DrawerSwipeHandle /> : null}
-          <div ref={contentRef} data-slot="drawer-content">
-            <DrawerPanelContext.Provider value={panelValue}>{children}</DrawerPanelContext.Provider>
+          <div
+            ref={mergedRef}
+            id={popupId}
+            role="dialog"
+            aria-modal={modal === true ? true : undefined}
+            aria-labelledby={ctx.titleId}
+            aria-describedby={ctx.descriptionId}
+            tabIndex={-1}
+            data-slot="drawer-popup"
+            data-swipe-axis={swipeAxis}
+            data-swipe-direction={swipeDirection}
+            data-swipeable={swipeable ? undefined : "false"}
+            data-presentation={presentation}
+            data-snap-points={hasSnapPoints ? "" : undefined}
+            data-has-offset={floated ? "" : undefined}
+            data-width={
+              typeof width === "string" && width in DRAWER_WIDTH_PRESETS
+                ? width
+                : undefined
+            }
+            data-variant={variant}
+            data-position={position !== "none" ? position : undefined}
+            data-nested-drawer-open={stacked ? "" : undefined}
+            data-nested-aside-open={ownAsideShift > 0 ? "" : undefined}
+            data-nested-bottom-open={bottomPush > 0 ? "" : undefined}
+            data-nested={ctx.isNested ? "" : undefined}
+            data-stack-measured={stacked && frontmostHeight != null ? "" : undefined}
+            {...presence}
+            className={className}
+            style={popupStyle}
+            onPointerDown={handlePointerDown}
+            {...props}
+          >
+            {/* Handle is mobile-sheet only; never mounts on desktop (no layout space). */}
+            {showSwipeHandle ? <DrawerSwipeHandle /> : null}
+            <div ref={contentRef} data-slot="drawer-content">
+              <DrawerPanelContext.Provider value={panelValue}>
+                {children}
+              </DrawerPanelContext.Provider>
+            </div>
           </div>
         </div>
-      </div>
-    </>,
-    portalContainer,
-  );
-});
+      </>,
+      portalContainer,
+    );
+  },
+);
 DrawerContent.displayName = "Drawer.Content";
 
-function separatorAttribute(separator: DrawerSeparatorType): DrawerSeparatorType | undefined {
+function separatorAttribute(
+  separator: DrawerSeparatorType,
+): DrawerSeparatorType | undefined {
   return separator === "none" ? undefined : separator;
 }
 
@@ -1300,7 +1417,8 @@ function DrawerHeader({
     const update = () =>
       header.style.setProperty("--drawer-header-end-width", `${end.offsetWidth}px`);
     update();
-    const observer = typeof ResizeObserver !== "undefined" ? new ResizeObserver(update) : null;
+    const observer =
+      typeof ResizeObserver !== "undefined" ? new ResizeObserver(update) : null;
     observer?.observe(end);
     return () => {
       observer?.disconnect();
@@ -1330,7 +1448,12 @@ function DrawerHeader({
 DrawerHeader.displayName = "Drawer.Header";
 
 /** Sticky to the bottom of the scrolling panel. */
-function DrawerFooter({ className, style, separator = "none", ...props }: DrawerFooterPropsType): ReactElement {
+function DrawerFooter({
+  className,
+  style,
+  separator = "none",
+  ...props
+}: DrawerFooterPropsType): ReactElement {
   return (
     <div
       data-slot="drawer-footer"
@@ -1372,22 +1495,21 @@ function DrawerBody({ className, style, ...props }: DrawerBodyPropsType): ReactE
 }
 DrawerBody.displayName = "Drawer.Body";
 
-const DrawerTitle = forwardRef<HTMLHeadingElement, DrawerTitlePropsType>(function DrawerTitle(
-  { className, style, ...props },
-  ref,
-) {
-  const { titleId } = useDrawerContext();
-  return (
-    <h2
-      ref={ref}
-      id={titleId}
-      data-slot="drawer-title"
-      className={className}
-      style={style}
-      {...props}
-    />
-  );
-});
+const DrawerTitle = forwardRef<HTMLHeadingElement, DrawerTitlePropsType>(
+  function DrawerTitle({ className, style, ...props }, ref) {
+    const { titleId } = useDrawerContext();
+    return (
+      <h2
+        ref={ref}
+        id={titleId}
+        data-slot="drawer-title"
+        className={className}
+        style={style}
+        {...props}
+      />
+    );
+  },
+);
 DrawerTitle.displayName = "Drawer.Title";
 
 const DrawerDescription = forwardRef<HTMLParagraphElement, DrawerDescriptionPropsType>(

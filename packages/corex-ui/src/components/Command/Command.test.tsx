@@ -105,7 +105,10 @@ describe("Command", () => {
     expect(document.querySelector('[data-slot="command-dialog-popup"]')).toBeTruthy();
     expect(screen.getByPlaceholderText("Palette search")).toBeInTheDocument();
     expect(screen.getByText("Command Palette")).toBeInTheDocument();
-    expect(screen.getByRole("dialog", { name: "Command Palette" })).toHaveAttribute("aria-modal", "true");
+    expect(screen.getByRole("dialog", { name: "Command Palette" })).toHaveAttribute(
+      "aria-modal",
+      "true",
+    );
     expect(document.activeElement).toBe(screen.getByPlaceholderText("Palette search"));
   });
 
@@ -138,7 +141,9 @@ describe("Command", () => {
       </Command>,
     );
 
-    expect(document.querySelector('[data-slot="command"]')).toHaveAttribute("data-sidebar");
+    expect(document.querySelector('[data-slot="command"]')).toHaveAttribute(
+      "data-sidebar",
+    );
     expect(document.querySelector('[data-slot="command-sidebar"]')).toBeTruthy();
     expect(screen.getByRole("button", { name: "Suggestions" })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Settings" })).toBeInTheDocument();
@@ -188,9 +193,15 @@ describe("Command", () => {
       <Command>
         <Command.Input placeholder="Keys" />
         <Command.List>
-          <Command.Item value="one" onSelect={onSelect}>One</Command.Item>
-          <Command.Item value="two" disabled onSelect={onSelect}>Two</Command.Item>
-          <Command.Item value="three" onSelect={onSelect}>Three</Command.Item>
+          <Command.Item value="one" onSelect={onSelect}>
+            One
+          </Command.Item>
+          <Command.Item value="two" disabled onSelect={onSelect}>
+            Two
+          </Command.Item>
+          <Command.Item value="three" onSelect={onSelect}>
+            Three
+          </Command.Item>
         </Command.List>
       </Command>,
     );
@@ -220,17 +231,23 @@ describe("Command", () => {
           </Command.Group>
           <Command.Separator data-testid="separator" />
           <Command.Group heading="Other">
-            <Command.Item value="billing" keywords={["invoice"]}>Billing</Command.Item>
+            <Command.Item value="billing" keywords={["invoice"]}>
+              Billing
+            </Command.Item>
           </Command.Group>
         </Command.List>
       </Command>,
     );
     expect(screen.getByTestId("separator")).toBeInTheDocument();
 
-    fireEvent.change(screen.getByPlaceholderText("Find"), { target: { value: "invoice" } });
+    fireEvent.change(screen.getByPlaceholderText("Find"), {
+      target: { value: "invoice" },
+    });
     expect(screen.getByText("Billing")).toBeInTheDocument();
     expect(screen.queryByText("Settings")).not.toBeInTheDocument();
-    expect(screen.getByText("Apps").closest('[data-slot="command-group"]')).not.toBeVisible();
+    expect(
+      screen.getByText("Apps").closest('[data-slot="command-group"]'),
+    ).not.toBeVisible();
     expect(screen.queryByTestId("separator")).not.toBeInTheDocument();
 
     fireEvent.change(screen.getByPlaceholderText("Find"), { target: { value: "stg" } });
@@ -238,4 +255,3 @@ describe("Command", () => {
     expect(screen.queryByText("Billing")).not.toBeInTheDocument();
   });
 });
-

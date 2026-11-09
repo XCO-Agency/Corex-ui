@@ -3,9 +3,7 @@
   "type": "registry:block",
   "title": "Store Onboarding",
   "description": "Streamlined interactive checklist onboarding with progress tracking.",
-  "dependencies": [
-    "@xco-agency/corex-ui"
-  ],
+  "dependencies": ["@xco-agency/corex-ui"],
   "files": [
     {
       "path": "OnboardingNew.tsx",

@@ -18,7 +18,12 @@ import { expandRecurrence, parseRRule } from "./recurrence";
 
 const d = (key: string) => parseDateInput(key);
 
-function occ(id: string, start: string, end: string, allDay = true): CalendarOccurrenceType {
+function occ(
+  id: string,
+  start: string,
+  end: string,
+  allDay = true,
+): CalendarOccurrenceType {
   return {
     key: id,
     event: { id, title: id, start, end, allDay },
@@ -114,7 +119,14 @@ describe("occurrence resolution", () => {
 
   it("expands recurring events inside the range", () => {
     const result = resolveOccurrences(
-      [{ id: "r", title: "Standup", start: "2026-09-28T09:00:00", rrule: "FREQ=WEEKLY;BYDAY=MO,WE" }],
+      [
+        {
+          id: "r",
+          title: "Standup",
+          start: "2026-09-28T09:00:00",
+          rrule: "FREQ=WEEKLY;BYDAY=MO,WE",
+        },
+      ],
       range,
     );
     expect(result.map((item) => toDateKey(item.start))).toEqual([
@@ -145,7 +157,12 @@ describe("recurrence", () => {
 
   it("honours COUNT and INTERVAL", () => {
     const starts = expandRecurrence(
-      { id: "x", title: "x", start: "2026-03-01", rrule: "FREQ=DAILY;INTERVAL=2;COUNT=3" },
+      {
+        id: "x",
+        title: "x",
+        start: "2026-03-01",
+        rrule: "FREQ=DAILY;INTERVAL=2;COUNT=3",
+      },
       range,
     );
     expect(starts.map(toDateKey)).toEqual(["2026-03-01", "2026-03-03", "2026-03-05"]);
@@ -172,16 +189,32 @@ describe("week lane layout", () => {
       ],
       week,
     );
-    const byId = Object.fromEntries(segments.map((segment) => [segment.occurrence.key, segment]));
-    expect(byId.long).toMatchObject({ startCol: 0, endCol: 3, lane: 0, continuesBefore: true, continuesAfter: false });
+    const byId = Object.fromEntries(
+      segments.map((segment) => [segment.occurrence.key, segment]),
+    );
+    expect(byId.long).toMatchObject({
+      startCol: 0,
+      endCol: 3,
+      lane: 0,
+      continuesBefore: true,
+      continuesAfter: false,
+    });
     expect(byId.short).toMatchObject({ startCol: 1, endCol: 1, lane: 1 });
-    expect(byId.later).toMatchObject({ startCol: 3, endCol: 6, lane: 1, continuesAfter: true });
+    expect(byId.later).toMatchObject({
+      startCol: 3,
+      endCol: 6,
+      lane: 1,
+      continuesAfter: true,
+    });
     expect(laneCount).toBe(2);
   });
 
   it("skips hidden weekend columns", () => {
     const weekdays = week.filter((day) => day.getDay() !== 0 && day.getDay() !== 6);
-    const { segments } = layoutWeekSegments([occ("sat", "2026-10-24", "2026-10-25")], weekdays);
+    const { segments } = layoutWeekSegments(
+      [occ("sat", "2026-10-24", "2026-10-25")],
+      weekdays,
+    );
     expect(segments).toHaveLength(0);
   });
 

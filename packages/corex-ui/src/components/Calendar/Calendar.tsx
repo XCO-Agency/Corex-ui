@@ -1,4 +1,12 @@
-import { forwardRef, useCallback, useEffect, useId, useMemo, useRef, useState } from "react";
+import {
+  forwardRef,
+  useCallback,
+  useEffect,
+  useId,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import type { CSSProperties, KeyboardEvent } from "react";
 import { useHydrated } from "../../core/useHydrated";
 import { useIsomorphicLayoutEffect } from "../../core/useIsomorphicLayoutEffect";
@@ -31,7 +39,11 @@ import {
   startOfWeek,
   toDateKey,
 } from "./utils/date";
-import { compareOccurrences, occurrenceTouchesDay, resolveOccurrences } from "./utils/events";
+import {
+  compareOccurrences,
+  occurrenceTouchesDay,
+  resolveOccurrences,
+} from "./utils/events";
 import { formatTitle } from "./utils/format";
 import { DEFAULT_TOOLBAR, Toolbar } from "./Toolbar";
 import { DayEventsModal } from "./parts/DayEventsModal";
@@ -164,7 +176,9 @@ export const Calendar = forwardRef<HTMLDivElement, CalendarPropsType>(function C
     dateProp,
     defaultDate ?? new Date(),
   );
-  const [focusDate, setFocusDate] = useState<Date>(() => startOfDay(dateProp ?? defaultDate ?? new Date()));
+  const [focusDate, setFocusDate] = useState<Date>(() =>
+    startOfDay(dateProp ?? defaultDate ?? new Date()),
+  );
   const pendingFocusRef = useRef(false);
   const [selection, setSelection] = useState<CalendarSelectionType | null>(null);
   // The date outlives `open` so the modal keeps its content while it animates closed.
@@ -177,16 +191,23 @@ export const Calendar = forwardRef<HTMLDivElement, CalendarPropsType>(function C
   const today = useMemo(() => startOfDay(now), [now.toDateString()]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const rootSize = useElementSize(rootRef);
-  const compact = Boolean(rootSize && rootSize.width > 0 && rootSize.width < COMPACT_BREAKPOINT);
+  const compact = Boolean(
+    rootSize && rootSize.width > 0 && rootSize.width < COMPACT_BREAKPOINT,
+  );
 
   // On a phone, an uncontrolled calendar with no explicit view opens as a list.
   const checkedMobile = useRef(false);
   useEffect(() => {
     if (checkedMobile.current || !hydrated) return;
     checkedMobile.current = true;
-    if (viewProp !== undefined || defaultView !== undefined || !views.includes("list")) return;
+    if (viewProp !== undefined || defaultView !== undefined || !views.includes("list"))
+      return;
     const view = rootRef.current?.ownerDocument.defaultView;
-    if (view && typeof view.matchMedia === "function" && view.matchMedia(`(max-width: ${COMPACT_BREAKPOINT - 1}px)`).matches) {
+    if (
+      view &&
+      typeof view.matchMedia === "function" &&
+      view.matchMedia(`(max-width: ${COMPACT_BREAKPOINT - 1}px)`).matches
+    ) {
       setViewState("list");
     }
   }, [hydrated, viewProp, defaultView, views, setViewState]);
@@ -308,10 +329,18 @@ export const Calendar = forwardRef<HTMLDivElement, CalendarPropsType>(function C
     [],
   );
 
-  const resolvedDirection = dir === "auto" ? (rootRef.current?.closest("[dir]")?.getAttribute("dir") === "rtl" ? "rtl" : "ltr") : dir;
+  const resolvedDirection =
+    dir === "auto"
+      ? rootRef.current?.closest("[dir]")?.getAttribute("dir") === "rtl"
+        ? "rtl"
+        : "ltr"
+      : dir;
   const metrics = DENSITY_METRICS[density];
   const slotMinMinutes = parseTimeToMinutes(slotMinTime, 0);
-  const slotMaxMinutes = Math.max(slotMinMinutes + slotDuration, parseTimeToMinutes(slotMaxTime, 24 * 60));
+  const slotMaxMinutes = Math.max(
+    slotMinMinutes + slotDuration,
+    parseTimeToMinutes(slotMaxTime, 24 * 60),
+  );
   const businessHours = useMemo(
     () => resolveBusinessHours(businessHoursProp),
     // Object literals are common here; compare by value.
@@ -395,7 +424,13 @@ export const Calendar = forwardRef<HTMLDivElement, CalendarPropsType>(function C
     : [];
 
   const ViewComponent =
-    view === "week" ? WeekView : view === "day" ? DayView : view === "list" ? ListView : MonthView;
+    view === "week"
+      ? WeekView
+      : view === "day"
+        ? DayView
+        : view === "list"
+          ? ListView
+          : MonthView;
 
   return (
     <div
@@ -454,4 +489,3 @@ export const Calendar = forwardRef<HTMLDivElement, CalendarPropsType>(function C
     </div>
   );
 });
-

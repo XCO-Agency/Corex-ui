@@ -6,7 +6,12 @@ export type SearchTriggerPropsType = {
 
 export function SearchTrigger({ onClick }: SearchTriggerPropsType) {
   return (
-    <Button onClick={onClick} icon="search" inlineSize="fill" accessibilityLabel="Search components">
+    <Button
+      onClick={onClick}
+      icon="search"
+      inlineSize="fill"
+      accessibilityLabel="Search components"
+    >
       <InlineStack alignItems="center" justifyContent="space-between" gap="small">
         <Text color="subdued">Search components</Text>
         <Text color="subdued" variant="small">

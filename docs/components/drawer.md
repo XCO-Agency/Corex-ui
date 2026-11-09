@@ -4,10 +4,10 @@ Self-contained custom control (pattern 4) with **no third-party runtime** — pr
 
 **Defaults**
 
-| Viewport | Presentation | Handle | Edge offset | Swipe |
-| --- | --- | --- | --- | --- |
-| Desktop (`md+`) | Right side drawer | Never (not mounted) | `8` (all sides) | Full panel surface |
-| Mobile (`mdDown`) | Bottom sheet | Only if `showSwipeHandle` | `8` (all sides) | Full panel surface |
+| Viewport          | Presentation      | Handle                    | Edge offset     | Swipe              |
+| ----------------- | ----------------- | ------------------------- | --------------- | ------------------ |
+| Desktop (`md+`)   | Right side drawer | Never (not mounted)       | `8` (all sides) | Full panel surface |
+| Mobile (`mdDown`) | Bottom sheet      | Only if `showSwipeHandle` | `8` (all sides) | Full panel surface |
 
 ```tsx
 import { Drawer, Button, Text } from "@xco-agency/corex-ui";
@@ -64,14 +64,14 @@ Adjust the float gap from the viewport with `offset` on `<Drawer>` or `<Drawer.C
 
 ## Width (`width` on `Drawer.Content`)
 
-| Value | Width |
-| :---- | :---- |
-| `"small"` | 20rem |
-| `"base"` (default) | 24rem (75% below 640px) |
-| `"large"` | 32rem |
-| `"large-100"` / `"large-200"` / `"large-300"` / `"large-400"` / `"large-500"` | 36 / 40 / 48 / 56 / 64rem |
-| `"full"` | Viewport minus the edge offsets |
-| CSS length or number | `"420px"`, `"30rem"`, `"60vw"`, `360` (px) |
+| Value                                                                         | Width                                      |
+| :---------------------------------------------------------------------------- | :----------------------------------------- |
+| `"small"`                                                                     | 20rem                                      |
+| `"base"` (default)                                                            | 24rem (75% below 640px)                    |
+| `"large"`                                                                     | 32rem                                      |
+| `"large-100"` / `"large-200"` / `"large-300"` / `"large-400"` / `"large-500"` | 36 / 40 / 48 / 56 / 64rem                  |
+| `"full"`                                                                      | Viewport minus the edge offsets            |
+| CSS length or number                                                          | `"420px"`, `"30rem"`, `"60vw"`, `360` (px) |
 
 Every width is capped to the viewport minus the edge offsets, so large presets stay on screen on small viewports.
 
@@ -97,11 +97,19 @@ Every width is capped to the viewport minus the edge offsets, so large presets s
 `responsive` defaults to `true`. Side directions (`left` / `right`) become a bottom sheet (`down`) below the `md` breakpoint. Desktop never uses the sheet presentation. There is **no Modal ↔ Drawer** branch — only Drawer remaps.
 
 ```tsx
-{/* Lock a right drawer on every breakpoint */}
-<Drawer swipeDirection="right" responsive={false}>…</Drawer>
+{
+  /* Lock a right drawer on every breakpoint */
+}
+<Drawer swipeDirection="right" responsive={false}>
+  …
+</Drawer>;
 
-{/* Always a bottom sheet */}
-<Drawer swipeDirection="down" responsive={false} showSwipeHandle>…</Drawer>
+{
+  /* Always a bottom sheet */
+}
+<Drawer swipeDirection="down" responsive={false} showSwipeHandle>
+  …
+</Drawer>;
 ```
 
 ## Swipe handle
@@ -135,11 +143,11 @@ Sheets accept `snapPoints` (a number `<= 1` is a viewport fraction, larger numbe
 
 `useDrawer()` works everywhere — it does **not** need a `<Drawer>` ancestor. What it targets depends on where it is called:
 
-| Call | Target | `isOpen` |
-| :--- | :----- | :------- |
-| `useDrawer()` inside a Drawer's content | that (nearest) drawer | that drawer |
-| `useDrawer()` outside any Drawer | the topmost open drawer for `close()` | any drawer open |
-| `useDrawer("cart")` anywhere | `<Drawer id="cart">` | that drawer |
+| Call                                    | Target                                | `isOpen`        |
+| :-------------------------------------- | :------------------------------------ | :-------------- |
+| `useDrawer()` inside a Drawer's content | that (nearest) drawer                 | that drawer     |
+| `useDrawer()` outside any Drawer        | the topmost open drawer for `close()` | any drawer open |
+| `useDrawer("cart")` anywhere            | `<Drawer id="cart">`                  | that drawer     |
 
 Every result has `{ isOpen, open, close, toggle, closeAll }`. `useDrawer()` also returns `insideDrawer`, and inside a Drawer that drawer's context fields (for the context alone, `useDrawerContext()` — it throws outside a Drawer).
 
@@ -147,7 +155,17 @@ Every result has `{ isOpen, open, close, toggle, closeAll }`. `useDrawer()` also
 // Inside the drawer: no Drawer.Close wrapper needed.
 function SaveButton() {
   const drawer = useDrawer();
-  return <Button variant="primary" onClick={async () => { await save(); drawer.close(); }}>Save</Button>;
+  return (
+    <Button
+      variant="primary"
+      onClick={async () => {
+        await save();
+        drawer.close();
+      }}
+    >
+      Save
+    </Button>
+  );
 }
 
 // Anywhere else (header, layout, route change handler…).

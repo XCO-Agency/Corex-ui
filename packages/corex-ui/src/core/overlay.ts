@@ -124,7 +124,8 @@ export function useDismissableLayer(options: {
       const target = event.target as Node | null;
       if (!target) return;
       // Composed path so presses inside web components' shadow trees count as inside.
-      const path = typeof event.composedPath === "function" ? event.composedPath() : [target];
+      const path =
+        typeof event.composedPath === "function" ? event.composedPath() : [target];
       const inside = getInside().some(
         (node) => node && (path.includes(node) || node.contains(target)),
       );
@@ -178,7 +179,9 @@ export function useFocusContainment(
       const autofocus =
         node.querySelector<HTMLElement>("[autofocus], [data-autofocus]") ??
         (initialFocus === "first-field"
-          ? node.querySelector<HTMLElement>("input:not([type=hidden]):not([disabled]), textarea:not([disabled])")
+          ? node.querySelector<HTMLElement>(
+              "input:not([type=hidden]):not([disabled]), textarea:not([disabled])",
+            )
           : null);
       (autofocus ?? node).focus({ preventScroll: true });
     }
@@ -187,7 +190,8 @@ export function useFocusContainment(
       if (!trap || !isTopLayer(id, node.ownerDocument)) return;
       const target = event.target as Node | null;
       if (!target || node.contains(target)) return;
-      if (getContainersRef.current?.().some((container) => container?.contains(target))) return;
+      if (getContainersRef.current?.().some((container) => container?.contains(target)))
+        return;
       node.focus({ preventScroll: true });
     };
     doc.addEventListener("focusin", handleFocusIn);
@@ -201,7 +205,10 @@ export function useFocusContainment(
   }, [nodeRef, id, active, trap, initialFocus]);
 }
 
-const lockCounts = new WeakMap<Document, { count: number; overflow: string; paddingRight: string }>();
+const lockCounts = new WeakMap<
+  Document,
+  { count: number; overflow: string; paddingRight: string }
+>();
 
 /** Locks page scroll on `doc` while active; nested locks are reference counted. */
 export function useScrollLock(doc: Document | null, active: boolean) {
@@ -215,7 +222,11 @@ export function useScrollLock(doc: Document | null, active: boolean) {
     } else {
       const view = doc.defaultView;
       const scrollbar = view ? view.innerWidth - root.clientWidth : 0;
-      lockCounts.set(doc, { count: 1, overflow: root.style.overflow, paddingRight: body.style.paddingRight });
+      lockCounts.set(doc, {
+        count: 1,
+        overflow: root.style.overflow,
+        paddingRight: body.style.paddingRight,
+      });
       root.style.overflow = "hidden";
       if (scrollbar > 0) body.style.paddingRight = `${scrollbar}px`;
     }

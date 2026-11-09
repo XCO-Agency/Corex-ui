@@ -82,7 +82,9 @@ export function FlexPopoverExample() {
                 position="bottom-end"
               >
                 <FlexPopover.Trigger>
-                  <Button>{controlledOpen ? "Close Controlled" : "Open Controlled"}</Button>
+                  <Button>
+                    {controlledOpen ? "Close Controlled" : "Open Controlled"}
+                  </Button>
                 </FlexPopover.Trigger>
                 <FlexPopover.Content
                   heading="Controlled Panel"

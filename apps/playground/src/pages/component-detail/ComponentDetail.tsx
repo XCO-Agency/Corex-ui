@@ -42,7 +42,11 @@ export function ComponentDetail() {
       if (reference.props.length)
         items.push({ id: API_SECTION_IDS.props, title: "Props", level: 2 });
       if (reference.subcomponents)
-        items.push({ id: API_SECTION_IDS.subcomponents, title: "Subcomponents", level: 2 });
+        items.push({
+          id: API_SECTION_IDS.subcomponents,
+          title: "Subcomponents",
+          level: 2,
+        });
       reference.extraTables.forEach((table) =>
         items.push({
           id: extraTableId(table.title),

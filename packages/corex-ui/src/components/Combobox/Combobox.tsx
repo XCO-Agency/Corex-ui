@@ -58,7 +58,6 @@ const ComboboxInput = forwardRef<HTMLElement, ComboboxInputPropsType>(
       onClear,
       disabled,
       readOnly,
-      autoComplete = "off",
       autoCorrect = "off",
       autoCapitalize = "none",
       spellCheck = false,
@@ -125,6 +124,9 @@ const ComboboxInput = forwardRef<HTMLElement, ComboboxInputPropsType>(
     };
 
     const handleFocus = (event: any) => {
+      // Chrome rewrites autocomplete on focus and then draws its own suggestion
+      // list over the combobox. Keep the attribute off so only our list shows.
+      event.currentTarget?.setAttribute?.("autocomplete", "off");
       setIsFocused(true);
       onFocus?.(event);
       if (!isEffectiveDisabled && !isEffectiveReadOnly) {
@@ -291,7 +293,7 @@ const ComboboxInput = forwardRef<HTMLElement, ComboboxInputPropsType>(
                   ? `${comboboxId}-item-${highlightedIndex}`
                   : undefined
               }
-              autoComplete={autoComplete}
+              autoComplete="off"
               autoCorrect={autoCorrect}
               autoCapitalize={autoCapitalize}
               spellCheck={spellCheck}

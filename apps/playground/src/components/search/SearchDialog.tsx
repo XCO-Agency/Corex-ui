@@ -140,7 +140,10 @@ export type SearchDialogPropsType = {
   onOpenChange?: (open: boolean) => void;
 };
 
-export function SearchDialog({ open: controlledOpen, onOpenChange }: SearchDialogPropsType) {
+export function SearchDialog({
+  open: controlledOpen,
+  onOpenChange,
+}: SearchDialogPropsType) {
   const [internalOpen, setInternalOpen] = React.useState(false);
   const navigate = useNavigate();
 

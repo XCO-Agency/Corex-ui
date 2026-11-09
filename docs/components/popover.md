@@ -20,7 +20,6 @@ import { Box, Button, Popover, Text } from "@xco-agency/corex-ui";
 > [!TIP]
 > For action dropdown menus, use [`ActionList`](./action-list.md). `ActionList` encapsulates its own `Popover`, trigger, and auto-dismiss behavior out of the box.
 
-
 `Popover.Trigger` clones its child with the invoker attributes (`commandfor`,
 `command`), so the element opens and closes the overlay itself — no open state to
 hold. `Popover.Content` renders `s-popover`; `fitTrigger` matches its width to the

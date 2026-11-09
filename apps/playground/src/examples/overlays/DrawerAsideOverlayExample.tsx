@@ -54,7 +54,9 @@ export function DrawerAsideOverlayExample() {
                             <Drawer.Content width="small">
                               <Drawer.Header>
                                 <Drawer.Title>Open orders</Drawer.Title>
-                                <Drawer.Description>2 orders still unfulfilled.</Drawer.Description>
+                                <Drawer.Description>
+                                  2 orders still unfulfilled.
+                                </Drawer.Description>
                               </Drawer.Header>
                               <Drawer.Footer>
                                 <Drawer.Close>

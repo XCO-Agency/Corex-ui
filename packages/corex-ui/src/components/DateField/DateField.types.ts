@@ -5,7 +5,7 @@ type NativeDateFieldProps = PolarisPropsType<"s-date-field">;
 
 export type DateFieldPropsType = Omit<
   NativeDateFieldProps,
-  "label" | "value" | "details"
+  "label" | "value" | "details" | "onChange"
 > & {
   label: ReactNode;
   value?: string;

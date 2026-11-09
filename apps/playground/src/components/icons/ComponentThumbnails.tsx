@@ -962,14 +962,70 @@ export function RichTextEditorThumbnail() {
       />
       <rect x="22" y="18" width="116" height="18" rx="8" fill={mutedBg} />
       <rect x="22" y="28" width="116" height="8" fill={mutedBg} />
-      <rect x="30" y="24" width="28" height="6" rx="2" fill={textMuted} fillOpacity="0.55" />
-      <rect x="64" y="24" width="8" height="6" rx="1.5" fill={textPrimary} fillOpacity="0.7" />
-      <rect x="74" y="24" width="8" height="6" rx="1.5" fill={textPrimary} fillOpacity="0.55" />
-      <rect x="84" y="24" width="8" height="6" rx="1.5" fill={textPrimary} fillOpacity="0.45" />
+      <rect
+        x="30"
+        y="24"
+        width="28"
+        height="6"
+        rx="2"
+        fill={textMuted}
+        fillOpacity="0.55"
+      />
+      <rect
+        x="64"
+        y="24"
+        width="8"
+        height="6"
+        rx="1.5"
+        fill={textPrimary}
+        fillOpacity="0.7"
+      />
+      <rect
+        x="74"
+        y="24"
+        width="8"
+        height="6"
+        rx="1.5"
+        fill={textPrimary}
+        fillOpacity="0.55"
+      />
+      <rect
+        x="84"
+        y="24"
+        width="8"
+        height="6"
+        rx="1.5"
+        fill={textPrimary}
+        fillOpacity="0.45"
+      />
       <line x1="22" y1="36" x2="138" y2="36" stroke={cardBorder} strokeWidth="1" />
-      <rect x="30" y="46" width="72" height="5" rx="2.5" fill={textMuted} fillOpacity="0.35" />
-      <rect x="30" y="56" width="54" height="5" rx="2.5" fill={textMuted} fillOpacity="0.25" />
-      <rect x="30" y="66" width="40" height="5" rx="2.5" fill={accentTint} stroke={accentBorder} />
+      <rect
+        x="30"
+        y="46"
+        width="72"
+        height="5"
+        rx="2.5"
+        fill={textMuted}
+        fillOpacity="0.35"
+      />
+      <rect
+        x="30"
+        y="56"
+        width="54"
+        height="5"
+        rx="2.5"
+        fill={textMuted}
+        fillOpacity="0.25"
+      />
+      <rect
+        x="30"
+        y="66"
+        width="40"
+        height="5"
+        rx="2.5"
+        fill={accentTint}
+        stroke={accentBorder}
+      />
     </Frame>
   );
 }
@@ -2215,10 +2271,35 @@ export function SelectableThumbnail() {
         stroke="#005bd3"
         strokeWidth="2"
       />
-      <rect x="29" y="28" width="26" height="5" rx="2.5" fill={textPrimary} fillOpacity="0.7" />
-      <rect x="29" y="38" width="34" height="4" rx="2" fill={textMuted} fillOpacity="0.3" />
+      <rect
+        x="29"
+        y="28"
+        width="26"
+        height="5"
+        rx="2.5"
+        fill={textPrimary}
+        fillOpacity="0.7"
+      />
+      <rect
+        x="29"
+        y="38"
+        width="34"
+        height="4"
+        rx="2"
+        fill={textMuted}
+        fillOpacity="0.3"
+      />
       <circle cx="70" cy="20" r="6" fill="#005bd3" />
-      <rect x="84" y="24" width="48" height="32" rx="6" fill="none" stroke={textMuted} strokeOpacity="0.3" />
+      <rect
+        x="84"
+        y="24"
+        width="48"
+        height="32"
+        rx="6"
+        fill="none"
+        stroke={textMuted}
+        strokeOpacity="0.3"
+      />
     </Frame>
   );
 }
@@ -2814,8 +2895,25 @@ export function CalendarThumbnail() {
   const rows = [0, 1, 2, 3];
   return (
     <Frame>
-      <rect x="18" y="14" width="124" height="72" rx="7" fill={cardBg} stroke={cardBorder} strokeWidth="1.2" />
-      <rect x="26" y="20" width="36" height="5" rx="2.5" fill={textPrimary} fillOpacity="0.75" />
+      <rect
+        x="18"
+        y="14"
+        width="124"
+        height="72"
+        rx="7"
+        fill={cardBg}
+        stroke={cardBorder}
+        strokeWidth="1.2"
+      />
+      <rect
+        x="26"
+        y="20"
+        width="36"
+        height="5"
+        rx="2.5"
+        fill={textPrimary}
+        fillOpacity="0.75"
+      />
       <line x1="18" y1="31" x2="142" y2="31" stroke={cardBorder} strokeWidth="1" />
       {rows.map((row) =>
         cols.map((col) => (
@@ -2927,14 +3025,7 @@ export function CommandThumbnail() {
         fill={textMuted}
         fillOpacity="0.35"
       />
-      <line
-        x1="34"
-        y1="40"
-        x2="126"
-        y2="40"
-        stroke={cardBorder}
-        strokeWidth="1"
-      />
+      <line x1="34" y1="40" x2="126" y2="40" stroke={cardBorder} strokeWidth="1" />
       {/* Selected item */}
       <rect
         x="34"

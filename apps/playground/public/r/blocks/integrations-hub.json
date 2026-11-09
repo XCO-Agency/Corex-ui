@@ -3,9 +3,7 @@
   "type": "registry:block",
   "title": "Integrations",
   "description": "Third-party ERP, CRM, and marketing connectors management.",
-  "dependencies": [
-    "@xco-agency/corex-ui"
-  ],
+  "dependencies": ["@xco-agency/corex-ui"],
   "files": [
     {
       "path": "constants.ts",

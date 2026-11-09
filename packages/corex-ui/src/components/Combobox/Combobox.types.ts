@@ -89,8 +89,6 @@ export type ComboboxInputPropsType = {
   onClear?: () => void;
   disabled?: boolean;
   readOnly?: boolean;
-  /** Browser autocomplete behavior for the input. Defaults to 'off'. */
-  autoComplete?: string;
   /** Browser autocorrect attribute (e.g. 'off' for search). Defaults to 'off'. */
   autoCorrect?: string;
   /** Browser autocapitalize attribute (e.g. 'none' for search). Defaults to 'none'. */

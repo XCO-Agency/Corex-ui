@@ -165,10 +165,7 @@ export function insertImage(editor: HTMLElement | null, url: string, alt = "") {
   const src = url.trim();
   if (!src || src === "https://" || src === "http://") return;
   const safeAlt = alt.replace(/"/g, "&quot;");
-  insertHtml(
-    editor,
-    `<img src="${src.replace(/"/g, "&quot;")}" alt="${safeAlt}" />`,
-  );
+  insertHtml(editor, `<img src="${src.replace(/"/g, "&quot;")}" alt="${safeAlt}" />`);
 }
 
 /** Accepts a full iframe embed snippet or a bare URL and inserts a video embed. */

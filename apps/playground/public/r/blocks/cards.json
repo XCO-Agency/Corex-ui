@@ -3,9 +3,7 @@
   "type": "registry:block",
   "title": "Cards",
   "description": "Three versatile card layouts: minimalist, media showcase, and media with actions.",
-  "dependencies": [
-    "@xco-agency/corex-ui"
-  ],
+  "dependencies": ["@xco-agency/corex-ui"],
   "files": [
     {
       "path": "BlockCard.tsx",

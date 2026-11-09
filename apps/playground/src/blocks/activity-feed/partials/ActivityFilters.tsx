@@ -47,10 +47,7 @@ export function ActivityFilters({
       <InlineStack gap="small-200" alignItems="center">
         {/* Filter Dropdown */}
         <div ref={dropdownRef} style={{ position: "relative" }}>
-          <Button
-            variant="secondary"
-            onClick={() => setFilterOpen((prev) => !prev)}
-          >
+          <Button variant="secondary" onClick={() => setFilterOpen((prev) => !prev)}>
             <span
               style={{
                 display: "inline-flex",

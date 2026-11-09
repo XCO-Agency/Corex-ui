@@ -2,6 +2,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import prettier from "prettier";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -104,10 +105,21 @@ function toTitleCase(slug) {
     .join(" ");
 }
 
-export function buildRegistry({ silent = false } = {}) {
+async function writeJson(filePath, value, prettierConfig) {
+  const formatted = await prettier.format(JSON.stringify(value, null, 2), {
+    ...prettierConfig,
+    filepath: filePath,
+    parser: "json",
+  });
+  fs.writeFileSync(filePath, formatted, "utf-8");
+}
+
+export async function buildRegistry({ silent = false } = {}) {
   if (!fs.existsSync(outputDir)) {
     fs.mkdirSync(outputDir, { recursive: true });
   }
+
+  const prettierConfig = (await prettier.resolveConfig(outputIndexFile)) ?? {};
 
   const blockSlugs = fs.readdirSync(blocksDir).filter((name) => {
     return fs.statSync(path.join(blocksDir, name)).isDirectory();
@@ -139,7 +151,7 @@ export function buildRegistry({ silent = false } = {}) {
     };
 
     const outFilePath = path.join(outputDir, `${slug}.json`);
-    fs.writeFileSync(outFilePath, JSON.stringify(blockJson, null, 2), "utf-8");
+    await writeJson(outFilePath, blockJson, prettierConfig);
 
     indexList.push({
       name: slug,
@@ -152,7 +164,7 @@ export function buildRegistry({ silent = false } = {}) {
   // Sort index alphabetically by name
   indexList.sort((a, b) => a.name.localeCompare(b.name));
 
-  fs.writeFileSync(outputIndexFile, JSON.stringify(indexList, null, 2), "utf-8");
+  await writeJson(outputIndexFile, indexList, prettierConfig);
 
   // Sync AI Skill to public directory for direct download and raw viewing
   const rootDir = path.resolve(playgroundDir, "../..");
@@ -186,5 +198,5 @@ const isDirectRun =
   process.argv[1] && fileURLToPath(import.meta.url) === path.resolve(process.argv[1]);
 
 if (isDirectRun) {
-  buildRegistry();
+  await buildRegistry();
 }

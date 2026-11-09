@@ -206,12 +206,7 @@ export function SelectableExample() {
 /** Compact preview tile so inset indicators read like a media card. */
 function BoxPreview() {
   return (
-    <Box
-      background="subdued"
-      borderRadius="base"
-      padding="large-200"
-      minBlockSize="80px"
-    >
+    <Box background="subdued" borderRadius="base" padding="large-200" minBlockSize="80px">
       <BlockStack alignItems="center" justifyContent="center">
         <Text color="subdued">Preview</Text>
       </BlockStack>

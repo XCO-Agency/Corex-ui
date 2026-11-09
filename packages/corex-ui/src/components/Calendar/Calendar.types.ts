@@ -34,8 +34,7 @@ export type CalendarRangeType = {
 };
 
 export type CalendarEventsSourceType =
-  | CalendarEventType[]
-  | ((range: CalendarRangeType) => Promise<CalendarEventType[]>);
+  CalendarEventType[] | ((range: CalendarRangeType) => Promise<CalendarEventType[]>);
 
 export type CalendarBusinessHoursType = {
   /** 0 = Sunday. Defaults to Monday–Friday. */

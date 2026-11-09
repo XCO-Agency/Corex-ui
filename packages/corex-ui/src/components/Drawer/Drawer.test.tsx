@@ -38,7 +38,11 @@ afterEach(() => {
     writable: true,
     value: 1024,
   });
-  Object.defineProperty(window, "innerHeight", { configurable: true, writable: true, value: 768 });
+  Object.defineProperty(window, "innerHeight", {
+    configurable: true,
+    writable: true,
+    value: 768,
+  });
 });
 
 function StackOfThree({ grandchildOpen }: { grandchildOpen: boolean }) {
@@ -225,9 +229,9 @@ describe("Drawer", () => {
     );
 
     expect(screen.getByText("Nested drawer")).toBeInTheDocument();
-    expect(document.querySelectorAll('[data-slot="drawer-popup"]').length).toBeGreaterThanOrEqual(
-      2,
-    );
+    expect(
+      document.querySelectorAll('[data-slot="drawer-popup"]').length,
+    ).toBeGreaterThanOrEqual(2);
     expect(document.body.textContent).toContain("Parent drawer");
   });
 
@@ -289,9 +293,9 @@ describe("Drawer", () => {
     expect(onParent).not.toHaveBeenCalled();
 
     act(() => {
-      document.querySelector('[data-slot="drawer-overlay"]')!.dispatchEvent(
-        new Event("pointerdown", { bubbles: true }),
-      );
+      document
+        .querySelector('[data-slot="drawer-overlay"]')!
+        .dispatchEvent(new Event("pointerdown", { bubbles: true }));
     });
     expect(onParent).toHaveBeenLastCalledWith(false, { reason: "outside-press" });
   });
@@ -360,7 +364,17 @@ describe("Drawer", () => {
       this: HTMLElement,
     ) {
       const title = this.querySelector?.('[data-slot="drawer-title"]')?.textContent ?? "";
-      return { height: heights[title] ?? 0, width: 0, top: 0, left: 0, right: 0, bottom: 0, x: 0, y: 0, toJSON: () => ({}) } as DOMRect;
+      return {
+        height: heights[title] ?? 0,
+        width: 0,
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        x: 0,
+        y: 0,
+        toJSON: () => ({}),
+      } as DOMRect;
     });
     const { rerender } = render(<StackOfThree grandchildOpen={false} />);
     // Opening the third level after the second must not reset the first.
@@ -574,7 +588,13 @@ describe("Drawer", () => {
     }
 
     const swipe = (element: HTMLElement) => {
-      fireEvent.pointerDown(element, { pointerId: 1, clientX: 100, clientY: 100, button: 0, pointerType: "mouse" });
+      fireEvent.pointerDown(element, {
+        pointerId: 1,
+        clientX: 100,
+        clientY: 100,
+        button: 0,
+        pointerType: "mouse",
+      });
       fireEvent.pointerMove(window, { pointerId: 1, clientX: 180, clientY: 100 });
       return () => {
         // Past 30% of the panel width: a dismissing swipe.
@@ -607,7 +627,13 @@ describe("Drawer", () => {
     expect(popup).toHaveAttribute("data-swipeable", "false");
 
     // The same past-threshold drag that dismisses a swipeable drawer.
-    fireEvent.pointerDown(popup, { pointerId: 1, clientX: 100, clientY: 100, button: 0, pointerType: "mouse" });
+    fireEvent.pointerDown(popup, {
+      pointerId: 1,
+      clientX: 100,
+      clientY: 100,
+      button: 0,
+      pointerType: "mouse",
+    });
     fireEvent.pointerMove(window, { pointerId: 1, clientX: 180, clientY: 100 });
     expect(popup).not.toHaveAttribute("data-swiping");
     fireEvent.pointerMove(window, { pointerId: 1, clientX: 300, clientY: 100 });
@@ -648,7 +674,13 @@ describe("Drawer", () => {
       </Drawer>,
     );
     const parent = screen.getByRole("dialog", { name: "Parent" });
-    fireEvent.pointerDown(parent, { pointerId: 2, clientX: 100, clientY: 100, button: 0, pointerType: "mouse" });
+    fireEvent.pointerDown(parent, {
+      pointerId: 2,
+      clientX: 100,
+      clientY: 100,
+      button: 0,
+      pointerType: "mouse",
+    });
     fireEvent.pointerMove(window, { pointerId: 2, clientX: 200, clientY: 100 });
     expect(parent).not.toHaveAttribute("data-swiping");
     fireEvent.pointerUp(window, { pointerId: 2, clientX: 200, clientY: 100 });
@@ -705,10 +737,14 @@ describe("Drawer", () => {
       );
 
       expect(
-        screen.getByRole("dialog", { name: "Two" }).style.getPropertyValue("--drawer-aside-shift"),
+        screen
+          .getByRole("dialog", { name: "Two" })
+          .style.getPropertyValue("--drawer-aside-shift"),
       ).toBe("300px");
       expect(
-        screen.getByRole("dialog", { name: "One" }).style.getPropertyValue("--drawer-aside-shift"),
+        screen
+          .getByRole("dialog", { name: "One" })
+          .style.getPropertyValue("--drawer-aside-shift"),
       ).toBe("600px");
     });
 
@@ -727,8 +763,13 @@ describe("Drawer", () => {
         </Drawer>,
       );
 
-      expect(screen.getByRole("dialog", { name: "Aside" })).toHaveAttribute("data-variant", "float");
-      expect(screen.getByRole("dialog", { name: "Parent" })).toHaveAttribute("data-nested-drawer-open");
+      expect(screen.getByRole("dialog", { name: "Aside" })).toHaveAttribute(
+        "data-variant",
+        "float",
+      );
+      expect(screen.getByRole("dialog", { name: "Parent" })).toHaveAttribute(
+        "data-nested-drawer-open",
+      );
     });
 
     it("splits the parent's column with a bottom drawer", () => {
@@ -760,12 +801,21 @@ describe("Drawer", () => {
 
     it("sizes a bottom drawer from its active snap point", () => {
       mockViewport(false);
-      Object.defineProperty(window, "innerHeight", { configurable: true, writable: true, value: 1000 });
+      Object.defineProperty(window, "innerHeight", {
+        configurable: true,
+        writable: true,
+        value: 1000,
+      });
       render(
         <Drawer defaultOpen>
           <Drawer.Content>
             <Drawer.Title>Parent</Drawer.Title>
-            <Drawer defaultOpen variant="bottom" snapPoints={[0.3, 0.6]} defaultSnapPoint={0.6}>
+            <Drawer
+              defaultOpen
+              variant="bottom"
+              snapPoints={[0.3, 0.6]}
+              defaultSnapPoint={0.6}
+            >
               <Drawer.Content>
                 <Drawer.Title>Bottom</Drawer.Title>
               </Drawer.Content>
@@ -834,9 +884,9 @@ describe("Drawer", () => {
       expect(onAside).not.toHaveBeenCalled();
 
       act(() => {
-        document.querySelector('[data-slot="drawer-overlay"]')!.dispatchEvent(
-          new Event("pointerdown", { bubbles: true }),
-        );
+        document
+          .querySelector('[data-slot="drawer-overlay"]')!
+          .dispatchEvent(new Event("pointerdown", { bubbles: true }));
       });
       expect(onAside).toHaveBeenLastCalledWith(false, { reason: "outside-press" });
     });
@@ -904,7 +954,10 @@ describe("Drawer", () => {
           </Drawer.Content>
         </Drawer>,
       );
-      expect(screen.getByRole("dialog", { name: "Alone" })).toHaveAttribute("data-variant", "float");
+      expect(screen.getByRole("dialog", { name: "Alone" })).toHaveAttribute(
+        "data-variant",
+        "float",
+      );
     });
 
     it("opens an aside on the parent's inner side without moving the parent", () => {
@@ -948,9 +1001,14 @@ describe("Drawer", () => {
         </Drawer>,
       );
 
-      expect(screen.getByRole("dialog", { name: "Aside" })).toHaveAttribute("data-position", "edge");
+      expect(screen.getByRole("dialog", { name: "Aside" })).toHaveAttribute(
+        "data-position",
+        "edge",
+      );
       expect(
-        screen.getByRole("dialog", { name: "Parent" }).style.getPropertyValue("--drawer-aside-shift"),
+        screen
+          .getByRole("dialog", { name: "Parent" })
+          .style.getPropertyValue("--drawer-aside-shift"),
       ).toBe("300px");
     });
   });
@@ -1010,10 +1068,14 @@ describe("Drawer", () => {
       );
 
       expect(
-        screen.getByRole("dialog", { name: "One" }).style.getPropertyValue("--drawer-aside-shift"),
+        screen
+          .getByRole("dialog", { name: "One" })
+          .style.getPropertyValue("--drawer-aside-shift"),
       ).toBe("300px");
       expect(
-        screen.getByRole("dialog", { name: "Overlay" }).style.getPropertyValue("--drawer-aside-shift"),
+        screen
+          .getByRole("dialog", { name: "Overlay" })
+          .style.getPropertyValue("--drawer-aside-shift"),
       ).toBe("300px");
     });
 
@@ -1039,7 +1101,9 @@ describe("Drawer", () => {
       );
 
       expect(
-        screen.getByRole("dialog", { name: "Toast" }).style.getPropertyValue("--drawer-overlay-top"),
+        screen
+          .getByRole("dialog", { name: "Toast" })
+          .style.getPropertyValue("--drawer-overlay-top"),
       ).toBe("400px");
     });
   });
@@ -1060,7 +1124,9 @@ describe("Drawer", () => {
 
       const header = document.querySelector('[data-slot="drawer-header"]')!;
       expect(header).toHaveAttribute("data-mobile-align", "start");
-      expect(header.querySelector('[data-slot="drawer-header-content"]')).toHaveTextContent("Order");
+      expect(
+        header.querySelector('[data-slot="drawer-header-content"]'),
+      ).toHaveTextContent("Order");
       const slot = header.querySelector('[data-slot="drawer-header-actions"]')!;
       const close = slot.querySelector('[data-slot="drawer-close"]')!;
       expect(close).toHaveAttribute("accessibilityLabel", "Close");
@@ -1073,7 +1139,10 @@ describe("Drawer", () => {
       const { rerender } = render(
         <Drawer defaultOpen>
           <Drawer.Content>
-            <Drawer.Header mobileAlign="center" actions={<button type="button">Edit</button>}>
+            <Drawer.Header
+              mobileAlign="center"
+              actions={<button type="button">Edit</button>}
+            >
               <Drawer.Title>Order</Drawer.Title>
             </Drawer.Header>
           </Drawer.Content>
@@ -1117,7 +1186,9 @@ describe("Drawer", () => {
       );
 
       const header = document.querySelector('[data-slot="drawer-header"]');
-      const [plain, sticky] = document.querySelectorAll('[data-slot="drawer-pre-footer"]');
+      const [plain, sticky] = document.querySelectorAll(
+        '[data-slot="drawer-pre-footer"]',
+      );
       const footer = document.querySelector('[data-slot="drawer-footer"]');
       expect(header).toHaveAttribute("data-separator", "divider");
       expect(plain).not.toHaveAttribute("data-sticky");
@@ -1143,7 +1214,9 @@ describe("Drawer", () => {
         </Drawer>,
       );
 
-      const content = document.querySelector<HTMLElement>('[data-slot="drawer-content"]')!;
+      const content = document.querySelector<HTMLElement>(
+        '[data-slot="drawer-content"]',
+      )!;
       expect(content).not.toHaveAttribute("data-overflow-top");
       expect(content).toHaveAttribute("data-overflow-bottom");
 

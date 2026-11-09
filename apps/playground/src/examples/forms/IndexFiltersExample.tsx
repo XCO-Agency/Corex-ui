@@ -385,10 +385,14 @@ export function IndexFiltersExample() {
   const handleRenameView = () => {
     const name = editName.trim();
     if (!name || !editingViewId) return;
-    const duplicate = [...statusTabs, ...savedViews].some(
-      (tab) =>
-        tab.id !== editingViewId && tab.label?.toLowerCase() === name.toLowerCase(),
-    );
+    const normalizedName = name.toLowerCase();
+    const duplicate =
+      statusTabs.some(
+        (tab) => tab.id !== editingViewId && tab.label?.toLowerCase() === normalizedName,
+      ) ||
+      savedViews.some(
+        (view) => view.id !== editingViewId && view.name.toLowerCase() === normalizedName,
+      );
     if (duplicate) return;
     setSavedViews((prev) =>
       prev.map((view) => (view.id === editingViewId ? { ...view, name } : view)),

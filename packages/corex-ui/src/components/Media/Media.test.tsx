@@ -121,11 +121,7 @@ describe("Media", () => {
     render(
       <Media onDetailChange={onDetailChange}>
         <Media.Content>
-          <Media.Item
-            value="a"
-            accessibilityLabel="Alpha"
-            onActivate={onActivate}
-          >
+          <Media.Item value="a" accessibilityLabel="Alpha" onActivate={onActivate}>
             <Media.Meta name="alpha" />
           </Media.Item>
         </Media.Content>
@@ -207,7 +203,9 @@ describe("Media", () => {
       "data-variant",
       "dashed",
     );
-    expect(document.querySelector('[data-slot="media-empty"]')).toHaveTextContent("empty");
+    expect(document.querySelector('[data-slot="media-empty"]')).toHaveTextContent(
+      "empty",
+    );
   });
 
   it("injects the stylesheet once", () => {

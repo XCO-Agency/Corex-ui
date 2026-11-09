@@ -47,7 +47,11 @@ export function ComponentCanvas({
   }, [isDragging]);
 
   return (
-    <BlockStack className={className} inlineSize="100%" minBlockSize={isFullscreen ? "70vh" : "160px"}>
+    <BlockStack
+      className={className}
+      inlineSize="100%"
+      minBlockSize={isFullscreen ? "70vh" : "160px"}
+    >
       <Group orientation="horizontal">
         <Panel
           panelRef={panelRef}
@@ -64,7 +68,9 @@ export function ComponentCanvas({
               insetBlockEnd="0"
             />
           )}
-          <ComponentIframe className={isFullscreen ? "h-full" : ""}>{children}</ComponentIframe>
+          <ComponentIframe className={isFullscreen ? "h-full" : ""}>
+            {children}
+          </ComponentIframe>
         </Panel>
         <Separator onPointerDown={() => setIsDragging(true)} />
         <Panel defaultSize="0%" minSize="0px" />

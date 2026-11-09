@@ -3,9 +3,7 @@
   "type": "registry:block",
   "title": "App Promotion",
   "description": "Ecosystem app promotion card with one-click installation trigger.",
-  "dependencies": [
-    "@xco-agency/corex-ui"
-  ],
+  "dependencies": ["@xco-agency/corex-ui"],
   "files": [
     {
       "path": "AppCrossSell.tsx",

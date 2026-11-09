@@ -3,9 +3,7 @@
   "type": "registry:block",
   "title": "Notifications",
   "description": "Email & SMS transactional template customizer with variable insertion.",
-  "dependencies": [
-    "@xco-agency/corex-ui"
-  ],
+  "dependencies": ["@xco-agency/corex-ui"],
   "files": [
     {
       "path": "constants.ts",

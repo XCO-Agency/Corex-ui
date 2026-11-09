@@ -28,7 +28,9 @@ export function DrawerAsideExample() {
           <Drawer.Content>
             <Drawer.Header>
               <Drawer.Title>Customers</Drawer.Title>
-              <Drawer.Description>Stays usable while the aside is open.</Drawer.Description>
+              <Drawer.Description>
+                Stays usable while the aside is open.
+              </Drawer.Description>
             </Drawer.Header>
             <Drawer.Body>
               <BlockStack gap="base">
@@ -96,7 +98,9 @@ export function DrawerAsideExample() {
                 <Drawer.Content width="small">
                   <Drawer.Header>
                     <Drawer.Title>Jane Cooper</Drawer.Title>
-                    <Drawer.Description>Opened on the parent&apos;s left.</Drawer.Description>
+                    <Drawer.Description>
+                      Opened on the parent&apos;s left.
+                    </Drawer.Description>
                   </Drawer.Header>
                   <Drawer.Footer>
                     <Drawer.Close>

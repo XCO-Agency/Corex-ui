@@ -99,7 +99,12 @@ function EyeIcon() {
 
 function GridIcon() {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 20 20"
+      fill="currentColor"
+      aria-hidden="true"
+    >
       <path d="M3.5 3.5h5v5h-5v-5Zm8 0h5v5h-5v-5Zm-8 8h5v5h-5v-5Zm8 0h5v5h-5v-5Z" />
     </svg>
   );
@@ -107,7 +112,12 @@ function GridIcon() {
 
 function ListIcon() {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 20 20"
+      fill="currentColor"
+      aria-hidden="true"
+    >
       <path d="M3 4.5h14v1.5H3V4.5Zm0 4.75h14v1.5H3v-1.5Zm0 4.75h14V15.5H3v-1.5Z" />
     </svg>
   );
@@ -115,7 +125,12 @@ function ListIcon() {
 
 function CloseIcon() {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 20 20"
+      fill="none"
+      aria-hidden="true"
+    >
       <path
         d="M5.5 5.5 14.5 14.5M14.5 5.5 5.5 14.5"
         stroke="currentColor"
@@ -270,7 +285,13 @@ const MediaToolbar = forwardRef<HTMLDivElement, MediaToolbarPropsType>(
   function MediaToolbar({ children, className, style, id }, ref) {
     useMedia();
     return (
-      <div ref={ref} id={id} data-slot="media-toolbar" className={className} style={style}>
+      <div
+        ref={ref}
+        id={id}
+        data-slot="media-toolbar"
+        className={className}
+        style={style}
+      >
         {children}
       </div>
     );
@@ -282,7 +303,13 @@ const MediaFilters = forwardRef<HTMLDivElement, MediaFiltersPropsType>(
   function MediaFilters({ children, className, style, id }, ref) {
     useMedia();
     return (
-      <div ref={ref} id={id} data-slot="media-filters" className={className} style={style}>
+      <div
+        ref={ref}
+        id={id}
+        data-slot="media-filters"
+        className={className}
+        style={style}
+      >
         {children}
       </div>
     );
@@ -290,16 +317,17 @@ const MediaFilters = forwardRef<HTMLDivElement, MediaFiltersPropsType>(
 );
 MediaFilters.displayName = "Media.Filters";
 
-const MediaBody = forwardRef<HTMLDivElement, MediaBodyPropsType>(
-  function MediaBody({ children, className, style, id }, ref) {
-    useMedia();
-    return (
-      <div ref={ref} id={id} data-slot="media-body" className={className} style={style}>
-        {children}
-      </div>
-    );
-  },
-);
+const MediaBody = forwardRef<HTMLDivElement, MediaBodyPropsType>(function MediaBody(
+  { children, className, style, id },
+  ref,
+) {
+  useMedia();
+  return (
+    <div ref={ref} id={id} data-slot="media-body" className={className} style={style}>
+      {children}
+    </div>
+  );
+});
 MediaBody.displayName = "Media.Body";
 
 const MediaContent = forwardRef<HTMLDivElement, MediaContentPropsType>(
@@ -443,7 +471,10 @@ const MediaMeta = forwardRef<HTMLDivElement, MediaMetaPropsType>(function MediaM
   return (
     <div ref={ref} id={id} data-slot="media-meta" className={className} style={style}>
       {name != null ? (
-        <span data-slot="media-meta-name" title={typeof name === "string" ? name : undefined}>
+        <span
+          data-slot="media-meta-name"
+          title={typeof name === "string" ? name : undefined}
+        >
           {name}
         </span>
       ) : null}
@@ -495,185 +526,173 @@ const MediaActions = forwardRef<HTMLDivElement, MediaActionsPropsType>(
 );
 MediaActions.displayName = "Media.Actions";
 
-const MediaUpload = forwardRef<HTMLDivElement, MediaUploadPropsType>(
-  function MediaUpload(
-    { children, variant = "dashed", dropZone = false, className, style, id },
-    ref,
-  ) {
-    useMedia();
-    const dropZoneProps =
-      dropZone === true ? {} : dropZone === false ? null : dropZone;
+const MediaUpload = forwardRef<HTMLDivElement, MediaUploadPropsType>(function MediaUpload(
+  { children, variant = "dashed", dropZone = false, className, style, id },
+  ref,
+) {
+  useMedia();
+  const dropZoneProps = dropZone === true ? {} : dropZone === false ? null : dropZone;
 
-    return (
-      <div
-        ref={ref}
-        id={id}
-        data-slot="media-upload"
-        data-variant={variant}
-        className={className}
-        style={style}
-      >
-        {dropZoneProps ? (
-          <DropZone accept="image/*" multiple {...dropZoneProps}>
-            {children}
-          </DropZone>
-        ) : (
-          children
-        )}
-      </div>
-    );
-  },
-);
+  return (
+    <div
+      ref={ref}
+      id={id}
+      data-slot="media-upload"
+      data-variant={variant}
+      className={className}
+      style={style}
+    >
+      {dropZoneProps ? (
+        <DropZone accept="image/*" multiple {...dropZoneProps}>
+          {children}
+        </DropZone>
+      ) : (
+        children
+      )}
+    </div>
+  );
+});
 MediaUpload.displayName = "Media.Upload";
 
-const MediaDetail = forwardRef<HTMLDivElement, MediaDetailPropsType>(
-  function MediaDetail(
-    {
-      children,
-      heading,
-      closable,
-      closeAccessibilityLabel = "Close preview",
-      gated = true,
-      animate = "fade-left",
-      duration = 220,
-      inlineSize = "18rem",
-      maxInlineSize = "22rem",
-      className,
-      style,
-      id,
-    },
-    ref,
-  ) {
-    const { detailValue, setDetailValue } = useMedia();
-    const open = !gated || detailValue != null;
-    const showClose = closable ?? heading != null;
-
-    return (
-      <Transition
-        ref={ref}
-        show={open}
-        animate={animate}
-        duration={duration}
-        appear
-        as="aside"
-        id={id}
-        className={className}
-        style={
-          {
-            "--cx-media-detail-size": inlineSize,
-            "--cx-media-detail-max": maxInlineSize,
-            ...style,
-          } as CSSProperties
-        }
-        {...{
-          "data-slot": "media-detail",
-          "aria-label": typeof heading === "string" ? heading : "Preview",
-        }}
-      >
-        {heading != null || showClose ? (
-          <div data-slot="media-detail-header">
-            {heading != null ? (
-              <h3 data-slot="media-detail-heading">{heading}</h3>
-            ) : (
-              <span />
-            )}
-            {showClose ? (
-              <button
-                type="button"
-                data-slot="media-action-chip"
-                aria-label={closeAccessibilityLabel}
-                onClick={() => setDetailValue(null)}
-              >
-                <CloseIcon />
-              </button>
-            ) : null}
-          </div>
-        ) : null}
-        <div data-slot="media-detail-body">{children}</div>
-      </Transition>
-    );
+const MediaDetail = forwardRef<HTMLDivElement, MediaDetailPropsType>(function MediaDetail(
+  {
+    children,
+    heading,
+    closable,
+    closeAccessibilityLabel = "Close preview",
+    gated = true,
+    animate = "fade-left",
+    duration = 220,
+    inlineSize = "18rem",
+    maxInlineSize = "22rem",
+    className,
+    style,
+    id,
   },
-);
+  ref,
+) {
+  const { detailValue, setDetailValue } = useMedia();
+  const open = !gated || detailValue != null;
+  const showClose = closable ?? heading != null;
+
+  return (
+    <Transition
+      ref={ref}
+      show={open}
+      animate={animate}
+      duration={duration}
+      appear
+      as="aside"
+      id={id}
+      className={className}
+      style={
+        {
+          "--cx-media-detail-size": inlineSize,
+          "--cx-media-detail-max": maxInlineSize,
+          ...style,
+        } as CSSProperties
+      }
+      {...{
+        "data-slot": "media-detail",
+        "aria-label": typeof heading === "string" ? heading : "Preview",
+      }}
+    >
+      {heading != null || showClose ? (
+        <div data-slot="media-detail-header">
+          {heading != null ? (
+            <h3 data-slot="media-detail-heading">{heading}</h3>
+          ) : (
+            <span />
+          )}
+          {showClose ? (
+            <button
+              type="button"
+              data-slot="media-action-chip"
+              aria-label={closeAccessibilityLabel}
+              onClick={() => setDetailValue(null)}
+            >
+              <CloseIcon />
+            </button>
+          ) : null}
+        </div>
+      ) : null}
+      <div data-slot="media-detail-body">{children}</div>
+    </Transition>
+  );
+});
 MediaDetail.displayName = "Media.Detail";
 
-const MediaEmpty = forwardRef<HTMLDivElement, MediaEmptyPropsType>(
-  function MediaEmpty({ children, className, style, id }, ref) {
-    useMedia();
-    return (
-      <div ref={ref} id={id} data-slot="media-empty" className={className} style={style}>
-        {children}
-      </div>
-    );
-  },
-);
+const MediaEmpty = forwardRef<HTMLDivElement, MediaEmptyPropsType>(function MediaEmpty(
+  { children, className, style, id },
+  ref,
+) {
+  useMedia();
+  return (
+    <div ref={ref} id={id} data-slot="media-empty" className={className} style={style}>
+      {children}
+    </div>
+  );
+});
 MediaEmpty.displayName = "Media.Empty";
 
-const MediaTrigger = forwardRef<HTMLElement, MediaTriggerPropsType>(
-  function MediaTrigger(
-    {
-      children,
-      variant = "default",
-      accessibilityLabel = "Preview",
-      onClick,
-      className,
-      style,
-      id,
-    },
-    ref,
-  ) {
-    const media = useMedia();
-    const item = useMediaItem();
+const MediaTrigger = forwardRef<HTMLElement, MediaTriggerPropsType>(function MediaTrigger(
+  {
+    children,
+    variant = "default",
+    accessibilityLabel = "Preview",
+    onClick,
+    className,
+    style,
+    id,
+  },
+  ref,
+) {
+  const media = useMedia();
+  const item = useMediaItem();
 
-    const handleActivate = (event: MouseEvent<HTMLElement>) => {
-      event.stopPropagation();
-      if (item) media.setDetailValue(item.value);
-      onClick?.(event);
-    };
+  const handleActivate = (event: MouseEvent<HTMLElement>) => {
+    event.stopPropagation();
+    if (item) media.setDetailValue(item.value);
+    onClick?.(event);
+  };
 
-    if (variant === "preview" && children == null) {
-      return (
-        <button
-          ref={ref as React.Ref<HTMLButtonElement>}
-          type="button"
-          id={id}
-          data-slot="media-action-chip"
-          className={className}
-          style={style}
-          aria-label={accessibilityLabel}
-          onClick={handleActivate}
-          onMouseDown={(event) => event.stopPropagation()}
-        >
-          <EyeIcon />
-        </button>
-      );
-    }
-
+  if (variant === "preview" && children == null) {
     return (
-      <div
-        ref={ref as React.Ref<HTMLDivElement>}
+      <button
+        ref={ref as React.Ref<HTMLButtonElement>}
+        type="button"
         id={id}
-        data-slot="media-trigger"
+        data-slot="media-action-chip"
         className={className}
         style={style}
+        aria-label={accessibilityLabel}
         onClick={handleActivate}
         onMouseDown={(event) => event.stopPropagation()}
       >
-        {children}
-      </div>
+        <EyeIcon />
+      </button>
     );
-  },
-);
+  }
+
+  return (
+    <div
+      ref={ref as React.Ref<HTMLDivElement>}
+      id={id}
+      data-slot="media-trigger"
+      className={className}
+      style={style}
+      onClick={handleActivate}
+      onMouseDown={(event) => event.stopPropagation()}
+    >
+      {children}
+    </div>
+  );
+});
 MediaTrigger.displayName = "Media.Trigger";
 
 const MediaViewToggle = forwardRef<HTMLButtonElement, MediaViewTogglePropsType>(
   function MediaViewToggle(
-    {
-      gridLabel = "Grid view",
-      listLabel = "List view",
-      className,
-      style,
-      id,
-    },
+    { gridLabel = "Grid view", listLabel = "List view", className, style, id },
     ref,
   ) {
     const { view, toggleView } = useMedia();

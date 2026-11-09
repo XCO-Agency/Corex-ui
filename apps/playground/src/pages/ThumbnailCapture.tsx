@@ -32,7 +32,9 @@ export function ThumbnailCapture() {
       const iframe = hostRef.current?.querySelector("iframe");
       const root = iframe?.contentDocument?.getElementById("preview-root");
       const hasContent = Boolean(root && root.childElementCount > 0);
-      const polarisReady = Boolean(iframe?.contentWindow?.customElements?.get("s-button"));
+      const polarisReady = Boolean(
+        iframe?.contentWindow?.customElements?.get("s-button"),
+      );
 
       if (hasContent && polarisReady) {
         window.requestAnimationFrame(() => {

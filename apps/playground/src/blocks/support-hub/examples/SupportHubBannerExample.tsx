@@ -38,12 +38,10 @@ export function SupportHubBannerExample() {
                   <Text variant="headingSm" as="h3" fontWeight="bold">
                     Need help? We&apos;re here for you
                   </Text>
-                  <Badge tone="success" size="small">
-                    Online now
-                  </Badge>
+                  <Badge tone="success">Online now</Badge>
                 </InlineStack>
 
-                <Text variant="bodySm" tone="subdued" as="p">
+                <Text variant="bodySm" color="subdued" as="p">
                   Customer Care Team &bull; {DEFAULT_SUPPORT_HOURS.days} (
                   {DEFAULT_SUPPORT_HOURS.time})
                 </Text>

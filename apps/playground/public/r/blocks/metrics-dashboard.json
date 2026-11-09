@@ -3,9 +3,7 @@
   "type": "registry:block",
   "title": "Analytics Dashboard",
   "description": "Executive revenue, conversion, and order KPI overview with comparison trends.",
-  "dependencies": [
-    "@xco-agency/corex-ui"
-  ],
+  "dependencies": ["@xco-agency/corex-ui"],
   "files": [
     {
       "path": "MetricsDashboardAdvancedExample.tsx",

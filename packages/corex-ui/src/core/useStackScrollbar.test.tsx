@@ -22,7 +22,9 @@ describe("stack scrollbar", () => {
 
   it("hides the scrollbar with hideScrollbar", () => {
     const { container } = render(
-      <BlockStack overflowY="scroll" hideScrollbar className="mine">x</BlockStack>,
+      <BlockStack overflowY="scroll" hideScrollbar className="mine">
+        x
+      </BlockStack>,
     );
     expect(container.firstElementChild).toHaveClass("mine", "cx-stack-scroll--hidden");
   });

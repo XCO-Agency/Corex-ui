@@ -3,9 +3,7 @@
   "type": "registry:block",
   "title": "AI Recommendations",
   "description": "AI-calculated revenue opportunities with lift badges and one-click actions.",
-  "dependencies": [
-    "@xco-agency/corex-ui"
-  ],
+  "dependencies": ["@xco-agency/corex-ui"],
   "files": [
     {
       "path": "AiRecommendations.tsx",

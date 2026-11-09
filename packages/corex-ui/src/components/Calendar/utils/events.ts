@@ -68,7 +68,13 @@ export function resolveOccurrences(
     }
 
     if (start < range.end && end > range.start) {
-      occurrences.push({ key: `${event.id}:${start.getTime()}`, event, start, end, allDay });
+      occurrences.push({
+        key: `${event.id}:${start.getTime()}`,
+        event,
+        start,
+        end,
+        allDay,
+      });
     }
   }
 
@@ -82,22 +88,32 @@ export function isMultiDay(occurrence: CalendarOccurrenceType): boolean {
   return diffDays(occurrence.start, lastInstant) > 0;
 }
 
-export function occurrenceTouchesDay(occurrence: CalendarOccurrenceType, day: Date): boolean {
+export function occurrenceTouchesDay(
+  occurrence: CalendarOccurrenceType,
+  day: Date,
+): boolean {
   const dayStart = startOfDay(day);
   return occurrence.start < addDays(dayStart, 1) && occurrence.end > dayStart;
 }
 
-export function compareOccurrences(a: CalendarOccurrenceType, b: CalendarOccurrenceType): number {
+export function compareOccurrences(
+  a: CalendarOccurrenceType,
+  b: CalendarOccurrenceType,
+): number {
   if (a.allDay !== b.allDay) return a.allDay ? -1 : 1;
   const byStart = a.start.getTime() - b.start.getTime();
   if (byStart !== 0) return byStart;
-  const byLength = b.end.getTime() - b.start.getTime() - (a.end.getTime() - a.start.getTime());
+  const byLength =
+    b.end.getTime() - b.start.getTime() - (a.end.getTime() - a.start.getTime());
   if (byLength !== 0) return byLength;
   return a.event.title.localeCompare(b.event.title);
 }
 
 /** Recurring occurrences share one definition, so they are never dragged individually. */
-export function canEdit(occurrence: CalendarOccurrenceType, calendarEditable: boolean): boolean {
+export function canEdit(
+  occurrence: CalendarOccurrenceType,
+  calendarEditable: boolean,
+): boolean {
   if (occurrence.event.rrule) return false;
   return occurrence.event.editable ?? calendarEditable;
 }

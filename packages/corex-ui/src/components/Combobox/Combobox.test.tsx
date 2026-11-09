@@ -319,6 +319,8 @@ describe("Combobox", () => {
     expect(input.getAttribute("aria-haspopup")).toBe("listbox");
     expect(input.getAttribute("aria-controls")).toBe("test-combobox-listbox");
     expect(input.getAttribute("autocomplete")).toBe("off");
+    fireEvent.focus(input);
+    expect(input.getAttribute("autocomplete")).toBe("off");
     expect(input.getAttribute("autocorrect")).toBe("off");
     expect(input.getAttribute("autocapitalize")).toBe("none");
     expect(input.getAttribute("spellcheck")).toBe("false");

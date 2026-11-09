@@ -121,7 +121,11 @@ export function applyDayMaxEvents(
   const moreLinks: MoreLinkType[] = [];
   for (let col = 0; col < columnCount; col += 1) {
     if (overflow[col]) {
-      moreLinks.push({ col, lane: Math.max(0, limit - 1), count: totals[col]! - visible[col]! });
+      moreLinks.push({
+        col,
+        lane: Math.max(0, limit - 1),
+        count: totals[col]! - visible[col]!,
+      });
     }
   }
   return { pieces, moreLinks };
@@ -135,7 +139,9 @@ export type PositionedItemType<T> = { item: T; column: number; columns: number }
  * Side-by-side column packing for overlapping timed events in one day:
  * each cluster of mutually-chained overlaps shares the width evenly.
  */
-export function layoutTimeColumn<T extends TimedItemType>(items: T[]): PositionedItemType<T>[] {
+export function layoutTimeColumn<T extends TimedItemType>(
+  items: T[],
+): PositionedItemType<T>[] {
   const sorted = [...items].sort((a, b) => a.start - b.start || b.end - a.end);
   const result: PositionedItemType<T>[] = [];
 

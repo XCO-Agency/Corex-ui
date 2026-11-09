@@ -54,10 +54,7 @@
     "category": "Home",
     "vendor": "Hario",
     "productType": "Kitchen",
-    "tags": [
-      "discontinued",
-      "sale"
-    ],
+    "tags": ["discontinued", "sale"],
     "channels": 2,
     "price": 331,
     "updatedAt": "2026-05-20"
@@ -72,10 +69,7 @@
     "category": "Clothing",
     "vendor": "Aglini",
     "productType": "Shirts",
-    "tags": [
-      "gift",
-      "sale"
-    ],
+    "tags": ["gift", "sale"],
     "channels": 3,
     "price": 230,
     "updatedAt": "2026-08-03"
@@ -90,11 +84,7 @@
     "category": "Clothing",
     "vendor": "Hovman",
     "productType": "Pants",
-    "tags": [
-      "gift",
-      "new",
-      "summer"
-    ],
+    "tags": ["gift", "new", "summer"],
     "channels": 2,
     "price": 86,
     "updatedAt": "2026-02-16"
@@ -109,11 +99,7 @@
     "category": "Clothing",
     "vendor": "Everlane",
     "productType": "Knitwear",
-    "tags": [
-      "basics",
-      "sale",
-      "winter"
-    ],
+    "tags": ["basics", "sale", "winter"],
     "channels": 2,
     "price": 390,
     "updatedAt": "2026-05-23"
@@ -128,10 +114,7 @@
     "category": "Accessories",
     "vendor": "Aglini",
     "productType": "Bags",
-    "tags": [
-      "basics",
-      "summer"
-    ],
+    "tags": ["basics", "summer"],
     "channels": 1,
     "price": 195,
     "updatedAt": "2026-06-20"
@@ -146,11 +129,7 @@
     "category": "Home",
     "vendor": "P.F. Candle Co.",
     "productType": "Candles",
-    "tags": [
-      "new",
-      "restock",
-      "winter"
-    ],
+    "tags": ["new", "restock", "winter"],
     "channels": 3,
     "price": 187,
     "updatedAt": "2026-04-03"
@@ -180,10 +159,7 @@
     "category": "Outerwear",
     "vendor": "Everlane",
     "productType": "Jackets",
-    "tags": [
-      "bestseller",
-      "winter"
-    ],
+    "tags": ["bestseller", "winter"],
     "channels": 1,
     "price": 340,
     "updatedAt": "2026-05-16"
@@ -198,10 +174,7 @@
     "category": "Outerwear",
     "vendor": "Norse Projects",
     "productType": "Jackets",
-    "tags": [
-      "bestseller",
-      "gift"
-    ],
+    "tags": ["bestseller", "gift"],
     "channels": 1,
     "price": 245,
     "updatedAt": "2026-09-11"
@@ -231,9 +204,7 @@
     "category": "Outerwear",
     "vendor": "Norse Projects",
     "productType": "Coats",
-    "tags": [
-      "discontinued"
-    ],
+    "tags": ["discontinued"],
     "channels": 1,
     "price": 160,
     "updatedAt": "2026-08-20"
@@ -248,9 +219,7 @@
     "category": "Home",
     "vendor": "Hario",
     "productType": "Candles",
-    "tags": [
-      "restock"
-    ],
+    "tags": ["restock"],
     "channels": 3,
     "price": 158,
     "updatedAt": "2026-07-15"
@@ -265,9 +234,7 @@
     "category": "Accessories",
     "vendor": "Aglini",
     "productType": "Belts",
-    "tags": [
-      "sale"
-    ],
+    "tags": ["sale"],
     "channels": 3,
     "price": 69,
     "updatedAt": "2026-01-26"
@@ -282,10 +249,7 @@
     "category": "Clothing",
     "vendor": "Amelia Toro",
     "productType": "Dresses",
-    "tags": [
-      "new",
-      "sale"
-    ],
+    "tags": ["new", "sale"],
     "channels": 3,
     "price": 155,
     "updatedAt": "2026-09-14"
@@ -300,11 +264,7 @@
     "category": "Outerwear",
     "vendor": "Norse Projects",
     "productType": "Coats",
-    "tags": [
-      "bestseller",
-      "restock",
-      "summer"
-    ],
+    "tags": ["bestseller", "restock", "summer"],
     "channels": 1,
     "price": 87,
     "updatedAt": "2026-08-20"
@@ -319,10 +279,7 @@
     "category": "Clothing",
     "vendor": "Everlane",
     "productType": "Dresses",
-    "tags": [
-      "summer",
-      "winter"
-    ],
+    "tags": ["summer", "winter"],
     "channels": 3,
     "price": 210,
     "updatedAt": "2026-01-25"
@@ -337,9 +294,7 @@
     "category": "Clothing",
     "vendor": "Hovman",
     "productType": "Knitwear",
-    "tags": [
-      "sale"
-    ],
+    "tags": ["sale"],
     "channels": 2,
     "price": 416,
     "updatedAt": "2026-04-27"
@@ -354,10 +309,7 @@
     "category": "Accessories",
     "vendor": "Cuyana",
     "productType": "Bags",
-    "tags": [
-      "bestseller",
-      "winter"
-    ],
+    "tags": ["bestseller", "winter"],
     "channels": 3,
     "price": 294,
     "updatedAt": "2026-06-05"
@@ -372,11 +324,7 @@
     "category": "Beauty",
     "vendor": "Monochrome",
     "productType": "Body care",
-    "tags": [
-      "bestseller",
-      "restock",
-      "sale"
-    ],
+    "tags": ["bestseller", "restock", "sale"],
     "channels": 2,
     "price": 98,
     "updatedAt": "2026-06-03"
@@ -391,9 +339,7 @@
     "category": "Beauty",
     "vendor": "Monochrome",
     "productType": "Body care",
-    "tags": [
-      "winter"
-    ],
+    "tags": ["winter"],
     "channels": 1,
     "price": 128,
     "updatedAt": "2026-01-25"
@@ -408,10 +354,7 @@
     "category": "Outerwear",
     "vendor": "Norse Projects",
     "productType": "Jackets",
-    "tags": [
-      "basics",
-      "winter"
-    ],
+    "tags": ["basics", "winter"],
     "channels": 1,
     "price": 362,
     "updatedAt": "2026-03-14"
@@ -426,11 +369,7 @@
     "category": "Clothing",
     "vendor": "Amelia Toro",
     "productType": "Shirts",
-    "tags": [
-      "basics",
-      "gift",
-      "summer"
-    ],
+    "tags": ["basics", "gift", "summer"],
     "channels": 2,
     "price": 418,
     "updatedAt": "2026-05-20"
@@ -445,10 +384,7 @@
     "category": "Outerwear",
     "vendor": "Everlane",
     "productType": "Coats",
-    "tags": [
-      "bestseller",
-      "discontinued"
-    ],
+    "tags": ["bestseller", "discontinued"],
     "channels": 2,
     "price": 164,
     "updatedAt": "2026-01-09"
@@ -463,11 +399,7 @@
     "category": "Clothing",
     "vendor": "Hovman",
     "productType": "Shirts",
-    "tags": [
-      "basics",
-      "discontinued",
-      "restock"
-    ],
+    "tags": ["basics", "discontinued", "restock"],
     "channels": 2,
     "price": 313,
     "updatedAt": "2026-04-11"
@@ -512,9 +444,7 @@
     "category": "Beauty",
     "vendor": "Kiehl's",
     "productType": "Skin care",
-    "tags": [
-      "new"
-    ],
+    "tags": ["new"],
     "channels": 3,
     "price": 352,
     "updatedAt": "2026-02-09"
@@ -529,11 +459,7 @@
     "category": "Clothing",
     "vendor": "Aglini",
     "productType": "Dresses",
-    "tags": [
-      "discontinued",
-      "gift",
-      "winter"
-    ],
+    "tags": ["discontinued", "gift", "winter"],
     "channels": 2,
     "price": 329,
     "updatedAt": "2026-03-02"
@@ -593,11 +519,7 @@
     "category": "Clothing",
     "vendor": "Everlane",
     "productType": "Shirts",
-    "tags": [
-      "bestseller",
-      "discontinued",
-      "summer"
-    ],
+    "tags": ["bestseller", "discontinued", "summer"],
     "channels": 3,
     "price": 56,
     "updatedAt": "2026-04-22"
@@ -642,11 +564,7 @@
     "category": "Accessories",
     "vendor": "Aglini",
     "productType": "Belts",
-    "tags": [
-      "gift",
-      "restock",
-      "winter"
-    ],
+    "tags": ["gift", "restock", "winter"],
     "channels": 2,
     "price": 13,
     "updatedAt": "2026-06-27"
@@ -676,10 +594,7 @@
     "category": "Clothing",
     "vendor": "Amelia Toro",
     "productType": "Knitwear",
-    "tags": [
-      "gift",
-      "new"
-    ],
+    "tags": ["gift", "new"],
     "channels": 2,
     "price": 399,
     "updatedAt": "2026-07-18"
@@ -694,9 +609,7 @@
     "category": "Home",
     "vendor": "P.F. Candle Co.",
     "productType": "Kitchen",
-    "tags": [
-      "bestseller"
-    ],
+    "tags": ["bestseller"],
     "channels": 2,
     "price": 194,
     "updatedAt": "2026-05-10"
@@ -756,9 +669,7 @@
     "category": "Home",
     "vendor": "P.F. Candle Co.",
     "productType": "Kitchen",
-    "tags": [
-      "summer"
-    ],
+    "tags": ["summer"],
     "channels": 2,
     "price": 323,
     "updatedAt": "2026-08-19"
@@ -773,9 +684,7 @@
     "category": "Accessories",
     "vendor": "Cuyana",
     "productType": "Bags",
-    "tags": [
-      "bestseller"
-    ],
+    "tags": ["bestseller"],
     "channels": 1,
     "price": 241,
     "updatedAt": "2026-02-27"
@@ -790,11 +699,7 @@
     "category": "Accessories",
     "vendor": "Cuyana",
     "productType": "Belts",
-    "tags": [
-      "sale",
-      "summer",
-      "winter"
-    ],
+    "tags": ["sale", "summer", "winter"],
     "channels": 2,
     "price": 242,
     "updatedAt": "2026-10-07"
@@ -809,9 +714,7 @@
     "category": "Accessories",
     "vendor": "Aglini",
     "productType": "Belts",
-    "tags": [
-      "discontinued"
-    ],
+    "tags": ["discontinued"],
     "channels": 3,
     "price": 115,
     "updatedAt": "2026-04-01"
@@ -826,11 +729,7 @@
     "category": "Accessories",
     "vendor": "Aglini",
     "productType": "Bags",
-    "tags": [
-      "discontinued",
-      "gift",
-      "new"
-    ],
+    "tags": ["discontinued", "gift", "new"],
     "channels": 1,
     "price": 317,
     "updatedAt": "2026-07-12"
@@ -845,9 +744,7 @@
     "category": "Accessories",
     "vendor": "Cuyana",
     "productType": "Belts",
-    "tags": [
-      "new"
-    ],
+    "tags": ["new"],
     "channels": 2,
     "price": 109,
     "updatedAt": "2026-05-04"
@@ -862,9 +759,7 @@
     "category": "Outerwear",
     "vendor": "Norse Projects",
     "productType": "Coats",
-    "tags": [
-      "restock"
-    ],
+    "tags": ["restock"],
     "channels": 1,
     "price": 323,
     "updatedAt": "2026-03-13"
@@ -879,10 +774,7 @@
     "category": "Outerwear",
     "vendor": "Everlane",
     "productType": "Jackets",
-    "tags": [
-      "bestseller",
-      "discontinued"
-    ],
+    "tags": ["bestseller", "discontinued"],
     "channels": 1,
     "price": 13,
     "updatedAt": "2026-05-03"
@@ -897,11 +789,7 @@
     "category": "Beauty",
     "vendor": "Monochrome",
     "productType": "Body care",
-    "tags": [
-      "basics",
-      "gift",
-      "new"
-    ],
+    "tags": ["basics", "gift", "new"],
     "channels": 2,
     "price": 97,
     "updatedAt": "2026-06-24"
@@ -946,9 +834,7 @@
     "category": "Accessories",
     "vendor": "Aglini",
     "productType": "Bags",
-    "tags": [
-      "gift"
-    ],
+    "tags": ["gift"],
     "channels": 2,
     "price": 214,
     "updatedAt": "2026-10-03"
@@ -963,11 +849,7 @@
     "category": "Home",
     "vendor": "P.F. Candle Co.",
     "productType": "Kitchen",
-    "tags": [
-      "bestseller",
-      "sale",
-      "winter"
-    ],
+    "tags": ["bestseller", "sale", "winter"],
     "channels": 3,
     "price": 49,
     "updatedAt": "2026-02-14"
@@ -982,10 +864,7 @@
     "category": "Accessories",
     "vendor": "Aglini",
     "productType": "Belts",
-    "tags": [
-      "basics",
-      "gift"
-    ],
+    "tags": ["basics", "gift"],
     "channels": 2,
     "price": 335,
     "updatedAt": "2026-04-15"
@@ -1000,10 +879,7 @@
     "category": "Outerwear",
     "vendor": "Norse Projects",
     "productType": "Jackets",
-    "tags": [
-      "new",
-      "sale"
-    ],
+    "tags": ["new", "sale"],
     "channels": 3,
     "price": 366,
     "updatedAt": "2026-08-02"
@@ -1033,9 +909,7 @@
     "category": "Clothing",
     "vendor": "Aglini",
     "productType": "Pants",
-    "tags": [
-      "summer"
-    ],
+    "tags": ["summer"],
     "channels": 2,
     "price": 161,
     "updatedAt": "2026-01-07"
@@ -1050,10 +924,7 @@
     "category": "Beauty",
     "vendor": "Kiehl's",
     "productType": "Body care",
-    "tags": [
-      "new",
-      "winter"
-    ],
+    "tags": ["new", "winter"],
     "channels": 1,
     "price": 360,
     "updatedAt": "2026-09-16"
@@ -1068,10 +939,7 @@
     "category": "Clothing",
     "vendor": "Everlane",
     "productType": "Knitwear",
-    "tags": [
-      "basics",
-      "restock"
-    ],
+    "tags": ["basics", "restock"],
     "channels": 3,
     "price": 147,
     "updatedAt": "2026-01-10"
@@ -1086,9 +954,7 @@
     "category": "Home",
     "vendor": "P.F. Candle Co.",
     "productType": "Candles",
-    "tags": [
-      "summer"
-    ],
+    "tags": ["summer"],
     "channels": 2,
     "price": 407,
     "updatedAt": "2026-07-04"
@@ -1103,10 +969,7 @@
     "category": "Clothing",
     "vendor": "Hovman",
     "productType": "Shirts",
-    "tags": [
-      "bestseller",
-      "sale"
-    ],
+    "tags": ["bestseller", "sale"],
     "channels": 1,
     "price": 164,
     "updatedAt": "2026-03-17"
@@ -1121,11 +984,7 @@
     "category": "Outerwear",
     "vendor": "Norse Projects",
     "productType": "Coats",
-    "tags": [
-      "basics",
-      "gift",
-      "summer"
-    ],
+    "tags": ["basics", "gift", "summer"],
     "channels": 3,
     "price": 182,
     "updatedAt": "2026-10-23"
@@ -1140,11 +999,7 @@
     "category": "Outerwear",
     "vendor": "Everlane",
     "productType": "Coats",
-    "tags": [
-      "discontinued",
-      "gift",
-      "winter"
-    ],
+    "tags": ["discontinued", "gift", "winter"],
     "channels": 1,
     "price": 437,
     "updatedAt": "2026-04-02"
@@ -1159,11 +1014,7 @@
     "category": "Home",
     "vendor": "P.F. Candle Co.",
     "productType": "Kitchen",
-    "tags": [
-      "gift",
-      "new",
-      "restock"
-    ],
+    "tags": ["gift", "new", "restock"],
     "channels": 3,
     "price": 204,
     "updatedAt": "2026-01-01"
@@ -1208,9 +1059,7 @@
     "category": "Outerwear",
     "vendor": "Everlane",
     "productType": "Coats",
-    "tags": [
-      "winter"
-    ],
+    "tags": ["winter"],
     "channels": 2,
     "price": 279,
     "updatedAt": "2026-05-06"
@@ -1225,10 +1074,7 @@
     "category": "Beauty",
     "vendor": "Kiehl's",
     "productType": "Body care",
-    "tags": [
-      "gift",
-      "summer"
-    ],
+    "tags": ["gift", "summer"],
     "channels": 1,
     "price": 92,
     "updatedAt": "2026-03-21"
@@ -1243,10 +1089,7 @@
     "category": "Beauty",
     "vendor": "Kiehl's",
     "productType": "Body care",
-    "tags": [
-      "restock",
-      "sale"
-    ],
+    "tags": ["restock", "sale"],
     "channels": 3,
     "price": 361,
     "updatedAt": "2026-05-13"
@@ -1261,10 +1104,7 @@
     "category": "Beauty",
     "vendor": "Monochrome",
     "productType": "Skin care",
-    "tags": [
-      "basics",
-      "gift"
-    ],
+    "tags": ["basics", "gift"],
     "channels": 3,
     "price": 13,
     "updatedAt": "2026-01-08"
@@ -1294,11 +1134,7 @@
     "category": "Accessories",
     "vendor": "Cuyana",
     "productType": "Bags",
-    "tags": [
-      "gift",
-      "sale",
-      "winter"
-    ],
+    "tags": ["gift", "sale", "winter"],
     "channels": 1,
     "price": 394,
     "updatedAt": "2026-05-13"
@@ -1328,11 +1164,7 @@
     "category": "Outerwear",
     "vendor": "Everlane",
     "productType": "Coats",
-    "tags": [
-      "basics",
-      "bestseller",
-      "summer"
-    ],
+    "tags": ["basics", "bestseller", "summer"],
     "channels": 2,
     "price": 286,
     "updatedAt": "2026-08-23"
@@ -1347,10 +1179,7 @@
     "category": "Home",
     "vendor": "Hario",
     "productType": "Kitchen",
-    "tags": [
-      "new",
-      "summer"
-    ],
+    "tags": ["new", "summer"],
     "channels": 1,
     "price": 159,
     "updatedAt": "2026-05-23"
@@ -1410,9 +1239,7 @@
     "category": "Clothing",
     "vendor": "Aglini",
     "productType": "Pants",
-    "tags": [
-      "sale"
-    ],
+    "tags": ["sale"],
     "channels": 3,
     "price": 41,
     "updatedAt": "2026-07-04"
@@ -1427,10 +1254,7 @@
     "category": "Clothing",
     "vendor": "Aglini",
     "productType": "Dresses",
-    "tags": [
-      "gift",
-      "sale"
-    ],
+    "tags": ["gift", "sale"],
     "channels": 2,
     "price": 126,
     "updatedAt": "2026-06-09"
@@ -1445,11 +1269,7 @@
     "category": "Beauty",
     "vendor": "Kiehl's",
     "productType": "Body care",
-    "tags": [
-      "bestseller",
-      "sale",
-      "winter"
-    ],
+    "tags": ["bestseller", "sale", "winter"],
     "channels": 2,
     "price": 321,
     "updatedAt": "2026-09-19"
@@ -1494,9 +1314,7 @@
     "category": "Home",
     "vendor": "Hario",
     "productType": "Candles",
-    "tags": [
-      "basics"
-    ],
+    "tags": ["basics"],
     "channels": 2,
     "price": 199,
     "updatedAt": "2026-09-17"
@@ -1511,11 +1329,7 @@
     "category": "Outerwear",
     "vendor": "Everlane",
     "productType": "Coats",
-    "tags": [
-      "gift",
-      "sale",
-      "winter"
-    ],
+    "tags": ["gift", "sale", "winter"],
     "channels": 2,
     "price": 204,
     "updatedAt": "2026-05-19"
@@ -1530,9 +1344,7 @@
     "category": "Outerwear",
     "vendor": "Everlane",
     "productType": "Coats",
-    "tags": [
-      "new"
-    ],
+    "tags": ["new"],
     "channels": 3,
     "price": 155,
     "updatedAt": "2026-09-12"
@@ -1547,9 +1359,7 @@
     "category": "Beauty",
     "vendor": "Kiehl's",
     "productType": "Skin care",
-    "tags": [
-      "winter"
-    ],
+    "tags": ["winter"],
     "channels": 3,
     "price": 411,
     "updatedAt": "2026-05-07"
@@ -1564,9 +1374,7 @@
     "category": "Accessories",
     "vendor": "Aglini",
     "productType": "Bags",
-    "tags": [
-      "basics"
-    ],
+    "tags": ["basics"],
     "channels": 3,
     "price": 335,
     "updatedAt": "2026-01-24"
@@ -1581,11 +1389,7 @@
     "category": "Outerwear",
     "vendor": "Norse Projects",
     "productType": "Jackets",
-    "tags": [
-      "basics",
-      "gift",
-      "sale"
-    ],
+    "tags": ["basics", "gift", "sale"],
     "channels": 3,
     "price": 55,
     "updatedAt": "2026-07-08"
@@ -1600,11 +1404,7 @@
     "category": "Accessories",
     "vendor": "Aglini",
     "productType": "Bags",
-    "tags": [
-      "discontinued",
-      "summer",
-      "winter"
-    ],
+    "tags": ["discontinued", "summer", "winter"],
     "channels": 2,
     "price": 250,
     "updatedAt": "2026-03-23"
@@ -1619,11 +1419,7 @@
     "category": "Outerwear",
     "vendor": "Everlane",
     "productType": "Jackets",
-    "tags": [
-      "discontinued",
-      "gift",
-      "new"
-    ],
+    "tags": ["discontinued", "gift", "new"],
     "channels": 1,
     "price": 184,
     "updatedAt": "2026-02-24"
@@ -1638,10 +1434,7 @@
     "category": "Home",
     "vendor": "P.F. Candle Co.",
     "productType": "Candles",
-    "tags": [
-      "new",
-      "winter"
-    ],
+    "tags": ["new", "winter"],
     "channels": 2,
     "price": 337,
     "updatedAt": "2026-09-08"
@@ -1656,10 +1449,7 @@
     "category": "Outerwear",
     "vendor": "Everlane",
     "productType": "Jackets",
-    "tags": [
-      "bestseller",
-      "sale"
-    ],
+    "tags": ["bestseller", "sale"],
     "channels": 2,
     "price": 167,
     "updatedAt": "2026-04-09"
@@ -1674,10 +1464,7 @@
     "category": "Accessories",
     "vendor": "Cuyana",
     "productType": "Belts",
-    "tags": [
-      "discontinued",
-      "sale"
-    ],
+    "tags": ["discontinued", "sale"],
     "channels": 2,
     "price": 285,
     "updatedAt": "2026-02-22"
@@ -1707,9 +1494,7 @@
     "category": "Home",
     "vendor": "Hario",
     "productType": "Candles",
-    "tags": [
-      "winter"
-    ],
+    "tags": ["winter"],
     "channels": 3,
     "price": 407,
     "updatedAt": "2026-09-26"

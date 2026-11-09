@@ -221,15 +221,13 @@ export function MediaExample() {
       <BlockStack gap="small-200">
         <Text heading>Media library picker</Text>
         <Text color="subdued">
-          Grid/list browse, multi-select, hover preview chip, upload strip, and a
-          sliding detail panel — composed inside a Modal.
+          Grid/list browse, multi-select, hover preview chip, upload strip, and a sliding
+          detail panel — composed inside a Modal.
         </Text>
         <InlineStack gap="small-100" alignItems="center">
           <Button onClick={() => setOpen(true)}>Select image</Button>
           <Text color="subdued">
-            {selected.length === 0
-              ? "Nothing selected"
-              : `${selected.length} selected`}
+            {selected.length === 0 ? "Nothing selected" : `${selected.length} selected`}
           </Text>
         </InlineStack>
       </BlockStack>

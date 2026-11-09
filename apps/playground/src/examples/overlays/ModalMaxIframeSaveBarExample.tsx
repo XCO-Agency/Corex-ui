@@ -156,7 +156,7 @@ export function ModalMaxIframeSaveBarExample() {
           <Text as="h3" variant="base" fontWeight="bold">
             Pattern B — Cross-Document Modal with BroadcastChannel Handshake
           </Text>
-          <Text as="p" tone="subdued">
+          <Text as="p" color="subdued">
             Used when the modal loads a nested route via <code>src=&quot;...&quot;</code>.
             Because nested iframes lack App Bridge custom elements,{" "}
             <code>&lt;SaveBar&gt;</code> lives on the host <code>&lt;Modal&gt;</code>. An
@@ -171,7 +171,7 @@ export function ModalMaxIframeSaveBarExample() {
           </Button>
 
           <InlineStack gap="small-200" blockAlign="center">
-            <Text as="span" tone="subdued">
+            <Text as="span" color="subdued">
               Host SaveBar:
             </Text>
             <Badge tone={saveState.visible ? "warning" : "neutral"}>
@@ -198,13 +198,13 @@ export function ModalMaxIframeSaveBarExample() {
               <Badge tone="info">Active Handshake</Badge>
             </InlineStack>
             {logMessages.length === 0 ? (
-              <Text as="p" variant="small" tone="subdued">
+              <Text as="p" variant="small" color="subdued">
                 No events recorded yet. Open modal and modify preferences to inspect
                 channel traffic.
               </Text>
             ) : (
               logMessages.map((log, index) => (
-                <Text key={index} as="p" variant="small" tone="subdued">
+                <Text key={index} as="p" variant="small" color="subdued">
                   <code>{log}</code>
                 </Text>
               ))
@@ -296,7 +296,7 @@ export function ModalMaxIframeSaveBarExample() {
                         <Text as="span" fontWeight="semibold">
                           Enable customer portal custom branding
                         </Text>
-                        <Text as="span" tone="subdued" variant="small">
+                        <Text as="span" color="subdued" variant="small">
                           Inherit theme typography and color schemes.
                         </Text>
                       </BlockStack>

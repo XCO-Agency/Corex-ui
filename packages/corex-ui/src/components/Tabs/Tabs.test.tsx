@@ -68,8 +68,12 @@ describe("Tabs", () => {
       "data-icon-only",
       "true",
     );
-    expect(screen.getByRole("tab", { name: "Tablet" })).not.toHaveAttribute("data-icon-only");
-    expect(screen.getByRole("tab", { name: "Mobile" })).not.toHaveAttribute("data-icon-only");
+    expect(screen.getByRole("tab", { name: "Tablet" })).not.toHaveAttribute(
+      "data-icon-only",
+    );
+    expect(screen.getByRole("tab", { name: "Mobile" })).not.toHaveAttribute(
+      "data-icon-only",
+    );
   });
 
   it("renders badge, tooltip, and rightSide content", () => {

@@ -74,13 +74,15 @@ export function Step5ShopifyValidation({
         <Card>
           <BlockStack gap="large-100" justifyContent="center">
             <BlockStack gap="base" inlineSize="100%">
-              <Banner
-                heading="Opens Shopify in a new tab"
-                action={{
-                  content: "Open Theme Editor",
-                  onAction: openThemeEditor,
-                }}
-              ></Banner>
+              <Banner heading="Opens Shopify in a new tab">
+                <Button
+                  slot="secondary-actions"
+                  variant="secondary"
+                  onClick={openThemeEditor}
+                >
+                  Open Theme Editor
+                </Button>
+              </Banner>
 
               <Clickable
                 onClick={openThemeEditor}

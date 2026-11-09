@@ -276,9 +276,7 @@ describe("Popover", () => {
       </Popover>,
     );
 
-    expect(warn).toHaveBeenCalledWith(
-      expect.stringContaining("Popover.Trigger"),
-    );
+    expect(warn).toHaveBeenCalledWith(expect.stringContaining("Popover.Trigger"));
     warn.mockRestore();
   });
 

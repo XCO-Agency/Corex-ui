@@ -1,5 +1,11 @@
 export { Drawer, useDrawer, useDrawerContext } from "./Drawer";
-export { openDrawer, closeDrawer, toggleDrawer, closeAllDrawers, isDrawerOpen } from "./drawerRegistry";
+export {
+  openDrawer,
+  closeDrawer,
+  toggleDrawer,
+  closeAllDrawers,
+  isDrawerOpen,
+} from "./drawerRegistry";
 export type {
   DrawerBodyPropsType,
   DrawerChildLayoutType,

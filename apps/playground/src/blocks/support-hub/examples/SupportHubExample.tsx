@@ -114,7 +114,7 @@ export function SupportHubExample() {
                   <Text variant="bodyMd" fontWeight="semibold">
                     How do I enable the cart drawer in my theme?
                   </Text>
-                  <Text variant="bodySm" tone="subdued">
+                  <Text variant="bodySm" color="subdued">
                     Navigate to Online Store &gt; Themes &gt; Customize, then enable the
                     App Embed for Cart Drawer.
                   </Text>
@@ -123,7 +123,7 @@ export function SupportHubExample() {
                   <Text variant="bodyMd" fontWeight="semibold">
                     Can I customize the upsell recommendations?
                   </Text>
-                  <Text variant="bodySm" tone="subdued">
+                  <Text variant="bodySm" color="subdued">
                     Yes, under the Addons tab you can create manual collections or
                     AI-driven cross-sells.
                   </Text>

@@ -20,7 +20,8 @@ const SRC = __dirname;
 function sourceFiles(dir: string): string[] {
   return readdirSync(dir).flatMap((name) => {
     const path = join(dir, name);
-    if (statSync(path).isDirectory()) return name === "test-utils" ? [] : sourceFiles(path);
+    if (statSync(path).isDirectory())
+      return name === "test-utils" ? [] : sourceFiles(path);
     return /\.tsx?$/.test(name) && !/\.(test|d)\.tsx?$/.test(name) ? [path] : [];
   });
 }
@@ -28,7 +29,8 @@ function sourceFiles(dir: string): string[] {
 function bareImports(code: string): string[] {
   const specifiers = new Set<string>();
   // Static `import … from "x"`, side-effect `import "x"`, `export … from "x"` and `import("x")`.
-  const pattern = /(?:^|\n)\s*(?:import|export)\s[^"'`]*?from\s*["']([^"']+)["']|(?:^|\n)\s*import\s*["']([^"']+)["']|\bimport\(\s*["']([^"']+)["']\s*\)/g;
+  const pattern =
+    /(?:^|\n)\s*(?:import|export)\s[^"'`]*?from\s*["']([^"']+)["']|(?:^|\n)\s*import\s*["']([^"']+)["']|\bimport\(\s*["']([^"']+)["']\s*\)/g;
   for (const match of code.matchAll(pattern)) {
     const specifier = match[1] ?? match[2] ?? match[3];
     if (specifier && !specifier.startsWith(".")) specifiers.add(specifier);
