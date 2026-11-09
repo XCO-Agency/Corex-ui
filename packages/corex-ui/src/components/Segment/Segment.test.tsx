@@ -8,6 +8,31 @@ const OPTIONS = [
 ];
 
 describe("Segment", () => {
+  it("sizes an option as icon-only when it has an icon and no label", () => {
+    render(
+      <Segment
+        accessibilityLabel="Viewport"
+        options={[
+          { value: "desktop", icon: "desktop", accessibilityLabel: "Desktop" },
+          { value: "tablet", icon: "tablet", label: "Tablet" },
+        ]}
+        value="desktop"
+        onChange={() => {}}
+      />,
+    );
+
+    expect(screen.getByRole("radio", { name: "Desktop" })).toHaveAttribute(
+      "data-icon-only",
+      "true",
+    );
+    expect(screen.getByRole("radio", { name: "Tablet" })).not.toHaveAttribute(
+      "data-icon-only",
+    );
+    expect(document.querySelector("[data-slot='segment']")).not.toHaveAttribute(
+      "data-icon-only",
+    );
+  });
+
   it("renders options without a label by default", () => {
     render(<Segment options={OPTIONS} value="min" onChange={() => {}} />);
 

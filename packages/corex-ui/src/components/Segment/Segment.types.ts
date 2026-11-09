@@ -1,17 +1,23 @@
 import type { CSSProperties, ReactNode } from "react";
+import type { IconType } from "../../types/common";
 
 export type SegmentVariantType = "default" | "primary";
 export type SegmentSizeType = "small" | "base" | "large";
 export type SegmentInlineSizeType = "auto" | "fill";
 
 export type SegmentOptionType<TValue extends string = string> = {
-  /** Visible label for the segment. */
-  label: ReactNode;
+  /**
+   * Visible label for the segment.
+   * Optional when `icon` is set. An option with only an icon is sized as a square.
+   */
+  label?: ReactNode;
+  /** Icon shown before the label, or alone when `label` is omitted. */
+  icon?: IconType;
   /** Unique value used for selection. */
   value: TValue;
   /** Disables this option only. */
   disabled?: boolean;
-  /** Accessible name when `label` is not plain text. */
+  /** Accessible name when `label` is not plain text, or when the option is icon-only. */
   accessibilityLabel?: string;
 };
 

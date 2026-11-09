@@ -1,5 +1,12 @@
 import { useMemo, useState } from "react";
-import { Banner, BlockStack, Page, useIndexResourceState } from "@xco-agency/corex-ui";
+import {
+  Banner,
+  BlockStack,
+  Modal,
+  Page,
+  TextField,
+  useIndexResourceState,
+} from "@xco-agency/corex-ui";
 import type { IndexFiltersSavedViewType, TabItemType } from "@xco-agency/corex-ui";
 import {
   DEFAULT_PRODUCT_INDEX_SORT,
@@ -35,6 +42,8 @@ export function ProductIndexExample() {
   const [page, setPage] = useState(1);
   const [refreshing, setRefreshing] = useState(false);
   const [notice, setNotice] = useState<string | null>(null);
+  const [editingViewId, setEditingViewId] = useState<string | null>(null);
+  const [editName, setEditName] = useState("");
 
   const showNotice = (message: string) => {
     setNotice(message);
@@ -43,13 +52,45 @@ export function ProductIndexExample() {
 
   /* ---------------------------------------------------------------- views */
 
-  const savedView = savedViews.find((view) => view.id === selectedTab);
   const statusTab = PRODUCT_INDEX_STATUS_TABS.find((tab) => tab.id === selectedTab);
+
+  const handleEditView = (id: string) => {
+    const view = savedViews.find((item) => item.id === id);
+    if (!view) return;
+    setEditingViewId(id);
+    setEditName(view.name);
+  };
+
+  const handleRemoveView = (id: string) => {
+    const view = savedViews.find((item) => item.id === id);
+    if (!view) return;
+    setSavedViews((prev) => prev.filter((item) => item.id !== id));
+    if (selectedTab === id) handleSelectTab("all");
+    showNotice(`View "${view.name}" removed.`);
+  };
 
   const tabs: TabItemType[] = [
     ...PRODUCT_INDEX_STATUS_TABS,
-    ...savedViews.map((view) => ({ id: view.id, label: view.name })),
+    ...savedViews.map((view) => ({
+      id: view.id,
+      label: view.name,
+      actions: {
+        onEdit: () => handleEditView(view.id),
+        onRemove: () => handleRemoveView(view.id),
+      },
+    })),
   ];
+  const editingView = savedViews.find((view) => view.id === editingViewId);
+  const editNameError =
+    editingView &&
+    editName.trim() &&
+    tabs.some(
+      (tab) =>
+        tab.id !== editingView.id &&
+        tab.label?.toLowerCase() === editName.trim().toLowerCase(),
+    )
+      ? "A view with this name already exists"
+      : undefined;
 
   const handleSelectTab = (tabId: string) => {
     setSelectedTab(tabId);
@@ -71,11 +112,14 @@ export function ProductIndexExample() {
     showNotice(`View "${view.name}" saved.`);
   };
 
-  const handleDeleteView = () => {
-    if (!savedView) return;
-    setSavedViews((prev) => prev.filter((view) => view.id !== savedView.id));
-    handleSelectTab("all");
-    showNotice(`View "${savedView.name}" deleted.`);
+  const handleRenameView = () => {
+    const name = editName.trim();
+    if (!name || !editingViewId || editNameError) return;
+    setSavedViews((prev) =>
+      prev.map((view) => (view.id === editingViewId ? { ...view, name } : view)),
+    );
+    setEditingViewId(null);
+    showNotice(`View renamed to "${name}".`);
   };
 
   /* ------------------------------------------------------------- filtering */
@@ -187,7 +231,6 @@ export function ProductIndexExample() {
           onColumnsChange={setColumns}
           existingViewNames={tabs.map((tab) => tab.label ?? "")}
           onSaveView={handleSaveView}
-          onDeleteView={savedView ? handleDeleteView : undefined}
           onExport={handleExport}
           onRefresh={handleRefresh}
           refreshing={refreshing}
@@ -213,6 +256,26 @@ export function ProductIndexExample() {
           loading={refreshing}
         />
       </BlockStack>
+
+      <Modal
+        open={editingView != null}
+        onClose={() => setEditingViewId(null)}
+        title="Edit view"
+        primaryAction={{
+          content: "Save",
+          onAction: handleRenameView,
+          disabled: !editName.trim() || Boolean(editNameError),
+        }}
+        secondaryActions={[{ content: "Cancel", onAction: () => setEditingViewId(null) }]}
+      >
+        <TextField
+          label="Name"
+          value={editName}
+          error={editNameError}
+          autoComplete="off"
+          onChange={setEditName}
+        />
+      </Modal>
     </Page>
   );
 }

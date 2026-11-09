@@ -26,6 +26,7 @@ import type {
   TabsPropsType,
   TabsVariantType,
 } from "./Tabs.types";
+import { ActionList } from "../ActionList";
 import { Clickable } from "../Clickable";
 import { Icon } from "../Icon";
 import { Badge } from "../Badge";
@@ -34,6 +35,7 @@ import { InlineStack } from "../InlineStack";
 import { BlockStack } from "../BlockStack";
 import { Box } from "../Box";
 import { Popover, usePopover } from "../Popover";
+import type { ActionListItemType } from "../ActionList/ActionList.types";
 import { TABS_CSS, TABS_STYLE_ID } from "./Tabs.css";
 
 const TabsContext = createContext<TabsContextType | null>(null);
@@ -110,6 +112,35 @@ function partitionChildren(children: ReactNode): {
   return { panels, extras };
 }
 
+function viewActions<TId extends string | number>(
+  tab: TabItemType<TId>,
+  closeMenu: () => void,
+): ActionListItemType[] {
+  const items: ActionListItemType[] = [];
+  if (tab.actions?.onEdit) {
+    items.push({
+      content: "Edit",
+      icon: "edit",
+      onAction: () => {
+        tab.actions?.onEdit?.();
+        closeMenu();
+      },
+    });
+  }
+  if (tab.actions?.onRemove) {
+    items.push({
+      content: "Remove",
+      icon: "delete",
+      destructive: true,
+      onAction: () => {
+        tab.actions?.onRemove?.();
+        closeMenu();
+      },
+    });
+  }
+  return items;
+}
+
 function CompactTabsMenu<TId extends string | number = string>({
   tabs,
   isTabSelected,
@@ -128,73 +159,94 @@ function CompactTabsMenu<TId extends string | number = string>({
       <BlockStack gap="small-500">
         {tabs.map((tab, index) => {
           const isSelected = isTabSelected(tab, index);
+          const actions = viewActions(tab, close);
+          const label = tab.accessibilityLabel ?? tab.label;
 
           const menuItem = (
-            <Clickable
+            <InlineStack
               key={tab.id ?? index}
-              disabled={tab.disabled}
-              background={isSelected ? "subdued" : "transparent"}
-              paddingInline="small-200"
-              blockSize="28px"
-              borderRadius="large-200"
-              inlineSize="fill"
-              commandFor={popoverId}
-              command="--hide"
-              accessibilityLabel={tab.accessibilityLabel ?? tab.label}
-              onClick={() => {
-                if (tab.disabled) return;
-                onSelectTab(tab, index);
-                close();
-              }}
+              alignItems="center"
+              gap="small-500"
+              wrap={false}
             >
-              <div
-                style={
-                  {
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                    gap: 8,
-                    width: "100%",
-                    height: "100%",
-                    opacity: tab.disabled ? 0.5 : 1,
-                    "--p-color-bg-surface-hover": "#f1f1f2",
-                    "--p-color-bg-surface-secondary-hover": "#f1f1f2",
-                    "--p-color-bg-surface-tertiary-hover": "#f1f1f2",
-                    "--t-surface-secondary-hover": "#f1f1f2",
-                    "--t-surface-tertiary-hover": "#f1f1f2",
-                  } as CSSProperties
-                }
+              <Clickable
+                disabled={tab.disabled}
+                background={isSelected ? "subdued" : "transparent"}
+                paddingInline="small-200"
+                blockSize="28px"
+                borderRadius="large-200"
+                inlineSize="fill"
+                commandFor={popoverId}
+                command="--hide"
+                accessibilityLabel={label}
+                onClick={() => {
+                  if (tab.disabled) return;
+                  onSelectTab(tab, index);
+                  close();
+                }}
               >
-                <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                  <div
-                    style={{
-                      width: 16,
-                      height: 16,
+                <div
+                  style={
+                    {
                       display: "flex",
                       alignItems: "center",
-                      justifyContent: "center",
-                      flexShrink: 0,
-                    }}
-                  >
-                    {isSelected && <Icon type="check" />}
+                      justifyContent: "space-between",
+                      gap: 8,
+                      width: "100%",
+                      height: "100%",
+                      opacity: tab.disabled ? 0.5 : 1,
+                      "--p-color-bg-surface-hover": "#f1f1f2",
+                      "--p-color-bg-surface-secondary-hover": "#f1f1f2",
+                      "--p-color-bg-surface-tertiary-hover": "#f1f1f2",
+                      "--t-surface-secondary-hover": "#f1f1f2",
+                      "--t-surface-tertiary-hover": "#f1f1f2",
+                    } as CSSProperties
+                  }
+                >
+                  <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                    <div
+                      style={{
+                        width: 16,
+                        height: 16,
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        flexShrink: 0,
+                      }}
+                    >
+                      {isSelected && <Icon type="check" />}
+                    </div>
+
+                    {tab.icon && <Icon type={tab.icon} />}
+
+                    {tab.label && (
+                      <Text variant="small" lineClamp={1} heading={isSelected}>
+                        {tab.label}
+                      </Text>
+                    )}
                   </div>
 
-                  {tab.icon && <Icon type={tab.icon} />}
-
-                  {tab.label && (
-                    <Text variant="small" lineClamp={1} heading={isSelected}>
-                      {tab.label}
-                    </Text>
+                  {showBadge && tab.badge !== undefined && (
+                    <Badge color="strong" tone={tab.disabled ? "neutral" : tab.badgeTone}>
+                      {tab.badge}
+                    </Badge>
                   )}
                 </div>
-
-                {showBadge && tab.badge !== undefined && (
-                  <Badge color="strong" tone={tab.disabled ? "neutral" : tab.badgeTone}>
-                    {tab.badge}
-                  </Badge>
-                )}
-              </div>
-            </Clickable>
+              </Clickable>
+              {actions.length > 0 ? (
+                <ActionList items={actions}>
+                  <Clickable
+                    accessibilityLabel={`Actions for ${label ?? "view"}`}
+                    background="transparent"
+                    padding="small-500"
+                    borderRadius="large-200"
+                    onClick={(event) => event.stopPropagation()}
+                  >
+                    <Icon type="menu-horizontal" />
+                  </Clickable>
+                </ActionList>
+              ) : null}
+            </InlineStack>
           );
 
           if (tab.tooltip) {
@@ -452,12 +504,17 @@ function TabsInner<TId extends string | number = string>(
 
       {tabs.map((tab, index) => {
         const isSelected = isTabSelected(tab, index);
+        const hasLabel = tab.label != null && tab.label !== "";
+        const hasBadge =
+          showBadge && tab.badge != null && tab.badge !== false && tab.badge !== "";
+        const iconOnly = Boolean(tab.icon) && !hasLabel && !hasBadge;
 
         const button = (
           <button
             type="button"
             role="tab"
             data-slot="tabs-option"
+            data-icon-only={iconOnly ? "true" : undefined}
             ref={(node) => {
               optionRefs.current[index] = node;
             }}

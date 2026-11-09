@@ -9,10 +9,12 @@ import {
   IndexFilters,
   InlineStack,
   Link,
+  Modal,
   Page,
   Table,
   Tabs,
   Text,
+  TextField,
 } from "@xco-agency/corex-ui";
 import type {
   IndexAppliedFilterType,
@@ -259,6 +261,8 @@ const filterDefinitions: IndexFilterItemType[] = [
 export function IndexFiltersExample() {
   const [selectedView, setSelectedView] = useState("all");
   const [savedViews, setSavedViews] = useState<SavedViewTabType[]>([]);
+  const [editingViewId, setEditingViewId] = useState<string | null>(null);
+  const [editName, setEditName] = useState("");
   const [query, setQuery] = useState("");
   const [appliedFilters, setAppliedFilters] = useState<IndexAppliedFilterType[]>([
     {
@@ -371,6 +375,43 @@ export function IndexFiltersExample() {
     setTimeout(() => setSavedNotice(""), 3000);
   };
 
+  const handleEditView = (id: string) => {
+    const view = savedViews.find((item) => item.id === id);
+    if (!view) return;
+    setEditingViewId(id);
+    setEditName(view.name);
+  };
+
+  const handleRenameView = () => {
+    const name = editName.trim();
+    if (!name || !editingViewId) return;
+    const duplicate = [...statusTabs, ...savedViews].some(
+      (tab) =>
+        tab.id !== editingViewId && tab.label?.toLowerCase() === name.toLowerCase(),
+    );
+    if (duplicate) return;
+    setSavedViews((prev) =>
+      prev.map((view) => (view.id === editingViewId ? { ...view, name } : view)),
+    );
+    setEditingViewId(null);
+    setSavedNotice(`Renamed view to "${name}"`);
+    setTimeout(() => setSavedNotice(""), 3000);
+  };
+
+  const handleRemoveView = (id: string) => {
+    const view = savedViews.find((item) => item.id === id);
+    setSavedViews((prev) => prev.filter((item) => item.id !== id));
+    if (selectedView === id) {
+      setSelectedView("all");
+      setQuery("");
+      setAppliedFilters([]);
+    }
+    if (view) {
+      setSavedNotice(`Removed view "${view.name}"`);
+      setTimeout(() => setSavedNotice(""), 3000);
+    }
+  };
+
   const handleSelectView = (tabId: string) => {
     setSelectedView(tabId);
     const saved = savedViews.find((view) => view.id === tabId);
@@ -387,8 +428,26 @@ export function IndexFiltersExample() {
 
   const viewTabs: TabItemType[] = [
     ...statusTabs,
-    ...savedViews.map((view) => ({ id: view.id, label: view.name })),
+    ...savedViews.map((view) => ({
+      id: view.id,
+      label: view.name,
+      actions: {
+        onEdit: () => handleEditView(view.id),
+        onRemove: () => handleRemoveView(view.id),
+      },
+    })),
   ];
+  const editingView = savedViews.find((view) => view.id === editingViewId);
+  const editNameError =
+    editingView &&
+    editName.trim() &&
+    viewTabs.some(
+      (tab) =>
+        tab.id !== editingView.id &&
+        tab.label?.toLowerCase() === editName.trim().toLowerCase(),
+    )
+      ? "A view with this name already exists"
+      : undefined;
   const isStatusView = statusTabs.some((tab) => tab.id === selectedView);
 
   // Filter products based on search, view tabs, applied filters, and column visibility
@@ -571,6 +630,26 @@ export function IndexFiltersExample() {
           )}
         </Card>
       </BlockStack>
+
+      <Modal
+        open={editingView != null}
+        onClose={() => setEditingViewId(null)}
+        title="Edit view"
+        primaryAction={{
+          content: "Save",
+          onAction: handleRenameView,
+          disabled: !editName.trim() || Boolean(editNameError),
+        }}
+        secondaryActions={[{ content: "Cancel", onAction: () => setEditingViewId(null) }]}
+      >
+        <TextField
+          label="Name"
+          value={editName}
+          error={editNameError}
+          autoComplete="off"
+          onChange={setEditName}
+        />
+      </Modal>
     </Page>
   );
 }

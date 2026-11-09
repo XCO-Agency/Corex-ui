@@ -5,6 +5,7 @@ import {
   Box,
   Button,
   Clickable,
+  Divider,
   Grid,
   Image,
   InlineStack,
@@ -27,12 +28,12 @@ function Tile({ item, href }: { item: ComponentEntry; href: string }) {
       inlineSize="fill"
       borderWidth="base"
       borderColor="base"
-      borderRadius="base"
+      borderRadius="large-200"
       overflow="hidden"
       background="base"
     >
       <BlockStack gap="none">
-        <Box background="subdued" padding="small" minBlockSize="96px">
+        <Box background="subdued" padding="none" minBlockSize="96px">
           {screenshot ? (
             <Image
               src={screenshot}
@@ -49,7 +50,8 @@ function Tile({ item, href }: { item: ComponentEntry; href: string }) {
             </Text>
           )}
         </Box>
-        <Box padding="small" borderWidth="base" borderColor="base">
+        <Divider />
+        <Box padding="small">
           <BlockStack gap="small-500">
             <Text fontWeight="medium" lineClamp={1}>
               {item.name}
@@ -64,7 +66,15 @@ function Tile({ item, href }: { item: ComponentEntry; href: string }) {
   );
 }
 
-function GroupHeading({ id, title, count }: { id: string; title: string; count: number }) {
+function GroupHeading({
+  id,
+  title,
+  count,
+}: {
+  id: string;
+  title: string;
+  count: number;
+}) {
   return (
     <Box id={id}>
       <InlineStack gap="small-200" alignItems="baseline">
@@ -112,12 +122,16 @@ export function Overview() {
             Build Shopify apps, ship faster
           </Text>
           <Text as="p" color="subdued">
-            A legacy @shopify/polaris-compatible component library backed by Shopify&apos;s
-            Polaris web components. Swap the import, keep your code.
+            A legacy @shopify/polaris-compatible component library backed by
+            Shopify&apos;s Polaris web components. Swap the import, keep your code.
           </Text>
           <InlineStack gap="small" alignItems="center" wrap>
             <CommandSnippet command="pnpm add @xco-agency/corex-ui" />
-            <Button variant="primary" icon="arrow-right" onClick={() => navigate("/installation")}>
+            <Button
+              variant="primary"
+              icon="arrow-right"
+              onClick={() => navigate("/installation")}
+            >
               Get started
             </Button>
           </InlineStack>
@@ -154,7 +168,12 @@ export function Overview() {
 
         {blocks.length > 0 && (
           <BlockStack gap="large-200">
-            <Box id="blocks" paddingBlockStart="large" borderWidth="base" borderColor="base">
+            <Box
+              id="blocks"
+              paddingBlockStart="large"
+              borderWidth="base"
+              borderColor="base"
+            >
               <BlockStack gap="small-200">
                 <Text as="h2" variant="headingMd" heading>
                   Blocks

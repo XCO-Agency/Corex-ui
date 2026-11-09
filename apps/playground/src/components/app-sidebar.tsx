@@ -7,9 +7,11 @@ import {
   Clickable,
   Collapsible,
   Icon,
+  IconTile,
   InlineStack,
   Navigation,
   Text,
+  Thumbnail,
   type IconType,
 } from "@xco-agency/corex-ui";
 import { SidebarCategoryItem } from "@/components/SidebarCategoryItem";
@@ -36,7 +38,12 @@ const GUIDE_LINKS: {
     icon: "import",
     match: (pathname) => pathname === "/installation",
   },
-  { to: "/icons", label: "Icons", icon: "grid", match: (pathname) => pathname === "/icons" },
+  {
+    to: "/icons",
+    label: "Icons",
+    icon: "grid",
+    match: (pathname) => pathname === "/icons",
+  },
   {
     to: "/apps-icons",
     label: "Apps Icons",
@@ -131,17 +138,48 @@ export function AppSidebar({ onOpenSearch, onNavigate }: AppSidebarPropsType) {
     <Navigation>
       <BlockStack gap="small">
         <InlineStack alignItems="center" justifyContent="space-between" gap="small-200">
-          <Clickable onClick={() => go("/")} paddingInline="small-200" paddingBlock="small-300">
+          <Clickable
+            onClick={() => go("/")}
+            paddingInline="small-200"
+            paddingBlock="small-300"
+          >
             <InlineStack alignItems="center" gap="small-200">
-              <Text fontWeight="bold">cx</Text>
+              <Thumbnail src="/brand/corex-icon.svg" alt="" size="small-200" />
               <Text fontWeight="semibold">Corex UI</Text>
             </InlineStack>
           </Clickable>
           <Badge>v{COREX_UI_VERSION}</Badge>
         </InlineStack>
-        <Button icon="search" variant="secondary" onClick={onOpenSearch} inlineSize="fill">
-          Search
-        </Button>
+        <IconTile size="auto" tone="subdued" color="strong" borderRadius="full">
+          <Clickable
+            onClick={onOpenSearch}
+            inlineSize="fill"
+            padding="small-400 small-200"
+            borderRadius="large-200"
+            border="base"
+            borderWidth="small"
+            background="base"
+          >
+            <InlineStack
+              alignItems="center"
+              justifyContent="space-between"
+              gap="small-200"
+            >
+              <InlineStack alignItems="center" gap="small-300">
+                <Icon type="search" />
+                <Text>Search</Text>
+              </InlineStack>
+              <InlineStack alignItems="center" gap="small-500">
+                <kbd className="bg-black/10 size-5 font-semibold font-mono text-lg flex justify-center items-center rounded-sm">
+                  ⌘
+                </kbd>
+                <kbd className="bg-black/10 size-5 font-medium font-mono text-sm flex justify-center items-center rounded-sm">
+                  K
+                </kbd>
+              </InlineStack>
+            </InlineStack>
+          </Clickable>
+        </IconTile>
       </BlockStack>
 
       <Navigation.Section>

@@ -13,6 +13,7 @@ import { ComponentCanvas } from "./ComponentCanvas";
 import { ComponentCodeViewer } from "./ComponentCodeViewer";
 import { ComponentFullscreenOverlay } from "./ComponentFullscreenOverlay";
 import { ComponentExampleToolbar } from "./ComponentExampleToolbar";
+import { Card } from "@xco-agency/corex-ui";
 
 export type ComponentExampleCardPropsType = {
   example: ComponentExampleType;
@@ -69,7 +70,7 @@ export function ComponentExampleCard({
         />
       </InlineStack>
 
-      <Box borderWidth="base" borderColor="base" borderRadius="base" overflow="hidden" background="base">
+      <Card padding="none">
         <BlockStack gap="none">
           <ComponentExampleToolbar
             variant="card"
@@ -100,7 +101,7 @@ export function ComponentExampleCard({
             />
           )}
         </BlockStack>
-      </Box>
+      </Card>
 
       <ComponentFullscreenOverlay
         open={isFullscreen}

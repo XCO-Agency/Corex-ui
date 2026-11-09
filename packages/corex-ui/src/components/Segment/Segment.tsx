@@ -8,11 +8,18 @@ import {
   type ForwardedRef,
   type KeyboardEvent,
   type ReactElement,
+  type ReactNode,
 } from "react";
 import { mergeRefs } from "../../core/mergeRefs";
 import { useIsomorphicLayoutEffect } from "../../core/useIsomorphicLayoutEffect";
+import { Icon } from "../Icon";
 import { SEGMENT_CSS, SEGMENT_STYLE_ID } from "./Segment.css";
 import type { SegmentComponentType, SegmentPropsType } from "./Segment.types";
+
+function isIconOnlyOption(option: { label?: ReactNode; icon?: unknown }) {
+  const hasLabel = option.label != null && option.label !== false && option.label !== "";
+  return Boolean(option.icon) && !hasLabel;
+}
 
 function ensureStyles(node: HTMLElement | null) {
   const doc = node?.ownerDocument ?? (typeof document !== "undefined" ? document : null);
@@ -153,6 +160,7 @@ function SegmentInner<TValue extends string = string>(
       data-inline-size={inlineSize}
       data-disabled={disabled ? "true" : undefined}
       data-has-selection={hasSelection ? "true" : "false"}
+      data-icon-only={options.every(isIconOnlyOption) ? "true" : undefined}
     >
       {label != null && label !== false && label !== "" ? (
         <span data-slot="segment-label" id={labelId}>
@@ -173,6 +181,7 @@ function SegmentInner<TValue extends string = string>(
         {options.map((option, index) => {
           const isSelected = option.value === selectedValue;
           const isOptionDisabled = disabled || Boolean(option.disabled);
+          const iconOnly = isIconOnlyOption(option);
 
           return (
             <button
@@ -183,6 +192,7 @@ function SegmentInner<TValue extends string = string>(
               type="button"
               role="radio"
               data-slot="segment-option"
+              data-icon-only={iconOnly ? "true" : undefined}
               name={name}
               value={option.value}
               aria-checked={isSelected}
@@ -197,7 +207,8 @@ function SegmentInner<TValue extends string = string>(
               }
               onClick={() => selectValue(option.value)}
             >
-              {option.label}
+              {option.icon ? <Icon type={option.icon} /> : null}
+              {iconOnly ? null : option.label}
             </button>
           );
         })}

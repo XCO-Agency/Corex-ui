@@ -96,8 +96,6 @@ export type ProductIndexFiltersPropsType = {
   onColumnsChange: (columns: ProductIndexColumnType[]) => void;
   existingViewNames: string[];
   onSaveView: (view: IndexFiltersSavedViewType) => void;
-  /** Set when the selected tab is a saved view; shows the delete action. */
-  onDeleteView?: () => void;
   onExport: () => void;
   onRefresh: () => void;
   refreshing: boolean;

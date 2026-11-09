@@ -1,6 +1,17 @@
 import type { ReactNode } from "react";
 import { IconType, ToneType } from "../../types/common";
 
+/**
+ * Actions for a custom saved view. Built-in views omit this.
+ * In compact mode, the view list shows a menu on that row.
+ */
+export type TabItemActionsType = {
+  /** Called when Edit is chosen. */
+  onEdit?: () => void;
+  /** Called when Remove is chosen. */
+  onRemove?: () => void;
+};
+
 export type TabItemType<TId extends string | number = string> = {
   id: TId;
   label?: string;
@@ -10,6 +21,11 @@ export type TabItemType<TId extends string | number = string> = {
   badgeTone?: ToneType;
   disabled?: boolean;
   accessibilityLabel?: string;
+  /**
+   * Edit and remove actions for a custom saved view.
+   * Compact mode shows a menu on that row. Built-in views omit this.
+   */
+  actions?: TabItemActionsType;
 };
 
 /** `segment` = pill track (default). `card` = folder tabs connected to a panel. */

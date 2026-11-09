@@ -3,7 +3,6 @@ import {
   BlockStack,
   Box,
   Button,
-  ButtonGroup,
   InlineStack,
   Segment,
   Text,
@@ -65,53 +64,42 @@ function ViewportControls({
   onToggleFullscreen: () => void;
   fullscreenOnly?: boolean;
 }) {
+  const fullscreen = (
+    <Tooltip content="Full screen">
+      <Button
+        icon="maximize"
+        variant="tertiary"
+        accessibilityLabel="Full screen"
+        onClick={onToggleFullscreen}
+      />
+    </Tooltip>
+  );
+
+  if (fullscreenOnly) return fullscreen;
+
   return (
-    <ButtonGroup gap="none" accessibilityLabel="Viewport">
-      {!fullscreenOnly && (
-        <>
-          <Tooltip content="Desktop (100%)">
-            <Button
-              icon="desktop"
-              variant={viewport === "100%" ? "secondary" : "tertiary"}
-              accessibilityLabel="Desktop"
-              onClick={() => onViewportChange("100%")}
-            />
-          </Tooltip>
-          <Tooltip content="Tablet (768px)">
-            <Button
-              icon="tablet"
-              variant={viewport === "768px" ? "secondary" : "tertiary"}
-              accessibilityLabel="Tablet"
-              onClick={() => onViewportChange("768px")}
-            />
-          </Tooltip>
-          <Tooltip content="Mobile (375px)">
-            <Button
-              icon="mobile"
-              variant={viewport === "375px" ? "secondary" : "tertiary"}
-              accessibilityLabel="Mobile"
-              onClick={() => onViewportChange("375px")}
-            />
-          </Tooltip>
-          <Tooltip content="Reset example">
-            <Button
-              icon="reset"
-              variant="tertiary"
-              accessibilityLabel="Reset example"
-              onClick={onRemount}
-            />
-          </Tooltip>
-        </>
-      )}
-      <Tooltip content="Full screen">
+    <InlineStack alignItems="center" gap="small-200">
+      <Segment<CanvasViewportType>
+        accessibilityLabel="Example viewport"
+        size="small"
+        value={viewport}
+        onChange={onViewportChange}
+        options={[
+          { value: "100%", icon: "desktop", accessibilityLabel: "Desktop (100%)" },
+          { value: "768px", icon: "tablet", accessibilityLabel: "Tablet (768px)" },
+          { value: "375px", icon: "mobile", accessibilityLabel: "Mobile (375px)" },
+        ]}
+      />
+      <Tooltip content="Reset example">
         <Button
-          icon="maximize"
+          icon="reset"
           variant="tertiary"
-          accessibilityLabel="Full screen"
-          onClick={onToggleFullscreen}
+          accessibilityLabel="Reset example"
+          onClick={onRemount}
         />
       </Tooltip>
-    </ButtonGroup>
+      {fullscreen}
+    </InlineStack>
   );
 }
 
@@ -192,14 +180,24 @@ export function ComponentExampleToolbar({
   }
 
   return (
-    <Box padding={variant === "overlay" ? "base" : "none"}>
+    <Box
+      padding={variant === "overlay" ? "base" : "none"}
+      border="base"
+      borderWidth="none none small none"
+    >
       <InlineStack alignItems="center" justifyContent="space-between" gap="small" wrap>
         <InlineStack alignItems="center" gap="small" wrap>
           {tabs}
-          <Text as={variant === "overlay" ? "h2" : "h3"} variant="headingSm" fontWeight="semibold">
+          <Text
+            as={variant === "overlay" ? "h2" : "h3"}
+            variant="headingSm"
+            fontWeight="semibold"
+          >
             {title}
           </Text>
-          {variant === "overlay" && componentName ? <BadgeLabel>{componentName}</BadgeLabel> : null}
+          {variant === "overlay" && componentName ? (
+            <BadgeLabel>{componentName}</BadgeLabel>
+          ) : null}
         </InlineStack>
         <InlineStack alignItems="center" gap="small-200" wrap>
           {viewportControls}

@@ -32,7 +32,6 @@ export function ProductIndexFilters({
   onColumnsChange,
   existingViewNames,
   onSaveView,
-  onDeleteView,
   onExport,
   onRefresh,
   refreshing,
@@ -133,13 +132,6 @@ export function ProductIndexFilters({
       />
 
       <IndexFilters.Actions>
-        {/* Delete is only relevant while a saved view is selected. */}
-        <IndexFilters.ViewVisibleActiveFilter visible={Boolean(onDeleteView)}>
-          <Button variant="tertiary" tone="critical" onClick={onDeleteView}>
-            Delete view
-          </Button>
-        </IndexFilters.ViewVisibleActiveFilter>
-
         {/* Shown only while a search or filter is active. */}
         <IndexFilters.ViewVisibleActiveFilter>
           <Button variant="tertiary" icon="export" onClick={onExport}>

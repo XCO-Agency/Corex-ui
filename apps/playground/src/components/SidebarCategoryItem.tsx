@@ -2,14 +2,15 @@ import * as React from "react";
 import { useNavigate } from "react-router-dom";
 import {
   BlockStack,
+  Box,
   Clickable,
   Collapsible,
   Icon,
   InlineStack,
-  Navigation,
   Text,
 } from "@xco-agency/corex-ui";
 import { type ComponentEntry } from "@/data/registry";
+import { getCategoryIcon } from "@/lib/category-icons";
 
 export type SidebarCategoryItemPropsType = {
   category: string;
@@ -48,17 +49,26 @@ export function SidebarCategoryItem({
       onExpandedChange={setIsOpen}
       accessibilityLabel={category}
       content={
-        <BlockStack gap="none" paddingInlineStart="small">
+        <BlockStack gap="none">
           {components.map((component) => {
             const itemPath = `/${basePath}/${component.slug}`;
+            const selected = currentPath === itemPath;
             return (
-              <Navigation.Item
+              <Clickable
                 key={itemPath}
-                id={itemPath}
-                label={component.name}
-                selected={currentPath === itemPath}
+                inlineSize="fill"
+                paddingInline="small-200"
+                paddingBlock="small-300"
+                borderRadius="base"
+                background={selected ? "strong" : undefined}
+                accessibilityLabel={component.name}
                 onClick={() => openItem(itemPath)}
-              />
+              >
+                <InlineStack alignItems="center" gap="small-300">
+                  <Box inlineSize="20px" />
+                  <Text lineClamp={1}>{component.name}</Text>
+                </InlineStack>
+              </Clickable>
             );
           })}
         </BlockStack>
@@ -75,9 +85,12 @@ export function SidebarCategoryItem({
           aria-expanded={expanded}
         >
           <InlineStack alignItems="center" justifyContent="space-between" gap="small-200">
-            <Text fontWeight="medium" lineClamp={1}>
-              {category}
-            </Text>
+            <InlineStack alignItems="center" gap="small-300">
+              <Icon source={getCategoryIcon(category)} />
+              <Text fontWeight="medium" lineClamp={1}>
+                {category}
+              </Text>
+            </InlineStack>
             <InlineStack alignItems="center" gap="small-300">
               <Text variant="xs" color="subdued">
                 {components.length}

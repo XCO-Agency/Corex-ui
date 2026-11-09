@@ -138,6 +138,23 @@ export const TABS_CSS = `
   min-inline-size: 0;
 }
 
+/* Icon with no label and no badge: the hit target is a square matching the track height. */
+[data-slot="tabs-option"][data-icon-only="true"] {
+  padding-inline: 0;
+  inline-size: 28px;
+  min-inline-size: 28px;
+  max-inline-size: 28px;
+}
+
+[data-slot="tabs"][data-inline-size="fill"] [data-slot="tabs-option-wrap"]:has([data-icon-only="true"]) {
+  flex: 0 0 auto;
+}
+
+[data-slot="tabs"][data-inline-size="fill"] [data-slot="tabs-option"][data-icon-only="true"] {
+  flex: 0 0 28px;
+  inline-size: 28px;
+}
+
 /* ── Card / folder (Shopify analytics Freeform/Cohorts style) ────────
  * Continuous gray rail + white active tab with large top radius and
  * concave bottom fillets (the scooped shoulders from the reference).
@@ -272,6 +289,18 @@ export const TABS_CSS = `
   outline: 2px solid var(--p-color-border-focus, #005bd3);
   outline-offset: -2px;
   box-shadow: none;
+}
+
+[data-slot="tabs"][data-variant="card"] [data-slot="tabs-option-wrap"]:has([data-icon-only="true"]) {
+  flex: 0 0 auto;
+}
+
+[data-slot="tabs"][data-variant="card"] [data-slot="tabs-option"][data-icon-only="true"] {
+  flex: 0 0 36px;
+  inline-size: 36px;
+  min-inline-size: 36px;
+  max-inline-size: 36px;
+  padding-inline: 0;
 }
 
 [data-slot="tabs"][data-variant="card"] [data-slot="tabs-option"] s-icon {

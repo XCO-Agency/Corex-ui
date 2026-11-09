@@ -52,6 +52,26 @@ describe("Tabs", () => {
     expect(onSelect).not.toHaveBeenCalled();
   });
 
+  it("marks a tab as icon-only when it has an icon and no label or badge", () => {
+    render(
+      <Tabs
+        tabs={[
+          { id: "desktop", icon: "desktop", accessibilityLabel: "Desktop" },
+          { id: "tablet", icon: "tablet", label: "Tablet" },
+          { id: "mobile", icon: "mobile", badge: 2, accessibilityLabel: "Mobile" },
+        ]}
+        value="desktop"
+      />,
+    );
+
+    expect(screen.getByRole("tab", { name: "Desktop" })).toHaveAttribute(
+      "data-icon-only",
+      "true",
+    );
+    expect(screen.getByRole("tab", { name: "Tablet" })).not.toHaveAttribute("data-icon-only");
+    expect(screen.getByRole("tab", { name: "Mobile" })).not.toHaveAttribute("data-icon-only");
+  });
+
   it("renders badge, tooltip, and rightSide content", () => {
     const extendedTabs = [
       { id: "orders", label: "Orders", badge: 5, tooltip: "View orders" },
@@ -296,6 +316,48 @@ describe("Tabs", () => {
       render(<Tabs tabs={richTabs} value="all" compact />);
 
       expect(screen.getAllByText("42").length).toBeGreaterThanOrEqual(1);
+    });
+
+    it("shows edit and remove on custom saved views only", () => {
+      const onEdit = vi.fn();
+      const onRemove = vi.fn();
+      const onChange = vi.fn();
+
+      render(
+        <Tabs
+          tabs={[
+            { id: "all", label: "All" },
+            {
+              id: "low-stock",
+              label: "Low stock",
+              actions: { onEdit, onRemove },
+            },
+          ]}
+          value="all"
+          onChange={onChange}
+          compact
+        />,
+      );
+
+      const menus = document.querySelectorAll(
+        's-clickable[accessibilitylabel^="Actions for "]',
+      );
+      expect(menus).toHaveLength(1);
+      expect(menus[0]).toHaveAttribute("accessibilitylabel", "Actions for Low stock");
+
+      screen
+        .getByText("Edit")
+        .closest("s-clickable")
+        ?.dispatchEvent(new MouseEvent("click", { bubbles: true }));
+      expect(onEdit).toHaveBeenCalledOnce();
+      expect(onChange).not.toHaveBeenCalled();
+
+      screen
+        .getByText("Remove")
+        .closest("s-clickable")
+        ?.dispatchEvent(new MouseEvent("click", { bubbles: true }));
+      expect(onRemove).toHaveBeenCalledOnce();
+      expect(onChange).not.toHaveBeenCalled();
     });
 
     it("renders rightSide alongside the compact trigger", () => {

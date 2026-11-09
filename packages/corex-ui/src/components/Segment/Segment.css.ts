@@ -167,6 +167,35 @@ export const SEGMENT_CSS = `
   opacity: 0.5;
 }
 
+[data-slot="segment-option"][data-icon-only="true"] {
+  inline-size: var(--cx-segment-action-height, 28px);
+  min-inline-size: var(--cx-segment-action-height, 28px);
+  max-inline-size: var(--cx-segment-action-height, 28px);
+  padding-inline: 0;
+  justify-self: center;
+}
+
+/* Every option is an icon and nothing else: each cell matches the track height. */
+[data-slot="segment"][data-icon-only="true"] [data-slot="segment-track"] {
+  display: inline-flex;
+  inline-size: auto;
+}
+
+[data-slot="segment"][data-icon-only="true"][data-inline-size="fill"] [data-slot="segment-track"] {
+  inline-size: auto;
+}
+
+[data-slot="segment"][data-icon-only="true"] [data-slot="segment-option"] {
+  inline-size: var(--cx-segment-action-height, 28px);
+  min-inline-size: var(--cx-segment-action-height, 28px);
+  max-inline-size: var(--cx-segment-action-height, 28px);
+  padding-inline: 0;
+}
+
+[data-slot="segment"][data-icon-only="true"] [data-slot="segment-thumb"] {
+  inline-size: var(--cx-segment-action-height, 28px);
+}
+
 [data-slot="segment"][data-disabled="true"] {
   pointer-events: none;
 }
