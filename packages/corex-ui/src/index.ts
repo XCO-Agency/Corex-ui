@@ -74,6 +74,7 @@ export * from "./components/Popover";
 export * from "./components/FlexPopover";
 export * from "./components/Floating";
 export * from "./components/Collapsible";
+export * from "./components/ConditionsRepeater";
 export * from "./components/Transition";
 export * from "./components/Menu";
 export * from "./components/Navigation";
