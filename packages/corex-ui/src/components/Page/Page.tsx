@@ -125,12 +125,18 @@ function renderBreadcrumbActions(
 
 function renderAside(aside?: ReactNode) {
   if (!aside) return null;
-  if (isValidElement(aside)) {
+
+  // `<s-page>` only projects a light-DOM child that actually has `slot="aside"`.
+  // Host elements accept that attribute. A composite component (for example
+  // `aside={<RecommendationsInfo />}`) does not: `slot` stays a React prop and
+  // never reaches the DOM, so the node falls through into the main column.
+  if (isValidElement(aside) && typeof aside.type === "string") {
     const slot = (aside.props as { slot?: string })?.slot;
     return cloneElement(aside, {
       slot: slot ?? "aside",
     } as Record<string, unknown>);
   }
+
   return <div slot="aside">{aside}</div>;
 }
 

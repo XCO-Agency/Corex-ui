@@ -169,6 +169,29 @@ describe("Page", () => {
     expect(screen.getByText("Paid")).toHaveAttribute("slot", "accessory");
   });
 
+  it("assigns the aside slot when the content is a composite component", () => {
+    function RecommendationsInfo() {
+      return <section>Recommendation details</section>;
+    }
+
+    render(
+      <Page
+        heading="AI Recommendations"
+        inlineSize="base"
+        aside={<RecommendationsInfo />}
+      >
+        Main body
+      </Page>,
+    );
+
+    const details = screen.getByText("Recommendation details");
+    const slotted = details.closest("[slot='aside']");
+    expect(slotted).not.toBeNull();
+    expect(slotted?.parentElement?.tagName.toLowerCase()).toBe("s-page");
+    expect(details).not.toHaveAttribute("slot", "aside");
+    expect(slotted).toContainElement(details);
+  });
+
   it("falls back to titleMetadata and additionalMetadata for accessory", () => {
     const { rerender } = render(
       <Page heading="Orders" titleMetadata={<span>Fulfilled</span>}>

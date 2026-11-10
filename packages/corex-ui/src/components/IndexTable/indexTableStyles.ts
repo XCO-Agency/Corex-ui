@@ -445,5 +445,4 @@ export const INDEX_TABLE_CSS = `
 }
 .cx-it__pagination--floating > * { pointer-events: auto; }
 .cx-it__footer { display: flex; justify-content: center; padding: 12px 8px; }
-.cx-it__empty { padding: 24px 16px; }
 `;
