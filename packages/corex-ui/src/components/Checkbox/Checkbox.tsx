@@ -1,4 +1,5 @@
 import { forwardRef } from "react";
+import { childrenText } from "../../core/childrenText";
 import { createWebComponent } from "../../core/createWebComponent";
 import type { CheckboxPropsType } from "./Checkbox.types";
 
@@ -19,12 +20,16 @@ export const Checkbox = forwardRef<HTMLElement, CheckboxPropsType>(function Chec
     helpText,
     details,
     id,
+    accessibilityLabel,
     ...rest
   },
   ref,
 ) {
   const resolvedLabelAccessibilityVisibility =
     labelAccessibilityVisibility ?? (labelHidden ? "exclusive" : undefined);
+  const labelText = typeof label === "string" ? label.trim() : childrenText(label);
+  const resolvedAccessibilityLabel =
+    accessibilityLabel || (labelText ? undefined : "Checkbox");
 
   const handleChange = (event: Event) => {
     const target = event.currentTarget as (EventTarget & { checked?: boolean }) | null;
@@ -38,6 +43,7 @@ export const Checkbox = forwardRef<HTMLElement, CheckboxPropsType>(function Chec
       label={label}
       checked={checked}
       indeterminate={indeterminate}
+      accessibilityLabel={resolvedAccessibilityLabel}
       labelAccessibilityVisibility={resolvedLabelAccessibilityVisibility}
       details={details ?? helpText}
       onChange={handleChange}

@@ -7,8 +7,6 @@ export type AvatarPropsType = Omit<NativeAvatarProps, "size"> & {
   name?: string;
   /** Shape of the avatar ('round' | 'square'). */
   shape?: "round" | "square" | (string & {});
-  /** Visually hidden label describing avatar. */
-  accessibilityLabel?: string;
   /** Source image URL (legacy Polaris prop mapping to `src`). */
   source?: string;
   /** Image URL alias mapping to `src`. */

@@ -8,11 +8,15 @@ const SButtonGroup = createWebComponent<HTMLElement>("s-button-group", {
 
 /** Thin wrapper: `s-button-group` accepts `<s-button>` children directly. */
 export const ButtonGroup = forwardRef<HTMLElement, ButtonGroupPropsType>(
-  function ButtonGroup({ children, fullWidth: _fullWidth, variant, gap, ...rest }, ref) {
+  function ButtonGroup(
+    { children, fullWidth: _fullWidth, variant, gap, accessibilityLabel, ...rest },
+    ref,
+  ) {
     return (
       <SButtonGroup
         ref={ref}
         gap={gap ?? (variant === "segmented" ? "none" : undefined)}
+        accessibilityLabel={accessibilityLabel || "Actions"}
         {...rest}
       >
         {children}

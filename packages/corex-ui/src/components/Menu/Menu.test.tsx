@@ -16,6 +16,7 @@ describe("Menu", () => {
 
     const el = document.querySelector("s-menu#actions-menu");
     expect(el).not.toBeNull();
+    expect(el).toHaveAttribute("accessibilitylabel", "Menu");
     expect(screen.getByText("Duplicate")).toBeInTheDocument();
     expect(screen.getByText("Delete")).toHaveAttribute("tone", "critical");
   });

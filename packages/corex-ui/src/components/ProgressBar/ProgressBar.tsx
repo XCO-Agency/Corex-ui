@@ -52,7 +52,10 @@ const SProgress = createWebComponent<HTMLElement>("s-progress");
  * instead.
  */
 export const ProgressBar = forwardRef<HTMLElement, ProgressBarPropsType>(
-  function ProgressBar({ accessibilityLabel, max, tone, value, ...rest }, ref) {
+  function ProgressBar(
+    { accessibilityLabel = "Progress", max, tone, value, ...rest },
+    ref,
+  ) {
     return (
       <SProgress
         ref={ref}

@@ -14,6 +14,7 @@ describe("ButtonGroup", () => {
 
     const group = screen.getByText("One").closest("s-button-group");
     expect(group).not.toBeNull();
+    expect(group).toHaveAttribute("accessibilitylabel", "Actions");
     expect(screen.getByText("Two")).toBeInTheDocument();
   });
 

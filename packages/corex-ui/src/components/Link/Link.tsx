@@ -1,4 +1,5 @@
 import { forwardRef, type CSSProperties } from "react";
+import { childrenText } from "../../core/childrenText";
 import { createWebComponent } from "../../core/createWebComponent";
 import type { LinkPropsType } from "./Link.types";
 
@@ -23,6 +24,7 @@ export const Link = forwardRef<HTMLElement, LinkPropsType>(function Link(
     removeUnderline,
     style,
     className,
+    accessibilityLabel,
     ...rest
   },
   ref,
@@ -32,6 +34,9 @@ export const Link = forwardRef<HTMLElement, LinkPropsType>(function Link(
   const resolvedRel = rel ?? (external ? "noopener noreferrer" : undefined);
   const resolvedDownload =
     typeof download === "boolean" ? (download ? "" : undefined) : download;
+  const visibleLabel = childrenText(children);
+  const resolvedAccessibilityLabel =
+    accessibilityLabel || (visibleLabel ? undefined : "Link");
 
   const combinedStyles: CSSProperties = {
     ...(monochrome ? { color: "inherit" } : {}),
@@ -46,6 +51,7 @@ export const Link = forwardRef<HTMLElement, LinkPropsType>(function Link(
       target={resolvedTarget}
       rel={resolvedRel}
       download={resolvedDownload}
+      accessibilityLabel={resolvedAccessibilityLabel}
       style={combinedStyles}
       className={className}
       {...rest}

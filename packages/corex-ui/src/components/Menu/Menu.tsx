@@ -9,11 +9,11 @@ const SMenu = createWebComponent<HTMLElement>("s-menu");
  * `Button` using `commandFor={menuId}` — see `docs/app-bridge.md`.
  */
 export const Menu = forwardRef<HTMLElement, MenuPropsType>(function Menu(
-  { children, ...rest },
+  { children, accessibilityLabel = "Menu", ...rest },
   ref,
 ) {
   return (
-    <SMenu ref={ref} {...rest}>
+    <SMenu ref={ref} accessibilityLabel={accessibilityLabel} {...rest}>
       {children}
     </SMenu>
   );

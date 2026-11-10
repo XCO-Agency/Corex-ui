@@ -5,12 +5,18 @@ import { Card } from "./Card";
 describe("Card", () => {
   it("renders an s-section with an optional title", () => {
     render(<Card title="Details">Body content</Card>);
-    expect(screen.getByText("Body content").closest("s-section")).not.toBeNull();
+    expect(screen.getByText("Body content").closest("s-section")).toHaveAttribute(
+      "accessibilitylabel",
+      "Details",
+    );
     expect(screen.getByText("Details").closest("s-text")).not.toBeNull();
   });
 
   it("renders without a title", () => {
     render(<Card>Just content</Card>);
-    expect(screen.getByText("Just content").closest("s-section")).not.toBeNull();
+    expect(screen.getByText("Just content").closest("s-section")).toHaveAttribute(
+      "accessibilitylabel",
+      "Section",
+    );
   });
 });
