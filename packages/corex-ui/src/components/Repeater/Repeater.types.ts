@@ -1,19 +1,19 @@
 import type { ReactNode } from "react";
 
 /** The id a row is keyed and announced by. */
-export type ConditionsRepeaterKeyType = string | number;
+export type RepeaterKeyType = string | number;
 
-export type ConditionsRepeaterPropsType<ItemType> = {
+export type RepeaterPropsType<ItemType> = {
   /** The rows, in order. */
   items: readonly ItemType[];
   /**
    * A stable id per row. Defaults to `item.id`, then the index. A stable id is
    * what lets a row added after the first render grow in while the rest stay.
    */
-  getItemId?: (item: ItemType, index: number) => ConditionsRepeaterKeyType;
+  getItemId?: (item: ItemType, index: number) => RepeaterKeyType;
   /**
    * The row's top line: its field, operator, comparator... Usually
-   * `ConditionsRepeater.Pill`s. Wraps when it runs out of room.
+   * `Repeater.Pill`s. Wraps when it runs out of room.
    */
   renderControls: (item: ItemType, index: number) => ReactNode;
   /**
@@ -81,7 +81,7 @@ export type ConditionsRepeaterPropsType<ItemType> = {
   id?: string;
 };
 
-export type ConditionsRepeaterPillPropsType = {
+export type RepeaterPillPropsType = {
   /** The current choice, or a prompt when there is none. */
   label: ReactNode;
   /** Whether the pill's menu is open; sets `aria-expanded`. */
@@ -99,15 +99,15 @@ export type ConditionsRepeaterPillPropsType = {
   onOpenChange?: (open: boolean) => void;
 };
 
-export type ConditionsRepeaterOptionType = {
+export type RepeaterOptionType = {
   label: string;
   value: string;
   /** A second, subdued line under the label. */
   detail?: string;
 };
 
-export type ConditionsRepeaterOptionsPropsType = {
-  options: readonly ConditionsRepeaterOptionType[];
+export type RepeaterOptionsPropsType = {
+  options: readonly RepeaterOptionType[];
   /** The selected value, or values for a multi-pick menu. */
   selected?: string | readonly string[];
   onSelect: (value: string) => void;
@@ -130,9 +130,9 @@ export type ConditionsRepeaterOptionsPropsType = {
 };
 
 /** How a row's values combine: every one must match, or any one. */
-export type ConditionsMatchModeType = "all" | "any";
+export type RepeaterMatchModeType = "all" | "any";
 
-export type ConditionsRepeaterTagsInputPropsType = {
+export type RepeaterTagsInputPropsType = {
   /** The chosen values, in order. */
   values: readonly string[];
   /** The next list after a value is added or removed. */
@@ -141,7 +141,7 @@ export type ConditionsRepeaterTagsInputPropsType = {
    * How the values combine, shown as a badge between chips.
    * @default "any"
    */
-  mode?: ConditionsMatchModeType;
+  mode?: RepeaterMatchModeType;
   /** The badge text per mode. @default { all: "AND", any: "OR" } */
   joinLabels?: { all: string; any: string };
   /** Input placeholder and accessible name. @default "Add a value" */
@@ -162,16 +162,16 @@ export type ConditionsRepeaterTagsInputPropsType = {
   disabled?: boolean;
 };
 
-export type ConditionsRepeaterMatchModePropsType = {
-  value: ConditionsMatchModeType;
-  onChange: (value: ConditionsMatchModeType) => void;
+export type RepeaterMatchModePropsType = {
+  value: RepeaterMatchModeType;
+  onChange: (value: RepeaterMatchModeType) => void;
   /** The pill and menu labels. @default { all: "All", any: "Any" } */
   labels?: { all: string; any: string };
   /**
    * A sentence on what the current mode does, at the top of the menu and as
    * the pill's accessible label.
    */
-  help?: string | ((mode: ConditionsMatchModeType) => string);
+  help?: string | ((mode: RepeaterMatchModeType) => string);
   /**
    * Fixes the mode (a product has one type, so several types only make sense
    * as "any"): the pill is disabled and `help` shows on hover.

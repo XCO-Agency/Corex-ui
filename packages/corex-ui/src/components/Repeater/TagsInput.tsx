@@ -5,15 +5,15 @@ import { Combobox, useCombobox } from "../Combobox";
 import { InlineStack } from "../InlineStack";
 import { Spinner } from "../Spinner";
 import { Tag } from "../Tag";
-import type { ConditionsRepeaterTagsInputPropsType } from "./ConditionsRepeater.types";
+import type { RepeaterTagsInputPropsType } from "./Repeater.types";
 
-const STYLE_ID = "cx-conditions-tags-styles";
+const STYLE_ID = "cx-repeater-tags-styles";
 
 // The chips are Corex Tag and Badge. This keeps the wrapping flow, its padding
 // in the value strip, and a borderless inline input: Combobox.Input cannot sit
 // inline without its own border and chevron.
 const TAGS_CSS = `
-.cx-conditions-tags {
+.cx-repeater-tags {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -23,8 +23,8 @@ const TAGS_CSS = `
   box-sizing: border-box;
   cursor: text;
 }
-.cx-conditions-tags[data-disabled="true"] { cursor: default; }
-.cx-conditions-tags__input {
+.cx-repeater-tags[data-disabled="true"] { cursor: default; }
+.cx-repeater-tags__input {
   flex: 1 1 72px;
   min-inline-size: 72px;
   margin: 0;
@@ -37,7 +37,7 @@ const TAGS_CSS = `
   font-size: var(--p-font-size-300, 13px);
   line-height: 20px;
 }
-.cx-conditions-tags__input::placeholder {
+.cx-repeater-tags__input::placeholder {
   color: var(--p-color-text-secondary, #616161);
 }
 `;
@@ -119,7 +119,7 @@ function Chips({
 
   return (
     <div
-      className="cx-conditions-tags"
+      className="cx-repeater-tags"
       data-disabled={disabled ? "true" : undefined}
       ref={(node) => {
         flowRef.current = node;
@@ -155,7 +155,7 @@ function Chips({
       })}
       <input
         ref={inputRef as RefObject<HTMLInputElement>}
-        className="cx-conditions-tags__input"
+        className="cx-repeater-tags__input"
         value={combo.inputValue}
         placeholder={values.length > 0 ? "" : placeholder}
         aria-label={placeholder}
@@ -256,7 +256,7 @@ export function TagsInput({
   commitKeys = ["Enter", ","],
   removeAccessibilityLabel = (value) => `Remove ${value}`,
   disabled = false,
-}: ConditionsRepeaterTagsInputPropsType): ReactElement {
+}: RepeaterTagsInputPropsType): ReactElement {
   const [draft, setDraft] = useState("");
   const [open, setOpen] = useState(false);
   const [loaded, setLoaded] = useState<readonly string[] | null>(null);
@@ -376,4 +376,4 @@ export function TagsInput({
     </Combobox>
   );
 }
-TagsInput.displayName = "ConditionsRepeater.TagsInput";
+TagsInput.displayName = "Repeater.TagsInput";

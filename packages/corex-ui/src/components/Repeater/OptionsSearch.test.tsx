@@ -1,11 +1,7 @@
 import { act, fireEvent, render, screen } from "@testing-library/react";
 import { useState } from "react";
 import { describe, expect, it, vi } from "vitest";
-import {
-  ConditionsRepeater,
-  filterConditionOptions,
-  optionsSearchShown,
-} from "./ConditionsRepeater";
+import { Repeater, filterRepeaterOptions, optionsSearchShown } from "./Repeater";
 
 const many = Array.from({ length: 12 }, (_, index) => ({
   label: `Field ${index + 1}`,
@@ -27,10 +23,10 @@ function search(container: ParentNode, value: string) {
   });
 }
 
-describe("ConditionsRepeater.Options search", () => {
+describe("Repeater.Options search", () => {
   it("shows no search up to the threshold", () => {
     const { container } = render(
-      <ConditionsRepeater.Options options={many.slice(0, 10)} onSelect={() => {}} />,
+      <Repeater.Options options={many.slice(0, 10)} onSelect={() => {}} />,
     );
     expect(searchOf(container)).toBeNull();
     expect(optionLabels()).toHaveLength(10);
@@ -38,14 +34,14 @@ describe("ConditionsRepeater.Options search", () => {
 
   it("shows a search past the threshold, which is a prop", () => {
     const { container, rerender } = render(
-      <ConditionsRepeater.Options options={many.slice(0, 11)} onSelect={() => {}} />,
+      <Repeater.Options options={many.slice(0, 11)} onSelect={() => {}} />,
     );
     const field = searchOf(container)!;
     expect(field).toHaveAttribute("placeholder", "Search");
     expect(field).toHaveAttribute("label", "Search");
 
     rerender(
-      <ConditionsRepeater.Options
+      <Repeater.Options
         options={many.slice(0, 3)}
         searchThreshold={2}
         onSelect={() => {}}
@@ -53,20 +49,12 @@ describe("ConditionsRepeater.Options search", () => {
     );
     expect(searchOf(container)).not.toBeNull();
 
-    rerender(
-      <ConditionsRepeater.Options
-        options={many}
-        searchable={false}
-        onSelect={() => {}}
-      />,
-    );
+    rerender(<Repeater.Options options={many} searchable={false} onSelect={() => {}} />);
     expect(searchOf(container)).toBeNull();
   });
 
   it("keeps the search outside the scrolling list", () => {
-    const { container } = render(
-      <ConditionsRepeater.Options options={many} onSelect={() => {}} />,
-    );
+    const { container } = render(<Repeater.Options options={many} onSelect={() => {}} />);
     const listbox = screen.getByRole("listbox");
     const scroller = listbox.parentElement!;
     expect(scroller.contains(searchOf(container))).toBe(false);
@@ -75,7 +63,7 @@ describe("ConditionsRepeater.Options search", () => {
 
   it("filters on label and detail, ignoring case, and says when nothing matches", () => {
     const { container } = render(
-      <ConditionsRepeater.Options
+      <Repeater.Options
         options={many}
         noResultsText="No condition matches."
         onSelect={() => {}}
@@ -100,18 +88,14 @@ describe("ConditionsRepeater.Options search", () => {
 
   it("picks the first match on Enter in the search", () => {
     const onSelect = vi.fn();
-    const { container } = render(
-      <ConditionsRepeater.Options options={many} onSelect={onSelect} />,
-    );
+    const { container } = render(<Repeater.Options options={many} onSelect={onSelect} />);
     search(container, "supplier");
     fireEvent.keyDown(searchOf(container)!, { key: "Enter" });
     expect(onSelect).toHaveBeenCalledWith("f12");
   });
 
   it("moves between the search and the options with the arrow keys", () => {
-    const { container } = render(
-      <ConditionsRepeater.Options options={many} onSelect={() => {}} />,
-    );
+    const { container } = render(<Repeater.Options options={many} onSelect={() => {}} />);
     const field = searchOf(container) as HTMLElement;
     const rows = screen.getAllByRole("option");
     rows.forEach((row) => row.setAttribute("tabindex", "0"));
@@ -131,9 +115,7 @@ describe("ConditionsRepeater.Options search", () => {
   });
 
   it("focuses the search when it mounts", async () => {
-    const { container } = render(
-      <ConditionsRepeater.Options options={many} onSelect={() => {}} />,
-    );
+    const { container } = render(<Repeater.Options options={many} onSelect={() => {}} />);
     const field = searchOf(container) as HTMLElement;
     field.setAttribute("tabindex", "0");
     await act(() => new Promise((resolve) => requestAnimationFrame(() => resolve(null))));
@@ -144,12 +126,12 @@ describe("ConditionsRepeater.Options search", () => {
     function Harness() {
       const [open, setOpen] = useState(false);
       return (
-        <ConditionsRepeater
+        <Repeater
           items={[{ id: 1 }]}
-          renderControls={() => <ConditionsRepeater.Pill label="Title" />}
+          renderControls={() => <Repeater.Pill label="Title" />}
           addMenuOpen={open}
           onAddMenuOpenChange={setOpen}
-          addMenu={<ConditionsRepeater.Options options={many} onSelect={() => {}} />}
+          addMenu={<Repeater.Options options={many} onSelect={() => {}} />}
         />
       );
     }
@@ -172,20 +154,20 @@ describe("ConditionsRepeater.Options search", () => {
 
 describe("options helpers", () => {
   it("filter and decide on the search", () => {
-    expect(filterConditionOptions(many, "  ").length).toBe(12);
-    expect(filterConditionOptions(many, "brand").map((o) => o.value)).toEqual(["f12"]);
+    expect(filterRepeaterOptions(many, "  ").length).toBe(12);
+    expect(filterRepeaterOptions(many, "brand").map((o) => o.value)).toEqual(["f12"]);
     expect(optionsSearchShown(10, undefined, 10)).toBe(false);
     expect(optionsSearchShown(11, undefined, 10)).toBe(true);
     expect(optionsSearchShown(3, true, 10)).toBe(true);
   });
 });
 
-describe("ConditionsRepeater trash tooltip", () => {
+describe("Repeater trash tooltip", () => {
   type ItemType = { id: number; name: string };
   const items: ItemType[] = [{ id: 1, name: "Title" }];
   const base = {
     items,
-    renderControls: (item: ItemType) => <ConditionsRepeater.Pill label={item.name} />,
+    renderControls: (item: ItemType) => <Repeater.Pill label={item.name} />,
     onRemove: () => {},
   };
   const tooltip = (container: HTMLElement) => container.querySelector("s-tooltip");
@@ -194,7 +176,7 @@ describe("ConditionsRepeater trash tooltip", () => {
 
   it("shows the remove label by default, tied to the trash button", () => {
     const { container } = render(
-      <ConditionsRepeater<ItemType>
+      <Repeater<ItemType>
         {...base}
         removeAccessibilityLabel={(item) => `Remove ${item.name} condition`}
       />,
@@ -205,7 +187,7 @@ describe("ConditionsRepeater trash tooltip", () => {
   });
 
   it("stays inside the fading slot, so it hides with the button", () => {
-    const { container } = render(<ConditionsRepeater<ItemType> {...base} />);
+    const { container } = render(<Repeater<ItemType> {...base} />);
     const slot = trash(container).closest(".cx-hoverable-slot")!;
     expect(slot.contains(tooltip(container))).toBe(true);
     expect(slot).toHaveAttribute("data-keep-space", "true");
@@ -213,14 +195,11 @@ describe("ConditionsRepeater trash tooltip", () => {
 
   it("takes an override, or false for none", () => {
     const { container, rerender } = render(
-      <ConditionsRepeater<ItemType>
-        {...base}
-        removeTooltip={(item) => `Delete ${item.name}`}
-      />,
+      <Repeater<ItemType> {...base} removeTooltip={(item) => `Delete ${item.name}`} />,
     );
     expect(tooltip(container)).toHaveTextContent("Delete Title");
 
-    rerender(<ConditionsRepeater<ItemType> {...base} removeTooltip={false} />);
+    rerender(<Repeater<ItemType> {...base} removeTooltip={false} />);
     expect(tooltip(container)).toBeNull();
     expect(trash(container)).toHaveAttribute("accessibilitylabel", "Remove condition");
   });

@@ -25,17 +25,17 @@ import { Text } from "../Text";
 import { Tooltip } from "../Tooltip";
 import { TagsInput } from "./TagsInput";
 import type {
-  ConditionsMatchModeType,
-  ConditionsRepeaterMatchModePropsType,
-  ConditionsRepeaterOptionType,
-  ConditionsRepeaterKeyType,
-  ConditionsRepeaterOptionsPropsType,
-  ConditionsRepeaterPillPropsType,
-  ConditionsRepeaterPropsType,
-} from "./ConditionsRepeater.types";
+  RepeaterMatchModeType,
+  RepeaterMatchModePropsType,
+  RepeaterOptionType,
+  RepeaterKeyType,
+  RepeaterOptionsPropsType,
+  RepeaterPillPropsType,
+  RepeaterPropsType,
+} from "./Repeater.types";
 
 /** How long a new row takes to grow in. */
-export const CONDITIONS_REPEATER_MOTION_MS = 220;
+export const REPEATER_MOTION_MS = 220;
 
 // ─── Input tracking ────────────────────────────────────────────────────────────
 //
@@ -213,7 +213,7 @@ function RowHover({
         role="listitem"
         aria-label={label}
         style={{ display: "contents" }}
-        data-cx-conditions-row=""
+        data-cx-repeater-row=""
         onFocus={() => {
           const doc = frameRef.current?.ownerDocument;
           if (doc && focusShowsRowActions(inputStateFor(doc).modality)) {
@@ -253,7 +253,7 @@ function GrowIn({
     <Collapsible
       expanded={expanded}
       framed={false}
-      duration={CONDITIONS_REPEATER_MOTION_MS}
+      duration={REPEATER_MOTION_MS}
       easing="ease-in-out"
       content={children}
     >
@@ -303,7 +303,7 @@ function Pill({
   accessibilityLabel,
   menu,
   onOpenChange,
-}: ConditionsRepeaterPillPropsType): ReactElement {
+}: RepeaterPillPropsType): ReactElement {
   const anchorRef = useRef<HTMLSpanElement>(null);
   const pill = (
     <Clickable
@@ -350,7 +350,7 @@ function Pill({
     </span>
   );
 }
-Pill.displayName = "ConditionsRepeater.Pill";
+Pill.displayName = "Repeater.Pill";
 
 // ─── Options ───────────────────────────────────────────────────────────────────
 
@@ -358,10 +358,10 @@ Pill.displayName = "ConditionsRepeater.Pill";
 const OPTIONS_ROOT_STYLE: CSSProperties = { display: "contents" };
 
 /** Options whose label or detail contains `query`, ignoring case. */
-export function filterConditionOptions(
-  options: readonly ConditionsRepeaterOptionType[],
+export function filterRepeaterOptions(
+  options: readonly RepeaterOptionType[],
   query: string,
-): ConditionsRepeaterOptionType[] {
+): RepeaterOptionType[] {
   const needle = query.trim().toLowerCase();
   if (!needle) return [...options];
   return options.filter(
@@ -394,7 +394,7 @@ function Options({
   searchPlaceholder = "Search",
   noResultsText = "No results",
   listMaxBlockSize = "232px",
-}: ConditionsRepeaterOptionsPropsType): ReactElement {
+}: RepeaterOptionsPropsType): ReactElement {
   const picked = new Set(
     selected === undefined ? [] : typeof selected === "string" ? [selected] : selected,
   );
@@ -403,7 +403,7 @@ function Options({
   const [query, setQuery] = useState("");
   const searchRef = useRef<HTMLElement>(null);
   const rootRef = useRef<HTMLDivElement>(null);
-  const shown = withSearch ? filterConditionOptions(options, query) : options;
+  const shown = withSearch ? filterRepeaterOptions(options, query) : options;
   // The list keeps its opening height while filtering, so a menu placed
   // above its anchor does not move the search under the caret.
   const scrollerRef = useRef<HTMLDivElement>(null);
@@ -543,7 +543,7 @@ function Options({
     </div>
   );
 }
-Options.displayName = "ConditionsRepeater.Options";
+Options.displayName = "Repeater.Options";
 
 // ─── Match mode ────────────────────────────────────────────────────────────────
 
@@ -563,7 +563,7 @@ function MatchMode({
   locked = false,
   open,
   onOpenChange,
-}: ConditionsRepeaterMatchModePropsType): ReactElement {
+}: RepeaterMatchModePropsType): ReactElement {
   const [openState, setOpenState] = useState(false);
   const isOpen = open ?? openState;
   const setOpen = (next: boolean) => {
@@ -620,7 +620,7 @@ function MatchMode({
               ]}
               selected={value}
               onSelect={(next) => {
-                onChange(next as ConditionsMatchModeType);
+                onChange(next as RepeaterMatchModeType);
                 setOpen(false);
               }}
             />
@@ -630,21 +630,21 @@ function MatchMode({
     />
   );
 }
-MatchMode.displayName = "ConditionsRepeater.MatchMode";
+MatchMode.displayName = "Repeater.MatchMode";
 
 // ─── Repeater ──────────────────────────────────────────────────────────────────
 
-function defaultItemId(item: unknown, index: number): ConditionsRepeaterKeyType {
+function defaultItemId(item: unknown, index: number): RepeaterKeyType {
   const id = (item as { id?: unknown } | null)?.id;
   return typeof id === "string" || typeof id === "number" ? id : index;
 }
 
 /** Whether the add button is off: disabled, or at the plan's limit. */
-export function conditionsAtLimit(count: number, maxItems: number | undefined): boolean {
+export function repeaterAtLimit(count: number, maxItems: number | undefined): boolean {
   return typeof maxItems === "number" && count >= maxItems;
 }
 
-function ConditionsRepeaterRoot<ItemType>({
+function RepeaterRoot<ItemType>({
   items,
   getItemId = defaultItemId,
   renderControls,
@@ -666,9 +666,9 @@ function ConditionsRepeaterRoot<ItemType>({
   animateNewItems = true,
   accessibilityLabel = "Conditions",
   id,
-}: ConditionsRepeaterPropsType<ItemType>): ReactElement {
+}: RepeaterPropsType<ItemType>): ReactElement {
   // Rows present on the first render show without moving; later ones grow in.
-  const initialIds = useRef<Set<ConditionsRepeaterKeyType> | null>(null);
+  const initialIds = useRef<Set<RepeaterKeyType> | null>(null);
   if (initialIds.current === null) {
     initialIds.current = new Set(items.map((item, index) => getItemId(item, index)));
   }
@@ -681,7 +681,7 @@ function ConditionsRepeaterRoot<ItemType>({
   };
   const addAnchorRef = useRef<HTMLSpanElement>(null);
 
-  const atLimit = conditionsAtLimit(items.length, maxItems);
+  const atLimit = repeaterAtLimit(items.length, maxItems);
   const addDisabled = disabled || atLimit;
 
   const addButton = (
@@ -844,19 +844,19 @@ function ConditionsRepeaterRoot<ItemType>({
 
 /**
  * A list of condition rows, as in a smart collection's rules: each row is a
- * rounded card with its controls on top (`ConditionsRepeater.Pill`s), an
+ * rounded card with its controls on top (`Repeater.Pill`s), an
  * optional value area under a divider, and a trash button that shows on hover
  * or keyboard focus and removes the row at once. An add button (optionally
  * opening a menu) and an end slot sit under the rows; a `maxItems` limit turns
  * the add button off and shows `limitNote`.
  *
  * ```tsx
- * <ConditionsRepeater
+ * <Repeater
  *   items={rules}
  *   renderControls={(rule) => (
  *     <>
- *       <ConditionsRepeater.Pill label={rule.fieldLabel} menu={fieldMenu} … />
- *       <ConditionsRepeater.Pill label={rule.operatorLabel} … />
+ *       <Repeater.Pill label={rule.fieldLabel} menu={fieldMenu} … />
+ *       <Repeater.Pill label={rule.operatorLabel} … />
  *     </>
  *   )}
  *   renderValue={(rule) => <Box padding="small-200"><TextField … /></Box>}
@@ -865,7 +865,7 @@ function ConditionsRepeaterRoot<ItemType>({
  * />
  * ```
  */
-export const ConditionsRepeater = Object.assign(ConditionsRepeaterRoot, {
+export const Repeater = Object.assign(RepeaterRoot, {
   Pill,
   Options,
   MatchMode,

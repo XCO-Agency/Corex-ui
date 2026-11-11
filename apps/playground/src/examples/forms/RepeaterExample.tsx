@@ -5,8 +5,8 @@ import {
   Box,
   Button,
   Card,
-  ConditionsRepeater,
-  type ConditionsMatchModeType,
+  Repeater,
+  type RepeaterMatchModeType,
   Text,
   TextField,
 } from "@xco-agency/corex-ui";
@@ -23,7 +23,7 @@ type FieldType = {
   /** Several values, joined by the row's All / Any mode. */
   multi?: {
     suggestions: string[];
-    help: (mode: ConditionsMatchModeType) => string;
+    help: (mode: RepeaterMatchModeType) => string;
     /** A product has one type: several types can only match as Any. */
     lockAnyWhenMany?: boolean;
   };
@@ -149,14 +149,14 @@ type RuleType = {
   operator: string;
   value: string;
   values: string[];
-  mode: ConditionsMatchModeType;
+  mode: RepeaterMatchModeType;
 };
 
 const MAX_RULES = 4;
 
 let nextId = 4;
 
-export function ConditionsRepeaterExample() {
+export function RepeaterExample() {
   const [rules, setRules] = useState<RuleType[]>([
     {
       id: 1,
@@ -193,7 +193,7 @@ export function ConditionsRepeaterExample() {
     <Card>
       <BlockStack gap="base">
         <Text variant="headingSm">Products must match all conditions</Text>
-        <ConditionsRepeater<RuleType>
+        <Repeater<RuleType>
           items={rules}
           maxItems={MAX_RULES}
           limitNote={
@@ -214,12 +214,12 @@ export function ConditionsRepeaterExample() {
             const operatorKey = `operator-${rule.id}`;
             return (
               <>
-                <ConditionsRepeater.Pill
+                <Repeater.Pill
                   label={field.label}
                   open={openMenu === fieldKey}
                   onOpenChange={(open) => setOpenMenu(open ? fieldKey : null)}
                   menu={
-                    <ConditionsRepeater.Options
+                    <Repeater.Options
                       options={fieldOptions}
                       selected={rule.field}
                       onSelect={(value) => {
@@ -237,7 +237,7 @@ export function ConditionsRepeaterExample() {
                   }
                 />
                 {field.multi ? (
-                  <ConditionsRepeater.MatchMode
+                  <Repeater.MatchMode
                     value={rule.mode}
                     onChange={(mode) => update(rule.id, { mode })}
                     help={field.multi.help}
@@ -246,12 +246,12 @@ export function ConditionsRepeaterExample() {
                     onOpenChange={(open) => setOpenMenu(open ? operatorKey : null)}
                   />
                 ) : (
-                  <ConditionsRepeater.Pill
+                  <Repeater.Pill
                     label={operator?.label ?? "Operator"}
                     open={openMenu === operatorKey}
                     onOpenChange={(open) => setOpenMenu(open ? operatorKey : null)}
                     menu={
-                      <ConditionsRepeater.Options
+                      <Repeater.Options
                         options={field.operators}
                         selected={rule.operator}
                         onSelect={(value) => {
@@ -271,7 +271,7 @@ export function ConditionsRepeaterExample() {
             if (field.multi) {
               const lock = field.multi.lockAnyWhenMany;
               return (
-                <ConditionsRepeater.TagsInput
+                <Repeater.TagsInput
                   values={rule.values}
                   mode={rule.mode}
                   suggestions={field.multi.suggestions}
@@ -305,7 +305,7 @@ export function ConditionsRepeaterExample() {
           addMenuOpen={addOpen}
           onAddMenuOpenChange={setAddOpen}
           addMenu={
-            <ConditionsRepeater.Options
+            <Repeater.Options
               options={fieldOptions}
               searchPlaceholder="Search conditions"
               noResultsText="No condition matches your search."

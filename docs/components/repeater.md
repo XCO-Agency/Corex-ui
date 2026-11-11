@@ -1,35 +1,35 @@
-# ConditionsRepeater
+# Repeater
 
 Repeated condition rows, as in a smart collection's rules. Extracted from Rankify's collection editor with the same look.
 
 Each row is a rounded card (`borderRadius="large-200"`, base border) with:
 
-- its controls on top, usually `ConditionsRepeater.Pill`s, wrapping when they run out of room;
+- its controls on top, usually `Repeater.Pill`s, wrapping when they run out of room;
 - an optional value area under a divider, edge to edge (a text field, a tag input);
 - a trash button that fades in while the row is hovered or holds keyboard focus (its space is kept, so nothing shifts), and removes the row at once: no confirmation and no exit animation.
 
 Under the rows: an add button (optionally opening a menu), an end slot, and a note when a `maxItems` limit is reached.
 
 ```tsx
-import { Box, ConditionsRepeater, TextField } from "@xco-agency/corex-ui";
+import { Box, Repeater, TextField } from "@xco-agency/corex-ui";
 
-<ConditionsRepeater
+<Repeater
   items={rules}
   renderControls={(rule) => (
     <>
-      <ConditionsRepeater.Pill
+      <Repeater.Pill
         label={rule.fieldLabel}
         open={openMenu === `field-${rule.id}`}
         onOpenChange={(open) => setOpenMenu(open ? `field-${rule.id}` : null)}
         menu={
-          <ConditionsRepeater.Options
+          <Repeater.Options
             options={fields}
             selected={rule.field}
             onSelect={(field) => changeField(rule.id, field)}
           />
         }
       />
-      <ConditionsRepeater.Pill label={rule.operatorLabel} /* … */ />
+      <Repeater.Pill label={rule.operatorLabel} /* … */ />
     </>
   )}
   renderValue={(rule) =>
@@ -45,7 +45,7 @@ import { Box, ConditionsRepeater, TextField } from "@xco-agency/corex-ui";
     )
   }
   onRemove={(rule) => remove(rule.id)}
-  addMenu={<ConditionsRepeater.Options options={fields} onSelect={addRule} />}
+  addMenu={<Repeater.Options options={fields} onSelect={addRule} />}
   addMenuOpen={addOpen}
   onAddMenuOpenChange={setAddOpen}
   maxItems={plan.ruleLimit}
@@ -58,7 +58,7 @@ import { Box, ConditionsRepeater, TextField } from "@xco-agency/corex-ui";
 />;
 ```
 
-## ConditionsRepeater
+## Repeater
 
 | Prop                       | Behavior                                                                                                                                                                                          |
 | -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -79,7 +79,7 @@ import { Box, ConditionsRepeater, TextField } from "@xco-agency/corex-ui";
 | `animateNewItems`          | Grow new rows in. Default `true`.                                                                                                                                                                 |
 | `accessibilityLabel`       | Names the list. Default `"Conditions"`.                                                                                                                                                           |
 
-## ConditionsRepeater.Pill
+## Repeater.Pill
 
 The light gray capsule the rows use for their choices: `s-clickable` with `background="subdued"`, `borderRadius="large-200"`, `small-300` / `small-100` padding (32px tall), small body text and a small `select` icon.
 
@@ -92,16 +92,16 @@ The light gray capsule the rows use for their choices: `s-clickable` with `backg
 | `disabled`             | Ignores clicks (a locked comparator). Wrap in a `Tooltip` to say why. |
 | `accessibilityLabel`   | Defaults to `label` when that is a string.                            |
 
-## ConditionsRepeater.Options
+## Repeater.Options
 
 The menu rows: a check and a subdued background on the selected option, an optional second line (`detail`). `selected` takes one value or a list; `onSelect` gets the picked value.
 
 With more than `searchThreshold` options (10) a search field sits on top. It takes focus as the menu opens and filters on label and detail, ignoring case. It stays put while the options scroll under it, and the list keeps its height while filtering. Enter picks the first match, the arrow keys (and Home / End) move between the search and the options, and Escape closes the menu. The query starts empty each time the menu opens.
 
 ```tsx
-<ConditionsRepeater
+<Repeater
   addMenu={
-    <ConditionsRepeater.Options
+    <Repeater.Options
       options={conditionTypes} // 13 types: the search shows
       searchPlaceholder="Search conditions"
       noResultsText="No condition matches your search."
@@ -120,17 +120,17 @@ With more than `searchThreshold` options (10) a search field sits on top. It tak
 | `noResultsText`     | Shown when nothing matches. Default `"No results"`.                               |
 | `listMaxBlockSize`  | Height the options scroll within. Default `"232px"`.                              |
 
-`filterConditionOptions(options, query)` and `optionsSearchShown(count, searchable, threshold)` are exported.
+`filterRepeaterOptions(options, query)` and `optionsSearchShown(count, searchable, threshold)` are exported.
 
 ## Multi-value rows: tags with All / Any
 
-A row that takes several values (tags, vendors, product types) pairs a `ConditionsRepeater.MatchMode` pill in its controls with a `ConditionsRepeater.TagsInput` as its value. Both are controlled: you own `values` and `mode`.
+A row that takes several values (tags, vendors, product types) pairs a `Repeater.MatchMode` pill in its controls with a `Repeater.TagsInput` as its value. Both are controlled: you own `values` and `mode`.
 
 ```tsx
 renderControls={(rule) => (
   <>
-    <ConditionsRepeater.Pill label="Tag" /* field menu */ />
-    <ConditionsRepeater.MatchMode
+    <Repeater.Pill label="Tag" /* field menu */ />
+    <Repeater.MatchMode
       value={rule.mode}
       onChange={(mode) => update(rule.id, { mode })}
       help={(mode) =>
@@ -142,7 +142,7 @@ renderControls={(rule) => (
   </>
 )}
 renderValue={(rule) => (
-  <ConditionsRepeater.TagsInput
+  <Repeater.TagsInput
     values={rule.values}
     mode={rule.mode}
     onChange={(values) => update(rule.id, { values })}
@@ -152,7 +152,7 @@ renderValue={(rule) => (
 )}
 ```
 
-### ConditionsRepeater.TagsInput
+### Repeater.TagsInput
 
 The chosen values are base `Tag`s, removable, with the mode as a neutral `Badge` between them (`AND` for all, `OR` for any), and a borderless input on the same line, wrapping in a 16px-padded strip. A press on the strip focuses the input; focusing opens the suggestions, which stay open so several can be picked.
 
@@ -171,7 +171,7 @@ The chosen values are base `Tag`s, removable, with the mode as a neutral `Badge`
 
 Values are trimmed; blanks and duplicates are ignored. Backspace in an empty input removes the last chip. Arrow keys move through the suggestions, Enter picks the highlighted one (or adds the typed text), Escape closes the list.
 
-### ConditionsRepeater.MatchMode
+### Repeater.MatchMode
 
 The `All` / `Any` pill. Its menu is 180px wide: the `help` sentence for the current mode in subdued text, then the two options.
 

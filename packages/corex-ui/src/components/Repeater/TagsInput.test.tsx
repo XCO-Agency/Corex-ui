@@ -1,8 +1,8 @@
 import { act, fireEvent, render, screen } from "@testing-library/react";
 import { useState } from "react";
 import { describe, expect, it, vi } from "vitest";
-import { ConditionsRepeater } from "./ConditionsRepeater";
-import type { ConditionsMatchModeType } from "./ConditionsRepeater.types";
+import { Repeater } from "./Repeater";
+import type { RepeaterMatchModeType } from "./Repeater.types";
 import { tagsKeyAction, valuesToAdd } from "./TagsInput";
 
 function Harness({
@@ -12,7 +12,7 @@ function Harness({
   ...rest
 }: {
   initial?: string[];
-  mode?: ConditionsMatchModeType;
+  mode?: RepeaterMatchModeType;
   onChange?: (values: string[]) => void;
   suggestions?: string[];
   loadSuggestions?: () => Promise<readonly string[]>;
@@ -21,7 +21,7 @@ function Harness({
 }) {
   const [values, setValues] = useState(initial);
   return (
-    <ConditionsRepeater.TagsInput
+    <Repeater.TagsInput
       values={values}
       mode={mode}
       onChange={(next) => {
@@ -44,7 +44,7 @@ function type(text: string) {
   fireEvent.change(input(), { target: { value: text } });
 }
 
-describe("ConditionsRepeater.TagsInput", () => {
+describe("Repeater.TagsInput", () => {
   it("renders the values as base tags with the mode between them", () => {
     const { container } = render(
       <Harness initial={["red", "blue", "green"]} mode="all" />,
@@ -61,7 +61,7 @@ describe("ConditionsRepeater.TagsInput", () => {
     expect(joins(container)).toEqual(["OR"]);
 
     rerender(
-      <ConditionsRepeater.TagsInput
+      <Repeater.TagsInput
         values={["a", "b"]}
         onChange={() => {}}
         mode="all"
@@ -124,12 +124,10 @@ describe("ConditionsRepeater.TagsInput", () => {
   });
 
   it("only shows the placeholder while there are no values", () => {
-    const { rerender } = render(
-      <ConditionsRepeater.TagsInput values={[]} onChange={() => {}} />,
-    );
+    const { rerender } = render(<Repeater.TagsInput values={[]} onChange={() => {}} />);
     expect(input()).toHaveAttribute("placeholder", "Add a value");
 
-    rerender(<ConditionsRepeater.TagsInput values={["a"]} onChange={() => {}} />);
+    rerender(<Repeater.TagsInput values={["a"]} onChange={() => {}} />);
     expect(input()).toHaveAttribute("placeholder", "");
   });
 
@@ -181,14 +179,14 @@ describe("ConditionsRepeater.TagsInput", () => {
   });
 });
 
-describe("ConditionsRepeater.MatchMode", () => {
+describe("Repeater.MatchMode", () => {
   function ModeHarness(props: {
     locked?: boolean;
-    onChange?: (v: ConditionsMatchModeType) => void;
+    onChange?: (v: RepeaterMatchModeType) => void;
   }) {
-    const [mode, setMode] = useState<ConditionsMatchModeType>("all");
+    const [mode, setMode] = useState<RepeaterMatchModeType>("all");
     return (
-      <ConditionsRepeater.MatchMode
+      <Repeater.MatchMode
         value={mode}
         onChange={(next) => {
           setMode(next);

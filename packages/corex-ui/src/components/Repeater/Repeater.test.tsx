@@ -2,13 +2,13 @@ import { act, fireEvent, render, screen } from "@testing-library/react";
 import { useState } from "react";
 import { describe, expect, it, vi } from "vitest";
 import {
-  ConditionsRepeater,
-  conditionsAtLimit,
+  Repeater,
+  repeaterAtLimit,
   focusShowsRowActions,
   pointerStillInsideRow,
   releasePointerFocus,
   rowActionsVisible,
-} from "./ConditionsRepeater";
+} from "./Repeater";
 
 type RuleType = { id: number; field: string; operator: string; value: string | null };
 
@@ -18,18 +18,18 @@ const rules: RuleType[] = [
 ];
 
 const rows = (container: HTMLElement) =>
-  Array.from(container.querySelectorAll("[data-cx-conditions-row]"));
+  Array.from(container.querySelectorAll("[data-cx-repeater-row]"));
 const trashOf = (row: Element) => row.querySelector('s-button[icon="delete"]');
 const slotOf = (row: Element) => trashOf(row)?.closest(".cx-hoverable-slot");
 
-function setup(props: Partial<Parameters<typeof ConditionsRepeater<RuleType>>[0]> = {}) {
+function setup(props: Partial<Parameters<typeof Repeater<RuleType>>[0]> = {}) {
   return render(
-    <ConditionsRepeater<RuleType>
+    <Repeater<RuleType>
       items={rules}
       renderControls={(rule) => (
         <>
-          <ConditionsRepeater.Pill label={rule.field} />
-          <ConditionsRepeater.Pill label={rule.operator} />
+          <Repeater.Pill label={rule.field} />
+          <Repeater.Pill label={rule.operator} />
         </>
       )}
       renderValue={(rule) => (rule.value === null ? null : <em>{rule.value}</em>)}
@@ -40,7 +40,7 @@ function setup(props: Partial<Parameters<typeof ConditionsRepeater<RuleType>>[0]
   );
 }
 
-describe("ConditionsRepeater", () => {
+describe("Repeater", () => {
   it("renders one bordered card per row, with the controls on top", () => {
     const { container } = setup();
     expect(screen.getByRole("list", { name: "Conditions" })).toBeInTheDocument();
@@ -155,9 +155,9 @@ describe("ConditionsRepeater", () => {
     function Harness() {
       const [open, setOpen] = useState(false);
       return (
-        <ConditionsRepeater<RuleType>
+        <Repeater<RuleType>
           items={rules}
-          renderControls={(rule) => <ConditionsRepeater.Pill label={rule.field} />}
+          renderControls={(rule) => <Repeater.Pill label={rule.field} />}
           addMenu={<span>Field menu</span>}
           addMenuOpen={open}
           onAddMenuOpenChange={setOpen}
@@ -182,16 +182,16 @@ describe("ConditionsRepeater", () => {
     expect(collapsedFirst).toBeNull();
 
     rerender(
-      <ConditionsRepeater<RuleType>
+      <Repeater<RuleType>
         items={[...rules, { id: 3, field: "Vendor", operator: "is", value: "" }]}
-        renderControls={(rule) => <ConditionsRepeater.Pill label={rule.field} />}
+        renderControls={(rule) => <Repeater.Pill label={rule.field} />}
       />,
     );
     expect(rows(container)).toHaveLength(3);
   });
 });
 
-describe("ConditionsRepeater hover in another document", () => {
+describe("Repeater hover in another document", () => {
   // Regression: the pointer tracker listened on the module's global document.
   // Rendered into an iframe (the docs preview), it kept the outer page's
   // coordinates, the hit-test after each render landed outside the row, and
@@ -207,9 +207,9 @@ describe("ConditionsRepeater hover in another document", () => {
     fireEvent.pointerMove(document, { clientX: 900, clientY: 900 });
 
     const { container, unmount } = render(
-      <ConditionsRepeater<RuleType>
+      <Repeater<RuleType>
         items={rules}
-        renderControls={(rule) => <ConditionsRepeater.Pill label={rule.field} />}
+        renderControls={(rule) => <Repeater.Pill label={rule.field} />}
         onRemove={() => {}}
       />,
       { container: host },
@@ -253,9 +253,9 @@ describe("ConditionsRepeater hover in another document", () => {
   });
 });
 
-describe("ConditionsRepeater.Pill", () => {
+describe("Repeater.Pill", () => {
   it("is a subdued capsule with a select chevron", () => {
-    render(<ConditionsRepeater.Pill label="Title" />);
+    render(<Repeater.Pill label="Title" />);
     const pill = screen.getByText("Title").closest("s-clickable")!;
     expect(pill).toHaveAttribute("background", "subdued");
     expect(pill).toHaveAttribute("borderradius", "large-200");
@@ -267,7 +267,7 @@ describe("ConditionsRepeater.Pill", () => {
   it("toggles its menu and reports aria-expanded", () => {
     const onOpenChange = vi.fn();
     render(
-      <ConditionsRepeater.Pill
+      <Repeater.Pill
         label="contains"
         open={false}
         menu={<span>Operators</span>}
@@ -282,17 +282,17 @@ describe("ConditionsRepeater.Pill", () => {
 
   it("does nothing when disabled", () => {
     const onClick = vi.fn();
-    render(<ConditionsRepeater.Pill label="Any" disabled onClick={onClick} />);
+    render(<Repeater.Pill label="Any" disabled onClick={onClick} />);
     fireEvent.click(screen.getByText("Any").closest("s-clickable")!);
     expect(onClick).not.toHaveBeenCalled();
   });
 });
 
-describe("ConditionsRepeater.Options", () => {
+describe("Repeater.Options", () => {
   it("checks the selected option and picks on click", () => {
     const onSelect = vi.fn();
     render(
-      <ConditionsRepeater.Options
+      <Repeater.Options
         options={[
           { label: "All conditions", value: "AND", detail: "Every one must match" },
           { label: "Any condition", value: "OR" },
@@ -343,8 +343,8 @@ describe("helpers", () => {
   });
 
   it("knows the limit", () => {
-    expect(conditionsAtLimit(1, 1)).toBe(true);
-    expect(conditionsAtLimit(0, 1)).toBe(false);
-    expect(conditionsAtLimit(5, undefined)).toBe(false);
+    expect(repeaterAtLimit(1, 1)).toBe(true);
+    expect(repeaterAtLimit(0, 1)).toBe(false);
+    expect(repeaterAtLimit(5, undefined)).toBe(false);
   });
 });
