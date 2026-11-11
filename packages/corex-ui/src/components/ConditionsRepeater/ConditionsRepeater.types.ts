@@ -31,6 +31,11 @@ export type ConditionsRepeaterPropsType<ItemType> = {
   onRemove?: (item: ItemType, index: number) => void;
   /** Accessible label for a row's trash button. @default "Remove condition" */
   removeAccessibilityLabel?: string | ((item: ItemType, index: number) => string);
+  /**
+   * Tooltip on the trash button. Defaults to the remove label; `false` turns
+   * it off.
+   */
+  removeTooltip?: ReactNode | ((item: ItemType, index: number) => ReactNode) | false;
 
   /** Label of the add button. @default "Add condition" */
   addLabel?: ReactNode;
@@ -106,6 +111,22 @@ export type ConditionsRepeaterOptionsPropsType = {
   /** The selected value, or values for a multi-pick menu. */
   selected?: string | readonly string[];
   onSelect: (value: string) => void;
+  /**
+   * Shows a search field above the options. By default it shows once there
+   * are more than `searchThreshold` options.
+   */
+  searchable?: boolean;
+  /** @default 10 */
+  searchThreshold?: number;
+  /** Placeholder and accessible name of the search field. @default "Search" */
+  searchPlaceholder?: string;
+  /** Shown when nothing matches the search. @default "No results" */
+  noResultsText?: ReactNode;
+  /**
+   * Height the options scroll within under the search field, which stays put.
+   * @default "232px"
+   */
+  listMaxBlockSize?: string;
 };
 
 /** How a row's values combine: every one must match, or any one. */

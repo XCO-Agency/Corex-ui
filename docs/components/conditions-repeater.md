@@ -60,23 +60,24 @@ import { Box, ConditionsRepeater, TextField } from "@xco-agency/corex-ui";
 
 ## ConditionsRepeater
 
-| Prop                       | Behavior                                                                                                                                   |
-| -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
-| `items`                    | The rows, in order.                                                                                                                        |
-| `getItemId`                | A stable id per row. Defaults to `item.id`, then the index. Rows present on the first render show at once; later ones grow in (220ms).     |
-| `renderControls`           | The row's top line.                                                                                                                        |
-| `renderValue`              | The area under the divider. Return `null` for a row that needs none (the operator is the whole choice).                                    |
-| `onRemove`                 | Shows the trash button and removes the row on click. Without it there is no trash button.                                                  |
-| `removeAccessibilityLabel` | A string or `(item, index) => string`. Default `"Remove condition"`.                                                                       |
-| `addLabel`, `onAdd`        | The add button's label (default `"Add condition"`) and handler.                                                                            |
-| `addMenu`                  | A menu under the add button; the button toggles it, Escape and a click outside close it. `addMenuOpen` / `onAddMenuOpenChange` control it. |
-| `hideAdd`                  | Hides the add button.                                                                                                                      |
-| `maxItems`, `limitNote`    | At `maxItems` the add button is disabled and `limitNote` shows under the footer (a plan limit and its upgrade action).                     |
-| `footerEnd`                | End of the footer row, opposite the add button.                                                                                            |
-| `emptyState`               | Shown instead of the rows when there are none. A string renders as critical text.                                                          |
-| `disabled`                 | Disables adding and removing.                                                                                                              |
-| `animateNewItems`          | Grow new rows in. Default `true`.                                                                                                          |
-| `accessibilityLabel`       | Names the list. Default `"Conditions"`.                                                                                                    |
+| Prop                       | Behavior                                                                                                                                                                                          |
+| -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `items`                    | The rows, in order.                                                                                                                                                                               |
+| `getItemId`                | A stable id per row. Defaults to `item.id`, then the index. Rows present on the first render show at once; later ones grow in (220ms).                                                            |
+| `renderControls`           | The row's top line.                                                                                                                                                                               |
+| `renderValue`              | The area under the divider. Return `null` for a row that needs none (the operator is the whole choice).                                                                                           |
+| `onRemove`                 | Shows the trash button and removes the row on click. Without it there is no trash button.                                                                                                         |
+| `removeAccessibilityLabel` | A string or `(item, index) => string`. Default `"Remove condition"`.                                                                                                                              |
+| `removeTooltip`            | Tooltip on the trash button: a node or `(item, index) => node`. Defaults to the remove label; `false` for none. It sits inside the button's fade, so it hides with it and leaves the hover alone. |
+| `addLabel`, `onAdd`        | The add button's label (default `"Add condition"`) and handler.                                                                                                                                   |
+| `addMenu`                  | A menu under the add button; the button toggles it, Escape and a click outside close it. `addMenuOpen` / `onAddMenuOpenChange` control it.                                                        |
+| `hideAdd`                  | Hides the add button.                                                                                                                                                                             |
+| `maxItems`, `limitNote`    | At `maxItems` the add button is disabled and `limitNote` shows under the footer (a plan limit and its upgrade action).                                                                            |
+| `footerEnd`                | End of the footer row, opposite the add button.                                                                                                                                                   |
+| `emptyState`               | Shown instead of the rows when there are none. A string renders as critical text.                                                                                                                 |
+| `disabled`                 | Disables adding and removing.                                                                                                                                                                     |
+| `animateNewItems`          | Grow new rows in. Default `true`.                                                                                                                                                                 |
+| `accessibilityLabel`       | Names the list. Default `"Conditions"`.                                                                                                                                                           |
 
 ## ConditionsRepeater.Pill
 
@@ -94,6 +95,32 @@ The light gray capsule the rows use for their choices: `s-clickable` with `backg
 ## ConditionsRepeater.Options
 
 The menu rows: a check and a subdued background on the selected option, an optional second line (`detail`). `selected` takes one value or a list; `onSelect` gets the picked value.
+
+With more than `searchThreshold` options (10) a search field sits on top. It takes focus as the menu opens and filters on label and detail, ignoring case. It stays put while the options scroll under it, and the list keeps its height while filtering. Enter picks the first match, the arrow keys (and Home / End) move between the search and the options, and Escape closes the menu. The query starts empty each time the menu opens.
+
+```tsx
+<ConditionsRepeater
+  addMenu={
+    <ConditionsRepeater.Options
+      options={conditionTypes} // 13 types: the search shows
+      searchPlaceholder="Search conditions"
+      noResultsText="No condition matches your search."
+      onSelect={addRule}
+    />
+  }
+  /* … */
+/>
+```
+
+| Prop                | Behavior                                                                          |
+| ------------------- | --------------------------------------------------------------------------------- |
+| `searchable`        | `true` or `false` forces the search on or off. Default: shown past the threshold. |
+| `searchThreshold`   | Default `10`: the search shows from 11 options.                                   |
+| `searchPlaceholder` | Placeholder and accessible name. Default `"Search"`.                              |
+| `noResultsText`     | Shown when nothing matches. Default `"No results"`.                               |
+| `listMaxBlockSize`  | Height the options scroll within. Default `"232px"`.                              |
+
+`filterConditionOptions(options, query)` and `optionsSearchShown(count, searchable, threshold)` are exported.
 
 ## Multi-value rows: tags with All / Any
 
@@ -161,7 +188,8 @@ The `All` / `Any` pill. Its menu is 180px wide: the `help` sentence for the curr
 ## Keyboard and assistive technology
 
 - The rows are a `list` of `listitem`s, named by `accessibilityLabel`.
+- The trash button has a tooltip (the remove label by default).
 - Tabbing into a row shows its trash button; a mouse click on a pill does not (focus left behind after a menu closes is not a hover).
 - Pills and the add button report `aria-expanded`; their menus close on Escape.
-- `Options` is a `listbox` of `option`s with `aria-selected`.
+- `Options` is a `listbox` of `option`s with `aria-selected`; its search field is named by `searchPlaceholder`.
 - `TagsInput`'s input is a `combobox` (`aria-autocomplete="list"`, `aria-expanded`, `aria-controls` on its listbox); each chip's remove control is named by `removeAccessibilityLabel`.

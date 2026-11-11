@@ -105,7 +105,7 @@ export const formsComponents: ComponentEntry[] = [
     slug: "conditions-repeater",
     category: "Forms",
     description:
-      "Repeated condition rows: rounded cards with field and operator pills, a value area under a divider, a trash button on hover or keyboard focus that removes the row at once, an add button with an optional field menu, a plan limit, and multi-value tag rows with an All / Any mode.",
+      "Repeated condition rows: rounded cards with field and operator pills, a value area under a divider, a trash button on hover or keyboard focus that removes the row at once, a trash tooltip, an add button with an optional field menu that turns searchable past 10 types, a plan limit, and multi-value tag rows with an All / Any mode.",
     examples: [
       {
         title: "Smart collection rules with a plan limit",

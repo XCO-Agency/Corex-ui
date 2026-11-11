@@ -14,6 +14,8 @@ import {
 type FieldType = {
   value: string;
   label: string;
+  /** Second line in the field menus, searched too. */
+  detail?: string;
   operators: { label: string; value: string }[];
   /** The operator is the whole choice (Status: Active), so no value area. */
   operatorIsValue?: boolean;
@@ -82,6 +84,65 @@ const FIELDS: FieldType[] = [
   },
 ];
 
+const TEXT_OPERATORS = [
+  { label: "contains", value: "contains" },
+  { label: "is equal to", value: "equals" },
+];
+const NUMBER_OPERATORS = [
+  { label: "is greater than", value: "gt" },
+  { label: "is less than", value: "lt" },
+];
+
+/** More condition types than the add menu shows unsearched (10). */
+const MORE_FIELDS: FieldType[] = [
+  {
+    value: "vendor",
+    label: "Vendor",
+    detail: "Brand or supplier",
+    operators: TEXT_OPERATORS,
+  },
+  {
+    value: "sku",
+    label: "SKU",
+    detail: "Variant stock keeping unit",
+    operators: TEXT_OPERATORS,
+  },
+  {
+    value: "barcode",
+    label: "Barcode",
+    detail: "ISBN, UPC or GTIN",
+    operators: TEXT_OPERATORS,
+  },
+  {
+    value: "compare_at",
+    label: "Compare-at price",
+    detail: "Price before a sale",
+    prefix: "$",
+    operators: NUMBER_OPERATORS,
+  },
+  {
+    value: "weight",
+    label: "Weight",
+    detail: "Shipping weight in kg",
+    operators: NUMBER_OPERATORS,
+  },
+  {
+    value: "inventory",
+    label: "Inventory stock",
+    detail: "Units available across locations",
+    operators: NUMBER_OPERATORS,
+  },
+  {
+    value: "metafield",
+    label: "Metafield",
+    detail: "Custom product data",
+    operators: TEXT_OPERATORS,
+  },
+  { value: "variant_title", label: "Variant title", operators: TEXT_OPERATORS },
+];
+
+const ALL_FIELDS: FieldType[] = [...FIELDS, ...MORE_FIELDS];
+
 type RuleType = {
   id: number;
   field: string;
@@ -118,11 +179,15 @@ export function ConditionsRepeaterExample() {
   const [openMenu, setOpenMenu] = useState<string | null>(null);
   const [addOpen, setAddOpen] = useState(false);
 
-  const fieldOf = (rule: RuleType) => FIELDS.find((f) => f.value === rule.field)!;
+  const fieldOf = (rule: RuleType) => ALL_FIELDS.find((f) => f.value === rule.field)!;
   const update = (id: number, patch: Partial<RuleType>) =>
     setRules((current) => current.map((r) => (r.id === id ? { ...r, ...patch } : r)));
 
-  const fieldOptions = FIELDS.map(({ label, value }) => ({ label, value }));
+  const fieldOptions = ALL_FIELDS.map(({ label, value, detail }) => ({
+    label,
+    value,
+    detail,
+  }));
 
   return (
     <Card>
@@ -158,7 +223,7 @@ export function ConditionsRepeaterExample() {
                       options={fieldOptions}
                       selected={rule.field}
                       onSelect={(value) => {
-                        const next = FIELDS.find((f) => f.value === value)!;
+                        const next = ALL_FIELDS.find((f) => f.value === value)!;
                         update(rule.id, {
                           field: value,
                           operator: next.operators[0]?.value ?? "",
@@ -242,8 +307,10 @@ export function ConditionsRepeaterExample() {
           addMenu={
             <ConditionsRepeater.Options
               options={fieldOptions}
+              searchPlaceholder="Search conditions"
+              noResultsText="No condition matches your search."
               onSelect={(value) => {
-                const field = FIELDS.find((f) => f.value === value)!;
+                const field = ALL_FIELDS.find((f) => f.value === value)!;
                 setRules((current) => [
                   ...current,
                   {

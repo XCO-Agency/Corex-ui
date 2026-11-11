@@ -3,7 +3,9 @@ import {
   useEffect,
   useRef,
   useState,
+  type CSSProperties,
   type FocusEvent,
+  type KeyboardEvent,
   type MouseEvent,
   type ReactElement,
   type ReactNode,
@@ -18,12 +20,14 @@ import { FlexPopover } from "../FlexPopover";
 import { Hoverable } from "../Hoverable";
 import { Icon } from "../Icon";
 import { InlineStack } from "../InlineStack";
+import { SearchField } from "../SearchField";
 import { Text } from "../Text";
 import { Tooltip } from "../Tooltip";
 import { TagsInput } from "./TagsInput";
 import type {
   ConditionsMatchModeType,
   ConditionsRepeaterMatchModePropsType,
+  ConditionsRepeaterOptionType,
   ConditionsRepeaterKeyType,
   ConditionsRepeaterOptionsPropsType,
   ConditionsRepeaterPillPropsType,
@@ -350,54 +354,193 @@ Pill.displayName = "ConditionsRepeater.Pill";
 
 // ─── Options ───────────────────────────────────────────────────────────────────
 
-/** The menu rows the pills open: a check on the selected one. */
+/** Only catches the arrow keys of the search and the rows; adds no box. */
+const OPTIONS_ROOT_STYLE: CSSProperties = { display: "contents" };
+
+/** Options whose label or detail contains `query`, ignoring case. */
+export function filterConditionOptions(
+  options: readonly ConditionsRepeaterOptionType[],
+  query: string,
+): ConditionsRepeaterOptionType[] {
+  const needle = query.trim().toLowerCase();
+  if (!needle) return [...options];
+  return options.filter(
+    (option) =>
+      option.label.toLowerCase().includes(needle) ||
+      (option.detail ?? "").toLowerCase().includes(needle),
+  );
+}
+
+/** Whether `Options` shows its search field. */
+export function optionsSearchShown(
+  count: number,
+  searchable: boolean | undefined,
+  threshold: number,
+): boolean {
+  return searchable ?? count > threshold;
+}
+
+/**
+ * The menu rows the pills open: a check on the selected one. Past
+ * `searchThreshold` options a search field sits on top and stays there while
+ * the options scroll under it.
+ */
 function Options({
   options,
   selected,
   onSelect,
+  searchable,
+  searchThreshold = 10,
+  searchPlaceholder = "Search",
+  noResultsText = "No results",
+  listMaxBlockSize = "232px",
 }: ConditionsRepeaterOptionsPropsType): ReactElement {
   const picked = new Set(
     selected === undefined ? [] : typeof selected === "string" ? [selected] : selected,
   );
-  return (
-    <BlockStack gap="none" role="listbox">
-      {options.map((option) => {
-        const isSelected = picked.has(option.value);
-        return (
-          <Clickable
-            key={option.value}
-            role="option"
-            aria-selected={isSelected}
-            inlineSize="fill"
-            paddingBlock="small-200"
-            paddingInline="small-100"
-            borderRadius="large"
-            minBlockSize="36px"
-            background={isSelected ? "subdued" : undefined}
-            accessibilityLabel={
-              option.detail ? `${option.label}. ${option.detail}` : option.label
-            }
-            onClick={() => onSelect(option.value)}
-          >
-            <InlineStack
-              gap="small-200"
-              blockAlign={option.detail ? "start" : "center"}
-              wrap={false}
+  const withSearch = optionsSearchShown(options.length, searchable, searchThreshold);
+  // The menu unmounts when it closes, so each opening starts with no query.
+  const [query, setQuery] = useState("");
+  const searchRef = useRef<HTMLElement>(null);
+  const rootRef = useRef<HTMLDivElement>(null);
+  const shown = withSearch ? filterConditionOptions(options, query) : options;
+  // The list keeps its opening height while filtering, so a menu placed
+  // above its anchor does not move the search under the caret.
+  const scrollerRef = useRef<HTMLDivElement>(null);
+  const [listHeight, setListHeight] = useState<number | null>(null);
+  useEffect(() => {
+    if (!withSearch) return;
+    // Measured once the popover has laid its rows out.
+    const frame = requestAnimationFrame(() => {
+      // offsetHeight: the popover may still be scaling in.
+      const height = scrollerRef.current?.offsetHeight ?? 0;
+      if (height > 0) setListHeight(height);
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [withSearch]);
+
+  // Focus the search as the menu opens (after the popover has placed itself).
+  useEffect(() => {
+    if (!withSearch) return;
+    const node = searchRef.current;
+    const frame = requestAnimationFrame(() => node?.focus());
+    return () => cancelAnimationFrame(frame);
+  }, [withSearch]);
+
+  const rowsOf = () =>
+    Array.from(rootRef.current?.querySelectorAll<HTMLElement>('[role="option"]') ?? []);
+
+  const onKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
+    const keys = ["ArrowDown", "ArrowUp", "Home", "End"];
+    const inSearch = Boolean(
+      searchRef.current &&
+      (event.target === searchRef.current ||
+        searchRef.current.contains(event.target as Node)),
+    );
+    if (inSearch && event.key === "Enter") {
+      // Enter in the search picks the first match.
+      const first = shown[0];
+      if (first) {
+        event.preventDefault();
+        onSelect(first.value);
+      }
+      return;
+    }
+    if (!keys.includes(event.key)) return;
+    const rows = rowsOf();
+    if (rows.length === 0) return;
+    const doc = rootRef.current?.ownerDocument;
+    const current = rows.findIndex(
+      (row) => row === doc?.activeElement || row.contains(doc?.activeElement ?? null),
+    );
+    let next: number | "search";
+    if (event.key === "Home") next = 0;
+    else if (event.key === "End") next = rows.length - 1;
+    else if (event.key === "ArrowDown")
+      next = current < 0 ? 0 : Math.min(current + 1, rows.length - 1);
+    else next = current <= 0 ? (withSearch ? "search" : 0) : current - 1;
+    if (inSearch && (event.key === "Home" || event.key === "End")) return;
+    event.preventDefault();
+    if (next === "search") searchRef.current?.focus();
+    else rows[next]?.focus();
+  };
+
+  const list =
+    shown.length === 0 ? (
+      <Box paddingInline="small-100" paddingBlock="small-200">
+        <Text as="p" color="subdued">
+          {noResultsText}
+        </Text>
+      </Box>
+    ) : (
+      <BlockStack gap="none" role="listbox">
+        {shown.map((option) => {
+          const isSelected = picked.has(option.value);
+          return (
+            <Clickable
+              key={option.value}
+              role="option"
+              aria-selected={isSelected}
+              inlineSize="fill"
+              paddingBlock="small-200"
+              paddingInline="small-100"
+              borderRadius="large"
+              minBlockSize="36px"
+              background={isSelected ? "subdued" : undefined}
+              accessibilityLabel={
+                option.detail ? `${option.label}. ${option.detail}` : option.label
+              }
+              onClick={() => onSelect(option.value)}
             >
-              {isSelected ? <Icon type="check" /> : null}
-              <BlockStack gap="small-300">
-                <Text as="span">{option.label}</Text>
-                {option.detail ? (
-                  <Text as="span" variant="bodySm" color="subdued">
-                    {option.detail}
-                  </Text>
-                ) : null}
-              </BlockStack>
-            </InlineStack>
-          </Clickable>
-        );
-      })}
-    </BlockStack>
+              <InlineStack
+                gap="small-200"
+                blockAlign={option.detail ? "start" : "center"}
+                wrap={false}
+              >
+                {isSelected ? <Icon type="check" /> : null}
+                <BlockStack gap="small-300">
+                  <Text as="span">{option.label}</Text>
+                  {option.detail ? (
+                    <Text as="span" variant="bodySm" color="subdued">
+                      {option.detail}
+                    </Text>
+                  ) : null}
+                </BlockStack>
+              </InlineStack>
+            </Clickable>
+          );
+        })}
+      </BlockStack>
+    );
+
+  return (
+    <div ref={rootRef} style={OPTIONS_ROOT_STYLE} onKeyDown={onKeyDown}>
+      {withSearch ? (
+        <BlockStack gap="small-200">
+          {/* Outside the scrolling list, so it stays at the top. */}
+          <SearchField
+            ref={searchRef}
+            label={searchPlaceholder}
+            labelAccessibilityVisibility="exclusive"
+            placeholder={searchPlaceholder}
+            autocomplete="off"
+            value={query}
+            onChange={(value) => setQuery(value)}
+          />
+          <BlockStack
+            ref={scrollerRef}
+            maxBlockSize={listMaxBlockSize}
+            minBlockSize={listHeight === null ? undefined : `${listHeight}px`}
+            overflow="auto"
+            gap="none"
+          >
+            {list}
+          </BlockStack>
+        </BlockStack>
+      ) : (
+        list
+      )}
+    </div>
   );
 }
 Options.displayName = "ConditionsRepeater.Options";
@@ -508,6 +651,7 @@ function ConditionsRepeaterRoot<ItemType>({
   renderValue,
   onRemove,
   removeAccessibilityLabel = "Remove condition",
+  removeTooltip,
   addLabel = "Add condition",
   onAdd,
   addMenu,
@@ -568,6 +712,25 @@ function ConditionsRepeaterRoot<ItemType>({
               typeof removeAccessibilityLabel === "function"
                 ? removeAccessibilityLabel(item, index)
                 : removeAccessibilityLabel;
+            const tip =
+              removeTooltip === false
+                ? null
+                : removeTooltip === undefined
+                  ? removeLabel
+                  : typeof removeTooltip === "function"
+                    ? removeTooltip(item, index)
+                    : removeTooltip;
+            const trash = onRemove ? (
+              <Button
+                icon="delete"
+                variant="tertiary"
+                disabled={disabled}
+                accessibilityLabel={removeLabel}
+                // Gone on the click, with no exit animation holding the row
+                // (and the old list) open.
+                onClick={() => onRemove(item, index)}
+              />
+            ) : null;
 
             return (
               <GrowIn key={key} appear={animateNewItems && !initialIds.current?.has(key)}>
@@ -608,15 +771,15 @@ function ConditionsRepeaterRoot<ItemType>({
                                 pills never reflow under the pointer as it
                                 shows and hides. */}
                             <Hoverable.Show animation="fade">
-                              <Button
-                                icon="delete"
-                                variant="tertiary"
-                                disabled={disabled}
-                                accessibilityLabel={removeLabel}
-                                // Gone on the click, with no exit animation
-                                // holding the row (and the old list) open.
-                                onClick={() => onRemove(item, index)}
-                              />
+                              {/* Inside the slot: the tooltip hides with the
+                                  button, and its popover sits in the top
+                                  layer, so the fade and the row's hover are
+                                  untouched. */}
+                              {tip === null || tip === undefined || tip === "" ? (
+                                trash
+                              ) : (
+                                <Tooltip content={tip}>{trash}</Tooltip>
+                              )}
                             </Hoverable.Show>
                           </InlineStack>
                         ) : null}
