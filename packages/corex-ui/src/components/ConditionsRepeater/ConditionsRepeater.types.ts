@@ -107,3 +107,56 @@ export type ConditionsRepeaterOptionsPropsType = {
   selected?: string | readonly string[];
   onSelect: (value: string) => void;
 };
+
+/** How a row's values combine: every one must match, or any one. */
+export type ConditionsMatchModeType = "all" | "any";
+
+export type ConditionsRepeaterTagsInputPropsType = {
+  /** The chosen values, in order. */
+  values: readonly string[];
+  /** The next list after a value is added or removed. */
+  onChange: (values: string[]) => void;
+  /**
+   * How the values combine, shown as a badge between chips.
+   * @default "any"
+   */
+  mode?: ConditionsMatchModeType;
+  /** The badge text per mode. @default { all: "AND", any: "OR" } */
+  joinLabels?: { all: string; any: string };
+  /** Input placeholder and accessible name. @default "Add a value" */
+  placeholder?: string;
+  /** Values to offer while typing; ones already chosen are left out. */
+  suggestions?: readonly string[];
+  /**
+   * Loads the suggestions the first time the list opens (a store's tags,
+   * vendors...). Typing a value still works if it fails.
+   */
+  loadSuggestions?: () => Promise<readonly string[]>;
+  /** Change it to load again (a row switched from tags to vendors). */
+  suggestionsKey?: string | number;
+  /** Keys that turn the typed text into a chip. @default ["Enter", ","] */
+  commitKeys?: readonly string[];
+  /** Accessible label of a chip's remove control. @default `Remove ${value}` */
+  removeAccessibilityLabel?: (value: string) => string;
+  disabled?: boolean;
+};
+
+export type ConditionsRepeaterMatchModePropsType = {
+  value: ConditionsMatchModeType;
+  onChange: (value: ConditionsMatchModeType) => void;
+  /** The pill and menu labels. @default { all: "All", any: "Any" } */
+  labels?: { all: string; any: string };
+  /**
+   * A sentence on what the current mode does, at the top of the menu and as
+   * the pill's accessible label.
+   */
+  help?: string | ((mode: ConditionsMatchModeType) => string);
+  /**
+   * Fixes the mode (a product has one type, so several types only make sense
+   * as "any"): the pill is disabled and `help` shows on hover.
+   */
+  locked?: boolean;
+  /** Controlled menu state. */
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
+};

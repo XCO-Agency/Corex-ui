@@ -6,7 +6,7 @@ Each row is a rounded card (`borderRadius="large-200"`, base border) with:
 
 - its controls on top, usually `ConditionsRepeater.Pill`s, wrapping when they run out of room;
 - an optional value area under a divider, edge to edge (a text field, a tag input);
-- a trash button that shows while the row is hovered or holds keyboard focus, and removes the row at once: no confirmation and no exit animation.
+- a trash button that fades in while the row is hovered or holds keyboard focus (its space is kept, so nothing shifts), and removes the row at once: no confirmation and no exit animation.
 
 Under the rows: an add button (optionally opening a menu), an end slot, and a note when a `maxItems` limit is reached.
 
@@ -95,9 +95,73 @@ The light gray capsule the rows use for their choices: `s-clickable` with `backg
 
 The menu rows: a check and a subdued background on the selected option, an optional second line (`detail`). `selected` takes one value or a list; `onSelect` gets the picked value.
 
+## Multi-value rows: tags with All / Any
+
+A row that takes several values (tags, vendors, product types) pairs a `ConditionsRepeater.MatchMode` pill in its controls with a `ConditionsRepeater.TagsInput` as its value. Both are controlled: you own `values` and `mode`.
+
+```tsx
+renderControls={(rule) => (
+  <>
+    <ConditionsRepeater.Pill label="Tag" /* field menu */ />
+    <ConditionsRepeater.MatchMode
+      value={rule.mode}
+      onChange={(mode) => update(rule.id, { mode })}
+      help={(mode) =>
+        mode === "all"
+          ? "Only products containing all specified tags will be counted."
+          : "Products with any of the specified tags will be included."
+      }
+    />
+  </>
+)}
+renderValue={(rule) => (
+  <ConditionsRepeater.TagsInput
+    values={rule.values}
+    mode={rule.mode}
+    onChange={(values) => update(rule.id, { values })}
+    loadSuggestions={() => fetchStoreTags()}
+    suggestionsKey={rule.field}
+  />
+)}
+```
+
+### ConditionsRepeater.TagsInput
+
+The chosen values are base `Tag`s, removable, with the mode as a neutral `Badge` between them (`AND` for all, `OR` for any), and a borderless input on the same line, wrapping in a 16px-padded strip. A press on the strip focuses the input; focusing opens the suggestions, which stay open so several can be picked.
+
+| Prop                       | Behavior                                                                                                   |
+| -------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| `values`, `onChange`       | The values, and the next list after an add or a remove.                                                    |
+| `mode`                     | `"all"` or `"any"` (default). Only sets the badge between chips; the pill changes it.                      |
+| `joinLabels`               | The badge text. Default `{ all: "AND", any: "OR" }`.                                                       |
+| `placeholder`              | Shown while there are no values, and the input's name. Default `"Add a value"`.                            |
+| `suggestions`              | Values to offer. Ones already chosen are left out; typing filters the rest.                                |
+| `loadSuggestions`          | Loads more the first time the list opens, with a spinner meanwhile. A failure leaves typing working.       |
+| `suggestionsKey`           | Change it to load again (the row switched from tags to vendors).                                           |
+| `commitKeys`               | Keys that turn the typed text into a chip. Default `["Enter", ","]`. With a comma, a pasted list is split. |
+| `removeAccessibilityLabel` | `(value) => string`. Default `` `Remove ${value}` ``.                                                      |
+| `disabled`                 | Fixes the values: no input, no remove controls.                                                            |
+
+Values are trimmed; blanks and duplicates are ignored. Backspace in an empty input removes the last chip. Arrow keys move through the suggestions, Enter picks the highlighted one (or adds the typed text), Escape closes the list.
+
+### ConditionsRepeater.MatchMode
+
+The `All` / `Any` pill. Its menu is 180px wide: the `help` sentence for the current mode in subdued text, then the two options.
+
+| Prop                   | Behavior                                                                                                                                  |
+| ---------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| `value`, `onChange`    | `"all"` or `"any"`.                                                                                                                       |
+| `labels`               | Default `{ all: "All", any: "Any" }`.                                                                                                     |
+| `help`                 | A string or `(mode) => string`: the menu's first line and the pill's accessible label.                                                    |
+| `locked`               | Disables the pill and shows `help` in a tooltip. For a mode the data forces (a product has one type, so several types only match as Any). |
+| `open`, `onOpenChange` | Controls the menu; uncontrolled otherwise.                                                                                                |
+
+`tagsKeyAction(key, draft, hasValues, commitKeys?)` and `valuesToAdd(draft, values, splitOnComma)` are exported for custom inputs that want the same rules.
+
 ## Keyboard and assistive technology
 
 - The rows are a `list` of `listitem`s, named by `accessibilityLabel`.
 - Tabbing into a row shows its trash button; a mouse click on a pill does not (focus left behind after a menu closes is not a hover).
 - Pills and the add button report `aria-expanded`; their menus close on Escape.
 - `Options` is a `listbox` of `option`s with `aria-selected`.
+- `TagsInput`'s input is a `combobox` (`aria-autocomplete="list"`, `aria-expanded`, `aria-controls` on its listbox); each chip's remove control is named by `removeAccessibilityLabel`.

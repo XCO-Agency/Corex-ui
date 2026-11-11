@@ -19,7 +19,11 @@ import { Hoverable } from "../Hoverable";
 import { Icon } from "../Icon";
 import { InlineStack } from "../InlineStack";
 import { Text } from "../Text";
+import { Tooltip } from "../Tooltip";
+import { TagsInput } from "./TagsInput";
 import type {
+  ConditionsMatchModeType,
+  ConditionsRepeaterMatchModePropsType,
   ConditionsRepeaterKeyType,
   ConditionsRepeaterOptionsPropsType,
   ConditionsRepeaterPillPropsType,
@@ -398,6 +402,93 @@ function Options({
 }
 Options.displayName = "ConditionsRepeater.Options";
 
+// ─── Match mode ────────────────────────────────────────────────────────────────
+
+/** Fixed width for the short All/Any explanation, so it wraps to a few lines. */
+const MATCH_HELP_WIDTH = "180px";
+
+/**
+ * The All / Any pill of a multi-value row: whether every value must match or
+ * any one. Its menu leads with what the current mode does. Locked, the pill
+ * is disabled and that sentence shows on hover instead.
+ */
+function MatchMode({
+  value,
+  onChange,
+  labels = { all: "All", any: "Any" },
+  help,
+  locked = false,
+  open,
+  onOpenChange,
+}: ConditionsRepeaterMatchModePropsType): ReactElement {
+  const [openState, setOpenState] = useState(false);
+  const isOpen = open ?? openState;
+  const setOpen = (next: boolean) => {
+    if (open === undefined) setOpenState(next);
+    onOpenChange?.(next);
+  };
+  const helpText = typeof help === "function" ? help(value) : help;
+  const label = value === "all" ? labels.all : labels.any;
+
+  if (locked) {
+    const pill = <Pill label={label} disabled accessibilityLabel={helpText ?? label} />;
+    if (!helpText) return pill;
+    return (
+      <Tooltip
+        content={
+          <Box
+            inlineSize={MATCH_HELP_WIDTH}
+            maxInlineSize={MATCH_HELP_WIDTH}
+            padding="none"
+          >
+            {helpText}
+          </Box>
+        }
+      >
+        {pill}
+      </Tooltip>
+    );
+  }
+
+  return (
+    <Pill
+      label={label}
+      open={isOpen}
+      onOpenChange={setOpen}
+      accessibilityLabel={helpText ?? label}
+      menu={
+        <Box
+          inlineSize={MATCH_HELP_WIDTH}
+          maxInlineSize={MATCH_HELP_WIDTH}
+          padding="none"
+        >
+          <BlockStack gap="none">
+            {helpText ? (
+              <Box paddingInline="small-100" paddingBlock="small-200">
+                <Text as="p" color="subdued">
+                  {helpText}
+                </Text>
+              </Box>
+            ) : null}
+            <Options
+              options={[
+                { label: labels.all, value: "all" },
+                { label: labels.any, value: "any" },
+              ]}
+              selected={value}
+              onSelect={(next) => {
+                onChange(next as ConditionsMatchModeType);
+                setOpen(false);
+              }}
+            />
+          </BlockStack>
+        </Box>
+      }
+    />
+  );
+}
+MatchMode.displayName = "ConditionsRepeater.MatchMode";
+
 // ─── Repeater ──────────────────────────────────────────────────────────────────
 
 function defaultItemId(item: unknown, index: number): ConditionsRepeaterKeyType {
@@ -614,4 +705,6 @@ function ConditionsRepeaterRoot<ItemType>({
 export const ConditionsRepeater = Object.assign(ConditionsRepeaterRoot, {
   Pill,
   Options,
+  MatchMode,
+  TagsInput,
 });

@@ -6,6 +6,7 @@ import {
   Button,
   Card,
   ConditionsRepeater,
+  type ConditionsMatchModeType,
   Text,
   TextField,
 } from "@xco-agency/corex-ui";
@@ -17,6 +18,13 @@ type FieldType = {
   /** The operator is the whole choice (Status: Active), so no value area. */
   operatorIsValue?: boolean;
   prefix?: string;
+  /** Several values, joined by the row's All / Any mode. */
+  multi?: {
+    suggestions: string[];
+    help: (mode: ConditionsMatchModeType) => string;
+    /** A product has one type: several types can only match as Any. */
+    lockAnyWhenMany?: boolean;
+  };
 };
 
 const FIELDS: FieldType[] = [
@@ -47,18 +55,65 @@ const FIELDS: FieldType[] = [
       { label: "Draft", value: "draft" },
     ],
   },
+  {
+    value: "tag",
+    label: "Tag",
+    operators: [],
+    multi: {
+      suggestions: ["summer", "sale", "new", "bestseller", "eco"],
+      help: (mode) =>
+        mode === "all"
+          ? "Only products containing all specified tags will be counted."
+          : "Products with any of the specified tags will be included.",
+    },
+  },
+  {
+    value: "type",
+    label: "Product type",
+    operators: [],
+    multi: {
+      suggestions: ["Shirts", "Shoes", "Hats", "Bags"],
+      lockAnyWhenMany: true,
+      help: (mode) =>
+        mode === "all"
+          ? "Only products with all specified types will be counted."
+          : "Products with any of the specified types will be included.",
+    },
+  },
 ];
 
-type RuleType = { id: number; field: string; operator: string; value: string };
+type RuleType = {
+  id: number;
+  field: string;
+  operator: string;
+  value: string;
+  values: string[];
+  mode: ConditionsMatchModeType;
+};
 
-const MAX_RULES = 3;
+const MAX_RULES = 4;
 
-let nextId = 3;
+let nextId = 4;
 
 export function ConditionsRepeaterExample() {
   const [rules, setRules] = useState<RuleType[]>([
-    { id: 1, field: "title", operator: "contains", value: "Summer" },
-    { id: 2, field: "status", operator: "active", value: "" },
+    {
+      id: 1,
+      field: "title",
+      operator: "contains",
+      value: "Summer",
+      values: [],
+      mode: "any",
+    },
+    { id: 2, field: "status", operator: "active", value: "", values: [], mode: "any" },
+    {
+      id: 3,
+      field: "tag",
+      operator: "",
+      value: "",
+      values: ["summer", "sale"],
+      mode: "all",
+    },
   ]);
   const [openMenu, setOpenMenu] = useState<string | null>(null);
   const [addOpen, setAddOpen] = useState(false);
@@ -106,35 +161,65 @@ export function ConditionsRepeaterExample() {
                         const next = FIELDS.find((f) => f.value === value)!;
                         update(rule.id, {
                           field: value,
-                          operator: next.operators[0]!.value,
+                          operator: next.operators[0]?.value ?? "",
                           value: "",
+                          values: [],
+                          mode: "any",
                         });
                         setOpenMenu(null);
                       }}
                     />
                   }
                 />
-                <ConditionsRepeater.Pill
-                  label={operator?.label ?? "Operator"}
-                  open={openMenu === operatorKey}
-                  onOpenChange={(open) => setOpenMenu(open ? operatorKey : null)}
-                  menu={
-                    <ConditionsRepeater.Options
-                      options={field.operators}
-                      selected={rule.operator}
-                      onSelect={(value) => {
-                        update(rule.id, { operator: value });
-                        setOpenMenu(null);
-                      }}
-                    />
-                  }
-                />
+                {field.multi ? (
+                  <ConditionsRepeater.MatchMode
+                    value={rule.mode}
+                    onChange={(mode) => update(rule.id, { mode })}
+                    help={field.multi.help}
+                    locked={field.multi.lockAnyWhenMany && rule.values.length > 1}
+                    open={openMenu === operatorKey}
+                    onOpenChange={(open) => setOpenMenu(open ? operatorKey : null)}
+                  />
+                ) : (
+                  <ConditionsRepeater.Pill
+                    label={operator?.label ?? "Operator"}
+                    open={openMenu === operatorKey}
+                    onOpenChange={(open) => setOpenMenu(open ? operatorKey : null)}
+                    menu={
+                      <ConditionsRepeater.Options
+                        options={field.operators}
+                        selected={rule.operator}
+                        onSelect={(value) => {
+                          update(rule.id, { operator: value });
+                          setOpenMenu(null);
+                        }}
+                      />
+                    }
+                  />
+                )}
               </>
             );
           }}
           renderValue={(rule) => {
             const field = fieldOf(rule);
             if (field.operatorIsValue) return null;
+            if (field.multi) {
+              const lock = field.multi.lockAnyWhenMany;
+              return (
+                <ConditionsRepeater.TagsInput
+                  values={rule.values}
+                  mode={rule.mode}
+                  suggestions={field.multi.suggestions}
+                  suggestionsKey={rule.field}
+                  onChange={(values) =>
+                    update(rule.id, {
+                      values,
+                      ...(lock && values.length > 1 ? { mode: "any" as const } : {}),
+                    })
+                  }
+                />
+              );
+            }
             return (
               <Box padding="small-200">
                 <TextField
@@ -164,8 +249,10 @@ export function ConditionsRepeaterExample() {
                   {
                     id: nextId++,
                     field: value,
-                    operator: field.operators[0]!.value,
+                    operator: field.operators[0]?.value ?? "",
                     value: "",
+                    values: [],
+                    mode: "any",
                   },
                 ]);
                 setAddOpen(false);

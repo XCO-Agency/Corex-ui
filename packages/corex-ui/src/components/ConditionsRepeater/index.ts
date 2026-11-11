@@ -3,7 +3,11 @@ export {
   CONDITIONS_REPEATER_MOTION_MS,
   conditionsAtLimit,
 } from "./ConditionsRepeater";
+export { tagsKeyAction, valuesToAdd } from "./TagsInput";
 export type {
+  ConditionsMatchModeType,
+  ConditionsRepeaterMatchModePropsType,
+  ConditionsRepeaterTagsInputPropsType,
   ConditionsRepeaterKeyType,
   ConditionsRepeaterOptionType,
   ConditionsRepeaterOptionsPropsType,
