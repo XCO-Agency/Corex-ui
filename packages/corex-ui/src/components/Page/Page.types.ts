@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import type { IconType, PolarisPropsType } from "../../types/common";
-import { ButtonPropsType } from "../Button";
+import type { ButtonPropsType } from "../Button";
 
 type NativePageProps = PolarisPropsType<"s-page">;
 
@@ -10,39 +10,62 @@ type NativePageProps = PolarisPropsType<"s-page">;
 export type PageInlineSizeType = NonNullable<NativePageProps["inlineSize"]>;
 
 /**
- * Action descriptor for the primary action button.
+ * `s-button` props that a page action can carry.
+ *
+ * Matches the button web component: `accessibilityLabel`, `command`,
+ * `commandFor`, `disabled`, `download`, `href`, `icon`, `inlineSize`,
+ * `interestFor`, `loading`, `target`, `tone`, `type`, plus click, focus,
+ * and blur. Legacy `url`, `external`, `destructive`, and `submit` still map
+ * through `Button`.
+ *
+ * https://shopify.dev/docs/api/app-home/latest/web-components/actions/button
  */
-export type PagePrimaryActionType = {
-  /** Text content or React node displayed inside the button */
+type PageActionButtonProps = Omit<ButtonPropsType, "slot" | "variant" | "children">;
+
+/**
+ * Shared fields for a page action descriptor.
+ * `content` is the legacy label; `children` is the button slot of the same name.
+ * `onAction` is the legacy click callback; `onClick` is the button event.
+ */
+export type PageActionDescriptorType = PageActionButtonProps & {
+  /** Label shown inside the button. Alias for the button `children`. */
   content?: ReactNode;
-  /** Callback fired when the action is triggered */
+  /** Button label. Used when `content` is omitted. */
+  children?: ReactNode;
+  /** @deprecated Use `onClick`. Fired when the action button is activated. */
   onAction?: () => void;
-  /** Whether the action button is disabled */
-  disabled?: boolean;
-  /** Whether the action button is in a loading state */
-  loading?: boolean;
-  /** Destructive styling (red/critical) */
-  destructive?: boolean;
-  /** URL to navigate to if the action behaves as a link */
-  url?: string;
-  /** Whether to open the link in a new tab */
-  external?: boolean;
-  /** Accessibility label for screen readers */
-  accessibilityLabel?: string;
-  /** Unique ID for the action element */
-  id?: string;
-  [key: string]: unknown;
+  /**
+   * Present on every action so callers can narrow it per slot.
+   * Primary only accepts `"primary"`; secondary accepts `"secondary"` or `"auto"`.
+   */
+  variant?: "primary" | "secondary" | "auto";
 };
 
 /**
- * Action descriptor for secondary page actions.
+ * Primary page action.
+ * The `primary-action` slot only accepts one button with `variant="primary"`.
+ * Passing `variant` is optional; the slot always renders `primary`.
+ *
+ * https://shopify.dev/docs/api/app-home/latest/web-components/layout-and-structure/page
  */
-export type PageMenuActionDescriptorType = ButtonPropsType & {
-  /** Text content or React node displayed inside the button */
-  content?: ReactNode;
-  /** Callback fired when the action is triggered */
-  onAction?: () => void;
-  /** Whether the action button is disabled */
+export type PagePrimaryActionType = PageActionDescriptorType & {
+  /** Fixed by the primary-action slot. Any other value is ignored. */
+  variant?: "primary";
+};
+
+/**
+ * Secondary page action.
+ * The `secondary-actions` slot only accepts buttons with `variant` `secondary`
+ * or `auto`.
+ *
+ * https://shopify.dev/docs/api/app-home/latest/web-components/layout-and-structure/page
+ */
+export type PageMenuActionDescriptorType = PageActionDescriptorType & {
+  /**
+   * Visual emphasis. The slot rejects every other variant.
+   * @default 'auto'
+   */
+  variant?: "auto" | "secondary";
 };
 
 /**
