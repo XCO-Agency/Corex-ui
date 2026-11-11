@@ -69,8 +69,8 @@ describe("ConditionsRepeater", () => {
     const { container } = setup();
     const row = rows(container)[0]!;
     expect(slotOf(row)).toHaveAttribute("data-visible", "false");
-    // Hidden without keeping space, as the row had it.
-    expect(slotOf(row)).toHaveAttribute("data-keep-space", "false");
+    // Hidden in place: its space is kept, so nothing reflows as it shows.
+    expect(slotOf(row)).toHaveAttribute("data-keep-space", "true");
 
     fireEvent.mouseOver(row.querySelector("s-box")!);
     expect(slotOf(row)).toHaveAttribute("data-visible", "true");
@@ -188,6 +188,68 @@ describe("ConditionsRepeater", () => {
       />,
     );
     expect(rows(container)).toHaveLength(3);
+  });
+});
+
+describe("ConditionsRepeater hover in another document", () => {
+  // Regression: the pointer tracker listened on the module's global document.
+  // Rendered into an iframe (the docs preview), it kept the outer page's
+  // coordinates, the hit-test after each render landed outside the row, and
+  // the hover was cancelled a frame after it began: the trash flashed.
+  it("keeps the trash button shown while the pointer stays on the row", async () => {
+    const iframe = document.createElement("iframe");
+    document.body.append(iframe);
+    const doc = iframe.contentDocument!;
+    const host = doc.createElement("div");
+    doc.body.append(host);
+
+    // The outer page last saw the pointer far away from the row.
+    fireEvent.pointerMove(document, { clientX: 900, clientY: 900 });
+
+    const { container, unmount } = render(
+      <ConditionsRepeater<RuleType>
+        items={rules}
+        renderControls={(rule) => <ConditionsRepeater.Pill label={rule.field} />}
+        onRemove={() => {}}
+      />,
+      { container: host },
+    );
+    const row = rows(container)[0]!;
+    const card = row.querySelector("s-box")!;
+    // What the frame's own document has under each point.
+    (
+      doc as Document & { elementsFromPoint: Document["elementsFromPoint"] }
+    ).elementsFromPoint = (x: number) => (x < 100 ? [card] : [doc.body]);
+
+    const view = doc.defaultView!;
+    // jsdom has no PointerEvent; a MouseEvent of that type carries the point.
+    const move = (clientX: number, clientY: number) =>
+      doc.body.dispatchEvent(
+        new view.MouseEvent("pointermove", { clientX, clientY, bubbles: true }),
+      );
+    move(10, 10);
+    fireEvent.mouseOver(card);
+    expect(slotOf(row)).toHaveAttribute("data-visible", "true");
+
+    // A few frames and re-renders later, and another move on the row.
+    await act(async () => {
+      await new Promise((resolve) => setTimeout(resolve, 60));
+    });
+    move(20, 10);
+    await act(async () => {
+      await new Promise((resolve) => setTimeout(resolve, 60));
+    });
+    expect(slotOf(row)).toHaveAttribute("data-visible", "true");
+
+    // Off the row, it hides.
+    move(500, 10);
+    await act(async () => {
+      await new Promise((resolve) => setTimeout(resolve, 20));
+    });
+    expect(slotOf(row)).toHaveAttribute("data-visible", "false");
+
+    unmount();
+    iframe.remove();
   });
 });
 

@@ -29,45 +29,59 @@ import type {
 /** How long a new row takes to grow in. */
 export const CONDITIONS_REPEATER_MOTION_MS = 220;
 
-// ─── Input modality ────────────────────────────────────────────────────────────
+// ─── Input tracking ────────────────────────────────────────────────────────────
 //
 // Mouse focus left on a pill after its menu closes is not a hover; keyboard
 // focus is. Hoverable's `includeFocus` cannot tell the two apart, so the rows
-// track the last input themselves. One set of document listeners for the page.
+// track the last input themselves, and where the pointer last was.
+//
+// Per document, not per page: the rows can render into another document than
+// the one this module loaded in (an iframe preview, a portal into a frame).
+// A single tracker on the global `document` never heard that frame's pointer,
+// so its coordinates were stale ones from the outer page, the hit-test landed
+// outside the row, and the row's hover was cancelled one frame after it
+// started: the trash button flashed on every move into or across a row.
 
 type PointerPointType = { x: number; y: number };
 
-let lastPointer: PointerPointType | null = null;
-let inputModality: "pointer" | "keyboard" = "pointer";
-let modalityInstalled = false;
+type InputStateType = {
+  pointer: PointerPointType | null;
+  modality: "pointer" | "keyboard";
+};
 
 const MODIFIER_KEYS = new Set(["Meta", "Control", "Alt", "Shift"]);
 
-function installInputModality(): void {
-  if (modalityInstalled || typeof document === "undefined") return;
-  modalityInstalled = true;
-  document.addEventListener(
+const inputStates = new WeakMap<Document, InputStateType>();
+
+/** The input tracker for `doc`, installed on first use. */
+export function inputStateFor(doc: Document): InputStateType {
+  const existing = inputStates.get(doc);
+  if (existing) return existing;
+  const state: InputStateType = { pointer: null, modality: "pointer" };
+  inputStates.set(doc, state);
+  doc.addEventListener(
     "pointerdown",
     () => {
-      inputModality = "pointer";
+      state.modality = "pointer";
     },
     true,
   );
-  document.addEventListener(
+  doc.addEventListener(
     "pointermove",
     (event) => {
-      lastPointer = { x: event.clientX, y: event.clientY };
+      state.pointer = { x: event.clientX, y: event.clientY };
     },
     true,
   );
-  document.addEventListener(
+  doc.addEventListener(
     "keydown",
     (event) => {
       if (MODIFIER_KEYS.has(event.key)) return;
-      inputModality = "keyboard";
+      state.modality = "keyboard";
     },
     true,
   );
+  return state;
 }
 
 /** Whether a focus that just landed in a row should show its trash button. */
@@ -109,14 +123,20 @@ export function pointerStillInsideRow(root: Node, hits: readonly Node[]): boolea
   return hits.some((hit) => containsAcrossShadow(root, hit));
 }
 
-function hitsAtLastPointer(node: HTMLElement): Node[] {
-  if (!lastPointer) return [node];
+/**
+ * What is under `point` in `node`'s document. With no point yet, or none the
+ * document can answer for, the row is taken to still hold the pointer:
+ * cancelling a hover on a guess is what made the button flash.
+ */
+export function hitsAt(node: HTMLElement, point: PointerPointType | null): Node[] {
+  if (!point) return [node];
   const doc = node.ownerDocument;
   if (typeof doc.elementsFromPoint === "function") {
-    return doc.elementsFromPoint(lastPointer.x, lastPointer.y);
+    const hits = doc.elementsFromPoint(point.x, point.y);
+    return hits.length > 0 ? hits : [node];
   }
-  const hit = doc.elementFromPoint?.(lastPointer.x, lastPointer.y);
-  return hit ? [hit] : [];
+  const hit = doc.elementFromPoint?.(point.x, point.y);
+  return hit ? [hit] : [node];
 }
 
 // ─── Row hover ─────────────────────────────────────────────────────────────────
@@ -144,26 +164,33 @@ function RowHover({
   }, [pointer]);
 
   useEffect(() => {
-    installInputModality();
+    const doc = frameRef.current?.ownerDocument;
+    if (!doc) return;
+    inputStateFor(doc);
     const clearKeyboard = () => setKeyboard(false);
-    document.addEventListener("pointerdown", clearKeyboard, true);
-    return () => document.removeEventListener("pointerdown", clearKeyboard, true);
+    doc.addEventListener("pointerdown", clearKeyboard, true);
+    return () => doc.removeEventListener("pointerdown", clearKeyboard, true);
   }, []);
 
+  // A row that shrinks off a still pointer: re-check what is under the pointer
+  // after a render, and on each move, from the move's own coordinates.
   useEffect(() => {
     const node = frameRef.current;
     if (!node) return;
-    const release = () => {
+    const state = inputStateFor(node.ownerDocument);
+    const release = (point: PointerPointType | null) => {
       if (!pointerRef.current) return;
-      if (pointerStillInsideRow(node, hitsAtLastPointer(node))) return;
+      if (pointerStillInsideRow(node, hitsAt(node, point))) return;
       node.dispatchEvent(new MouseEvent("mouseout", { bubbles: true }));
     };
-    const frame = requestAnimationFrame(release);
+    const frame = requestAnimationFrame(() => release(state.pointer));
+    const onMove = (event: PointerEvent) =>
+      release({ x: event.clientX, y: event.clientY });
     const view = node.ownerDocument.defaultView;
-    view?.addEventListener("pointermove", release);
+    view?.addEventListener("pointermove", onMove);
     return () => {
       cancelAnimationFrame(frame);
-      view?.removeEventListener("pointermove", release);
+      view?.removeEventListener("pointermove", onMove);
     };
   });
 
@@ -180,7 +207,10 @@ function RowHover({
         style={{ display: "contents" }}
         data-cx-conditions-row=""
         onFocus={() => {
-          if (focusShowsRowActions(inputModality)) setKeyboard(true);
+          const doc = frameRef.current?.ownerDocument;
+          if (doc && focusShowsRowActions(inputStateFor(doc).modality)) {
+            setKeyboard(true);
+          }
         }}
         onBlur={(event: FocusEvent<HTMLDivElement>) => {
           const next = event.relatedTarget;
@@ -483,7 +513,10 @@ function ConditionsRepeaterRoot<ItemType>({
 
                         {onRemove ? (
                           <InlineStack flex="none" blockAlign="start">
-                            <Hoverable.Show keepSpace={false} animation="fade">
+                            {/* Space kept: the button fades in place, so the
+                                pills never reflow under the pointer as it
+                                shows and hides. */}
+                            <Hoverable.Show animation="fade">
                               <Button
                                 icon="delete"
                                 variant="tertiary"
