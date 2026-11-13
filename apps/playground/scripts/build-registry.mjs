@@ -22,6 +22,11 @@ const BLOCK_METADATA = {
     description:
       "AI-calculated revenue opportunities with lift badges and one-click actions.",
   },
+  "analytics-charts": {
+    title: "Analytics Charts",
+    description:
+      "Shopify-style line, column, funnel, bar list, donut and sparkline charts with metric cards.",
+  },
   "app-cross-sell": {
     title: "App Promotion",
     description: "Ecosystem app promotion card with one-click installation trigger.",
@@ -87,7 +92,11 @@ function getFilesRecursively(dir, baseDir) {
     const fullPath = path.join(dir, entry.name);
 
     if (entry.isDirectory()) {
+      // Block tests stay in the repo; they are not copied into apps.
+      if (entry.name === "__tests__") continue;
       files.push(...getFilesRecursively(fullPath, baseDir));
+    } else if (/\.test\.(tsx|ts)$/.test(entry.name)) {
+      continue;
     } else if (/\.(tsx|ts|css|json)$/.test(entry.name)) {
       const relativePath = path.relative(baseDir, fullPath).replace(/\\/g, "/");
       const content = fs.readFileSync(fullPath, "utf-8");

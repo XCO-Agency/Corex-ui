@@ -13,6 +13,7 @@ import { pricingBlocks } from "./blocks/pricing";
 import { integrationsBlocks } from "./blocks/integrations";
 import { activityFeedBlocks } from "./blocks/activity-feed";
 import { metricsBlocks } from "./blocks/metrics";
+import { analyticsChartsBlocks } from "./blocks/analytics-charts";
 import { onboardingBlocks } from "./blocks/onboarding";
 import { onboardingNewBlocks } from "./blocks/onboarding-new";
 import { notificationTemplatesBlocks } from "./blocks/notification-templates";
@@ -81,7 +82,7 @@ export const blocks: BlockGroupType[] = [
   },
   {
     category: "Analytics",
-    components: metricsBlocks,
+    components: [...metricsBlocks, ...analyticsChartsBlocks],
   },
 ].map((group) => ({ ...group, components: [...group.components].sort(byName) }));
 
