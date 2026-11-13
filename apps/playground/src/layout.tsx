@@ -65,12 +65,12 @@ export default function Layout({ children }: LayoutPropsType) {
           className="playground-nav"
           inlineSize="240px"
           blockSize="100%"
-          overflow="hidden"
+          minBlockSize={0}
+          overflowY="auto"
           shrink={false}
+          padding="small"
         >
-          <BlockStack blockSize="100%" overflowY="auto" padding="small">
-            {sidebar}
-          </BlockStack>
+          {sidebar}
         </BlockStack>
       )}
 

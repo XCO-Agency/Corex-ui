@@ -31,6 +31,7 @@ import {
 } from "../../core/overlay";
 import { DRAWER_CSS, DRAWER_STYLE_ID } from "./Drawer.css";
 import { Button } from "../Button";
+import { Text } from "../Text";
 import { devWarning } from "../../utils/devWarning";
 import {
   closeAllDrawers,
@@ -1495,35 +1496,74 @@ function DrawerBody({ className, style, ...props }: DrawerBodyPropsType): ReactE
 }
 DrawerBody.displayName = "Drawer.Body";
 
-const DrawerTitle = forwardRef<HTMLHeadingElement, DrawerTitlePropsType>(
-  function DrawerTitle({ className, style, ...props }, ref) {
+const DrawerTitle = forwardRef<HTMLElement, DrawerTitlePropsType>(
+  function DrawerTitle(
+    {
+      className,
+      style,
+      children,
+      variant = "headingSm",
+      fontWeight,
+      color,
+      lineClamp,
+      breakWord,
+    },
+    ref,
+  ) {
     const { titleId } = useDrawerContext();
     return (
-      <h2
+      <Text
         ref={ref}
         id={titleId}
+        as="h2"
+        heading
+        variant={variant}
+        fontWeight={fontWeight}
+        color={color}
+        lineClamp={lineClamp}
+        breakWord={breakWord}
         data-slot="drawer-title"
         className={className}
         style={style}
-        {...props}
-      />
+      >
+        {children}
+      </Text>
     );
   },
 );
 DrawerTitle.displayName = "Drawer.Title";
 
-const DrawerDescription = forwardRef<HTMLParagraphElement, DrawerDescriptionPropsType>(
-  function DrawerDescription({ className, style, ...props }, ref) {
+const DrawerDescription = forwardRef<HTMLElement, DrawerDescriptionPropsType>(
+  function DrawerDescription(
+    {
+      className,
+      style,
+      children,
+      variant = "bodyMd",
+      fontWeight = "regular",
+      color = "subdued",
+      lineClamp,
+      breakWord,
+    },
+    ref,
+  ) {
     const { descriptionId } = useDrawerContext();
     return (
-      <p
+      <Text
         ref={ref}
         id={descriptionId}
+        as="p"
+        variant={variant}
+        fontWeight={fontWeight}
+        color={color}
+        lineClamp={lineClamp}
+        breakWord={breakWord}
         data-slot="drawer-description"
         className={className}
         style={style}
-        {...props}
-      />
+      >
+        {children}
+      </Text>
     );
   },
 );

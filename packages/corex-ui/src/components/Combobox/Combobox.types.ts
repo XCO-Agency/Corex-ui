@@ -13,6 +13,8 @@ export type ComboboxContextType<T = any> = {
   value: any;
   isSelected: (valueOrItem: any) => boolean;
   selectItem: (valueOrItem: any) => void;
+  /** Replace the full selection (used by multi-select ChoiceList). */
+  setValue: (value: any) => void;
   removeTag: (valueOrItem: any) => void;
   clearValue: () => void;
   open: boolean;
@@ -118,6 +120,11 @@ export type ComboboxContentPropsType = {
 
 export type ComboboxListPropsType<T = any> = {
   children?: ReactNode | ((item: T, index: number) => ReactNode);
+  /**
+   * Visible heading for the multi-select ChoiceList inside the popover.
+   * Ignored for single-select lists.
+   */
+  label?: string;
   className?: string;
   style?: CSSProperties;
   "aria-label"?: string;

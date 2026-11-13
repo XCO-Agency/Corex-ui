@@ -645,19 +645,12 @@ body {
   opacity: 1;
 }
 
-[data-slot="drawer-title"] {
+[data-slot="drawer-title"],
+[data-slot="drawer-description"] {
   margin: 0;
-  font-size: var(--p-font-size-350, 0.875rem);
-  font-weight: var(--p-font-weight-semibold, 600);
-  line-height: var(--p-font-line-height-500, 1.25);
-  color: var(--p-color-text, #303030);
 }
 
 [data-slot="drawer-description"] {
-  margin: 0;
-  font-size: var(--p-font-size-325, 0.8125rem);
-  line-height: var(--p-font-line-height-500, 1.25);
-  color: var(--p-color-text-secondary, #616161);
   text-wrap: balance;
 }
 

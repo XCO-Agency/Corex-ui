@@ -3,6 +3,8 @@ import { TextFieldExample } from "@/examples/forms/TextFieldExample";
 import TextFieldExampleRaw from "@/examples/forms/TextFieldExample.tsx?raw";
 import { SearchFieldExample } from "@/examples/forms/SearchFieldExample";
 import SearchFieldExampleRaw from "@/examples/forms/SearchFieldExample.tsx?raw";
+import { RepeaterExample } from "@/examples/forms/RepeaterExample";
+import RepeaterExampleRaw from "@/examples/forms/RepeaterExample.tsx?raw";
 import { IndexFiltersExample } from "@/examples/forms/IndexFiltersExample";
 import IndexFiltersExampleRaw from "@/examples/forms/IndexFiltersExample.tsx?raw";
 import { MoneyFieldExample } from "@/examples/forms/MoneyFieldExample";
@@ -95,6 +97,20 @@ export const formsComponents: ComponentEntry[] = [
         title: "IndexFilters with Views, Filter Pills & Column Settings",
         Example: IndexFiltersExample,
         code: IndexFiltersExampleRaw,
+      },
+    ],
+  },
+  {
+    name: "Repeater",
+    slug: "repeater",
+    category: "Forms",
+    description:
+      "Repeated condition rows: rounded cards with field and operator pills, a value area under a divider, a trash button on hover or keyboard focus that removes the row at once, a trash tooltip, an add button with an optional field menu that turns searchable past 10 types, a plan limit, and multi-value tag rows with an All / Any mode.",
+    examples: [
+      {
+        title: "Smart collection rules with a plan limit",
+        Example: RepeaterExample,
+        code: RepeaterExampleRaw,
       },
     ],
   },
