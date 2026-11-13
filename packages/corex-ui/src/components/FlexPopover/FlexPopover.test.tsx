@@ -52,7 +52,8 @@ describe("FlexPopover", () => {
 
     expect(popoverUi().getByText("Content")).toBeInTheDocument();
     expect(popoverUi().queryByText("Filters")).toBeNull();
-    expect(queryInPopovers("[accessibilitylabel]")).toBeNull();
+    // Card always sets accessibilityLabel on `s-section`; assert no header close control.
+    expect(queryInPopovers('s-button[accessibilitylabel^="Close"]')).toBeNull();
   });
 
   it("renders the heading and its close button when a heading is passed", () => {

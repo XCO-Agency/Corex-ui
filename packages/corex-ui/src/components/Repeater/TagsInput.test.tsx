@@ -145,9 +145,10 @@ describe("Repeater.TagsInput", () => {
     );
 
     fireEvent.focus(input());
-    expect(screen.queryByRole("option", { name: "red" })).toBeNull();
+    // Multi Combobox suggestions render as ChoiceList (`s-choice`), not role=option.
+    expect(document.querySelector('s-choice[value="red"]')).toBeNull();
     type("bl");
-    fireEvent.click(screen.getByRole("option", { name: "blue" }));
+    fireEvent.click(document.querySelector('s-choice[value="blue"]')!);
 
     expect(chips(container)).toEqual(["red", "blue"]);
   });
@@ -159,7 +160,9 @@ describe("Repeater.TagsInput", () => {
     await act(async () => {
       fireEvent.focus(input());
     });
-    expect(await screen.findByRole("option", { name: "vendor-a" })).toBeInTheDocument();
+    await vi.waitFor(() => {
+      expect(document.querySelector('s-choice[value="vendor-a"]')).not.toBeNull();
+    });
 
     fireEvent.keyDown(input(), { key: "Escape" });
     await act(async () => {
