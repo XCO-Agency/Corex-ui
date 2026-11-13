@@ -29,7 +29,7 @@ export const ChoiceList = forwardRef<HTMLElement, ChoiceListPropsType>(
     return (
       <SChoiceList
         ref={ref}
-        label={label ?? name}
+        label={label || name || "Choices"}
         values={selected ?? values}
         multiple={multiple}
         name={name}
@@ -46,7 +46,7 @@ export const ChoiceList = forwardRef<HTMLElement, ChoiceListPropsType>(
               key={`${value}-${index}`}
               value={value}
               selected={selected?.includes(value)}
-              accessibilityLabel={choiceLabel}
+              accessibilityLabel={choiceLabel || "Choice"}
               disabled={choice.disabled}
             >
               {choiceLabel}

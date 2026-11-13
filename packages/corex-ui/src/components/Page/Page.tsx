@@ -5,6 +5,7 @@ import { devWarning } from "../../utils/devWarning";
 import { Button } from "../Button";
 import { Link } from "../Link";
 import type {
+  PageActionDescriptorType,
   PageBackActionType,
   PageMenuActionDescriptorType,
   PagePrimaryActionType,
@@ -12,6 +13,51 @@ import type {
 } from "./Page.types";
 
 const SPage = createWebComponent<HTMLElement>("s-page");
+
+type PageActionSlot = "primary-action" | "secondary-actions";
+
+function renderActionButton(
+  action: PageActionDescriptorType,
+  slot: PageActionSlot,
+  key?: string | number,
+) {
+  const { content, children, onAction, onClick, variant, ...buttonProps } = action;
+  const isPrimary = slot === "primary-action";
+  const secondaryVariant =
+    variant === "secondary" || variant === "auto" ? variant : undefined;
+
+  if (isPrimary && variant !== undefined && variant !== "primary") {
+    devWarning(
+      "Page",
+      `primaryAction variant "${String(variant)}" is ignored. The primary-action slot only accepts variant "primary".`,
+    );
+  }
+  if (!isPrimary && variant !== undefined && secondaryVariant === undefined) {
+    devWarning(
+      "Page",
+      `secondaryActions variant "${String(variant)}" is ignored. The secondary-actions slot only accepts "secondary" or "auto".`,
+    );
+  }
+
+  return (
+    <Button
+      {...buttonProps}
+      key={key}
+      slot={slot}
+      variant={isPrimary ? "primary" : secondaryVariant}
+      onClick={
+        onAction
+          ? (event) => {
+              onClick?.(event);
+              onAction();
+            }
+          : onClick
+      }
+    >
+      {content ?? children}
+    </Button>
+  );
+}
 
 function renderPrimaryAction(primaryAction?: PagePrimaryActionType | ReactNode) {
   if (!primaryAction) return null;
@@ -23,23 +69,7 @@ function renderPrimaryAction(primaryAction?: PagePrimaryActionType | ReactNode) 
     } as Record<string, unknown>);
   }
 
-  const action = primaryAction as PagePrimaryActionType;
-  return (
-    <Button
-      slot="primary-action"
-      variant="primary"
-      tone={action.destructive ? "critical" : undefined}
-      disabled={action.disabled}
-      loading={action.loading}
-      url={action.url}
-      external={action.external}
-      accessibilityLabel={action.accessibilityLabel}
-      id={action.id}
-      onClick={action.onAction}
-    >
-      {action.content}
-    </Button>
-  );
+  return renderActionButton(primaryAction as PagePrimaryActionType, "primary-action");
 }
 
 function renderSecondaryActions(
@@ -66,23 +96,7 @@ function renderSecondaryActions(
 
       if (action && typeof action === "object") {
         const item = action as PageMenuActionDescriptorType;
-        return (
-          <Button
-            key={item.id ?? index}
-            slot="secondary-actions"
-            disabled={item.disabled}
-            loading={item.loading}
-            tone={item.destructive ? "critical" : undefined}
-            url={item.url}
-            external={item.external}
-            accessibilityLabel={item.accessibilityLabel}
-            icon={item.icon}
-            id={item.id}
-            onClick={item.onAction}
-          >
-            {item.content ?? item.children}
-          </Button>
-        );
+        return renderActionButton(item, "secondary-actions", item.id ?? index);
       }
 
       return null;
@@ -125,12 +139,18 @@ function renderBreadcrumbActions(
 
 function renderAside(aside?: ReactNode) {
   if (!aside) return null;
-  if (isValidElement(aside)) {
+
+  // `<s-page>` only projects a light-DOM child that actually has `slot="aside"`.
+  // Host elements accept that attribute. A composite component (for example
+  // `aside={<RecommendationsInfo />}`) does not: `slot` stays a React prop and
+  // never reaches the DOM, so the node falls through into the main column.
+  if (isValidElement(aside) && typeof aside.type === "string") {
     const slot = (aside.props as { slot?: string })?.slot;
     return cloneElement(aside, {
       slot: slot ?? "aside",
     } as Record<string, unknown>);
   }
+
   return <div slot="aside">{aside}</div>;
 }
 

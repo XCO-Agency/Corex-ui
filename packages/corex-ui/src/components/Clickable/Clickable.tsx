@@ -1,4 +1,5 @@
 import { forwardRef, type ForwardRefExoticComponent, type RefAttributes } from "react";
+import { childrenText } from "../../core/childrenText";
 import { createWebComponent } from "../../core/createWebComponent";
 import type { ClickablePropsType } from "./Clickable.types";
 import {
@@ -109,6 +110,9 @@ export const Clickable: ForwardRefExoticComponent<
   const resolvedRel = external ? "noopener noreferrer" : undefined;
   const resolvedDownload =
     typeof download === "boolean" ? (download ? "" : undefined) : download;
+  const visibleLabel = childrenText(children);
+  const resolvedAccessibilityLabel =
+    accessibilityLabel || (visibleLabel ? undefined : href ? "Link" : "Button");
 
   return (
     <div
@@ -156,7 +160,7 @@ export const Clickable: ForwardRefExoticComponent<
         minInlineSize={minInlineSize}
         maxInlineSize={maxInlineSize}
         overflow={overflow}
-        accessibilityLabel={accessibilityLabel}
+        accessibilityLabel={resolvedAccessibilityLabel}
         accessibilityRole={accessibilityRole}
         accessibilityVisibility={accessibilityVisibility}
         onClick={onClick}

@@ -1,6 +1,6 @@
 # ButtonGroup
 
-Thin wrapper over `s-button-group`, which accepts `<Button>` children directly.
+Thin wrapper over `s-button-group`. Each child `Button` is assigned to a slot: `variant="primary"` (or the legacy `primary` flag) becomes `slot="primary-action"`, and every other button becomes `slot="secondary-actions"`. A button the secondary slot would reject (`primary` when `gap="none"`, `tertiary`, and so on) is rendered as `variant="secondary"` so it stays visible. An explicit `slot` is left as-is. `primary-action` is not used when `gap="none"` (including `variant="segmented"`).
 
 ```tsx
 import { Button, ButtonGroup } from "@xco-agency/corex-ui";
@@ -15,6 +15,6 @@ import { Button, ButtonGroup } from "@xco-agency/corex-ui";
 
 | Legacy prop                              | Behavior                               |
 | ---------------------------------------- | -------------------------------------- |
-| `children`                               | Rendered as-is; use `Button` children. |
+| `children`                               | `Button` children, placed in `primary-action` or `secondary-actions`. |
 | `variant` (`"segmented"` \| `"default"`) | Passed straight through.               |
 | `fullWidth`                              | Passed straight through.               |

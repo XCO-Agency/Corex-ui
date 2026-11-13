@@ -64,7 +64,8 @@ describe("DropZone", () => {
     expect(wrapper?.getAttribute("data-size")).toBe("small");
 
     const el = container.querySelector("s-drop-zone");
-    expect(el?.getAttribute("label-accessibility-visibility")).toBe("exclusive");
+    expect(el?.getAttribute("accessibilitylabel")).toBe("Upload image");
+    expect(el?.getAttribute("labelaccessibilityvisibility")).toBe("exclusive");
     expect(container.querySelector('[data-slot="drop-zone-content"]')).not.toBeNull();
     expect(container.querySelector("s-icon")).not.toBeNull();
   });
@@ -91,7 +92,7 @@ describe("DropZone", () => {
     expect(
       container
         .querySelector("s-drop-zone")
-        ?.getAttribute("label-accessibility-visibility"),
+        ?.getAttribute("labelaccessibilityvisibility"),
     ).toBe("visible");
   });
 });

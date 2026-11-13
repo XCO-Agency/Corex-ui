@@ -1,4 +1,5 @@
 import { forwardRef, useRef, type CSSProperties } from "react";
+import { childrenText } from "../../core/childrenText";
 import { createWebComponent } from "../../core/createWebComponent";
 import { useIsomorphicLayoutEffect } from "../../core/useIsomorphicLayoutEffect";
 import { Icon } from "../Icon";
@@ -82,6 +83,10 @@ export const DropZone = forwardRef<HTMLElement, DropZonePropsType>(function Drop
   const isSmall = size === "small";
   const resolvedLabelVisibility =
     labelAccessibilityVisibility ?? (isSmall ? "exclusive" : undefined);
+  const labelText = typeof label === "string" ? label.trim() : childrenText(label);
+  const resolvedAccessibilityLabel =
+    accessibilityLabel ||
+    (labelText ? undefined : isMultiple ? "Upload files" : "Upload file");
   const isFill = isSmall && inlineSize === "fill";
 
   useIsomorphicLayoutEffect(() => {
@@ -116,8 +121,8 @@ export const DropZone = forwardRef<HTMLElement, DropZonePropsType>(function Drop
       label={label}
       accept={accept}
       multiple={isMultiple}
-      accessibility-label={accessibilityLabel}
-      label-accessibility-visibility={resolvedLabelVisibility}
+      accessibilityLabel={resolvedAccessibilityLabel}
+      labelAccessibilityVisibility={resolvedLabelVisibility}
       disabled={disabled}
       error={error}
       details={details ?? helpText}

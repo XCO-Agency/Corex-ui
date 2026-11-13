@@ -8,5 +8,14 @@ describe("Spinner", () => {
     const el = document.querySelector("s-spinner");
     expect(el).not.toBeNull();
     expect(el).toHaveAttribute("size", "large");
+    expect(el).toHaveAttribute("accessibilitylabel", "Loading");
+  });
+
+  it("names an unlabeled spinner Loading", () => {
+    render(<Spinner />);
+    expect(document.querySelector("s-spinner")).toHaveAttribute(
+      "accessibilitylabel",
+      "Loading",
+    );
   });
 });

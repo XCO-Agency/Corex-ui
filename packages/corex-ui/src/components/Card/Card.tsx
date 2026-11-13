@@ -1,4 +1,5 @@
 import { forwardRef } from "react";
+import { childrenText } from "../../core/childrenText";
 import { createWebComponent } from "../../core/createWebComponent";
 import { devWarning } from "../../utils/devWarning";
 import { Text } from "../Text";
@@ -33,6 +34,7 @@ export const Card = forwardRef<HTMLElement, CardPropsType>(function Card(
     description,
     heading,
     gap = "small",
+    accessibilityLabel,
     ...rest
   },
   ref,
@@ -45,13 +47,15 @@ export const Card = forwardRef<HTMLElement, CardPropsType>(function Card(
   }
 
   const headerTitle = title || heading;
+  const resolvedAccessibilityLabel =
+    accessibilityLabel || childrenText(headerTitle) || "Section";
   const hasHeader = Boolean(headerTitle || actions);
   const hasFooter = Boolean(
     primaryFooterAction || (secondaryFooterActions && secondaryFooterActions.length > 0),
   );
 
   return (
-    <SSection ref={ref} {...rest}>
+    <SSection ref={ref} accessibilityLabel={resolvedAccessibilityLabel} {...rest}>
       {hasHeader && (
         <InlineStack justifyContent="space-between" alignItems="center" gap="base">
           <BlockStack gap="small-300">

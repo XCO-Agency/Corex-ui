@@ -96,6 +96,65 @@ describe("Page", () => {
     expect(button).toHaveAttribute("slot", "primary-action");
   });
 
+  it("forwards s-button props on primary and secondary actions", () => {
+    render(
+      <Page
+        heading="Products"
+        primaryAction={{
+          content: "Save",
+          icon: "plus",
+          href: "/products/new",
+          target: "_blank",
+          tone: "neutral",
+          type: "submit",
+          loading: true,
+          accessibilityLabel: "Save product",
+          commandFor: "save-menu",
+          command: "--toggle",
+          interestFor: "save-tip",
+          download: "products.csv",
+          lang: "en",
+          inlineSize: "fit-content",
+        }}
+        secondaryActions={[
+          {
+            content: "Delete",
+            icon: "delete",
+            tone: "critical",
+            variant: "secondary",
+            disabled: true,
+          },
+        ]}
+      >
+        Body
+      </Page>,
+    );
+
+    const save = screen.getByText("Save");
+    expect(save).toHaveAttribute("slot", "primary-action");
+    expect(save).toHaveAttribute("variant", "primary");
+    expect(save).toHaveAttribute("icon", "plus");
+    expect(save).toHaveAttribute("href", "/products/new");
+    expect(save).toHaveAttribute("target", "_blank");
+    expect(save).toHaveAttribute("tone", "neutral");
+    expect(save).toHaveAttribute("type", "submit");
+    expect(save).toHaveAttribute("accessibilitylabel", "Save product");
+    expect(save).toHaveAttribute("commandfor", "save-menu");
+    expect(save).toHaveAttribute("command", "--toggle");
+    expect(save).toHaveAttribute("interestfor", "save-tip");
+    expect(save).toHaveAttribute("download", "products.csv");
+    expect(save).toHaveAttribute("lang", "en");
+    expect(save).toHaveAttribute("inlinesize", "fit-content");
+    expect(save).toHaveAttribute("loading");
+
+    const remove = screen.getByText("Delete");
+    expect(remove).toHaveAttribute("slot", "secondary-actions");
+    expect(remove).toHaveAttribute("variant", "secondary");
+    expect(remove).toHaveAttribute("icon", "delete");
+    expect(remove).toHaveAttribute("tone", "critical");
+    expect(remove).toHaveAttribute("disabled");
+  });
+
   it("renders secondaryActions array of action descriptors or ReactNodes", () => {
     const onExport = vi.fn();
     render(
@@ -167,6 +226,29 @@ describe("Page", () => {
 
     expect(screen.getByText("Sidebar content")).toHaveAttribute("slot", "aside");
     expect(screen.getByText("Paid")).toHaveAttribute("slot", "accessory");
+  });
+
+  it("assigns the aside slot when the content is a composite component", () => {
+    function RecommendationsInfo() {
+      return <section>Recommendation details</section>;
+    }
+
+    render(
+      <Page
+        heading="AI Recommendations"
+        inlineSize="base"
+        aside={<RecommendationsInfo />}
+      >
+        Main body
+      </Page>,
+    );
+
+    const details = screen.getByText("Recommendation details");
+    const slotted = details.closest("[slot='aside']");
+    expect(slotted).not.toBeNull();
+    expect(slotted?.parentElement?.tagName.toLowerCase()).toBe("s-page");
+    expect(details).not.toHaveAttribute("slot", "aside");
+    expect(slotted).toContainElement(details);
   });
 
   it("falls back to titleMetadata and additionalMetadata for accessory", () => {
