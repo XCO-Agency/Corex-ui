@@ -11,7 +11,7 @@
     "build:registry": "pnpm --filter playground run build:registry",
     "build:playground": "pnpm --filter playground run build",
     "dev": "pnpm --filter playground run dev",
-    "test": "pnpm --filter @xco-agency/corex-ui run test && node --test scripts/release-version.test.mjs",
+    "test": "pnpm --filter @xco-agency/corex-ui run test && pnpm --filter playground run test && node --test scripts/release-version.test.mjs",
     "typecheck": "pnpm --filter @xco-agency/corex-ui run typecheck",
     "changeset": "changeset",
     "version-packages": "changeset version && node scripts/sync-root-version.mjs && pnpm --filter @xco-agency/corex-ui run sync:version",

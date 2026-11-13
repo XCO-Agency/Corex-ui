@@ -11,7 +11,8 @@
     "typecheck": "tsc --noEmit",
     "sync:apps-icons": "node scripts/sync-apps-icons.mjs",
     "build:editor-props": "node scripts/build-editor-props.mjs",
-    "capture:thumbnails": "node scripts/capture-thumbnails.mjs"
+    "capture:thumbnails": "node scripts/capture-thumbnails.mjs",
+    "test": "vitest run"
   },
   "dependencies": {
     "@fontsource-variable/inter": "^5.3.0",
@@ -33,9 +34,11 @@
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
     "@vitejs/plugin-react": "^4.3.4",
+    "jsdom": "^25.0.1",
     "playwright": "^1.64.1",
     "typescript": "^5.6.3",
     "vite": "^6.4.3",
+    "vitest": "^2.1.4",
     "wrangler": "^4.128.0"
   }
 }

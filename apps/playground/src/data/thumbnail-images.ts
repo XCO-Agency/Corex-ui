@@ -3,6 +3,7 @@ export const thumbnailImages: Record<string, string> = {
   "action-list": "/thumbnails/action-list.png",
   "activity-feed": "/thumbnails/activity-feed.png",
   "ai-recommendations": "/thumbnails/ai-recommendations.png",
+  "analytics-charts": "/thumbnails/analytics-charts.png",
   "app-bridge-menu": "/thumbnails/app-bridge-menu.png",
   "app-cross-sell": "/thumbnails/app-cross-sell.png",
   "app-nav": "/thumbnails/app-nav.png",

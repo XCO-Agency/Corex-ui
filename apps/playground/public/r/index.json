@@ -12,6 +12,12 @@
     "filesCount": 5
   },
   {
+    "name": "analytics-charts",
+    "title": "Analytics Charts",
+    "description": "Shopify-style line, column, funnel, bar list, donut and sparkline charts with metric cards.",
+    "filesCount": 18
+  },
+  {
     "name": "app-cross-sell",
     "title": "App Promotion",
     "description": "Ecosystem app promotion card with one-click installation trigger.",
