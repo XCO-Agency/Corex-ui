@@ -145,7 +145,7 @@ describe("Combobox", () => {
     expect(onValueChange).toHaveBeenCalledWith(frameworks[0]);
   });
 
-  it("supports multiple selection with built-in Tags and removal", () => {
+  it("supports multiple selection with ChoiceList and built-in Tags", () => {
     const frameworks = ["Next.js", "SvelteKit", "Nuxt.js"];
     const onValueChange = vi.fn();
 
@@ -160,13 +160,7 @@ describe("Combobox", () => {
         <Combobox.Input placeholder="Add framework" />
         <Combobox.Content>
           <Combobox.Empty>No items found.</Combobox.Empty>
-          <Combobox.List>
-            {(item) => (
-              <Combobox.Item key={item} value={item}>
-                {item}
-              </Combobox.Item>
-            )}
-          </Combobox.List>
+          <Combobox.List label="Select frameworks" />
         </Combobox.Content>
       </Combobox>,
     );
@@ -175,8 +169,16 @@ describe("Combobox", () => {
     const chips = document.querySelectorAll("s-chip");
     expect(chips.length).toBe(2);
 
-    // Click an option to add it
-    fireEvent.click(screen.getByText("SvelteKit"));
+    // Multi-select popover uses ChoiceList (checkbox choices)
+    const choiceList = document.querySelector("s-choice-list") as HTMLElement & {
+      values?: string[];
+    };
+    expect(choiceList).toBeInTheDocument();
+    expect(choiceList.getAttribute("label")).toBe("Select frameworks");
+    expect(document.querySelectorAll("s-choice-list s-choice")).toHaveLength(3);
+
+    choiceList.values = ["Next.js", "Nuxt.js", "SvelteKit"];
+    choiceList.dispatchEvent(new Event("change", { bubbles: true }));
     expect(onValueChange).toHaveBeenCalledWith(["Next.js", "Nuxt.js", "SvelteKit"]);
   });
 

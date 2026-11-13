@@ -6,6 +6,7 @@ import type {
   ReactNode,
   RefAttributes,
 } from "react";
+import type { TextPropsType } from "../Text";
 
 /**
  * Side drawer width. Presets: `small` 20rem, `base` 24rem (default),
@@ -413,9 +414,31 @@ export type DrawerPreFooterPropsType = ComponentPropsWithoutRef<"div"> & {
   separator?: DrawerSeparatorType;
 };
 
-export type DrawerTitlePropsType = ComponentPropsWithoutRef<"h2">;
+/** Typography overrides for `Drawer.Title` — kept narrow to avoid Text `slot`/`Lowercase` spread clashes. */
+export type DrawerTitlePropsType = {
+  children?: ReactNode;
+  className?: string;
+  style?: CSSProperties;
+  /** Defaults to `headingSm`. */
+  variant?: TextPropsType["variant"];
+  fontWeight?: TextPropsType["fontWeight"];
+  color?: TextPropsType["color"];
+  lineClamp?: TextPropsType["lineClamp"];
+  breakWord?: TextPropsType["breakWord"];
+};
 
-export type DrawerDescriptionPropsType = ComponentPropsWithoutRef<"p">;
+/** Typography overrides for `Drawer.Description` — kept narrow to avoid Text `slot`/`Lowercase` spread clashes. */
+export type DrawerDescriptionPropsType = {
+  children?: ReactNode;
+  className?: string;
+  style?: CSSProperties;
+  /** Defaults to `bodyMd`. */
+  variant?: TextPropsType["variant"];
+  fontWeight?: TextPropsType["fontWeight"];
+  color?: TextPropsType["color"];
+  lineClamp?: TextPropsType["lineClamp"];
+  breakWord?: TextPropsType["breakWord"];
+};
 
 export type DrawerSwipeHandlePropsType = ComponentPropsWithoutRef<"div">;
 
@@ -429,11 +452,9 @@ export type DrawerComponentType = ((props: DrawerPropsType) => ReactElement) & {
   Header: (props: DrawerHeaderPropsType) => ReactElement;
   Footer: (props: DrawerFooterPropsType) => ReactElement;
   PreFooter: (props: DrawerPreFooterPropsType) => ReactElement;
-  Title: ForwardRefExoticComponent<
-    DrawerTitlePropsType & RefAttributes<HTMLHeadingElement>
-  >;
+  Title: ForwardRefExoticComponent<DrawerTitlePropsType & RefAttributes<HTMLElement>>;
   Description: ForwardRefExoticComponent<
-    DrawerDescriptionPropsType & RefAttributes<HTMLParagraphElement>
+    DrawerDescriptionPropsType & RefAttributes<HTMLElement>
   >;
   Close: (props: DrawerClosePropsType) => ReactElement;
   Overlay: ForwardRefExoticComponent<

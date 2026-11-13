@@ -47,6 +47,10 @@ function NavigationInner<TId extends string | number = string>(
   );
 
   const activeSelectedId = selected !== undefined ? selected : internalSelectedId;
+  // Mirror onto the inner stack: `<s-box>` is often `display: contents`, so a
+  // hardcoded inner `height: 100%` would lock to the scroll parent and clip.
+  // Pass `blockSize="auto"` when Navigation should size to its content.
+  const resolvedBlockSize = rest.blockSize || "100%";
 
   return (
     <NavigationContext.Provider
@@ -62,12 +66,12 @@ function NavigationInner<TId extends string | number = string>(
         {...rest}
         background={sectionned ? "base" : rest.background}
         inlineSize={rest.inlineSize || "100%"}
-        blockSize={rest.blockSize || "100%"}
+        blockSize={resolvedBlockSize}
         borderRadius={sectionned ? "large" : rest.borderRadius}
         border={sectionned ? "base" : rest.border}
         padding={sectionned ? "small-200" : rest.padding}
       >
-        <BlockStack blockSize="100%">{children}</BlockStack>
+        <BlockStack blockSize={resolvedBlockSize}>{children}</BlockStack>
       </Box>
     </NavigationContext.Provider>
   );

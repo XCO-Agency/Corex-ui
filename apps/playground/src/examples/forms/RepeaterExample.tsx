@@ -16,6 +16,8 @@ type FieldType = {
   label: string;
   /** Second line in the field menus, searched too. */
   detail?: string;
+  /** Leading icon in the field picker menus. */
+  icon?: string;
   operators: { label: string; value: string }[];
   /** The operator is the whole choice (Status: Active), so no value area. */
   operatorIsValue?: boolean;
@@ -33,6 +35,7 @@ const FIELDS: FieldType[] = [
   {
     value: "title",
     label: "Title",
+    icon: "text",
     operators: [
       { label: "contains", value: "contains" },
       { label: "is equal to", value: "equals" },
@@ -42,6 +45,7 @@ const FIELDS: FieldType[] = [
   {
     value: "price",
     label: "Price",
+    icon: "cash-dollar",
     prefix: "$",
     operators: [
       { label: "is greater than", value: "gt" },
@@ -51,6 +55,7 @@ const FIELDS: FieldType[] = [
   {
     value: "status",
     label: "Status",
+    icon: "status",
     operatorIsValue: true,
     operators: [
       { label: "Active", value: "active" },
@@ -60,6 +65,7 @@ const FIELDS: FieldType[] = [
   {
     value: "tag",
     label: "Tag",
+    icon: "hashtag",
     operators: [],
     multi: {
       suggestions: ["summer", "sale", "new", "bestseller", "eco"],
@@ -72,6 +78,7 @@ const FIELDS: FieldType[] = [
   {
     value: "type",
     label: "Product type",
+    icon: "product",
     operators: [],
     multi: {
       suggestions: ["Shirts", "Shoes", "Hats", "Bags"],
@@ -98,24 +105,28 @@ const MORE_FIELDS: FieldType[] = [
   {
     value: "vendor",
     label: "Vendor",
+    icon: "store",
     detail: "Brand or supplier",
     operators: TEXT_OPERATORS,
   },
   {
     value: "sku",
     label: "SKU",
+    icon: "barcode",
     detail: "Variant stock keeping unit",
     operators: TEXT_OPERATORS,
   },
   {
     value: "barcode",
     label: "Barcode",
+    icon: "barcode",
     detail: "ISBN, UPC or GTIN",
     operators: TEXT_OPERATORS,
   },
   {
     value: "compare_at",
     label: "Compare-at price",
+    icon: "cash-dollar",
     detail: "Price before a sale",
     prefix: "$",
     operators: NUMBER_OPERATORS,
@@ -123,22 +134,30 @@ const MORE_FIELDS: FieldType[] = [
   {
     value: "weight",
     label: "Weight",
+    icon: "product",
     detail: "Shipping weight in kg",
     operators: NUMBER_OPERATORS,
   },
   {
     value: "inventory",
     label: "Inventory stock",
+    icon: "inventory",
     detail: "Units available across locations",
     operators: NUMBER_OPERATORS,
   },
   {
     value: "metafield",
     label: "Metafield",
+    icon: "metaobject",
     detail: "Custom product data",
     operators: TEXT_OPERATORS,
   },
-  { value: "variant_title", label: "Variant title", operators: TEXT_OPERATORS },
+  {
+    value: "variant_title",
+    label: "Variant title",
+    icon: "text",
+    operators: TEXT_OPERATORS,
+  },
 ];
 
 const ALL_FIELDS: FieldType[] = [...FIELDS, ...MORE_FIELDS];
@@ -183,10 +202,11 @@ export function RepeaterExample() {
   const update = (id: number, patch: Partial<RuleType>) =>
     setRules((current) => current.map((r) => (r.id === id ? { ...r, ...patch } : r)));
 
-  const fieldOptions = ALL_FIELDS.map(({ label, value, detail }) => ({
+  const fieldOptions = ALL_FIELDS.map(({ label, value, detail, icon }) => ({
     label,
     value,
     detail,
+    icon,
   }));
 
   return (

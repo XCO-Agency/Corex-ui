@@ -20,7 +20,6 @@ import { FlexPopover } from "../FlexPopover";
 import { Hoverable } from "../Hoverable";
 import { Icon } from "../Icon";
 import { InlineStack } from "../InlineStack";
-import { SearchField } from "../SearchField";
 import { Text } from "../Text";
 import { Tooltip } from "../Tooltip";
 import { TagsInput } from "./TagsInput";
@@ -33,9 +32,23 @@ import type {
   RepeaterPillPropsType,
   RepeaterPropsType,
 } from "./Repeater.types";
+import type { IconType } from "../../types/common";
 
 /** How long a new row takes to grow in. */
 export const REPEATER_MOTION_MS = 220;
+
+const OPTIONS_SEARCH_INPUT_STYLE: CSSProperties = {
+  flex: "1 1 60px",
+  minWidth: "60px",
+  height: "24px",
+  padding: 0,
+  border: "none",
+  outline: "none",
+  background: "transparent",
+  fontSize: "13px",
+  fontFamily: "inherit",
+  color: "inherit",
+};
 
 // ─── Input tracking ────────────────────────────────────────────────────────────
 //
@@ -401,7 +414,7 @@ function Options({
   const withSearch = optionsSearchShown(options.length, searchable, searchThreshold);
   // The menu unmounts when it closes, so each opening starts with no query.
   const [query, setQuery] = useState("");
-  const searchRef = useRef<HTMLElement>(null);
+  const searchRef = useRef<HTMLInputElement>(null);
   const rootRef = useRef<HTMLDivElement>(null);
   const shown = withSearch ? filterRepeaterOptions(options, query) : options;
   // The list keeps its opening height while filtering, so a menu placed
@@ -467,7 +480,7 @@ function Options({
 
   const list =
     shown.length === 0 ? (
-      <Box paddingInline="small-100" paddingBlock="small-200">
+      <Box paddingInline="small-100" paddingBlock="base">
         <Text as="p" color="subdued">
           {noResultsText}
         </Text>
@@ -482,10 +495,10 @@ function Options({
               role="option"
               aria-selected={isSelected}
               inlineSize="fill"
-              paddingBlock="small-200"
-              paddingInline="small-100"
+              paddingBlock="small-400"
+              paddingInline="small-300"
               borderRadius="large"
-              minBlockSize="36px"
+              minBlockSize="28px"
               background={isSelected ? "subdued" : undefined}
               accessibilityLabel={
                 option.detail ? `${option.label}. ${option.detail}` : option.label
@@ -494,18 +507,29 @@ function Options({
             >
               <InlineStack
                 gap="small-200"
-                blockAlign={option.detail ? "start" : "center"}
+                alignItems={option.detail ? "start" : "center"}
+                justifyContent="space-between"
                 wrap={false}
+                inlineSize="fill"
               >
-                {isSelected ? <Icon type="check" /> : null}
-                <BlockStack gap="small-300">
-                  <Text as="span">{option.label}</Text>
-                  {option.detail ? (
-                    <Text as="span" variant="bodySm" color="subdued">
-                      {option.detail}
-                    </Text>
+                <InlineStack
+                  gap="small-200"
+                  alignItems={option.detail ? "start" : "center"}
+                  wrap={false}
+                >
+                  {option.icon ? (
+                    <Icon type={option.icon as IconType} color="subdued" />
                   ) : null}
-                </BlockStack>
+                  <BlockStack gap="small-500">
+                    <Text as="span">{option.label}</Text>
+                    {option.detail ? (
+                      <Text as="span" variant="xs" color="subdued">
+                        {option.detail}
+                      </Text>
+                    ) : null}
+                  </BlockStack>
+                </InlineStack>
+                {isSelected ? <Icon type="check" /> : null}
               </InlineStack>
             </Clickable>
           );
@@ -516,29 +540,44 @@ function Options({
   return (
     <div ref={rootRef} style={OPTIONS_ROOT_STYLE} onKeyDown={onKeyDown}>
       {withSearch ? (
-        <BlockStack gap="small-200">
+        <BlockStack gap="none">
           {/* Outside the scrolling list, so it stays at the top. */}
-          <SearchField
-            ref={searchRef}
-            label={searchPlaceholder}
-            labelAccessibilityVisibility="exclusive"
-            placeholder={searchPlaceholder}
-            autocomplete="off"
-            value={query}
-            onChange={(value) => setQuery(value)}
-          />
+
+          <InlineStack
+            alignItems="center"
+            gap="small-300"
+            minBlockSize="36px"
+            paddingInline="small-200"
+            inlineSize="fill"
+          >
+            <Icon type="search" color="subdued" />
+            <input
+              ref={searchRef}
+              data-slot="repeater-options-search"
+              type="text"
+              role="searchbox"
+              aria-label={searchPlaceholder}
+              placeholder={searchPlaceholder}
+              autoComplete="off"
+              value={query}
+              onChange={(event) => setQuery(event.target.value)}
+              style={OPTIONS_SEARCH_INPUT_STYLE}
+            />
+          </InlineStack>
+          <Divider color="strong" />
           <BlockStack
             ref={scrollerRef}
             maxBlockSize={listMaxBlockSize}
             minBlockSize={listHeight === null ? undefined : `${listHeight}px`}
             overflow="auto"
             gap="none"
+            padding="small-300"
           >
             {list}
           </BlockStack>
         </BlockStack>
       ) : (
-        list
+        <Box padding="base">{list}</Box>
       )}
     </div>
   );

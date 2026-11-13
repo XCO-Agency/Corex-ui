@@ -94,8 +94,8 @@ export function ComboboxExample() {
               Multi-Selection with Tags
             </Text>
             <Text color="subdued" variant="small">
-              Select multiple items rendered as removable tags using Corex UI Tag. Press
-              Backspace to remove.
+              Select multiple items with ChoiceList checkboxes in the popover. Selected
+              values render as removable tags. Press Backspace to remove.
             </Text>
           </BlockStack>
 
@@ -108,13 +108,7 @@ export function ComboboxExample() {
             <Combobox.Input placeholder="Add frameworks..." showClear />
             <Combobox.Content>
               <Combobox.Empty>No frameworks found.</Combobox.Empty>
-              <Combobox.List>
-                {(item) => (
-                  <Combobox.Item key={item} value={item}>
-                    {item}
-                  </Combobox.Item>
-                )}
-              </Combobox.List>
+              <Combobox.List label="Select frameworks" />
             </Combobox.Content>
           </Combobox>
         </BlockStack>
@@ -240,13 +234,7 @@ export function ComboboxExample() {
                 />
                 <Combobox.Content>
                   <Combobox.Empty>No frameworks found.</Combobox.Empty>
-                  <Combobox.List>
-                    {(item) => (
-                      <Combobox.Item key={item} value={item}>
-                        {item}
-                      </Combobox.Item>
-                    )}
-                  </Combobox.List>
+                  <Combobox.List label="Select frameworks" />
                 </Combobox.Content>
               </Combobox>
             </FormLayout>

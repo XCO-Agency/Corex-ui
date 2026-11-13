@@ -104,6 +104,8 @@ export type RepeaterOptionType = {
   value: string;
   /** A second, subdued line under the label. */
   detail?: string;
+  /** Optional leading icon (Polaris icon type, e.g. `"text"`, `"cash-dollar"`). */
+  icon?: string;
 };
 
 export type RepeaterOptionsPropsType = {

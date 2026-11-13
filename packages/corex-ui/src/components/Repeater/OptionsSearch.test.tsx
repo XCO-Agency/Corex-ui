@@ -9,17 +9,19 @@ const many = Array.from({ length: 12 }, (_, index) => ({
   detail: index === 11 ? "Brand or supplier" : undefined,
 }));
 
-const searchOf = (container: ParentNode) => container.querySelector("s-search-field");
+const searchOf = (container: ParentNode) =>
+  container.querySelector(
+    '[data-slot="repeater-options-search"]',
+  ) as HTMLInputElement | null;
 const optionLabels = () =>
   screen
     .queryAllByRole("option")
     .map((option) => option.getAttribute("accessibilitylabel"));
 
 function search(container: ParentNode, value: string) {
-  const field = searchOf(container) as HTMLElement & { value?: string };
+  const field = searchOf(container)!;
   act(() => {
-    field.value = value;
-    fireEvent(field, new CustomEvent("input", { bubbles: true }));
+    fireEvent.change(field, { target: { value } });
   });
 }
 
@@ -38,7 +40,7 @@ describe("Repeater.Options search", () => {
     );
     const field = searchOf(container)!;
     expect(field).toHaveAttribute("placeholder", "Search");
-    expect(field).toHaveAttribute("label", "Search");
+    expect(field).toHaveAttribute("aria-label", "Search");
 
     rerender(
       <Repeater.Options
@@ -53,12 +55,16 @@ describe("Repeater.Options search", () => {
     expect(searchOf(container)).toBeNull();
   });
 
-  it("keeps the search outside the scrolling list", () => {
+  it("keeps the search outside the scrolling list, split by a divider", () => {
     const { container } = render(<Repeater.Options options={many} onSelect={() => {}} />);
     const listbox = screen.getByRole("listbox");
     const scroller = listbox.parentElement!;
-    expect(scroller.contains(searchOf(container))).toBe(false);
-    expect(searchOf(container)!.parentElement!.contains(scroller)).toBe(true);
+    const field = searchOf(container)!;
+    expect(scroller.contains(field)).toBe(false);
+    expect(container.querySelector("s-divider")).not.toBeNull();
+    expect(
+      field.compareDocumentPosition(scroller) & Node.DOCUMENT_POSITION_FOLLOWING,
+    ).toBeTruthy();
   });
 
   it("filters on label and detail, ignoring case, and says when nothing matches", () => {
@@ -147,8 +153,18 @@ describe("Repeater.Options search", () => {
     expect(add).toHaveAttribute("aria-expanded", "false");
 
     fireEvent.click(add);
-    expect((searchOf(document) as HTMLElement & { value?: string }).value).toBe("");
+    expect(searchOf(document)!.value).toBe("");
     expect(optionLabels()).toHaveLength(12);
+  });
+
+  it("renders a leading icon when an option provides one", () => {
+    render(
+      <Repeater.Options
+        options={[{ label: "Title", value: "title", icon: "text" }]}
+        onSelect={() => {}}
+      />,
+    );
+    expect(screen.getByRole("option").querySelector('s-icon[type="text"]')).not.toBeNull();
   });
 });
 

@@ -14,6 +14,7 @@ import {
 import { mergeRefs } from "../../core/mergeRefs";
 import { BlockStack } from "../BlockStack";
 import { Box } from "../Box";
+import { ChoiceList } from "../ChoiceList";
 import { Clickable } from "../Clickable";
 import { FlexPopover } from "../FlexPopover";
 import { Icon } from "../Icon";
@@ -406,10 +407,84 @@ ComboboxContent.displayName = "ComboboxContent";
 
 /**
  * Suggestion list container. Supports normal children or a mapping function `(item, index) => ReactNode`.
+ * When `multiple` is set on the root Combobox, renders a ChoiceList (checkbox multi-select) instead.
  */
 const ComboboxList = forwardRef<HTMLDivElement, ComboboxListPropsType>(
-  function ComboboxList({ children, className, style, "aria-label": ariaLabel }, ref) {
-    const { filteredItems, comboboxId } = useCombobox();
+  function ComboboxList(
+    { children, label, className, style, "aria-label": ariaLabel },
+    ref,
+  ) {
+    const {
+      filteredItems,
+      items,
+      comboboxId,
+      multiple,
+      value,
+      itemToString,
+      setValue,
+      disabled,
+      readOnly,
+    } = useCombobox();
+
+    if (multiple) {
+      const selectedItems = Array.isArray(value)
+        ? value
+        : value != null
+          ? [value]
+          : [];
+      const selectedKeys = selectedItems.map((item) => itemToString(item));
+      const choices = filteredItems.map((item) => ({
+        label: itemToString(item),
+        value: itemToString(item),
+      }));
+
+      const resolveItem = (key: string) => {
+        const fromFiltered = filteredItems.find((item) => itemToString(item) === key);
+        if (fromFiltered !== undefined) return fromFiltered;
+        const fromItems = items?.find((item) => itemToString(item) === key);
+        if (fromItems !== undefined) return fromItems;
+        return selectedItems.find((item) => itemToString(item) === key);
+      };
+
+      const handleChoiceChange = (nextVisibleKeys: string[]) => {
+        if (disabled || readOnly) return;
+        const visibleKeySet = new Set(filteredItems.map((item) => itemToString(item)));
+        // Keep selections that are currently hidden by the search filter.
+        const preserved = selectedItems.filter(
+          (item) => !visibleKeySet.has(itemToString(item)),
+        );
+        const nextVisible = nextVisibleKeys
+          .map((key) => resolveItem(key))
+          .filter((item): item is NonNullable<typeof item> => item !== undefined);
+        setValue([...preserved, ...nextVisible]);
+      };
+
+      return (
+        <Box
+          ref={ref}
+          id={`${comboboxId}-listbox`}
+          padding="base"
+          inlineSize="100%"
+          role="listbox"
+          aria-label={ariaLabel ?? label ?? "Suggestions"}
+          aria-multiselectable="true"
+          className={className}
+          style={style}
+        >
+          {filteredItems.length > 0 ? (
+            <ChoiceList
+              label={label ?? ariaLabel ?? "Suggestions"}
+              labelAccessibilityVisibility={label ? "visible" : "exclusive"}
+              multiple
+              selected={selectedKeys}
+              choices={choices}
+              disabled={disabled || readOnly}
+              onChange={handleChoiceChange}
+            />
+          ) : null}
+        </Box>
+      );
+    }
 
     const content =
       typeof children === "function"
@@ -760,6 +835,16 @@ const ComboboxRoot = forwardRef<HTMLDivElement, ComboboxPropsType>(function Comb
     setInputValue("");
   }, [disabled, readOnly, isMultiple, isControlledValue, onValueChange, setInputValue]);
 
+  const setValue = useCallback(
+    (next: any) => {
+      if (disabled || readOnly) return;
+      if (!isControlledValue) setUncontrolledValue(next);
+      onValueChange?.(next);
+      if (isMultiple) setInputValue("");
+    },
+    [disabled, readOnly, isControlledValue, onValueChange, isMultiple, setInputValue],
+  );
+
   const contextValue: ComboboxContextType = useMemo(
     () => ({
       items,
@@ -767,6 +852,7 @@ const ComboboxRoot = forwardRef<HTMLDivElement, ComboboxPropsType>(function Comb
       value: currentValue,
       isSelected,
       selectItem,
+      setValue,
       removeTag,
       clearValue,
       open: isOpen,
@@ -788,6 +874,7 @@ const ComboboxRoot = forwardRef<HTMLDivElement, ComboboxPropsType>(function Comb
       currentValue,
       isSelected,
       selectItem,
+      setValue,
       removeTag,
       clearValue,
       isOpen,

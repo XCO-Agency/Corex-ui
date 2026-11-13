@@ -135,7 +135,7 @@ export function AppSidebar({ onOpenSearch, onNavigate }: AppSidebarPropsType) {
   };
 
   return (
-    <Navigation>
+    <Navigation blockSize="auto">
       <BlockStack gap="small">
         <InlineStack alignItems="center" justifyContent="space-between" gap="small-200">
           <Clickable
