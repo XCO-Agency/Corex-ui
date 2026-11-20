@@ -3,8 +3,7 @@ name: Publish Package
 # `release: created` is intentionally not a trigger. The old workflow listened
 # to both created and published, so one GitHub Release published the package twice.
 on:
-  release:
-    types: [published]
+  # Manual only: run from the Actions tab, or called by release.yml.
   workflow_dispatch:
     inputs:
       dry_run:
