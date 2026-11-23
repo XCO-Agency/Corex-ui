@@ -1,5 +1,25 @@
 # @xco-agency/corex-ui
 
+## 2.5.0
+
+### Minor Changes
+
+- [#26](https://github.com/XCO-Agency/Corex-ui/pull/26) [`5ead494`](https://github.com/XCO-Agency/Corex-ui/commit/5ead494f353e0b2e7106349cc63175365f02cde7) Thanks [@anasbenallaa](https://github.com/anasbenallaa)! - Add the **Analytics Charts** block (`npx @xco-agency/corex-ui@latest add analytics-charts`): Shopify admin-style metric cards, a line chart with a dashed comparison period, a column chart, a conversion funnel, a ranked bar list, a donut and a sparkline, drawn as dependency-free SVG with hover and keyboard tooltips. Labels and number/date formatting are all passed in as props.
+
+- [#25](https://github.com/XCO-Agency/Corex-ui/pull/25) [`e0f9810`](https://github.com/XCO-Agency/Corex-ui/commit/e0f98101512d636dbbcb5d827ebace22eaf46ef3) Thanks [@anasbenallaa](https://github.com/anasbenallaa)! - New `Repeater`: repeated condition rows (rounded cards with field and operator pills, a value area under a divider, a trash button that shows on hover or keyboard focus and removes the row at once), an add button with an optional menu, an end slot, an empty state, and a `maxItems` limit with a note. Ships with `Repeater.Pill`, `Repeater.Options`, and, for multi-value rows, `Repeater.TagsInput` (chips joined by AND / OR, added on Enter or a comma) and `Repeater.MatchMode` (the All / Any pill, lockable). The trash button has a tooltip (`removeTooltip`), and `Options` gets a search field past 10 options (`searchable`, `searchThreshold`, `searchPlaceholder`, `noResultsText`).
+
+- [`04ad1a5`](https://github.com/XCO-Agency/Corex-ui/commit/04ad1a56082b6bd4270e64b7515f1889de6b62d3) Thanks [@soufiyanbenallal](https://github.com/soufiyanbenallal)! - Custom saved views in the compact tab list can be edited or removed from a menu on each view.
+
+### Patch Changes
+
+- [`1629849`](https://github.com/XCO-Agency/Corex-ui/commit/1629849672281165f175f591c3f16b2c76632651) Thanks [@soufiyanbenallal](https://github.com/soufiyanbenallal)! - ButtonGroup assigns each child button to `primary-action` or `secondary-actions` so `s-button-group` renders it.
+
+- [`04ad1a5`](https://github.com/XCO-Agency/Corex-ui/commit/04ad1a56082b6bd4270e64b7515f1889de6b62d3) Thanks [@soufiyanbenallal](https://github.com/soufiyanbenallal)! - Icon-only tabs and segment options size to a square that matches the control height.
+
+- [#25](https://github.com/XCO-Agency/Corex-ui/pull/25) [`ca2ec5a`](https://github.com/XCO-Agency/Corex-ui/commit/ca2ec5a1ae98d066c264e0594541d73903a8e6e5) Thanks [@anasbenallaa](https://github.com/anasbenallaa)! - Fix Navigation clipping when scrolled inside a parent by mirroring `blockSize` onto the inner stack (pass `blockSize="auto"` for content-sized sidebars).
+
+- [`a822b8b`](https://github.com/XCO-Agency/Corex-ui/commit/a822b8bb80f7f18d47fab6947c1b2fb18181d0d7) Thanks [@soufiyanbenallal](https://github.com/soufiyanbenallal)! - Page places composite `aside` content in the sidebar slot, even when the component does not forward `slot`.
+
 ## 2.4.1
 
 ### Patch Changes
