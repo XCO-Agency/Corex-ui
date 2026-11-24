@@ -5,7 +5,7 @@ import { defineConfig } from "vitest/config";
 export default defineConfig({
   test: {
     environment: "jsdom",
-    include: ["src/blocks/**/*.test.{ts,tsx}"],
+    include: ["src/blocks/**/*.test.{ts,tsx}", "worker/**/*.test.ts"],
   },
   esbuild: { jsx: "automatic" },
   resolve: {

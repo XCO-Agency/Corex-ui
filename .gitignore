@@ -1,5 +1,6 @@
 node_modules/
 dist/
+.wrangler/
 release-tag.txt
 .turbo/
 *.tsbuildinfo
