@@ -1,4 +1,5 @@
 import type { ComponentEntry } from "../types";
+import { ClickableThumbnail } from "@/examples/actions/ClickableThumbnail";
 import { ButtonVariants } from "@/examples/actions/ButtonVariants";
 import ButtonVariantsRaw from "@/examples/actions/ButtonVariants.tsx?raw";
 import { ButtonGroupExample } from "@/examples/actions/ButtonGroupExample";
@@ -43,6 +44,7 @@ export const actionsComponents: ComponentEntry[] = [
     name: "Clickable",
     slug: "clickable",
     category: "Actions",
+    thumbnail: ClickableThumbnail,
     description:
       "An unstyled interactive wrapper powered by Polaris s-clickable for custom actions, cards, and rows.",
     examples: [

@@ -4,6 +4,7 @@ import {
   BlockStack,
   Box,
   Button,
+  Card,
   Clickable,
   Divider,
   Grid,
@@ -26,19 +27,16 @@ function Tile({ item, href }: { item: ComponentEntry; href: string }) {
     <Clickable
       onClick={() => navigate(href)}
       inlineSize="fill"
-      borderWidth="base"
-      borderColor="base"
+      padding="small-500"
       borderRadius="large-200"
-      overflow="hidden"
-      background="base"
     >
-      <BlockStack gap="none">
-        <Box background="subdued" padding="none" minBlockSize="96px">
+      <Card padding="none">
+        <BlockStack gap="none" minBlockSize="136px">
           {screenshot ? (
             <Image
               src={screenshot}
               alt=""
-              aspectRatio="2/1"
+              aspectRatio="4/3"
               objectFit="contain"
               loading="lazy"
             />
@@ -49,19 +47,13 @@ function Tile({ item, href }: { item: ComponentEntry; href: string }) {
               {item.name}
             </Text>
           )}
-        </Box>
-        <Divider />
-        <Box padding="small">
-          <BlockStack gap="small-500">
-            <Text fontWeight="medium" lineClamp={1}>
-              {item.name}
-            </Text>
-            <Text color="subdued" variant="small" lineClamp={1}>
-              {item.description}
-            </Text>
-          </BlockStack>
-        </Box>
-      </BlockStack>
+        </BlockStack>
+      </Card>
+      <Box padding="small-300 small">
+        <Text fontWeight="medium" lineClamp={1}>
+          {item.name}
+        </Text>
+      </Box>
     </Clickable>
   );
 }
@@ -139,19 +131,6 @@ export function Overview() {
             {registry.length} components · {totalBlocks} blocks · 6 hooks & utils
           </Text>
         </BlockStack>
-
-        <InlineStack gap="small-200" wrap>
-          {componentGroups.map(({ category, items }) => (
-            <Button key={category} variant="tertiary" onClick={() => jumpTo(category)}>
-              {category} {items.length}
-            </Button>
-          ))}
-          {blocks.length > 0 && (
-            <Button variant="tertiary" onClick={() => jumpTo("blocks")}>
-              Blocks {totalBlocks}
-            </Button>
-          )}
-        </InlineStack>
 
         {componentGroups.map(({ category, items }) => (
           <BlockStack key={category} gap="small">

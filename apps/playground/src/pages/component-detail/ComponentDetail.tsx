@@ -6,6 +6,7 @@ import { toReferenceName } from "@/lib/skill-reference";
 import { ComponentHeader } from "./partials/ComponentHeader";
 import { ComponentSandboxAlert } from "./partials/ComponentSandboxAlert";
 import { ComponentExampleCard } from "./partials/ComponentExampleCard";
+import { resolvePreviewLayout } from "./previewLayout";
 import { ComponentTableOfContents } from "./partials/ComponentTableOfContents";
 import { ComponentPagination } from "./partials/ComponentPagination";
 import {
@@ -89,6 +90,7 @@ export function ComponentDetail() {
                 <ComponentExampleCard
                   key={example.title}
                   example={example}
+                  layout={resolvePreviewLayout(entry, example)}
                   index={index}
                   componentName={toReferenceName(entry.name)}
                 />

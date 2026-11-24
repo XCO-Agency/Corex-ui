@@ -121,6 +121,7 @@ export const layoutComponents: ComponentEntry[] = [
   {
     name: "Page",
     slug: "page",
+    layout: "full",
     category: "Layout",
     description:
       "The top-level layout wrapper for a screen, with a heading and primary/secondary actions.",
@@ -176,6 +177,7 @@ export const layoutComponents: ComponentEntry[] = [
   {
     name: "Table",
     slug: "table",
+    layout: "full",
     category: "Layout",
     description:
       "Displays tabular data with support for expandable sub-rows and custom cell renderers.",
@@ -237,6 +239,7 @@ export const layoutComponents: ComponentEntry[] = [
   {
     name: "Grid",
     slug: "grid",
+    layout: "full",
     category: "Layout",
     description:
       "CSS Grid container with responsive tracks (columns/rows), gaps, and Grid.Item placement.",
@@ -251,6 +254,7 @@ export const layoutComponents: ComponentEntry[] = [
   {
     name: "Layout",
     slug: "layout",
+    layout: "full",
     category: "Layout",
     description:
       "v12's page grid: sections that take a fraction of the row on desktop and stack on a phone.",
@@ -265,6 +269,7 @@ export const layoutComponents: ComponentEntry[] = [
   {
     name: "InlineGrid",
     slug: "inline-grid",
+    layout: "full",
     category: "Layout",
     description:
       "Equal or explicitly tracked columns on one row, including v12's fraction names.",
@@ -345,6 +350,7 @@ export const layoutComponents: ComponentEntry[] = [
   {
     name: "IndexTable",
     slug: "index-table",
+    layout: "full",
     category: "Layout",
     description:
       "v12's resource table: selection, bulk actions and paging over the Table wrapper.",
@@ -359,6 +365,7 @@ export const layoutComponents: ComponentEntry[] = [
   {
     name: "ResourceList",
     slug: "resource-list",
+    layout: "full",
     category: "Layout",
     description: "A list that renders each item through a callback, with clickable rows.",
     examples: [
@@ -372,6 +379,7 @@ export const layoutComponents: ComponentEntry[] = [
   {
     name: "SkeletonPage",
     slug: "skeleton-page",
+    layout: "full",
     category: "Layout",
     description: "A page-shaped loading state: a title row above placeholder content.",
     examples: [

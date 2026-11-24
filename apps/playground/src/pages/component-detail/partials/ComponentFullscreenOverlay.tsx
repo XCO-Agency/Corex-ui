@@ -1,7 +1,7 @@
 import * as React from "react";
 import { createPortal } from "react-dom";
 import { BlockStack, Box, Button, InlineStack } from "@xco-agency/corex-ui";
-import type { ComponentExampleType } from "@/data/types";
+import type { ComponentExampleType, PreviewLayoutType } from "@/data/types";
 import type { CanvasViewportType } from "../types";
 import { ComponentCanvas } from "./ComponentCanvas";
 import { ComponentCodeViewer } from "./ComponentCodeViewer";
@@ -11,6 +11,7 @@ export type ComponentFullscreenOverlayPropsType = {
   open: boolean;
   onClose: () => void;
   example: ComponentExampleType;
+  layout: PreviewLayoutType;
   componentName?: string;
   activeTab: "preview" | "code";
   onActiveTabChange: (tab: "preview" | "code") => void;
@@ -24,6 +25,7 @@ export function ComponentFullscreenOverlay({
   open,
   onClose,
   example,
+  layout,
   componentName = "Component",
   activeTab,
   onActiveTabChange,
@@ -98,7 +100,12 @@ export function ComponentFullscreenOverlay({
       />
       <Box padding="base" overflow="hidden">
         {activeTab === "preview" ? (
-          <ComponentCanvas viewport={viewport} key={remountKey} isFullscreen>
+          <ComponentCanvas
+            viewport={viewport}
+            key={remountKey}
+            layout={layout}
+            isFullscreen
+          >
             <example.Example />
           </ComponentCanvas>
         ) : (

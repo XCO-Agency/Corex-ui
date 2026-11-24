@@ -7,7 +7,7 @@ import {
   InlineStack,
   Text,
 } from "@xco-agency/corex-ui";
-import type { ComponentExampleType } from "@/data/types";
+import type { ComponentExampleType, PreviewLayoutType } from "@/data/types";
 import type { CanvasViewportType } from "../types";
 import { ComponentCanvas } from "./ComponentCanvas";
 import { ComponentCodeViewer } from "./ComponentCodeViewer";
@@ -17,12 +17,14 @@ import { Card } from "@xco-agency/corex-ui";
 
 export type ComponentExampleCardPropsType = {
   example: ComponentExampleType;
+  layout: PreviewLayoutType;
   index: number;
   componentName?: string;
 };
 
 export function ComponentExampleCard({
   example,
+  layout,
   index,
   componentName = "Component",
 }: ComponentExampleCardPropsType) {
@@ -90,7 +92,12 @@ export function ComponentExampleCard({
           />
           <Divider />
           {activeTab === "preview" ? (
-            <ComponentCanvas viewport={viewport} key={remountKey} embedded>
+            <ComponentCanvas
+              viewport={viewport}
+              key={remountKey}
+              layout={layout}
+              embedded
+            >
               <example.Example />
             </ComponentCanvas>
           ) : (
@@ -107,6 +114,7 @@ export function ComponentExampleCard({
         open={isFullscreen}
         onClose={() => setIsFullscreen(false)}
         example={example}
+        layout={layout}
         componentName={componentName}
         activeTab={activeTab}
         onActiveTabChange={setActiveTab}

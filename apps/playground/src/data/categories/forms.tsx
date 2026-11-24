@@ -89,6 +89,7 @@ export const formsComponents: ComponentEntry[] = [
   {
     name: "IndexFilters",
     slug: "index-filters",
+    layout: "full",
     category: "Forms",
     description:
       "A unified search and filter bar: view tabs, keyword search with inline filter pills (field, condition and values), and a column visibility/sorting popover.",

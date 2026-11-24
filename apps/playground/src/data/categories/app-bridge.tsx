@@ -78,6 +78,7 @@ export const appBridgeComponents: ComponentEntry[] = [
   {
     name: "AppWindow",
     slug: "app-window",
+    layout: "full",
     category: "App Bridge",
     description:
       "Loads another page in an embedded window, shown/hidden via ref or command/commandFor. Supports automatic host SaveBar synchronization.",
@@ -120,6 +121,7 @@ export const appBridgeComponents: ComponentEntry[] = [
   {
     name: "AppNav",
     slug: "app-nav",
+    layout: "full",
     category: "App Bridge",
     description: "The embedded app's top-level navigation bar.",
     requiresEmbeddedContext: true,

@@ -21,6 +21,13 @@ export type FileItemType = {
   code: string;
 };
 
+/**
+ * How the preview frame places an example. `centered` suits small content
+ * (most components); `full` gives the example the whole frame (blocks, pages,
+ * tables). The frame applies it, so examples carry no centering code.
+ */
+export type PreviewLayoutType = "centered" | "full";
+
 export type ComponentExampleType = {
   title: string;
   Example: React.ComponentType;
@@ -32,6 +39,8 @@ export type ComponentExampleType = {
   files?: FileItemType[];
   /** Optional npx command for blocks */
   npxCommand?: string;
+  /** Overrides the entry's `layout` for this example. */
+  layout?: PreviewLayoutType;
 };
 export type ComponentExample = ComponentExampleType;
 
@@ -49,5 +58,15 @@ export type ComponentEntryType = {
    * the interaction works in this standalone playground.
    */
   requiresEmbeddedContext?: boolean;
+  /**
+   * Preview placement for the entry's examples. Defaults to `centered` for
+   * components and `full` for blocks (examples with an `npxCommand`).
+   */
+  layout?: PreviewLayoutType;
+  /**
+   * A compact example used only for the Overview tile image, when the first
+   * example is too large to read at that size.
+   */
+  thumbnail?: React.ComponentType;
 };
 export type ComponentEntry = ComponentEntryType;

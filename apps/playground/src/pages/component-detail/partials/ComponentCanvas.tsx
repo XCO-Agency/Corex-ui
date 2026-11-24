@@ -1,6 +1,7 @@
 import * as React from "react";
 import { Group, Panel, Separator, usePanelRef } from "react-resizable-panels";
 import { BlockStack, Box } from "@xco-agency/corex-ui";
+import type { PreviewLayoutType } from "@/data/types";
 import type { CanvasViewportType } from "../types";
 import { ComponentIframe } from "./ComponentIframe";
 
@@ -9,6 +10,8 @@ export type ComponentCanvasPropsType = {
   viewport?: CanvasViewportType;
   className?: string;
   isFullscreen?: boolean;
+  /** Where the example sits in the frame. */
+  layout?: PreviewLayoutType;
   /** Rendered inside the example card, which supplies the frame. */
   embedded?: boolean;
 };
@@ -18,6 +21,7 @@ export function ComponentCanvas({
   viewport = "100%",
   className,
   isFullscreen = false,
+  layout = "full",
   embedded = false,
 }: ComponentCanvasPropsType) {
   const panelRef = usePanelRef();
@@ -68,7 +72,7 @@ export function ComponentCanvas({
               insetBlockEnd="0"
             />
           )}
-          <ComponentIframe className={isFullscreen ? "h-full" : ""}>
+          <ComponentIframe layout={layout} fill={isFullscreen}>
             {children}
           </ComponentIframe>
         </Panel>

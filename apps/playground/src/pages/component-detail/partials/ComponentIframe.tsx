@@ -1,5 +1,6 @@
 import { cn } from "@/lib/utils";
 import * as React from "react";
+import type { PreviewLayoutType } from "@/data/types";
 import { createPortal } from "react-dom";
 
 export type ComponentIframePropsType = {
@@ -12,6 +13,10 @@ export type ComponentIframePropsType = {
    * so the example fills the frame instead of floating in empty space.
    */
   compact?: boolean;
+  /** `centered` centres the example in the frame; `full` leaves it at the top, full width. @default "full" */
+  layout?: PreviewLayoutType;
+  /** Fill the available height (the fullscreen preview) instead of fitting the content. */
+  fill?: boolean;
 };
 
 export function ComponentIframe({
@@ -19,6 +24,8 @@ export function ComponentIframe({
   className,
   style,
   compact = false,
+  layout = "full",
+  fill = false,
 }: ComponentIframePropsType) {
   const iframeRef = React.useRef<HTMLIFrameElement>(null);
   const [mountNode, setMountNode] = React.useState<HTMLElement | null>(null);
@@ -100,6 +107,16 @@ export function ComponentIframe({
                 #preview-root:not(:has(> s-page)) {
                   padding: ${compact ? "12px" : "24px"};
                 }
+                /* Small content sits in the middle of the frame. Pages (s-page) stay full width. */
+                #preview-root[data-layout="centered"]:not(:has(> s-page)) {
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  min-height: ${fill ? "100vh" : "212px"};
+                }
+                #preview-root[data-layout="centered"]:not(:has(> s-page)) > * {
+                  max-width: 100%;
+                }
                 #preview-root:empty {
                   display: flex;
                   align-items: center;
@@ -156,7 +173,7 @@ export function ComponentIframe({
             </head>
 
             <body>
-              <div id="preview-root"></div>
+              <div id="preview-root" data-layout="${layout}"></div>
             </body>
           </html>
         `);
@@ -220,6 +237,7 @@ export function ComponentIframe({
     if (!iframe || !mountNode) return;
 
     const updateHeight = () => {
+      if (fill) return;
       const doc = iframe.contentDocument;
       if (!doc) return;
 
@@ -254,7 +272,7 @@ export function ComponentIframe({
       mutationObserver.disconnect();
       window.clearTimeout(timer);
     };
-  }, [mountNode]);
+  }, [mountNode, fill]);
 
   return (
     <iframe
@@ -263,7 +281,8 @@ export function ComponentIframe({
       className={cn("w-full border-0 bg-transparent", className)}
       style={{
         minHeight: compact ? "0px" : "260px",
-        maxHeight: "100vh",
+        maxHeight: fill ? "none" : "100vh",
+        height: fill ? "calc(100vh - 8.5rem)" : undefined,
         display: "block",
         backgroundColor: "transparent",
         ...style,

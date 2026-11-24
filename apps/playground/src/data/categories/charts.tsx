@@ -7,6 +7,7 @@ import { ChartDonutExample } from "@/examples/charts/ChartDonutExample";
 import ChartDonutExampleRaw from "@/examples/charts/ChartDonutExample.tsx?raw";
 import { ChartFunnelExample } from "@/examples/charts/ChartFunnelExample";
 import ChartFunnelExampleRaw from "@/examples/charts/ChartFunnelExample.tsx?raw";
+import { ChartLineThumbnail } from "@/examples/charts/ChartLineThumbnail";
 import { ChartLineExample } from "@/examples/charts/ChartLineExample";
 import ChartLineExampleRaw from "@/examples/charts/ChartLineExample.tsx?raw";
 import { ChartSparklineExample } from "@/examples/charts/ChartSparklineExample";
@@ -69,6 +70,7 @@ export const chartsComponents: ComponentEntry[] = [
     name: "ChartLine",
     slug: "chart-line",
     category: "Charts",
+    thumbnail: ChartLineThumbnail,
     description:
       "Line chart over dates with an optional dashed comparison period, smooth (default) or sharp curves, and a hover and keyboard tooltip.",
     examples: [
