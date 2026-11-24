@@ -9,9 +9,15 @@ import { ChartChange } from "./ChartChange";
 import { ChartDonut } from "./ChartDonut";
 import { ChartFunnel } from "./ChartFunnel";
 import { ChartLine } from "./ChartLine";
+import { ChartTooltip } from "./ChartTooltip";
 import { ChartSparkline } from "./ChartSparkline";
 import { CHART_COLORS } from "./Chart.constants";
-import { chartAxisTicks, chartLabelIndexes, chartValueScale } from "./Chart.utils";
+import {
+  chartAxisTicks,
+  chartLabelIndexes,
+  chartLinePath,
+  chartValueScale,
+} from "./Chart.utils";
 
 (globalThis as any).IS_REACT_ACT_ENVIRONMENT = true;
 
@@ -241,7 +247,76 @@ describe("ChartBarList", () => {
     );
     expect(html).toContain("width:100%");
     expect(html).toContain("width:25%");
-    expect(html).toContain("↗ 12%");
+    expect(html).toContain(">80%<");
+    expect(html).toContain(">20%<");
+  });
+
+  it("shares against a given total instead of the listed rows", () => {
+    const html = renderToStaticMarkup(
+      <ChartBarList
+        ariaLabel="x"
+        total={1000}
+        items={[{ id: "a", label: "Shoes", value: 200, display: "200" }]}
+      />,
+    );
+    expect(html).toContain(">20%<");
+  });
+});
+
+describe("ChartBarList hover", () => {
+  let host: HTMLDivElement;
+  let root: Root;
+  beforeEach(() => {
+    host = document.createElement("div");
+    document.body.appendChild(host);
+    root = createRoot(host);
+  });
+  afterEach(() => {
+    act(() => root.unmount());
+    host.remove();
+  });
+
+  it("darkens the hovered row, dims the others and opens its card", () => {
+    act(() =>
+      root.render(
+        <ChartBarList
+          ariaLabel="Views"
+          items={[
+            { id: "a", label: "Shoes", value: 200, display: "200" },
+            { id: "b", label: "Hats", value: 50, display: "50", change: 12 },
+          ]}
+        />,
+      ),
+    );
+    const row = (id: string) => host.querySelector(`[data-row="${id}"]`) as HTMLElement;
+    // Box puts its style on a wrapper around the s-box that takes the events.
+    const wrap = (id: string) => row(id).parentElement as HTMLElement;
+    act(() => {
+      row("b").dispatchEvent(new MouseEvent("mouseenter"));
+    });
+    expect(wrap("a").style.opacity).toBe("0.45");
+    expect(wrap("b").style.opacity).toBe("1");
+    const card = host.querySelector("[data-chart-tooltip]")?.textContent ?? "";
+    expect(card).toContain("Hats");
+    expect(card).toContain("50");
+    expect(card).toContain("↗ 12%");
+    act(() => {
+      row("b").dispatchEvent(new MouseEvent("mouseleave"));
+    });
+    expect(host.querySelector("[data-chart-tooltip]")).toBeNull();
+  });
+
+  it("keeps rows to the share and prints value and change only without the card", () => {
+    const items = [{ id: "a", label: "Shoes", value: 200, display: "1,200", change: 12 }];
+    const compact = renderToStaticMarkup(<ChartBarList ariaLabel="x" items={items} />);
+    expect(compact).toContain(">100%<");
+    expect(compact).not.toContain(">1,200<");
+    expect(compact).not.toContain("↗ 12%");
+    const inline = renderToStaticMarkup(
+      <ChartBarList ariaLabel="x" items={items} tooltip={false} />,
+    );
+    expect(inline).toContain(">1,200<");
+    expect(inline).toContain("↗ 12%");
   });
 });
 
@@ -289,13 +364,16 @@ describe("ChartFunnel", () => {
 });
 
 describe("ChartSparkline", () => {
-  it("draws a labelled trend line, nothing for no data", () => {
+  it("draws a labelled trend line, decorative without a label, nothing for fewer than two values", () => {
     const html = renderToStaticMarkup(
       <ChartSparkline values={[1, 3, 2]} ariaLabel="Revenue trend" />,
     );
     expect(html).toContain('aria-label="Revenue trend"');
-    expect(html).toContain("<polyline");
-    expect(renderToStaticMarkup(<ChartSparkline values={[]} ariaLabel="x" />)).toBe("");
+    expect(html).toContain('role="img"');
+    expect(renderToStaticMarkup(<ChartSparkline values={[1, 3, 2]} />)).toContain(
+      'aria-hidden="true"',
+    );
+    expect(renderToStaticMarkup(<ChartSparkline values={[5]} ariaLabel="x" />)).toBe("");
   });
 });
 
@@ -305,5 +383,198 @@ describe("ChartChange", () => {
     expect(renderToStaticMarkup(<ChartChange pct={-12.5} />)).toContain("↘ 12.5%");
     expect(renderToStaticMarkup(<ChartChange pct={0} />)).toContain("→ 0%");
     expect(renderToStaticMarkup(<ChartChange pct={null} />)).toBe("");
+  });
+});
+
+describe("ChartDonut hover", () => {
+  let host: HTMLDivElement;
+  let root: Root;
+  beforeEach(() => {
+    host = document.createElement("div");
+    document.body.appendChild(host);
+    root = createRoot(host);
+  });
+  afterEach(() => {
+    act(() => root.unmount());
+    host.remove();
+  });
+
+  it("grows the hovered slice, dims the others and shows its tooltip", () => {
+    act(() =>
+      root.render(
+        <ChartDonut
+          ariaLabel="Revenue by collection"
+          total="$400.00"
+          totalLabel="Total"
+          slices={[
+            { id: "a", label: "Shoes", value: 300, display: "$300.00" },
+            { id: "b", label: "Hats", value: 100, display: "$100.00" },
+          ]}
+        />,
+      ),
+    );
+    const slice = (id: string) => host.querySelector(`[data-slice="${id}"]`)!;
+    expect(slice("a").getAttribute("stroke-opacity")).toBe("1");
+    act(() => {
+      slice("b").dispatchEvent(new MouseEvent("mouseover", { bubbles: true }));
+    });
+    expect(Number(slice("b").getAttribute("stroke-width"))).toBeGreaterThan(
+      Number(slice("a").getAttribute("stroke-width")),
+    );
+    expect(slice("b").getAttribute("stroke-opacity")).toBe("1");
+    expect(slice("a").getAttribute("stroke-opacity")).toBe("0.3");
+    expect(host.querySelector("[data-chart-tooltip]")?.textContent).toContain("25%");
+    expect(host.textContent).toContain("Hats");
+    act(() => {
+      slice("b").dispatchEvent(new MouseEvent("mouseout", { bubbles: true }));
+    });
+    expect(host.querySelector("[data-chart-tooltip]")).toBeNull();
+    expect(slice("a").getAttribute("stroke-opacity")).toBe("1");
+  });
+});
+
+describe("ChartFunnel hover", () => {
+  let host: HTMLDivElement;
+  let root: Root;
+  beforeEach(() => {
+    host = document.createElement("div");
+    document.body.appendChild(host);
+    root = createRoot(host);
+  });
+  afterEach(() => {
+    act(() => root.unmount());
+    host.remove();
+  });
+
+  const stages = [
+    {
+      id: "a",
+      label: "Sessions",
+      value: 100,
+      share: 100,
+      shareDisplay: "100%",
+      display: "100",
+    },
+    {
+      id: "b",
+      label: "Orders",
+      value: 4,
+      share: 4,
+      shareDisplay: "4%",
+      display: "4",
+      note: "4% of the previous step",
+      change: 12,
+      details: [{ label: "Drop-off", value: "−96%" }],
+    },
+  ];
+
+  it("highlights the hovered stage, dims the rest and opens its card", () => {
+    act(() =>
+      root.render(<ChartFunnel ariaLabel="Conversion breakdown" stages={stages} />),
+    );
+    const group = (id: string) =>
+      host.querySelector(`[data-stage="${id}"]`) as SVGElement;
+    expect(host.querySelector("[data-chart-tooltip]")).toBeNull();
+    act(() => {
+      host
+        .querySelector('[data-stage-hit="b"]')!
+        .dispatchEvent(new MouseEvent("mouseover", { bubbles: true }));
+    });
+    expect(group("a").style.opacity).toBe("0.45");
+    expect(group("b").style.opacity).toBe("1");
+    const card = host.querySelector("[data-chart-tooltip]")?.textContent ?? "";
+    expect(card).toContain("Orders");
+    expect(card).toContain("Drop-off");
+    expect(card).toContain("−96%");
+    expect(card).toContain("4% of the previous step");
+    expect(card).toContain("↗ 12%");
+    act(() => {
+      host
+        .querySelector('[data-stage-hit="b"]')!
+        .dispatchEvent(new MouseEvent("mouseout", { bubbles: true }));
+    });
+    expect(host.querySelector("[data-chart-tooltip]")).toBeNull();
+    expect(group("a").style.opacity).toBe("1");
+  });
+
+  it("opens the card from the stage header too", () => {
+    act(() =>
+      root.render(<ChartFunnel ariaLabel="Conversion breakdown" stages={stages} />),
+    );
+    act(() => {
+      host
+        .querySelector('[data-stage-header="a"]')!
+        .dispatchEvent(new MouseEvent("mouseenter"));
+    });
+    expect(host.querySelector("[data-chart-tooltip]")?.textContent).toContain("Sessions");
+  });
+});
+
+describe("ChartTooltip placement", () => {
+  const rows = [{ color: "#000", label: "a", value: "1" }];
+  it("clears the hovered element instead of covering it", () => {
+    // A 40px column centred at 100: the card starts past its right edge (120 + 12).
+    expect(
+      renderToStaticMarkup(
+        <ChartTooltip x={100} anchorWidth={40} containerWidth={600} rows={rows} />,
+      ),
+    ).toContain("left:132px");
+    // No room on the right: it goes left of the column and stays inside the container.
+    expect(
+      renderToStaticMarkup(
+        <ChartTooltip x={500} anchorWidth={40} containerWidth={600} rows={rows} />,
+      ),
+    ).toContain("left:268px");
+  });
+
+  it("sits outside the box above or below, not over it", () => {
+    const below = renderToStaticMarkup(
+      <ChartTooltip x={0} containerWidth={600} rows={rows} placement="below" />,
+    );
+    expect(below).toContain("top:calc(100% + 4px)");
+    const above = renderToStaticMarkup(
+      <ChartTooltip x={0} containerWidth={600} rows={rows} placement="above" />,
+    );
+    expect(above).toContain("bottom:calc(100% + 4px)");
+  });
+});
+
+describe("line curve", () => {
+  const pts = [
+    { x: 0, y: 100 },
+    { x: 10, y: 20 },
+    { x: 20, y: 20 },
+    { x: 30, y: 80 },
+  ];
+  it("joins points with straight segments when sharp", () => {
+    expect(chartLinePath(pts, "sharp")).toBe(
+      "M0.0,100.0 L10.0,20.0 L20.0,20.0 L30.0,80.0",
+    );
+  });
+
+  it("curves through every point without overshooting, by default", () => {
+    const d = chartLinePath(pts);
+    expect(d).toBe(chartLinePath(pts, "smooth"));
+    expect(d.match(/C/g)).toHaveLength(3);
+    expect(d).toContain("10.0,20.0");
+    // Flat between two equal points: the control points stay on that level (no dip below 20).
+    const flat = d.split(" C")[2]!;
+    expect(flat.match(/,20\.0/g)!.length).toBeGreaterThanOrEqual(3);
+  });
+
+  it("draws the line smooth unless asked for sharp", () => {
+    const line = (curve?: "smooth" | "sharp") =>
+      renderToStaticMarkup(
+        <ChartLine
+          ariaLabel="x"
+          dates={["a", "b", "c"]}
+          formatValue={fmt}
+          formatDate={day}
+          curve={curve}
+          series={[{ id: "current", label: "Now", values: [1, 5, 2] }]}
+        />,
+      );
+    expect(line()).toMatch(/<path data-series="current" d="M[^"]* C/);
+    expect(line("sharp")).not.toMatch(/data-series="current" d="[^"]*C/);
   });
 });

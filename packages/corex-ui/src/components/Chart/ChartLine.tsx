@@ -5,7 +5,12 @@ import { CHART_COLORS, CHART_HEIGHT } from "./Chart.constants";
 import { useActiveIndex } from "./useActiveIndex";
 import { useChartWidth } from "./useChartWidth";
 import type { ChartLinePropsType, ChartLineSeriesType } from "./Chart.types";
-import { labelWidth, chartValueScale, chartLabelIndexes } from "./Chart.utils";
+import {
+  labelWidth,
+  chartLinePath,
+  chartValueScale,
+  chartLabelIndexes,
+} from "./Chart.utils";
 import { ChartXAxisLabels, ChartYAxisGrid } from "./ChartAxes";
 import { ChartLegend, ChartTooltip } from "./ChartTooltip";
 
@@ -13,7 +18,7 @@ const seriesColor = (s: ChartLineSeriesType) =>
   s.color ?? (s.dashed ? CHART_COLORS.comparison : CHART_COLORS.primary);
 
 /**
- * Shopify's line chart: a solid blue current-period line, an optional
+ * Shopify's line chart (smooth by default, or `curve="sharp"`): a solid blue current-period line, an optional
  * light dashed previous-period line, light gridlines with value labels,
  * dates along the bottom, a legend under it, and a hover / keyboard
  * tooltip with each series' date and value.
@@ -27,6 +32,7 @@ export function ChartLine({
   formatDate,
   height = CHART_HEIGHT,
   legend = true,
+  curve = "smooth",
 }: ChartLinePropsType) {
   const titleId = useId();
   const [ref, width] = useChartWidth<HTMLElement>();
@@ -46,10 +52,10 @@ export function ChartLine({
   const { active, props } = useActiveIndex(count, indexAt);
 
   const path = (values: number[]) =>
-    values
-      .slice(0, count)
-      .map((v, i) => `${i === 0 ? "M" : "L"}${x(i).toFixed(1)},${y(v).toFixed(1)}`)
-      .join(" ");
+    chartLinePath(
+      values.slice(0, count).map((v, i) => ({ x: x(i), y: y(v) })),
+      curve,
+    );
 
   const labels = chartLabelIndexes(count, width < 420 ? 4 : 6).map((i, n, all) => ({
     x: x(i),

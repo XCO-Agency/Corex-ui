@@ -70,8 +70,8 @@ describe("ChartCard", () => {
   it("shows the title, the value with its change and the chart", () => {
     const html = renderToStaticMarkup(
       <ChartCard
-        title="Sessions"
-        definition="Visits to the store"
+        heading="Sessions"
+        tooltip="Visits to the store"
         value="1,204"
         change={8.2}
       >

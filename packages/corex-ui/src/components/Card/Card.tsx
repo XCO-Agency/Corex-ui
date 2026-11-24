@@ -63,7 +63,7 @@ export const Card = forwardRef<HTMLElement, CardPropsType>(function Card(
               <InlineStack gap="small" alignItems="center">
                 {icon && <Icon type={icon} />}
                 {headerTitle && (
-                  <Text tooltip={tooltip} heading>
+                  <Text tooltip={tooltip} heading fontWeight="medium">
                     {headerTitle}
                   </Text>
                 )}

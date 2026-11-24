@@ -54,8 +54,8 @@ export function AnalyticsChartsExample() {
       <BlockStack gap="base">
         <Grid columns={{ xs: 1, md: 2 }} gap="base">
           <ChartCard
-            title="Sessions"
-            definition="Visits to your online store in the selected period."
+            heading="Sessions"
+            tooltip="Visits to your online store in the selected period."
             value={number.format(sessionsTotal)}
             change={percentChange(sessionsTotal, sessionsPrevious)}
           >
@@ -88,8 +88,8 @@ export function AnalyticsChartsExample() {
           </ChartCard>
 
           <ChartCard
-            title="Orders"
-            definition="Orders placed per day, against the two weeks before."
+            heading="Orders"
+            tooltip="Orders placed per day, against the two weeks before."
             value={number.format(ordersTotal)}
             change={percentChange(ordersTotal, ordersPrevious)}
           >
@@ -110,8 +110,8 @@ export function AnalyticsChartsExample() {
         </Grid>
 
         <ChartCard
-          title="Conversion rate breakdown"
-          definition="How many sessions reached each step of the purchase."
+          heading="Conversion rate breakdown"
+          tooltip="How many sessions reached each step of the purchase."
           value="3.2%"
           change={0.4}
         >
@@ -120,15 +120,19 @@ export function AnalyticsChartsExample() {
 
         <Grid columns={{ xs: 1, md: 3 }} gap="base">
           <ChartCard
-            title="Sessions by location"
-            definition="Top countries by sessions in the selected period."
+            heading="Sessions by location"
+            tooltip="Top countries by sessions in the selected period."
           >
-            <ChartBarList ariaLabel="Sessions by location" items={TOP_LOCATIONS} />
+            <ChartBarList
+              ariaLabel="Sessions by location"
+              items={TOP_LOCATIONS}
+              total={sessionsTotal}
+            />
           </ChartCard>
 
           <ChartCard
-            title="Sales by channel"
-            definition="Gross sales split by the channel the order came from."
+            heading="Sales by channel"
+            tooltip="Gross sales split by the channel the order came from."
           >
             <ChartDonut
               ariaLabel="Sales by channel"
@@ -139,8 +143,8 @@ export function AnalyticsChartsExample() {
           </ChartCard>
 
           <ChartCard
-            title="Total sales"
-            definition="Gross sales minus discounts and returns."
+            heading="Total sales"
+            tooltip="Gross sales minus discounts and returns."
             value={money.format(salesTotal)}
             change={percentChange(salesTotal, salesPrevious)}
           >
@@ -149,6 +153,7 @@ export function AnalyticsChartsExample() {
               values={SALES.current}
               width={240}
               height={48}
+              color="info"
             />
           </ChartCard>
         </Grid>

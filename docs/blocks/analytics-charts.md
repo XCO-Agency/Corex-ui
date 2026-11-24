@@ -14,20 +14,20 @@ Live example: [`/blocks/analytics-charts`](https://corex-ui.xco.agency/blocks/an
 
 Source: `packages/corex-ui/src/components/Chart/`. The package ships only the charts, with no card or title around them, so you can place them anywhere.
 
-| Export           | What it draws                                                                                                                      |
-| :--------------- | :--------------------------------------------------------------------------------------------------------------------------------- |
-| `ChartLine`      | One or more series over `dates`. `dashed: true` gives the comparison style.                                                        |
-| `ChartBar`       | Bars per day, with an optional pale `comparison` bar beside each.                                                                  |
-| `ChartFunnel`    | Shopify's "Conversion rate breakdown": label, share, count and change per stage, then bars with faded drop-off bands.              |
-| `ChartBarList`   | A ranked list ("Sessions by location"): label, a bar scaled to the largest value, the value and its change.                        |
-| `ChartDonut`     | A ring of slices with the total in the centre, and a legend with each value and share. Hovering a legend row highlights its slice. |
-| `ChartSparkline` | A small trend line with a light area, for table cells and metric cards.                                                            |
+| Export           | What it draws                                                                                                                                                                                                                                                    |
+| :--------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `ChartLine`      | One or more series over `dates`. `dashed: true` gives the comparison style. `curve` is `"smooth"` (default, a curve through every point that never overshoots) or `"sharp"` (straight segments).                                                                 |
+| `ChartBar`       | Bars per day, with an optional pale `comparison` bar beside each.                                                                                                                                                                                                |
+| `ChartFunnel`    | Shopify's "Conversion rate breakdown": label, share, count and change per stage, then bars with faded drop-off bands.                                                                                                                                            |
+| `ChartBarList`   | A ranked list ("Sessions by location"): the label (and an optional `leading` flag or icon), its share of `total` and a thin bar scaled to the largest value. The value and change are in a compact hover card; `tooltip={false}` prints them in the row instead. |
+| `ChartDonut`     | A ring of slices with the total in the centre, and a legend with each value and share. Hovering a legend row highlights its slice.                                                                                                                               |
+| `ChartSparkline` | A small trend line with a light area, for table cells and metric cards.                                                                                                                                                                                          |
 
 `CHART_COLORS` (the palette) and each chart's prop types are exported too.
 
 ## What the block adds
 
-- `partials/ChartCard.tsx`: a Corex `Card` with the title (dotted underline, `definition` in its tooltip), the headline `value` with its change, and the chart under it.
+- `partials/ChartCard.tsx`: a Corex `Card` that passes `heading`, `tooltip` and `actions` straight to the Card (its own title, dotted-underline definition and header actions), then shows the headline `value` with its change and the chart under it.
 - `partials/ChangeIndicator.tsx`: `↗ 34%` (success), `↘ 12%` (critical), `→ 0%` (subdued). Renders nothing for `null`.
 - `utils.ts`: `percentChange` (`null` without a previous value, never invented), `dayRange`, `periodSeries` (splits daily rows into the current and previous period; the previous is `null` when it has no data, so no flat comparison line is drawn) and `sum`.
 
@@ -41,8 +41,8 @@ import { percentChange, periodSeries, sum } from "~/components/analytics-charts/
 const s = periodSeries(rows, { previousFrom, currentFrom, to }, (row) => row.sessions);
 
 <ChartCard
-  title={t("analytics.sessions")}
-  definition={t("analytics.sessionsHelp")}
+  heading={t("analytics.sessions")}
+  tooltip={t("analytics.sessionsHelp")}
   value={formatNumber(sum(s.current))}
   change={percentChange(sum(s.current), s.previous && sum(s.previous))}
 >

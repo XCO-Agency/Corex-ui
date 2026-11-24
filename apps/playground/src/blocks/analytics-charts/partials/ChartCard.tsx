@@ -3,37 +3,28 @@ import type { ChartCardPropsType } from "../types";
 import { ChangeIndicator } from "./ChangeIndicator";
 
 /**
- * Shopify's analytics card: the title (dotted underline, its definition on
- * hover), the headline value with its change, then the chart.
+ * Shopify's analytics card: a Corex `Card`, so the title (`heading`), its
+ * definition (`tooltip`) and header `actions` are the Card's own, then the
+ * headline value with its change, then the chart.
  */
 export function ChartCard({
-  title,
-  definition,
   value,
   change,
   changeLabel,
-  action,
   children,
+  ...card
 }: ChartCardPropsType) {
   return (
-    <Card>
+    <Card {...card}>
       <BlockStack gap="base">
-        <BlockStack gap="small-300">
-          <InlineStack justifyContent="space-between" alignItems="center" gap="small-200">
-            <Text as="h3" variant="headingSm" tooltip={definition}>
-              {title}
+        {value != null && (
+          <InlineStack gap="small-200" alignItems="center">
+            <Text as="p" variant="headingLg">
+              {value}
             </Text>
-            {action}
+            <ChangeIndicator pct={change ?? null} label={changeLabel} />
           </InlineStack>
-          {value != null && (
-            <InlineStack gap="small-200" alignItems="center">
-              <Text as="p" variant="headingLg">
-                {value}
-              </Text>
-              <ChangeIndicator pct={change ?? null} label={changeLabel} />
-            </InlineStack>
-          )}
-        </BlockStack>
+        )}
         {children}
       </BlockStack>
     </Card>

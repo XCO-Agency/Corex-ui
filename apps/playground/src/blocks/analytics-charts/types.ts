@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import type { CardPropsType } from "@xco-agency/corex-ui";
 
 export type PeriodRangeType = {
   /** First day of the previous period (YYYY-MM-DD). */
@@ -26,17 +26,12 @@ export type ChangeIndicatorPropsType = {
   label?: string;
 };
 
-export type ChartCardPropsType = {
-  title: string;
-  /** What the number means; shown on hover of the dotted-underlined title. */
-  definition?: ReactNode;
+/** A Corex `Card`: `heading`, `tooltip`, `actions` and the rest are the Card's own props. */
+export type ChartCardPropsType = CardPropsType & {
   /** The headline figure, as shown. */
   value?: string;
   /** Percent change next to the value. */
   change?: number | null;
   /** Accessible label for the change. */
   changeLabel?: string;
-  /** Rendered at the end of the title row, e.g. a button or popover. */
-  action?: ReactNode;
-  children: ReactNode;
 };

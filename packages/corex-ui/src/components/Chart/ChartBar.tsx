@@ -128,6 +128,7 @@ export function ChartBar({
         {active != null && current && (
           <ChartTooltip
             x={center(active)}
+            anchorWidth={slot}
             containerWidth={width}
             heading={compared ? undefined : formatDate(current.date)}
             rows={[

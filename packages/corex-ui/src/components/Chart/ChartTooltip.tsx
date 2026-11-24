@@ -36,19 +36,31 @@ export function ChartSeriesMarker({ color, dashed = false }: ChartSeriesMarkerPr
  */
 export function ChartTooltip({
   x,
+  anchorWidth = 0,
   containerWidth,
   heading,
   rows,
   children,
+  placement = "inside",
 }: ChartTooltipPropsType) {
   const width = TOOLTIP_WIDTH;
-  const left = x + 12 + width > containerWidth ? Math.max(0, x - 12 - width) : x + 12;
+  const half = anchorWidth / 2;
+  const beside =
+    x + half + 12 + width > containerWidth ? x - half - 12 - width : x + half + 12;
+  const left = Math.max(0, Math.min(beside, containerWidth - width));
   return (
     <Box
       role="presentation"
       data-chart-tooltip=""
       position="absolute"
-      insetBlockStart="4px"
+      insetBlockStart={
+        placement === "inside"
+          ? "4px"
+          : placement === "below"
+            ? "calc(100% + 4px)"
+            : undefined
+      }
+      insetBlockEnd={placement === "above" ? "calc(100% + 4px)" : undefined}
       insetInlineStart={`${left}px`}
       zIndex={1}
       shadow="0 4px 12px rgba(0, 0, 0, 0.12), 0 0 0 1px rgba(0, 0, 0, 0.06)"

@@ -54,6 +54,10 @@ export const FUNNEL_STAGES: ChartFunnelStageType[] = [
     shareDisplay: "9%",
     display: "1,426",
     note: "9% of the previous step",
+    details: [
+      { label: "Drop-off", value: "−91%" },
+      { label: "Sessions lost", value: "14,414" },
+    ],
     change: 3.1,
   },
   {
@@ -65,6 +69,10 @@ export const FUNNEL_STAGES: ChartFunnelStageType[] = [
     shareDisplay: "5%",
     display: "792",
     note: "55.5% of the previous step",
+    details: [
+      { label: "Drop-off", value: "−44.5%" },
+      { label: "Sessions lost", value: "634" },
+    ],
     change: -1.4,
   },
   {
@@ -76,16 +84,41 @@ export const FUNNEL_STAGES: ChartFunnelStageType[] = [
     shareDisplay: "3.2%",
     display: "507",
     note: "64% of the previous step",
+    details: [
+      { label: "Drop-off", value: "−36%" },
+      { label: "Sessions lost", value: "285" },
+    ],
     change: 0,
   },
 ];
 
 export const TOP_LOCATIONS: ChartBarListItemType[] = [
-  { id: "us", label: "United States", value: 6420, display: "6,420", change: 12.4 },
-  { id: "ca", label: "Canada", value: 2310, display: "2,310", change: 4.8 },
-  { id: "gb", label: "United Kingdom", value: 1875, display: "1,875", change: -3.2 },
-  { id: "fr", label: "France", value: 1120, display: "1,120", change: 21 },
-  { id: "ma", label: "Morocco", value: 640, display: "640", change: null },
+  {
+    id: "us",
+    leading: "🇺🇸",
+    label: "United States",
+    value: 6420,
+    display: "6,420",
+    change: 12.4,
+  },
+  {
+    id: "ca",
+    leading: "🇨🇦",
+    label: "Canada",
+    value: 2310,
+    display: "2,310",
+    change: 4.8,
+  },
+  {
+    id: "gb",
+    leading: "🇬🇧",
+    label: "United Kingdom",
+    value: 1875,
+    display: "1,875",
+    change: -3.2,
+  },
+  { id: "fr", leading: "🇫🇷", label: "France", value: 1120, display: "1,120", change: 21 },
+  { id: "ma", leading: "🇲🇦", label: "Morocco", value: 640, display: "640", change: null },
 ];
 
 export const SALES_BY_CHANNEL: ChartDonutSliceType[] = [
