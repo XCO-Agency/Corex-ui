@@ -28,7 +28,8 @@ body {
 }
 
 .playground-canvas,
-.playground-topbar {
+.playground-topbar,
+.playground-footer {
   background: #fff;
   color: #1a1a1a;
 }
@@ -42,6 +43,17 @@ body {
 .playground-topbar {
   border-bottom: 1px solid #e3e3e3;
   flex-shrink: 0;
+}
+
+.playground-footer {
+  border-top: 1px solid #e3e3e3;
+  flex-shrink: 0;
+}
+
+.playground-footer img {
+  display: block;
+  width: 200px;
+  height: auto;
 }
 
 .thumbnail-svg {
