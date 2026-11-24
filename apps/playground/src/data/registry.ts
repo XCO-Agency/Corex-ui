@@ -1,6 +1,7 @@
 import { actionsComponents } from "./categories/actions";
 import { formsComponents } from "./categories/forms";
 import { layoutComponents } from "./categories/layout";
+import { chartsComponents } from "./categories/charts";
 import { feedbackComponents } from "./categories/feedback";
 import { mediaComponents } from "./categories/media";
 import { overlaysComponents } from "./categories/overlays";
@@ -36,6 +37,7 @@ export const registry: ComponentEntry[] = [
   ...actionsComponents,
   ...formsComponents,
   ...layoutComponents,
+  ...chartsComponents,
   ...feedbackComponents,
   ...mediaComponents,
   ...overlaysComponents,

@@ -68,9 +68,11 @@ _Configures instructions in `.github/copilot-instructions.md`._
 If you prefer to download the raw skill without using `skills.sh`:
 
 ```bash
-mkdir -p .agents/skills/corex-ui-components && \
+mkdir -p .agents/skills/corex-ui-components/references && \
 curl -sSL https://raw.githubusercontent.com/XCO-Agency/Corex-ui/main/.agents/skills/corex-ui-components/SKILL.md \
-  -o .agents/skills/corex-ui-components/SKILL.md
+  -o .agents/skills/corex-ui-components/SKILL.md && \
+curl -sSL https://raw.githubusercontent.com/XCO-Agency/Corex-ui/main/.agents/skills/corex-ui-components/references/components.md \
+  -o .agents/skills/corex-ui-components/references/components.md
 ```
 
 ---
@@ -105,19 +107,22 @@ curl -sSL https://raw.githubusercontent.com/XCO-Agency/Corex-ui/main/.agents/ski
 
 ## What the Skill Teaches Your AI Agent
 
-1. **Strict Corex UI Component Usage**:
-   Never outputs raw HTML (`<div>`, `<button>`, `<span>`, `<input>`, `<svg>`, etc.) or Tailwind CSS in blocks. Composes layouts exclusively with `@xco-agency/corex-ui` components (`Box`, `BlockStack`, `InlineStack`, `Card`, `Button`, `Text`, etc.).
+`SKILL.md` is short on purpose (rules and page patterns). The full per-component prop tables live in `references/components.md`, which the agent opens only when it needs one component's props.
 
-2. **Modern Polaris Spacing Tokens**:
-   Enforces modern Polaris spacing tokens (`"none"`, `"small-500"`...`"small-100"`, `"base"`, `"large-100"`...`"large-500"`) for all `gap` and `padding` props. Forbids legacy numeric tokens (`"100"`, `"200"`, `"300"`, `"400"`).
+1. **The right page for the job.**
+   Detail, edit and create pages use `Page inlineSize="base"` with an `aside` column, like Shopify's product page. Settings use `inlineSize="small"` in one column. Index pages use `large` with `IndexFilters` and `IndexTable`. Dashboards use `large` with a `Grid` of chart cards. Forms save through `SaveBar`.
 
-3. **No Deprecated Polaris Props**:
-   Ensures the agent uses active modern props:
-   - `variant="primary"` instead of legacy `primary`
-   - `tone="critical"` instead of legacy `destructive`
-   - `variant="plain"` instead of legacy `plain`
-   - `alignItems` and `justifyContent` instead of legacy `align` or `blockAlign`
-   - `heading` instead of legacy `title` on `Banner`
+2. **The right field for each kind of data.**
+   Money is `MoneyField`, counts are `NumberField`, email is `EmailField`, a choice of two to four short options is `Segment`, six or more options is `Select`, an immediate on/off is `Switch`, and so on. Related short fields sit side by side in `FormLayout.Group`.
 
-4. **Component API Verification**:
-   Provides accurate prop signatures for all 75+ components including compound components (`Combobox`, `IndexFilters`, `DatePicker`, `ActionList`, etc.).
+3. **Only Corex UI components.**
+   Never raw HTML (`<div>`, `<button>`, `<span>`, `<input>`, `<svg>`) or Tailwind in admin UI. Layouts are composed with `Page`, `Card`, `BlockStack`, `InlineStack`, `Grid`, `Box`.
+
+4. **Modern Polaris spacing tokens.**
+   `"none"`, `"small-500"`…`"small-100"`, `"base"`, `"large-100"`…`"large-500"` for every `gap` and `padding`. Never the legacy numeric tokens.
+
+5. **No deprecated props.**
+   A table of replacements, for example `variant="primary"` for `primary`, `tone="critical"` for `destructive`, `heading` for `title`, `inlineSize="small"` for `narrowWidth`, `details` for `helpText`, `Page aside` instead of `Layout`.
+
+6. **Verified props.**
+   The agent reads `<Name>PropsType` in the installed `dist/index.d.ts` instead of recalling Polaris React.
