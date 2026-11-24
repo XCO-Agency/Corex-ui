@@ -248,8 +248,8 @@ export const Text = forwardRef<HTMLElement, TextPropsType>(
       <span
         style={
           hasTooltip && underline
-            ? { ...typographyStyle, ...TOOLTIP_UNDERLINE_STYLE }
-            : typographyStyle
+            ? { ...typographyStyle, ...style, ...TOOLTIP_UNDERLINE_STYLE }
+            : { ...typographyStyle, ...style }
         }
       >
         {children}

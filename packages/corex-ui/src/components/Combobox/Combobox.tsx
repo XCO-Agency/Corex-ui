@@ -215,9 +215,13 @@ const ComboboxInput = forwardRef<HTMLElement, ComboboxInputPropsType>(
     const shouldShowClear = Boolean(showClear && (displayValue || tags.length > 0));
 
     return (
-      <BlockStack gap="small-300" inlineSize="100%">
+      <BlockStack inlineSize="100%" style={{ gap: "var(--p-space-150, 6px)" }}>
         {label ? (
-          <Text variant="small" fontWeight="medium">
+          <Text
+            variant="bodyMd"
+            fontWeight="medium"
+            style={{ fontSize: "0.8125rem", lineHeight: "1.25rem" }}
+          >
             {label}
           </Text>
         ) : null}
@@ -231,7 +235,7 @@ const ComboboxInput = forwardRef<HTMLElement, ComboboxInputPropsType>(
           borderRadius="large"
           paddingInline="small-300"
           paddingBlock="none"
-          minBlockSize="32px"
+          minBlockSize="30px"
           className={className}
           style={{
             boxShadow: isFocused
@@ -252,7 +256,7 @@ const ComboboxInput = forwardRef<HTMLElement, ComboboxInputPropsType>(
           <InlineStack
             alignItems="center"
             gap="small-200"
-            minBlockSize="32px"
+            minBlockSize="30px"
             inlineSize="fill"
           >
             {prefix ? (
@@ -427,11 +431,7 @@ const ComboboxList = forwardRef<HTMLDivElement, ComboboxListPropsType>(
     } = useCombobox();
 
     if (multiple) {
-      const selectedItems = Array.isArray(value)
-        ? value
-        : value != null
-          ? [value]
-          : [];
+      const selectedItems = Array.isArray(value) ? value : value != null ? [value] : [];
       const selectedKeys = selectedItems.map((item) => itemToString(item));
       const choices = filteredItems.map((item) => ({
         label: itemToString(item),
