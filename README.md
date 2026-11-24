@@ -5,6 +5,12 @@ mirrors the legacy `@shopify/polaris` component API while rendering Shopify's ac
 maintained Polaris web components underneath. It exists to make migrating off deprecated
 Polaris React a matter of swapping an import, not rewriting a UI.
 
+<p align="center">
+  <a href="https://open-launch.com" target="_blank" title="Featured on Open-Launch">
+    <img src="https://open-launch.com/images/badges/featured-light.svg" alt="Featured on Open-Launch" width="200" height="50">
+  </a>
+</p>
+
 ```diff
 -import { Button, Card } from "@shopify/polaris";
 +import { Button, Card } from "@xco-agency/corex-ui";
