@@ -8,5 +8,10 @@
       "@xco-agency/corex-ui": ["../../packages/corex-ui/src/index.ts"]
     }
   },
-  "include": ["src", "../../packages/corex-ui/src/types/**/*.d.ts"]
+  "include": [
+    "src",
+    "worker/index.ts",
+    "worker/routing.ts",
+    "../../packages/corex-ui/src/types/**/*.d.ts"
+  ]
 }
