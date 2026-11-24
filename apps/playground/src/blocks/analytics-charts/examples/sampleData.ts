@@ -1,4 +1,8 @@
-import type { BarListItemType, DonutSliceType, FunnelStageType } from "../types";
+import {
+  type ChartBarListItemType,
+  type ChartDonutSliceType,
+  type ChartFunnelStageType,
+} from "@xco-agency/corex-ui";
 import { dayRange, periodSeries } from "../utils";
 
 /** Deterministic demo rows: 60 days of sessions, orders and sales. */
@@ -30,7 +34,7 @@ export const ORDERS_14 = periodSeries(
   (row) => row.orders,
 );
 
-export const FUNNEL_STAGES: FunnelStageType[] = [
+export const FUNNEL_STAGES: ChartFunnelStageType[] = [
   {
     id: "sessions",
     label: "Sessions",
@@ -76,7 +80,7 @@ export const FUNNEL_STAGES: FunnelStageType[] = [
   },
 ];
 
-export const TOP_LOCATIONS: BarListItemType[] = [
+export const TOP_LOCATIONS: ChartBarListItemType[] = [
   { id: "us", label: "United States", value: 6420, display: "6,420", change: 12.4 },
   { id: "ca", label: "Canada", value: 2310, display: "2,310", change: 4.8 },
   { id: "gb", label: "United Kingdom", value: 1875, display: "1,875", change: -3.2 },
@@ -84,7 +88,7 @@ export const TOP_LOCATIONS: BarListItemType[] = [
   { id: "ma", label: "Morocco", value: 640, display: "640", change: null },
 ];
 
-export const SALES_BY_CHANNEL: DonutSliceType[] = [
+export const SALES_BY_CHANNEL: ChartDonutSliceType[] = [
   { id: "online", label: "Online Store", value: 18420, display: "$18,420" },
   { id: "pos", label: "Point of Sale", value: 6210, display: "$6,210" },
   { id: "shop", label: "Shop app", value: 3150, display: "$3,150" },

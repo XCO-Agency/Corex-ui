@@ -1,15 +1,16 @@
 import { useId } from "react";
-import { BlockStack, Box } from "@xco-agency/corex-ui";
-import { CHART, CHART_HEIGHT } from "../constants";
-import { useActiveIndex } from "../hooks/useActiveIndex";
-import { useChartWidth } from "../hooks/useChartWidth";
-import type { LineChartPropsType, LineSeriesType } from "../types";
-import { labelWidth, valueScale, xLabelIndexes } from "../utils";
-import { XAxisLabels, YAxisGrid } from "./Axes";
+import { BlockStack } from "../BlockStack";
+import { Box } from "../Box";
+import { CHART_COLORS, CHART_HEIGHT } from "./Chart.constants";
+import { useActiveIndex } from "./useActiveIndex";
+import { useChartWidth } from "./useChartWidth";
+import type { ChartLinePropsType, ChartLineSeriesType } from "./Chart.types";
+import { labelWidth, chartValueScale, chartLabelIndexes } from "./Chart.utils";
+import { ChartXAxisLabels, ChartYAxisGrid } from "./ChartAxes";
 import { ChartLegend, ChartTooltip } from "./ChartTooltip";
 
-const seriesColor = (s: LineSeriesType) =>
-  s.color ?? (s.dashed ? CHART.comparison : CHART.primary);
+const seriesColor = (s: ChartLineSeriesType) =>
+  s.color ?? (s.dashed ? CHART_COLORS.comparison : CHART_COLORS.primary);
 
 /**
  * Shopify's line chart: a solid blue current-period line, an optional
@@ -17,7 +18,7 @@ const seriesColor = (s: LineSeriesType) =>
  * dates along the bottom, a legend under it, and a hover / keyboard
  * tooltip with each series' date and value.
  */
-export function LineChart({
+export function ChartLine({
   series,
   dates,
   ariaLabel,
@@ -26,11 +27,11 @@ export function LineChart({
   formatDate,
   height = CHART_HEIGHT,
   legend = true,
-}: LineChartPropsType) {
+}: ChartLinePropsType) {
   const titleId = useId();
   const [ref, width] = useChartWidth<HTMLElement>();
   const count = dates.length;
-  const { ticks, max } = valueScale(series.flatMap((s) => s.values));
+  const { ticks, max } = chartValueScale(series.flatMap((s) => s.values));
   const marginLeft = Math.max(...ticks.map((t) => labelWidth(formatTick(t)))) + 8;
   const marginRight = 12;
   const top = 8;
@@ -50,7 +51,7 @@ export function LineChart({
       .map((v, i) => `${i === 0 ? "M" : "L"}${x(i).toFixed(1)},${y(v).toFixed(1)}`)
       .join(" ");
 
-  const labels = xLabelIndexes(count, width < 420 ? 4 : 6).map((i, n, all) => ({
+  const labels = chartLabelIndexes(count, width < 420 ? 4 : 6).map((i, n, all) => ({
     x: x(i),
     text: formatDate(dates[i] ?? ""),
     anchor:
@@ -74,7 +75,7 @@ export function LineChart({
           {...props}
         >
           <title id={titleId}>{ariaLabel}</title>
-          <YAxisGrid
+          <ChartYAxisGrid
             ticks={ticks}
             max={max}
             left={marginLeft}
@@ -104,7 +105,7 @@ export function LineChart({
                 x2={x(active)}
                 y1={top}
                 y2={top + plotHeight}
-                stroke={CHART.guide}
+                stroke={CHART_COLORS.guide}
                 strokeWidth={1}
                 strokeDasharray="2 2"
               />
@@ -121,7 +122,7 @@ export function LineChart({
               ))}
             </g>
           )}
-          <XAxisLabels labels={labels} y={height - 8} />
+          <ChartXAxisLabels labels={labels} y={height - 8} />
         </svg>
         {active != null && (
           <ChartTooltip

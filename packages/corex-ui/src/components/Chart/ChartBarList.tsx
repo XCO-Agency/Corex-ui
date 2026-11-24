@@ -1,14 +1,17 @@
-import { BlockStack, Box, InlineStack, Text } from "@xco-agency/corex-ui";
-import { CHART } from "../constants";
-import type { HorizontalBarListPropsType } from "../types";
-import { ChangeIndicator } from "./ChangeIndicator";
+import { BlockStack } from "../BlockStack";
+import { Box } from "../Box";
+import { InlineStack } from "../InlineStack";
+import { Text } from "../Text";
+import { CHART_COLORS } from "./Chart.constants";
+import type { ChartBarListPropsType } from "./Chart.types";
+import { ChartChange } from "./ChartChange";
 
 /**
  * Shopify's ranked bar list ("Sessions by location"): each row's label,
  * a bar scaled to the largest value with the value beside it, and its
  * change.
  */
-export function HorizontalBarList({ items, ariaLabel }: HorizontalBarListPropsType) {
+export function ChartBarList({ items, ariaLabel }: ChartBarListPropsType) {
   const max = Math.max(...items.map((item) => item.value), 1);
   return (
     <Box role="list" aria-label={ariaLabel}>
@@ -31,14 +34,14 @@ export function HorizontalBarList({ items, ariaLabel }: HorizontalBarListPropsTy
                       width: `${Math.max((item.value / max) * 100, item.value > 0 ? 1 : 0)}%`,
                       height: 16,
                       borderRadius: 3,
-                      background: CHART.bar,
+                      background: CHART_COLORS.bar,
                     }}
                   />
                 </Box>
                 <Text as="span" variant="bodySm" fontWeight="semibold" numeric>
                   {item.display}
                 </Text>
-                <ChangeIndicator pct={item.change ?? null} />
+                <ChartChange pct={item.change ?? null} />
               </InlineStack>
             </BlockStack>
           </Box>

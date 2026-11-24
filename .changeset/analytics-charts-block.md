@@ -2,4 +2,4 @@
 "@xco-agency/corex-ui": minor
 ---
 
-Add the **Analytics Charts** block (`npx @xco-agency/corex-ui@latest add analytics-charts`): Shopify admin-style metric cards, a line chart with a dashed comparison period, a column chart, a conversion funnel, a ranked bar list, a donut and a sparkline, drawn as dependency-free SVG with hover and keyboard tooltips. Labels and number/date formatting are all passed in as props.
+Add the Shopify admin-style chart components: `ChartLine` (with a dashed comparison period), `ChartBar`, `ChartFunnel`, `ChartBarList`, `ChartDonut` and `ChartSparkline`, plus the `CHART_COLORS` palette. They are dependency-free SVG with hover and keyboard tooltips; labels and number/date formatting come in as props. The **Analytics Charts** block (`npx @xco-agency/corex-ui@latest add analytics-charts`) composes them with its own metric card and period helpers.

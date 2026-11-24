@@ -1,8 +1,8 @@
-import { CHART, CHART_FONT } from "../constants";
-import type { XAxisLabelsPropsType, YAxisGridPropsType } from "../types";
+import { CHART_COLORS, CHART_FONT } from "./Chart.constants";
+import type { ChartXAxisLabelsPropsType, ChartYAxisGridPropsType } from "./Chart.types";
 
 /** Horizontal gridlines with their value labels, Shopify style. */
-export function YAxisGrid({
+export function ChartYAxisGrid({
   ticks,
   max,
   left,
@@ -10,7 +10,7 @@ export function YAxisGrid({
   top,
   plotHeight,
   format,
-}: YAxisGridPropsType) {
+}: ChartYAxisGridPropsType) {
   return (
     <g data-chart-y-axis="" aria-hidden>
       {ticks.map((tick) => {
@@ -22,7 +22,7 @@ export function YAxisGrid({
               x2={right}
               y1={y}
               y2={y}
-              stroke={tick === 0 ? CHART.baseline : CHART.grid}
+              stroke={tick === 0 ? CHART_COLORS.baseline : CHART_COLORS.grid}
               strokeWidth={1}
               shapeRendering="crispEdges"
             />
@@ -31,8 +31,8 @@ export function YAxisGrid({
               y={y}
               dy="0.32em"
               textAnchor="end"
-              fill={CHART.axisText}
-              fontSize={CHART.axisFontSize}
+              fill={CHART_COLORS.axisText}
+              fontSize={CHART_COLORS.axisFontSize}
               fontFamily={CHART_FONT}
             >
               {format(tick)}
@@ -45,7 +45,7 @@ export function YAxisGrid({
 }
 
 /** Date labels under the plot at the given x positions. */
-export function XAxisLabels({ labels, y }: XAxisLabelsPropsType) {
+export function ChartXAxisLabels({ labels, y }: ChartXAxisLabelsPropsType) {
   return (
     <g data-chart-x-axis="" aria-hidden>
       {labels.map((label, i) => (
@@ -54,8 +54,8 @@ export function XAxisLabels({ labels, y }: XAxisLabelsPropsType) {
           x={label.x}
           y={y}
           textAnchor={label.anchor ?? "middle"}
-          fill={CHART.axisText}
-          fontSize={CHART.axisFontSize}
+          fill={CHART_COLORS.axisText}
+          fontSize={CHART_COLORS.axisFontSize}
           fontFamily={CHART_FONT}
         >
           {label.text}

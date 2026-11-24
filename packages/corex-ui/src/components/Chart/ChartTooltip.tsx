@@ -1,13 +1,16 @@
-import { BlockStack, Box, InlineStack, Text } from "@xco-agency/corex-ui";
-import { TOOLTIP_WIDTH } from "../constants";
+import { BlockStack } from "../BlockStack";
+import { Box } from "../Box";
+import { InlineStack } from "../InlineStack";
+import { Text } from "../Text";
+import { TOOLTIP_WIDTH } from "./Chart.constants";
 import type {
   ChartLegendPropsType,
   ChartTooltipPropsType,
-  SeriesMarkerPropsType,
-} from "../types";
+  ChartSeriesMarkerPropsType,
+} from "./Chart.types";
 
 /** A coloured series marker: a dot, or a short dash for the comparison. */
-export function SeriesMarker({ color, dashed = false }: SeriesMarkerPropsType) {
+export function ChartSeriesMarker({ color, dashed = false }: ChartSeriesMarkerPropsType) {
   return (
     <svg width="12" height="12" aria-hidden focusable="false">
       {dashed ? (
@@ -72,7 +75,7 @@ export function ChartTooltip({
             wrap={false}
           >
             <InlineStack gap="small-300" alignItems="center" wrap={false}>
-              <SeriesMarker color={row.color} dashed={row.dashed} />
+              <ChartSeriesMarker color={row.color} dashed={row.dashed} />
               <Text as="span" variant="bodySm" color="subdued">
                 {row.label}
               </Text>
@@ -94,7 +97,7 @@ export function ChartLegend({ items }: ChartLegendPropsType) {
     <InlineStack gap="base" justifyContent="center" alignItems="center">
       {items.map((item) => (
         <InlineStack key={item.label} gap="small-300" alignItems="center" wrap={false}>
-          <SeriesMarker color={item.color} dashed={item.dashed} />
+          <ChartSeriesMarker color={item.color} dashed={item.dashed} />
           <Text as="span" variant="bodySm" color="subdued">
             {item.label}
           </Text>

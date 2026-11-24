@@ -6,42 +6,37 @@ Shopify admin analytics charts, drawn the way the native reports draw them: a bl
 npx @xco-agency/corex-ui@latest add analytics-charts
 ```
 
-The CLI copies the block into `app/components/analytics-charts/` (or `src/components/…`, or the `componentsDir` in `corex.json`). It's your code after that, so you can change it. The only dependency is `@xco-agency/corex-ui`. There's no chart library.
+The CLI copies the example page, `ChartCard`, `ChangeIndicator` and the period helpers into `app/components/analytics-charts/` (or `src/components/…`, or the `componentsDir` in `corex.json`). It's your code after that. The charts themselves are components of `@xco-agency/corex-ui`, so the block imports them. There's no chart library.
 
 Live example: [`/blocks/analytics-charts`](https://corex-ui.xco.agency/blocks/analytics-charts).
 
-## What's in it
+## Chart components (in `@xco-agency/corex-ui`)
 
-| Export              | What it draws                                                                                                                                |
-| :------------------ | :------------------------------------------------------------------------------------------------------------------------------------------- |
-| `ChartCard`         | A Corex `Card` with the title (dotted underline, `definition` in its tooltip), the headline `value` with its change, and the chart under it. |
-| `LineChart`         | One or more series over `dates`. `dashed: true` gives the comparison style.                                                                  |
-| `ColumnChart`       | Bars per day, with an optional pale `comparison` bar beside each.                                                                            |
-| `FunnelChart`       | Shopify's "Conversion rate breakdown": label, share, count and change per stage, then bars with faded drop-off bands.                        |
-| `HorizontalBarList` | A ranked list ("Sessions by location"): label, a bar scaled to the largest value, the value and its change.                                  |
-| `DonutChart`        | A ring of slices with the total in the centre, and a legend with each value and share. Hovering a legend row highlights its slice.           |
-| `Sparkline`         | A small trend line with a light area, for table cells and metric cards.                                                                      |
-| `ChangeIndicator`   | `↗ 34%` (success), `↘ 12%` (critical), `→ 0%` (subdued). Renders nothing for `null`.                                                         |
+Source: `packages/corex-ui/src/components/Chart/`. The package ships only the charts, with no card or title around them, so you can place them anywhere.
 
-The block also exports its building pieces: `YAxisGrid`, `XAxisLabels`, `ChartTooltip`, `ChartLegend`, `SeriesMarker`, the hooks `useChartWidth` and `useActiveIndex`, the `CHART` palette, and these helpers:
+| Export           | What it draws                                                                                                                      |
+| :--------------- | :--------------------------------------------------------------------------------------------------------------------------------- |
+| `ChartLine`      | One or more series over `dates`. `dashed: true` gives the comparison style.                                                        |
+| `ChartBar`       | Bars per day, with an optional pale `comparison` bar beside each.                                                                  |
+| `ChartFunnel`    | Shopify's "Conversion rate breakdown": label, share, count and change per stage, then bars with faded drop-off bands.              |
+| `ChartBarList`   | A ranked list ("Sessions by location"): label, a bar scaled to the largest value, the value and its change.                        |
+| `ChartDonut`     | A ring of slices with the total in the centre, and a legend with each value and share. Hovering a legend row highlights its slice. |
+| `ChartSparkline` | A small trend line with a light area, for table cells and metric cards.                                                            |
 
-- `axisTicks` / `valueScale`: round 0-based ticks of about four steps of 1, 2 or 5 × 10ⁿ.
-- `xLabelIndexes`: the first, the last, and evenly spaced labels in between.
-- `percentChange`: `null` when there's no previous value. It never makes one up.
-- `dayRange`
-- `periodSeries`: splits daily rows into the current period and the one before it, with gaps filled. The previous period is `null` when it has no data, so the chart doesn't draw a flat comparison line.
-- `sum`
+`CHART_COLORS` (the palette) and each chart's prop types are exported too.
+
+## What the block adds
+
+- `partials/ChartCard.tsx`: a Corex `Card` with the title (dotted underline, `definition` in its tooltip), the headline `value` with its change, and the chart under it.
+- `partials/ChangeIndicator.tsx`: `↗ 34%` (success), `↘ 12%` (critical), `→ 0%` (subdued). Renders nothing for `null`.
+- `utils.ts`: `percentChange` (`null` without a previous value, never invented), `dayRange`, `periodSeries` (splits daily rows into the current and previous period; the previous is `null` when it has no data, so no flat comparison line is drawn) and `sum`.
 
 ## Usage
 
 ```tsx
-import {
-  ChartCard,
-  LineChart,
-  percentChange,
-  periodSeries,
-  sum,
-} from "~/components/analytics-charts";
+import { ChartLine } from "@xco-agency/corex-ui";
+import { ChartCard } from "~/components/analytics-charts/partials/ChartCard";
+import { percentChange, periodSeries, sum } from "~/components/analytics-charts/utils";
 
 const s = periodSeries(rows, { previousFrom, currentFrom, to }, (row) => row.sessions);
 
@@ -51,7 +46,7 @@ const s = periodSeries(rows, { previousFrom, currentFrom, to }, (row) => row.ses
   value={formatNumber(sum(s.current))}
   change={percentChange(sum(s.current), s.previous && sum(s.previous))}
 >
-  <LineChart
+  <ChartLine
     ariaLabel={t("analytics.sessionsChart")}
     dates={s.dates}
     formatValue={formatNumber}
@@ -75,11 +70,11 @@ const s = periodSeries(rows, { previousFrom, currentFrom, to }, (row) => row.ses
 </ChartCard>;
 ```
 
-The block has no strings of its own. Every label, accessible name and number or date format comes in through props, so it works with any i18n setup and locale.
+The charts have no strings of their own. Every label, accessible name and number or date format comes in through props, so they work with any i18n setup and locale.
 
 ## Styles
 
-All colours live in `constants.ts` (`CHART`), so retheming happens in one place.
+Colours are the `CHART_COLORS` palette in the package.
 
 | Token        | Value                                     | Used for                                     |
 | :----------- | :---------------------------------------- | :------------------------------------------- |
@@ -104,11 +99,11 @@ Columns have rounded top corners (2px). The hover card is 200px wide, white, wit
 
 ## Why it uses raw SVG
 
-Corex blocks normally use only Corex components, and there are no inline styles. This block makes two exceptions, both kept as small as possible:
+Blocks use only Corex components. The chart components inside the package make two exceptions, both kept as small as possible:
 
 1. **The plots are `<svg>`.** Corex has no chart primitive, and drawing the plots in SVG is how the block avoids a chart dependency. All text outside the plot (titles, values, legends, the hover card's content, the funnel header, the bar list and donut legend) is Corex `Text`, laid out with `BlockStack`, `InlineStack`, `Grid`, `Box` and `Card`.
 2. **Some geometry is set through `Box` `style`.** Examples are the hover card's position, the width of each ranked bar, and the donut's centre overlay. These are computed values that no Corex prop expresses.
 
 ## Tests
 
-`apps/playground/src/blocks/analytics-charts/__tests__/charts.test.tsx` covers the scales, period splitting, line and column rendering, keyboard tooltips, the donut shares, the bar widths and the funnel connectors. Run it with `pnpm --filter playground test`. The registry builder leaves tests out of what the CLI copies.
+`packages/corex-ui/src/components/Chart/Chart.test.tsx` covers the scales, line and bar rendering, keyboard tooltips, the donut shares, the bar widths and the funnel connectors (`pnpm --filter @xco-agency/corex-ui test`). The block's own helpers and card are covered by `apps/playground/src/blocks/analytics-charts/__tests__/block.test.tsx` (`pnpm --filter playground test`).

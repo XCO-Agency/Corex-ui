@@ -1,11 +1,12 @@
 import { useId } from "react";
-import { BlockStack, Box } from "@xco-agency/corex-ui";
-import { CHART, CHART_HEIGHT } from "../constants";
-import { useActiveIndex } from "../hooks/useActiveIndex";
-import { useChartWidth } from "../hooks/useChartWidth";
-import type { ColumnChartPropsType } from "../types";
-import { labelWidth, valueScale, xLabelIndexes } from "../utils";
-import { XAxisLabels, YAxisGrid } from "./Axes";
+import { BlockStack } from "../BlockStack";
+import { Box } from "../Box";
+import { CHART_COLORS, CHART_HEIGHT } from "./Chart.constants";
+import { useActiveIndex } from "./useActiveIndex";
+import { useChartWidth } from "./useChartWidth";
+import type { ChartBarPropsType } from "./Chart.types";
+import { labelWidth, chartValueScale, chartLabelIndexes } from "./Chart.utils";
+import { ChartXAxisLabels, ChartYAxisGrid } from "./ChartAxes";
 import { ChartLegend, ChartTooltip } from "./ChartTooltip";
 
 /**
@@ -13,7 +14,7 @@ import { ChartLegend, ChartTooltip } from "./ChartTooltip";
  * dates under the plot, an optional pale previous-period bar beside each,
  * and a hover / keyboard tooltip.
  */
-export function ColumnChart({
+export function ChartBar({
   data,
   ariaLabel,
   label,
@@ -23,12 +24,14 @@ export function ColumnChart({
   formatTick = formatValue,
   formatDate,
   height = CHART_HEIGHT,
-}: ColumnChartPropsType) {
+}: ChartBarPropsType) {
   const titleId = useId();
   const [ref, width] = useChartWidth<HTMLElement>();
   const count = data.length;
   const compared = data.some((d) => d.comparison != null);
-  const { ticks, max } = valueScale(data.flatMap((d) => [d.value, d.comparison ?? 0]));
+  const { ticks, max } = chartValueScale(
+    data.flatMap((d) => [d.value, d.comparison ?? 0]),
+  );
   const marginLeft = Math.max(...ticks.map((t) => labelWidth(formatTick(t)))) + 8;
   const marginRight = 8;
   const top = 8;
@@ -46,7 +49,7 @@ export function ColumnChart({
   const { active, props } = useActiveIndex(count, indexAt);
   const baseline = top + plotHeight;
 
-  const labels = xLabelIndexes(count, width < 420 ? 4 : 6).map((i) => ({
+  const labels = chartLabelIndexes(count, width < 420 ? 4 : 6).map((i) => ({
     x: center(i),
     text: formatDate(data[i]?.date ?? ""),
   }));
@@ -82,7 +85,7 @@ export function ColumnChart({
           {...props}
         >
           <title id={titleId}>{ariaLabel}</title>
-          <YAxisGrid
+          <ChartYAxisGrid
             ticks={ticks}
             max={max}
             left={marginLeft}
@@ -109,13 +112,18 @@ export function ColumnChart({
                 <g key={`${d.date}-${i}`}>
                   {compared &&
                     d.comparison != null &&
-                    bar(center(i) - offset, d.comparison, CHART.comparison, "previous")}
-                  {bar(center(i) + offset, d.value, CHART.bar, "current")}
+                    bar(
+                      center(i) - offset,
+                      d.comparison,
+                      CHART_COLORS.comparison,
+                      "previous",
+                    )}
+                  {bar(center(i) + offset, d.value, CHART_COLORS.bar, "current")}
                 </g>
               );
             })}
           </g>
-          <XAxisLabels labels={labels} y={height - 8} />
+          <ChartXAxisLabels labels={labels} y={height - 8} />
         </svg>
         {active != null && current && (
           <ChartTooltip
@@ -124,14 +132,14 @@ export function ColumnChart({
             heading={compared ? undefined : formatDate(current.date)}
             rows={[
               {
-                color: CHART.bar,
+                color: CHART_COLORS.bar,
                 label: compared ? formatDate(current.date) : label,
                 value: formatValue(current.value),
               },
               ...(compared && current.comparison != null
                 ? [
                     {
-                      color: CHART.comparison,
+                      color: CHART_COLORS.comparison,
                       label: formatDate(comparisonDates?.[active] ?? ""),
                       value: formatValue(current.comparison),
                     },
@@ -146,9 +154,9 @@ export function ColumnChart({
       </Box>
       <ChartLegend
         items={[
-          { color: CHART.bar, label },
+          { color: CHART_COLORS.bar, label },
           ...(compared && comparisonLabel
-            ? [{ color: CHART.comparison, label: comparisonLabel }]
+            ? [{ color: CHART_COLORS.comparison, label: comparisonLabel }]
             : []),
         ]}
       />

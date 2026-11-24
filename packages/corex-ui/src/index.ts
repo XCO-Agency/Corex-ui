@@ -84,6 +84,7 @@ export * from "./components/Toast";
 export * from "./components/SkeletonPage";
 export * from "./components/Combobox";
 export * from "./components/Autocomplete";
+export * from "./components/Chart";
 
 export * from "./components/AppWindow";
 export * from "./components/AppNav";

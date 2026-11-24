@@ -1,11 +1,15 @@
-import { BlockStack, Grid, Page } from "@xco-agency/corex-ui";
+import {
+  BlockStack,
+  ChartBar,
+  ChartBarList,
+  ChartDonut,
+  ChartFunnel,
+  ChartLine,
+  ChartSparkline,
+  Grid,
+  Page,
+} from "@xco-agency/corex-ui";
 import { ChartCard } from "../partials/ChartCard";
-import { ColumnChart } from "../partials/ColumnChart";
-import { DonutChart } from "../partials/DonutChart";
-import { FunnelChart } from "../partials/FunnelChart";
-import { HorizontalBarList } from "../partials/HorizontalBarList";
-import { LineChart } from "../partials/LineChart";
-import { Sparkline } from "../partials/Sparkline";
 import { percentChange, sum } from "../utils";
 import {
   FUNNEL_STAGES,
@@ -55,7 +59,7 @@ export function AnalyticsChartsExample() {
             value={number.format(sessionsTotal)}
             change={percentChange(sessionsTotal, sessionsPrevious)}
           >
-            <LineChart
+            <ChartLine
               ariaLabel={`Sessions, ${rangeLabel(SESSIONS.dates)}`}
               dates={SESSIONS.dates}
               formatValue={(n) => number.format(n)}
@@ -89,7 +93,7 @@ export function AnalyticsChartsExample() {
             value={number.format(ordersTotal)}
             change={percentChange(ordersTotal, ordersPrevious)}
           >
-            <ColumnChart
+            <ChartBar
               ariaLabel={`Orders per day, ${rangeLabel(ORDERS_14.dates)}`}
               label={rangeLabel(ORDERS_14.dates)}
               comparisonLabel={rangeLabel(ORDERS_14.previousDates)}
@@ -111,7 +115,7 @@ export function AnalyticsChartsExample() {
           value="3.2%"
           change={0.4}
         >
-          <FunnelChart ariaLabel="Conversion rate breakdown" stages={FUNNEL_STAGES} />
+          <ChartFunnel ariaLabel="Conversion rate breakdown" stages={FUNNEL_STAGES} />
         </ChartCard>
 
         <Grid columns={{ xs: 1, md: 3 }} gap="base">
@@ -119,14 +123,14 @@ export function AnalyticsChartsExample() {
             title="Sessions by location"
             definition="Top countries by sessions in the selected period."
           >
-            <HorizontalBarList ariaLabel="Sessions by location" items={TOP_LOCATIONS} />
+            <ChartBarList ariaLabel="Sessions by location" items={TOP_LOCATIONS} />
           </ChartCard>
 
           <ChartCard
             title="Sales by channel"
             definition="Gross sales split by the channel the order came from."
           >
-            <DonutChart
+            <ChartDonut
               ariaLabel="Sales by channel"
               total={money.format(sum(SALES_BY_CHANNEL.map((s) => s.value)))}
               totalLabel="Total"
@@ -140,7 +144,7 @@ export function AnalyticsChartsExample() {
             value={money.format(salesTotal)}
             change={percentChange(salesTotal, salesPrevious)}
           >
-            <Sparkline
+            <ChartSparkline
               ariaLabel="Total sales trend"
               values={SALES.current}
               width={240}

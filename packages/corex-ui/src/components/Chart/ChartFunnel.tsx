@@ -1,14 +1,16 @@
-import { BlockStack, Grid, Text } from "@xco-agency/corex-ui";
-import { CHART, FUNNEL_BAR_SHARE, FUNNEL_PLOT_HEIGHT } from "../constants";
-import type { FunnelChartPropsType } from "../types";
-import { ChangeIndicator } from "./ChangeIndicator";
+import { BlockStack } from "../BlockStack";
+import { Grid } from "../Grid";
+import { Text } from "../Text";
+import { CHART_COLORS, FUNNEL_BAR_SHARE, FUNNEL_PLOT_HEIGHT } from "./Chart.constants";
+import type { ChartFunnelPropsType } from "./Chart.types";
+import { ChartChange } from "./ChartChange";
 
 /**
  * Shopify's "Conversion rate breakdown": a column per stage with its label,
  * share and count over it, a solid bar for the stage, and a faded band
  * flowing from each bar's top down to the next one's (the drop-off).
  */
-export function FunnelChart({ stages, ariaLabel }: FunnelChartPropsType) {
+export function ChartFunnel({ stages, ariaLabel }: ChartFunnelPropsType) {
   const plot = FUNNEL_PLOT_HEIGHT;
   const n = Math.max(stages.length, 1);
   const width = 1000;
@@ -37,7 +39,7 @@ export function FunnelChart({ stages, ariaLabel }: FunnelChartPropsType) {
             <Text as="p" variant="bodySm">
               {stage.display}
             </Text>
-            <ChangeIndicator pct={stage.change ?? null} />
+            <ChartChange pct={stage.change ?? null} />
             {stage.note && (
               <Text as="p" variant="bodySm" color="subdued">
                 {stage.note}
@@ -60,7 +62,7 @@ export function FunnelChart({ stages, ariaLabel }: FunnelChartPropsType) {
           x2={width}
           y1={plot - 0.5}
           y2={plot - 0.5}
-          stroke={CHART.baseline}
+          stroke={CHART_COLORS.baseline}
           strokeWidth={1}
           vectorEffect="non-scaling-stroke"
         />
@@ -77,14 +79,14 @@ export function FunnelChart({ stages, ariaLabel }: FunnelChartPropsType) {
                 y={0}
                 width={barWidth}
                 height={plot}
-                fill={CHART.faded}
+                fill={CHART_COLORS.faded}
                 fillOpacity={0.45}
               />
               {next && (
                 <polygon
                   data-connector=""
                   points={`${x + barWidth},${plot - h} ${x + column},${plot - height(next.share)} ${x + column},${plot} ${x + barWidth},${plot}`}
-                  fill={CHART.faded}
+                  fill={CHART_COLORS.faded}
                 />
               )}
               <rect
@@ -92,7 +94,7 @@ export function FunnelChart({ stages, ariaLabel }: FunnelChartPropsType) {
                 y={plot - h}
                 width={barWidth}
                 height={h}
-                fill={CHART.bar}
+                fill={CHART_COLORS.bar}
                 rx={2}
               />
             </g>

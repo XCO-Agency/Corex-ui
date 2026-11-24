@@ -1,17 +1,17 @@
-import { CHART } from "../constants";
-import type { SparklinePropsType } from "../types";
+import { CHART_COLORS } from "./Chart.constants";
+import type { ChartSparklinePropsType } from "./Chart.types";
 
 /**
  * A small trend line for a table cell or metric, in the current-period
  * blue. Flat zero data draws a line on the baseline; no data draws nothing.
  */
-export function Sparkline({
+export function ChartSparkline({
   values,
   ariaLabel,
   width = 96,
   height = 28,
-  color = CHART.primary,
-}: SparklinePropsType) {
+  color = CHART_COLORS.primary,
+}: ChartSparklinePropsType) {
   if (values.length === 0) return null;
   const max = Math.max(...values.map((v) => Number(v) || 0), 0);
   const pad = 2;

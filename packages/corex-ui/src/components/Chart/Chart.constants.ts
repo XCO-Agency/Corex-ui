@@ -3,7 +3,7 @@
  * current period in blue, the comparison period pale and dashed, light
  * gridlines with a darker zero line, and grey 12px axis labels.
  */
-export const CHART = {
+export const CHART_COLORS = {
   /** The current period's line. */
   primary: "#2c6ecb",
   /** Bars, funnel stages and ranked bars. */

@@ -1,21 +1,24 @@
 import { useState } from "react";
-import { BlockStack, Box, InlineStack, Text } from "@xco-agency/corex-ui";
-import { CHART } from "../constants";
-import type { DonutChartPropsType } from "../types";
-import { SeriesMarker } from "./ChartTooltip";
+import { BlockStack } from "../BlockStack";
+import { Box } from "../Box";
+import { InlineStack } from "../InlineStack";
+import { Text } from "../Text";
+import { CHART_COLORS } from "./Chart.constants";
+import type { ChartDonutPropsType } from "./Chart.types";
+import { ChartSeriesMarker } from "./ChartTooltip";
 
 /**
  * Shopify's donut ("Sales by channel"): a ring of slices with the total in
  * its centre and a legend with each slice's value and share, readable
  * without hovering. Hovering a legend row highlights its slice.
  */
-export function DonutChart({
+export function ChartDonut({
   slices,
   total,
   totalLabel,
   ariaLabel,
   size = 160,
-}: DonutChartPropsType) {
+}: ChartDonutPropsType) {
   const [active, setActive] = useState<string | null>(null);
   const sumValues = slices.reduce((s, slice) => s + Math.max(slice.value, 0), 0);
   const stroke = 18;
@@ -24,7 +27,7 @@ export function DonutChart({
   const gap = slices.length > 1 ? 2 : 0;
   let offset = 0;
   const colour = (i: number): string =>
-    CHART.palette[i % CHART.palette.length] ?? CHART.bar;
+    CHART_COLORS.palette[i % CHART_COLORS.palette.length] ?? CHART_COLORS.bar;
 
   return (
     <InlineStack gap="large-100" alignItems="center" wrap>
@@ -42,7 +45,7 @@ export function DonutChart({
             cy={size / 2}
             r={radius}
             fill="none"
-            stroke={CHART.grid}
+            stroke={CHART_COLORS.grid}
             strokeWidth={stroke}
           />
           {sumValues > 0 &&
@@ -107,7 +110,7 @@ export function DonutChart({
                 wrap={false}
               >
                 <InlineStack gap="small-300" alignItems="center" wrap={false}>
-                  <SeriesMarker color={colour(i)} />
+                  <ChartSeriesMarker color={colour(i)} />
                   <Text as="span" variant="bodySm" lineClamp={1}>
                     {slice.label}
                   </Text>
