@@ -145,6 +145,26 @@ export default function Layout({ children }: LayoutPropsType) {
           <BlockStack grow minBlockSize="0" overflowY="auto" padding="large-200">
             {children}
           </BlockStack>
+          <InlineStack
+            className="playground-footer"
+            alignItems="center"
+            justifyContent="center"
+            paddingBlock="small-200"
+            paddingInline="base"
+          >
+            <a
+              href="https://open-launch.com"
+              target="_blank"
+              title="Featured on Open-Launch"
+            >
+              <img
+                src="https://open-launch.com/images/badges/featured-light.svg"
+                alt="Featured on Open-Launch"
+                width={200}
+                height={50}
+              />
+            </a>
+          </InlineStack>
         </BlockStack>
       </BlockStack>
 
